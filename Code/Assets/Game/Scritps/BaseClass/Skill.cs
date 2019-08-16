@@ -12,6 +12,11 @@ public class Skill
 	public SkillType skillType = SkillType.NONE;
 	public ValueChange[] valueChange = new ValueChange[0];
 
+	public bool useable = false;
+	public ItemVariableType itemVariable = ItemVariableType.NONE;
+	public string variableKey = "";
+	public string variableValue = "";
+
 	public Skill()
 	{
 		iD = DataHolder.LastSkillID() + 1;

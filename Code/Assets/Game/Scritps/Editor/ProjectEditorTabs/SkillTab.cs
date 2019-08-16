@@ -91,6 +91,33 @@ public class SkillTab : BaseTab
 			DataHolder.Skill(selection).skillType = (SkillType)EditorGUILayout.EnumPopup("Skill Type", DataHolder.Skill(selection).skillType, GUILayout.Width (pw.mWidth * 2));
 			EditorGUILayout.Separator();
 
+			EditorGUILayout.BeginVertical("box");
+			fold3 = EditorGUILayout.Foldout(fold3, "Usage Settings");
+			if(fold3)
+			{
+				DataHolder.Skill(selection).useable = EditorGUILayout.BeginToggleGroup("Useable", DataHolder.Skill(selection).useable);
+
+				DataHolder.Skill(selection).itemVariable = (ItemVariableType)EditorTab.EnumToolbar("Item variable", 
+					(int)DataHolder.Skill(selection).itemVariable, typeof(ItemVariableType));
+				if(!ItemVariableType.NONE.Equals(DataHolder.Skill(selection).itemVariable))
+				{
+					DataHolder.Skill(selection).variableKey = EditorGUILayout.TextField("Variable key", DataHolder.Skill(selection).variableKey, GUILayout.Width((int)(pw.mWidth*1.5)));
+				}
+				if(ItemVariableType.SET.Equals(DataHolder.Skill(selection).itemVariable))
+				{
+					DataHolder.Skill(selection).variableValue = EditorGUILayout.TextField("Variable value", DataHolder.Skill(selection).variableValue, GUILayout.Width((int)(pw.mWidth*1.5)));
+				}
+
+				EditorGUILayout.Separator();
+				EditorGUILayout.BeginHorizontal();
+
+				GUILayout.FlexibleSpace();
+				EditorGUILayout.EndHorizontal();
+
+				EditorGUILayout.EndToggleGroup();
+				this.Separate();
+			}
+			EditorGUILayout.EndVertical();
 			
 			EditorGUILayout.BeginVertical("box");
 			fold3 = EditorGUILayout.Foldout(fold3, "User Settings");
