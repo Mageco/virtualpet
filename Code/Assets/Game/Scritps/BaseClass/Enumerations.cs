@@ -19,10 +19,10 @@ public enum StatusNeeded {STATUS_VALUE, SKILL};
 // skill
 public enum SkillEffect {NONE, ADD, REMOVE};
 public enum SkillType {NONE,ACTION,EMOTION};
-public enum Direction {R =0, D = 1, L = 2, U = 3};
+public enum Direction {R =0, D = 1, L = 2, U = 3, RU = 4,RD = 5,LU = 6,LD = 7};
 
 //Movement
-public enum MovementType{WALK = 0,RUN = 1,CRAW = 2,JUMP = 3,FLY = 4};
+public enum MovementType{WALK = 0,RUN = 1,CRAW = 2,JUMP = 3};
 
 // formula
 public enum SimpleOperator {ADD, SUB, SET};
