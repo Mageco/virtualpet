@@ -36,6 +36,11 @@ public class CameraController : MonoBehaviour
 		this.transform.position = new Vector3(t.x,t.y,this.transform.position.z);
 	}
 
+	void Awake()
+	{
+		target = GameObject.FindObjectOfType<CharController> ().transform;
+	}
+
 
 	void Start()
 	{
@@ -92,6 +97,7 @@ public class CameraController : MonoBehaviour
 				y = Mathf.Clamp (y, boundY.x + height, boundY.y - height);
 
 				this.transform.position = new Vector3 (x, y, this.transform.position.z);
+
 			}
 		} 
 	}
