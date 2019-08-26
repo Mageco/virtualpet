@@ -59,7 +59,7 @@ public class PolyNavAgent : MonoBehaviour{
 
 	private static List<PolyNavAgent> allAgents = new List<PolyNavAgent>();
 
-	CharController character;
+	public CharController character;
 
 	public float rotation;
 
@@ -147,7 +147,7 @@ public class PolyNavAgent : MonoBehaviour{
 	void OnEnable(){ allAgents.Add(this); }
 	void OnDisable(){ allAgents.Remove(this); }
 	void Awake(){ _transform = transform; 
-		character = this.GetComponent <CharController> ();
+		
 	}
 
 	///Set the destination for the agent. As a result the agent starts moving
@@ -350,10 +350,10 @@ public class PolyNavAgent : MonoBehaviour{
 		if (OnDestinationReached != null)
 			OnDestinationReached();
 
-		if (type == AgentType.Char)
-			character.OnArrived ();
-		else if (type == AgentType.Pet)
-			this.transform.GetComponent<CharController> ().OnArrived ();
+		//if (type == AgentType.Char)
+		character.OnArrived ();
+		//else if (type == AgentType.Pet)
+		//	this.transform.GetComponent<CharController> ().OnArrived ();
 	}
 
 	//stop the agent and callback + message
@@ -443,7 +443,12 @@ public class PolyNavAgent : MonoBehaviour{
             vec.Normalize();
             vec *= max;
         }
-        return vec;
+		if (Math.Abs (vec.y) > Mathf.Abs (vec.x)) {
+			if (vec.magnitude > max / 4) {
+				vec.Normalize();
+				vec *= max/4;
+			}
+		}        return vec;
     }
 
 
