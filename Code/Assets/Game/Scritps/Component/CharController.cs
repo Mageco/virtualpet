@@ -19,6 +19,7 @@ public class CharController : MonoBehaviour {
 	float time;
 	float maxAgentTime = 0.1f;
 	Vector2 lastTargetPosition;
+	bool isArrived = true;
 
 	//Anim
 	string moveAnim = "Run";
@@ -53,14 +54,12 @@ public class CharController : MonoBehaviour {
 		if (interactType == InteractType.None) {
 			if (enviromentType == EnviromentType.Room)
 				anim.Play (idleAnim + "_" + direction.ToString (), 0);
-		}
-		else if (interactType == InteractType.MoveToTarget) {
+		} else if (interactType == InteractType.FollowTarget) {
 			if (time > maxAgentTime) {
 				if (target != null) {
 					if (Vector2.Distance (lastTargetPosition, target.position) > 1) {
 						agent.SetDestination (target.position);
 						lastTargetPosition = target.position;
-						interactType = InteractType.MoveToTarget;
 					}
 				}
 				time = 0;
@@ -69,7 +68,12 @@ public class CharController : MonoBehaviour {
 
 			anim.Play (moveAnim + "_" + direction.ToString (), 0);
 			anim.speed = agent.speed / agent.maxSpeed;
-		} else if (interactType == InteractType.Drag) {
+		} else if (interactType == InteractType.Call) {
+			if (isArrived) {
+				SetDirection (Direction.D);
+			}
+		}
+		else if (interactType == InteractType.Drag) {
 			Vector3 pos = Camera.main.ScreenToWorldPoint (Input.mousePosition) - dragOffset;
 			pos.z = 0;
 			if (pos.y > 20)
@@ -130,24 +134,23 @@ public class CharController : MonoBehaviour {
 	#region Actionn
 	public void OnArrived()
 	{
-		if (interactType == InteractType.MoveToTarget) {
+		if (interactType == InteractType.FollowTarget) {
 			interactType = InteractType.None;
-		} else if (interactType == InteractType.Call) {
-			SetDirection (Direction.D);
 		}
+			
+		isArrived = true;
 	}
 
 	public void OnCall()
 	{
-		if (Vector2.Distance (lastTargetPosition, target.position) < 0.1f) {
-			return;
-		}
-		interactType = InteractType.MoveToTarget;
+		target.position = InputController.instance.callPoint.position;
+		StartCoroutine (MoveToPoint (target.position));
+		interactType = InteractType.Call;
 	}
 
-	public void OnMove()
+	public void OnFollowTarget()
 	{
-		interactType = InteractType.MoveToTarget;
+		interactType = InteractType.FollowTarget;
 	}
 
 
@@ -253,13 +256,29 @@ public class CharController : MonoBehaviour {
 	}
 	#endregion
 
-	#region Movement
+	#region Action
 
+	void DoAction()
+	{
 
+	}
+
+	IEnumerator MoveToPoint(Vector3 pos)
+	{
+		isArrived = false;
+		target.transform.position = pos;
+		agent.SetDestination (target.position);
+		lastTargetPosition = target.position;
+		while (!isArrived) {
+			anim.Play (moveAnim + "_" + direction.ToString (), 0);
+			yield return new WaitForEndOfFrame ();
+		}
+
+	}
 
 	#endregion
 
 }
 
-public enum InteractType {None,MoveToTarget,Drag,Drop,Caress,Call,Bath,Command};
+public enum InteractType {None,FollowTarget,Drag,Drop,Caress,Call,Bath,Command};
 public enum EnviromentType {Room,Table,Bath};

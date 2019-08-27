@@ -8,7 +8,7 @@ public class InputController : MonoBehaviour
 	public static InputController instance;
 	public Transform target;
 	public LeanScreenDepth ScreenDepth;
-	public Transform[] points;
+	public Transform callPoint;
 	CharController character;
 
 	void Awake()
@@ -39,13 +39,12 @@ public class InputController : MonoBehaviour
 		target.position = worldPoint;
 
 		if (character.interactType == InteractType.None && character.enviromentType == EnviromentType.Room) {
-			character.OnMove ();
+			character.OnFollowTarget ();
 		}
 	}
 
 	public void OnCall()
 	{
-		target.transform.position = points [0].position;
 		character.OnCall ();
 	}
 }
