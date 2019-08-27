@@ -22,14 +22,14 @@ AnimatorController:
     m_IKPass: 0
     m_SyncedLayerAffectsTiming: 0
     m_Controller: {fileID: 9100000}
---- !u!1102 &1102564799060424246
+--- !u!1102 &1102316464196851232
 AnimatorState:
   serializedVersion: 5
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Idle D
+  m_Name: Idle_D
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -48,59 +48,7 @@ AnimatorState:
   m_MirrorParameter: 
   m_CycleOffsetParameter: 
   m_TimeParameter: 
---- !u!1102 &1102606137848418938
-AnimatorState:
-  serializedVersion: 5
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: Idle
-  m_Speed: 1
-  m_CycleOffset: 0
-  m_Transitions: []
-  m_StateMachineBehaviours: []
-  m_Position: {x: 50, y: 50, z: 0}
-  m_IKOnFeet: 0
-  m_WriteDefaultValues: 1
-  m_Mirror: 0
-  m_SpeedParameterActive: 0
-  m_MirrorParameterActive: 0
-  m_CycleOffsetParameterActive: 0
-  m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: b2fec6415a9524aa387cf7ea78a7c760, type: 2}
-  m_Tag: 
-  m_SpeedParameter: 
-  m_MirrorParameter: 
-  m_CycleOffsetParameter: 
-  m_TimeParameter: 
---- !u!1102 &1102663816009551172
-AnimatorState:
-  serializedVersion: 5
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: Idle Bark
-  m_Speed: 1
-  m_CycleOffset: 0
-  m_Transitions: []
-  m_StateMachineBehaviours: []
-  m_Position: {x: 50, y: 50, z: 0}
-  m_IKOnFeet: 0
-  m_WriteDefaultValues: 1
-  m_Mirror: 0
-  m_SpeedParameterActive: 0
-  m_MirrorParameterActive: 0
-  m_CycleOffsetParameterActive: 0
-  m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: 632613c2e0c0c4d7a80b57f7de761caa, type: 2}
-  m_Tag: 
-  m_SpeedParameter: 
-  m_MirrorParameter: 
-  m_CycleOffsetParameter: 
-  m_TimeParameter: 
---- !u!1102 &1102771081602250364
+--- !u!1102 &1102454290018450602
 AnimatorState:
   serializedVersion: 5
   m_ObjectHideFlags: 1
@@ -126,7 +74,7 @@ AnimatorState:
   m_MirrorParameter: 
   m_CycleOffsetParameter: 
   m_TimeParameter: 
---- !u!1102 &1102775844659027876
+--- !u!1102 &1102521069475860742
 AnimatorState:
   serializedVersion: 5
   m_ObjectHideFlags: 1
@@ -152,14 +100,14 @@ AnimatorState:
   m_MirrorParameter: 
   m_CycleOffsetParameter: 
   m_TimeParameter: 
---- !u!1102 &1102920126536488046
+--- !u!1102 &1102725234609614948
 AnimatorState:
   serializedVersion: 5
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: run D
+  m_Name: Run_D
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -188,23 +136,17 @@ AnimatorStateMachine:
   m_Name: Base Layer
   m_ChildStates:
   - serializedVersion: 1
-    m_State: {fileID: 1102606137848418938}
-    m_Position: {x: 360, y: 132, z: 0}
+    m_State: {fileID: 1102454290018450602}
+    m_Position: {x: 384, y: 240, z: 0}
   - serializedVersion: 1
-    m_State: {fileID: 1102663816009551172}
-    m_Position: {x: 360, y: 180, z: 0}
+    m_State: {fileID: 1102316464196851232}
+    m_Position: {x: 384, y: 288, z: 0}
   - serializedVersion: 1
-    m_State: {fileID: 1102564799060424246}
-    m_Position: {x: 360, y: 228, z: 0}
+    m_State: {fileID: 1102521069475860742}
+    m_Position: {x: 384, y: 336, z: 0}
   - serializedVersion: 1
-    m_State: {fileID: 1102920126536488046}
-    m_Position: {x: 360, y: 276, z: 0}
-  - serializedVersion: 1
-    m_State: {fileID: 1102771081602250364}
-    m_Position: {x: 372, y: 384, z: 0}
-  - serializedVersion: 1
-    m_State: {fileID: 1102775844659027876}
-    m_Position: {x: 446.63306, y: 508.8586, z: 0}
+    m_State: {fileID: 1102725234609614948}
+    m_Position: {x: 384, y: 384, z: 0}
   m_ChildStateMachines: []
   m_AnyStateTransitions: []
   m_EntryTransitions: []
@@ -214,4 +156,4 @@ AnimatorStateMachine:
   m_EntryPosition: {x: 50, y: 120, z: 0}
   m_ExitPosition: {x: 800, y: 120, z: 0}
   m_ParentStateMachinePosition: {x: 800, y: 20, z: 0}
-  m_DefaultState: {fileID: 1102606137848418938}
+  m_DefaultState: {fileID: 1102454290018450602}
