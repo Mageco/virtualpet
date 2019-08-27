@@ -49,13 +49,6 @@ public class CharController : MonoBehaviour {
 	void Update () {
 
 
-		if (enviromentType == EnviromentType.Table) {
-			anim.Play ("Lay_D", 0);
-		} else if (enviromentType == EnviromentType.Bath) {
-			anim.Play ("Idle_D", 0);
-		} else if (enviromentType == EnviromentType.Room) {
-			
-		}
 
 		if (interactType == InteractType.None) {
 			if (enviromentType == EnviromentType.Room)
@@ -110,7 +103,11 @@ public class CharController : MonoBehaviour {
 				
 				fallSpeed = 0;
 				this.transform.rotation = Quaternion.identity;
+				anim.Play ("Idle_D", 0);
 			}
+		}else if (interactType == InteractType.Bath)
+		{
+			anim.Play ("Idle_D", 0);
 		}
 
 
