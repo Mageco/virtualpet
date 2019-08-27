@@ -484,7 +484,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 495664663}
-  m_LocalRotation: {x: 0, y: 0, z: -0.87834907, w: 0.4780197}
+  m_LocalRotation: {x: 0, y: 0, z: -0.8783491, w: 0.47801974}
   m_LocalPosition: {x: -1.6803057, y: -1.7723048, z: 0.4}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -505,7 +505,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Length: 0.9999992
+  m_Length: 0.9999995
   m_ChildTransform: {fileID: 1675029409}
   m_AttachedIK: {fileID: 0}
 --- !u!1 &561391001
@@ -1798,8 +1798,8 @@ SkinnedMeshRenderer:
   m_BlendShapeWeights: []
   m_RootBone: {fileID: 1231152476}
   m_AABB:
-    m_Center: {x: NaN, y: NaN, z: NaN}
-    m_Extent: {x: -Infinity, y: -Infinity, z: -Infinity}
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 0, y: 0, z: 0}
   m_DirtyAABB: 0
 --- !u!1 &1724125457
 GameObject:
@@ -2001,8 +2001,7 @@ MonoBehaviour:
   - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
   m_SortingLayerID: 0
   m_SortingOrder: 0
-  m_BoneTransforms:
-  - {fileID: 0}
+  m_BoneTransforms: []
 --- !u!33 &1984588766
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -2170,6 +2169,11 @@ GameObject:
   m_Component:
   - component: {fileID: 362402634}
   - component: {fileID: 4405949453764750100}
+  - component: {fileID: 2776677470726071295}
+  - component: {fileID: 2776677470726071294}
+  - component: {fileID: 2776677470726071291}
+  - component: {fileID: 2776677470726071292}
+  - component: {fileID: 2776677470726071293}
   m_Layer: 0
   m_Name: Shiba big
   m_TagString: Untagged
@@ -2202,7 +2206,7 @@ Animator:
   m_GameObject: {fileID: 2776677470726071290}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 7eaf539ee14074180a4b4421208fdbc0, type: 2}
+  m_Controller: {fileID: 9100000, guid: 00f4e020fd0dd4c338e6862098c9a36b, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -2211,3 +2215,124 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!50 &2776677470726071295
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2776677470726071290}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
+--- !u!58 &2776677470726071294
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2776677470726071290}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 3}
+  serializedVersion: 2
+  m_Radius: 4
+--- !u!114 &2776677470726071291
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2776677470726071290}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6752bcb268be74d428ce2f1b1368a1b2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  interactType: 0
+  enviromentType: 0
+  direction: 0
+  target: {fileID: 0}
+--- !u!114 &2776677470726071292
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2776677470726071290}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c6f41fb25ffc7b4a8308db03a8bfc41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  IgnoreStartedOverGui: 1
+  IgnoreIsOverGui: 0
+  RequiredSelectable: {fileID: 0}
+  CheckAngle: 0
+  Angle: 0
+  AngleThreshold: 90
+  Clamp: 0
+  Multiplier: 1
+  onSwipe:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_MethodName: OnFingerSwipe
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_TypeName: Lean.Touch.LeanFingerSwipe+LeanFingerEvent, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  onSwipeDelta:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_MethodName: OnFingerTouchUp
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_TypeName: Lean.Touch.LeanFingerSwipe+Vector2Event, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  AllowMultiple: 1
+  MultipleSwipeDelay: 0.5
+--- !u!114 &2776677470726071293
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2776677470726071290}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7bb2bec2c1a824c41989665ca1b0ee8a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  initZ: -6
+  scaleFactor: 0.1

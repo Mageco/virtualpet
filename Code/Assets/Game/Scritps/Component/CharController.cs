@@ -46,16 +46,9 @@ public class CharController : MonoBehaviour {
 	}
 
 	// Update is called once per frame
-	void Update () {
+	void FixedUpdate () {
 
 
-		if (enviromentType == EnviromentType.Table) {
-			anim.Play ("Lay_D", 0);
-		} else if (enviromentType == EnviromentType.Bath) {
-			anim.Play ("Idle_D", 0);
-		} else if (enviromentType == EnviromentType.Room) {
-			
-		}
 
 		if (interactType == InteractType.None) {
 			if (enviromentType == EnviromentType.Room)
@@ -101,7 +94,7 @@ public class CharController : MonoBehaviour {
 			pos.y -= fallSpeed * Time.deltaTime;
 			pos.z = dropPosition.z;
 			agent.transform.position = pos;
-			if (Vector2.Distance (agent.transform.position, dropPosition) < 0.5f) {
+			if (Vector2.Distance (agent.transform.position, dropPosition) < 1f) {
 
 				if (enviromentType == EnviromentType.Bath)
 					interactType = InteractType.Bath;
@@ -110,7 +103,11 @@ public class CharController : MonoBehaviour {
 				
 				fallSpeed = 0;
 				this.transform.rotation = Quaternion.identity;
+				anim.Play ("Idle_D", 0);
 			}
+		}else if (interactType == InteractType.Bath)
+		{
+			anim.Play ("Idle_D", 0);
 		}
 
 
@@ -227,8 +224,6 @@ public class CharController : MonoBehaviour {
 				angle = 30;
 			if (angle < -30)
 				angle = -30;
-
-			Debug.Log (angle);
 
 			this.transform.rotation = Quaternion.Euler (0, 0, -angle);
 		}
