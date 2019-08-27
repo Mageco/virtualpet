@@ -1,5 +1,17 @@
 using UnityEngine;
 using System.Collections.Generic;
+#if UNITY_EDITOR
+using UnityEditor;
+
+namespace Lean.Touch
+{
+	[CanEditMultipleObjects]
+	[CustomEditor(typeof(LeanSelect))]
+	public class LeanSelect_Inspector : Lean.Common.LeanInspector<LeanSelect>
+	{
+	}
+}
+#endif
 
 namespace Lean.Touch
 {
@@ -9,6 +21,7 @@ namespace Lean.Touch
 	{
 		public enum SelectType
 		{
+			Manually = -1,
 			Raycast3D,
 			Overlap2D,
 			CanvasUI
@@ -29,6 +42,7 @@ namespace Lean.Touch
 			SelectAgain
 		}
 
+		/// <summary>This stores all active and enabled LeanSelect instances in the scene.</summary>
 		public static List<LeanSelect> Instances = new List<LeanSelect>();
 
 		public SelectType SelectUsing;
@@ -64,12 +78,19 @@ namespace Lean.Touch
 		}
 
 		// NOTE: This must be called from somewhere
-		public void SelectScreenPosition(LeanFinger finger, Vector2 screenPosition)
+		public virtual void SelectScreenPosition(LeanFinger finger, Vector2 screenPosition)
 		{
 			// Stores the component we hit (Collider or Collider2D)
 			var component = default(Component);
 
-			switch (SelectUsing)
+			TryGetComponent(SelectUsing, screenPosition, ref component);
+
+			Select(finger, component);
+		}
+
+		protected void TryGetComponent(SelectType selectUsing, Vector2 screenPosition, ref Component component)
+		{
+			switch (selectUsing)
 			{
 				case SelectType.Raycast3D:
 				{
@@ -122,9 +143,6 @@ namespace Lean.Touch
 				}
 				break;
 			}
-
-			// Select the component
-			Select(finger, component);
 		}
 
 		public void Select(LeanFinger finger, Component component)

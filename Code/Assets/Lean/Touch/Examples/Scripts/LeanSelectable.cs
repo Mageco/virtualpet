@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Serialization;
 using System.Collections.Generic;
 
 #if UNITY_EDITOR
@@ -9,42 +10,53 @@ namespace Lean.Touch
 {
 	[CanEditMultipleObjects]
 	[CustomEditor(typeof(LeanSelectable))]
-	public class LeanSelectable_Editor : Editor
+	public class LeanSelectable_Inspector : Common.LeanInspector<LeanSelectable>
 	{
-		private bool showEvents;
+		private bool showUnusedEvents;
 
 		// Draw the whole inspector
-		public override void OnInspectorGUI()
+		protected override void DrawInspector()
 		{
-			EditorGUI.BeginDisabledGroup(true);
-				DrawDefault("isSelected");
-			EditorGUI.EndDisabledGroup();
-			DrawDefault("DeselectOnUp");
-			DrawDefault("HideWithFinger");
-			DrawDefault("IsolateSelectingFingers");
+			// isSelected modified?
+			if (Draw("isSelected") == true)
+			{
+				// Grab the new value
+				var isSelected = serializedObject.FindProperty("isSelected").boolValue;
+
+				// Apply it directly to each instance before the SerializedObject applies it when this method returns
+				Each(t => t.IsSelected = isSelected);
+			}
+			Draw("DeselectOnUp");
+			Draw("HideWithFinger");
+			Draw("IsolateSelectingFingers");
 
 			EditorGUILayout.Separator();
 
-			showEvents = EditorGUILayout.Foldout(showEvents, "Show Events");
+			var usedA = Any(t => t.OnSelect.GetPersistentEventCount() > 0);
+			var usedB = Any(t => t.OnSelectSet.GetPersistentEventCount() > 0);
+			var usedC = Any(t => t.OnSelectUp.GetPersistentEventCount() > 0);
+			var usedD = Any(t => t.OnDeselect.GetPersistentEventCount() > 0);
 
-			if (showEvents == true)
+			showUnusedEvents = EditorGUILayout.Foldout(showUnusedEvents, "Show Unused Events");
+
+			if (usedA == true || showUnusedEvents == true)
 			{
-				DrawDefault("OnSelect");
-				DrawDefault("OnSelectSet");
-				DrawDefault("OnSelectUp");
-				DrawDefault("OnDeselect");
+				Draw("onSelect");
 			}
-		}
 
-		private void DrawDefault(string name)
-		{
-			EditorGUI.BeginChangeCheck();
-
-			EditorGUILayout.PropertyField(serializedObject.FindProperty(name));
-
-			if (EditorGUI.EndChangeCheck() == true)
+			if (usedB == true || showUnusedEvents == true)
 			{
-				serializedObject.ApplyModifiedProperties();
+				Draw("onSelectSet");
+			}
+
+			if (usedC == true || showUnusedEvents == true)
+			{
+				Draw("onSelectUp");
+			}
+
+			if (usedD == true || showUnusedEvents == true)
+			{
+				Draw("onDeselect");
 			}
 		}
 	}
@@ -68,6 +80,14 @@ namespace Lean.Touch
 
 		public static List<LeanSelectable> Instances = new List<LeanSelectable>();
 
+		public static System.Action<LeanSelectable, LeanFinger> OnSelectGlobal;
+
+		public static System.Action<LeanSelectable, LeanFinger> OnSelectSetGlobal;
+
+		public static System.Action<LeanSelectable, LeanFinger> OnSelectUpGlobal;
+
+		public static System.Action<LeanSelectable> OnDeselectGlobal;
+
 		[Tooltip("Should this get deselected when the selecting finger goes up?")]
 		public bool DeselectOnUp;
 
@@ -77,9 +97,43 @@ namespace Lean.Touch
 		[Tooltip("If the selecting fingers are still active, only return those to RequiredSelectable queries?")]
 		public bool IsolateSelectingFingers;
 
+		/// <summary>This event is called when selection begins (finger = the finger that selected this).</summary>
+		public LeanFingerEvent OnSelect { get { if (onSelect == null) onSelect = new LeanFingerEvent(); return onSelect; } } [FormerlySerializedAs("OnSelect")] [SerializeField] private LeanFingerEvent onSelect;
+
+		/// <summary>This event is called every frame this selectable is selected with a finger (finger = the finger that selected this).</summary>
+		public LeanFingerEvent OnSelectSet { get { if (onSelectSet == null) onSelectSet = new LeanFingerEvent(); return onSelectSet; } } [FormerlySerializedAs("OnSelectSet")] [SerializeField] private LeanFingerEvent onSelectSet;
+
+		/// <summary>This event is called when the selecting finger goes up (finger = the finger that selected this).</summary>
+		public LeanFingerEvent OnSelectUp { get { if (onSelectUp == null) onSelectUp = new LeanFingerEvent(); return onSelectUp; } } [FormerlySerializedAs("OnSelectUp")] [SerializeField] private LeanFingerEvent onSelectUp;
+
+		/// <summary>This event is called when this is deselected, if OnSelectUp hasn't been called yet, it will get called first.</summary>
+		public UnityEvent OnDeselect { get { if (onDeselect == null) onDeselect = new UnityEvent(); return onDeselect; } } [FormerlySerializedAs("OnDeselect")] [SerializeField] private UnityEvent onDeselect;
+
+		/// <summary>If you want to change this, do it via the Select/Deselect methods (accessible from the context menu gear icon in editor)</summary>
+		[Tooltip("If you want to change this, do it via the Select/Deselect methods (accessible from the context menu gear icon in editor)")]
+		[SerializeField]
+		private bool isSelected;
+
+		// The fingers that were used to select this GameObject
+		// If a finger goes up then it will be removed from this list
+		[System.NonSerialized]
+		private List<LeanFinger> selectingFingers = new List<LeanFinger>();
+
 		/// <summary>Returns isSelected, or false if HideWithFinger is true and SelectingFinger is still set.</summary>
 		public bool IsSelected
 		{
+			set
+			{
+				if (value == true)
+				{
+					Select();
+				}
+				else
+				{
+					Deselect();
+				}
+			}
+
 			get
 			{
 				// Hide IsSelected?
@@ -119,28 +173,6 @@ namespace Lean.Touch
 				return count;
 			}
 		}
-
-		/// <summary>This event is called when selection begins (finger = the finger that selected this).</summary>
-		public LeanFingerEvent OnSelect;
-
-		/// <summary>This event is called every frame this selectable is selected with a finger (finger = the finger that selected this).</summary>
-		public LeanFingerEvent OnSelectSet;
-
-		/// <summary>This event is called when the selecting finger goes up (finger = the finger that selected this).</summary>
-		public LeanFingerEvent OnSelectUp;
-
-		/// <summary>This event is called when this is deselected, if OnSelectUp hasn't been called yet, it will get called first.</summary>
-		public UnityEvent OnDeselect;
-
-		/// <summary>If you want to change this, do it via the Select/Deselect methods (accessible from the context menu gear icon in editor)</summary>
-		[Tooltip("If you want to change this, do it via the Select/Deselect methods (accessible from the context menu gear icon in editor)")]
-		[SerializeField]
-		private bool isSelected;
-
-		// The fingers that were used to select this GameObject
-		// If a finger goes up then it will be removed from this list
-		[System.NonSerialized]
-		private List<LeanFinger> selectingFingers = new List<LeanFinger>();
 
 		/// <summary>This tells you the first or earliest still active finger that initiated selection of this object.
 		/// NOTE: If the selecting finger went up then this may return null.</summary>
@@ -311,9 +343,14 @@ namespace Lean.Touch
 				}
 			}
 
-			if (OnSelect != null)
+			if (onSelect != null)
 			{
-				OnSelect.Invoke(finger);
+				onSelect.Invoke(finger);
+			}
+
+			if (OnSelectGlobal != null)
+			{
+				OnSelectGlobal(this, finger);
 			}
 
 			// Make sure FingerUp is only registered once
@@ -338,17 +375,30 @@ namespace Lean.Touch
 				{
 					var selectingFinger = selectingFingers[i];
 
-					if (OnSelectUp != null && selectingFinger != null)
+					if (selectingFinger != null)
 					{
-						OnSelectUp.Invoke(selectingFinger);
+						if (onSelectUp != null)
+						{
+							onSelectUp.Invoke(selectingFinger);
+						}
+
+						if (OnSelectUpGlobal != null)
+						{
+							OnSelectUpGlobal(this, selectingFinger);
+						}
 					}
 				}
 
 				selectingFingers.Clear();
 
-				if (OnDeselect != null)
+				if (onDeselect != null)
 				{
-					OnDeselect.Invoke();
+					onDeselect.Invoke();
+				}
+
+				if (OnDeselectGlobal != null)
+				{
+					OnDeselectGlobal(this);
 				}
 			}
 		}
@@ -404,9 +454,14 @@ namespace Lean.Touch
 				// Was this selected with this finger?
 				if (selectable.IsSelectedBy(finger) == true)
 				{
-					if (selectable.OnSelectSet != null)
+					if (selectable.onSelectSet != null)
 					{
-						selectable.OnSelectSet.Invoke(finger);
+						selectable.onSelectSet.Invoke(finger);
+					}
+
+					if (OnSelectSetGlobal != null)
+					{
+						OnSelectSetGlobal(selectable, finger);
 					}
 				}
 			}
@@ -428,15 +483,15 @@ namespace Lean.Touch
 						{
 							selectable.Deselect();
 						}
-						// Deselection will call OnSelectUp
+						// Deselection will call onSelectUp
 						else
 						{
-							// Null the finger and call OnSelectUp
+							// Null the finger and call onSelectUp
 							selectable.selectingFingers.RemoveAt(j);
 
-							if (selectable.OnSelectUp != null)
+							if (selectable.onSelectUp != null)
 							{
-								selectable.OnSelectUp.Invoke(finger);
+								selectable.onSelectUp.Invoke(finger);
 							}
 						}
 					}

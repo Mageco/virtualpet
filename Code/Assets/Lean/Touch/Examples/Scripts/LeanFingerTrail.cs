@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.Events;
 using System.Collections.Generic;
 
 namespace Lean.Touch
@@ -8,9 +7,6 @@ namespace Lean.Touch
 	[HelpURL(LeanTouch.HelpUrlPrefix + "LeanFingerTrail")]
 	public class LeanFingerTrail : MonoBehaviour
 	{
-		// Event signature
-		[System.Serializable] public class LeanFingerEvent : UnityEvent<LeanFinger> {}
-
 		// This class will store an association between a Finger and a LineRenderer instance
 		[System.Serializable]
 		public class FingerData : LeanFingerData
@@ -126,7 +122,7 @@ namespace Lean.Touch
 		private void FingerUp(LeanFinger finger)
 		{
 			// Find link for this finger, and clear it
-			var fingerData = LeanFingerData.Find(ref fingerDatas, finger);
+			var fingerData = LeanFingerData.Find(fingerDatas, finger);
 
 			if (fingerData != null)
 			{

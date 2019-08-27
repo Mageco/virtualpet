@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Serialization;
 
 namespace Lean.Touch
 {
@@ -25,7 +26,7 @@ namespace Lean.Touch
 		[Tooltip("Do nothing if this LeanSelectable isn't selected?")]
 		public LeanSelectable RequiredSelectable;
 
-		public LeanFingerEvent OnTap;
+		public LeanFingerEvent OnTap { get { if (onTap == null) onTap = new LeanFingerEvent(); return onTap; } } [FormerlySerializedAs("OnTap")] [SerializeField] private LeanFingerEvent onTap;
 
 #if UNITY_EDITOR
 		protected virtual void Reset()
@@ -83,9 +84,9 @@ namespace Lean.Touch
 			}
 
 			// Call event
-			if (OnTap != null)
+			if (onTap != null)
 			{
-				OnTap.Invoke(finger);
+				onTap.Invoke(finger);
 			}
 		}
 	}

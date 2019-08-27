@@ -19,6 +19,8 @@ namespace Lean.Touch
 		[Tooltip("The amount of lines between each path point when read from LeanScreenDepth")]
 		public int Smoothing = 1;
 
+		public static Vector3 LastWorldNormal = Vector3.forward;
+
 		public int PointCount
 		{
 			get
@@ -182,6 +184,8 @@ namespace Lean.Touch
 					{
 						closestPoint    = point;
 						closestDistance = distance;
+
+						LastWorldNormal = Vector3.Normalize(point - pointB);
 					}
 
 					pointA = pointB;
@@ -212,6 +216,8 @@ namespace Lean.Touch
 					{
 						closestPoint    = point;
 						closestDistance = distance;
+
+						LastWorldNormal = Vector3.Normalize(point - pointB);
 					}
 
 					pointA = pointB;

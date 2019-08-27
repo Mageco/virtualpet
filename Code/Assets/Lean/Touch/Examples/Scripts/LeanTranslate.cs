@@ -93,7 +93,7 @@ namespace Lean.Touch
 			}
 			else
 			{
-				Debug.LogError("Failed to find camera. Either tag your cameras MainCamera, or set one in this component.", this);
+				Debug.LogError("Failed to find camera. Either tag your camera as MainCamera, or set one in this component.", this);
 			}
 		}
 	}

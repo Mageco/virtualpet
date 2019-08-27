@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Serialization;
 using System.Collections.Generic;
 
 namespace Lean.Touch
@@ -9,7 +10,7 @@ namespace Lean.Touch
 	public class LeanFingerHeld : MonoBehaviour
 	{
 		// Event signature
-		[System.Serializable] public class FingerEvent : UnityEvent<LeanFinger> {}
+		[System.Serializable] public class LeanFingerEvent : UnityEvent<LeanFinger> {}
 
 		// This class will store extra Finger data
 		[System.Serializable]
@@ -35,14 +36,14 @@ namespace Lean.Touch
 		[Tooltip("The finger cannot move more than this many pixels relative to the reference DPI")]
 		public float MaximumMovement = 5.0f;
 
-		// Called on the first frame the conditions are met
-		public FingerEvent OnHeldDown;
+		/// <summary>Called on the first frame the conditions are met.</summary>
+		public LeanFingerEvent OnHeldDown { get { if (onHeldDown == null) onHeldDown = new LeanFingerEvent(); return onHeldDown; } } [FormerlySerializedAs("OnHeldDown")] [SerializeField] private LeanFingerEvent onHeldDown;
 
-		// Called on every frame the conditions are met
-		public FingerEvent OnHeldSet;
+		/// <summary>Called on every frame the conditions are met.</summary>
+		public LeanFingerEvent OnHeldSet { get { if (onHeldSet == null) onHeldSet = new LeanFingerEvent(); return onHeldSet; } } [FormerlySerializedAs("OnHeldSet")] [SerializeField] private LeanFingerEvent onHeldSet;
 
-		// Called on the last frame the conditions are met
-		public FingerEvent OnHeldUp;
+		/// <summary>Called on the last frame the conditions are met.</summary>
+		public LeanFingerEvent OnSelect { get { if (onHeldUp == null) onHeldUp = new LeanFingerEvent(); return onHeldUp; } } [FormerlySerializedAs("OnHeldUp")] [SerializeField] private LeanFingerEvent onHeldUp;
 
 		// This stores all finger links
 		private List<Link> links = new List<Link>();
@@ -116,25 +117,25 @@ namespace Lean.Touch
 
 				if (set == true && link.LastSet == false)
 				{
-					if (OnHeldDown != null)
+					if (onHeldDown != null)
 					{
-						OnHeldDown.Invoke(finger);
+						onHeldDown.Invoke(finger);
 					}
 				}
 
 				if (set == true)
 				{
-					if (OnHeldSet != null)
+					if (onHeldSet != null)
 					{
-						OnHeldSet.Invoke(finger);
+						onHeldSet.Invoke(finger);
 					}
 				}
 
 				if (set == false && link.LastSet == true)
 				{
-					if (OnHeldUp != null)
+					if (onHeldUp != null)
 					{
-						OnHeldUp.Invoke(finger);
+						onHeldUp.Invoke(finger);
 					}
 				}
 
@@ -154,9 +155,9 @@ namespace Lean.Touch
 
 				if (link.LastSet == true)
 				{
-					if (OnHeldUp != null)
+					if (onHeldUp != null)
 					{
-						OnHeldUp.Invoke(finger);
+						onHeldUp.Invoke(finger);
 					}
 				}
 			}

@@ -24,8 +24,20 @@ public class CharScale : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-		if (character.transform.position.y < initZ)
-			character.transform.localScale = originalScale * (1 + (-character.transform.position.y + initZ) * scaleFactor);
+		if (character.interactType == InteractType.Drop)
+			return;
+
+		float offset = initZ;
+		if (character.interactType == InteractType.Drag) {
+			if (character.transform.position.y > 2)
+				offset = initZ + 22;
+			else
+				return;
+		}
+
+
+		if (character.transform.position.y < offset)
+			character.transform.localScale = originalScale * (1 + (-character.transform.position.y + offset) * scaleFactor);
 		else
 			character.transform.localScale = originalScale;
     }

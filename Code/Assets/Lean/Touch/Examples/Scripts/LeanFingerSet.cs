@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Serialization;
 
 namespace Lean.Touch
 {
@@ -32,9 +33,9 @@ namespace Lean.Touch
 		[Tooltip("The coordinate space of the OnSetDelta values")]
 		public DeltaCoordinatesType DeltaCoordinates;
 
-		public LeanFingerEvent OnSet;
+		public LeanFingerEvent OnSet { get { if (onSet == null) onSet = new LeanFingerEvent(); return onSet; } } [FormerlySerializedAs("OnSet")] [SerializeField] private LeanFingerEvent onSet;
 
-		public Vector2Event OnSetDelta;
+		public Vector2Event OnSetDelta { get { if (onSetDelta == null) onSetDelta = new Vector2Event(); return onSetDelta; } } [FormerlySerializedAs("OnSetDelta")] [SerializeField] private Vector2Event onSetDelta;
 
 #if UNITY_EDITOR
 		protected virtual void Reset()
@@ -96,14 +97,14 @@ namespace Lean.Touch
 			}
 
 			// Call event
-			if (OnSet != null)
+			if (onSet != null)
 			{
-				OnSet.Invoke(finger);
+				onSet.Invoke(finger);
 			}
 
-			if (OnSetDelta != null)
+			if (onSetDelta != null)
 			{
-				OnSetDelta.Invoke(delta);
+				onSetDelta.Invoke(delta);
 			}
 		}
 	}

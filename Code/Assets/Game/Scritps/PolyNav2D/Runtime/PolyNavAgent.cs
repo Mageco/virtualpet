@@ -59,7 +59,7 @@ public class PolyNavAgent : MonoBehaviour{
 
 	private static List<PolyNavAgent> allAgents = new List<PolyNavAgent>();
 
-	public CharController character;
+	CharController character;
 
 	public float rotation;
 
@@ -147,7 +147,7 @@ public class PolyNavAgent : MonoBehaviour{
 	void OnEnable(){ allAgents.Add(this); }
 	void OnDisable(){ allAgents.Remove(this); }
 	void Awake(){ _transform = transform; 
-		
+		character = GameObject.FindObjectOfType<CharController> ();
 	}
 
 	///Set the destination for the agent. As a result the agent starts moving

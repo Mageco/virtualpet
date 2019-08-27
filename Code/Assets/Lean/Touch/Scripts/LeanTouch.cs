@@ -149,6 +149,8 @@ namespace Lean.Touch
 	[HelpURL(HelpUrlPrefix + "LeanTouch")]
 	public partial class LeanTouch : MonoBehaviour
 	{
+		public const string ComponentMenuPrefix = "Lean/GUI/Lean ";
+
 		public const string HelpUrlPrefix = "http://carloswilkes.github.io/Documentation/LeanTouch#";
 
 		public const string PlusHelpUrlPrefix = "http://carloswilkes.github.io/Documentation/LeanTouchPlus#";

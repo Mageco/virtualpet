@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Lean.Touch
 {
-	/// <summary>This script will automatically destroy this GameObject after the specified amount of time.
+	/// <summary>This component will automatically destroy this GameObject after the specified amount of time.
 	/// NOTE: If you want to manually destroy this GameObject, then disable this component, and call the DestroyNow method directly.</summary>
 	[HelpURL(LeanTouch.HelpUrlPrefix + "LeanDestroy")]
 	public class LeanDestroy : MonoBehaviour
