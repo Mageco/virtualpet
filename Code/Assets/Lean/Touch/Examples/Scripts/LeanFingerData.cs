@@ -9,22 +9,42 @@ namespace Lean.Touch
 		// The finger associated with this link
 		public LeanFinger Finger;
 
-		public static T Find<T>(ref List<T> fingerDatas, LeanFinger finger)
-			where T : LeanFingerData, new()
+		public static void Remove<T>(List<T> fingerDatas, LeanFinger finger, Stack<T> pool = null)
+			where T : LeanFingerData
 		{
-			if (fingerDatas == null)
+			if (fingerDatas != null)
 			{
-				fingerDatas = new List<T>();
-			}
-
-			// Find existing link?
-			for (var i = fingerDatas.Count - 1; i >= 0; i--)
-			{
-				var fingerData = fingerDatas[i];
-
-				if (fingerData.Finger == finger)
+				for (var i = fingerDatas.Count - 1; i >= 0; i--)
 				{
-					return fingerData;
+					var fingerData = fingerDatas[i];
+
+					if (fingerData.Finger == finger)
+					{
+						fingerDatas.RemoveAt(i);
+
+						if (pool != null)
+						{
+							pool.Push(fingerData);
+						}
+					}
+				}
+			}
+		}
+
+		public static T Find<T>(List<T> fingerDatas, LeanFinger finger)
+			where T : LeanFingerData
+		{
+			if (fingerDatas != null)
+			{
+				// Find existing link?
+				for (var i = fingerDatas.Count - 1; i >= 0; i--)
+				{
+					var fingerData = fingerDatas[i];
+
+					if (fingerData.Finger == finger)
+					{
+						return fingerData;
+					}
 				}
 			}
 

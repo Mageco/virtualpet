@@ -6,16 +6,20 @@ using Lean.Touch;
 public class InputController : MonoBehaviour
 {
 	public static InputController instance;
+	public Transform target;
+	public LeanScreenDepth ScreenDepth;
+	public Transform[] points;
+	CharController character;
 
 	void Awake()
 	{
 		if (instance == null)
 			instance = this;
+
+		character = GameObject.FindObjectOfType<CharController> ();
 	}
 
-	public Transform target;
-	public LeanScreenDepth ScreenDepth;
-	public Transform[] points;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -34,10 +38,14 @@ public class InputController : MonoBehaviour
 		worldPoint.z = target.position.z;
 		target.position = worldPoint;
 
+		if (character.interactType == InteractType.None && character.enviromentType == EnviromentType.Room) {
+			character.OnMove ();
+		}
 	}
 
 	public void OnCall()
 	{
 		target.transform.position = points [0].position;
+		character.OnCall ();
 	}
 }

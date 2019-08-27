@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Lean.Touch
 {
-	/// <summary>This script allows you to track & pedestral this GameObject (e.g. Camera) based on finger drags.</summary>
+	/// <summary>This script allows you to track & pedestal this GameObject (e.g. Camera) based on finger drags.</summary>
 	[HelpURL(LeanTouch.HelpUrlPrefix + "LeanCameraMove")]
 	public class LeanCameraMove : MonoBehaviour
 	{

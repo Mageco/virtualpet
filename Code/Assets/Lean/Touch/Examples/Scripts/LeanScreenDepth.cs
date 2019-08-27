@@ -152,18 +152,32 @@ namespace Lean.Touch
 		// Toolips are modified at runtime based on Conversion setting
 		public float Distance;
 
+		/// <summary>When performing a ScreenDepth conversion, the converted point can have a normal associated with it. This stores that.</summary>
+		public static Vector3 LastWorldNormal = Vector3.forward;
+
+		private static RaycastHit[] hits = new RaycastHit[128];
+
 		// This will do the actual conversion
-		public Vector3 Convert(Vector2 screenPoint, GameObject gameObject = null)
+		public Vector3 Convert(Vector2 screenPoint, GameObject gameObject = null, Transform ignore = null)
 		{
 			var position = default(Vector3);
 
-			TryConvert(ref position, screenPoint, gameObject);
+			TryConvert(ref position, screenPoint, gameObject, ignore);
 
 			return position;
 		}
 
+		// This will return the delta between two converted screenPoints
+		public Vector3 ConvertDelta(Vector2 lastScreenPoint, Vector2 screenPoint, GameObject gameObject = null, Transform ignore = null)
+		{
+			var lastWorldPoint = Convert(lastScreenPoint, gameObject, ignore);
+			var     worldPoint = Convert(    screenPoint, gameObject, ignore);
+
+			return worldPoint - lastWorldPoint;
+		}
+
 		// This will do the actual conversion
-		public bool TryConvert(ref Vector3 position, Vector2 screenPoint, GameObject gameObject = null)
+		public bool TryConvert(ref Vector3 position, Vector2 screenPoint, GameObject gameObject = null, Transform ignore = null)
 		{
 			var camera = LeanTouch.GetCamera(Camera, gameObject);
 
@@ -176,6 +190,8 @@ namespace Lean.Touch
 						var screenPoint3 = new Vector3(screenPoint.x, screenPoint.y, Distance);
 
 						position = camera.ScreenToWorldPoint(screenPoint3);
+
+						LastWorldNormal = -camera.transform.forward;
 
 						return true;
 					}
@@ -191,6 +207,8 @@ namespace Lean.Touch
 
 							position = ray.GetPoint(scale);
 
+							LastWorldNormal = Vector3.back;
+
 							return true;
 						}
 					}
@@ -198,12 +216,28 @@ namespace Lean.Touch
 
 					case ConversionType.PhysicsRaycast:
 					{
-						var ray = camera.ScreenPointToRay(screenPoint);
-						var hit = default(RaycastHit);
+						var ray       = camera.ScreenPointToRay(screenPoint);
+						var hitCount  = Physics.RaycastNonAlloc(ray, hits, float.PositiveInfinity, Layers);
+						var bestPoint = default(Vector3);
+						var bestDist  = float.PositiveInfinity;
 
-						if (Physics.Raycast(ray, out hit, float.PositiveInfinity, Layers) == true)
+						for (var i = hitCount - 1; i >= 0; i--)
 						{
-							position = hit.point;
+							var hit         = hits[i];
+							var hitDistance = hit.distance;
+
+							if (hitDistance < bestDist && IsChildOf(hit.transform, ignore) == false)
+							{
+								bestPoint = hit.point + hit.normal * Distance;
+								bestDist  = hitDistance;
+
+								LastWorldNormal = hit.normal;
+							}
+						}
+
+						if (bestDist < float.PositiveInfinity)
+						{
+							position = bestPoint;
 
 							return true;
 						}
@@ -222,6 +256,8 @@ namespace Lean.Touch
 							if (plane.TryRaycast(ray, ref hit, Distance) == true)
 							{
 								position = hit;
+
+								LastWorldNormal = plane.transform.forward;
 
 								return true;
 							}
@@ -242,6 +278,8 @@ namespace Lean.Touch
 							{
 								position = hit;
 
+								LastWorldNormal = LeanPath.LastWorldNormal;
+
 								return true;
 							}
 						}
@@ -256,14 +294,29 @@ namespace Lean.Touch
 
 			return false;
 		}
-
-		// This will return the delta between two converted screenPoints
-		public Vector3 ConvertDelta(Vector2 lastScreenPoint, Vector2 screenPoint, GameObject gameObject = null)
+		
+		// This will return true if current or one of its parents matches the specified gameObject's Transform (current must be non-null)
+		private static bool IsChildOf(Transform current, Transform target)
 		{
-			var lastWorldPoint = Convert(lastScreenPoint, gameObject);
-			var     worldPoint = Convert(    screenPoint, gameObject);
+			if (target != null)
+			{
+				while (true)
+				{
+					if (current == target)
+					{
+						return true;
+					}
 
-			return worldPoint - lastWorldPoint;
+					current = current.parent;
+
+					if (current == null)
+					{
+						break;
+					}
+				}
+			}
+
+			return false;
 		}
 	}
 }

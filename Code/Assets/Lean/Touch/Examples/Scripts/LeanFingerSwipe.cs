@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Serialization;
 
 namespace Lean.Touch
 {
@@ -16,7 +17,7 @@ namespace Lean.Touch
 		}
 
 		// Event signature
-		[System.Serializable] public class FingerEvent : UnityEvent<LeanFinger> {}
+		[System.Serializable] public class LeanFingerEvent : UnityEvent<LeanFinger> {}
 		[System.Serializable] public class Vector2Event : UnityEvent<Vector2> {}
 
 		[Tooltip("Ignore fingers with StartedOverGui?")]
@@ -44,9 +45,9 @@ namespace Lean.Touch
 		public float Multiplier = 1.0f;
 
 		// Called on the first frame the conditions are met
-		public FingerEvent OnSwipe;
+		public LeanFingerEvent OnSwipe { get { if (onSwipe == null) onSwipe = new LeanFingerEvent(); return onSwipe; } } [FormerlySerializedAs("OnSwipe")] [SerializeField] private LeanFingerEvent onSwipe;
 
-		public Vector2Event OnSwipeDelta;
+		public Vector2Event OnSwipeDelta { get { if (onSwipeDelta == null) onSwipeDelta = new Vector2Event(); return onSwipeDelta; } } [FormerlySerializedAs("OnSwipeDelta")] [SerializeField] private Vector2Event onSwipeDelta;
 
 #if UNITY_EDITOR
 		protected virtual void Reset()
@@ -95,14 +96,14 @@ namespace Lean.Touch
 			}
 
 			// Call event
-			if (OnSwipe != null)
+			if (onSwipe != null)
 			{
-				OnSwipe.Invoke(finger);
+				onSwipe.Invoke(finger);
 			}
 
-			if (OnSwipeDelta != null)
+			if (onSwipeDelta != null)
 			{
-				OnSwipeDelta.Invoke(swipeDelta * Multiplier);
+				onSwipeDelta.Invoke(swipeDelta * Multiplier);
 			}
 
 			return true;
