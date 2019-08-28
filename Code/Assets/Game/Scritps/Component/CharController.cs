@@ -124,8 +124,25 @@ public class CharController : MonoBehaviour {
 			direction = Direction.R;
 		else
 			direction = Direction.D;
+
 		this.transform.position = agent.transform.position;
 
+//		if (agent.transform.eulerAngles.z < 22.5f && agent.transform.eulerAngles.z > -22.5f || (agent.transform.eulerAngles.z > 337.5f && agent.transform.eulerAngles.z < 382.5f) || (agent.transform.eulerAngles.z < -337.5f && agent.transform.eulerAngles.z > -382.5f))
+//			direction = Direction.U;
+//		else if ((agent.transform.eulerAngles.z > 22.5f && agent.transform.eulerAngles.z < 67.5f) || (agent.transform.eulerAngles.z > -337.5f && agent.transform.eulerAngles.z < -292.5f))
+//			direction = Direction.LU;
+//		else if ((agent.transform.eulerAngles.z >= 67.5f && agent.transform.eulerAngles.z <= 112.5f) || (agent.transform.eulerAngles.z >= -292.5f && agent.transform.eulerAngles.z <= -247.5f))
+//			direction = Direction.L;
+//		else if ((agent.transform.eulerAngles.z >= 112.5f && agent.transform.eulerAngles.z <= 157.5f) || (agent.transform.eulerAngles.z >= -247.5f && agent.transform.eulerAngles.z <= -202.5f))
+//			direction = Direction.LD;
+//		else if ((agent.transform.eulerAngles.z <= -22.5f && agent.transform.eulerAngles.z >= -67.5) || (agent.transform.eulerAngles.z >= 247.5f && agent.transform.eulerAngles.z <= 292.5f))
+//			direction = Direction.RU;
+//		else if ((agent.transform.eulerAngles.z <= -67.5f && agent.transform.eulerAngles.z >= -112.5f) || (agent.transform.eulerAngles.z >= 202.5f && agent.transform.eulerAngles.z <= 257.5f))
+//			direction = Direction.R;
+//		else if ((agent.transform.eulerAngles.z <= -112.5 && agent.transform.eulerAngles.z >= -157.5f) || (agent.transform.eulerAngles.z >= 257.5f && agent.transform.eulerAngles.z <= 302.5f))
+//			direction = Direction.RD;
+//		else
+//			direction = Direction.D;
 	}
 
 
@@ -143,9 +160,11 @@ public class CharController : MonoBehaviour {
 
 	public void OnCall()
 	{
-		target.position = InputController.instance.callPoint.position;
-		StartCoroutine (MoveToPoint (target.position));
-		interactType = InteractType.Call;
+		if (enviromentType == EnviromentType.Room) {
+			target.position = InputController.instance.callPoint.position;
+			StartCoroutine (MoveToPoint (target.position));
+			interactType = InteractType.Call;
+		}
 	}
 
 	public void OnFollowTarget()

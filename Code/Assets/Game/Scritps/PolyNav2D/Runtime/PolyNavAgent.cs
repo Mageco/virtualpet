@@ -326,7 +326,9 @@ public class PolyNavAgent : MonoBehaviour{
 
 	void SetPositionOrder()
 	{
-
+		Vector3 pos = this.transform.position;
+		pos.z = this.transform.position.y;
+		this.transform.position = pos;
 	}
 
 	//recalculate path to prime goal if there is no pending requests

@@ -22,7 +22,7 @@ public class CharScale : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void LateUpdate()
     {
 		if (character.interactType == InteractType.Drop)
 			return;
