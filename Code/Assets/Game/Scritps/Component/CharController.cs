@@ -121,7 +121,7 @@ public class CharController : MonoBehaviour {
 				
 				fallSpeed = 0;
 				this.transform.rotation = Quaternion.identity;
-				anim.Play ("Idle_D", 0);
+				anim.Play ("Drop_Light_D", 0);
 			}
 		} else if (interactType == InteractType.Bath) {
 			anim.Play ("Idle_D", 0);
