@@ -16,23 +16,32 @@ public class CharController : MonoBehaviour {
 	//Movement
 	public Transform target;
 	PolyNavAgent agent;
-	float time;
+	float agentTime;
 	float maxAgentTime = 0.1f;
 	Vector2 lastTargetPosition;
 	bool isArrived = true;
+	bool isAbort = false;
+
+	//Action
+	public ActionType actionType = ActionType.None;
+	public float actionTime;
+	public float maxActionTime = 1;
+
 
 	//Anim
 	string moveAnim = "Run";
 	string idleAnim = "Idle";
 	Animator anim;
 
-	//Drag Drop
+	//Interact
 	bool isTouch = false;
 	Vector3 dragOffset;
 	Vector3 dropPosition;
 	Rigidbody2D rigid;
 	CircleCollider2D collider;
 	float fallSpeed = 0;
+	float interactTime = 0;
+	float maxInteractTime = 3;
 
 	void Awake()
 	{
@@ -49,31 +58,36 @@ public class CharController : MonoBehaviour {
 	// Update is called once per frame
 	void FixedUpdate () {
 
-
-
 		if (interactType == InteractType.None) {
-			if (enviromentType == EnviromentType.Room)
-				anim.Play (idleAnim + "_" + direction.ToString (), 0);
+			if (enviromentType == EnviromentType.Room) {
+				if (actionTime > maxActionTime) {
+					Abort ();
+					Think ();
+				} else
+					actionTime += Time.deltaTime;
+			}
 		} else if (interactType == InteractType.FollowTarget) {
-			if (time > maxAgentTime) {
+			if (agentTime > maxAgentTime) {
 				if (target != null) {
 					if (Vector2.Distance (lastTargetPosition, target.position) > 1) {
 						agent.SetDestination (target.position);
 						lastTargetPosition = target.position;
 					}
 				}
-				time = 0;
+				agentTime = 0;
 			} else
-				time += Time.deltaTime;
+				agentTime += Time.deltaTime;
 
 			anim.Play (moveAnim + "_" + direction.ToString (), 0);
 			anim.speed = agent.speed / agent.maxSpeed;
 		} else if (interactType == InteractType.Call) {
 			if (isArrived) {
+				anim.Play (idleAnim + "_" + direction.ToString (), 0);
 				SetDirection (Direction.D);
+				interactType = InteractType.Caress;
+				maxInteractTime = Random.Range (5, 10);
 			}
-		}
-		else if (interactType == InteractType.Drag) {
+		} else if (interactType == InteractType.Drag) {
 			Vector3 pos = Camera.main.ScreenToWorldPoint (Input.mousePosition) - dragOffset;
 			pos.z = 0;
 			if (pos.y > 20)
@@ -109,13 +123,18 @@ public class CharController : MonoBehaviour {
 				this.transform.rotation = Quaternion.identity;
 				anim.Play ("Idle_D", 0);
 			}
-		}else if (interactType == InteractType.Bath)
-		{
+		} else if (interactType == InteractType.Bath) {
 			anim.Play ("Idle_D", 0);
+		} else if (interactType == InteractType.Caress) {
+			if (interactTime > maxInteractTime) {
+				Think ();
+			} else {
+				interactTime += Time.deltaTime;
+			}
 		}
 
 
-
+		//Check Agent
 		if (agent.transform.eulerAngles.z < 45 && agent.transform.eulerAngles.z > -45 || (agent.transform.eulerAngles.z > 315 && agent.transform.eulerAngles.z < 405) || (agent.transform.eulerAngles.z < -315 && agent.transform.eulerAngles.z > -405))
 			direction = Direction.U;
 		else if ((agent.transform.eulerAngles.z >= 45 && agent.transform.eulerAngles.z <= 135) || (agent.transform.eulerAngles.z <= -225 && agent.transform.eulerAngles.z >= -315))
@@ -146,37 +165,71 @@ public class CharController : MonoBehaviour {
 	}
 
 
-
-
-	#region Actionn
-	public void OnArrived()
-	{
-		if (interactType == InteractType.FollowTarget) {
-			interactType = InteractType.None;
-		}
-			
-		isArrived = true;
-	}
-
+	#region Interact
 	public void OnCall()
 	{
+		Abort ();
 		if (enviromentType == EnviromentType.Room) {
-			target.position = InputController.instance.callPoint.position;
-			StartCoroutine (MoveToPoint (target.position));
+			StartCoroutine (MoveToPoint ( InputController.instance.GetRandomPoint (PointType.Call).position));
 			interactType = InteractType.Call;
 		}
 	}
 
 	public void OnFollowTarget()
 	{
+		Abort ();
 		interactType = InteractType.FollowTarget;
 	}
 
+	void OnDrag()
+	{
+		Abort ();
+		interactType = InteractType.Drag;
+		SetDirection (Direction.D);
+		enviromentType = EnviromentType.Room;
+	}
 
-	#endregion
+	void OnDrop()
+	{
+		Abort ();
+		RaycastHit2D[] hit = Physics2D.RaycastAll(transform.position + new Vector3(0,-2,0), -Vector2.up,100);
 
+		Vector3 pos = this.transform.position;
+		pos.y = pos.y - 22;
+		if (pos.y < -20)
+			pos.y = -20;
+		dropPosition = pos;
+		enviromentType = EnviromentType.Room;
 
-	#region Interact
+		for (int i = 0; i < hit.Length; i++) {
+			if (hit[i].collider.tag == "Table") {
+				pos.y = hit[i].collider.transform.position.y;
+				dropPosition = pos;
+				enviromentType = EnviromentType.Table;
+				break;
+			}else if(hit[i].collider.tag == "Bath") {
+				pos.y = hit[i].collider.transform.position.y;
+				pos.z = hit [i].collider.transform.position.z;
+				dropPosition = pos;
+				enviromentType = EnviromentType.Bath;
+				break;
+			}
+		}
+
+		interactType = InteractType.Drop;
+	}
+
+	void OnLay()
+	{
+		anim.Play ("Idle_D", 0);
+		interactTime = 0;
+	}
+
+	public void ResetInteract()
+	{
+		interactTime = 0;
+		interactType = InteractType.None;
+	}
 
 
 	void OnMouseDown()
@@ -194,31 +247,7 @@ public class CharController : MonoBehaviour {
 		dragOffset = Vector3.zero;
 		isTouch = false;
 		if (interactType == InteractType.Drag) {
-			RaycastHit2D[] hit = Physics2D.RaycastAll(transform.position + new Vector3(0,-2,0), -Vector2.up,100);
-
-			Vector3 pos = this.transform.position;
-			pos.y = pos.y - 22;
-			if (pos.y < -20)
-				pos.y = -20;
-			dropPosition = pos;
-			enviromentType = EnviromentType.Room;
-
-			for (int i = 0; i < hit.Length; i++) {
-				if (hit[i].collider.tag == "Table") {
-					pos.y = hit[i].collider.transform.position.y;
-					dropPosition = pos;
-					enviromentType = EnviromentType.Table;
-					break;
-				}else if(hit[i].collider.tag == "Bath") {
-					pos.y = hit[i].collider.transform.position.y;
-					pos.z = hit [i].collider.transform.position.z;
-					dropPosition = pos;
-					enviromentType = EnviromentType.Bath;
-					break;
-				}
-			}
-
-			interactType = InteractType.Drop;
+			OnDrop ();
 		}
 	}
 
@@ -226,16 +255,10 @@ public class CharController : MonoBehaviour {
 	{
 		float angle = Mathf.Atan2(delta.x, delta.y) * Mathf.Rad2Deg;
 		if (isTouch && angle > -45 && angle < 45 && interactType != InteractType.Drop) {
-			interactType = InteractType.Drag;
-			SetDirection (Direction.D);
-			enviromentType = EnviromentType.Room;
-		}else if(isTouch && (angle > 115 || angle < -115) && interactType == InteractType.Call) {
-			anim.Play ("Lay_D", 0);
-			interactType = InteractType.Caress;
-			SetDirection (Direction.D);
+			OnDrag ();
+		}else if(isTouch && (angle > 115 || angle < -115) && interactType == InteractType.Caress) {
+			OnLay ();
 		}
-
-
 	}
 
 	public void OnFingerSwipe(LeanFinger finger)
@@ -261,11 +284,100 @@ public class CharController : MonoBehaviour {
 
 	#endregion
 
-	#region Direction
+	#region Action
 
-	#endregion
+	void Free()
+	{
+		interactType = InteractType.None;
+		Think ();
+	}
 
-	#region Collider
+	void Think()
+	{
+		ResetInteract ();
+		isAbort = false;
+		int id = Random.Range (1, 100);
+		if (id < 50) {
+			actionType = ActionType.None;
+			maxActionTime = Random.Range (2, 5);
+		} else {
+			actionType = ActionType.Discover;
+			maxActionTime = Random.Range (20, 50);
+		}
+
+		DoAction ();
+	}
+
+
+	void DoAction()
+	{
+		if (actionType == ActionType.None) {
+			anim.Play (idleAnim + "_D", 0);
+		} else if (actionType == ActionType.Discover) {
+			StartCoroutine (Discover ());
+		}
+	}
+
+	public void Abort()
+	{
+		actionTime = 0;
+		actionType = ActionType.None;
+		isAbort = true;
+	}
+
+
+
+	IEnumerator Discover()
+	{
+		while(!isAbort) 
+		{
+			if(!isAbort)
+				yield return StartCoroutine (MoveToPoint (InputController.instance.GetRandomPoint (PointType.Favourite).position));
+			
+			if (!isAbort) {
+				anim.Play ("Idle_D");
+				yield return StartCoroutine (Wait (Random.Range (1, 3)));
+			}
+		}
+	}
+
+
+	IEnumerator RandomDirection()
+	{
+		yield return null;
+	}
+
+
+	IEnumerator Wait(float maxT)
+	{
+		float time = 0;
+		while (time < maxT && !isAbort) {
+			time += Time.deltaTime;
+			yield return new WaitForEndOfFrame ();
+		}
+	}
+
+
+	IEnumerator MoveToPoint(Vector3 pos)
+	{
+		isArrived = false;
+		if (Vector2.Distance (pos, lastTargetPosition) > 0.5f) {
+			lastTargetPosition = pos;
+			agent.SetDestination (pos);
+			while (!isArrived && !isAbort) {
+				anim.Play (moveAnim + "_" + direction.ToString (), 0);
+				if (isAbort)
+					agent.Stop ();
+				yield return new WaitForEndOfFrame ();
+			}
+		} else {
+			isArrived = true;
+			yield return new WaitForEndOfFrame ();
+		}
+
+
+
+	}
 
 	void SetDirection(Direction d)
 	{
@@ -275,29 +387,35 @@ public class CharController : MonoBehaviour {
 	}
 	#endregion
 
-	#region Action
-
-	void DoAction()
+	#region Event
+	public void OnArrived()
 	{
-
-	}
-
-	IEnumerator MoveToPoint(Vector3 pos)
-	{
-		isArrived = false;
-		target.transform.position = pos;
-		agent.SetDestination (target.position);
-		lastTargetPosition = target.position;
-		while (!isArrived) {
-			anim.Play (moveAnim + "_" + direction.ToString (), 0);
-			yield return new WaitForEndOfFrame ();
+		if (interactType == InteractType.FollowTarget) {
+			Free ();
 		}
 
+		isArrived = true;
 	}
 
+	void OnTriggerEnter2D(Collider2D other) {
+		if (other.tag == "Mouse") {
+			if (interactType == InteractType.None || interactType == InteractType.Caress) {
+				interactType = InteractType.FollowTarget;
+				target = other.transform;
+			}
+		}
+	}
+
+	void OnTriggerExit2D(Collider2D other) {
+		if (other.tag == "Mouse" && interactType == InteractType.FollowTarget) {
+			Free ();
+		}
+	}
 	#endregion
 
 }
 
 public enum InteractType {None,FollowTarget,Drag,Drop,Caress,Call,Bath,Command};
 public enum EnviromentType {Room,Table,Bath};
+public enum ActionType {None,Sleepy,Hungry,Patrol,Discover,FollowTarget,Listening,Pee,Shit,Itchiness,Tired,Sickness}
+public enum EmotionType {None,Sad,Fear,Happy,Supprise,mad}
