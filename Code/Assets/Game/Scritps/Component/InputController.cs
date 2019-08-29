@@ -11,6 +11,7 @@ public class InputController : MonoBehaviour
 	public List<GizmoPoint> callPoints;
 	public List<GizmoPoint> sleepPoints;
 	public List<GizmoPoint> eatPoints;
+	public List<GizmoPoint> drinkPoints;
 	public List<GizmoPoint> favouritesPoints;
 	public List<GizmoPoint> mousePoints;
 	CharController character;
@@ -33,6 +34,8 @@ public class InputController : MonoBehaviour
 				sleepPoints.Add (points [i]);
 			else if (points [i].type == PointType.Mouse)
 				mousePoints.Add (points [i]);
+			else if (points [i].type == PointType.Drink)
+				drinkPoints.Add (points [i]);
 		}
 	}
 
@@ -48,6 +51,8 @@ public class InputController : MonoBehaviour
 			return sleepPoints;
 		}else if (type == PointType.Mouse) {
 			return mousePoints;
+		}else if (type == PointType.Drink) {
+			return drinkPoints;
 		}
 		return null;
 	}
