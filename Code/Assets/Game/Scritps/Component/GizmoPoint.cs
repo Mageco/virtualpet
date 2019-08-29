@@ -18,8 +18,10 @@ public class GizmoPoint : MonoBehaviour
 			Gizmos.color = Color.green;
 		else if(type == PointType.Mouse)
 			Gizmos.color = Color.cyan;
+		else if(type == PointType.Patrol)
+			Gizmos.color = Color.magenta;
 		Gizmos.DrawSphere(transform.position, 0.5f);
 	}
 }
 
-public enum PointType {Sleep,Eat,Drink,Favourite,Call,Mouse};
+public enum PointType {Sleep,Eat,Drink,Favourite,Call,Mouse,Patrol};

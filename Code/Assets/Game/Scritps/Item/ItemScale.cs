@@ -23,11 +23,11 @@ public class ItemScale : MonoBehaviour
 	// Update is called once per frame
 	void LateUpdate()
 	{
-		if (item.interactType == ItemInteractType.Drop)
+		if (item != null && item.interactType == ItemInteractType.Drop)
 			return;
 
 		float offset = initZ;
-		if (item.interactType == ItemInteractType.Drag) {
+		if (item != null && item.interactType == ItemInteractType.Drag) {
 			if (item.transform.position.y > 2)
 				offset = initZ + 22;
 			else
@@ -35,9 +35,9 @@ public class ItemScale : MonoBehaviour
 		}
 
 
-		if (item.transform.position.y < offset)
-			item.transform.localScale = originalScale * (1 + (-item.transform.position.y + offset) * scaleFactor);
+		if (transform.position.y < offset)
+			transform.localScale = originalScale * (1 + (-transform.position.y + offset) * scaleFactor);
 		else
-			item.transform.localScale = originalScale;
+			transform.localScale = originalScale;
 	}
 }

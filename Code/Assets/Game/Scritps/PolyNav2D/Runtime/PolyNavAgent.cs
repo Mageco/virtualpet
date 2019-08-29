@@ -328,6 +328,8 @@ public class PolyNavAgent : MonoBehaviour{
 	{
 		Vector3 pos = this.transform.position;
 		pos.z = this.transform.position.y;
+		if (pos.y < -25)
+			pos.y = -25;
 		this.transform.position = pos;
 	}
 

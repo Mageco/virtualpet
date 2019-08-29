@@ -29,7 +29,7 @@ public class CharData
 	[HideInInspector]
 	public float happyConsume = 0.01f;
 	[HideInInspector]
-	public float sleetConsume = 0.01f;
+	public float sleepConsume = 0.05f;
 
 
 	[HideInInspector]

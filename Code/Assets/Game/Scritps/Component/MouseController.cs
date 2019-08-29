@@ -12,12 +12,14 @@ public class MouseController : MonoBehaviour
 	bool isRun = false;
 	public GameObject body;
 	Vector3 originalPosition;
+	public CircleCollider2D collider;
+	public InteractType interactType;
 
 	void Awake()
 	{
 		originalPosition = this.transform.position;
 		this.body.gameObject.SetActive (false);
-		this.GetComponent <CircleCollider2D> ().enabled = false;
+		collider.enabled = false;
 	}
 
 	void Start()
@@ -46,10 +48,10 @@ public class MouseController : MonoBehaviour
 		maxTimeSpawn = Random.Range (60, 120);
 		isRun = true;
 		this.body.gameObject.SetActive (true);
-		this.GetComponent <CircleCollider2D> ().enabled = true;
+		collider.enabled = true;
 	}
 
-	void Update()
+	void LateUpdate()
 	{
 		if (isRun) {
 			Vector3 pos = this.transform.position;
@@ -70,7 +72,7 @@ public class MouseController : MonoBehaviour
 		Debug.Log ("Complete Run");
 		isRun = false;
 		this.body.gameObject.SetActive (false);
-		this.GetComponent <CircleCollider2D> ().enabled = false;
+		collider.enabled = false;
 		this.transform.position = originalPosition;
 	}
 

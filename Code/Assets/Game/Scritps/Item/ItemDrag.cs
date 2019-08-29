@@ -12,6 +12,8 @@ public class ItemDrag : MonoBehaviour
 	Vector3 lastPosition;
 	bool isDragable = true;
 	bool isBusy = false;
+	public bool isReturn = false;
+	public bool isObstruct = true;
 
 	void Awake()
 	{
@@ -26,6 +28,8 @@ public class ItemDrag : MonoBehaviour
 			if (isDragable) {
 				Vector3 pos = Camera.main.ScreenToWorldPoint (Input.mousePosition) - dragOffset;
 				pos.z = this.transform.position.z;
+				if (!isObstruct)
+					pos.z = -50;
 				this.transform.position = pos;
 			} 
 		}
@@ -52,7 +56,10 @@ public class ItemDrag : MonoBehaviour
 	void OnMouseUp()
 	{
 		dragOffset = Vector3.zero;
-		if (isDrag && !isDragable)
+
+		if (isDrag && isReturn)
+			StartCoroutine (Return (originalPosition));
+		else if (isDrag && !isDragable)
 			StartCoroutine (Return (lastPosition));
 		isDrag = false;
 	}
@@ -69,14 +76,14 @@ public class ItemDrag : MonoBehaviour
 
 
 	void OnTriggerEnter2D(Collider2D other) {
-		if (other.GetComponent<PolyNavObstacle>() != null) {
+		if (other.GetComponent<PolyNavObstacle>() != null && isObstruct) {
 			isDragable = false;
 			Debug.Log ("Collide");
 		}
 	}
 
 	void OnTriggerExit2D(Collider2D other) {
-		if (other.GetComponent<PolyNavObstacle>() != null) {
+		if (other.GetComponent<PolyNavObstacle>() != null && isObstruct) {
 			isDragable = true;
 		}
 	}

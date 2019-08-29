@@ -14,6 +14,7 @@ public class InputController : MonoBehaviour
 	public List<GizmoPoint> drinkPoints;
 	public List<GizmoPoint> favouritesPoints;
 	public List<GizmoPoint> mousePoints;
+	public List<GizmoPoint> patrolPoints;
 	CharController character;
 
 	void Awake()
@@ -36,6 +37,8 @@ public class InputController : MonoBehaviour
 				mousePoints.Add (points [i]);
 			else if (points [i].type == PointType.Drink)
 				drinkPoints.Add (points [i]);
+			else if (points [i].type == PointType.Patrol)
+				drinkPoints.Add (points [i]);
 		}
 	}
 
@@ -53,6 +56,8 @@ public class InputController : MonoBehaviour
 			return mousePoints;
 		}else if (type == PointType.Drink) {
 			return drinkPoints;
+		}else if (type == PointType.Patrol) {
+			return patrolPoints;
 		}
 		return null;
 	}
@@ -62,6 +67,13 @@ public class InputController : MonoBehaviour
 		List<GizmoPoint> points = GetPoints (type);
 		int id = Random.Range (0, points.Count);
 		return points [id].transform;
+	}
+
+	public void SetTarget(PointType type)
+	{
+		Debug.Log (type);
+		target.position = this.GetRandomPoint (type).position;
+		character.target = this.target;
 	}
 
 	public List<Transform> GetRandomPoints(PointType type)

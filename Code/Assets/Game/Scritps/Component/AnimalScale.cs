@@ -2,17 +2,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CharScale : MonoBehaviour
+public class AnimalScale : MonoBehaviour
 {
 
 	public float initZ = -6;
 	public float scaleFactor = 0.1f;
-	CharController character;
+	MouseController character;
 	Vector3 originalScale;
 
 	void Awake()
 	{
-		character = this.GetComponent <CharController> ();
+		character = this.GetComponent <MouseController> ();
 		originalScale = character.transform.localScale;
 	}
     // Start is called before the first frame update
