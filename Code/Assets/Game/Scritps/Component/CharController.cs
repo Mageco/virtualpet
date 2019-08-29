@@ -18,7 +18,7 @@ public class CharController : MonoBehaviour {
 
 	//Think
 	float dataTime;
-	float maxDataTime = 0.03f;
+	float maxDataTime = 0.1f;
 
 	//Movement
 	public Transform target;
@@ -27,7 +27,7 @@ public class CharController : MonoBehaviour {
 	float maxAgentTime = 0.1f;
 	Vector2 lastTargetPosition;
 	bool isArrived = true;
-	bool isAbort = false;
+	public bool isAbort = false;
 
 	//Action
 	public ActionType actionType = ActionType.None;
@@ -69,7 +69,6 @@ public class CharController : MonoBehaviour {
 		if (interactType == InteractType.None || interactType == InteractType.Busy) {
 			if (enviromentType == EnviromentType.Room) {
 				if (actionTime > maxActionTime || isEndAction) {
-					Abort ();
 					Think ();
 				} else
 					actionTime += Time.deltaTime;
@@ -135,7 +134,7 @@ public class CharController : MonoBehaviour {
 			anim.Play ("Idle_D", 0);
 		} else if (interactType == InteractType.Caress) {
 			if (interactTime > maxInteractTime) {
-				Think ();
+				interactType = InteractType.None;
 			} else {
 				interactTime += Time.deltaTime;
 			}
@@ -143,34 +142,35 @@ public class CharController : MonoBehaviour {
 
 
 		//Check Agent
-		if (agent.transform.eulerAngles.z < 45 && agent.transform.eulerAngles.z > -45 || (agent.transform.eulerAngles.z > 315 && agent.transform.eulerAngles.z < 405) || (agent.transform.eulerAngles.z < -315 && agent.transform.eulerAngles.z > -405))
+//		if (agent.transform.eulerAngles.z < 45 && agent.transform.eulerAngles.z > -45 || (agent.transform.eulerAngles.z > 315 && agent.transform.eulerAngles.z < 405) || (agent.transform.eulerAngles.z < -315 && agent.transform.eulerAngles.z > -405))
+//			direction = Direction.U;
+//		else if ((agent.transform.eulerAngles.z >= 45 && agent.transform.eulerAngles.z <= 135) || (agent.transform.eulerAngles.z <= -225 && agent.transform.eulerAngles.z >= -315))
+//			direction = Direction.L;
+//		else if ((agent.transform.eulerAngles.z <= -45 && agent.transform.eulerAngles.z >= -135) || (agent.transform.eulerAngles.z >= 225 && agent.transform.eulerAngles.z <= 315))
+//			direction = Direction.R;
+//		else
+//			direction = Direction.D;
+
+
+
+		if (agent.transform.eulerAngles.z < 30f && agent.transform.eulerAngles.z > -30f || (agent.transform.eulerAngles.z > 330f && agent.transform.eulerAngles.z < 390f) || (agent.transform.eulerAngles.z < -330f && agent.transform.eulerAngles.z > -390f))
 			direction = Direction.U;
-		else if ((agent.transform.eulerAngles.z >= 45 && agent.transform.eulerAngles.z <= 135) || (agent.transform.eulerAngles.z <= -225 && agent.transform.eulerAngles.z >= -315))
-			direction = Direction.L;
-		else if ((agent.transform.eulerAngles.z <= -45 && agent.transform.eulerAngles.z >= -135) || (agent.transform.eulerAngles.z >= 225 && agent.transform.eulerAngles.z <= 315))
-			direction = Direction.R;
+		else if ((agent.transform.eulerAngles.z > 30f && agent.transform.eulerAngles.z < 80f) || (agent.transform.eulerAngles.z > -330f && agent.transform.eulerAngles.z < -280f))
+			direction = Direction.LU;
+//		else if ((agent.transform.eulerAngles.z >= 67.5f && agent.transform.eulerAngles.z <= 112.5f) || (agent.transform.eulerAngles.z >= -292.5f && agent.transform.eulerAngles.z <= -247.5f))
+//			direction = Direction.L;
+		else if ((agent.transform.eulerAngles.z >= 80f && agent.transform.eulerAngles.z <= 150f) || (agent.transform.eulerAngles.z >= -280f && agent.transform.eulerAngles.z <= -210f))
+			direction = Direction.LD;
+		else if ((agent.transform.eulerAngles.z <= -30f && agent.transform.eulerAngles.z >= -80f) || (agent.transform.eulerAngles.z >= 280f && agent.transform.eulerAngles.z <= 330f))
+			direction = Direction.RU;
+//		else if ((agent.transform.eulerAngles.z <= -67.5f && agent.transform.eulerAngles.z >= -112.5f) || (agent.transform.eulerAngles.z >= 202.5f && agent.transform.eulerAngles.z <= 257.5f))
+//			direction = Direction.R;
+		else if ((agent.transform.eulerAngles.z <= -80 && agent.transform.eulerAngles.z >= -150) || (agent.transform.eulerAngles.z >= 210f && agent.transform.eulerAngles.z <= 280f))
+			direction = Direction.RD;
 		else
 			direction = Direction.D;
 
 		this.transform.position = agent.transform.position;
-
-//		if (agent.transform.eulerAngles.z < 22.5f && agent.transform.eulerAngles.z > -22.5f || (agent.transform.eulerAngles.z > 337.5f && agent.transform.eulerAngles.z < 382.5f) || (agent.transform.eulerAngles.z < -337.5f && agent.transform.eulerAngles.z > -382.5f))
-//			direction = Direction.U;
-//		else if ((agent.transform.eulerAngles.z > 22.5f && agent.transform.eulerAngles.z < 67.5f) || (agent.transform.eulerAngles.z > -337.5f && agent.transform.eulerAngles.z < -292.5f))
-//			direction = Direction.LU;
-//		else if ((agent.transform.eulerAngles.z >= 67.5f && agent.transform.eulerAngles.z <= 112.5f) || (agent.transform.eulerAngles.z >= -292.5f && agent.transform.eulerAngles.z <= -247.5f))
-//			direction = Direction.L;
-//		else if ((agent.transform.eulerAngles.z >= 112.5f && agent.transform.eulerAngles.z <= 157.5f) || (agent.transform.eulerAngles.z >= -247.5f && agent.transform.eulerAngles.z <= -202.5f))
-//			direction = Direction.LD;
-//		else if ((agent.transform.eulerAngles.z <= -22.5f && agent.transform.eulerAngles.z >= -67.5) || (agent.transform.eulerAngles.z >= 247.5f && agent.transform.eulerAngles.z <= 292.5f))
-//			direction = Direction.RU;
-//		else if ((agent.transform.eulerAngles.z <= -67.5f && agent.transform.eulerAngles.z >= -112.5f) || (agent.transform.eulerAngles.z >= 202.5f && agent.transform.eulerAngles.z <= 257.5f))
-//			direction = Direction.R;
-//		else if ((agent.transform.eulerAngles.z <= -112.5 && agent.transform.eulerAngles.z >= -157.5f) || (agent.transform.eulerAngles.z >= 257.5f && agent.transform.eulerAngles.z <= 302.5f))
-//			direction = Direction.RD;
-//		else
-//			direction = Direction.D;
-
 
 		//Calculate Attribue Data
 		if (dataTime > maxDataTime) {
@@ -187,18 +187,18 @@ public class CharController : MonoBehaviour {
 
 
 		if (interactType == InteractType.Call)
-			data.actionEnergyConsume = 0.4f;
+			data.actionEnergyConsume = 0.2f;
 		else if (interactType == InteractType.Command)
-			data.actionEnergyConsume = 0.5f;
-		else if (interactType == InteractType.Caress)
 			data.actionEnergyConsume = 0.3f;
+		else if (interactType == InteractType.Caress)
+			data.actionEnergyConsume = 0.1f;
 		else if (interactType == InteractType.FollowTarget)
-			data.actionEnergyConsume = 0.9f;
+			data.actionEnergyConsume = 0.5f;
 		else if (interactType == InteractType.None) {
 			if (actionType == ActionType.Discover) {
-				data.actionEnergyConsume = 0.9f;
-			}else if(actionType == ActionType.Patrol) {
 				data.actionEnergyConsume = 0.5f;
+			}else if(actionType == ActionType.Patrol) {
+				data.actionEnergyConsume = 0.3f;
 			}
 		}
 
@@ -391,6 +391,9 @@ public class CharController : MonoBehaviour {
 		ResetInteract ();
 		isAbort = false;
 		isEndAction = false;
+		actionTime = 0;
+		maxActionTime = 10000;
+		actionType = ActionType.None;
 
 		if (data.Shit > data.maxShit * 0.9f) {
 			actionType = ActionType.Shit;
@@ -471,7 +474,7 @@ public class CharController : MonoBehaviour {
 	void DoAction()
 	{
 		if (actionType == ActionType.None) {
-			anim.Play (idleAnim + "_D", 0);
+			anim.Play (idleAnim + "_" + direction.ToString (), 0);
 		} else if (actionType == ActionType.Rest) {
 			StartCoroutine (Rest ());
 		} else if (actionType == ActionType.Patrol) {
@@ -499,7 +502,6 @@ public class CharController : MonoBehaviour {
 	void Free()
 	{
 		interactType = InteractType.None;
-		Think ();
 	}
 
 
@@ -599,7 +601,7 @@ public class CharController : MonoBehaviour {
 		anim.Play ("Pee_D", 0);
 		Debug.Log ("Pee");
 		while (data.Pee > 1 && !isAbort) {
-			data.Pee -= 0.1f;
+			data.Pee -= 1f;
 			yield return new WaitForEndOfFrame();
 		}
 		interactType = InteractType.None;
@@ -611,7 +613,7 @@ public class CharController : MonoBehaviour {
 		interactType = InteractType.Busy;
 		Debug.Log ("Shit");
 		while (data.Shit > 1 && !isAbort) {
-			data.Shit -= 0.5f;
+			data.Shit -= 2f;
 			yield return new WaitForEndOfFrame();
 		}
 		interactType = InteractType.None;
@@ -620,8 +622,9 @@ public class CharController : MonoBehaviour {
 
 	IEnumerator Eat()
 	{
-		Debug.Log ("Eat");
-		yield return StartCoroutine (MoveToPoint (InputController.instance.GetRandomPoint (PointType.Eat).position));
+		Debug.Log ("Eat " + InputController.instance.GetRandomPoint (PointType.Eat).position);
+		//if(!isAbort)
+		//	yield return StartCoroutine (MoveToPoint (InputController.instance.GetRandomPoint (PointType.Eat).position));
 		while (data.Food < data.maxFood && !isAbort) {
 			data.Food += 0.5f;
 			yield return new WaitForEndOfFrame();
@@ -631,10 +634,11 @@ public class CharController : MonoBehaviour {
 
 	IEnumerator Drink()
 	{
+		anim.Play (idleAnim + "_" + direction.ToString (), 0);
 		Debug.Log ("Drink");
 		yield return StartCoroutine (MoveToPoint (InputController.instance.GetRandomPoint (PointType.Drink).position));
 		while (data.Water < data.maxWater && !isAbort) {
-			data.Water += 1f;
+			data.Water += 2f;
 			yield return new WaitForEndOfFrame();
 		}
 		isEndAction = true;
@@ -642,6 +646,7 @@ public class CharController : MonoBehaviour {
 
 	IEnumerator Sleep()
 	{
+		anim.Play (idleAnim + "_" + direction.ToString (), 0);
 		Debug.Log ("Sleep");
 		yield return StartCoroutine (MoveToPoint (InputController.instance.GetRandomPoint (PointType.Sleep).position));
 		while (data.Sleep < data.maxSleep && !isAbort) {
@@ -653,6 +658,7 @@ public class CharController : MonoBehaviour {
 
 	IEnumerator Rest()
 	{
+		anim.Play (idleAnim + "_" + direction.ToString (), 0);
 		Debug.Log ("Rest");
 		while (!isAbort) {
 			yield return new WaitForEndOfFrame();
@@ -660,11 +666,13 @@ public class CharController : MonoBehaviour {
 	}
 
 	IEnumerator Itchi(){
+		anim.Play (idleAnim + "_" + direction.ToString (), 0);
 		Debug.Log ("Itchi");
 		yield return new WaitForEndOfFrame ();
 	}
 
 	IEnumerator Sick(){
+		anim.Play (idleAnim + "_" + direction.ToString (), 0);
 		Debug.Log ("Sick");
 		yield return new WaitForEndOfFrame ();
 	}
@@ -673,11 +681,15 @@ public class CharController : MonoBehaviour {
 	#region Event
 	public void OnArrived()
 	{
+
+		Debug.Log ("Arrived");
+
 		if (interactType == InteractType.FollowTarget) {
 			Free ();
 		}
 
 		isArrived = true;
+		anim.Play (idleAnim + "_" + direction.ToString (), 0);
 	}
 
 	void OnTriggerEnter2D(Collider2D other) {
@@ -700,5 +712,4 @@ public class CharController : MonoBehaviour {
 
 public enum InteractType {None,FollowTarget,Drag,Drop,Caress,Call,Bath,Command,Busy,Listening};
 public enum EnviromentType {Room,Table,Bath};
-public enum ActionType {None,Rest,Sleep,Eat,Drink,Patrol,Discover,Pee,Shit,Itchi,Sick}
-public enum EmotionType {None,Sad,Fear,Happy,Supprise,mad}
+public enum ActionType {None,Rest,Sleep,Eat,Drink,Patrol,Discover,Pee,Shit,Itchi,Sick,Sad,Fear,Happy,Supprise,Mad}
