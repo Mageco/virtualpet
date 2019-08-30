@@ -11,11 +11,14 @@ public class BathShowerItem : MonoBehaviour
 	bool isDrag = false;
 	Vector3 originalPosition;
 	bool isBusy = false;
+	bool isShower = false;
+	public GameObject showerEffect;
 
 	void Awake()
 	{
 		anim = this.GetComponent<Animator> ();
 		originalPosition = this.transform.position;
+		showerEffect.SetActive (false);
 	}
 
     // Update is called once per frame
@@ -34,8 +37,34 @@ public class BathShowerItem : MonoBehaviour
 
 			this.transform.position = pos + new Vector3 (0, 0, -10);
 		}
+
+		if (this.transform.position.y < (originalPosition.y - maxDistance + 1)) {
+			if (!isShower)
+				OnShower ();
+		} else {
+			if (isShower)
+				OffShower ();
+		}
         
     }
+
+	void OnShower(){
+		isShower = true;
+		showerEffect.SetActive (true);
+		Debug.Log ("Shower");
+		if (InputController.instance.character.enviromentType == EnviromentType.Bath) {
+			InputController.instance.character.OnShower ();
+		}
+	}
+
+	void OffShower(){
+		isShower = false;
+		showerEffect.SetActive (false);
+		Debug.Log ("OffShower");
+		if (InputController.instance.character.enviromentType == EnviromentType.Bath) {
+			InputController.instance.character.OffShower ();
+		}
+	}
 
 	void OnMouseDown()
 	{

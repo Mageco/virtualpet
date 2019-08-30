@@ -14,16 +14,16 @@ public class CharController : MonoBehaviour {
 	//[HideInInspector]
 	public EnviromentType enviromentType = EnviromentType.Room;
 	//[HideInInspector]
-	public Direction direction;
+	public Direction direction = Direction.D;
 
 	//Think
-	float dataTime;
+	float dataTime = 0;
 	float maxDataTime = 0.1f;
 
 	//Movement
 	public Transform target;
 	PolyNavAgent agent;
-	float agentTime;
+	float agentTime = 0;
 	float maxAgentTime = 0.1f;
 	Vector2 lastTargetPosition;
 	public bool isArrived = true;
@@ -46,9 +46,10 @@ public class CharController : MonoBehaviour {
 	string sleepAnim = "Sleep_LD";
 	string peeAnim = "Pee_D";
 	string lookDownAnim = "Idle_LookDown";
-	string bathAnim = "Bath_Start_D";
+	string bathAnim = "BathStart_D";
 	string soapAnim = "Soap_D";
 	string showerAnim = "Shower_LD";
+	string shakeAnim = "Shake_D";
 
 	Animator anim;
 
@@ -156,19 +157,16 @@ public class CharController : MonoBehaviour {
 			}
 		} else if (interactType == InteractType.Fall) {
 			if (interactTime > maxInteractTime) {
-				if (enviromentType == EnviromentType.Bath)
-					interactType = InteractType.Bath;
+				if (enviromentType == EnviromentType.Bath) {
+					OnBath ();
+				}
 				else
 					interactType = InteractType.None;
 			} else {
 				interactTime += Time.deltaTime;
 			}
 		} else if (interactType == InteractType.Bath) {
-			anim.Play (bathAnim, 0);
-		} else if (interactType == InteractType.Soap) {
-			anim.Play (soapAnim, 0);
-		} else if (interactType == InteractType.Shower) {
-			anim.Play (showerAnim, 0);
+			
 		}else if (interactType == InteractType.Caress) {
 			if (interactTime > maxInteractTime) {
 				interactType = InteractType.None;
@@ -397,6 +395,29 @@ public class CharController : MonoBehaviour {
 		interactTime = 0;
 	}
 
+	void OnBath(){
+		interactType = InteractType.Bath;
+		anim.Play (bathAnim, 0);
+	}
+
+	public void OnSoap()
+	{
+		if(enviromentType == EnviromentType.Bath)
+			anim.Play (soapAnim, 0);
+	}
+
+	public void OnShower()
+	{
+		if(enviromentType == EnviromentType.Bath)
+			anim.Play (showerAnim, 0);
+	}
+
+	public void OffShower()
+	{
+		if(enviromentType == EnviromentType.Bath)
+			anim.Play (shakeAnim, 0);
+	}
+
 	public void ResetInteract()
 	{
 		interactTime = 0;
@@ -454,6 +475,8 @@ public class CharController : MonoBehaviour {
 		EventSystem.current.RaycastAll(eventDataCurrentPosition, results);
 		return results.Count > 0;
 	}
+
+
 
 	#endregion
 
@@ -650,6 +673,14 @@ public class CharController : MonoBehaviour {
 	IEnumerator Wait(float maxT)
 	{
 		float time = 0;
+
+		int ran = Random.Range (0, 100);
+		if (ran < 30) {
+			anim.Play (bathAnim, 0);
+		} 
+		else
+			anim.Play (idleAnim + "_" + direction.ToString (), 0);
+
 		while (time < maxT && !isAbort) {
 			time += Time.deltaTime;
 			yield return new WaitForEndOfFrame ();
@@ -724,10 +755,17 @@ public class CharController : MonoBehaviour {
 			InputController.instance.SetTarget (PointType.Eat);
 			yield return StartCoroutine (MoveToPoint ());
 		}
-		anim.Play (eatAnim, 0);
-		while (data.Food < data.maxFood && !isAbort) {
-			data.Food += 0.3f;
-			yield return new WaitForEndOfFrame();
+		bool canEat = true;
+		if (InputController.instance.foodBowl.CanEat ()) {
+			anim.Play (eatAnim, 0);
+			while (data.Food < data.maxFood && !isAbort && canEat) {
+				data.Food += 0.3f;
+				InputController.instance.foodBowl.Eat (0.3f);
+				if (!InputController.instance.foodBowl.CanEat ()) {
+					canEat = false;
+				}
+				yield return new WaitForEndOfFrame ();
+			}
 		}
 		isEndAction = true;
 	}
@@ -809,17 +847,21 @@ public class CharController : MonoBehaviour {
 
 	void OnTriggerEnter2D(Collider2D other) {
 		if (other.tag == "Mouse") {
-			if ((interactType == InteractType.None || interactType == InteractType.Caress) && interactType != InteractType.Busy ) {
+			if ((interactType == InteractType.None || interactType == InteractType.Caress) && interactType != InteractType.Busy) {
 				interactType = InteractType.FollowTarget;
 				target = other.transform;
 				Abort ();
 			}
+		} else if (other.tag == "Food") {
+
 		}
 	}
 
 	void OnTriggerExit2D(Collider2D other) {
 		if (other.tag == "Mouse" && interactType == InteractType.FollowTarget) {
 			interactType = InteractType.None;
+		}else if (other.tag == "Food") {
+
 		}
 	}
 	#endregion
@@ -839,6 +881,6 @@ public class CharController : MonoBehaviour {
 
 }
 
-public enum InteractType {None,FollowTarget,Drag,Drop,Caress,Call,Bath,Command,Busy,Listening,Fall,Soap,Shower};
+public enum InteractType {None,FollowTarget,Drag,Drop,Caress,Call,Bath,Command,Busy,Listening,Fall};
 public enum EnviromentType {Room,Table,Bath};
 public enum ActionType {None,Rest,Sleep,Eat,Drink,Patrol,Discover,Pee,Shit,Itchi,Sick,Sad,Fear,Happy,Supprise,Mad}

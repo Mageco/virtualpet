@@ -16,8 +16,13 @@ public class InputController : MonoBehaviour
 	public List<GizmoPoint> favouritesPoints;
 	public List<GizmoPoint> mousePoints;
 	public List<GizmoPoint> patrolPoints;
-	CharController character;
+	[HideInInspector]
+	public CharController character;
 	public CameraController cameraController;
+	public FoodBBowlItem foodBowl;
+	public SoapItem soapItem;
+	public BathShowerItem showerItem;
+	//public BathTubItem bathTubeItem;
 
 	float time;
 	float maxDoubleClickTime = 0.4f;
@@ -46,6 +51,8 @@ public class InputController : MonoBehaviour
 			else if (points [i].type == PointType.Patrol)
 				drinkPoints.Add (points [i]);
 		}
+
+		Application.targetFrameRate = 50;
 	}
 
 	List<GizmoPoint> GetPoints(PointType type)
