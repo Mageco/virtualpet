@@ -34,6 +34,7 @@ public class SoapItem : MonoBehaviour
 		if (isTouch) {
 			if (character != null) {
 				character.OnSoap ();
+				ItemController.instance.bathTubeItem.OnSoap ();
 			}
 		}
 	}

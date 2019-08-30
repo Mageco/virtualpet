@@ -19,10 +19,7 @@ public class InputController : MonoBehaviour
 	[HideInInspector]
 	public CharController character;
 	public CameraController cameraController;
-	public FoodBBowlItem foodBowl;
-	public SoapItem soapItem;
-	public BathShowerItem showerItem;
-	//public BathTubItem bathTubeItem;
+
 
 	float time;
 	float maxDoubleClickTime = 0.4f;

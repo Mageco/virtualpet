@@ -756,12 +756,12 @@ public class CharController : MonoBehaviour {
 			yield return StartCoroutine (MoveToPoint ());
 		}
 		bool canEat = true;
-		if (InputController.instance.foodBowl.CanEat ()) {
+		if (ItemController.instance.foodBowl.CanEat ()) {
 			anim.Play (eatAnim, 0);
 			while (data.Food < data.maxFood && !isAbort && canEat) {
 				data.Food += 0.3f;
-				InputController.instance.foodBowl.Eat (0.3f);
-				if (!InputController.instance.foodBowl.CanEat ()) {
+				ItemController.instance.foodBowl.Eat (0.3f);
+				if (!ItemController.instance.foodBowl.CanEat ()) {
 					canEat = false;
 				}
 				yield return new WaitForEndOfFrame ();

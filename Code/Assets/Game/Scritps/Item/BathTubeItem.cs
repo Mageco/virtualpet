@@ -4,6 +4,15 @@ using UnityEngine;
 
 public class BathTubeItem : MonoBehaviour
 {
+
+	Animator anim;
+	bool isSoap = false;
+
+	void Awake()
+	{
+		anim = this.GetComponent <Animator> ();
+
+	}
     // Start is called before the first frame update
     void Start()
     {
@@ -15,4 +24,20 @@ public class BathTubeItem : MonoBehaviour
     {
         
     }
+
+	public void OnSoap()
+	{
+		if (!isSoap) {
+			anim.Play ("Bath_Start", 0);
+			isSoap = true;
+		}
+	}
+
+	public void OnShower()
+	{
+		if (isSoap) {
+			anim.Play ("Bath_End", 0);
+			isSoap = false;
+		}
+	}
 }
