@@ -14,10 +14,12 @@ public class MouseController : MonoBehaviour
 	Vector3 originalPosition;
 	public CircleCollider2D collider;
 	public InteractType interactType;
+	Vector3 lastPosition;
 
 	void Awake()
 	{
 		originalPosition = this.transform.position;
+		lastPosition = this.transform.position;
 		this.body.gameObject.SetActive (false);
 		collider.enabled = false;
 	}
@@ -34,6 +36,7 @@ public class MouseController : MonoBehaviour
 
 	public void Spawn()
 	{
+		lastPosition = this.transform.position;
 		List<Transform> points = InputController.instance.GetRandomPoints (PointType.Mouse);
 		int max = Random.Range (3, points.Count);
 		paths = new Vector3[max + 2];
@@ -42,7 +45,7 @@ public class MouseController : MonoBehaviour
 		for (int i = 1; i < paths.Length - 1; i++) {
 			paths [i] = points [i-1].position;
 		}
-		iTween.MoveTo (this.gameObject, iTween.Hash ("path", paths, "speed", speed, "orienttopath", false, "easetype", "easeInOutSine", "oncomplete", "Complete"));
+		iTween.MoveTo (this.gameObject, iTween.Hash ("path", paths, "speed", speed, "orienttopath", false, "easetype", "easeInOutSine","oncomplete", "Complete"));
 
 		time = 0;
 		maxTimeSpawn = Random.Range (60, 120);
@@ -51,12 +54,25 @@ public class MouseController : MonoBehaviour
 		collider.enabled = true;
 	}
 
+	void Update()
+	{
+		lastPosition = this.transform.position;
+	}
+
 	void LateUpdate()
 	{
 		if (isRun) {
 			Vector3 pos = this.transform.position;
 			pos.z = this.transform.position.y;
 			this.transform.position = pos;
+			if (pos.x > lastPosition.x) {
+				body.transform.rotation = Quaternion.Euler (new Vector3 (0, 180, 0));
+				body.transform.localScale = new Vector3 (body.transform.localScale.x, body.transform.localScale.y, -1);
+			} else {
+				body.transform.rotation = Quaternion.Euler (new Vector3 (0, 0, 0));
+				body.transform.localScale = new Vector3 (body.transform.localScale.x, body.transform.localScale.y, 1);
+			}
+
 		}
 		else {
 			if (time > maxTimeSpawn) {

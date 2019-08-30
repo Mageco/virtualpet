@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Lean.Touch;
+using UnityEngine.EventSystems;
 
 public class InputController : MonoBehaviour
 {
@@ -16,6 +17,11 @@ public class InputController : MonoBehaviour
 	public List<GizmoPoint> mousePoints;
 	public List<GizmoPoint> patrolPoints;
 	CharController character;
+	public CameraController cameraController;
+
+	float time;
+	float maxDoubleClickTime = 0.4f;
+	bool isClick = false;
 
 	void Awake()
 	{
@@ -102,25 +108,68 @@ public class InputController : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
-	public void SetTarget(LeanFinger finger)
+	void Update()
 	{
-		var worldPoint = ScreenDepth.Convert (finger.ScreenPosition, gameObject);
-		worldPoint.z = target.position.z;
-		target.position = worldPoint;
-
-		if ((character.interactType == InteractType.None || character.interactType == InteractType.Caress) && character.enviromentType == EnviromentType.Room) {
-			character.target = this.target;
-			character.OnFollowTarget ();
-		}
+		if (isClick)
+			time += Time.deltaTime;
 	}
+
 
 	public void OnCall()
 	{
 		character.OnCall ();
 	}
+
+	void OnMouseDown()
+	{
+		if (IsPointerOverUIObject ()) {
+			return;
+		}
+
+	}
+
+	void OnMouseUp()
+	{
+		if (isClick) {
+			if (time > maxDoubleClickTime) {
+				time = 0;
+			} else {
+				OnDoubleClick ();
+				time = 0;
+				isClick = false;
+				return;
+			}
+		} else {
+			time = 0;
+			isClick = true;
+		}
+	}
+
+	void OnDoubleClick()
+	{
+		Vector3 pos = Camera.main.ScreenToWorldPoint (Input.mousePosition);
+		pos.z = 0;
+		target.position = pos;
+
+		if ((character.interactType == InteractType.None || character.interactType == InteractType.Caress) && character.enviromentType == EnviromentType.Room) {
+			character.target = this.target;
+			character.OnListening ();
+			Debug.Log ("Double Click");
+		}
+
+	}
+
+	public void ResetCameraTarget()
+	{
+		cameraController.SetTarget (this.character.gameObject);
+	}
+
+	private bool IsPointerOverUIObject() {
+		PointerEventData eventDataCurrentPosition = new PointerEventData(EventSystem.current);
+		eventDataCurrentPosition.position = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
+		List<RaycastResult> results = new List<RaycastResult>();
+		EventSystem.current.RaycastAll(eventDataCurrentPosition, results);
+		return results.Count > 0;
+	}
 }
+

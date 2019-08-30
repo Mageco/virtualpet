@@ -16,6 +16,7 @@ public class ItemDrag : MonoBehaviour
 	public bool isReturn = false;
 	public bool isObstruct = true;
 	public bool isDragOffset = true;
+	public bool isCameraControl = false;
 
 	void Awake()
 	{
@@ -51,10 +52,15 @@ public class ItemDrag : MonoBehaviour
 		if (!isDragable)
 			StartCoroutine (ReturnPosition (originalPosition));
 
+
 		if(isDragOffset)
 			dragOffset = Camera.main.ScreenToWorldPoint (Input.mousePosition) - this.transform.position ;
 		isDrag = true;
 		lastPosition = this.transform.position;
+
+		if (isCameraControl) {
+			InputController.instance.cameraController.SetTarget (this.gameObject);
+		}
 	}
 
 	void OnMouseUp()
@@ -68,6 +74,9 @@ public class ItemDrag : MonoBehaviour
 		else if (isDrag && !isDragable)
 			StartCoroutine (ReturnPosition (lastPosition));
 		isDrag = false;
+		if (isCameraControl) {
+			InputController.instance.ResetCameraTarget();
+		}
 	}
 
 	IEnumerator ReturnPosition(Vector3 pos)

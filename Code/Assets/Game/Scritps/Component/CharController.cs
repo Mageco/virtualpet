@@ -39,12 +39,16 @@ public class CharController : MonoBehaviour {
 	string idleAnim = "Idle";
 	string dropAnim = "Drop_Light_D";
 	string holdAnim = "Hold_D";
-	string layAnim = "Lay_D";
+	string layAnim = "Sleep_LD";
 	string eatAnim = "Eat_LD";
 	string drinkAnim = "Eat_LD";
 	string sheetAnim = "Poop_D";
 	string sleepAnim = "Sleep_LD";
 	string peeAnim = "Pee_D";
+	string lookDownAnim = "Idle_LookDown";
+	string bathAnim = "Bath_Start_D";
+	string soapAnim = "Soap_D";
+	string showerAnim = "Shower_LD";
 
 	Animator anim;
 
@@ -159,15 +163,29 @@ public class CharController : MonoBehaviour {
 			} else {
 				interactTime += Time.deltaTime;
 			}
-		}
-		else if (interactType == InteractType.Bath) {
-			anim.Play (idleAnim + "_" + direction.ToString (), 0);
-		} else if (interactType == InteractType.Caress) {
+		} else if (interactType == InteractType.Bath) {
+			anim.Play (bathAnim, 0);
+		} else if (interactType == InteractType.Soap) {
+			anim.Play (soapAnim, 0);
+		} else if (interactType == InteractType.Shower) {
+			anim.Play (showerAnim, 0);
+		}else if (interactType == InteractType.Caress) {
 			if (interactTime > maxInteractTime) {
 				interactType = InteractType.None;
 			} else {
 				interactTime += Time.deltaTime;
 			}
+		} else if (interactType == InteractType.Listening) {
+
+			anim.Play (lookDownAnim + "_" + direction.ToString ());
+			if (interactTime > maxInteractTime) {
+				int id = Random.Range (0, 100);
+				if (id > 50)
+					OnCall ();
+				else
+					interactType = InteractType.None;
+			} else
+				interactTime += Time.deltaTime;
 		}
 
 
@@ -298,9 +316,27 @@ public class CharController : MonoBehaviour {
 		
 		Abort ();
 		if (enviromentType == EnviromentType.Room) {
+			anim.Play (idleAnim + "_" + direction.ToString (), 0);
 			InputController.instance.SetTarget (PointType.Call);
-			StartCoroutine (MoveToPoint ());
+			StartCoroutine (MoveToPointFocus ());
 			interactType = InteractType.Call;
+		}
+	}
+
+	public void OnListening(){
+
+		if (interactType == InteractType.Busy)
+			return;
+		Abort ();
+
+		if (enviromentType == EnviromentType.Room) {
+			if (target.position.x < this.transform.position.x)
+				SetDirection (Direction.LD);
+			else
+				SetDirection (Direction.RD);
+			interactTime = 0;
+			maxInteractTime = Random.Range (2, 3);
+			interactType = InteractType.Listening;
 		}
 	}
 
@@ -315,7 +351,7 @@ public class CharController : MonoBehaviour {
 
 	void OnDrag()
 	{
-		if (interactType == InteractType.FollowTarget)
+		if (interactType == InteractType.FollowTarget || interactType == InteractType.Call)
 			return;
 		
 		Abort ();
@@ -356,6 +392,7 @@ public class CharController : MonoBehaviour {
 
 	void OnLay()
 	{
+		Abort ();
 		anim.Play (layAnim, 0);
 		interactTime = 0;
 	}
@@ -391,8 +428,9 @@ public class CharController : MonoBehaviour {
 		float angle = Mathf.Atan2(delta.x, delta.y) * Mathf.Rad2Deg;
 		if (isTouch && angle > -45 && angle < 45 && interactType != InteractType.Drop) {
 			OnDrag ();
-		}else if(isTouch && (angle > 115 || angle < -115) && interactType == InteractType.Caress) {
-			OnLay ();
+		}else if(isTouch && (angle > 115 || angle < -115)) {
+			if (interactType == InteractType.Caress)
+				OnLay ();
 		}
 	}
 
@@ -544,7 +582,16 @@ public class CharController : MonoBehaviour {
 	{
 		if (d == Direction.D) {
 			agent.transform.rotation = Quaternion.Euler (new Vector3 (0, 0, 180));
-		}
+		}else if(d == Direction.U)
+			agent.transform.rotation = Quaternion.Euler (new Vector3 (0, 0, -180));
+		else if(d == Direction.RD)
+			agent.transform.rotation = Quaternion.Euler (new Vector3 (0, 0, -140));
+		else if(d == Direction.RU)
+			agent.transform.rotation = Quaternion.Euler (new Vector3 (0, 0, -40));
+		else if(d == Direction.LD)
+			agent.transform.rotation = Quaternion.Euler (new Vector3 (0, 0, 140));
+		else if(d == Direction.LU)
+			agent.transform.rotation = Quaternion.Euler (new Vector3 (0, 0, 40));
 	}
 
 	IEnumerator DoAnim(string a)
@@ -559,6 +606,25 @@ public class CharController : MonoBehaviour {
 	}
 
 	IEnumerator MoveToPoint()
+	{
+		isArrived = false;
+		Debug.Log ((Vector2.Distance (target.position, agent.transform.position) < 0.5f));
+		if (Vector2.Distance (target.position, agent.transform.position) > 0.5f) {
+			lastTargetPosition = target.position;
+			agent.SetDestination (target.position);
+			while (!isArrived && !isAbort) {
+				anim.Play (moveAnim + "_" + direction.ToString (), 0);
+				yield return new WaitForEndOfFrame ();
+				if (isAbort)
+					agent.Stop ();
+			}
+		} else {
+			isArrived = true;
+			yield return new WaitForEndOfFrame ();
+		}
+	}
+
+	IEnumerator MoveToPointFocus()
 	{
 		isArrived = false;
 		Debug.Log ((Vector2.Distance (target.position, agent.transform.position) < 0.5f));
@@ -598,11 +664,6 @@ public class CharController : MonoBehaviour {
 	}
 
 
-	IEnumerator Listening(){
-		yield return new WaitForEndOfFrame ();
-		isEndAction = true;
-	}
-
 	IEnumerator Patrol(){
 		yield return new WaitForEndOfFrame ();
 		isEndAction = true;
@@ -634,6 +695,7 @@ public class CharController : MonoBehaviour {
 		interactType = InteractType.Busy;
 		anim.Play (peeAnim, 0);
 		Debug.Log ("Pee");
+		SpawnPee ();
 		while (data.Pee > 1 && !isAbort) {
 			data.Pee -= 0.5f;
 			yield return new WaitForEndOfFrame();
@@ -646,6 +708,7 @@ public class CharController : MonoBehaviour {
 	{
 		interactType = InteractType.Busy;
 		anim.Play (sheetAnim, 0);
+		SpawnShit ();
 		while (data.Shit > 1 && !isAbort) {
 			data.Shit -= 0.5f;
 			yield return new WaitForEndOfFrame();
@@ -776,6 +839,6 @@ public class CharController : MonoBehaviour {
 
 }
 
-public enum InteractType {None,FollowTarget,Drag,Drop,Caress,Call,Bath,Command,Busy,Listening,Fall};
+public enum InteractType {None,FollowTarget,Drag,Drop,Caress,Call,Bath,Command,Busy,Listening,Fall,Soap,Shower};
 public enum EnviromentType {Room,Table,Bath};
 public enum ActionType {None,Rest,Sleep,Eat,Drink,Patrol,Discover,Pee,Shit,Itchi,Sick,Sad,Fear,Happy,Supprise,Mad}
