@@ -16,6 +16,7 @@ public class InputController : MonoBehaviour
 	public List<GizmoPoint> favouritesPoints;
 	public List<GizmoPoint> mousePoints;
 	public List<GizmoPoint> patrolPoints;
+	public List<GizmoPoint> caressPoints;
 	[HideInInspector]
 	public CharController character;
 	public CameraController cameraController;
@@ -47,6 +48,8 @@ public class InputController : MonoBehaviour
 				drinkPoints.Add (points [i]);
 			else if (points [i].type == PointType.Patrol)
 				drinkPoints.Add (points [i]);
+			else if (points [i].type == PointType.Caress)
+				caressPoints.Add (points [i]);
 		}
 
 		Application.targetFrameRate = 50;
@@ -68,6 +71,8 @@ public class InputController : MonoBehaviour
 			return drinkPoints;
 		}else if (type == PointType.Patrol) {
 			return patrolPoints;
+		}else if (type == PointType.Caress) {
+			return caressPoints;
 		}
 		return null;
 	}
@@ -121,7 +126,7 @@ public class InputController : MonoBehaviour
 
 	public void OnCall()
 	{
-		character.OnCall ();
+		character.OnListening ();
 	}
 
 	void OnMouseDown()

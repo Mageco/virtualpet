@@ -2,12 +2,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FoodBBowlItem : MonoBehaviour
+public class FoodBowlItem : MonoBehaviour
 {
 	float foodAmount;
 	public float maxfoodAmount = 200;
 	public SpriteRenderer image;
 	public Sprite[] foodSprites;
+	public Transform anchor;
+
+	float time;
+	float maxDoubleClickTime = 0.4f;
+	bool isClick = false;
 
     // Start is called before the first frame update
     void Start()
@@ -39,7 +44,19 @@ public class FoodBBowlItem : MonoBehaviour
 
 	void OnMouseUp()
 	{
-		Fill ();
+		if (isClick) {
+			if (time > maxDoubleClickTime) {
+				time = 0;
+			} else {
+				Fill ();
+				time = 0;
+				isClick = false;
+				return;
+			}
+		} else {
+			time = 0;
+			isClick = true;
+		}
 	}
 
 	void Fill()

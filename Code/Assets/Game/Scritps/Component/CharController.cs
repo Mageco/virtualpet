@@ -39,7 +39,7 @@ public class CharController : MonoBehaviour {
 	string idleAnim = "Idle";
 	string dropAnim = "Drop_Light_D";
 	string holdAnim = "Hold_D";
-	string layAnim = "Sleep_LD";
+	string layAnim = "Scratch_LD";
 	string eatAnim = "Eat_LD";
 	string drinkAnim = "Eat_LD";
 	string sheetAnim = "Poop_D";
@@ -50,6 +50,8 @@ public class CharController : MonoBehaviour {
 	string soapAnim = "Soap_D";
 	string showerAnim = "Shower_LD";
 	string shakeAnim = "Shake_D";
+	string sickAnim = "Lay_Sick_LD";
+	string sitAnim ="Sit_Idle_D";
 
 	Animator anim;
 
@@ -107,8 +109,8 @@ public class CharController : MonoBehaviour {
 			anim.speed = 1.3f;
 		} else if (interactType == InteractType.Call) {
 			if (isArrived) {
-				anim.Play (idleAnim + "_" + direction.ToString (), 0);
 				SetDirection (Direction.D);
+				anim.Play (idleAnim + "_" + direction.ToString (), 0);
 				interactType = InteractType.Caress;
 				maxInteractTime = Random.Range (5, 10);
 			}
@@ -138,7 +140,7 @@ public class CharController : MonoBehaviour {
 			pos.y -= fallSpeed * Time.deltaTime;
 			pos.z = dropPosition.z;
 			agent.transform.position = pos;
-			if (Vector2.Distance (agent.transform.position, dropPosition) < 1f) {
+			if (Vector2.Distance (agent.transform.position, dropPosition) < fallSpeed * Time.deltaTime * 2) {
 
 				if (fallSpeed < 50) {
 					dropAnim = "Drop_Light_D";
@@ -159,21 +161,30 @@ public class CharController : MonoBehaviour {
 			if (interactTime > maxInteractTime) {
 				if (enviromentType == EnviromentType.Bath) {
 					OnBath ();
-				}
-				else
+				} else
 					interactType = InteractType.None;
 			} else {
 				interactTime += Time.deltaTime;
 			}
 		} else if (interactType == InteractType.Bath) {
 			
-		}else if (interactType == InteractType.Caress) {
+		} else if (interactType == InteractType.Caress) {
+
+			if (isArrived) {
+				InputController.instance.SetTarget (PointType.Caress);
+				StartCoroutine (MoveToPointCaress ());
+			}
+
 			if (interactTime > maxInteractTime) {
+				Abort ();
 				interactType = InteractType.None;
 			} else {
 				interactTime += Time.deltaTime;
 			}
-		} else if (interactType == InteractType.Listening) {
+		} else if (interactType == InteractType.Lay) {
+			anim.Play (layAnim, 0);
+		}
+		else if (interactType == InteractType.Listening) {
 
 			anim.Play (lookDownAnim + "_" + direction.ToString ());
 			if (interactTime > maxInteractTime) {
@@ -276,25 +287,25 @@ public class CharController : MonoBehaviour {
 
 		float deltaHealth = data.healthConsume;
 
-		deltaHealth += (data.Happy - data.maxHappy * 0.3f) + 0.001f;
+		deltaHealth += (data.Happy - data.maxHappy * 0.3f) * 0.001f;
 
 		if (data.Dirty > data.maxDirty * 0.8f)
-			deltaHealth -= (data.Dirty - data.maxDirty * 0.8f) * 0.03f;
+			deltaHealth -= (data.Dirty - data.maxDirty * 0.8f) * 0.003f;
 
 		if(data.Pee > data.maxPee * 0.9f)
-			deltaHealth -= (data.Pee - data.maxPee * 0.9f) * 0.01f;
+			deltaHealth -= (data.Pee - data.maxPee * 0.9f) * 0.001f;
 
 		if(data.Shit > data.maxShit * 0.9f)
-			deltaHealth -= (data.Shit - data.maxShit * 0.9f) * 0.02f;
+			deltaHealth -= (data.Shit - data.maxShit * 0.9f) * 0.002f;
 
 		if(data.Food < data.maxFood * 0.1f)
-			deltaHealth -= (data.maxFood * 0.1f - data.Food) * 0.01f;
+			deltaHealth -= (data.maxFood * 0.1f - data.Food) * 0.001f;
 
 		if(data.Water < data.maxWater * 0.1f)
-			deltaHealth -= (data.maxWater * 0.1f - data.Water) * 0.01f;
+			deltaHealth -= (data.maxWater * 0.1f - data.Water) * 0.001f;
 		
 		if(data.Sleep < data.maxSleep * 0.05f)
-			deltaHealth -= (data.maxSleep * 0.05f - data.Sleep) * 0.04f;
+			deltaHealth -= (data.maxSleep * 0.05f - data.Sleep) * 0.004f;
 
 		data.Health += deltaHealth;
 
@@ -323,7 +334,7 @@ public class CharController : MonoBehaviour {
 
 	public void OnListening(){
 
-		if (interactType == InteractType.Busy)
+		if (interactType != InteractType.None)
 			return;
 		Abort ();
 
@@ -349,7 +360,7 @@ public class CharController : MonoBehaviour {
 
 	void OnDrag()
 	{
-		if (interactType == InteractType.FollowTarget || interactType == InteractType.Call)
+		if (interactType == InteractType.FollowTarget || interactType == InteractType.Call || interactType == InteractType.Lay)
 			return;
 		
 		Abort ();
@@ -390,9 +401,21 @@ public class CharController : MonoBehaviour {
 
 	void OnLay()
 	{
-		Abort ();
-		anim.Play (layAnim, 0);
+		interactType = InteractType.Lay;
+		int ran = Random.Range (0, 100);
+		if (ran > 50)
+			layAnim = "Scratch_LD";
+		else
+			layAnim = "Scratch_RD";
+	}
+
+
+	void OffLay()
+	{
 		interactTime = 0;
+		interactType = InteractType.Caress;
+		isArrived = true;
+		anim.Play (idleAnim + "_" + direction.ToString ());
 	}
 
 	void OnBath(){
@@ -441,7 +464,8 @@ public class CharController : MonoBehaviour {
 		isTouch = false;
 		if (interactType == InteractType.Drag) {
 			OnDrop ();
-		}
+		} else if (interactType == InteractType.Lay)
+			OffLay ();
 	}
 
 	public void OnFingerTouchUp(Vector2 delta)
@@ -631,7 +655,6 @@ public class CharController : MonoBehaviour {
 	IEnumerator MoveToPoint()
 	{
 		isArrived = false;
-		Debug.Log ((Vector2.Distance (target.position, agent.transform.position) < 0.5f));
 		if (Vector2.Distance (target.position, agent.transform.position) > 0.5f) {
 			lastTargetPosition = target.position;
 			agent.SetDestination (target.position);
@@ -639,6 +662,25 @@ public class CharController : MonoBehaviour {
 				anim.Play (moveAnim + "_" + direction.ToString (), 0);
 				yield return new WaitForEndOfFrame ();
 				if (isAbort)
+					agent.Stop ();
+			}
+		} else {
+			isArrived = true;
+			yield return new WaitForEndOfFrame ();
+		}
+	}
+
+	IEnumerator MoveToPointCaress()
+	{
+		isArrived = false;
+		if (Vector2.Distance (target.position, agent.transform.position) > 0.5f) {
+			lastTargetPosition = target.position;
+			agent.SetDestination (target.position);
+			anim.Play ("Run_D", 0);
+			while (!isArrived && interactType == InteractType.Caress) {
+				anim.Play ("Run_D", 0);
+				yield return new WaitForEndOfFrame ();
+				if (interactType != InteractType.Caress)
 					agent.Stop ();
 			}
 		} else {
@@ -758,12 +800,15 @@ public class CharController : MonoBehaviour {
 		bool canEat = true;
 		if (ItemController.instance.foodBowl.CanEat ()) {
 			anim.Play (eatAnim, 0);
+			yield return new WaitForSeconds (0.1f);
 			while (data.Food < data.maxFood && !isAbort && canEat) {
 				data.Food += 0.3f;
 				ItemController.instance.foodBowl.Eat (0.3f);
 				if (!ItemController.instance.foodBowl.CanEat ()) {
 					canEat = false;
 				}
+				if (Vector2.Distance (this.transform.position, ItemController.instance.foodBowl.anchor.position) > 0.5f)
+					canEat = false;
 				yield return new WaitForEndOfFrame ();
 			}
 		}
@@ -779,10 +824,21 @@ public class CharController : MonoBehaviour {
 			yield return StartCoroutine (MoveToPoint ());
 		}
 
-		anim.Play (drinkAnim, 0);
-		while (data.Water < data.maxWater && !isAbort) {
-			data.Water += 0.5f;
-			yield return new WaitForEndOfFrame();
+		bool canDrink = true;
+
+		if (ItemController.instance.waterBowl.CanEat ()) {
+			anim.Play (drinkAnim, 0);
+			yield return new WaitForSeconds (0.1f);
+			while (data.Water < data.maxWater && !isAbort && canDrink) {
+				data.Water += 0.5f;
+				ItemController.instance.waterBowl.Eat (0.5f);
+				if (!ItemController.instance.waterBowl.CanEat ()) {
+					canDrink = false;
+				}
+				if (Vector2.Distance (this.transform.position, ItemController.instance.waterBowl.anchor.position) > 0.5f)
+					canDrink = false;
+				yield return new WaitForEndOfFrame ();
+			}
 		}
 		isEndAction = true;
 	}
@@ -805,7 +861,7 @@ public class CharController : MonoBehaviour {
 	{
 		float time = 0;
 		float maxTime = Random.Range (2, 5);
-		anim.Play (idleAnim + "_" + direction.ToString (), 0);
+		anim.Play (sitAnim, 0);
 		Debug.Log ("Rest");
 		while (!isAbort && time < maxTime) {
 			time += Time.deltaTime;
@@ -822,17 +878,21 @@ public class CharController : MonoBehaviour {
 	}
 
 	IEnumerator Sick(){
-		anim.Play (idleAnim + "_" + direction.ToString (), 0);
+		interactType = InteractType.Busy;
+		anim.Play (sickAnim, 0);
 		Debug.Log ("Sick");
+		while (data.health < 0.1f*data.maxHealth  && !isAbort) {
+			yield return new WaitForEndOfFrame();
+		}
 		yield return new WaitForEndOfFrame ();
 		isEndAction = true;
 	}
+
 	#endregion
 
 	#region Event
 	public void OnArrived()
 	{
-
 		Debug.Log ("Arrived");
 
 		if (interactType == InteractType.FollowTarget) {
@@ -841,8 +901,9 @@ public class CharController : MonoBehaviour {
 			anim.speed = 1;
 		}
 
+		if(interactType != InteractType.Caress)
+			anim.Play (idleAnim + "_" + direction.ToString (), 0);
 		isArrived = true;
-		anim.Play (idleAnim + "_" + direction.ToString (), 0);
 	}
 
 	void OnTriggerEnter2D(Collider2D other) {
@@ -881,6 +942,6 @@ public class CharController : MonoBehaviour {
 
 }
 
-public enum InteractType {None,FollowTarget,Drag,Drop,Caress,Call,Bath,Command,Busy,Listening,Fall};
+public enum InteractType {None,FollowTarget,Drag,Drop,Caress,Call,Bath,Command,Busy,Listening,Fall,Lay};
 public enum EnviromentType {Room,Table,Bath};
 public enum ActionType {None,Rest,Sleep,Eat,Drink,Patrol,Discover,Pee,Shit,Itchi,Sick,Sad,Fear,Happy,Supprise,Mad}

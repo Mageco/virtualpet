@@ -8,7 +8,8 @@ public class ItemController : MonoBehaviour
 	public static ItemController instance;
 	[HideInInspector]
 	public CharController character;
-	public FoodBBowlItem foodBowl;
+	public FoodBowlItem foodBowl;
+	public FoodBowlItem waterBowl;
 	public SoapItem soapItem;
 	public BathShowerItem showerItem;
 	public BathTubeItem bathTubeItem;
