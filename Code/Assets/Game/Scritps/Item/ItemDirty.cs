@@ -12,6 +12,7 @@ public class ItemDirty : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+		originalScale = this.transform.localScale;
 		dirty = maxDirty;
     }
 

@@ -9,16 +9,19 @@ public class ItemDrag : MonoBehaviour
 	Animator anim;
 	bool isDrag = false;
 	Vector3 originalPosition;
+	Quaternion originalRotation;
 	Vector3 lastPosition;
 	bool isDragable = true;
 	bool isBusy = false;
 	public bool isReturn = false;
 	public bool isObstruct = true;
+	public bool isDragOffset = true;
 
 	void Awake()
 	{
 		anim = this.GetComponent<Animator> ();
 		originalPosition = this.transform.position;
+		originalRotation = this.transform.rotation;
 	}
 
 	// Update is called once per frame
@@ -46,9 +49,10 @@ public class ItemDrag : MonoBehaviour
 			return;
 
 		if (!isDragable)
-			StartCoroutine (Return (originalPosition));
+			StartCoroutine (ReturnPosition (originalPosition));
 
-		dragOffset = Camera.main.ScreenToWorldPoint (Input.mousePosition) - this.transform.position ;
+		if(isDragOffset)
+			dragOffset = Camera.main.ScreenToWorldPoint (Input.mousePosition) - this.transform.position ;
 		isDrag = true;
 		lastPosition = this.transform.position;
 	}
@@ -57,18 +61,30 @@ public class ItemDrag : MonoBehaviour
 	{
 		dragOffset = Vector3.zero;
 
-		if (isDrag && isReturn)
-			StartCoroutine (Return (originalPosition));
+		if (isDrag && isReturn) {
+			StartCoroutine (ReturnPosition (originalPosition));
+			StartCoroutine (ReturnRotation (originalRotation));
+		}
 		else if (isDrag && !isDragable)
-			StartCoroutine (Return (lastPosition));
+			StartCoroutine (ReturnPosition (lastPosition));
 		isDrag = false;
 	}
 
-	IEnumerator Return(Vector3 pos)
+	IEnumerator ReturnPosition(Vector3 pos)
 	{
 		isBusy = true;
 		while (Vector2.Distance (this.transform.position, pos) > 0.1f) {
 			this.transform.position = Vector3.Lerp (this.transform.position, pos, Time.deltaTime * 5);
+			yield return new WaitForEndOfFrame ();
+		}
+		isBusy = false;
+	}
+
+	IEnumerator ReturnRotation(Quaternion rot)
+	{
+		isBusy = true;
+		while (Quaternion.Angle (this.transform.rotation, rot) > 1f) {
+			this.transform.rotation = Quaternion.Lerp (this.transform.rotation, rot, Time.deltaTime * 40);
 			yield return new WaitForEndOfFrame ();
 		}
 		isBusy = false;

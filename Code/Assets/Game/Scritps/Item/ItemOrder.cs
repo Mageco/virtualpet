@@ -8,11 +8,17 @@ public class ItemOrder : MonoBehaviour
 	ItemObject item;
 	Vector3 originalPosition;
 	public bool isOrder = true;
+	public bool isStatic = false;
 
 	void Awake()
 	{
 		item = this.GetComponent <ItemObject> ();
 		originalPosition = this.transform.position;
+		if (isStatic) {
+			Vector3 pos = this.transform.position;
+			pos.z = this.transform.position.y;
+			this.transform.position = pos;
+		}
 	}
 
 
@@ -20,7 +26,7 @@ public class ItemOrder : MonoBehaviour
     // Update is called once per frame
     void LateUpdate()
     {
-		if (isOrder) {
+		if (isOrder && !isStatic) {
 			Vector3 pos = this.transform.position;
 			pos.z = this.transform.position.y;
 			this.transform.position = pos;

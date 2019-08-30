@@ -8,18 +8,16 @@ public class CleanItem : MonoBehaviour
 {
 
 	bool isTouch = false;
-	bool isCollide = false;
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+	ItemDirty dirtyItem;
+	float targetAngle = 0;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+	void Update()
+	{
+		if (isTouch) {
+			targetAngle = Mathf.Lerp (targetAngle, 0, Time.deltaTime * 4);
+			this.transform.rotation = Quaternion.Lerp (this.transform.rotation, Quaternion.Euler (new Vector3 (0, 0,-targetAngle)), Time.deltaTime * 2);
+		}
+	}
 
 	void OnMouseDown()
 	{
@@ -39,29 +37,27 @@ public class CleanItem : MonoBehaviour
 	public void OnFingerSwipe(LeanFinger finger)
 	{
 		if (isTouch) {
-			float angle = finger.ScreenDelta.x;
-			if (angle > 30)
-				angle = 30;
-			if (angle < -30)
-				angle = -30;
+			targetAngle = finger.ScreenDelta.x;
+			if (targetAngle > 45)
+				targetAngle = 45;
+			if (targetAngle < -45)
+				targetAngle = -45;
 
-			this.transform.rotation = Quaternion.Euler (0, 0, -angle);
-
-			if (isCollide) {
-
+			if (dirtyItem != null) {
+				dirtyItem.OnClean ();
 			}
 		}
 	}
 
 	void OnTriggerEnter2D(Collider2D other) {
 		if (other.GetComponent <ItemDirty>() != null) {
-			isCollide = true;
+			dirtyItem = other.GetComponent <ItemDirty>();
 		}
 	}
 
 	void OnTriggerExit2D(Collider2D other) {
-		if (other.GetComponent <ItemDirty>() != null) {
-			isCollide = false;
+		if (other.GetComponent <ItemDirty>() == dirtyItem) {
+			dirtyItem = null;
 		}
 	}
 
