@@ -58,6 +58,12 @@ public class CharController : MonoBehaviour {
 	float interactTime = 0;
 	float maxInteractTime = 3;
 
+	//Pee,Sheet
+	public Transform peePosition;
+	public Transform shitPosition;
+	public GameObject peePrefab;
+	public GameObject shitPrefab;
+
 	void Awake()
 	{
 		anim = this.GetComponent<Animator> ();
@@ -753,6 +759,19 @@ public class CharController : MonoBehaviour {
 			interactType = InteractType.None;
 		}
 	}
+	#endregion
+
+	#region Effect
+	void SpawnPee()
+	{
+		GameObject go = GameObject.Instantiate (peePrefab, peePosition.position + new Vector3 (0, 0, 50), Quaternion.identity);
+	}
+
+	void SpawnShit(){
+		GameObject go = GameObject.Instantiate (shitPrefab, shitPosition.position, Quaternion.identity);
+	}
+
+
 	#endregion
 
 }
