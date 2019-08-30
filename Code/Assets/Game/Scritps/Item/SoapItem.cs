@@ -32,7 +32,7 @@ public class SoapItem : MonoBehaviour
 	public void OnFingerSwipe(LeanFinger finger)
 	{
 		if (isTouch) {
-			if (character != null) {
+			if (character != null && character.enviromentType == EnviromentType.Bath) {
 				character.OnSoap ();
 				ItemController.instance.bathTubeItem.OnSoap ();
 			}

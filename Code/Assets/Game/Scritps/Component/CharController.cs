@@ -91,6 +91,8 @@ public class CharController : MonoBehaviour {
 				if (isEndAction) {
 					Think ();
 				} 
+			} else if (enviromentType == EnviromentType.Table) {
+
 			}
 		} else if (interactType == InteractType.FollowTarget) {
 			if (agentTime > maxAgentTime) {
@@ -360,7 +362,7 @@ public class CharController : MonoBehaviour {
 
 	void OnDrag()
 	{
-		if (interactType == InteractType.FollowTarget || interactType == InteractType.Call || interactType == InteractType.Lay)
+		if (interactType == InteractType.FollowTarget || interactType == InteractType.Call || interactType == InteractType.Lay || interactType == InteractType.Busy)
 			return;
 		
 		Abort ();
@@ -531,27 +533,39 @@ public class CharController : MonoBehaviour {
 		}
 
 		if (data.Food < data.maxFood * 0.2f) {
-			actionType = ActionType.Eat;
-			DoAction ();
-			return;
+			int ran = Random.Range (0, 100);
+			if (ran > 30) {
+				actionType = ActionType.Eat;
+				DoAction ();
+				return;
+			}
 		}
 
 		if (data.Water < data.maxWater * 0.2f) {
-			actionType = ActionType.Drink;
-			DoAction ();
-			return;
+			int ran = Random.Range (0, 100);
+			if (ran > 30) {
+				actionType = ActionType.Drink;
+				DoAction ();
+				return;
+			}
 		}
 
 		if (data.Sleep < data.maxSleep * 0.1f) {
-			actionType = ActionType.Sleep;
-			DoAction ();
-			return;
+			int ran = Random.Range (0, 100);
+			if (ran > 30) {
+				actionType = ActionType.Sleep;
+				DoAction ();
+				return;
+			}
 		}
 
 		if (data.Dirty > data.maxDirty * 0.7f) {
-			actionType = ActionType.Itchi;
-			DoAction ();
-			return;
+			int ran = Random.Range (0, 100);
+			if (ran > 50) {
+				actionType = ActionType.Itchi;
+				DoAction ();
+				return;
+			}
 		}
 
 		if (data.Energy < data.maxEnergy * 0.1f) {
@@ -615,7 +629,7 @@ public class CharController : MonoBehaviour {
 	//Basic Action
 	public void Abort()
 	{
-		actionType = ActionType.None;
+		//actionType = ActionType.None;
 		isAbort = true;
 		isEndAction = true;
 	}
