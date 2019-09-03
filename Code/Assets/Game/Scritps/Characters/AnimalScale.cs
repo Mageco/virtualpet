@@ -7,12 +7,12 @@ public class AnimalScale : MonoBehaviour
 
 	public float initZ = -6;
 	public float scaleFactor = 0.1f;
-	MouseController character;
+	AnimalController character;
 	Vector3 originalScale;
 
 	void Awake()
 	{
-		character = this.GetComponent <MouseController> ();
+		character = this.GetComponent <AnimalController> ();
 		originalScale = character.transform.localScale;
 	}
     // Start is called before the first frame update

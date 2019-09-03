@@ -6,7 +6,7 @@ using Lean.Touch;
 
 public class CharController : MonoBehaviour {
 
-
+	#region Declair
 	//Data
 	public CharData data;
 	//[HideInInspector]
@@ -15,6 +15,7 @@ public class CharController : MonoBehaviour {
 	public EnviromentType enviromentType = EnviromentType.Room;
 	//[HideInInspector]
 	public Direction direction = Direction.D;
+	public AnimType animType = AnimType.Idle;
 
 	//Think
 	float dataTime = 0;
@@ -32,6 +33,7 @@ public class CharController : MonoBehaviour {
 	//Action
 	public ActionType actionType = ActionType.None;
 	public bool isEndAction = false;
+
 
 
 	//Anim
@@ -52,6 +54,7 @@ public class CharController : MonoBehaviour {
 	string shakeAnim = "Shake_D";
 	string sickAnim = "Lay_Sick_LD";
 	string sitAnim ="Sit_Idle_D";
+	string restAnim = "";
 
 	Animator anim;
 
@@ -65,11 +68,20 @@ public class CharController : MonoBehaviour {
 	float interactTime = 0;
 	float maxInteractTime = 3;
 
+	//Double Click
+	float doubleClickTime;
+	float maxDoubleClickTime = 0.4f;
+	bool isClick = false;
+
 	//Pee,Sheet
 	public Transform peePosition;
 	public Transform shitPosition;
 	public GameObject peePrefab;
 	public GameObject shitPrefab;
+
+	#endregion
+
+	#region Load
 
 	void Awake()
 	{
@@ -82,6 +94,9 @@ public class CharController : MonoBehaviour {
 	void Start () {
 
 	}
+	#endregion
+
+	#region Update
 
 	// Update is called once per frame
 	void FixedUpdate () {
@@ -185,10 +200,7 @@ public class CharController : MonoBehaviour {
 			}
 		} else if (interactType == InteractType.Lay) {
 			anim.Play (layAnim, 0);
-		}
-		else if (interactType == InteractType.Listening) {
-
-			anim.Play (lookDownAnim + "_" + direction.ToString ());
+		} else if (interactType == InteractType.Listening) {
 			if (interactTime > maxInteractTime) {
 				int id = Random.Range (0, 100);
 				if (id > 50)
@@ -238,6 +250,7 @@ public class CharController : MonoBehaviour {
 		} else
 			dataTime += Time.deltaTime;
 	}
+	#endregion
 
 	#region Data
 	void CalculateData()
@@ -341,12 +354,19 @@ public class CharController : MonoBehaviour {
 		Abort ();
 
 		if (enviromentType == EnviromentType.Room) {
-			if (target.position.x < this.transform.position.x)
+			if (target.position.x < this.transform.position.x) {
 				SetDirection (Direction.LD);
-			else
+			} else {
 				SetDirection (Direction.RD);
+			}
+			int ran = Random.Range (0, 100);
+			if (ran > 50)
+				anim.Play (lookDownAnim + "_" + direction.ToString ());
+			else 
+				anim.Play (bathAnim, 0);
+
 			interactTime = 0;
-			maxInteractTime = Random.Range (2, 3);
+			maxInteractTime = Random.Range (1, 2);
 			interactType = InteractType.Listening;
 		}
 	}
@@ -468,6 +488,20 @@ public class CharController : MonoBehaviour {
 			OnDrop ();
 		} else if (interactType == InteractType.Lay)
 			OffLay ();
+
+		if (isClick) {
+			if (doubleClickTime > maxDoubleClickTime) {
+				doubleClickTime = 0;
+			} else {
+				OnListening ();
+				doubleClickTime = 0;
+				isClick = false;
+				return;
+			}
+		} else {
+			doubleClickTime = 0;
+			isClick = true;
+		}
 	}
 
 	public void OnFingerTouchUp(Vector2 delta)
@@ -958,4 +992,4 @@ public class CharController : MonoBehaviour {
 
 public enum InteractType {None,FollowTarget,Drag,Drop,Caress,Call,Bath,Command,Busy,Listening,Fall,Lay};
 public enum EnviromentType {Room,Table,Bath};
-public enum ActionType {None,Rest,Sleep,Eat,Drink,Patrol,Discover,Pee,Shit,Itchi,Sick,Sad,Fear,Happy,Supprise,Mad}
+public enum ActionType {None,Rest,Sleep,Eat,Drink,Patrol,Discover,Pee,Shit,Itchi,Sick,Sad,Fear,Happy,Supprise,Mad,Hungry,Thirsty}
