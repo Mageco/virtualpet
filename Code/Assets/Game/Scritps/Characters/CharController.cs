@@ -16,10 +16,11 @@ public class CharController : MonoBehaviour {
 	//[HideInInspector]
 	public Direction direction = Direction.D;
 	public AnimType animType = AnimType.Idle;
+	public Direction touchDirection = Direction.D;
 
 	//Think
 	float dataTime = 0;
-	float maxDataTime = 0.1f;
+	float maxDataTime = 1f;
 
 	//Movement
 	public Transform target;
@@ -37,25 +38,7 @@ public class CharController : MonoBehaviour {
 
 
 	//Anim
-	string moveAnim = "Run";
-	string idleAnim = "Idle";
-	string dropAnim = "Drop_Light_D";
-	string holdAnim = "Hold_D";
-	string layAnim = "Scratch_LD";
-	string eatAnim = "Eat_LD";
-	string drinkAnim = "Eat_LD";
-	string sheetAnim = "Poop_D";
-	string sleepAnim = "Sleep_LD";
-	string peeAnim = "Pee_D";
-	string lookDownAnim = "Idle_LookDown";
-	string bathAnim = "BathStart_D";
-	string soapAnim = "Soap_D";
-	string showerAnim = "Shower_LD";
-	string shakeAnim = "Shake_D";
-	string sickAnim = "Lay_Sick_LD";
-	string sitAnim ="Sit_Idle_D";
-	string restAnim = "";
-
+	CharAnim charAnim;
 	Animator anim;
 
 	//Interact
@@ -64,7 +47,8 @@ public class CharController : MonoBehaviour {
 	Vector3 dropPosition;
 	Rigidbody2D rigid;
 	CircleCollider2D collider;
-	float fallSpeed = 0;
+	[HideInInspector]
+	public float fallSpeed = 0;
 	float interactTime = 0;
 	float maxInteractTime = 3;
 
@@ -86,13 +70,14 @@ public class CharController : MonoBehaviour {
 	void Awake()
 	{
 		anim = this.GetComponent<Animator> ();
+		charAnim = this.GetComponent<CharAnim> ();
 		agent = GameObject.FindObjectOfType<PolyNavAgent> ();
 		rigid = this.GetComponent <Rigidbody2D> ();
 		collider = this.GetComponent <CircleCollider2D> ();
 	}
 	// Use this for initialization
 	void Start () {
-
+		charAnim.SetAnimType (AnimType.Idle);
 	}
 	#endregion
 
@@ -122,12 +107,12 @@ public class CharController : MonoBehaviour {
 				agentTime += Time.deltaTime;
 
 			agent.speed = 40;
-			anim.Play (moveAnim + "_" + direction.ToString (), 0);
+			charAnim.SetAnimType (AnimType.Run);
 			anim.speed = 1.3f;
 		} else if (interactType == InteractType.Call) {
 			if (isArrived) {
 				SetDirection (Direction.D);
-				anim.Play (idleAnim + "_" + direction.ToString (), 0);
+				charAnim.SetAnimType (AnimType.Idle);
 				interactType = InteractType.Caress;
 				maxInteractTime = Random.Range (5, 10);
 			}
@@ -146,7 +131,7 @@ public class CharController : MonoBehaviour {
 
 			pos.z = -50;
 			agent.transform.position = pos;
-			anim.Play (holdAnim, 0);
+			charAnim.SetAnimType (AnimType.Hold);
 			this.transform.rotation = Quaternion.Lerp (this.transform.rotation, Quaternion.identity, Time.deltaTime * 2);
 
 		} else if (interactType == InteractType.Drop) {
@@ -160,18 +145,16 @@ public class CharController : MonoBehaviour {
 			if (Vector2.Distance (agent.transform.position, dropPosition) < fallSpeed * Time.deltaTime * 2) {
 
 				if (fallSpeed < 50) {
-					dropAnim = "Drop_Light_D";
+					charAnim.SetAnimType (AnimType.Fall_Light);
 					maxInteractTime = 2;
 				} else {
-					dropAnim = "Drop_Hard_D";
+					charAnim.SetAnimType (AnimType.Fall);
 					maxInteractTime = 3;
 				}
 
 				interactTime = 0;
-				maxInteractTime = 2;
 				fallSpeed = 0;
 				this.transform.rotation = Quaternion.identity;
-				anim.Play (dropAnim, 0);
 				interactType = InteractType.Fall;
 			}
 		} else if (interactType == InteractType.Fall) {
@@ -188,8 +171,19 @@ public class CharController : MonoBehaviour {
 		} else if (interactType == InteractType.Caress) {
 
 			if (isArrived) {
-				InputController.instance.SetTarget (PointType.Caress);
-				StartCoroutine (MoveToPointCaress ());
+				int ran = Random.Range (0, 100);
+				if (ran > 80) {
+					isArrived = false;
+					charAnim.SetAnimType (AnimType.Sit);
+				}else if(ran > 50)
+				{
+					isArrived = false;
+					charAnim.SetAnimType (AnimType.Happy);
+				}
+				else {
+					InputController.instance.SetTarget (PointType.Caress);
+					StartCoroutine (MoveToPointCaress ());
+				}
 			}
 
 			if (interactTime > maxInteractTime) {
@@ -198,8 +192,13 @@ public class CharController : MonoBehaviour {
 			} else {
 				interactTime += Time.deltaTime;
 			}
-		} else if (interactType == InteractType.Lay) {
-			anim.Play (layAnim, 0);
+		} else if (interactType == InteractType.Touch) {
+			if (interactTime > maxInteractTime) {
+				interactType = InteractType.Caress;
+				isArrived = true;
+			} else {
+				interactTime += Time.deltaTime;
+			}
 		} else if (interactType == InteractType.Listening) {
 			if (interactTime > maxInteractTime) {
 				int id = Random.Range (0, 100);
@@ -212,30 +211,14 @@ public class CharController : MonoBehaviour {
 		}
 
 
-		//Check Agent
-//		if (agent.transform.eulerAngles.z < 45 && agent.transform.eulerAngles.z > -45 || (agent.transform.eulerAngles.z > 315 && agent.transform.eulerAngles.z < 405) || (agent.transform.eulerAngles.z < -315 && agent.transform.eulerAngles.z > -405))
-//			direction = Direction.U;
-//		else if ((agent.transform.eulerAngles.z >= 45 && agent.transform.eulerAngles.z <= 135) || (agent.transform.eulerAngles.z <= -225 && agent.transform.eulerAngles.z >= -315))
-//			direction = Direction.L;
-//		else if ((agent.transform.eulerAngles.z <= -45 && agent.transform.eulerAngles.z >= -135) || (agent.transform.eulerAngles.z >= 225 && agent.transform.eulerAngles.z <= 315))
-//			direction = Direction.R;
-//		else
-//			direction = Direction.D;
-
-
-
 		if (agent.transform.eulerAngles.z < 30f && agent.transform.eulerAngles.z > -30f || (agent.transform.eulerAngles.z > 330f && agent.transform.eulerAngles.z < 390f) || (agent.transform.eulerAngles.z < -330f && agent.transform.eulerAngles.z > -390f))
 			direction = Direction.U;
 		else if ((agent.transform.eulerAngles.z > 30f && agent.transform.eulerAngles.z < 80f) || (agent.transform.eulerAngles.z > -330f && agent.transform.eulerAngles.z < -280f))
 			direction = Direction.LU;
-//		else if ((agent.transform.eulerAngles.z >= 67.5f && agent.transform.eulerAngles.z <= 112.5f) || (agent.transform.eulerAngles.z >= -292.5f && agent.transform.eulerAngles.z <= -247.5f))
-//			direction = Direction.L;
 		else if ((agent.transform.eulerAngles.z >= 80f && agent.transform.eulerAngles.z <= 150f) || (agent.transform.eulerAngles.z >= -280f && agent.transform.eulerAngles.z <= -210f))
 			direction = Direction.LD;
 		else if ((agent.transform.eulerAngles.z <= -30f && agent.transform.eulerAngles.z >= -80f) || (agent.transform.eulerAngles.z >= 280f && agent.transform.eulerAngles.z <= 330f))
 			direction = Direction.RU;
-//		else if ((agent.transform.eulerAngles.z <= -67.5f && agent.transform.eulerAngles.z >= -112.5f) || (agent.transform.eulerAngles.z >= 202.5f && agent.transform.eulerAngles.z <= 257.5f))
-//			direction = Direction.R;
 		else if ((agent.transform.eulerAngles.z <= -80 && agent.transform.eulerAngles.z >= -150) || (agent.transform.eulerAngles.z >= 210f && agent.transform.eulerAngles.z <= 280f))
 			direction = Direction.RD;
 		else
@@ -340,7 +323,7 @@ public class CharController : MonoBehaviour {
 		
 		Abort ();
 		if (enviromentType == EnviromentType.Room) {
-			anim.Play (idleAnim + "_" + direction.ToString (), 0);
+			charAnim.SetAnimType (AnimType.Idle);
 			InputController.instance.SetTarget (PointType.Call);
 			StartCoroutine (MoveToPointFocus ());
 			interactType = InteractType.Call;
@@ -361,9 +344,9 @@ public class CharController : MonoBehaviour {
 			}
 			int ran = Random.Range (0, 100);
 			if (ran > 50)
-				anim.Play (lookDownAnim + "_" + direction.ToString ());
+				charAnim.SetAnimType (AnimType.Listening);
 			else 
-				anim.Play (bathAnim, 0);
+				charAnim.SetAnimType (AnimType.Bath);
 
 			interactTime = 0;
 			maxInteractTime = Random.Range (1, 2);
@@ -382,7 +365,7 @@ public class CharController : MonoBehaviour {
 
 	void OnDrag()
 	{
-		if (interactType == InteractType.FollowTarget || interactType == InteractType.Call || interactType == InteractType.Lay || interactType == InteractType.Busy)
+		if (interactType == InteractType.FollowTarget || interactType == InteractType.Call || interactType == InteractType.Touch || interactType == InteractType.Busy)
 			return;
 		
 		Abort ();
@@ -421,46 +404,44 @@ public class CharController : MonoBehaviour {
 		interactType = InteractType.Drop;
 	}
 
-	void OnLay()
+	void OnTouch()
 	{
-		interactType = InteractType.Lay;
-		int ran = Random.Range (0, 100);
-		if (ran > 50)
-			layAnim = "Scratch_LD";
-		else
-			layAnim = "Scratch_RD";
+		interactType = InteractType.Touch;
+		interactTime = 0;
+		maxInteractTime = Random.Range (2, 3);
+		charAnim.SetAnimType (AnimType.Touch);
 	}
 
 
-	void OffLay()
+	void OffTouch()
 	{
 		interactTime = 0;
+		maxInteractTime = Random.Range (3, 5);
 		interactType = InteractType.Caress;
 		isArrived = true;
-		anim.Play (idleAnim + "_" + direction.ToString ());
 	}
 
 	void OnBath(){
 		interactType = InteractType.Bath;
-		anim.Play (bathAnim, 0);
+		charAnim.SetAnimType (AnimType.Bath);
 	}
 
 	public void OnSoap()
 	{
 		if(enviromentType == EnviromentType.Bath)
-			anim.Play (soapAnim, 0);
+			charAnim.SetAnimType (AnimType.Soap);
 	}
 
 	public void OnShower()
 	{
 		if(enviromentType == EnviromentType.Bath)
-			anim.Play (showerAnim, 0);
+			charAnim.SetAnimType (AnimType.Shower);
 	}
 
 	public void OffShower()
 	{
 		if(enviromentType == EnviromentType.Bath)
-			anim.Play (shakeAnim, 0);
+			charAnim.SetAnimType (AnimType.Bath);
 	}
 
 	public void ResetInteract()
@@ -486,8 +467,7 @@ public class CharController : MonoBehaviour {
 		isTouch = false;
 		if (interactType == InteractType.Drag) {
 			OnDrop ();
-		} else if (interactType == InteractType.Lay)
-			OffLay ();
+		} 
 
 		if (isClick) {
 			if (doubleClickTime > maxDoubleClickTime) {
@@ -508,10 +488,31 @@ public class CharController : MonoBehaviour {
 	{
 		float angle = Mathf.Atan2(delta.x, delta.y) * Mathf.Rad2Deg;
 		if (isTouch && angle > -45 && angle < 45 && interactType != InteractType.Drop) {
-			OnDrag ();
-		}else if(isTouch && (angle > 115 || angle < -115)) {
+			touchDirection = Direction.U;
 			if (interactType == InteractType.Caress)
-				OnLay ();
+				OnTouch ();
+			else if (interactType == InteractType.Touch)
+				interactTime = 0;
+			else
+				OnDrag ();
+		}else if(isTouch && (angle > 115 || angle < -115)) {
+			touchDirection = Direction.D;
+			if (interactType == InteractType.Caress)
+				OnTouch ();
+			else if (interactType == InteractType.Touch)
+				interactTime = 0;
+		}else if(isTouch && (angle > 45 && angle < 115)) {
+			touchDirection = Direction.L;
+			if (interactType == InteractType.Caress)
+				OnTouch ();
+			else if (interactType == InteractType.Touch)
+				interactTime = 0;
+		}else if(isTouch && (angle > 115 && angle < 205)) {
+			touchDirection = Direction.R;
+			if (interactType == InteractType.Caress)
+				OnTouch ();
+			else if (interactType == InteractType.Touch)
+				interactTime = 0;
 		}
 	}
 
@@ -619,9 +620,9 @@ public class CharController : MonoBehaviour {
 		int id = Random.Range (0,100);
 		if (id < 20) {
 			actionType = ActionType.None;
-		} else if (id < 50) {
+		} else if (id < 40) {
 			actionType = ActionType.Rest;
-		} else if (id < 80) {
+		} else if (id < 60) {
 			actionType = ActionType.Patrol;
 		} else {
 			actionType = ActionType.Discover;
@@ -707,7 +708,7 @@ public class CharController : MonoBehaviour {
 			lastTargetPosition = target.position;
 			agent.SetDestination (target.position);
 			while (!isArrived && !isAbort) {
-				anim.Play (moveAnim + "_" + direction.ToString (), 0);
+				charAnim.SetAnimType (AnimType.Run);
 				yield return new WaitForEndOfFrame ();
 				if (isAbort)
 					agent.Stop ();
@@ -724,9 +725,10 @@ public class CharController : MonoBehaviour {
 		if (Vector2.Distance (target.position, agent.transform.position) > 0.5f) {
 			lastTargetPosition = target.position;
 			agent.SetDestination (target.position);
-			anim.Play ("Run_D", 0);
+			charAnim.SetAnimType (AnimType.Idle);
 			while (!isArrived && interactType == InteractType.Caress) {
-				anim.Play ("Run_D", 0);
+				SetDirection (Direction.D);
+				charAnim.SetAnimType (AnimType.Run);
 				yield return new WaitForEndOfFrame ();
 				if (interactType != InteractType.Caress)
 					agent.Stop ();
@@ -745,7 +747,7 @@ public class CharController : MonoBehaviour {
 			lastTargetPosition = target.position;
 			agent.SetDestination (target.position);
 			while (!isArrived) {
-				anim.Play (moveAnim + "_" + direction.ToString (), 0);
+				charAnim.SetAnimType (AnimType.Run);
 				yield return new WaitForEndOfFrame ();
 			}
 		} else {
@@ -766,10 +768,13 @@ public class CharController : MonoBehaviour {
 
 		int ran = Random.Range (0, 100);
 		if (ran < 30) {
-			anim.Play (bathAnim, 0);
+			charAnim.SetAnimType (AnimType.Bath);
 		} 
-		else
-			anim.Play (idleAnim + "_" + direction.ToString (), 0);
+		else if(ran < 70)
+			charAnim.SetAnimType (AnimType.Idle);
+		else 
+			charAnim.SetAnimType (AnimType.Sit);
+		
 
 		while (time < maxT && !isAbort) {
 			time += Time.deltaTime;
@@ -793,7 +798,7 @@ public class CharController : MonoBehaviour {
 	IEnumerator Discover()
 	{
 		int n = 0;
-		int maxCount = Random.Range (2, 5);
+		int maxCount = Random.Range (4, 10);
 		while(!isAbort && n < maxCount) 
 		{
 			if(!isAbort)
@@ -802,7 +807,11 @@ public class CharController : MonoBehaviour {
 				yield return StartCoroutine (MoveToPoint ());
 			}
 			if (!isAbort) {
-				anim.Play (idleAnim + "_" + direction.ToString ());
+				int ran = Random.Range (0, 100);
+				if (ran < 30) {
+					charAnim.SetAnimType (AnimType.Bath);
+				} else 
+					charAnim.SetAnimType (AnimType.Idle);
 				yield return StartCoroutine (Wait (Random.Range (1, 3)));
 			}
 
@@ -814,7 +823,7 @@ public class CharController : MonoBehaviour {
 	IEnumerator Pee()
 	{
 		interactType = InteractType.Busy;
-		anim.Play (peeAnim, 0);
+		charAnim.SetAnimType (AnimType.Pee);
 		Debug.Log ("Pee");
 		SpawnPee ();
 		while (data.Pee > 1 && !isAbort) {
@@ -828,7 +837,7 @@ public class CharController : MonoBehaviour {
 	IEnumerator Shit()
 	{
 		interactType = InteractType.Busy;
-		anim.Play (sheetAnim, 0);
+		charAnim.SetAnimType (AnimType.Shit);
 		SpawnShit ();
 		while (data.Shit > 1 && !isAbort) {
 			data.Shit -= 0.5f;
@@ -847,7 +856,7 @@ public class CharController : MonoBehaviour {
 		}
 		bool canEat = true;
 		if (ItemController.instance.foodBowl.CanEat ()) {
-			anim.Play (eatAnim, 0);
+			charAnim.SetAnimType (AnimType.Eat);
 			yield return new WaitForSeconds (0.1f);
 			while (data.Food < data.maxFood && !isAbort && canEat) {
 				data.Food += 0.3f;
@@ -875,7 +884,7 @@ public class CharController : MonoBehaviour {
 		bool canDrink = true;
 
 		if (ItemController.instance.waterBowl.CanEat ()) {
-			anim.Play (drinkAnim, 0);
+			charAnim.SetAnimType (AnimType.Eat);
 			yield return new WaitForSeconds (0.1f);
 			while (data.Water < data.maxWater && !isAbort && canDrink) {
 				data.Water += 0.5f;
@@ -897,7 +906,7 @@ public class CharController : MonoBehaviour {
 		Debug.Log ("Sleep");
 		InputController.instance.SetTarget (PointType.Sleep);
 		yield return StartCoroutine (MoveToPoint ());
-		anim.Play (sleepAnim, 0);
+		charAnim.SetAnimType (AnimType.Sleep);
 		while (data.Sleep < data.maxSleep && !isAbort) {
 			data.Sleep += 0.01f;
 			yield return new WaitForEndOfFrame();
@@ -909,7 +918,7 @@ public class CharController : MonoBehaviour {
 	{
 		float time = 0;
 		float maxTime = Random.Range (2, 5);
-		anim.Play (sitAnim, 0);
+		charAnim.SetAnimType (AnimType.Sit);
 		Debug.Log ("Rest");
 		while (!isAbort && time < maxTime) {
 			time += Time.deltaTime;
@@ -919,7 +928,7 @@ public class CharController : MonoBehaviour {
 	}
 
 	IEnumerator Itchi(){
-		anim.Play (idleAnim + "_" + direction.ToString (), 0);
+		charAnim.SetAnimType (AnimType.Itchi);
 		Debug.Log ("Itchi");
 		yield return new WaitForEndOfFrame ();
 		isEndAction = true;
@@ -927,7 +936,7 @@ public class CharController : MonoBehaviour {
 
 	IEnumerator Sick(){
 		interactType = InteractType.Busy;
-		anim.Play (sickAnim, 0);
+		charAnim.SetAnimType (AnimType.Sick);
 		Debug.Log ("Sick");
 		while (data.health < 0.1f*data.maxHealth  && !isAbort) {
 			yield return new WaitForEndOfFrame();
@@ -950,7 +959,7 @@ public class CharController : MonoBehaviour {
 		}
 
 		if(interactType != InteractType.Caress)
-			anim.Play (idleAnim + "_" + direction.ToString (), 0);
+			charAnim.SetAnimType (AnimType.Idle);
 		isArrived = true;
 	}
 
@@ -990,6 +999,6 @@ public class CharController : MonoBehaviour {
 
 }
 
-public enum InteractType {None,FollowTarget,Drag,Drop,Caress,Call,Bath,Command,Busy,Listening,Fall,Lay};
+public enum InteractType {None,FollowTarget,Drag,Drop,Caress,Call,Bath,Command,Busy,Listening,Fall,Touch};
 public enum EnviromentType {Room,Table,Bath};
 public enum ActionType {None,Rest,Sleep,Eat,Drink,Patrol,Discover,Pee,Shit,Itchi,Sick,Sad,Fear,Happy,Supprise,Mad,Hungry,Thirsty}
