@@ -2281,6 +2281,7 @@ GameObject:
   m_Component:
   - component: {fileID: 675940576}
   - component: {fileID: 675940577}
+  - component: {fileID: 675940578}
   m_Layer: 0
   m_Name: land
   m_TagString: Untagged
@@ -2350,6 +2351,23 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &675940578
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 675940575}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 43ffcd2fa3635466c917cce873cf44a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  depth: 0.04
+  xScroll: 1
+  yScroll: 1
+  xOffset: 0
+  yOffset: 0
 --- !u!1 &709953333
 GameObject:
   m_ObjectHideFlags: 0
@@ -2404,6 +2422,7 @@ GameObject:
   m_Component:
   - component: {fileID: 734682073}
   - component: {fileID: 734682074}
+  - component: {fileID: 734682075}
   m_Layer: 0
   m_Name: Sky
   m_TagString: Untagged
@@ -2473,6 +2492,23 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &734682075
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 734682072}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 43ffcd2fa3635466c917cce873cf44a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  depth: 0.01
+  xScroll: 1
+  yScroll: 0
+  xOffset: 0
+  yOffset: 0
 --- !u!1 &753809532
 GameObject:
   m_ObjectHideFlags: 0
@@ -5611,6 +5647,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1449207653}
   - component: {fileID: 1449207654}
+  - component: {fileID: 1449207655}
   m_Layer: 0
   m_Name: tree
   m_TagString: Untagged
@@ -5680,6 +5717,23 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1449207655
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1449207652}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 43ffcd2fa3635466c917cce873cf44a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  depth: 0.05
+  xScroll: 1
+  yScroll: 1
+  xOffset: 0
+  yOffset: 0
 --- !u!1 &1457560787
 GameObject:
   m_ObjectHideFlags: 0
@@ -6188,12 +6242,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   generateOnUpdate: 1
   navObstacles:
-  - {fileID: 1150087308}
   - {fileID: 1353531333}
-  - {fileID: 2141299594}
-  - {fileID: 1019367132}
   - {fileID: 612671448}
+  - {fileID: 2141299594}
   - {fileID: 1411810448}
+  - {fileID: 1150087308}
+  - {fileID: 1019367132}
   inflateRadius: 0.1
   regenerateFlag: 1
 --- !u!1 &1573716278
