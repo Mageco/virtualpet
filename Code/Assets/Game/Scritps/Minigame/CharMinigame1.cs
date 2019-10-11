@@ -52,6 +52,9 @@ public class CharMinigame1 : MonoBehaviour
         if(collision.gameObject.tag == "Ground")
         {
             state = CharState.Run;
+        }else if(collision.gameObject.tag == "Obstruct"){
+            state = CharState.Fail;
+            Minigame1.instance.OnFail();
         }
     }
 }
