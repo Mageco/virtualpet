@@ -35,7 +35,6 @@ public class CharMinigame1 : MonoBehaviour
     {
         if(state == CharState.Jump)
         {
-           
             //if (n > 50)
                 anim.Play("Jump");
             //else
@@ -43,18 +42,29 @@ public class CharMinigame1 : MonoBehaviour
         }else if(state == CharState.Run)
         {
             anim.Play("Run");
+        }else if(state == CharState.Fail)
+        {
+            anim.Play("Fail");
         }
 
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    void OnTriggerEnter2D(Collider2D other) 
     {
-        if(collision.gameObject.tag == "Ground")
-        {
-            state = CharState.Run;
-        }else if(collision.gameObject.tag == "Obstruct"){
+        if(other.tag == "Obstruct"){
             state = CharState.Fail;
+            rigid.AddForce(new Vector2(0, 100));
+            this.GetComponent<CircleCollider2D>().enabled = false;
             Minigame1.instance.OnFail();
+        }
+    }
+
+    void OnCollisionEnter2D(Collision2D col)
+    {
+        if(col.gameObject.tag == "Ground")
+        {
+            if(state != CharState.Fail)
+                state = CharState.Run;
         }
     }
 }

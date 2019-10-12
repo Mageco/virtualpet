@@ -8,11 +8,11 @@ public class Minigame1 : MonoBehaviour
     public static Minigame1 instance;
     public ObjectLevel[] levels;
 
-    public Animator[] bg;
+    RunObject[] bg;
 
     public Transform anchor;
     float time;
-    float timeSpawn = 0;
+    float timeSpawn = 20;
     float maxTimeSpawn = 10;
     int id = 0;
     GameObject item;
@@ -22,6 +22,8 @@ public class Minigame1 : MonoBehaviour
         if(instance == null){
             instance = this;
         }
+
+       
     }
 
     void Start()
@@ -39,16 +41,12 @@ public class Minigame1 : MonoBehaviour
         {
             timeSpawn += Time.deltaTime;
         }   
-
-        foreach(Animator anim in bg){
-            
-        }
     }
 
     void SpawnItem(){
         for(int i=0;i<levels.Length;i++)
         {                
-            if(time > levels[i].startTime )
+            if(time >= levels[i].startTime )
             {
                 id = i;
             }
@@ -61,6 +59,16 @@ public class Minigame1 : MonoBehaviour
     }
 
     public void OnFail(){
+       StartCoroutine(OnFailCoroutine());
+    }
+
+    IEnumerator OnFailCoroutine(){
+        bg = GameObject.FindObjectsOfType<RunObject>();
+        for(int i=0;i<bg.Length;i++)
+        {
+            bg[i].isMove = false;
+        }
+        yield return new WaitForSeconds(3);
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }
