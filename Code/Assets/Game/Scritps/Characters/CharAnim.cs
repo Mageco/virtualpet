@@ -12,6 +12,7 @@ public class CharAnim : MonoBehaviour
 	AnimType animType = AnimType.Idle;
 	AnimType lastAnimType = AnimType.Idle;
 
+
     void Awake()
 	{
 		if (instance == null)
