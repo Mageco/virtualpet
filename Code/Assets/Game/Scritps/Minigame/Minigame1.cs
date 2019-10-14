@@ -6,15 +6,12 @@ using UnityEngine.SceneManagement;
 public class Minigame1 : MonoBehaviour
 { 
     public static Minigame1 instance;
-    public ObjectLevel[] levels;
-
+    public GameObject[] itemPrefabs;
     RunObject[] bg;
-
-    public Transform anchor;
-    float time;
+    float time = 0;
     float timeSpawn = 20;
-    float maxTimeSpawn = 10;
-    int id = 0;
+    float maxTimeSpawn = 0.1f;
+    float speed = 3;
     GameObject item;
     // Start is called before the first frame update
 
@@ -22,8 +19,6 @@ public class Minigame1 : MonoBehaviour
         if(instance == null){
             instance = this;
         }
-
-       
     }
 
     void Start()
@@ -44,18 +39,12 @@ public class Minigame1 : MonoBehaviour
     }
 
     void SpawnItem(){
-        for(int i=0;i<levels.Length;i++)
-        {                
-            if(time >= levels[i].startTime )
-            {
-                id = i;
-            }
-        }       
-
-        item = GameObject.Instantiate(levels[id].itemPrefabs[Random.Range(0,levels[id].itemPrefabs.Length)]);
-        //item.transform.position = this.transform.position;
-        //maxTimeSpawn += Random.Range (2f,4f);
+        item = GameObject.Instantiate(itemPrefabs[Random.Range(0,itemPrefabs.Length)]);
+        item.transform.position += new Vector3(0,0,-17);
+        RunObject run = item.GetComponent<RunObject>();
+        run.speed = -this.speed;
         timeSpawn = 0;
+        maxTimeSpawn = Random.Range(2f,2.5f);
     }
 
     public void OnFail(){
@@ -73,8 +62,3 @@ public class Minigame1 : MonoBehaviour
     }
 }
 
-[System.Serializable]
-public class ObjectLevel{
-        public float startTime;
-        public GameObject[] itemPrefabs;
-} ;

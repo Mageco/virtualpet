@@ -6,6 +6,7 @@ public class RunObject : MonoBehaviour
 {
     public float speed = 1;
     public bool isMove = true;
+    public bool isLoop = true;
     public float maxLength = 20;
     float length = 0;
     Vector3 originalPos;
@@ -21,8 +22,14 @@ public class RunObject : MonoBehaviour
         if(isMove){
             this.transform.position += new Vector3(speed*Time.deltaTime,0,0);
             if(length > maxLength){
-                this.transform.position = originalPos;
-                length = 0;
+                if(isLoop)
+                {
+                    this.transform.position = originalPos;
+                    length = 0;
+                }else
+                {
+                    GameObject.Destroy(this.gameObject);
+                }
             }else{
                 length += Mathf.Abs(speed * Time.deltaTime);
             }
