@@ -8,6 +8,7 @@ public class CharMinigame1 : MonoBehaviour
     Animator anim;
     Rigidbody2D rigid;
     int n = 0;
+    float time = 0;
 
     void Awake(){
         anim = this.GetComponent<Animator>();
@@ -19,6 +20,23 @@ public class CharMinigame1 : MonoBehaviour
 
     }
 
+    public void OnMouseDown(){
+        if (state == CharState.Run)
+        {
+            state = CharState.Touch;
+             rigid.AddForce(new Vector2(0, 150));
+        }
+    }
+
+    public void OnMouseUp(){
+        if (state == CharState.Touch)
+        {
+            Debug.Log("Jump");
+            state = CharState.Jump;
+            n = Random.Range(0, 100);
+            time = 0;
+        }       
+    }
     
     public void Jump(){
         if (state == CharState.Run)
@@ -31,7 +49,7 @@ public class CharMinigame1 : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         if(state == CharState.Jump)
         {
@@ -45,7 +63,17 @@ public class CharMinigame1 : MonoBehaviour
         }else if(state == CharState.Fail)
         {
             anim.Play("Fail");
+        }else if(state == CharState.Touch){
+            anim.Play("Jump");
+            time += Time.deltaTime;
+            rigid.AddForce(new Vector2(0, 5));
+            anim.speed = 1/(1+time);
+            if(time > 1f){
+                OnMouseUp();
+            }
         }
+
+
 
     }
 
@@ -54,7 +82,7 @@ public class CharMinigame1 : MonoBehaviour
         if(other.tag == "Obstruct"){
             state = CharState.Fail;
             rigid.AddForce(new Vector2(0, 100));
-            this.GetComponent<CircleCollider2D>().enabled = false;
+            this.GetComponent<PolygonCollider2D>().enabled = false;
             Minigame1.instance.OnFail();
         }
     }
@@ -63,10 +91,13 @@ public class CharMinigame1 : MonoBehaviour
     {
         if(col.gameObject.tag == "Ground")
         {
-            if(state != CharState.Fail)
+            if(state != CharState.Fail){
                 state = CharState.Run;
+                 anim.speed = 1;
+            }
+                
         }
     }
 }
 
-public enum CharState{Idle,Run,Jump,Fail}
+public enum CharState{Idle,Touch,Run,Jump,Fail}

@@ -5,7 +5,7 @@ using UnityEngine;
 public class FrogObject : MonoBehaviour
 {
     public enum FrogState{wait,idle,active}
-    public float waitingTime;
+    float waitingTime;
     public float idleTime;
     public float activeTime;
     FrogState state = FrogState.wait;
@@ -15,6 +15,7 @@ public class FrogObject : MonoBehaviour
     void Awake()
     {
         anim = this.GetComponent<Animator>();
+        waitingTime = Random.Range(0,1f);
     
     }
     // Start is called before the first frame update
@@ -29,7 +30,10 @@ public class FrogObject : MonoBehaviour
 
         if(state == FrogState.wait){
             if(time > waitingTime){
-                state = FrogState.active;
+                if(Random.Range(0,100) > 50)
+                    state = FrogState.active;
+                else
+                    state = FrogState.idle;
                 time = 0;
             }
             anim.Play("Idle");
