@@ -413,6 +413,7 @@ function scanAndUpdatedNewGuid($path, $namespace)
                     // get uploaded file extension
                     $fileExtension = pathinfo($path.'/'.$ff, PATHINFO_EXTENSION);
                     if (checkMetaFile($fileExtension)) {
+                        // try with update every file first
                         //if (isset($metaFilesTobeUpdated[$path.'/'.$ff]) && $metaFilesTobeUpdated[$path.'/'.$ff] == true) {
                             updatedNewGuid($path.'/'.$ff, $namespace);
                         //}
