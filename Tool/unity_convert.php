@@ -30,7 +30,8 @@ $metaFileExtensions = [
     "fontsettings",
     "controller",
     "pdf",
-    "meta"
+    "meta",
+    "playable"
 ];
 
 $pluginsTobeCleaned = [
@@ -134,7 +135,7 @@ exit;
 /**
  *****************************************************************************************
  */
-// functions to be used
+// utility functions to be used
 
 function checkExclude($inputList, $check) {
     $found = false;
@@ -345,7 +346,7 @@ function scanSourcesMeta($path, $excludes, $namespace)
                     $fileExtension = pathinfo($path.'/'.$ff, PATHINFO_EXTENSION);
 
                     if ("meta" == $fileExtension) {
-                            getMetaFileGuid($path.'/'.$ff, $namespace);
+                        getMetaFileGuid($path.'/'.$ff, $namespace);
                     }
                 }
             }
@@ -412,9 +413,9 @@ function scanAndUpdatedNewGuid($path, $namespace)
                     // get uploaded file extension
                     $fileExtension = pathinfo($path.'/'.$ff, PATHINFO_EXTENSION);
                     if (checkMetaFile($fileExtension)) {
-                        if (isset($metaFilesTobeUpdated[$path.'/'.$ff]) && $metaFilesTobeUpdated[$path.'/'.$ff] == true) {
+                        //if (isset($metaFilesTobeUpdated[$path.'/'.$ff]) && $metaFilesTobeUpdated[$path.'/'.$ff] == true) {
                             updatedNewGuid($path.'/'.$ff, $namespace);
-                        }
+                        //}
                     }
                 }
             }
