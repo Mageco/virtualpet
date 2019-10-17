@@ -18,6 +18,8 @@ public class ItemDrag : MonoBehaviour
 	public bool isDragOffset = true;
 	public bool isCameraControl = false;
 
+	public bool isIgnoreUI = true;
+
 	void Awake()
 	{
 		anim = this.GetComponent<Animator> ();
@@ -40,9 +42,17 @@ public class ItemDrag : MonoBehaviour
 
 	}
 
+	public void StartDrag(){
+		OnMouseDown();
+	}
+
+	public void EndDrag(){
+		OnMouseUp();
+	}
+
 	void OnMouseDown()
 	{
-		if (IsPointerOverUIObject ()) {
+		if (isIgnoreUI && IsPointerOverUIObject ()) {
 			return;
 		}
 
