@@ -14,11 +14,14 @@ public class BathShowerItem : MonoBehaviour
 	bool isShower = false;
 	public GameObject showerEffect;
 
+	CharBath character;
+
 	void Awake()
 	{
 		anim = this.GetComponent<Animator> ();
 		originalPosition = this.transform.position;
 		showerEffect.SetActive (false);
+		character = GameObject.FindObjectOfType<CharBath>();
 	}
 
     // Update is called once per frame
@@ -52,19 +55,15 @@ public class BathShowerItem : MonoBehaviour
 		isShower = true;
 		showerEffect.SetActive (true);
 		Debug.Log ("Shower");
-		if (InputController.instance.character.enviromentType == EnviromentType.Bath) {
-			ItemController.instance.character.OnShower ();
-			ItemController.instance.bathTubeItem.OnShower ();
-		}
+		character.OnShower ();
+		ItemController.instance.bathTubeItem.OnShower ();
 	}
 
 	void OffShower(){
 		isShower = false;
 		showerEffect.SetActive (false);
 		Debug.Log ("OffShower");
-		if (ItemController.instance.character.enviromentType == EnviromentType.Bath) {
-			ItemController.instance.character.OffShower ();
-		}
+		character.OffShower ();
 	}
 
 	void OnMouseDown()

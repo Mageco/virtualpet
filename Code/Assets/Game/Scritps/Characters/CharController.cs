@@ -24,6 +24,8 @@ public class CharController : MonoBehaviour {
 
 	//Movement
 	public Transform target;
+	
+	[HideInInspector]
 	PolyNavAgent agent;
 	float agentTime = 0;
 	float maxAgentTime = 0.1f;
@@ -43,25 +45,12 @@ public class CharController : MonoBehaviour {
 
 	//Interact
 	bool isTouch = false;
-	Vector3 dragOffset;
-	Vector3 dropPosition;
-	Rigidbody2D rigid;
-	CircleCollider2D collider;
-	[HideInInspector]
-	public float fallSpeed = 0;
-	float interactTime = 0;
-	float maxInteractTime = 3;
 
-	//Double Click
-	float doubleClickTime;
-	float maxDoubleClickTime = 0.4f;
-	bool isClick = false;
-
-	//Pee,Sheet
-	public Transform peePosition;
-	public Transform shitPosition;
-	public GameObject peePrefab;
-	public GameObject shitPrefab;
+    //Pee,Sheet
+    public Transform peePosition;
+    public Transform shitPosition;
+    public GameObject peePrefab;
+    public GameObject shitPrefab;
 
 	#endregion
 
@@ -72,8 +61,6 @@ public class CharController : MonoBehaviour {
 		anim = this.GetComponent<Animator> ();
 		charAnim = this.GetComponent<CharAnim> ();
 		agent = GameObject.FindObjectOfType<PolyNavAgent> ();
-		rigid = this.GetComponent <Rigidbody2D> ();
-		collider = this.GetComponent <CircleCollider2D> ();
 	}
 	// Use this for initialization
 	void Start () {
@@ -85,131 +72,6 @@ public class CharController : MonoBehaviour {
 
 	// Update is called once per frame
 	void FixedUpdate () {
-
-		if (interactType == InteractType.None || interactType == InteractType.Busy) {
-			if (enviromentType == EnviromentType.Room) {
-				if (isEndAction) {
-					Think ();
-				} 
-			} else if (enviromentType == EnviromentType.Table) {
-
-			}
-		} else if (interactType == InteractType.FollowTarget) {
-			if (agentTime > maxAgentTime) {
-				if (target != null) {
-					if (Vector2.Distance (lastTargetPosition, target.position) > 1) {
-						agent.SetDestination (target.position);
-						lastTargetPosition = target.position;
-					}
-				}
-				agentTime = 0;
-			} else
-				agentTime += Time.deltaTime;
-
-			agent.speed = 40;
-			charAnim.SetAnimType (AnimType.Run);
-			anim.speed = 1.3f;
-		} else if (interactType == InteractType.Call) {
-			if (isArrived) {
-				SetDirection (Direction.D);
-				charAnim.SetAnimType (AnimType.Idle);
-				interactType = InteractType.Caress;
-				maxInteractTime = Random.Range (5, 10);
-			}
-		} else if (interactType == InteractType.Drag) {
-			Vector3 pos = Camera.main.ScreenToWorldPoint (Input.mousePosition) - dragOffset;
-			pos.z = 0;
-			if (pos.y > 20)
-				pos.y = 20;
-			else if (pos.y < -20)
-				pos.y = -20;
-
-			if (pos.x > 35)
-				pos.x = 35;
-			else if (pos.x < -28)
-				pos.x = -28;
-
-			pos.z = -50;
-			agent.transform.position = pos;
-			charAnim.SetAnimType (AnimType.Hold);
-			this.transform.rotation = Quaternion.Lerp (this.transform.rotation, Quaternion.identity, Time.deltaTime * 2);
-
-		} else if (interactType == InteractType.Drop) {
-			fallSpeed += 100f * Time.deltaTime;
-			if (fallSpeed > 50)
-				fallSpeed = 50;
-			Vector3 pos = agent.transform.position;
-			pos.y -= fallSpeed * Time.deltaTime;
-			pos.z = dropPosition.z;
-			agent.transform.position = pos;
-			if (Vector2.Distance (agent.transform.position, dropPosition) < fallSpeed * Time.deltaTime * 2) {
-
-				if (fallSpeed < 50) {
-					charAnim.SetAnimType (AnimType.Fall_Light);
-					maxInteractTime = 2;
-				} else {
-					charAnim.SetAnimType (AnimType.Fall);
-					maxInteractTime = 3;
-				}
-
-				interactTime = 0;
-				fallSpeed = 0;
-				this.transform.rotation = Quaternion.identity;
-				interactType = InteractType.Fall;
-			}
-		} else if (interactType == InteractType.Fall) {
-			if (interactTime > maxInteractTime) {
-				if (enviromentType == EnviromentType.Bath) {
-					OnBath ();
-				} else
-					interactType = InteractType.None;
-			} else {
-				interactTime += Time.deltaTime;
-			}
-		} else if (interactType == InteractType.Bath) {
-			
-		} else if (interactType == InteractType.Caress) {
-
-			if (isArrived) {
-				int ran = Random.Range (0, 100);
-				if (ran > 80) {
-					isArrived = false;
-					charAnim.SetAnimType (AnimType.Sit);
-				}else if(ran > 50)
-				{
-					isArrived = false;
-					charAnim.SetAnimType (AnimType.Happy);
-				}
-				else {
-					InputController.instance.SetTarget (PointType.Caress);
-					StartCoroutine (MoveToPointCaress ());
-				}
-			}
-
-			if (interactTime > maxInteractTime) {
-				Abort ();
-				interactType = InteractType.None;
-			} else {
-				interactTime += Time.deltaTime;
-			}
-		} else if (interactType == InteractType.Touch) {
-			if (interactTime > maxInteractTime) {
-				interactType = InteractType.Caress;
-				isArrived = true;
-			} else {
-				interactTime += Time.deltaTime;
-			}
-		} else if (interactType == InteractType.Listening) {
-			if (interactTime > maxInteractTime) {
-				int id = Random.Range (0, 100);
-				if (id > 50)
-					OnCall ();
-				else
-					interactType = InteractType.None;
-			} else
-				interactTime += Time.deltaTime;
-		}
-
 
 		if (agent.transform.eulerAngles.z < 30f && agent.transform.eulerAngles.z > -30f || (agent.transform.eulerAngles.z > 330f && agent.transform.eulerAngles.z < 390f) || (agent.transform.eulerAngles.z < -330f && agent.transform.eulerAngles.z > -390f))
 			direction = Direction.U;
@@ -330,30 +192,6 @@ public class CharController : MonoBehaviour {
 		}
 	}
 
-	public void OnListening(){
-
-		if (interactType != InteractType.None)
-			return;
-		Abort ();
-
-		if (enviromentType == EnviromentType.Room) {
-			if (target.position.x < this.transform.position.x) {
-				SetDirection (Direction.LD);
-			} else {
-				SetDirection (Direction.RD);
-			}
-			int ran = Random.Range (0, 100);
-			if (ran > 50)
-				charAnim.SetAnimType (AnimType.Listening);
-			else 
-				charAnim.SetAnimType (AnimType.Bath);
-
-			interactTime = 0;
-			maxInteractTime = Random.Range (1, 2);
-			interactType = InteractType.Listening;
-		}
-	}
-
 	public void OnFollowTarget()
 	{
 		if (interactType == InteractType.Busy)
@@ -363,171 +201,46 @@ public class CharController : MonoBehaviour {
 		interactType = InteractType.FollowTarget;
 	}
 
-	void OnDrag()
+	void OnHold()
 	{
-		if (interactType == InteractType.FollowTarget || interactType == InteractType.Call || interactType == InteractType.Touch || interactType == InteractType.Busy)
-			return;
-		
 		Abort ();
-		interactType = InteractType.Drag;
+		actionType = ActionType.Hold;
 		SetDirection (Direction.D);
 		enviromentType = EnviromentType.Room;
 	}
 
-	void OnDrop()
+	public void OnBath(){
+		actionType = ActionType.Bath;
+	}
+
+	public void OnFingerTouchUp(Vector2 delta)
 	{
-		Abort ();
-		RaycastHit2D[] hit = Physics2D.RaycastAll(transform.position + new Vector3(0,-2,0), -Vector2.up,100);
-
-		Vector3 pos = this.transform.position;
-		pos.y = pos.y - 22;
-		if (pos.y < -20)
-			pos.y = -20;
-		dropPosition = pos;
-		enviromentType = EnviromentType.Room;
-
-		for (int i = 0; i < hit.Length; i++) {
-			if (hit[i].collider.tag == "Table") {
-				pos.y = hit[i].collider.transform.position.y;
-				dropPosition = pos;
-				enviromentType = EnviromentType.Table;
-				break;
-			}else if(hit[i].collider.tag == "Bath") {
-				pos.y = hit[i].collider.transform.position.y;
-				pos.z = hit [i].collider.transform.position.z;
-				dropPosition = pos;
-				enviromentType = EnviromentType.Bath;
-				break;
-			}
+		float angle = Mathf.Atan2(delta.x, delta.y) * Mathf.Rad2Deg;
+		if (isTouch && angle > -45 && angle < 45 && actionType != ActionType.Hold) {
+			touchDirection = Direction.U;
+			OnHold ();
+		}else if(isTouch && (angle > 115 || angle < -115)) {
+			touchDirection = Direction.D;
+		}else if(isTouch && (angle > 45 && angle < 115)) {
+			touchDirection = Direction.L;
+		}else if(isTouch && (angle > 115 && angle < 205)) {
+			touchDirection = Direction.R;
 		}
-
-		interactType = InteractType.Drop;
 	}
-
-	void OnTouch()
-	{
-		interactType = InteractType.Touch;
-		interactTime = 0;
-		maxInteractTime = Random.Range (2, 3);
-		charAnim.SetAnimType (AnimType.Touch);
-	}
-
-
-	void OffTouch()
-	{
-		interactTime = 0;
-		maxInteractTime = Random.Range (3, 5);
-		interactType = InteractType.Caress;
-		isArrived = true;
-	}
-
-	void OnBath(){
-		interactType = InteractType.Bath;
-		charAnim.SetAnimType (AnimType.Bath);
-	}
-
-	public void OnSoap()
-	{
-		if(enviromentType == EnviromentType.Bath)
-			charAnim.SetAnimType (AnimType.Soap);
-	}
-
-	public void OnShower()
-	{
-		if(enviromentType == EnviromentType.Bath)
-			charAnim.SetAnimType (AnimType.Shower);
-	}
-
-	public void OffShower()
-	{
-		if(enviromentType == EnviromentType.Bath)
-			charAnim.SetAnimType (AnimType.Bath);
-	}
-
-	public void ResetInteract()
-	{
-		interactTime = 0;
-		interactType = InteractType.None;
-	}
-
 
 	void OnMouseDown()
 	{
 		if (IsPointerOverUIObject ()) {
 			return;
 		}
-		dragOffset = Camera.main.ScreenToWorldPoint (Input.mousePosition) - this.transform.position ;
 		isTouch = true;
-
 	}
 
 	void OnMouseUp()
 	{
-		dragOffset = Vector3.zero;
 		isTouch = false;
-		if (interactType == InteractType.Drag) {
-			OnDrop ();
-		} 
-
-		if (isClick) {
-			if (doubleClickTime > maxDoubleClickTime) {
-				doubleClickTime = 0;
-			} else {
-				OnListening ();
-				doubleClickTime = 0;
-				isClick = false;
-				return;
-			}
-		} else {
-			doubleClickTime = 0;
-			isClick = true;
-		}
 	}
 
-	public void OnFingerTouchUp(Vector2 delta)
-	{
-		float angle = Mathf.Atan2(delta.x, delta.y) * Mathf.Rad2Deg;
-		if (isTouch && angle > -45 && angle < 45 && interactType != InteractType.Drop) {
-			touchDirection = Direction.U;
-			if (interactType == InteractType.Caress)
-				OnTouch ();
-			else if (interactType == InteractType.Touch)
-				interactTime = 0;
-			else
-				OnDrag ();
-		}else if(isTouch && (angle > 115 || angle < -115)) {
-			touchDirection = Direction.D;
-			if (interactType == InteractType.Caress)
-				OnTouch ();
-			else if (interactType == InteractType.Touch)
-				interactTime = 0;
-		}else if(isTouch && (angle > 45 && angle < 115)) {
-			touchDirection = Direction.L;
-			if (interactType == InteractType.Caress)
-				OnTouch ();
-			else if (interactType == InteractType.Touch)
-				interactTime = 0;
-		}else if(isTouch && (angle > 115 && angle < 205)) {
-			touchDirection = Direction.R;
-			if (interactType == InteractType.Caress)
-				OnTouch ();
-			else if (interactType == InteractType.Touch)
-				interactTime = 0;
-		}
-	}
-
-	public void OnFingerSwipe(LeanFinger finger)
-	{
-		if (interactType == InteractType.Drag) {
-			float angle = finger.ScreenDelta.x;
-			if (angle > 30)
-				angle = 30;
-			if (angle < -30)
-				angle = -30;
-
-			this.transform.rotation = Quaternion.Euler (0, 0, -angle);
-		}
-	}
 
 	private bool IsPointerOverUIObject() {
 		PointerEventData eventDataCurrentPosition = new PointerEventData(EventSystem.current);
@@ -544,7 +257,6 @@ public class CharController : MonoBehaviour {
 	#region Thinking
 	void Think()
 	{
-		ResetInteract ();
 		isAbort = false;
 		isEndAction = false;
 		actionType = ActionType.None;
@@ -633,29 +345,7 @@ public class CharController : MonoBehaviour {
 
 	void DoAction()
 	{
-		if (actionType == ActionType.None) {
-			StartCoroutine (None ());
-		} else if (actionType == ActionType.Rest) {
-			StartCoroutine (Rest ());
-		} else if (actionType == ActionType.Patrol) {
-			StartCoroutine (Patrol ());
-		} else if (actionType == ActionType.Pee) {
-			StartCoroutine (Pee ());
-		} else if (actionType == ActionType.Shit) {
-			StartCoroutine (Shit ());
-		} else if (actionType == ActionType.Eat) {
-			StartCoroutine (Eat ());
-		} else if (actionType == ActionType.Drink) {
-			StartCoroutine (Drink ());
-		} else if (actionType == ActionType.Sleep) {
-			StartCoroutine (Sleep ());
-		} else if (actionType == ActionType.Itchi) {
-			StartCoroutine (Itchi ());
-		} else if (actionType == ActionType.Sick) {
-			StartCoroutine (Sick ());
-		}else if (actionType == ActionType.Discover) {
-			StartCoroutine (Discover ());
-		}
+
 	}
 	#endregion
 
@@ -756,10 +446,7 @@ public class CharController : MonoBehaviour {
 		}
 	}
 
-	IEnumerator Turn()
-	{
-		yield return new WaitForEndOfFrame ();
-	}
+
 
 
 	IEnumerator Wait(float maxT)
@@ -1001,4 +688,4 @@ public class CharController : MonoBehaviour {
 
 public enum InteractType {None,FollowTarget,Drag,Drop,Caress,Call,Bath,Command,Busy,Listening,Fall,Touch};
 public enum EnviromentType {Room,Table,Bath};
-public enum ActionType {None,Rest,Sleep,Eat,Drink,Patrol,Discover,Pee,Shit,Itchi,Sick,Sad,Fear,Happy,Supprise,Mad,Hungry,Thirsty}
+public enum ActionType {None,Rest,Sleep,Eat,Drink,Patrol,Discover,Pee,Shit,Itchi,Sick,Sad,Fear,Happy,Tired,Call,Hold,OnTable,Bath}

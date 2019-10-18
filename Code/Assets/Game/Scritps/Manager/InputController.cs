@@ -126,7 +126,7 @@ public class InputController : MonoBehaviour
 
 	public void OnCall()
 	{
-		character.OnListening ();
+		
 	}
 
 	void OnMouseDown()
@@ -162,7 +162,6 @@ public class InputController : MonoBehaviour
 
 		if ((character.interactType == InteractType.None || character.interactType == InteractType.Caress) && character.enviromentType == EnviromentType.Room) {
 			character.target = this.target;
-			character.OnListening ();
 			Debug.Log ("Double Click");
 		}
 
