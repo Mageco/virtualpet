@@ -24,17 +24,7 @@ public class AnimalScale : MonoBehaviour
     // Update is called once per frame
     void LateUpdate()
     {
-		if (character.interactType == InteractType.Drop)
-			return;
-
 		float offset = initZ;
-		if (character.interactType == InteractType.Drag) {
-			if (character.transform.position.y > 2)
-				offset = initZ + 22;
-			else
-				return;
-		}
-
 
 		if (character.transform.position.y < offset)
 			character.transform.localScale = originalScale * (1 + (-character.transform.position.y + offset) * scaleFactor);

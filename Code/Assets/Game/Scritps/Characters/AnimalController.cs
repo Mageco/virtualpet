@@ -12,8 +12,7 @@ public class AnimalController : MonoBehaviour
 	bool isRun = false;
 	public GameObject body;
 	Vector3 originalPosition;
-	public CircleCollider2D collider;
-	public InteractType interactType;
+	public CircleCollider2D col;
 	Vector3 lastPosition;
 
 	void Awake()
@@ -21,7 +20,7 @@ public class AnimalController : MonoBehaviour
 		originalPosition = this.transform.position;
 		lastPosition = this.transform.position;
 		this.body.gameObject.SetActive (false);
-		collider.enabled = false;
+		col.enabled = false;
 	}
 
 	void Start()
@@ -51,7 +50,7 @@ public class AnimalController : MonoBehaviour
 		maxTimeSpawn = Random.Range (60, 120);
 		isRun = true;
 		this.body.gameObject.SetActive (true);
-		collider.enabled = true;
+		col.enabled = true;
 	}
 
 	void Update()
@@ -88,7 +87,7 @@ public class AnimalController : MonoBehaviour
 		Debug.Log ("Complete Run");
 		isRun = false;
 		this.body.gameObject.SetActive (false);
-		collider.enabled = false;
+		col.enabled = false;
 		this.transform.position = originalPosition;
 	}
 

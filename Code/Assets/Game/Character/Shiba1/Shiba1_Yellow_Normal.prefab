@@ -10966,6 +10966,8 @@ GameObject:
   - component: {fileID: 2776677470726071294}
   - component: {fileID: 2776677470726071291}
   - component: {fileID: 2776677470726071293}
+  - component: {fileID: 1491708376}
+  - component: {fileID: 1491708381}
   m_Layer: 0
   m_Name: Shiba1_Yellow_Normal
   m_TagString: Untagged
@@ -10982,7 +10984,7 @@ Transform:
   m_GameObject: {fileID: 2776677470726071290}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.7, y: 0.7, z: 1}
   m_Children:
   - {fileID: 1765883482}
   - {fileID: 447089985}
@@ -11006,7 +11008,7 @@ Animator:
   m_GameObject: {fileID: 2776677470726071290}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: bc1633ae8085a4ee7abd358a727f68eb, type: 2}
+  m_Controller: {fileID: 9100000, guid: 00f4e020fd0dd4c338e6862098c9a36b, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -11065,8 +11067,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   data:
-    food: 50
-    water: 50
+    food: 40
+    water: 20
     sleep: 50
     energy: 50
     health: 50
@@ -11092,17 +11094,13 @@ MonoBehaviour:
     maxHappy: 100
     maxStamina: 100
     maxDirty: 100
-  interactType: 0
   enviromentType: 0
   direction: 0
   animType: 0
-  touchDirection: 1
   target: {fileID: 0}
   isArrived: 1
   isAbort: 0
   actionType: 0
-  isEndAction: 0
-  fallSpeed: 0
   peePosition: {fileID: 5244646035458620630}
   shitPosition: {fileID: 6884997947463412684}
   peePrefab: {fileID: 7166089402494124037, guid: ccefdc6a159554ad68c454188f52587b,
@@ -11123,6 +11121,33 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   initZ: -6
   scaleFactor: 0.1
+--- !u!114 &1491708376
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2776677470726071290}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 74dfa756c92854cc08fcca93c97b5a08, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1491708381
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2776677470726071290}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df9d8101753564fdbb81f1f49c910387, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  interactType: 0
+  touchDirection: 1
+  dragOffset: {x: 0, y: 0, z: 0}
 --- !u!1 &2801980448229920772
 GameObject:
   m_ObjectHideFlags: 0

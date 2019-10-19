@@ -108,14 +108,6 @@ public class CharAnim : MonoBehaviour
 				else
 					currentAnim = "Scratch_LD";
 			} else {
-				if (character.touchDirection == Direction.D)
-					currentAnim = "Sit_Pet_Down_D";
-				else if(character.touchDirection == Direction.L)
-					currentAnim = "Sit_Pet_Left_D";
-				else if(character.touchDirection == Direction.R)
-					currentAnim = "Sit_Pet_Right_D";
-				else if(character.touchDirection == Direction.U)
-					currentAnim = "Sit_Pet_Up_D";
 				
 			}
 			break;	

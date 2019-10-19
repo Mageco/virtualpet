@@ -159,13 +159,6 @@ public class InputController : MonoBehaviour
 		Vector3 pos = Camera.main.ScreenToWorldPoint (Input.mousePosition);
 		pos.z = 0;
 		target.position = pos;
-
-		if ((character.interactType == InteractType.None || character.interactType == InteractType.Caress) && character.enviromentType == EnviromentType.Room) {
-			character.target = this.target;
-			character.OnListening ();
-			Debug.Log ("Double Click");
-		}
-
 	}
 
 	public void ResetCameraTarget()

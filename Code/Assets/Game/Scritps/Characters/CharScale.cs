@@ -8,12 +8,14 @@ public class CharScale : MonoBehaviour
 	public float initZ = -6;
 	public float scaleFactor = 0.1f;
 	CharController character;
+	CharInteract interact;
 	Vector3 originalScale;
 
 	void Awake()
 	{
 		character = this.GetComponent <CharController> ();
 		originalScale = character.transform.localScale;
+		interact = this.GetComponent<CharInteract>();
 	}
     // Start is called before the first frame update
     void Start()
@@ -24,15 +26,15 @@ public class CharScale : MonoBehaviour
     // Update is called once per frame
     void LateUpdate()
     {
-		if (character.interactType == InteractType.Drop)
+		if (interact.interactType == InteractType.Drop)
 			return;
 
 		float offset = initZ;
-		if (character.interactType == InteractType.Drag) {
-			if (character.transform.position.y > 2)
-				offset = initZ + 22;
-			else
-				return;
+		if (interact.interactType == InteractType.Drag) {
+//			if (character.transform.position.y > 2)
+				offset = initZ + 10;
+//			else
+//				return;
 		}
 
 
