@@ -8,7 +8,7 @@ public class SoapItem : MonoBehaviour
 {
 
 	bool isTouch = false;
-	CharBath character;
+	CharController character;
 
 	void Update()
 	{
@@ -32,7 +32,7 @@ public class SoapItem : MonoBehaviour
 	public void OnFingerSwipe(LeanFinger finger)
 	{
 		if (isTouch) {
-			if (character != null) {
+			if (character != null && character.enviromentType == EnviromentType.Bath) {
 				character.OnSoap ();
 				ItemController.instance.bathTubeItem.OnSoap ();
 			}
@@ -40,13 +40,13 @@ public class SoapItem : MonoBehaviour
 	}
 
 	void OnTriggerEnter2D(Collider2D other) {
-		if (other.GetComponent <CharBath>() != null) {
-			character = other.GetComponent <CharBath>();
+		if (other.GetComponent <CharController>() != null) {
+			character = other.GetComponent <CharController>();
 		}
 	}
 
 	void OnTriggerExit2D(Collider2D other) {
-		if (other.GetComponent <CharBath>() == character) {
+		if (other.GetComponent <CharController>() == character) {
 			character = null;
 		}
 	}
