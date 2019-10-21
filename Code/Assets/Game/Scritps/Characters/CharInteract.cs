@@ -10,7 +10,7 @@ public class CharInteract : MonoBehaviour
     float doubleClickTime;
     float maxDoubleClickTime = 0.4f;
     bool isClick = false;
-    bool isTouch = false;
+    public bool isTouch = false;
     public Direction touchDirection = Direction.D;
 
     public Vector3 dragOffset;
