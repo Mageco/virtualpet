@@ -15,8 +15,6 @@ public class CharController : MonoBehaviour {
     public EnviromentType enviromentType = EnviromentType.Room;
     //[HideInInspector]
     public Direction direction = Direction.D;
-    public AnimType animType = AnimType.Idle;
-   
 
     //Think
     float dataTime = 0;
@@ -70,8 +68,13 @@ public class CharController : MonoBehaviour {
     // Update is called once per frame
     void FixedUpdate () {
         
+        //Debug.Log(actionType.ToString() + "  " + charInteract.interactType.ToString());
         if(actionType == ActionType.None)
+        {
             Think();
+            DoAction ();
+        }
+
 
         if (agent.transform.eulerAngles.z < 30f && agent.transform.eulerAngles.z > -30f || (agent.transform.eulerAngles.z > 330f && agent.transform.eulerAngles.z < 390f) || (agent.transform.eulerAngles.z < -330f && agent.transform.eulerAngles.z > -390f))
             direction = Direction.U;
@@ -204,16 +207,17 @@ public class CharController : MonoBehaviour {
     {
         Abort ();
         actionType = ActionType.Hold;
-        charInteract.interactType = InteractType.Drag;
-        SetDirection (Direction.D);
-        enviromentType = EnviromentType.Room;
-        DoAction();
     }
 
 
     void OnBath(){
+        Abort();
         actionType = ActionType.Bath;
-        charAnim.SetAnimType (AnimType.Bath);
+    }
+
+    void OnTable(){
+        Abort();
+        actionType = ActionType.OnTable;
     }
 
     public void OnSoap()
@@ -235,11 +239,27 @@ public class CharController : MonoBehaviour {
     }
 
     public void OnMouse(Transform t){
-        if(actionType == ActionType.Hold || actionType == ActionType.OnTable || actionType == ActionType.Bath || actionType == ActionType.Sick)
+        if(actionType == ActionType.Hold || actionType == ActionType.OnTable || actionType == ActionType.Bath || actionType == ActionType.Sick
+        || actionType == ActionType.Sleep)
             return;
-        actionType = ActionType.Mouse;
-        target = t;
-        Abort ();
+
+        int n = 0;
+
+        if(actionType == ActionType.Pee|| actionType == ActionType.Shit){
+             n = Random.Range(50,100);
+        }
+
+        if(actionType == ActionType.Drink || actionType == ActionType.Eat){
+             n = Random.Range(25,100);   
+        }
+
+        if(n < 75)
+        {
+             Abort ();
+             actionType = ActionType.Mouse;
+             target = t;
+        }
+ 
     }
 
     public void OffMouse(){
@@ -264,23 +284,19 @@ public class CharController : MonoBehaviour {
     #region Thinking
     void Think()
     {
-        isAbort = false;
 
         if (data.Shit > data.maxShit * 0.9f) {
             actionType = ActionType.Shit;
-            DoAction ();
             return;
         }
 
         if (data.Pee > data.maxPee * 0.9f) {
             actionType = ActionType.Pee;
-            DoAction ();
             return;
         }
 
         if (data.Health < data.maxHealth * 0.1f) {
             actionType = ActionType.Sick;
-            DoAction ();
             return;
         }
 
@@ -288,7 +304,6 @@ public class CharController : MonoBehaviour {
             int ran = Random.Range (0, 100);
             if (ran > 30) {
                 actionType = ActionType.Eat;
-                DoAction ();
                 return;
             }
         }
@@ -297,7 +312,6 @@ public class CharController : MonoBehaviour {
             int ran = Random.Range (0, 100);
             if (ran > 30) {
                 actionType = ActionType.Drink;
-                DoAction ();
                 return;
             }
         }
@@ -306,7 +320,6 @@ public class CharController : MonoBehaviour {
             int ran = Random.Range (0, 100);
             if (ran > 30) {
                 actionType = ActionType.Sleep;
-                DoAction ();
                 return;
             }
         }
@@ -315,41 +328,38 @@ public class CharController : MonoBehaviour {
             int ran = Random.Range (0, 100);
             if (ran > 50) {
                 actionType = ActionType.Itchi;
-                DoAction ();
                 return;
             }
         }
 
         if (data.Energy < data.maxEnergy * 0.1f) {
             actionType = ActionType.Rest;
-            DoAction ();
             return;
         }
 
         if (data.Stamina < data.maxStamina * 0.3f) {
             actionType = ActionType.Discover;
-            DoAction ();
             return;
         }
 
 
         //Other Action
         int id = Random.Range (0,100);
-        if (id < 20) {
-            actionType = ActionType.None;
-        } else if (id < 40) {
+        if (id < 40) {
             actionType = ActionType.Rest;
         } else if (id < 60) {
             actionType = ActionType.Patrol;
         } else {
             actionType = ActionType.Discover;
         }
-        DoAction ();
+        
     }
 
 
     void DoAction()
     {
+        Debug.Log("DoAction " + actionType);
+        isAbort = false;
         if (actionType == ActionType.Rest) {
             StartCoroutine (Rest ());
         } else if (actionType == ActionType.Patrol) {
@@ -374,6 +384,18 @@ public class CharController : MonoBehaviour {
             StartCoroutine (Hold());
         }else if (actionType == ActionType.Mouse) {
             StartCoroutine (Mouse());
+        }else if (actionType == ActionType.Bath) {
+            StartCoroutine (Bath());
+        }else if (actionType == ActionType.OnTable) {
+            StartCoroutine (Table());
+        }else if (actionType == ActionType.Fear) {
+            StartCoroutine (Fear());
+        }else if (actionType == ActionType.Tired) {
+            StartCoroutine (Tired());
+        }else if (actionType == ActionType.Sad) {
+            StartCoroutine (Sad());
+        }else if (actionType == ActionType.Happy) {
+            StartCoroutine (Happy());
         }
     }
     #endregion
@@ -383,8 +405,11 @@ public class CharController : MonoBehaviour {
     //Basic Action
     public void Abort()
     {
+        anim.speed = 1;
         //actionType = ActionType.None;
         isAbort = true;
+        //isArrived = true;
+        //agent.Stop();
         //isEndAction = true;
     }
 
@@ -429,9 +454,9 @@ public class CharController : MonoBehaviour {
             while (!isArrived && !isAbort) {
                 charAnim.SetAnimType (AnimType.Run);
                 yield return new WaitForEndOfFrame ();
-                if (isAbort)
-                    agent.Stop ();
             }
+            if (isAbort)
+                agent.Stop ();
         } else {
             isArrived = true;
             yield return new WaitForEndOfFrame ();
@@ -441,16 +466,6 @@ public class CharController : MonoBehaviour {
     IEnumerator Wait(float maxT)
     {
         float time = 0;
-
-        int ran = Random.Range (0, 100);
-        if (ran < 30) {
-            charAnim.SetAnimType (AnimType.Bath);
-        } 
-        else if(ran < 70)
-            charAnim.SetAnimType (AnimType.Idle);
-        else 
-            charAnim.SetAnimType (AnimType.Sit);
-        
 
         while (time < maxT && !isAbort) {
             time += Time.deltaTime;
@@ -463,9 +478,43 @@ public class CharController : MonoBehaviour {
 
 
     IEnumerator Patrol(){
-        yield return new WaitForEndOfFrame ();
-        if (!isAbort)
-            actionType = ActionType.None;
+        int n = 0;
+        int maxCount = Random.Range (4, 10);
+        while(!isAbort && n < maxCount) 
+        {
+            if(!isAbort)
+            {
+                InputController.instance.SetTarget (PointType.Favourite);
+                yield return StartCoroutine (MoveToPoint ());
+            }
+            if (!isAbort) {
+                int ran = Random.Range (0, 100);
+                if (ran < 30) {
+                    charAnim.SetAnimType (AnimType.Bath);
+                } else 
+                    charAnim.SetAnimType (AnimType.Idle);
+                yield return StartCoroutine (Wait (Random.Range (1, 3)));
+            }
+
+            n++;
+        }
+        CheckAbort();
+    }
+
+    IEnumerator Bath(){
+        charAnim.SetAnimType (AnimType.Bath);
+        while(!isAbort){
+            yield return new WaitForEndOfFrame ();
+        }
+        CheckAbort();
+    }
+
+    IEnumerator Table(){
+        charAnim.SetAnimType (AnimType.Bath);
+        while(!isAbort){
+            yield return new WaitForEndOfFrame ();
+        }
+        CheckAbort();
     }
 
     IEnumerator Discover()
@@ -490,11 +539,15 @@ public class CharController : MonoBehaviour {
 
             n++;
         }
-        if (!isAbort)
-            actionType = ActionType.None;
+        CheckAbort();
     }
 
     IEnumerator Hold(){
+        charInteract.interactType = InteractType.Drag;
+        enviromentType = EnviromentType.Room;
+        Vector3 dropPosition = Vector3.zero;
+        SetDirection (Direction.D);
+        charAnim.SetAnimType (AnimType.Hold);
         while(charInteract.interactType == InteractType.Drag)
         {
             Vector3 pos = Camera.main.ScreenToWorldPoint (Input.mousePosition) - charInteract.dragOffset;
@@ -504,25 +557,25 @@ public class CharController : MonoBehaviour {
             else if (pos.y < -20)
                 pos.y = -20;
 
-            if (pos.x > 35)
-                pos.x = 35;
-            else if (pos.x < -28)
-                pos.x = -28;
+            if (pos.x >52)
+                pos.x =52;
+            else if (pos.x < -49)
+                pos.x = -49;
 
             pos.z = -50;
             agent.transform.position = pos;
-            charAnim.SetAnimType (AnimType.Hold);
+           
             this.transform.rotation = Quaternion.Lerp (this.transform.rotation, Quaternion.identity, Time.deltaTime * 2);
-            yield return new WaitForEndOfFrame();    
+            yield return new WaitForEndOfFrame();   
         }
 
-        //Start Drop
+                //Start Drop
         RaycastHit2D[] hit = Physics2D.RaycastAll(transform.position + new Vector3(0,-2,0), -Vector2.up,100);
         Vector3 pos2 = this.transform.position;
         pos2.y = pos2.y - 22;
         if (pos2.y < -20)
             pos2.y = -20;
-        Vector3 dropPosition = pos2;
+        dropPosition = pos2;
         enviromentType = EnviromentType.Room;
 
         for (int i = 0; i < hit.Length; i++) {
@@ -539,51 +592,56 @@ public class CharController : MonoBehaviour {
                 break;
             }
         }
-
+        
         float fallSpeed = 0;
-        //OnDrop
-        while(charInteract.interactType == InteractType.Drop) {
-            fallSpeed += 100f * Time.deltaTime;
+        float maxTime = 1;
+        while(charInteract.interactType == InteractType.Drop)
+        {
+            fallSpeed += 100f * Time.deltaTime;
             if (fallSpeed > 50)
                 fallSpeed = 50;
             Vector3 pos1 = agent.transform.position;
             pos1.y -= fallSpeed * Time.deltaTime;
             pos1.z = dropPosition.z;
             agent.transform.position = pos1;
+            
+            
             if (Vector2.Distance (agent.transform.position, dropPosition) < fallSpeed * Time.deltaTime * 2) {
                 this.transform.rotation = Quaternion.identity;
-                charInteract.interactType = InteractType.None;
                 
-
                 if (fallSpeed < 50) {
                     charAnim.SetAnimType (AnimType.Fall_Light);
-                    yield return new WaitForSeconds(2);
+                    maxTime = 1;
                 } else {
                     charAnim.SetAnimType (AnimType.Fall);
-                    yield return new WaitForSeconds(3);
+                    maxTime = 3;
                 }
-                fallSpeed = 0;
-                if (enviromentType == EnviromentType.Bath) {
-                    actionType = ActionType.Bath;
-                }else
-                    actionType = ActionType.None;
-                
+                charInteract.interactType = InteractType.None;
             }
-            yield return new WaitForEndOfFrame();    
-        }                   
+            yield return new WaitForEndOfFrame();   
+        }
+        
+        yield return StartCoroutine(Wait(maxTime));
+        if (enviromentType == EnviromentType.Bath) {
+            OnBath();
+        }else if(enviromentType == EnviromentType.Table){
+            OnTable();    
+        }
+        CheckAbort();         
     }
 
     IEnumerator Mouse(){
         if (target != null) {
-           if (Vector2.Distance (lastTargetPosition, target.position) > 1) {
-                 agent.SetDestination (target.position);
-                 lastTargetPosition = target.position;
-           }
+           //if (Vector2.Distance (lastTargetPosition, target.position) > 1) {
+                agent.SetDestination (target.position);
+                lastTargetPosition = target.position;
+           //}
+                agent.speed = 40;
+                charAnim.SetAnimType (AnimType.Run);
+                anim.speed = 1.3f;
+                yield return StartCoroutine(Wait(0.2f));
         }
-        agent.speed = 40;
-        charAnim.SetAnimType (AnimType.Run);
-        anim.speed = 1.3f;
-        yield return new WaitForSeconds(0.2f);
+        CheckAbort();
     }
 
     IEnumerator Pee()
@@ -595,8 +653,7 @@ public class CharController : MonoBehaviour {
             data.Pee -= 0.5f;
             yield return new WaitForEndOfFrame();
         }
-        if (!isAbort)
-            actionType = ActionType.None;
+        CheckAbort();
     }
 
     IEnumerator Shit()
@@ -607,8 +664,7 @@ public class CharController : MonoBehaviour {
             data.Shit -= 0.5f;
             yield return new WaitForEndOfFrame();
         }
-        if (!isAbort)
-            actionType = ActionType.None;
+        CheckAbort();
     }
 
     IEnumerator Eat()
@@ -621,7 +677,7 @@ public class CharController : MonoBehaviour {
         bool canEat = true;
         if (ItemController.instance.foodBowl.CanEat () && !isAbort) {
             charAnim.SetAnimType (AnimType.Eat);
-            yield return new WaitForSeconds (0.1f);
+            yield return StartCoroutine (Wait(0.1f));
             while (data.Food < data.maxFood && !isAbort && canEat) {
                 data.Food += 0.3f;
                 ItemController.instance.foodBowl.Eat (0.3f);
@@ -633,8 +689,7 @@ public class CharController : MonoBehaviour {
                 yield return new WaitForEndOfFrame ();
             }
         }
-        if (!isAbort)
-            actionType = ActionType.None;
+        CheckAbort();
     }
 
     IEnumerator Drink()
@@ -650,7 +705,7 @@ public class CharController : MonoBehaviour {
 
         if (ItemController.instance.waterBowl.CanEat ()) {
             charAnim.SetAnimType (AnimType.Eat);
-            yield return new WaitForSeconds (0.1f);
+            yield return StartCoroutine (Wait(0.1f));
             while (data.Water < data.maxWater && !isAbort && canDrink) {
                 data.Water += 0.5f;
                 ItemController.instance.waterBowl.Eat (0.5f);
@@ -662,8 +717,7 @@ public class CharController : MonoBehaviour {
                 yield return new WaitForEndOfFrame ();
             }
         }
-        if (!isAbort)
-            actionType = ActionType.None;
+        CheckAbort();
     }
 
     IEnumerator Sleep()
@@ -672,35 +726,30 @@ public class CharController : MonoBehaviour {
         Debug.Log ("Sleep");
         InputController.instance.SetTarget (PointType.Sleep);
         yield return StartCoroutine (MoveToPoint ());
-        charAnim.SetAnimType (AnimType.Sleep);
+        if(!isAbort)
+                charAnim.SetAnimType (AnimType.Sleep);
         while (data.Sleep < data.maxSleep && !isAbort) {
             data.Sleep += 0.01f;
             yield return new WaitForEndOfFrame();
         }
-        if (!isAbort)
-            actionType = ActionType.None;
+        CheckAbort();
     }
 
     IEnumerator Rest()
-    {
-        float time = 0;
+    {
         float maxTime = Random.Range (2, 5);
-        charAnim.SetAnimType (AnimType.Sit);
+        if(!isAbort)
+                charAnim.SetAnimType (AnimType.Sit);
         Debug.Log ("Rest");
-        while (!isAbort && time < maxTime) {
-            time += Time.deltaTime;
-            yield return new WaitForEndOfFrame();
-        }
-        if (!isAbort)
-            actionType = ActionType.None;
+        yield return StartCoroutine (Wait(maxTime));
+        CheckAbort();
     }
 
     IEnumerator Itchi(){
         charAnim.SetAnimType (AnimType.Itchi);
         Debug.Log ("Itchi");
         yield return new WaitForEndOfFrame ();
-        if (!isAbort)
-            actionType = ActionType.None;
+        CheckAbort();
     }
 
     IEnumerator Sick(){
@@ -710,9 +759,47 @@ public class CharController : MonoBehaviour {
             yield return new WaitForEndOfFrame();
         }
         yield return new WaitForEndOfFrame ();
-        if (!isAbort)
-            actionType = ActionType.None;
+        CheckAbort();
     }
+
+    IEnumerator Fear(){
+        charAnim.SetAnimType (AnimType.Idle);
+        while(!isAbort){
+            yield return new WaitForEndOfFrame ();
+        }
+        CheckAbort();
+    }
+
+    IEnumerator Tired(){
+        charAnim.SetAnimType (AnimType.Idle);
+        while(!isAbort){
+            yield return new WaitForEndOfFrame ();
+        }
+        CheckAbort();
+    }
+
+    IEnumerator Sad(){
+        charAnim.SetAnimType (AnimType.Idle);
+        while(!isAbort){
+            yield return new WaitForEndOfFrame ();
+        }
+        CheckAbort();
+    }
+
+    IEnumerator Happy(){
+        charAnim.SetAnimType (AnimType.Idle);
+        while(!isAbort){
+            yield return new WaitForEndOfFrame ();
+        }
+        CheckAbort();
+    }
+
+    void CheckAbort(){
+        if (!isAbort)
+            actionType = ActionType.None;
+        else
+            DoAction();
+    }
 
     #endregion
 

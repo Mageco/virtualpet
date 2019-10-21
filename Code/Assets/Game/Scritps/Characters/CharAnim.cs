@@ -23,7 +23,7 @@ public class CharAnim : MonoBehaviour
 
 	void Update()
 	{
-		
+		anim.Play (currentAnim, 0);
 	}
 
 	public AnimType GetAnimType()
@@ -151,7 +151,7 @@ public class CharAnim : MonoBehaviour
 			break;	
 		}
 
-		anim.Play (currentAnim, 0);
+		
 	}
 
 }

@@ -6,7 +6,7 @@ using Lean.Touch;
 
 public class CharInteract : MonoBehaviour
 {
-    public InteractType interactType;
+    public InteractType interactType = InteractType.None;
     float doubleClickTime;
     float maxDoubleClickTime = 0.4f;
     bool isClick = false;
@@ -56,7 +56,7 @@ public class CharInteract : MonoBehaviour
             if (doubleClickTime > maxDoubleClickTime) {
                 doubleClickTime = 0;
             } else {
-                character.OnListening ();
+                //character.OnListening ();
                 doubleClickTime = 0;
                 isClick = false;
                 return;
@@ -69,21 +69,19 @@ public class CharInteract : MonoBehaviour
 
     public void OnFingerTouchUp(Vector2 delta)
     {
-        if(interactType != InteractType.None)
-            return;
         float angle = Mathf.Atan2(delta.x, delta.y) * Mathf.Rad2Deg;
-        if (isTouch && angle > -45 && angle < 45 && interactType != InteractType.Drag) {
+        if (isTouch && angle > -45 && angle < 45 && interactType == InteractType.None) {
             touchDirection = Direction.U;
             character.OnHold ();
         }else if(isTouch && (angle > 115 || angle < -115)) {
             touchDirection = Direction.D;
-            interactType = InteractType.SwipeDown;
+            //interactType = InteractType.SwipeDown;
         }else if(isTouch && (angle > 45 && angle < 115)) {
             touchDirection = Direction.L;
-            interactType = InteractType.SwipeLeft;
+            //interactType = InteractType.SwipeLeft;
         }else if(isTouch && (angle > 115 && angle < 205)) {
             touchDirection = Direction.R;
-            interactType = InteractType.SwipeRight;
+            //interactType = InteractType.SwipeRight;
         }
     }
 
@@ -129,4 +127,4 @@ public class CharInteract : MonoBehaviour
     #endregion
 }
 
-public enum InteractType {None,Drag,Drop,Touch,SwipeUp,SwipeDown,SwipeLeft,SwipeRight,DoubleClick,Busy};
+public enum InteractType {None,Drag,Drop,Touch,SwipeUp,SwipeDown,SwipeLeft,SwipeRight,DoubleClick};
