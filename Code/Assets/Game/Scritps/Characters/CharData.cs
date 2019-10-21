@@ -15,6 +15,9 @@ public class CharData
 	public float happy = 50;
 	public float stamina = 50;
 	public float dirty = 50;
+	public float itchi = 50;
+	public float fear = 0;
+	public float curious = 0;
 
 	[HideInInspector]
 	public float basicEnergyConsume = 0.05f;
@@ -52,6 +55,9 @@ public class CharData
 	public float maxStamina = 100;
 	[HideInInspector]
 	public float maxDirty = 100;
+	public float maxItchi = 100;
+	public float maxFear = 100;
+	public float maxCurious = 100;
 
 
 	void Load()
@@ -224,5 +230,51 @@ public class CharData
 		}
 	}
 
+	public float Itchi
+	{
+		get
+		{
+			return this.itchi;
+		}
+		set
+		{
+			this.itchi = value;
+			if (this.itchi < 0)
+				this.itchi = 0;
+			else if (this.itchi > maxItchi)
+				this.itchi = maxItchi;
+		}
+	}
 
+	public float Fear
+	{
+		get
+		{
+			return this.fear;
+		}
+		set
+		{
+			this.fear = value;
+			if (this.fear < 0)
+				this.fear = 0;
+			else if (this.fear > maxFear)
+				this.fear = maxFear;
+		}
+	}
+
+		public float Curious
+	{
+		get
+		{
+			return this.curious;
+		}
+		set
+		{
+			this.curious = value;
+			if (this.curious < 0)
+				this.curious = 0;
+			else if (this.curious > maxCurious)
+				this.curious = maxCurious;
+		}
+	}
 }

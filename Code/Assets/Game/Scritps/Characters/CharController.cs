@@ -40,12 +40,14 @@ public class CharController : MonoBehaviour {
 
     //Interact
     CharInteract charInteract;
+    public bool isTouch = false;
     //Pee,Sheet
     public Transform peePosition;
     public Transform shitPosition;
     public GameObject peePrefab;
     public GameObject shitPrefab;
 
+    public GameObject touchObject;
     #endregion
 
     #region Load
@@ -56,6 +58,7 @@ public class CharController : MonoBehaviour {
         //charAnim = this.GetComponent<CharAnim> ();
         agent = GameObject.FindObjectOfType<PolyNavAgent> ();
         charInteract = this.GetComponent<CharInteract>();
+        touchObject.SetActive(false);
     }
     // Use this for initialization
     void Start () {
@@ -132,7 +135,7 @@ public class CharController : MonoBehaviour {
         }
 
         data.Dirty += data.dirtyFactor;
-
+        data.Itchi += data.Dirty * 0.001f;
         data.Stamina -= data.staminaConsume;
         data.Stamina += data.actionEnergyConsume;
 
@@ -173,8 +176,12 @@ public class CharController : MonoBehaviour {
     #region Interact
     public void OnCall()
     {
+        if(actionType == ActionType.Call || actionType == ActionType.Sick || actionType == ActionType.Sleep){
+                return;
+        }
         Abort ();
         actionType = ActionType.Call;
+        touchObject.SetActive(true);
     }
 
     public void OnListening(){
@@ -218,6 +225,20 @@ public class CharController : MonoBehaviour {
         if(actionType==ActionType.Bath)
             anim.Play("BathStart_D",0);
     }
+
+    public void OnTouch()
+    {
+        if(actionType == ActionType.Call){
+             isTouch = true;
+        }
+    }
+
+    public void OffTouch()
+    {
+        //if(actionType == ActionType.Call){
+        isTouch = false;
+        //}
+    }
 
     public void OnMouse(Transform t){
         if(actionType == ActionType.Hold || actionType == ActionType.OnTable || actionType == ActionType.Bath || actionType == ActionType.Sick
@@ -305,7 +326,7 @@ public class CharController : MonoBehaviour {
             }
         }
 
-        if (data.Dirty > data.maxDirty * 0.7f) {
+        if (data.Itchi> data.maxItchi* 0.7f) {
             int ran = Random.Range (0, 100);
             if (ran > 50) {
                 actionType = ActionType.Itchi;
@@ -322,6 +343,8 @@ public class CharController : MonoBehaviour {
             actionType = ActionType.Discover;
             return;
         }
+
+
 
 
         //Other Action
@@ -390,6 +413,7 @@ public class CharController : MonoBehaviour {
     {
         anim.speed = 1;
         isAbort = true;
+        touchObject.SetActive(false);
     }
 
     void RandomDirection()
@@ -458,7 +482,7 @@ public class CharController : MonoBehaviour {
 
     IEnumerator Patrol(){
         int n = 0;
-        int maxCount = Random.Range (4, 10);
+        int maxCount = Random.Range (2, 5);
         while(!isAbort && n < maxCount) 
         {
             if(!isAbort)
@@ -499,23 +523,13 @@ public class CharController : MonoBehaviour {
 
     IEnumerator Discover()
     {
-        int n = 0;
+        int n = Random.Range(0,4);
         int maxCount = Random.Range (4, 10);
         while(!isAbort && n < maxCount) 
         {
-            if(!isAbort)
-            {
-                InputController.instance.SetTarget (PointType.Favourite);
-                yield return StartCoroutine (MoveToPoint ());
-            }
-            if (!isAbort) {
-                int ran = Random.Range (0, 100);
-                anim.Play("BathStart_D",0);
-                yield return StartCoroutine (Wait (Random.Range (1, 3)));
-            }
-
-            n++;
-        }
+             yield return new WaitForEndOfFrame ();
+          
+        }
         CheckAbort();
     }
 
@@ -620,14 +634,97 @@ public class CharController : MonoBehaviour {
     }
 
     IEnumerator Call(){
+
+        yield return StartCoroutine(DoAnim("BathStart_D"));
+
         if (!isAbort) {
             InputController.instance.SetTarget (PointType.Call);
             yield return StartCoroutine (MoveToPoint ());
         }
-        while(!isAbort){
-            yield return new WaitForEndOfFrame();  
-        }
 
+        float t = 0;
+        float maxTime = 3f;
+        int n = Random.Range(0,9);
+        bool isWait = true;
+        
+        while(!isAbort && isWait){
+            if(!isTouch)
+            {
+                if(t==0)
+                {
+                     n = Random.Range(0,9);   
+                }
+                if(n==0){
+                        if (this.direction == Direction.RD || this.direction == Direction.RU)
+                        anim.Play("Lay_WaitPetBack_RD",0);
+                        else
+                        anim.Play("Lay_WaitPetBack_LD",0);
+                }else if(n==1){
+                        if (this.direction == Direction.RD || this.direction == Direction.RU)
+                        anim.Play("Lay_WaitPetHead_RD",0);
+                        else
+                        anim.Play("Lay_WaitPetHead_LD",0);                
+                }else if(n==2){
+                        if (this.direction == Direction.RD || this.direction == Direction.RU)
+                        anim.Play("Lay_WaitPetStomatch_RD",0);
+                        else
+                        anim.Play("Lay_WaitPetStomatch_LD",0);                
+                }else if(n==3){
+                        anim.Play("Sit_WaitPetUp_D");
+                }else if(n==4){
+                        anim.Play("Sit_WaitPetDown_D");
+                }else if(n==5){
+                        anim.Play("Sit_WaitPetLeft_D");
+                }else if(n==6){
+                        anim.Play("Sit_WaitPetRight_D");
+                }else if(n==7){
+                        anim.Play("WaitHandshake_D");
+                }else if(n==8){
+                        anim.Play("WaitJumpRound_D");
+                }
+                t += Time.deltaTime;
+                if(t > maxTime){
+                     isWait = false;
+                     n = Random.Range(0,9);
+                     maxTime = Random.Range(2f,5f);
+                }
+            }else {
+
+                if(n==0){
+                        if (this.direction == Direction.RD || this.direction == Direction.RU)
+                            anim.Play("Lay_PetBack_RD",0);
+                        else
+                            anim.Play("Lay_PetBack_LD",0);
+                      
+                }else if(n==1){
+                        if (this.direction == Direction.RD || this.direction == Direction.RU)
+                                anim.Play("Lay_PetHead_RD",0);
+                        else
+                                anim.Play("Lay_PetHead_LD",0);
+                }else if(n==2){
+                        if (this.direction == Direction.RD || this.direction == Direction.RU)
+                                anim.Play("Lay_PetStomatch_RD",0);
+                        else
+                                anim.Play("Lay_PetStomatch_LD",0);
+                }else if(n==3){
+                        anim.Play("Sit_Pet_Up_D",0);
+                }else if(n==4){
+                        anim.Play("Sit_Pet_Down_D",0);
+                }else if(n==5){
+                        anim.Play("Sit_Pet_Right_D",0);
+                }else if(n==6){
+                        anim.Play("Sit_Pet_Left_D",0);
+                }else if(n==7){
+                        anim.Play("Handshake_D",0);
+                }else if(n==8){
+                        anim.Play("JumpRound_D",0);
+                }
+                t = 0;
+                
+                
+            }
+            yield return new WaitForEndOfFrame();      
+        }
         CheckAbort();
     }
 
@@ -734,11 +831,27 @@ public class CharController : MonoBehaviour {
     }
 
     IEnumerator Itchi(){
-        if (this.direction == Direction.RD || this.direction == Direction.RU)
-           anim.Play("Itchy_RD",0);
-        else
-           anim.Play("Itchy_LD",0);
+
+        int i = Random.Range(0,3);
+
+        if(i == 0){
+                if (this.direction == Direction.RD || this.direction == Direction.RU)
+                anim.Play("Itchy_RD",0);
+                else
+                anim.Play("Itchy_LD",0);
+        }else if(i== 1){
+                anim.Play("Idle_ShedHair_D",0);
+        }else{
+                anim.Play("Shake_Hair_D",0);
+        }
+
+
+
         Debug.Log ("Itchi");
+        while (data.itchi > 0.5*data.maxItchi&& !isAbort) {
+            data.itchi -= 0.1f;
+            yield return new WaitForEndOfFrame();
+        }
         yield return new WaitForEndOfFrame ();
         CheckAbort();
     }
