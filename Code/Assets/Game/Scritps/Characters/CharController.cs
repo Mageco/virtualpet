@@ -221,7 +221,7 @@ public class CharController : MonoBehaviour {
 
     public void OnMouse(Transform t){
         if(actionType == ActionType.Hold || actionType == ActionType.OnTable || actionType == ActionType.Bath || actionType == ActionType.Sick
-        || actionType == ActionType.Sleep)
+        || actionType == ActionType.Sleep || actionType == ActionType.Call)
             return;
 
         int n = 0;
@@ -625,7 +625,7 @@ public class CharController : MonoBehaviour {
             yield return StartCoroutine (MoveToPoint ());
         }
         while(!isAbort){
-
+            yield return new WaitForEndOfFrame();  
         }
 
         CheckAbort();

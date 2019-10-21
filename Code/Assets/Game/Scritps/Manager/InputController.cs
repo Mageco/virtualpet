@@ -126,7 +126,7 @@ public class InputController : MonoBehaviour
 
 	public void OnCall()
 	{
-		character.OnListening ();
+		character.OnCall ();
 	}
 
 	void OnMouseDown()
