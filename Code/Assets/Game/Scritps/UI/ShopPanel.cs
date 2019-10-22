@@ -35,8 +35,9 @@ public class ShopPanel : MonoBehaviour
 
     void LoadItem(ItemData data){
         GameObject go = GameObject.Instantiate(itemUIPrefab);
-        go.transform.localScale = Vector3.one;
+       
         go.transform.SetParent(this.anchor);
+        go.transform.localScale = Vector3.one;
         ItemUI item = go.GetComponent<ItemUI>();
         items.Add(item);
         item.Load(data);
