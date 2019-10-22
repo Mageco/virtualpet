@@ -1014,7 +1014,7 @@ public class CharController : MonoBehaviour
                 else
                     anim.Play("Lay_LD", 0);
             }else if(ran < 60){
-                    
+
             }
         }
 
@@ -1130,6 +1130,10 @@ public class CharController : MonoBehaviour
     void SpawnShit()
     {
         GameObject go = GameObject.Instantiate(shitPrefab, shitPosition.position, Quaternion.identity);
+    }
+
+    void SpawnFly(){
+        //GameObject go = GameObject.Instantiate(flyPrefab,Vector3.zero, Quaternion.identity); 
     }
 
 
