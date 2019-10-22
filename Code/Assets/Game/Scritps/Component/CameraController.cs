@@ -49,10 +49,7 @@ public class CameraController : MonoBehaviour
 
 	void LateUpdate()
 	{
-		if(!GameHandler.IsGamePaused())
-		{
-			this.ExecuteCamera();
-		}
+		this.ExecuteCamera();
 	}
 
 	public void SetOriginalOrthographic(float o)

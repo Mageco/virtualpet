@@ -28,4 +28,11 @@ public class ItemDirty : MonoBehaviour
 		if (dirty < 0)
 			GameObject.Destroy (this.gameObject);
 	}
+
+	void OnTriggerEnter2D(Collider2D other) {
+        if (other.tag == "Player") {
+           other.GetComponent<CharController>().data.Dirty += this.dirty/10f;   
+		}        
+    }
+	
 }
