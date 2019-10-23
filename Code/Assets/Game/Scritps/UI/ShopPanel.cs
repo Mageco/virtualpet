@@ -11,7 +11,7 @@ public class ShopPanel : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        OnTab(0);
+        OnTab((int)category);
     }
 
     void Load(){
