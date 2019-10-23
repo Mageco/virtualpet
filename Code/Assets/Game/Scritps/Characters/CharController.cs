@@ -47,6 +47,7 @@ public class CharController : MonoBehaviour
     public Transform shitPosition;
     public GameObject peePrefab;
     public GameObject shitPrefab;
+    public GameObject dirtyEffect;
 
     public GameObject touchObject;
     #endregion
