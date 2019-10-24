@@ -19,7 +19,11 @@ public class ItemUI : MonoBehaviour
     {
         
         itemId = d.iD;
-        icon.sprite = Resources.Load(d.iconUrl) as Sprite;
+        Debug.Log(d.iconUrl);
+        string url = d.iconUrl.Replace("Assets/Game/Resources/","");
+        url = url.Replace(".png","");
+        Debug.Log(url);
+        icon.sprite = Resources.Load<Sprite>(url) as Sprite;
         price.text = d.buyPrice.ToString();
         if(d.itemState == ItemState.Buy){
             buyButton.SetActive(true);

@@ -7,7 +7,7 @@ public class ShopPanel : MonoBehaviour
     public Transform anchor;
     List<ItemUI> items = new List<ItemUI>();
     public GameObject itemUIPrefab;
-    public int category;
+    public ItemType category;
     // Start is called before the first frame update
     void Start()
     {
@@ -24,10 +24,10 @@ public class ShopPanel : MonoBehaviour
     }
 
     public void OnTab(int id){
-        category = id;
+        category = (ItemType)id;
         ClearItems();
         for(int i=0;i<DataHolder.Items().GetDataCount();i++){
-            if(DataHolder.Item(i).category == category){
+            if(DataHolder.Item(i).itemType == category){
                 LoadItem(DataHolder.Item(i));
             }
         }

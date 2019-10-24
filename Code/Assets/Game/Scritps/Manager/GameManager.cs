@@ -16,7 +16,10 @@ public class GameManager : MonoBehaviour
 	}
 
     void Load(){
-
+		Screen.sleepTimeout = SleepTimeout.NeverSleep;
+		DataHolder.Instance();
+		GameHandler.Instance();
+		Debug.Log(DataHolder.Items().GetDataCount());
     }
 
 }

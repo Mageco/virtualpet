@@ -18,7 +18,7 @@ public class DataHolder
 			return;
 		}
 		instance = this;
-		//Init();
+		Init();
 	}
 	
 	public void Init()

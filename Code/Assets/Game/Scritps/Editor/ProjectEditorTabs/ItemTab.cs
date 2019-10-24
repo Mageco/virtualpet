@@ -60,6 +60,9 @@ public class ItemTab : BaseTab
 
             EditorGUILayout.BeginHorizontal();
             EditorGUILayout.LabelField("Icon", GUILayout.MaxWidth(110));
+            if(DataHolder.Item(selection).iconUrl != null){
+                this.tmpSprites = AssetDatabase.LoadAssetAtPath<Texture2D>(DataHolder.Item(selection).iconUrl);
+            }
             this.tmpSprites = (Texture2D)EditorGUILayout.ObjectField(GUIContent.none, this.tmpSprites, typeof(Texture2D), false, GUILayout.MaxWidth(100));
             if (this.tmpSprites != null)
             {
