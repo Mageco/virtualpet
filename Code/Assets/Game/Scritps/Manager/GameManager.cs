@@ -6,20 +6,17 @@ public class GameManager : MonoBehaviour
 {
  public static GameManager instance;
 
-    public ItemData[] datas;
-
 	void Awake()
 	{
 		if (instance == null)
 			instance = this;
         
+        Application.targetFrameRate = 50;
         Load();
 	}
 
     void Load(){
-        for(int i=0;i<datas.Length;i++){
-            datas[i].itemID = i;
-        }
+
     }
 
 }

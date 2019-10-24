@@ -7,7 +7,7 @@ public class ShopPanel : MonoBehaviour
     public Transform anchor;
     List<ItemUI> items = new List<ItemUI>();
     public GameObject itemUIPrefab;
-    public ItemCategory category;
+    public int category;
     // Start is called before the first frame update
     void Start()
     {
@@ -24,16 +24,16 @@ public class ShopPanel : MonoBehaviour
     }
 
     public void OnTab(int id){
-        category = (ItemCategory)id;
+        category = id;
         ClearItems();
-        for(int i=0;i<GameManager.instance.datas.Length;i++){
-            if(GameManager.instance.datas[i].itemCategory == category){
-                LoadItem(GameManager.instance.datas[i]);
+        for(int i=0;i<DataHolder.Items().GetDataCount();i++){
+            if(DataHolder.Item(i).category == category){
+                LoadItem(DataHolder.Item(i));
             }
         }
     }
 
-    void LoadItem(ItemData data){
+    void LoadItem(Item data){
         GameObject go = GameObject.Instantiate(itemUIPrefab);
        
         go.transform.SetParent(this.anchor);

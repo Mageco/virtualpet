@@ -571,7 +571,7 @@ public class CharController : MonoBehaviour
         {
             if (!isAbort)
             {
-                InputController.instance.SetTarget(PointType.Favourite);
+                InputController.instance.SetTarget(PointType.Patrol);
                 yield return StartCoroutine(MoveToPoint());
             }
             if (!isAbort)
@@ -1145,5 +1145,3 @@ public class CharController : MonoBehaviour
 
 public enum EnviromentType { Room, Table, Bath };
 public enum ActionType { None, Mouse, Rest, Sleep, Eat, Drink, Patrol, Discover, Pee, Shit, Itchi, Sick, Sad, Fear, Happy, Tired, Call, Hold, OnTable, Bath, Listening }
-
-public enum Direction{U,D,L,R,RD,RU,LD,LU}

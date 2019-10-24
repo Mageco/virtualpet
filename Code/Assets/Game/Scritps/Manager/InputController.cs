@@ -8,15 +8,6 @@ public class InputController : MonoBehaviour
 {
 	public static InputController instance;
 	public Transform target;
-	public LeanScreenDepth ScreenDepth;
-	public List<GizmoPoint> callPoints;
-	public List<GizmoPoint> sleepPoints;
-	public List<GizmoPoint> eatPoints;
-	public List<GizmoPoint> drinkPoints;
-	public List<GizmoPoint> favouritesPoints;
-	public List<GizmoPoint> mousePoints;
-	public List<GizmoPoint> patrolPoints;
-	public List<GizmoPoint> caressPoints;
 	[HideInInspector]
 	public CharController character;
 	public CameraController cameraController;
@@ -32,49 +23,18 @@ public class InputController : MonoBehaviour
 			instance = this;
 
 		character = GameObject.FindObjectOfType<CharController> ();
-		GizmoPoint[] points = GameObject.FindObjectsOfType <GizmoPoint> ();
-		for (int i = 0; i < points.Length; i++) {
-			if (points [i].type == PointType.Call)
-				callPoints.Add (points [i]);
-			else if (points [i].type == PointType.Eat)
-				eatPoints.Add (points [i]);
-			else if (points [i].type == PointType.Favourite)
-				favouritesPoints.Add (points [i]);
-			else if (points [i].type == PointType.Sleep)
-				sleepPoints.Add (points [i]);
-			else if (points [i].type == PointType.Mouse)
-				mousePoints.Add (points [i]);
-			else if (points [i].type == PointType.Drink)
-				drinkPoints.Add (points [i]);
-			else if (points [i].type == PointType.Patrol)
-				drinkPoints.Add (points [i]);
-			else if (points [i].type == PointType.Caress)
-				caressPoints.Add (points [i]);
-		}
-
-		Application.targetFrameRate = 50;
+		
 	}
 
 	List<GizmoPoint> GetPoints(PointType type)
 	{
-		if (type == PointType.Call) {
-			return callPoints;
-		} else if (type == PointType.Eat) {
-			return eatPoints;
-		} else if (type == PointType.Favourite) {
-			return favouritesPoints;
-		} else if (type == PointType.Sleep) {
-			return sleepPoints;
-		}else if (type == PointType.Mouse) {
-			return mousePoints;
-		}else if (type == PointType.Drink) {
-			return drinkPoints;
-		}else if (type == PointType.Patrol) {
-			return patrolPoints;
-		}else if (type == PointType.Caress) {
-			return caressPoints;
+		List<GizmoPoint> temp = new List<GizmoPoint>();
+		GizmoPoint[] points = GameObject.FindObjectsOfType <GizmoPoint> ();
+		for(int i=0;i<points.Length;i++)
+		{
+			temp.Add(points[i]);
 		}
-		return null;
+		return temp;
 	}
 
 	public Transform GetRandomPoint(PointType type)
