@@ -39,7 +39,7 @@ public class ItemData : BaseData
 		SaveFile (fileName, text);
 	}
 
-	public string GetPrefabPath() { return "Prefabs/Items/"; }
+	public string GetPrefabPath() { return "Prefabs/Equipments/"; }
 	
 	public void AddItem()
 	{
