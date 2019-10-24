@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class ItemObject : MonoBehaviour
 {
+	public ItemType itemType = ItemType.None;
 	public ItemInteractType interactType = ItemInteractType.None;
 }
 

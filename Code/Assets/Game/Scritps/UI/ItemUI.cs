@@ -66,7 +66,7 @@ public class ItemUI : MonoBehaviour
     }
 
     public void OnBuy(){
-
+        ItemController.instance.UseItem(this.itemId);
     }
 
     public void OnUse(){

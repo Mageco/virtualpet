@@ -13,6 +13,7 @@ public class GameHandler
 	private float gameTime = 0;
 	private bool isLock = false;
 
+	public int[] items;
 
 	// handlers
 	private Hashtable variables;
@@ -34,6 +35,7 @@ public class GameHandler
 		this.ClearData();
 		LoadVariables();
 		LoadNumberVariables ();
+		this.LoadItems();
 	}
 	
 	public static GameHandler Instance()
@@ -305,6 +307,30 @@ public class GameHandler
 		}
 
 	}
+
+	#endregion
+
+	#region Item
+	void LoadItems(){
+		if(ES2.Exists("Items"))
+			items = ES2.LoadArray<int>("Items");
+		else{
+			items = new int[7];
+			items[0] = 2;
+			items[1] = 4;
+			items[2] = 7;
+			items[3] = 8;
+			items[4] = 11;
+			items[5] = 13;
+			items[6] = 17;
+		}
+	}
+
+	void SaveItems(){
+		ES2.Save(items,"Items");
+
+	}
+
 
 	#endregion
 }

@@ -71,7 +71,7 @@ public class DataHolder
 		if(DataHolder.Instance().items != null && DataHolder.Instance().items.GetDataCount() > 0)
 			return DataHolder.Instance().items.items[DataHolder.Instance().items.items.Length - 1].iD;
 		else 
-			return 0;
+			return -1;
 	}
 
 	public static SkillData Skills()

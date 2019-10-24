@@ -409,54 +409,65 @@ public class ApiManager : MonoBehaviour {
 
 	}
 
-	public int GetLive()
+	public int GetDiamond()
 	{
-		if (user.GetUserData ("Live") != null)
-			return int.Parse (user.GetUserData ("Live"));
+		if (user.GetUserData ("Diamond") != null)
+			return int.Parse (user.GetUserData ("Diamond"));
 		else
 			return 0;
 	}
 
-	public void AddLive(int c)
+	public void AddDiamond(int c)
 	{
-		int c1 = GetLive();
+		int c1 = GetDiamond();
 		if (c1 + c >= 0) {
 			c1 += c;
-			user.SetUserData (new UserData ("Live", c1.ToString (), ""));
+			user.SetUserData (new UserData ("Diamond", c1.ToString (), ""));
 			SaveUserData ();
 			UpdateUserData ();
 
 		} else {
-			Debug.Log ("Not Enough Live");
+			Debug.Log ("Not Enough Diamond");
 		}
 
 	}
 
-	public void BuyItem(string itemName,int price)
+	public void BuyItem(string itemId,int price,PriceType type)
 	{
-		if (price > GetCoin ()) {
-			if(MageManager.instance.GetLanguageName () == "English") 
-				MageManager.instance.OnNotificationPopup ("Warning", "You have not enough Ruby");
-			else
-				MageManager.instance.OnNotificationPopup ("Chú ý", "Bạn không đủ ngọc để mua sản phẩm này");
-			return;
+		if(type == PriceType.Coin){
+			if (price > GetCoin ()) {
+				if(MageManager.instance.GetLanguageName () == "English") 
+					MageManager.instance.OnNotificationPopup ("Warning", "You have not enough Coin");
+				else
+					MageManager.instance.OnNotificationPopup ("Chú ý", "Bạn không đủ vàng để mua sản phẩm này");
+				return;
+			}
+			AddCoin (-price);
+			AddItem (itemId);
+		}else if(type == PriceType.Diamond){
+			if (price > GetDiamond ()) {
+				if(MageManager.instance.GetLanguageName () == "English") 
+					MageManager.instance.OnNotificationPopup ("Warning", "You have not enough Ruby");
+				else
+					MageManager.instance.OnNotificationPopup ("Chú ý", "Bạn không đủ ngọc để mua sản phẩm này");
+				return;
+			}
+			AddDiamond (-price);
+			AddItem (itemId);
 		}
-
-		AddCoin (-price);
-		AddItem (itemName);
 	}
 
 
-	public void AddItem(string itemName)
+	public void AddItem(string itemId)
 	{
-		user.SetUserData (new UserData (itemName, "true", "Item"));
+		user.SetUserData (new UserData (itemId, "true", "Item"));
 		SaveUserData ();
 		UpdateUserData ();
 	}
 
-	public bool HaveItem(string itemName)
+	public bool HaveItem(string itemId)
 	{
-		if (user.GetUserData (itemName) == "true")
+		if (user.GetUserData (itemId) == "true")
 			return true;
 		else
 			return false;
