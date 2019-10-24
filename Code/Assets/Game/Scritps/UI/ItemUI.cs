@@ -13,6 +13,7 @@ public class ItemUI : MonoBehaviour
     public GameObject usedButton;
     public GameObject coinIcon;
     public GameObject diamonIcon;
+    public GameObject moneyIcon;
 
     // Start is called before the first frame update
     public void Load(Item d)
@@ -42,10 +43,16 @@ public class ItemUI : MonoBehaviour
         if(d.priceType == PriceType.Coin){
             coinIcon.SetActive(true);
             diamonIcon.SetActive(false);
-        }else 
+            moneyIcon.SetActive(false);
+        }else if(d.priceType == PriceType.Diamond)
         {
             coinIcon.SetActive(false);
-            diamonIcon.SetActive(true);            
+            diamonIcon.SetActive(true);      
+            moneyIcon.SetActive(false);      
+        }else if(d.priceType == PriceType.Money){
+            coinIcon.SetActive(false);
+            diamonIcon.SetActive(false);      
+            moneyIcon.SetActive(true);            
         }
 
     }

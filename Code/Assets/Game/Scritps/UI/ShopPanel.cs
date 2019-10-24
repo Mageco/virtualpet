@@ -7,11 +7,11 @@ public class ShopPanel : MonoBehaviour
     public Transform anchor;
     List<ItemUI> items = new List<ItemUI>();
     public GameObject itemUIPrefab;
-    public ItemType category;
+    public int currentTab;
     // Start is called before the first frame update
     void Start()
     {
-        OnTab((int)category);
+        OnTab(currentTab);
     }
 
     void Load(){
@@ -24,12 +24,40 @@ public class ShopPanel : MonoBehaviour
     }
 
     public void OnTab(int id){
-        category = (ItemType)id;
+        currentTab = id;
         ClearItems();
         for(int i=0;i<DataHolder.Items().GetDataCount();i++){
-            if(DataHolder.Item(i).itemType == category){
-                LoadItem(DataHolder.Item(i));
+            if(currentTab == 0)
+            {
+                if(DataHolder.Item(i).itemType == ItemType.Coin || DataHolder.Item(i).itemType == ItemType.Diamond){
+                    LoadItem(DataHolder.Item(i));
+                }
+            }else if(currentTab == 1){
+                 if(DataHolder.Item(i).itemType == ItemType.Toy){
+                    LoadItem(DataHolder.Item(i));
+                }               
+            }else if(currentTab == 2){
+                 if(DataHolder.Item(i).itemType == ItemType.Dog){
+                    LoadItem(DataHolder.Item(i));
+                }               
+            }else if(currentTab == 3){
+                 if(DataHolder.Item(i).itemType == ItemType.Room){
+                    LoadItem(DataHolder.Item(i));
+                }               
+            }else if(currentTab == 4){
+                 if(DataHolder.Item(i).itemType == ItemType.Bed){
+                    LoadItem(DataHolder.Item(i));
+                }               
+            }else if(currentTab == 5){
+                 if(DataHolder.Item(i).itemType == ItemType.Bath || DataHolder.Item(i).itemType == ItemType.Toilet || DataHolder.Item(i).itemType == ItemType.Cleaner){
+                    LoadItem(DataHolder.Item(i));
+                }               
+            }else if(currentTab == 6){
+                 if(DataHolder.Item(i).itemType == ItemType.Picture || DataHolder.Item(i).itemType == ItemType.Table){
+                    LoadItem(DataHolder.Item(i));
+                }               
             }
+
         }
     }
 

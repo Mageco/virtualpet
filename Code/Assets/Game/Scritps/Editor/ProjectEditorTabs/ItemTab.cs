@@ -100,7 +100,7 @@ public class ItemTab : BaseTab
 				EditorGUILayout.Separator();
 				EditorGUILayout.Separator();
 				DataHolder.Item(selection).buyPrice = EditorGUILayout.IntField("Buy price", DataHolder.Item(selection).buyPrice, GUILayout.Width(pw.mWidth));
-
+                DataHolder.Item(selection).priceType = (PriceType)EditorTab.EnumToolbar("Price Type", (int)DataHolder.Item(selection).priceType, typeof(PriceType));    
 
 
 				//EditorGUILayout.EndToggleGroup();

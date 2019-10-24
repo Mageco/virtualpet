@@ -77,7 +77,6 @@ public class Item
 
 }
 
-public enum PriceType{Coin,Diamond}
-public enum ItemState {Buy,Use,Used}
+
 
 

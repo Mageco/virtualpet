@@ -5,8 +5,9 @@ public enum ItemSkillType {NONE, LEARN, USE};
 public enum ItemVariableType {NONE, SET, REMOVE};
 public enum ItemDropType {NONE, ITEM, EQUIPMENT, SKILL};
 public enum ColumnFill {VERTICAL, HORIZONTAL};
-public enum ItemType{Diamond=0,Food=1,Toys=2,Dogs=3,Set=4,Room=5,Bed=6,Bath=7,Other=8}
-
+public enum ItemType{None,Diamond,Coin,Food,Drink,Toy,Dog,House,Room,Bed,Toilet,Bath,Picture,Cleaner,Table};
+public enum PriceType{Money,Coin,Diamond}
+public enum ItemState {Buy,Use,Used}
 
 // status values
 public enum StatusValueType {NORMAL, CONSUMABLE, EXPERIENCE};

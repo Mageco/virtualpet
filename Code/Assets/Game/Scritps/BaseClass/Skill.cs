@@ -12,6 +12,8 @@ public class Skill
 	public SkillType skillType = SkillType.NONE;
 
 	public bool useable = false;
+
+	public int progress = 0;
 	public ItemVariableType itemVariable = ItemVariableType.NONE;
 	public string variableKey = "";
 	public string variableValue = "";
