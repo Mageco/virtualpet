@@ -619,11 +619,41 @@ public class CharController : MonoBehaviour
 
     IEnumerator Table()
     {
-        anim.Play("BathStart_D", 0);
-        while (!isAbort)
-        {
-            yield return new WaitForEndOfFrame();
-        }
+        int rand = Random.Range(0,100);    
+        if(rand < 50){
+            anim.Play("BathStart_D", 0);
+            while (!isAbort)
+            {
+                yield return new WaitForEndOfFrame();
+            }
+        }   
+        else{
+            anim.Play("Jump_L",0);
+            //bool isDone = false;
+            Vector2 speed = new Vector2(-30,0);
+            Vector3 dropPosition = new Vector3(this.transform.position.x - 10,this.transform.position.y-15,0);
+            charInteract.interactType = InteractType.Drop;
+
+            while (charInteract.interactType == InteractType.Drop && !isAbort)
+            {
+                speed += new Vector2(0,-100*Time.deltaTime);
+                if (speed.y < -50)
+                    speed = new Vector2(speed.x,-50);
+                Vector3 pos1 = agent.transform.position;
+                pos1.y += speed.y * Time.deltaTime;
+                pos1.x += speed.x * Time.deltaTime;
+                pos1.z = dropPosition.y;
+                agent.transform.position = pos1;
+
+                if (Mathf.Abs(agent.transform.position.y - dropPosition.y) < 2f)
+                {
+                    this.transform.rotation = Quaternion.identity;
+                    charInteract.interactType = InteractType.None;                
+                }
+                yield return new WaitForEndOfFrame();            
+            }
+            yield return DoAnim("Fall_L");
+        } 
         CheckAbort();
     }
 
