@@ -36,15 +36,15 @@ public class ItemController : MonoBehaviour
 	}
 
 	void AddItem(int itemId){
-			string url = DataHolder.GetItem(itemId).prefabName.Replace("Assets/Game/Resources/","");
-        	url = url.Replace(".prefab",""); 
-			url = DataHolder.Items().GetPrefabPath() + url;
-			Debug.Log(url);
-			GameObject go = GameObject.Instantiate((Resources.Load(url) as GameObject),Vector3.zero,Quaternion.identity) as GameObject;		
-			ItemObject item = go.AddComponent<ItemObject>();
-			item.itemType = DataHolder.GetItem(itemId).itemType;
-			items.Add(item);
-			go.transform.parent = this.transform;	
+		string url = DataHolder.GetItem(itemId).prefabName.Replace("Assets/Game/Resources/","");
+		url = url.Replace(".prefab",""); 
+		url = DataHolder.Items().GetPrefabPath() + url;
+		Debug.Log(url);
+		GameObject go = GameObject.Instantiate((Resources.Load(url) as GameObject),Vector3.zero,Quaternion.identity) as GameObject;		
+		ItemObject item = go.AddComponent<ItemObject>();
+		item.itemType = DataHolder.GetItem(itemId).itemType;
+		items.Add(item);
+		go.transform.parent = this.transform;	
 	}
 
     // Update is called once per frame

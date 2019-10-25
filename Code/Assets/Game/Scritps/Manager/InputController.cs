@@ -32,7 +32,8 @@ public class InputController : MonoBehaviour
 		GizmoPoint[] points = GameObject.FindObjectsOfType <GizmoPoint> ();
 		for(int i=0;i<points.Length;i++)
 		{
-			temp.Add(points[i]);
+			if(points[i].type == type)
+				temp.Add(points[i]);
 		}
 		return temp;
 	}

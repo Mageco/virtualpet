@@ -220,6 +220,16 @@ public class CharController : MonoBehaviour
         actionType = ActionType.OnTable;
     }
 
+    public void OnFall(){
+        if(direction ==  Direction.LD || direction == Direction.RD || direction == Direction.LU || direction == Direction.RU){
+            if(!isArrived){
+                Abort();
+                isArrived = true;
+                actionType = ActionType.Fall;
+            }
+        }
+    }
+
     public void OnSoap()
     {
         if (actionType == ActionType.Bath)
@@ -392,7 +402,7 @@ public class CharController : MonoBehaviour
         }
         else
         {
-            actionType = ActionType.Discover;
+            actionType = ActionType.Patrol;
         }
 
     }
@@ -477,6 +487,9 @@ public class CharController : MonoBehaviour
         else if (actionType == ActionType.Call)
         {
             StartCoroutine(Call());
+        } else if (actionType == ActionType.Fall)
+        {
+            StartCoroutine(Fall());
         }
     }
     #endregion
@@ -489,6 +502,8 @@ public class CharController : MonoBehaviour
         anim.speed = 1;
         isAbort = true;
         touchObject.SetActive(false);
+        agent.Stop();
+        isArrived = true;
     }
 
     void RandomDirection()
@@ -1082,6 +1097,18 @@ public class CharController : MonoBehaviour
         CheckAbort();
     }
 
+    IEnumerator Fall()
+    {
+        if (this.direction == Direction.RD || this.direction == Direction.RU)
+            yield return StartCoroutine(DoAnim("Fall_Water_R"));
+        else
+            yield return StartCoroutine(DoAnim("Fall_Water_L"));
+ 
+        yield return new WaitForEndOfFrame();
+        CheckAbort();
+    }
+
+
     IEnumerator Tired()
     {
         anim.Play("Itchy_RD", 0);
@@ -1144,4 +1171,4 @@ public class CharController : MonoBehaviour
 
 
 public enum EnviromentType { Room, Table, Bath };
-public enum ActionType { None, Mouse, Rest, Sleep, Eat, Drink, Patrol, Discover, Pee, Shit, Itchi, Sick, Sad, Fear, Happy, Tired, Call, Hold, OnTable, Bath, Listening }
+public enum ActionType { None, Mouse, Rest, Sleep, Eat, Drink, Patrol, Discover, Pee, Shit, Itchi, Sick, Sad, Fear, Happy, Tired, Call, Hold, OnTable, Bath, Listening,Fall }

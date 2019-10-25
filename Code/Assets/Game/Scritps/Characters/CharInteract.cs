@@ -103,6 +103,9 @@ public class CharInteract : MonoBehaviour
            character.OnMouse(other.transform);            
         } else if (other.tag == "Food") {
 
+        }else if (other.tag == "Water") {
+            if(Mathf.Abs(other.transform.position.y - this.transform.position.y) < 1f)
+                character.OnFall();
         }
     }
 
