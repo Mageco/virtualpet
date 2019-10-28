@@ -123,10 +123,8 @@ public class FlowerJarItem : MonoBehaviour
 
 	IEnumerator OnHit(){
 		if(this.transform.position.y < originalPosition.y - 2){
-			if(Vector2.Distance(InputController.instance.character.transform.position,this.transform.position) < 5)
-				InputController.instance.character.OnListening(11);
-			else
-				InputController.instance.character.OnListening(5);
+			float l = Vector2.Distance(InputController.instance.character.transform.position,this.transform.position);
+			InputController.instance.character.OnListening(9 + 30f/l);
 			yield return StartCoroutine(DoAnim("Break",2));
 			InputController.instance.ResetCameraTarget();
 			yield return new WaitForSeconds(2);

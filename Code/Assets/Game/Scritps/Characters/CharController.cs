@@ -186,7 +186,7 @@ public class CharController : MonoBehaviour
     #region Interact
     public void OnCall()
     {
-        if (actionType == ActionType.Call || actionType == ActionType.Sick || actionType == ActionType.Sleep)
+        if (actionType == ActionType.Hold || actionType == ActionType.Call || actionType == ActionType.Sick || actionType == ActionType.Sleep)
         {
             return;
         }
@@ -197,15 +197,19 @@ public class CharController : MonoBehaviour
 
     public void OnListening(float sound)
     {
+        if (actionType == ActionType.Fear || actionType == ActionType.Listening || actionType == ActionType.Hold || actionType == ActionType.Sick || actionType == ActionType.Sleep)
+        {
+            return;
+        }
+
         Abort();
-        actionType = ActionType.Listening;
-        /* 
+        
         if(sound < 10){
             actionType = ActionType.Listening;
         }else {
             data.Fear += sound * 5;
             actionType = ActionType.Fear;
-        } */
+        } 
         
     }
 
@@ -277,7 +281,7 @@ public class CharController : MonoBehaviour
     public void OnMouse(Transform t)
     {
         if (actionType == ActionType.Hold || actionType == ActionType.OnTable || actionType == ActionType.Bath || actionType == ActionType.Sick
-        || actionType == ActionType.Sleep || actionType == ActionType.Call)
+        || actionType == ActionType.Sleep || actionType == ActionType.Call || actionType == ActionType.Listening || actionType == ActionType.Fear)
             return;
 
         int n = 0;
@@ -310,6 +314,7 @@ public class CharController : MonoBehaviour
     public void OnArrived()
     {
         Debug.Log("Arrived");
+
 
         if (actionType == ActionType.Mouse)
         {
@@ -561,7 +566,10 @@ public class CharController : MonoBehaviour
             agent.SetDestination(target.position);
             while (!isArrived && !isAbort)
             {
-                anim.Play("Run_" + this.direction.ToString(), 0);
+                if(actionType == ActionType.Fear ){
+                    anim.Play("RunScared_" + this.direction.ToString(), 0);
+                }else
+                    anim.Play("Run_" + this.direction.ToString(), 0);
                 yield return new WaitForEndOfFrame();
             }
             if (isAbort)
@@ -973,7 +981,7 @@ public class CharController : MonoBehaviour
     }
 
     IEnumerator Listening(){
-         direction = Direction.D;
+        direction = Direction.D;
         yield return StartCoroutine(DoAnim("Listen_" + direction.ToString()));
         CheckAbort();
     }
@@ -1166,10 +1174,24 @@ public class CharController : MonoBehaviour
 
     IEnumerator Fear()
     {
-        anim.Play("Itchy_RD", 0);
-        while (!isAbort)
+        direction = Direction.D;
+        yield return StartCoroutine(DoAnim("Surprised_Hard_" + direction.ToString()));
+        
+        int n = 0;
+        int maxCount = Random.Range(5, 10);
+        while (!isAbort && n < maxCount)
         {
-            yield return new WaitForEndOfFrame();
+            InputController.instance.SetTarget(PointType.Patrol);
+            yield return StartCoroutine(MoveToPoint());
+            n++;
+        }
+
+        InputController.instance.SetTarget(PointType.Safe);
+        yield return StartCoroutine(MoveToPoint());
+
+        while(data.Fear > 10){
+            data.Fear -= 10;
+            yield return StartCoroutine(DoAnim("Scared_LD"));
         }
         CheckAbort();
     }
@@ -1180,8 +1202,7 @@ public class CharController : MonoBehaviour
             yield return StartCoroutine(DoAnim("Fall_Water_R"));
         else
             yield return StartCoroutine(DoAnim("Fall_Water_L"));
- 
-        yield return new WaitForEndOfFrame();
+        
         CheckAbort();
     }
 
