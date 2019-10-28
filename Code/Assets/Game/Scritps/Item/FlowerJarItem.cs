@@ -122,7 +122,12 @@ public class FlowerJarItem : MonoBehaviour
     }
 
 	IEnumerator OnHit(){
+		state = ItemDragState.Hited;
 		if(this.transform.position.y < originalPosition.y - 2){
+			Vector3 pos = this.transform.position;
+			pos.z += 2;
+			this.transform.position = pos;
+
 			float l = Vector2.Distance(InputController.instance.character.transform.position,this.transform.position);
 			InputController.instance.character.OnListening(9 + 30f/l);
 			yield return StartCoroutine(DoAnim("Break",2));
@@ -204,4 +209,4 @@ public class FlowerJarItem : MonoBehaviour
 	}
 }
 
-public enum ItemDragState{None,Drag,Drop,Fall,Hit};
+public enum ItemDragState{None,Drag,Drop,Fall,Hit,Hited};

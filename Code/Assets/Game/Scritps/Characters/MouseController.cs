@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class AnimalController : MonoBehaviour
+public class MouseController : MonoBehaviour
 {
 	Vector3[] paths;
 	float time = 0;

@@ -223,7 +223,8 @@ public class CharController : MonoBehaviour
     void OnBath()
     {
         Abort();
-        direction = Direction.D;
+        SetDirection(Direction.D);
+        SetDirection(Direction.D);
         actionType = ActionType.Bath;
     }
 
@@ -613,7 +614,7 @@ public class CharController : MonoBehaviour
                 int ran = Random.Range(0, 100);
                 if (ran < 30)
                 {
-                    direction = Direction.D;
+                    SetDirection(Direction.D);
                     anim.Play("BathStart_" + direction.ToString(), 0);
                 }
                 else
@@ -641,7 +642,7 @@ public class CharController : MonoBehaviour
     {
         int rand = Random.Range(0,100);    
         if(rand < 50){
-            direction = Direction.D;
+            SetDirection(Direction.D);
             anim.Play("BathStart_" + direction.ToString(), 0);
             while (!isAbort)
             {
@@ -698,11 +699,11 @@ public class CharController : MonoBehaviour
         SetDirection(Direction.D);
         if (data.Health < data.maxHealth * 0.1f)
         {
-            direction = Direction.D;
+            SetDirection(Direction.D);
             anim.Play("Hold_Sick_" + direction.ToString(), 0);
         }
         else{
-            direction = Direction.D;
+            SetDirection(Direction.D);
             anim.Play("Hold_" + direction.ToString(), 0);
         }
         while (charInteract.interactType == InteractType.Drag)
@@ -773,7 +774,7 @@ public class CharController : MonoBehaviour
 
                 if (data.Health < data.maxHealth * 0.1f)
                 {
-                    direction = Direction.D;
+                    SetDirection(Direction.D);
                     anim.Play("Drop_Sick_" + direction.ToString(), 0);
                     maxTime = 3;
                 }
@@ -781,13 +782,13 @@ public class CharController : MonoBehaviour
                 {
                     if (fallSpeed < 50)
                     {
-                        direction = Direction.D;
+                        SetDirection(Direction.D);
                         anim.Play("Drop_Light_" + direction.ToString(), 0);
                         maxTime = 1;
                     }
                     else
                     {
-                        direction = Direction.D;
+                        SetDirection(Direction.D);
                         anim.Play("Drop_Hard_" + direction.ToString(), 0);
                         maxTime = 3;
                     }
@@ -834,7 +835,7 @@ public class CharController : MonoBehaviour
 
     IEnumerator Call()
     {
-        direction = Direction.D;
+        SetDirection(Direction.D);
         yield return StartCoroutine(DoAnim("BathStart_" + direction.ToString()));
 
         if (!isAbort)
@@ -880,32 +881,32 @@ public class CharController : MonoBehaviour
                 }
                 else if (n == 3)
                 {
-                    direction = Direction.D;
+                    SetDirection(Direction.D);
                     anim.Play("Sit_WaitPetUp_" + direction.ToString());
                 }
                 else if (n == 4)
                 {
-                     direction = Direction.D;
+                     SetDirection(Direction.D);
                     anim.Play("Sit_WaitPetDown_" + direction.ToString());
                 }
                 else if (n == 5)
                 {
-                     direction = Direction.D;
+                     SetDirection(Direction.D);
                     anim.Play("Sit_WaitPetLeft_" + direction.ToString());
                 }
                 else if (n == 6)
                 {
-                     direction = Direction.D;
+                     SetDirection(Direction.D);
                     anim.Play("Sit_WaitPetRight_" + direction.ToString());
                 }
                 else if (n == 7)
                 {
-                     direction = Direction.D;
+                     SetDirection(Direction.D);
                     anim.Play("WaitHandshake_" + direction.ToString());
                 }
                 else if (n == 8)
                 {
-                     direction = Direction.D;
+                     SetDirection(Direction.D);
                     anim.Play("WaitJumpRound_" + direction.ToString());
                 }
                 t += Time.deltaTime;
@@ -943,32 +944,32 @@ public class CharController : MonoBehaviour
                 }
                 else if (n == 3)
                 {
-                     direction = Direction.D;
+                     SetDirection(Direction.D);
                     anim.Play("Sit_Pet_Up_" + direction.ToString(), 0);
                 }
                 else if (n == 4)
                 {
-                     direction = Direction.D;
+                     SetDirection(Direction.D);
                     anim.Play("Sit_Pet_Down_" + direction.ToString(), 0);
                 }
                 else if (n == 5)
                 {
-                     direction = Direction.D;
+                     SetDirection(Direction.D);
                     anim.Play("Sit_Pet_Right_" + direction.ToString(), 0);
                 }
                 else if (n == 6)
                 {
-                     direction = Direction.D;
+                     SetDirection(Direction.D);
                     anim.Play("Sit_Pet_Left_" + direction.ToString(), 0);
                 }
                 else if (n == 7)
                 {
-                     direction = Direction.D;
+                     SetDirection(Direction.D);
                     anim.Play("Handshake_" + direction.ToString(), 0);
                 }
                 else if (n == 8)
                 {
-                     direction = Direction.D;
+                     SetDirection(Direction.D);
                     anim.Play("JumpRound_" + direction.ToString(), 0);
                 }
                 t = 0;
@@ -981,14 +982,13 @@ public class CharController : MonoBehaviour
     }
 
     IEnumerator Listening(){
-        direction = Direction.D;
         yield return StartCoroutine(DoAnim("Listen_" + direction.ToString()));
         CheckAbort();
     }
 
     IEnumerator Pee()
     {
-         direction = Direction.D;
+         SetDirection(Direction.D);
         anim.Play("Pee_" + direction.ToString(), 0);
         Debug.Log("Pee");
         SpawnPee();
@@ -1002,7 +1002,7 @@ public class CharController : MonoBehaviour
 
     IEnumerator Shit()
     {
-         direction = Direction.D;
+         SetDirection(Direction.D);
         anim.Play("Poop_" + direction.ToString(), 0);
         SpawnShit();
         while (data.Shit > 1 && !isAbort)
@@ -1103,7 +1103,7 @@ public class CharController : MonoBehaviour
             int ran = Random.Range(0, 100);
             if (ran < 20)
             {
-                direction = Direction.D;
+                SetDirection(Direction.D);
                 anim.Play("Idle_Sit_" + direction.ToString(), 0);
             }
             else if (ran < 40)
@@ -1136,12 +1136,12 @@ public class CharController : MonoBehaviour
         }
         else if (i == 1)
         {
-            direction = Direction.D;
+            SetDirection(Direction.D);
             anim.Play("Idle_ShedHair_" + direction.ToString(), 0);
         }
         else
         {
-            direction = Direction.D;
+            SetDirection(Direction.D);
             anim.Play("Shake_Hair_" + direction.ToString(), 0);
         }
 
@@ -1174,11 +1174,12 @@ public class CharController : MonoBehaviour
 
     IEnumerator Fear()
     {
-        direction = Direction.D;
-        yield return StartCoroutine(DoAnim("Surprised_Hard_" + direction.ToString()));
+        SetDirection(Direction.D);
+        yield return new WaitForEndOfFrame();
+        yield return StartCoroutine(DoAnim("Surprised_Hard_D"));
         
         int n = 0;
-        int maxCount = Random.Range(5, 10);
+        int maxCount = Random.Range(2, 5);
         while (!isAbort && n < maxCount)
         {
             InputController.instance.SetTarget(PointType.Patrol);
@@ -1190,7 +1191,7 @@ public class CharController : MonoBehaviour
         yield return StartCoroutine(MoveToPoint());
 
         while(data.Fear > 10){
-            data.Fear -= 10;
+            data.Fear -= 1;
             yield return StartCoroutine(DoAnim("Scared_LD"));
         }
         CheckAbort();
@@ -1266,6 +1267,7 @@ public class CharController : MonoBehaviour
     #endregion
 
 }
+
 
 
 public enum EnviromentType { Room, Table, Bath };
