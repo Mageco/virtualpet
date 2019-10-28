@@ -1,8 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using Lean.Touch;
+
 
 public class SoapItem : MonoBehaviour
 {
@@ -29,19 +28,13 @@ public class SoapItem : MonoBehaviour
 
 
 
-	public void OnFingerSwipe(LeanFinger finger)
-	{
-		if (isTouch) {
-			if (character != null && character.enviromentType == EnviromentType.Bath) {
-				character.OnSoap ();
-				ItemController.instance.bathTubeItem.OnSoap ();
-			}
-		}
-	}
-
 	void OnTriggerEnter2D(Collider2D other) {
 		if (other.GetComponent <CharController>() != null) {
 			character = other.GetComponent <CharController>();
+			if(character.actionType == ActionType.Bath){
+				character.OnSoap();
+				ItemController.instance.GetBathTubeItem().OnSoap ();
+			}
 		}
 	}
 

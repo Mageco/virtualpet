@@ -100,7 +100,9 @@ public class CharInteract : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other) {
         if (other.tag == "Mouse") {
-           character.OnMouse(other.transform);            
+           character.OnMouse();     
+           
+                  
         } else if (other.tag == "Food") {
 
         }else if (other.tag == "Water") {
@@ -111,7 +113,7 @@ public class CharInteract : MonoBehaviour
 
     void OnTriggerExit2D(Collider2D other) {
         if (other.tag == "Mouse" && character.actionType == ActionType.Mouse) {
-            character.OffMouse();
+            //character.OffMouse();
         }else if (other.tag == "Food") {
 
         }

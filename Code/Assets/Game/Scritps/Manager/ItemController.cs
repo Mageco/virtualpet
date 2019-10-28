@@ -10,9 +10,6 @@ public class ItemController : MonoBehaviour
 	public CharController character;
 	public FoodBowlItem foodBowl;
 	public FoodBowlItem waterBowl;
-	public SoapItem soapItem;
-	public BathShowerItem showerItem;
-	public BathTubeItem bathTubeItem;
 
 	public List<ItemObject> items = new List<ItemObject>();
 
@@ -52,6 +49,10 @@ public class ItemController : MonoBehaviour
     {
         
     }
+
+	public BathTubeItem GetBathTubeItem(){
+		return GameObject.FindObjectOfType<BathTubeItem>();
+	}
 
 	public void UseItem(int itemId){
 		for(int i=0;i<items.Count;i++){

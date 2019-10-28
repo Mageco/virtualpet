@@ -248,7 +248,7 @@ public class CharController : MonoBehaviour
     {
         if (actionType == ActionType.Bath)
         {
-            anim.Play("BathStart_" + direction.ToString(), 0);
+            anim.Play("Soap_D", 0);
         }
     }
 
@@ -261,7 +261,7 @@ public class CharController : MonoBehaviour
     public void OffShower()
     {
         if (actionType == ActionType.Bath)
-            anim.Play("BathStart_" + direction.ToString(), 0);
+            anim.Play("BathStart_D", 0);
     }
 
     public void OnTouch()
@@ -279,9 +279,9 @@ public class CharController : MonoBehaviour
         //}
     }
 
-    public void OnMouse(Transform t)
+    public void OnMouse()
     {
-        if (actionType == ActionType.Hold || actionType == ActionType.OnTable || actionType == ActionType.Bath || actionType == ActionType.Sick
+        if (actionType == ActionType.Mouse || actionType == ActionType.Hold || actionType == ActionType.OnTable || actionType == ActionType.Bath || actionType == ActionType.Sick
         || actionType == ActionType.Sleep || actionType == ActionType.Call || actionType == ActionType.Listening || actionType == ActionType.Fear)
             return;
 
@@ -301,7 +301,6 @@ public class CharController : MonoBehaviour
         {
             Abort();
             actionType = ActionType.Mouse;
-            target = t;
         }
 
     }
@@ -519,8 +518,8 @@ public class CharController : MonoBehaviour
         anim.speed = 1;
         isAbort = true;
         touchObject.SetActive(false);
-        //agent.Stop();
-        //isArrived = true;
+        agent.Stop();
+        isArrived = true;
     }
 
     void RandomDirection()
@@ -615,7 +614,7 @@ public class CharController : MonoBehaviour
                 if (ran < 30)
                 {
                     SetDirection(Direction.D);
-                    anim.Play("BathStart_" + direction.ToString(), 0);
+                    anim.Play("BathStart_D", 0);
                 }
                 else
                     anim.Play("Idle_" + this.direction.ToString(), 0);
@@ -630,7 +629,7 @@ public class CharController : MonoBehaviour
     IEnumerator Bath()
     {
 
-        anim.Play("BathStart_" + direction.ToString(), 0);
+        anim.Play("BathStart_D", 0);
         while (!isAbort)
         {
             yield return new WaitForEndOfFrame();
@@ -643,7 +642,7 @@ public class CharController : MonoBehaviour
         int rand = Random.Range(0,100);    
         if(rand < 50){
             SetDirection(Direction.D);
-            anim.Play("BathStart_" + direction.ToString(), 0);
+            anim.Play("BathStart_D", 0);
             while (!isAbort)
             {
                 yield return new WaitForEndOfFrame();
@@ -699,12 +698,10 @@ public class CharController : MonoBehaviour
         SetDirection(Direction.D);
         if (data.Health < data.maxHealth * 0.1f)
         {
-            SetDirection(Direction.D);
-            anim.Play("Hold_Sick_" + direction.ToString(), 0);
+            anim.Play("Hold_Sick_D", 0);
         }
         else{
-            SetDirection(Direction.D);
-            anim.Play("Hold_" + direction.ToString(), 0);
+            anim.Play("Hold_D", 0);
         }
         while (charInteract.interactType == InteractType.Drag)
         {
@@ -775,7 +772,7 @@ public class CharController : MonoBehaviour
                 if (data.Health < data.maxHealth * 0.1f)
                 {
                     SetDirection(Direction.D);
-                    anim.Play("Drop_Sick_" + direction.ToString(), 0);
+                    anim.Play("Drop_Sick_D", 0);
                     maxTime = 3;
                 }
                 else
@@ -783,13 +780,13 @@ public class CharController : MonoBehaviour
                     if (fallSpeed < 50)
                     {
                         SetDirection(Direction.D);
-                        anim.Play("Drop_Light_" + direction.ToString(), 0);
+                        anim.Play("Drop_Light_D", 0);
                         maxTime = 1;
                     }
                     else
                     {
                         SetDirection(Direction.D);
-                        anim.Play("Drop_Hard_" + direction.ToString(), 0);
+                        anim.Play("Drop_Hard_D", 0);
                         maxTime = 3;
                     }
                 }
@@ -821,14 +818,17 @@ public class CharController : MonoBehaviour
 
     IEnumerator Mouse()
     {
-        if (target != null)
-        {
-            agent.SetDestination(target.position);
-            lastTargetPosition = target.position;
-            agent.speed = 40;
+        while(AnimalController.instance.mouse.state != MouseState.Idle && !isAbort){
+            agent.SetDestination(AnimalController.instance.mouse.transform.position);
+            lastTargetPosition = AnimalController.instance.mouse.transform.position;
+            agent.speed = 45;
+            //int ran = Random.Range(0,100);
+            //if(ran > 50 && direction == Direction.LD){
+            //    anim.Play("Jump_LookDown_D");
+            //}else
             anim.Play("Run_" + this.direction.ToString(), 0);
-            anim.speed = 1.3f;
-            yield return StartCoroutine(Wait(0.2f));
+            anim.speed = 1.5f;
+            yield return StartCoroutine(Wait(0.5f));
         }
         CheckAbort();
     }
@@ -836,7 +836,7 @@ public class CharController : MonoBehaviour
     IEnumerator Call()
     {
         SetDirection(Direction.D);
-        yield return StartCoroutine(DoAnim("BathStart_" + direction.ToString()));
+        yield return StartCoroutine(DoAnim("BathStart_D"));
 
         if (!isAbort)
         {
@@ -882,32 +882,32 @@ public class CharController : MonoBehaviour
                 else if (n == 3)
                 {
                     SetDirection(Direction.D);
-                    anim.Play("Sit_WaitPetUp_" + direction.ToString());
+                    anim.Play("Sit_WaitPetUp_D" );
                 }
                 else if (n == 4)
                 {
                      SetDirection(Direction.D);
-                    anim.Play("Sit_WaitPetDown_" + direction.ToString());
+                    anim.Play("Sit_WaitPetDown_D" );
                 }
                 else if (n == 5)
                 {
                      SetDirection(Direction.D);
-                    anim.Play("Sit_WaitPetLeft_" + direction.ToString());
+                    anim.Play("Sit_WaitPetLeft_D" );
                 }
                 else if (n == 6)
                 {
                      SetDirection(Direction.D);
-                    anim.Play("Sit_WaitPetRight_" + direction.ToString());
+                    anim.Play("Sit_WaitPetRight_D" );
                 }
                 else if (n == 7)
                 {
                      SetDirection(Direction.D);
-                    anim.Play("WaitHandshake_" + direction.ToString());
+                    anim.Play("WaitHandshake_D" );
                 }
                 else if (n == 8)
                 {
                      SetDirection(Direction.D);
-                    anim.Play("WaitJumpRound_" + direction.ToString());
+                    anim.Play("WaitJumpRound_D" );
                 }
                 t += Time.deltaTime;
                 if (t > maxTime)
@@ -945,32 +945,32 @@ public class CharController : MonoBehaviour
                 else if (n == 3)
                 {
                      SetDirection(Direction.D);
-                    anim.Play("Sit_Pet_Up_" + direction.ToString(), 0);
+                    anim.Play("Sit_Pet_Up_D" , 0);
                 }
                 else if (n == 4)
                 {
                      SetDirection(Direction.D);
-                    anim.Play("Sit_Pet_Down_" + direction.ToString(), 0);
+                    anim.Play("Sit_Pet_Down_D" , 0);
                 }
                 else if (n == 5)
                 {
                      SetDirection(Direction.D);
-                    anim.Play("Sit_Pet_Right_" + direction.ToString(), 0);
+                    anim.Play("Sit_Pet_Right_D" , 0);
                 }
                 else if (n == 6)
                 {
                      SetDirection(Direction.D);
-                    anim.Play("Sit_Pet_Left_" + direction.ToString(), 0);
+                    anim.Play("Sit_Pet_Left_D" , 0);
                 }
                 else if (n == 7)
                 {
                      SetDirection(Direction.D);
-                    anim.Play("Handshake_" + direction.ToString(), 0);
+                    anim.Play("Handshake_D" , 0);
                 }
                 else if (n == 8)
                 {
                      SetDirection(Direction.D);
-                    anim.Play("JumpRound_" + direction.ToString(), 0);
+                    anim.Play("JumpRound_D" , 0);
                 }
                 t = 0;
 
@@ -989,7 +989,7 @@ public class CharController : MonoBehaviour
     IEnumerator Pee()
     {
          SetDirection(Direction.D);
-        anim.Play("Pee_" + direction.ToString(), 0);
+        anim.Play("Pee_D" , 0);
         Debug.Log("Pee");
         SpawnPee();
         while (data.Pee > 1 && !isAbort)
@@ -1003,7 +1003,7 @@ public class CharController : MonoBehaviour
     IEnumerator Shit()
     {
          SetDirection(Direction.D);
-        anim.Play("Poop_" + direction.ToString(), 0);
+        anim.Play("Poop_D" , 0);
         SpawnShit();
         while (data.Shit > 1 && !isAbort)
         {
@@ -1025,7 +1025,7 @@ public class CharController : MonoBehaviour
         if (ItemController.instance.foodBowl.CanEat() && !isAbort)
         {
              direction = Direction.LD;
-            anim.Play("Eat_" + direction.ToString(), 0);
+            anim.Play("Eat_LD" , 0);
             yield return StartCoroutine(Wait(0.1f));
             while (data.Food < data.maxFood && !isAbort && canEat)
             {
@@ -1058,7 +1058,7 @@ public class CharController : MonoBehaviour
         if (ItemController.instance.waterBowl.CanEat())
         {
              direction = Direction.LD;
-            anim.Play("Eat_" + direction.ToString(), 0);
+            anim.Play("Eat_LD" , 0);
             yield return StartCoroutine(Wait(0.1f));
             while (data.Water < data.maxWater && !isAbort && canDrink)
             {
@@ -1084,7 +1084,7 @@ public class CharController : MonoBehaviour
         yield return StartCoroutine(MoveToPoint());
         if (!isAbort){
              direction = Direction.LD;
-            anim.Play("Sleep_" + direction.ToString(), 0);
+            anim.Play("Sleep_LD" , 0);
         }
 
         while (data.Sleep < data.maxSleep && !isAbort)
@@ -1104,7 +1104,7 @@ public class CharController : MonoBehaviour
             if (ran < 20)
             {
                 SetDirection(Direction.D);
-                anim.Play("Idle_Sit_" + direction.ToString(), 0);
+                anim.Play("Idle_Sit_D", 0);
             }
             else if (ran < 40)
             {
@@ -1137,12 +1137,12 @@ public class CharController : MonoBehaviour
         else if (i == 1)
         {
             SetDirection(Direction.D);
-            anim.Play("Idle_ShedHair_" + direction.ToString(), 0);
+            anim.Play("Idle_ShedHair_D" , 0);
         }
         else
         {
             SetDirection(Direction.D);
-            anim.Play("Shake_Hair_" + direction.ToString(), 0);
+            anim.Play("Shake_Hair_D" , 0);
         }
 
 
