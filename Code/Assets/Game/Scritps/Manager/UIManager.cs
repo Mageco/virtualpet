@@ -7,6 +7,8 @@ public class UIManager : MonoBehaviour
 {
 
 	public static UIManager instance;
+	[HideInInspector]
+	public NotificationType notification = NotificationType.None;
 
 	void Awake()
 	{
@@ -29,4 +31,10 @@ public class UIManager : MonoBehaviour
 	{
 		InputController.instance.OnCall ();
 	}
+
+	public void OnNotify(NotificationType type){
+		notification = type;
+	}
 }
+
+public enum NotificationType{None,ItemPurchase,SkillLevelUp}

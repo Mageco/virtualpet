@@ -5,6 +5,7 @@ using UnityEngine;
 [System.Serializable]
 public class CharData
 {
+	int[] skills;
 	public float food = 50;
 	public float water = 50;
 	public float sleep = 50;
@@ -59,6 +60,9 @@ public class CharData
 	public float maxFear = 100;
 	public float maxCurious = 100;
 
+	public CharData(){
+		skills = new int[DataHolder.Skills().GetDataCount()];
+	}
 
 	void Load()
 	{
@@ -277,4 +281,25 @@ public class CharData
 				this.curious = maxCurious;
 		}
 	}
+
+	public int GetSkillProgress(SkillType type){
+		for(int i=0;i<skills.Length;i++){
+			if(DataHolder.Skill(i).skillType == type){
+				return skills[i];
+			}
+		}
+		return 0;
+	}
+
+	public void LevelUpSkill(SkillType type){
+		for(int i=0;i<skills.Length;i++){
+			if(DataHolder.Skill(i).skillType == type){
+				skills[i] ++;
+				if(skills[i] > DataHolder.Skill(i).maxProgress)
+					skills[i] = DataHolder.Skill(i).maxProgress;
+				return;
+			}
+		}
+	}
+
 }

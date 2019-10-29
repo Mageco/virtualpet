@@ -52,6 +52,13 @@ public class CharController : MonoBehaviour
     public GameObject touchObject;
     #endregion
 
+    //Skill
+    SkillType currentSkill = SkillType.NONE;
+    float skillTime;
+    float maxSkillTime = 5;
+    public GameObject skillLearnEffect;
+    public GameObject skillLevelUpEffect;
+
     #region Load
 
     void Awake()
@@ -106,6 +113,14 @@ public class CharController : MonoBehaviour
         }
         else
             dataTime += Time.deltaTime;
+
+        if(currentSkill != SkillType.NONE){
+            if(skillTime > maxSkillTime){
+                currentSkill = SkillType.NONE;
+                skillTime = 0;
+            }else
+                skillTime += Time.deltaTime;
+        }
     }
     #endregion
 
@@ -1247,6 +1262,29 @@ public class CharController : MonoBehaviour
     }
 
     #endregion
+
+    #region Skill
+
+    public void LearnSkill(SkillType type){
+        currentSkill = type;
+        skillTime = 0;
+    }
+    public void LevelUpSkill(SkillType type){
+        skillTime = 0;
+        currentSkill = SkillType.NONE;
+        StartCoroutine(LevelUpSkillCouroutine(type));
+        UIManager.instance.OnNotify(NotificationType.SkillLevelUp);
+    }
+
+    IEnumerator LevelUpSkillCouroutine(SkillType type){
+        yield return new WaitForEndOfFrame();
+        data.LevelUpSkill(type);
+    }
+
+
+
+
+    #endregion
 
     #region Effect
     void SpawnPee()

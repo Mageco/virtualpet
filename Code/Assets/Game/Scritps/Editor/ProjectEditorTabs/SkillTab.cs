@@ -88,6 +88,7 @@ public class SkillTab : BaseTab
 			}
 
 			DataHolder.Skill(selection).skillType = (SkillType)EditorGUILayout.EnumPopup("Skill Type", DataHolder.Skill(selection).skillType, GUILayout.Width (pw.mWidth * 2));
+			DataHolder.Skill(selection).maxProgress = EditorGUILayout.IntField("Max Progress", DataHolder.Skill(selection).maxProgress, GUILayout.Width (pw.mWidth * 2));
 			EditorGUILayout.Separator();
 
 			EditorGUILayout.BeginVertical("box");

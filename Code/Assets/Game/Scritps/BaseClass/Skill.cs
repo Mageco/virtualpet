@@ -13,7 +13,7 @@ public class Skill
 
 	public bool useable = false;
 
-	public int progress = 0;
+	public int maxProgress = 10;
 	public ItemVariableType itemVariable = ItemVariableType.NONE;
 	public string variableKey = "";
 	public string variableValue = "";
