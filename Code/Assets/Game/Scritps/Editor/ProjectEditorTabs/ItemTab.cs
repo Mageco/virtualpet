@@ -124,18 +124,6 @@ public class ItemTab : BaseTab
 						DataHolder.Item(selection).skillID, pw.GetSkills(), GUILayout.Width(pw.mWidth));
 				}
 
-				EditorGUILayout.Separator();
-				DataHolder.Item(selection).itemVariable = (ItemVariableType)EditorTab.EnumToolbar("Item variable", 
-					(int)DataHolder.Item(selection).itemVariable, typeof(ItemVariableType));
-				if(!ItemVariableType.NONE.Equals(DataHolder.Item(selection).itemVariable))
-				{
-					DataHolder.Item(selection).variableKey = EditorGUILayout.TextField("Variable key", DataHolder.Item(selection).variableKey, GUILayout.Width((int)(pw.mWidth*1.5)));
-				}
-				if(ItemVariableType.SET.Equals(DataHolder.Item(selection).itemVariable))
-				{
-					DataHolder.Item(selection).variableValue = EditorGUILayout.TextField("Variable value", DataHolder.Item(selection).variableValue, GUILayout.Width((int)(pw.mWidth*1.5)));
-				}
-
 			}
 			EditorGUILayout.EndVertical(); 
 

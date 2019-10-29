@@ -21108,6 +21108,7 @@ GameObject:
   - component: {fileID: 2776677470726071291}
   - component: {fileID: 2776677470726071293}
   - component: {fileID: 1491708381}
+  - component: {fileID: 3919013787828678110}
   m_Layer: 0
   m_Name: Shiba1_Yellow_Normal
   m_TagString: Player
@@ -21261,7 +21262,6 @@ MonoBehaviour:
   touchObject: {fileID: 530351831}
   currentSkill: 0
   skillLearnEffect: {fileID: 3661641459515871219}
-  skillLevelUpEffect: {fileID: 0}
 --- !u!114 &2776677470726071293
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21292,6 +21292,60 @@ MonoBehaviour:
   isTouch: 0
   touchDirection: 1
   dragOffset: {x: 0, y: 0, z: 0}
+--- !u!114 &3919013787828678110
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2776677470726071290}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c6f41fb25ffc7b4a8308db03a8bfc41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  IgnoreStartedOverGui: 1
+  IgnoreIsOverGui: 0
+  RequiredSelectable: {fileID: 0}
+  CheckAngle: 0
+  Angle: 0
+  AngleThreshold: 90
+  Clamp: 0
+  Multiplier: 1
+  onSwipe:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1491708381}
+        m_MethodName: OnFingerSwipe
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_TypeName: Lean.Touch.LeanFingerSwipe+LeanFingerEvent, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  onSwipeDelta:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1491708381}
+        m_MethodName: OnFingerTouchUp
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_TypeName: Lean.Touch.LeanFingerSwipe+Vector2Event, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  AllowMultiple: 1
+  MultipleSwipeDelay: 0.5
 --- !u!1 &2799078269039525955
 GameObject:
   m_ObjectHideFlags: 0

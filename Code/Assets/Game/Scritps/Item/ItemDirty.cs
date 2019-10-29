@@ -7,7 +7,6 @@ public class ItemDirty : MonoBehaviour
 
 	public float maxDirty = 100;
 	float dirty = 0;
-	public float clean = 20;
 	Vector3 originalScale;
     // Start is called before the first frame update
     void Start()
@@ -22,7 +21,7 @@ public class ItemDirty : MonoBehaviour
 		this.transform.localScale = dirty / maxDirty * originalScale;
     }
 
-	public void OnClean()
+	public void OnClean(float clean)
 	{
 		dirty -= clean;
 		if (dirty < 0)

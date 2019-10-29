@@ -6,16 +6,29 @@ using Lean.Touch;
 
 public class CleanItem : MonoBehaviour
 {
-
+	public float clean = 1f;
 	bool isTouch = false;
 	ItemDirty dirtyItem;
 	float targetAngle = 0;
 
+	Animator anim;
+
+	void Awake(){
+		anim = this.GetComponent<Animator>();
+	}
+
 	void Update()
 	{
 		if (isTouch) {
+			anim.Play("Active",0);
 			targetAngle = Mathf.Lerp (targetAngle, 0, Time.deltaTime * 4);
 			this.transform.rotation = Quaternion.Lerp (this.transform.rotation, Quaternion.Euler (new Vector3 (0, 0,-targetAngle)), Time.deltaTime * 2);
+			if(dirtyItem != null){
+				dirtyItem.OnClean(clean);
+			}
+		}else
+		{
+			anim.Play("Idle",0);
 		}
 	}
 
@@ -32,22 +45,6 @@ public class CleanItem : MonoBehaviour
 		isTouch = false;
 	}
 
-
-
-	public void OnFingerSwipe(LeanFinger finger)
-	{
-		if (isTouch) {
-			targetAngle = finger.ScreenDelta.x;
-			if (targetAngle > 45)
-				targetAngle = 45;
-			if (targetAngle < -45)
-				targetAngle = -45;
-
-			if (dirtyItem != null) {
-				dirtyItem.OnClean ();
-			}
-		}
-	}
 
 	void OnTriggerEnter2D(Collider2D other) {
 		if (other.GetComponent <ItemDirty>() != null) {

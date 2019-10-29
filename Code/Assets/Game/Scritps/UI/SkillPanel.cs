@@ -24,7 +24,7 @@ public class SkillPanel : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(UIManager.instance.notification == NotificationType.SkillLevelUp){
+        if(UIManager.instance.notification == NotificationType.Skill){
             Load();
             UIManager.instance.notification = NotificationType.None;
         }

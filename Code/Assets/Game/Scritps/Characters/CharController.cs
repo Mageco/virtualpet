@@ -57,7 +57,6 @@ public class CharController : MonoBehaviour
     float skillTime;
     float maxSkillTime = 20;
     public GameObject skillLearnEffect;
-    public GameObject skillLevelUpEffect;
 
     #region Load
 
@@ -69,7 +68,6 @@ public class CharController : MonoBehaviour
         charInteract = this.GetComponent<CharInteract>();
         touchObject.SetActive(false);
         skillLearnEffect.SetActive(false);
-        skillLevelUpEffect.SetActive(false);
     }
     // Use this for initialization
     void Start()
@@ -232,6 +230,9 @@ public class CharController : MonoBehaviour
 
     public void OnHold()
     {
+        if(actionType == ActionType.Hold || actionType == ActionType.SkillUp)
+            return;
+
         Abort();
         actionType = ActionType.Hold;
     }
@@ -302,7 +303,7 @@ public class CharController : MonoBehaviour
         || actionType == ActionType.Sleep || actionType == ActionType.Call || actionType == ActionType.Listening || actionType == ActionType.Fear)
             return;
 
-        if (actionType == ActionType.Pee || actionType == ActionType.Shit)
+        if (actionType == ActionType.Pee || actionType == ActionType.Shit || actionType == ActionType.SkillUp)
         {
             return;
         }
@@ -524,6 +525,8 @@ public class CharController : MonoBehaviour
             StartCoroutine(Fall());
         }else if(actionType == ActionType.Listening){
             StartCoroutine(Listening());
+        }else if(actionType == ActionType.SkillUp){
+            StartCoroutine(SkillUp());
         }
     }
     #endregion
@@ -1290,15 +1293,15 @@ public class CharController : MonoBehaviour
     }
     public void LevelUpSkill(SkillType type){
         OffLearnSkill();
-        StartCoroutine(LevelUpSkillCouroutine(type));
-        UIManager.instance.OnNotify(NotificationType.SkillLevelUp);
+        data.LevelUpSkill(type);
+        UIManager.instance.OnNotify(NotificationType.Skill);
+        Abort();
+        actionType = ActionType.SkillUp;
     }
 
-    IEnumerator LevelUpSkillCouroutine(SkillType type){
-        skillLevelUpEffect.SetActive(true);
-        yield return new WaitForSeconds(2);
-        skillLevelUpEffect.SetActive(false);
-        data.LevelUpSkill(type);
+    IEnumerator SkillUp(){
+        yield return StartCoroutine(DoAnim("JumpRound_SkillUp_D"));
+        CheckAbort();
     }
 
 
@@ -1329,4 +1332,4 @@ public class CharController : MonoBehaviour
 
 
 public enum EnviromentType { Room, Table, Bath };
-public enum ActionType { None, Mouse, Rest, Sleep, Eat, Drink, Patrol, Discover, Pee, Shit, Itchi, Sick, Sad, Fear, Happy, Tired, Call, Hold, OnTable, Bath, Listening,Fall }
+public enum ActionType { None, Mouse, Rest, Sleep, Eat, Drink, Patrol, Discover, Pee, Shit, Itchi, Sick, Sad, Fear, Happy, Tired, Call, Hold, OnTable, Bath, Listening,Fall,SkillUp}

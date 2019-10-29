@@ -67,7 +67,6 @@ public class ApiManager : MonoBehaviour {
 				isLogin = true;
 				MageManager.instance.SetLocation(result.User.country_code);
 				OnCompleteLogin (result);
-				CheckSubscription();
 				GetApplicationData ();
 			},
 			(errorStatus) => {
@@ -96,14 +95,20 @@ public class ApiManager : MonoBehaviour {
 	{
 		Debug.Log ("NEw user created");
 
-		user.user_datas.Add (new UserData ("Coin", "100", ""));
-		user.user_datas.Add (new UserData ("Live", "5", ""));
-		user.user_datas.Add (new UserData ("AvatarId", "0", ""));
-		user.SetUserData (new UserData ("Avatar0", "true", "Item"));
+		user.user_datas.Add (new UserData ("Coin", "100000", ""));
+		user.user_datas.Add (new UserData ("Diamond", "50000", ""));
+		user.user_datas.Add (new UserData ("2", "used", "Item"));
+		user.user_datas.Add (new UserData ("4", "used", "Item"));
+		user.user_datas.Add (new UserData ("7", "used", "Item"));
+		user.user_datas.Add (new UserData ("8", "used", "Item"));
+		user.user_datas.Add (new UserData ("11", "used", "Item"));
+		user.user_datas.Add (new UserData ("13", "used", "Item"));
+		user.user_datas.Add (new UserData ("17", "used", "Item"));
 
 		SaveUserData ();
 		UpdateUserData ();
 		UpdateUserProfile ();
+		ItemController.instance.LoadItems();
 	}
 
 	void CreateExistingUser(User u)
@@ -113,19 +118,11 @@ public class ApiManager : MonoBehaviour {
 			
 		if (user.GetUserData ("Coin") == null) {
 			isSave = true;
-			user.user_datas.Add (new UserData ("Coin", "100", ""));
+			user.user_datas.Add (new UserData ("Coin", "100000", ""));
 		}
-		if (user.GetUserData ("Live") == null) {
+		if (user.GetUserData ("Diamond") == null) {
 			isSave = true;
-			user.user_datas.Add (new UserData ("Live", "5", ""));
-		}
-		if (user.GetUserData ("AvatarId") == null) {
-			isSave = true;
-			user.user_datas.Add (new UserData ("AvatarId", "0", ""));
-		}
-		if (user.GetUserData ("Avatar0") == null) {
-			isSave = true;
-			user.user_datas.Add (new UserData ("Avatar0", "true", ""));
+			user.user_datas.Add (new UserData ("Diamond", "50000", ""));
 		}
 
 		if (isSave) {
@@ -220,115 +217,7 @@ public class ApiManager : MonoBehaviour {
 	#endregion
 
 
-	#region product
-	public void CheckSubscription() {
-		CheckSubscriptionRequest r = new CheckSubscriptionRequest();  // English wil be EN_en
-
-		//call to login api
-		ApiHandler.instance.SendApi<CheckSubscriptionResponse>(
-			ApiSettings.API_CHECK_SUBSCRIPTION,
-			r, 
-			(result) => {
-				Debug.Log("Check subscription");
-				//do all things like login
-				//Debug.Log("Result: " + result.Resources.ToString());
-
-				foreach (string i in result.LicenseItems) {
-					Debug.Log("license item:" + i);
-				}
-			},
-			(errorStatus) => {
-				Debug.Log("Error: " + errorStatus);
-				//do some other processing here
-			},
-			() => {
-				//timeout handler here
-				Debug.Log("Api call is timeout");
-			}
-		);
-	}
-
-	public void ValdiateActivationCode(string activationCode,string phone) {
-		ValidateActivationCodeRequest r = new ValidateActivationCodeRequest(activationCode, "", phone, "" );  // English wil be EN_en
-
-		//call to login api
-		ApiHandler.instance.SendApi<ValidateActivationCodeResponse>(
-			ApiSettings.API_VALIDATE_ACTIVATION_CODE,
-			r, 
-			(result) => {
-				Debug.Log("Validate activation code successful");
-				MageManager.instance.OnNotificationPopup("Chú ý","Kích hoạt thành công");
-				foreach (string i in result.LicenseItems) {
-					
-					Debug.Log("license item:" + i);
-				}
-				MageManager.instance.OffWaiting ();
-			},
-			(errorStatus) => {
-				Debug.Log("Error: " + errorStatus);
-				//do some other processing here
-				switch(errorStatus) {
-				case 100:
-					MageManager.instance.OnNotificationPopup("Chú ý","Thiết bị đã được kích hoạt rồi");
-					Debug.Log("User has used this code before!");
-					break;
-				case 101:
-					MageManager.instance.OnNotificationPopup("Chú ý","Đã quá số lượng thiết bị kích hoạt");
-					Debug.Log("Code has been fully used! Reach max number of users allowed.");
-					break;
-				case 102:
-					MageManager.instance.OnNotificationPopup("Chú ý","Mã kích hoạt không đúng");
-					Debug.Log("Code is invalid");
-					break;
-				}
-				MageManager.instance.OffWaiting ();
-			},
-			() => {
-				//timeout handler here
-				Debug.Log("Api call is timeout");
-				MageManager.instance.OffWaiting ();
-			}
-		);
-	}
-
-	public void ActivateByProduct(string productCode,string phone) {
-		ActivateByProductRequest r = new ActivateByProductRequest(productCode, "", phone, "" );  // English wil be EN_en
-
-		//call to login api
-		ApiHandler.instance.SendApi<ActivateByProductResponse>(
-			ApiSettings.API_ACTIVATE_BY_PRODUCT,
-			r, 
-			(result) => {
-				Debug.Log("Validate activation code successful");
-				foreach (string i in result.LicenseItems) {
-					Debug.Log("license item:" + i);
-				}
-
-			},
-			(errorStatus) => {
-				Debug.Log("Error: " + errorStatus);
-				//do some other processing here
-				switch(errorStatus) {
-				case 103:
-					Debug.Log("Wrong Product code!");
-					break;
-				case 104:
-					Debug.Log("Activation code generated failed.");
-					break;
-				case 102:
-					Debug.Log("Code is invalid");
-					break;
-				}
-			},
-			() => {
-				//timeout handler here
-				Debug.Log("Api call is timeout");
-			}
-		);
-	}
-
-
-	#endregion
+	
 
 
 	#region Event
@@ -432,45 +321,94 @@ public class ApiManager : MonoBehaviour {
 
 	}
 
-	public void BuyItem(string itemId,int price,PriceType type)
+	public bool BuyItem(int itemId)
 	{
+		PriceType type = DataHolder.GetItem(itemId).priceType;
+		int price = DataHolder.GetItem(itemId).buyPrice;
 		if(type == PriceType.Coin){
 			if (price > GetCoin ()) {
-				if(MageManager.instance.GetLanguageName () == "English") 
+/* 				if(MageManager.instance.GetLanguageName () == "English") 
 					MageManager.instance.OnNotificationPopup ("Warning", "You have not enough Coin");
 				else
-					MageManager.instance.OnNotificationPopup ("Chú ý", "Bạn không đủ vàng để mua sản phẩm này");
-				return;
+					MageManager.instance.OnNotificationPopup ("Chú ý", "Bạn không đủ vàng để mua sản phẩm này"); */
+				return false;
 			}
 			AddCoin (-price);
 			AddItem (itemId);
+			return true;
 		}else if(type == PriceType.Diamond){
 			if (price > GetDiamond ()) {
-				if(MageManager.instance.GetLanguageName () == "English") 
+/* 				if(MageManager.instance.GetLanguageName () == "English") 
 					MageManager.instance.OnNotificationPopup ("Warning", "You have not enough Ruby");
 				else
-					MageManager.instance.OnNotificationPopup ("Chú ý", "Bạn không đủ ngọc để mua sản phẩm này");
-				return;
+					MageManager.instance.OnNotificationPopup ("Chú ý", "Bạn không đủ ngọc để mua sản phẩm này"); */
+				return false;
 			}
 			AddDiamond (-price);
 			AddItem (itemId);
+			return true;
+		}else
+		{
+			return false;
 		}
 	}
 
 
-	public void AddItem(string itemId)
+	public void AddItem(int itemId)
 	{
-		user.SetUserData (new UserData (itemId, "true", "Item"));
+		user.SetUserData (new UserData (itemId.ToString(), "true", "Item"));
 		SaveUserData ();
 		UpdateUserData ();
 	}
 
-	public bool HaveItem(string itemId)
+	public void UseItem(int itemId){
+		Debug.LogWarning(itemId);
+		//if(HaveItem(itemId)){
+			user.SetUserData (new UserData (itemId.ToString(), "used", "Item"));
+			for(int i=0;i<DataHolder.Items().GetDataCount();i++){
+				if(DataHolder.Item(i).itemType == DataHolder.GetItem(itemId).itemType && DataHolder.Item(i).iD != itemId){
+					user.SetUserData (new UserData (itemId.ToString(), "true", "Item"));
+				}
+			}
+			SaveUserData ();
+			UpdateUserData ();
+		//}
+	}
+
+	public bool HaveItem(int itemId)
 	{
-		if (user.GetUserData (itemId) == "true")
+		if (user.GetUserData (itemId.ToString()) == "true" || user.GetUserData (itemId.ToString()) == "used")
 			return true;
 		else
 			return false;
+	}
+
+	public bool UsedItem(int itemId)
+	{
+		if (user.GetUserData (itemId.ToString()) == "used")
+			return true;
+		else
+			return false;
+	}
+
+	public List<int> GetBuyItems(){
+		List<int> items = new List<int>();
+		for(int i=0;i<DataHolder.Items().GetDataCount();i++){
+			if(HaveItem(DataHolder.Item(i).iD)){
+				items.Add(DataHolder.Item(i).iD);
+			}
+		}
+		return items;
+	}
+
+	public List<int> GetUsedItems(){
+		List<int> items = new List<int>();
+		for(int i=0;i<DataHolder.Items().GetDataCount();i++){
+			if(UsedItem(DataHolder.Item(i).iD)){
+				items.Add(DataHolder.Item(i).iD);
+			}
+		}
+		return items;
 	}
 
 	public string GetName()
@@ -485,21 +423,6 @@ public class ApiManager : MonoBehaviour {
 		UpdateUserProfile ();
 	}
 
-
-	public int GetAvatarId()
-	{
-		if (user.GetUserData ("AvatarId") != null)
-			return int.Parse (user.GetUserData ("AvatarId"));
-		else
-			return 0;
-	}
-
-	public void SetAvatarId(int id)
-	{
-		user.SetUserData (new UserData ("AvatarId", id.ToString (), ""));
-		SaveUserData ();
-		UpdateUserData ();
-	}
 
 
 

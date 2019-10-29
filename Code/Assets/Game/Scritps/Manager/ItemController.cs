@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class ItemController : MonoBehaviour
 {
-
 	public static ItemController instance;
 	[HideInInspector]
 	public CharController character;
@@ -23,12 +22,14 @@ public class ItemController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        LoadItems();
+		LoadItems();
     }
 
-	void LoadItems(){
-		for(int i=0;i<GameHandler.Instance().items.Length;i++){
-			AddItem(GameHandler.Instance().items[i]);
+	public void LoadItems(){
+		List<int> data = ApiManager.instance.GetUsedItems();
+		for(int i=0;i<data.Count;i++){
+			Debug.Log(data[i]);
+			AddItem(data[i]);
 		}
 	}
 

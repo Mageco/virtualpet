@@ -17,9 +17,7 @@ public class Item
 	public bool consume = true;
 	public ItemSkillType itemSkill = ItemSkillType.NONE;
 	public int skillID = 0;
-	public ItemVariableType itemVariable = ItemVariableType.NONE;
-	public string variableKey = "";
-	public string variableValue = "";
+
 
 	public Item()
 	{

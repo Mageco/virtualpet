@@ -52,7 +52,6 @@ public class ActivationWindow : MonoBehaviour {
 			} else {
 				ES2.Save (code, "ActivationCode");
 				ES2.Save (number, "PhoneNumber");
-				ApiManager.instance.ValdiateActivationCode (code, number);
 				MageManager.instance.OnWaiting ();
 			}
 

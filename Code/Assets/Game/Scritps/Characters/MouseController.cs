@@ -49,7 +49,7 @@ public class MouseController : MonoBehaviour
 	}
 
 	void Seek(){
-		anim.Play("Run",0);
+		
 		lastPosition = this.transform.position;
 		List<Transform> points = InputController.instance.GetRandomPoints (PointType.MouseEat);
 		List<Transform> pointRandoms = InputController.instance.GetRandomPoints (PointType.Mouse);
@@ -64,6 +64,7 @@ public class MouseController : MonoBehaviour
 		maxTimeSpawn = Random.Range (60, 120);
 		this.body.gameObject.SetActive (true);
 		col.enabled = true;
+		anim.Play("Run",0);
 	}
 
 	void CompleteSeek()

@@ -7,7 +7,7 @@ public class ShopPanel : MonoBehaviour
     public Transform anchor;
     List<ItemUI> items = new List<ItemUI>();
     public GameObject itemUIPrefab;
-    public int currentTab;
+    public int currentTab = 0;
     // Start is called before the first frame update
     void Start()
     {
@@ -20,7 +20,10 @@ public class ShopPanel : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if(UIManager.instance.notification == NotificationType.Shop){
+            OnTab(currentTab);
+            UIManager.instance.notification = NotificationType.None;
+        }
     }
 
     public void OnTab(int id){

@@ -15,6 +15,8 @@ public class ItemUI : MonoBehaviour
     public GameObject diamonIcon;
     public GameObject moneyIcon;
 
+    ItemState state = ItemState.Buy;
+
     // Start is called before the first frame update
     public void Load(Item d)
     {
@@ -26,19 +28,33 @@ public class ItemUI : MonoBehaviour
         Debug.Log(url);
         icon.sprite = Resources.Load<Sprite>(url) as Sprite;
         price.text = d.buyPrice.ToString();
-        if(d.itemState == ItemState.Buy){
+
+        if(ApiManager.instance.UsedItem(d.iD)){
+            state = ItemState.Used;
+        }
+        else if(ApiManager.instance.HaveItem(d.iD)){
+            if(d.itemType != ItemType.Diamond && d.itemType != ItemType.Coin && d.itemType != ItemType.Toy){     
+                state = ItemState.Use;
+            }else
+                state = ItemState.Buy;        
+        }else{
+            state = ItemState.Buy;
+        }
+
+        if(state == ItemState.Buy){
             buyButton.SetActive(true);
             useButton.SetActive(false);
             usedButton.SetActive(false);
-        }else if(d.itemState == ItemState.Use){
+        }else if(state == ItemState.Use){
             buyButton.SetActive(false);
             useButton.SetActive(true);
             usedButton.SetActive(false);
-        }else if(d.itemState == ItemState.Used){
+        }else if(state == ItemState.Used){
             buyButton.SetActive(false);
             useButton.SetActive(false);
             usedButton.SetActive(true);
         }
+        
 
         if(d.priceType == PriceType.Coin){
             coinIcon.SetActive(true);
@@ -60,14 +76,20 @@ public class ItemUI : MonoBehaviour
 
 
     // Update is called once per frame
-    void Update()
+    void UpdateState()
     {
         
     }
 
     public void OnBuy(){
-        ItemController.instance.UseItem(this.itemId);
-    }
+        if(state == ItemState.Used)
+            return;
+        else if(state == ItemState.Use){
+            UIManager.instance.UseItem(itemId);
+        }else {
+            UIManager.instance.BuyItem(itemId);
+        }        
+   }
 
     public void OnUse(){
 
