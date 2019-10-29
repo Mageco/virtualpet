@@ -40,7 +40,7 @@ public class CharController : MonoBehaviour
     Animator anim;
 
     //Interact
-    CharInteract charInteract;
+    public CharInteract charInteract;
     public bool isTouch = false;
     //Pee,Sheet
     public Transform peePosition;
@@ -53,9 +53,9 @@ public class CharController : MonoBehaviour
     #endregion
 
     //Skill
-    SkillType currentSkill = SkillType.NONE;
+    public SkillType currentSkill = SkillType.NONE;
     float skillTime;
-    float maxSkillTime = 5;
+    float maxSkillTime = 20;
     public GameObject skillLearnEffect;
     public GameObject skillLevelUpEffect;
 
@@ -68,10 +68,13 @@ public class CharController : MonoBehaviour
         agent = GameObject.FindObjectOfType<PolyNavAgent>();
         charInteract = this.GetComponent<CharInteract>();
         touchObject.SetActive(false);
+        skillLearnEffect.SetActive(false);
+        skillLevelUpEffect.SetActive(false);
     }
     // Use this for initialization
     void Start()
     {
+        data.Init();
         anim.Play("Idle_" + direction.ToString(), 0);
     }
     #endregion
@@ -116,8 +119,7 @@ public class CharController : MonoBehaviour
 
         if(currentSkill != SkillType.NONE){
             if(skillTime > maxSkillTime){
-                currentSkill = SkillType.NONE;
-                skillTime = 0;
+                OffLearnSkill();
             }else
                 skillTime += Time.deltaTime;
         }
@@ -300,12 +302,12 @@ public class CharController : MonoBehaviour
         || actionType == ActionType.Sleep || actionType == ActionType.Call || actionType == ActionType.Listening || actionType == ActionType.Fear)
             return;
 
-        int n = 0;
-
         if (actionType == ActionType.Pee || actionType == ActionType.Shit)
         {
-            n = Random.Range(50, 100);
+            return;
         }
+
+        int n = 0;
 
         if (actionType == ActionType.Drink || actionType == ActionType.Eat)
         {
@@ -441,6 +443,7 @@ public class CharController : MonoBehaviour
     {
         Debug.Log("DoAction " + actionType);
         isAbort = false;
+        agent.Stop();
         if (actionType == ActionType.Rest)
         {
             StartCoroutine(Rest());
@@ -533,8 +536,8 @@ public class CharController : MonoBehaviour
         anim.speed = 1;
         isAbort = true;
         touchObject.SetActive(false);
-        agent.Stop();
-        isArrived = true;
+        //agent.Stop();
+        //isArrived = true;
     }
 
     void RandomDirection()
@@ -577,8 +580,11 @@ public class CharController : MonoBehaviour
         isArrived = false;
         if (Vector2.Distance(target.position, agent.transform.position) > 0.5f)
         {
-            lastTargetPosition = target.position;
-            agent.SetDestination(target.position);
+            if(!isAbort){
+                lastTargetPosition = target.position;
+                agent.SetDestination(target.position);
+            }
+
             while (!isArrived && !isAbort)
             {
                 if(actionType == ActionType.Fear ){
@@ -587,8 +593,6 @@ public class CharController : MonoBehaviour
                     anim.Play("Run_" + this.direction.ToString(), 0);
                 yield return new WaitForEndOfFrame();
             }
-            if (isAbort)
-                agent.Stop();
         }
         else
         {
@@ -843,7 +847,7 @@ public class CharController : MonoBehaviour
             //}else
             anim.Play("Run_" + this.direction.ToString(), 0);
             anim.speed = 1.5f;
-            yield return StartCoroutine(Wait(0.5f));
+            yield return StartCoroutine(Wait(0.2f));
         }
         CheckAbort();
     }
@@ -1003,10 +1007,11 @@ public class CharController : MonoBehaviour
 
     IEnumerator Pee()
     {
-         SetDirection(Direction.D);
+        SetDirection(Direction.D);
         anim.Play("Pee_D" , 0);
         Debug.Log("Pee");
         SpawnPee();
+        OnLearnSkill(SkillType.Pee);
         while (data.Pee > 1 && !isAbort)
         {
             data.Pee -= 0.5f;
@@ -1020,6 +1025,7 @@ public class CharController : MonoBehaviour
          SetDirection(Direction.D);
         anim.Play("Poop_D" , 0);
         SpawnShit();
+        OnLearnSkill(SkillType.Toilet);
         while (data.Shit > 1 && !isAbort)
         {
             data.Shit -= 0.5f;
@@ -1093,9 +1099,15 @@ public class CharController : MonoBehaviour
 
     IEnumerator Sleep()
     {
-
+       
         Debug.Log("Sleep");
-        InputController.instance.SetTarget(PointType.Sleep);
+        if(data.SkillLearned(SkillType.Sleep)){
+            InputController.instance.SetTarget(PointType.Sleep);
+        }else{
+            OnLearnSkill(SkillType.Sleep);
+            InputController.instance.SetTarget(PointType.Patrol);
+        }
+           
         yield return StartCoroutine(MoveToPoint());
         if (!isAbort){
              direction = Direction.LD;
@@ -1265,19 +1277,27 @@ public class CharController : MonoBehaviour
 
     #region Skill
 
-    public void LearnSkill(SkillType type){
+    public void OnLearnSkill(SkillType type){
         currentSkill = type;
         skillTime = 0;
+        skillLearnEffect.SetActive(true);
     }
-    public void LevelUpSkill(SkillType type){
+
+    public void OffLearnSkill(){
         skillTime = 0;
         currentSkill = SkillType.NONE;
+        skillLearnEffect.SetActive(false);
+    }
+    public void LevelUpSkill(SkillType type){
+        OffLearnSkill();
         StartCoroutine(LevelUpSkillCouroutine(type));
         UIManager.instance.OnNotify(NotificationType.SkillLevelUp);
     }
 
     IEnumerator LevelUpSkillCouroutine(SkillType type){
-        yield return new WaitForEndOfFrame();
+        skillLevelUpEffect.SetActive(true);
+        yield return new WaitForSeconds(2);
+        skillLevelUpEffect.SetActive(false);
         data.LevelUpSkill(type);
     }
 

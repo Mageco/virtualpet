@@ -21,7 +21,8 @@ public class SkillUI : MonoBehaviour
         icon.sprite = Resources.Load<Sprite>(url) as Sprite;
         skillName.text = d.GetName(0);
         skillDescription.text = d.GetDescription(0);
-        progress.text = "0/10";
+        progress.text = InputController.instance.character.data.GetSkillProgress(d.skillType).ToString() + "/" + d.maxProgress.ToString();
+        slider.fillAmount = InputController.instance.character.data.GetSkillProgress(d.skillType) * 1f/d.maxProgress;
     }
 
 

@@ -61,6 +61,10 @@ public class CharData
 	public float maxCurious = 100;
 
 	public CharData(){
+		
+	}
+
+	public void Init(){
 		skills = new int[DataHolder.Skills().GetDataCount()];
 	}
 
@@ -300,6 +304,18 @@ public class CharData
 				return;
 			}
 		}
+	}
+
+	public bool SkillLearned(SkillType type){
+		for(int i=0;i<skills.Length;i++){
+			if(DataHolder.Skill(i).skillType == type){
+				if(skills[i] == DataHolder.Skill(i).maxProgress)
+					return true;
+				else 
+					return false;
+			}
+		}
+		return false;
 	}
 
 }
