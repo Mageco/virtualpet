@@ -54,6 +54,7 @@ public class ApiManager : MonoBehaviour {
 			user.SetUserData (new UserData ("11", "used", "Item"));
 			user.SetUserData (new UserData ("13", "used", "Item"));
 			user.SetUserData (new UserData ("17", "used", "Item"));
+			user.SetUserData (new UserData ("41", "used", "Item"));
 		}
 	}
 
@@ -116,6 +117,7 @@ public class ApiManager : MonoBehaviour {
 		user.SetUserData (new UserData ("11", "used", "Item"));
 		user.SetUserData (new UserData ("13", "used", "Item"));
 		user.SetUserData (new UserData ("17", "used", "Item"));
+		user.SetUserData (new UserData ("41", "used", "Item"));
 
 		SaveUserData ();
 		UpdateUserData ();

@@ -130,7 +130,7 @@ public class CharController : MonoBehaviour
         if (actionType == ActionType.Call)
             data.actionEnergyConsume = 0.2f;
         else if (actionType == ActionType.Mouse)
-            data.actionEnergyConsume = 0.5f;
+            data.actionEnergyConsume = 0.7f;
         else if (actionType == ActionType.Discover)
         {
             data.actionEnergyConsume = 0.5f;
@@ -138,7 +138,10 @@ public class CharController : MonoBehaviour
         else if (actionType == ActionType.Patrol)
         {
             data.actionEnergyConsume = 0.3f;
-        }
+        }else if (actionType == ActionType.Bath)
+            data.actionEnergyConsume = 0.05f;
+        else if (actionType == ActionType.Fear)
+            data.actionEnergyConsume = 0.3f;
 
         data.Energy -= data.basicEnergyConsume + data.actionEnergyConsume;
 
@@ -187,8 +190,7 @@ public class CharController : MonoBehaviour
 
         data.Health += deltaHealth;
 
-
-
+        data.curious += 0.1f;
     }
 
 
@@ -405,24 +407,40 @@ public class CharController : MonoBehaviour
             }
         }
 
-        if (data.Energy < data.maxEnergy * 0.1f)
+        if(data.Energy < data.maxEnergy * 0.1f){
+            actionType = ActionType.Tired;
+            return;
+        }
+        else if (data.Energy < data.maxEnergy * 0.3f)
         {
             actionType = ActionType.Rest;
             return;
         }
 
-        if (data.Stamina < data.maxStamina * 0.3f)
+        if (data.happy < data.maxHappy * 0.1f)
+        {
+            actionType = ActionType.Sad;
+            return;
+        }
+
+        if (data.curious > data.maxCurious * 0.9f)
         {
             actionType = ActionType.Discover;
             return;
         }
+
+       // if (data.Stamina < data.maxStamina * 0.3f)
+        //{
+        //    actionType = ActionType.Discover;
+        //    return;
+        //}
 
 
 
 
         //Other Action
         int id = Random.Range(0, 100);
-        if (id < 40)
+        if (id < 10)
         {
             actionType = ActionType.Rest;
         }
@@ -432,7 +450,7 @@ public class CharController : MonoBehaviour
         }
         else
         {
-            actionType = ActionType.Patrol;
+            actionType = ActionType.Discover;
         }
 
     }
@@ -699,13 +717,23 @@ public class CharController : MonoBehaviour
 
     IEnumerator Discover()
     {
-        int n = Random.Range(0, 4);
-        int maxCount = Random.Range(4, 10);
-        while (!isAbort && n < maxCount)
+        if (!isAbort && data.curious > data.maxCurious * 0.4f)
         {
-            yield return new WaitForEndOfFrame();
+            InputController.instance.SetTarget(PointType.MouseGate);
+            yield return StartCoroutine(MoveToPoint());
+             if (this.direction == Direction.RD || this.direction == Direction.RU)
+                 yield return StartCoroutine(DoAnim("Smell_RD")) ;
+            else if(this.direction == Direction.LD || this.direction == Direction.LU)
+                yield return StartCoroutine(DoAnim("Smell_LD")) ;
+            else
+                 yield return StartCoroutine(DoAnim("Smell_" + direction.ToString()));
 
+            yield return StartCoroutine(DoAnim("Smell_Bark_LD"));
+            data.curious -= 10;
+            
         }
+        
+       
         CheckAbort();
     }
 
@@ -1236,8 +1264,11 @@ public class CharController : MonoBehaviour
 
     IEnumerator Tired()
     {
-        anim.Play("Itchy_RD", 0);
-        while (!isAbort)
+        if (this.direction == Direction.RD || this.direction == Direction.RU)
+             anim.Play("Tired_RD", 0);
+        else
+             anim.Play("Tired_LD", 0);
+        while (data.energy > data.maxEnergy * 0.4f && !isAbort)
         {
             yield return new WaitForEndOfFrame();
         }
@@ -1246,8 +1277,11 @@ public class CharController : MonoBehaviour
 
     IEnumerator Sad()
     {
-        anim.Play("Itchy_RD", 0);
-        while (!isAbort)
+        if (this.direction == Direction.RD || this.direction == Direction.RU)
+             anim.Play("Lay_Sad_RD", 0);
+        else
+             anim.Play("Lay_Sad_LD", 0);
+        while (data.happy < data.maxHappy * 0.4f && !isAbort)
         {
             yield return new WaitForEndOfFrame();
         }

@@ -37,7 +37,7 @@ public class ItemController : MonoBehaviour
 		string url = DataHolder.GetItem(itemId).prefabName.Replace("Assets/Game/Resources/","");
 		url = url.Replace(".prefab",""); 
 		url = DataHolder.Items().GetPrefabPath() + url;
-		//Debug.Log(url);
+		Debug.Log(url);
 		GameObject go = GameObject.Instantiate((Resources.Load(url) as GameObject),Vector3.zero,Quaternion.identity) as GameObject;		
 		ItemObject item = go.AddComponent<ItemObject>();
 		item.itemType = DataHolder.GetItem(itemId).itemType;

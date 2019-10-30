@@ -52,7 +52,8 @@ public class InputController : MonoBehaviour
 	public void SetTarget(PointType type)
 	{
 		//Debug.Log (type);
-		target.position = this.GetRandomPoint (type).position;
+		if(this.GetRandomPoint (type) != null)
+			target.position = this.GetRandomPoint (type).position;
 		character.target = this.target;
 	}
 

@@ -81,6 +81,10 @@ public class ShopPanel : MonoBehaviour
                  if(DataHolder.Item(i).itemType == ItemType.Picture || DataHolder.Item(i).itemType == ItemType.Table){
                     LoadItem(DataHolder.Item(i));
                 }               
+            }else if(currentTab == 7){
+                 if(DataHolder.Item(i).itemType == ItemType.Food){
+                    LoadItem(DataHolder.Item(i));
+                }               
             }
 
         }
