@@ -209,7 +209,7 @@ public class CharController : MonoBehaviour
 
     public void OnListening(float sound)
     {
-        if (actionType == ActionType.Fear || actionType == ActionType.Listening || actionType == ActionType.Hold || actionType == ActionType.Sick || actionType == ActionType.Sleep)
+        if (actionType == ActionType.Bath || actionType == ActionType.Fear || actionType == ActionType.Listening || actionType == ActionType.Hold || actionType == ActionType.Sick || actionType == ActionType.Sleep)
         {
             return;
         }
@@ -852,8 +852,7 @@ public class CharController : MonoBehaviour
 
     IEnumerator Call()
     {
-        SetDirection(Direction.D);
-        yield return StartCoroutine(DoAnim("BathStart_D"));
+        yield return StartCoroutine(DoAnim("Listen_"+direction.ToString()));
 
         if (!isAbort)
         {

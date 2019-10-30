@@ -42,6 +42,18 @@ public class ApiManager : MonoBehaviour {
 
 		if (ES2.Exists ("User")) {
 			user = ES2.Load<User> ("User");
+		}else
+		{
+			user = new User();
+			user.SetUserData (new UserData ("Coin", "100000", ""));
+			user.SetUserData (new UserData ("Diamond", "50000", ""));
+			user.SetUserData (new UserData ("2", "used", "Item"));
+			user.SetUserData (new UserData ("4", "used", "Item"));
+			user.SetUserData (new UserData ("7", "used", "Item"));
+			user.SetUserData (new UserData ("8", "used", "Item"));
+			user.SetUserData (new UserData ("11", "used", "Item"));
+			user.SetUserData (new UserData ("13", "used", "Item"));
+			user.SetUserData (new UserData ("17", "used", "Item"));
 		}
 	}
 
@@ -95,15 +107,15 @@ public class ApiManager : MonoBehaviour {
 	{
 		Debug.Log ("NEw user created");
 
-		user.user_datas.Add (new UserData ("Coin", "100000", ""));
-		user.user_datas.Add (new UserData ("Diamond", "50000", ""));
-		user.user_datas.Add (new UserData ("2", "used", "Item"));
-		user.user_datas.Add (new UserData ("4", "used", "Item"));
-		user.user_datas.Add (new UserData ("7", "used", "Item"));
-		user.user_datas.Add (new UserData ("8", "used", "Item"));
-		user.user_datas.Add (new UserData ("11", "used", "Item"));
-		user.user_datas.Add (new UserData ("13", "used", "Item"));
-		user.user_datas.Add (new UserData ("17", "used", "Item"));
+		user.SetUserData (new UserData ("Coin", "100000", ""));
+		user.SetUserData (new UserData ("Diamond", "50000", ""));
+		user.SetUserData (new UserData ("2", "used", "Item"));
+		user.SetUserData (new UserData ("4", "used", "Item"));
+		user.SetUserData (new UserData ("7", "used", "Item"));
+		user.SetUserData (new UserData ("8", "used", "Item"));
+		user.SetUserData (new UserData ("11", "used", "Item"));
+		user.SetUserData (new UserData ("13", "used", "Item"));
+		user.SetUserData (new UserData ("17", "used", "Item"));
 
 		SaveUserData ();
 		UpdateUserData ();
