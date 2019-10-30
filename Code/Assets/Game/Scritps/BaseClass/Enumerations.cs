@@ -2,7 +2,7 @@
 // Item
 public enum ItemSkillType {NONE, LEARN, USE};
 public enum ItemDropType {NONE, ITEM, EQUIPMENT, SKILL};
-public enum ItemType{None,Diamond,Coin,Food,Drink,Toy,Dog,House,Room,Bed,Toilet,Bath,Picture,Cleaner,Table,Clock};
+public enum ItemType{None,Diamond,Coin,Food,Drink,Toy,Dog,House,Room,Bed,Toilet,Bath,Picture,Cleaner,Table,Clock,Medicine};
 public enum PriceType{Money,Coin,Diamond}
 public enum ItemState {Buy,Use,Used}
 public enum ItemDragState{None,Drag,Drop,Fall,Hit,Hited};
