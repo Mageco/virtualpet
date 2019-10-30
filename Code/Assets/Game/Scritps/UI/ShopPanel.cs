@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ShopPanel : MonoBehaviour
 {
@@ -8,10 +9,18 @@ public class ShopPanel : MonoBehaviour
     List<ItemUI> items = new List<ItemUI>();
     public GameObject itemUIPrefab;
     public int currentTab = 0;
+    public Toggle[] toggles;
+    int currentToogle;
     // Start is called before the first frame update
+
+    void Awake(){
+        if(ES2.Exists(this.gameObject.name)){
+            currentTab = ES2.Load<int>(this.gameObject.name);
+        }
+    }
     void Start()
     {
-        OnTab(currentTab);
+
     }
 
     void Load(){
@@ -28,6 +37,7 @@ public class ShopPanel : MonoBehaviour
 
     public void OnTab(int id){
         currentTab = id;
+        ES2.Save(currentTab,this.gameObject.name);
         ClearItems();
         for(int i=0;i<DataHolder.Items().GetDataCount();i++){
             if(currentTab == 0)

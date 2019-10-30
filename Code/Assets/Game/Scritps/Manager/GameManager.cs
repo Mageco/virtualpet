@@ -18,7 +18,7 @@ public class GameManager : MonoBehaviour
     void Load(){
 		Screen.sleepTimeout = SleepTimeout.NeverSleep;
 		DataHolder.Instance();
-		Debug.Log(DataHolder.Items().GetDataCount());
+		//Debug.Log(DataHolder.Items().GetDataCount());
     }
 
 }

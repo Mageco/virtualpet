@@ -29,14 +29,14 @@ public class SkillLocation : MonoBehaviour
 
     void OnTriggerStay2D(Collider2D other) {
 		if (other.tag == "Player") {
-            Debug.Log("Enter");
+            //Debug.Log("Enter");
             isEnter = true;
 		}
 	}
 
 	void OnTriggerExit2D(Collider2D other) {
         if (other.tag == "Player") {
-            Debug.Log("Enter");
+            //Debug.Log("Enter");
             isEnter = false;
 		}
 	}

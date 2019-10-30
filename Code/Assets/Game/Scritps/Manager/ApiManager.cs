@@ -364,12 +364,13 @@ public class ApiManager : MonoBehaviour {
 	public void UseItem(int itemId){
 		Debug.LogWarning(itemId);
 		//if(HaveItem(itemId)){
-			user.SetUserData (new UserData (itemId.ToString(), "used", "Item"));
-			for(int i=0;i<DataHolder.Items().GetDataCount();i++){
-				if(DataHolder.Item(i).itemType == DataHolder.GetItem(itemId).itemType && DataHolder.Item(i).iD != itemId){
-					user.SetUserData (new UserData (itemId.ToString(), "true", "Item"));
+			List<int> items = GetUsedItems();
+			for(int i=0;i<items.Count;i++){
+				if(DataHolder.GetItem(items[i]).itemType == DataHolder.GetItem(itemId).itemType && DataHolder.GetItem(items[i]).iD != itemId){
+					user.SetUserData (new UserData (DataHolder.GetItem(items[i]).iD.ToString(), "true", "Item"));
 				}
 			}
+			user.SetUserData (new UserData (itemId.ToString(), "used", "Item"));
 			SaveUserData ();
 			UpdateUserData ();
 		//}

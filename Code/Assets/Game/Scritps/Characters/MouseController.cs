@@ -45,22 +45,26 @@ public class MouseController : MonoBehaviour
 	public void Spawn()
 	{
 		state = MouseState.Seek;
+		time = 0;
 		Seek();
 	}
 
 	void Seek(){
 		
 		lastPosition = this.transform.position;
+
 		List<Transform> points = InputController.instance.GetRandomPoints (PointType.MouseEat);
 		List<Transform> pointRandoms = InputController.instance.GetRandomPoints (PointType.Mouse);
+
+		if(points == null || pointRandoms == null || points.Count == 0 || pointRandoms.Count == 0){
+			return;
+		}
 		paths = new Vector3[3];
 		paths [0] = originalPosition;
 		paths [1] = pointRandoms[Random.Range(0,pointRandoms.Count)].position;
 		paths [2] = points[0].position;
 
 		iTween.MoveTo (this.gameObject, iTween.Hash ("path", paths, "speed", speed, "orienttopath", false, "easetype", "linear","oncomplete", "CompleteSeek"));
-
-		time = 0;
 		maxTimeSpawn = Random.Range (60, 120);
 		this.body.gameObject.SetActive (true);
 		col.enabled = true;

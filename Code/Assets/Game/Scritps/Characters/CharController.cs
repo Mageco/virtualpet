@@ -331,7 +331,7 @@ public class CharController : MonoBehaviour
 
     public void OnArrived()
     {
-        Debug.Log("Arrived");
+        //Debug.Log("Arrived");
 
 
         if (actionType == ActionType.Mouse)
@@ -442,7 +442,7 @@ public class CharController : MonoBehaviour
 
     void DoAction()
     {
-        Debug.Log("DoAction " + actionType);
+        //Debug.Log("DoAction " + actionType);
         isAbort = false;
         agent.Stop();
         if (actionType == ActionType.Rest)
@@ -1070,7 +1070,7 @@ public class CharController : MonoBehaviour
     IEnumerator Drink()
     {
 
-        Debug.Log("Drink");
+        //Debug.Log("Drink");
         if (!isAbort)
         {
             InputController.instance.SetTarget(PointType.Drink);

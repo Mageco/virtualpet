@@ -22,10 +22,10 @@ public class ItemUI : MonoBehaviour
     {
         
         itemId = d.iD;
-        Debug.Log(d.iconUrl);
+        //Debug.Log(d.iconUrl);
         string url = d.iconUrl.Replace("Assets/Game/Resources/","");
         url = url.Replace(".png","");
-        Debug.Log(url);
+        //Debug.Log(url);
         icon.sprite = Resources.Load<Sprite>(url) as Sprite;
         price.text = d.buyPrice.ToString();
 

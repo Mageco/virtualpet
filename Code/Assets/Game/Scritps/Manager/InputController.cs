@@ -41,13 +41,17 @@ public class InputController : MonoBehaviour
 	public Transform GetRandomPoint(PointType type)
 	{
 		List<GizmoPoint> points = GetPoints (type);
-		int id = Random.Range (0, points.Count);
-		return points [id].transform;
+		if(points != null){
+			int id = Random.Range (0, points.Count);
+			return points [id].transform;
+		}else
+			return null;
+
 	}
 
 	public void SetTarget(PointType type)
 	{
-		Debug.Log (type);
+		//Debug.Log (type);
 		target.position = this.GetRandomPoint (type).position;
 		character.target = this.target;
 	}
