@@ -146,22 +146,6 @@ public class ArrayHelper
 	}
 	
 
-	public static ValueCheck[] Add(ValueCheck n, ValueCheck[] list)
-	{
-		ArrayList tmp = new ArrayList();
-		foreach(ValueCheck str in list) tmp.Add(str);
-		tmp.Add(n);
-		return tmp.ToArray(typeof(ValueCheck)) as ValueCheck[];
-	}
-
-	public static ValueCheck[] Remove(int index, ValueCheck[] list)
-	{
-		ArrayList tmp = new ArrayList();
-		foreach(ValueCheck str in list) tmp.Add(str);
-		tmp.RemoveAt(index);
-		return tmp.ToArray(typeof(ValueCheck)) as ValueCheck[];
-	}
-	
 	public static Item[] Add(Item n, Item[] list)
 	{
 		ArrayList tmp = new ArrayList();

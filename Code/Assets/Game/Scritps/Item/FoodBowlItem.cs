@@ -25,6 +25,7 @@ public class FoodBowlItem : MonoBehaviour
     {
 		int id = (int)(foodAmount/(maxfoodAmount/foodSprites.Length));
 		image.sprite = foodSprites [id];
+		
     }
 
 	public void Eat(float f)

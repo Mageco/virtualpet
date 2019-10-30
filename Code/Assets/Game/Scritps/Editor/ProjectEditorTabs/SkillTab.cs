@@ -6,9 +6,6 @@ public class SkillTab : BaseTab
 {
 
 	private GameObject tmpPrefab;
-
-
-	private int levelSelection = 0;
 	private string[] sections = new string[] {"1"};
 	
 	public SkillTab(ProjectWindow pw) : base(pw)

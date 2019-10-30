@@ -8,19 +8,30 @@ public class ShopPanel : MonoBehaviour
     public Transform anchor;
     List<ItemUI> items = new List<ItemUI>();
     public GameObject itemUIPrefab;
-    public int currentTab = 0;
+    int currentTab = 0;
     public Toggle[] toggles;
+    public int[] toogleIds;
     int currentToogle;
     // Start is called before the first frame update
 
     void Awake(){
-        if(ES2.Exists(this.gameObject.name)){
-            currentTab = ES2.Load<int>(this.gameObject.name);
+        if(ES2.Exists("Shop"+toogleIds[0])){
+            currentToogle = ES2.Load<int>("Shop"+toogleIds[0]);
         }
+
     }
     void Start()
     {
-
+        for(int i=0;i<toogleIds.Length;i++){
+            int id = i;
+            toggles[i].onValueChanged.AddListener (delegate {OnTab(id);});
+        }
+        if(toggles[currentToogle].isOn){
+            OnTab(currentToogle);
+        }else{
+            toggles[currentToogle].isOn = true; 
+        }
+           
     }
 
     void Load(){
@@ -30,14 +41,15 @@ public class ShopPanel : MonoBehaviour
     void Update()
     {
         if(UIManager.instance.notification == NotificationType.Shop){
-            OnTab(currentTab);
+            OnTab(currentToogle);
             UIManager.instance.notification = NotificationType.None;
         }
     }
 
     public void OnTab(int id){
-        currentTab = id;
-        ES2.Save(currentTab,this.gameObject.name);
+        currentTab = toogleIds[id];
+        currentToogle = id;
+        ES2.Save(id,"Shop"+toogleIds[0]);
         ClearItems();
         for(int i=0;i<DataHolder.Items().GetDataCount();i++){
             if(currentTab == 0)

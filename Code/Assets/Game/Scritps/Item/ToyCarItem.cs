@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class FlowerJarItem : MonoBehaviour
+public class ToyCarItem : MonoBehaviour
 {
 	Vector3 dragOffset;
 	Animator anim;
@@ -70,8 +70,6 @@ public class FlowerJarItem : MonoBehaviour
 					break;
 				}
 			}
-
-
 			state = ItemDragState.Fall;
 		}else if(state == ItemDragState.Fall){			
 			fallSpeed += 100f * Time.deltaTime;            
@@ -123,34 +121,16 @@ public class FlowerJarItem : MonoBehaviour
 
 	IEnumerator OnHit(){
 		state = ItemDragState.Hited;
-		if(this.transform.position.y < originalPosition.y - 2){
-			Vector3 pos = this.transform.position;
-			pos.z += 2;
-			this.transform.position = pos;
-
-			float l = Vector2.Distance(InputController.instance.character.transform.position,this.transform.position);
-			InputController.instance.character.OnListening(9 + 30f/l);
-			yield return StartCoroutine(DoAnim("Break",2));
-			InputController.instance.ResetCameraTarget();
-			yield return new WaitForSeconds(2);
-			this.transform.position = originalPosition;
-			//CharController char = ;
-		}else {
-			yield return StartCoroutine(DoAnim("Shake",0.5f));
-			InputController.instance.ResetCameraTarget();
-			Vector3 pos = originalPosition;
-			pos.x = this.transform.position.x;
-			pos.y = this.transform.position.y;
-			this.transform.position = pos;
-		}
-
-		
-		
+		yield return StartCoroutine(DoAnim("Hit",0.5f));
+		InputController.instance.ResetCameraTarget();
+		Vector3 pos = originalPosition;
+		pos.x = this.transform.position.x;
+		pos.y = this.transform.position.y;
+		this.transform.position = pos;
 		this.transform.rotation = originalRotation;
 		fallSpeed = 0;
 		anim.Play("Idle",0);
-		state = ItemDragState.None;
-		
+		state = ItemDragState.None;		
 	}
 
 	IEnumerator DoAnim(string a,float maxTime)

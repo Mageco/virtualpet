@@ -33,10 +33,7 @@ public class ItemUI : MonoBehaviour
             state = ItemState.Used;
         }
         else if(ApiManager.instance.HaveItem(d.iD)){
-            if(d.itemType != ItemType.Diamond && d.itemType != ItemType.Coin && d.itemType != ItemType.Toy){     
-                state = ItemState.Use;
-            }else
-                state = ItemState.Buy;        
+            state = ItemState.Use;        
         }else{
             state = ItemState.Buy;
         }

@@ -26,9 +26,6 @@ public class CharController : MonoBehaviour
 
     [HideInInspector]
     PolyNavAgent agent;
-    float agentTime = 0;
-    float maxAgentTime = 0.1f;
-    Vector2 lastTargetPosition;
     public bool isArrived = true;
     public bool isAbort = false;
 
@@ -584,7 +581,6 @@ public class CharController : MonoBehaviour
         if (Vector2.Distance(target.position, agent.transform.position) > 0.5f)
         {
             if(!isAbort){
-                lastTargetPosition = target.position;
                 agent.SetDestination(target.position);
             }
 
@@ -842,7 +838,6 @@ public class CharController : MonoBehaviour
     {
         while(AnimalController.instance.mouse.state != MouseState.Idle && !isAbort){
             agent.SetDestination(AnimalController.instance.mouse.transform.position);
-            lastTargetPosition = AnimalController.instance.mouse.transform.position;
             agent.speed = 45;
             //int ran = Random.Range(0,100);
             //if(ran > 50 && direction == Direction.LD){
@@ -1039,7 +1034,6 @@ public class CharController : MonoBehaviour
 
     IEnumerator Eat()
     {
-        Debug.Log("Eat");
         if (!isAbort)
         {
             InputController.instance.SetTarget(PointType.Eat);
@@ -1102,8 +1096,7 @@ public class CharController : MonoBehaviour
 
     IEnumerator Sleep()
     {
-       
-        Debug.Log("Sleep");
+        //Debug.Log("Sleep");
         if(data.SkillLearned(SkillType.Sleep)){
             InputController.instance.SetTarget(PointType.Sleep);
         }else{
