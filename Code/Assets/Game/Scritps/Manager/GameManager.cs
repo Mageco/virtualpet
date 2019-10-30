@@ -6,6 +6,7 @@ public class GameManager : MonoBehaviour
 {
  public static GameManager instance;
 
+	public float gameTime = 0;
 	void Awake()
 	{
 		if (instance == null)
@@ -13,6 +14,10 @@ public class GameManager : MonoBehaviour
         
         Application.targetFrameRate = 50;
         Load();
+	}
+
+	void Update(){
+		gameTime += Time.deltaTime;
 	}
 
     void Load(){

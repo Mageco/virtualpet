@@ -294,6 +294,7 @@ public class CharController : MonoBehaviour
         //}
     }
 
+
     public void OnMouse()
     {
         if (actionType == ActionType.Mouse || actionType == ActionType.Hold || actionType == ActionType.OnTable || actionType == ActionType.Bath || actionType == ActionType.Sick
@@ -862,20 +863,21 @@ public class CharController : MonoBehaviour
 
         float t = 0;
         float maxTime = 6f;
-        int n = Random.Range(0, 9);
         bool isWait = true;
+        int n=0;
 
         while (!isAbort && isWait)
         {
             if (!isTouch)
             {
-               
+                anim.speed = 1f;
                 if (t == 0)
                 {
                     n = Random.Range(0, 9);
                 }
                 if (n == 0)
                 {
+                    
                     if (this.direction == Direction.RD || this.direction == Direction.RU)
                         anim.Play("Wait_Lay_PetBack_RD", 0);
                     else
@@ -935,6 +937,8 @@ public class CharController : MonoBehaviour
             }
             else
             {
+                if(anim.speed > 0.1f)
+                    anim.speed -= 0.1f;
 
                 if (n == 0)
                 {

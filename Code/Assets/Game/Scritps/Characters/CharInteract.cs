@@ -16,6 +16,7 @@ public class CharInteract : MonoBehaviour
     public Vector3 dragOffset;
     CharController character;
 
+
     void Awake()
     {
         character = this.GetComponent<CharController>();
@@ -83,6 +84,7 @@ public class CharInteract : MonoBehaviour
             touchDirection = Direction.R;
             //interactType = InteractType.SwipeRight;
         }
+
     }
 
     public void OnFingerSwipe(LeanFinger finger)
