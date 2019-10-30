@@ -862,7 +862,7 @@ public class CharController : MonoBehaviour
         }
 
         float t = 0;
-        float maxTime = 3f;
+        float maxTime = 6f;
         int n = Random.Range(0, 9);
         bool isWait = true;
 
@@ -878,43 +878,43 @@ public class CharController : MonoBehaviour
                 if (n == 0)
                 {
                     if (this.direction == Direction.RD || this.direction == Direction.RU)
-                        anim.Play("Lay_WaitPetBack_RD", 0);
+                        anim.Play("Wait_Lay_PetBack_RD", 0);
                     else
-                        anim.Play("Lay_WaitPetBack_LD", 0);
+                        anim.Play("Wait_Lay_PetBack_LD", 0);
                 }
                 else if (n == 1)
                 {
                     if (this.direction == Direction.RD || this.direction == Direction.RU)
-                        anim.Play("Lay_WaitPetHead_RD", 0);
+                        anim.Play("Wait_Lay_PetHead_RD", 0);
                     else
-                        anim.Play("Lay_WaitPetHead_LD", 0);
+                        anim.Play("Wait_Lay_PetHead_LD", 0);
                 }
                 else if (n == 2)
                 {
                     if (this.direction == Direction.RD || this.direction == Direction.RU)
-                        anim.Play("Lay_WaitPetStomatch_RD", 0);
+                        anim.Play("Wait_Lay_PetStomatch_RD", 0);
                     else
-                        anim.Play("Lay_WaitPetStomatch_LD", 0);
+                        anim.Play("Wait_Lay_PetStomatch_LD", 0);
                 }
                 else if (n == 3)
                 {
                     SetDirection(Direction.D);
-                    anim.Play("Sit_WaitPetUp_D" );
+                    anim.Play("Wait_Sit_Pet_Up_D" );
                 }
                 else if (n == 4)
                 {
                      SetDirection(Direction.D);
-                    anim.Play("Sit_WaitPetDown_D" );
+                    anim.Play("Wait_Sit_Pet_Down_D" );
                 }
                 else if (n == 5)
                 {
                      SetDirection(Direction.D);
-                    anim.Play("Sit_WaitPetLeft_D" );
+                    anim.Play("Wait_Sit_Pet_Left_D" );
                 }
                 else if (n == 6)
                 {
                      SetDirection(Direction.D);
-                    anim.Play("Sit_WaitPetRight_D" );
+                    anim.Play("Wait_Sit_Pet_Right_D" );
                 }
                 else if (n == 7)
                 {
