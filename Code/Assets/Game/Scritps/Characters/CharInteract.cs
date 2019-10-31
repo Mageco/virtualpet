@@ -71,7 +71,7 @@ public class CharInteract : MonoBehaviour
     public void OnFingerTouchUp(Vector2 delta)
     {
         float angle = Mathf.Atan2(delta.x, delta.y) * Mathf.Rad2Deg;
-        if (isTouch && angle > -45 && angle < 45 && interactType == InteractType.None) {
+        if (isTouch && angle > -60&& angle <60&& interactType == InteractType.None) {
             touchDirection = Direction.U;
             character.OnHold ();
         }else if(isTouch && (angle > 115 || angle < -115)) {

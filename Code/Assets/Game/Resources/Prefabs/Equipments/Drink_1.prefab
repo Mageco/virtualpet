@@ -60,8 +60,8 @@ GameObject:
   - component: {fileID: 3669580434300967886}
   - component: {fileID: 3669580434300967887}
   - component: {fileID: 3669580434300967880}
-  - component: {fileID: 3669580434300967881}
-  - component: {fileID: 3669580434300967889}
+  - component: {fileID: 1720226836}
+  - component: {fileID: 2353112170194004574}
   m_Layer: 0
   m_Name: Water_Bowl
   m_TagString: Untagged
@@ -211,6 +211,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b70c853a102fb4bc9903072d50c08a6c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  itemType: 0
   interactType: 0
 --- !u!114 &3669580434300967880
 MonoBehaviour:
@@ -226,7 +227,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isOrder: 1
   isStatic: 0
---- !u!61 &3669580434300967881
+--- !u!61 &1720226836
 BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -236,10 +237,10 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.047675014, y: -0.37}
+  m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -250,9 +251,9 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 2.252804, y: 0.5}
+  m_Size: {x: 2.57, y: 1.24}
   m_EdgeRadius: 0
---- !u!114 &3669580434300967889
+--- !u!114 &2353112170194004574
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -261,7 +262,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 3669580434300967883}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f28402dd3988141b6a38e2672737c4d3, type: 3}
+  m_Script: {fileID: 11500000, guid: e05f49d6b981b41639f492569bc2b7c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   maxfoodAmount: 200

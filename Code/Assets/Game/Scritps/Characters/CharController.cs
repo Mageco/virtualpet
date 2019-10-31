@@ -893,12 +893,12 @@ public class CharController : MonoBehaviour
         float maxTime = 6f;
         bool isWait = true;
         int n=0;
+        n = Random.Range(0, 9);
 
         while (!isAbort && isWait)
         {
             if (!isTouch)
             {
-                anim.speed = 1f;
                 if (t == 0)
                 {
                     n = Random.Range(0, 9);
@@ -965,9 +965,6 @@ public class CharController : MonoBehaviour
             }
             else
             {
-                if(anim.speed > 0.1f)
-                    anim.speed -= 0.1f;
-
                 if (n == 0)
                 {
                     if (this.direction == Direction.RD || this.direction == Direction.RU)
@@ -1065,28 +1062,30 @@ public class CharController : MonoBehaviour
 
     IEnumerator Eat()
     {
-        if (!isAbort)
-        {
-            InputController.instance.SetTarget(PointType.Eat);
-            yield return StartCoroutine(MoveToPoint());
-        }
-        bool canEat = true;
-        if (ItemController.instance.foodBowl.CanEat() && !isAbort)
-        {
-             direction = Direction.LD;
-            anim.Play("Eat_LD" , 0);
-            yield return StartCoroutine(Wait(0.1f));
-            while (data.Food < data.maxFood && !isAbort && canEat)
+        if(ItemController.instance.FoodItem() != null){
+            if (!isAbort)
             {
-                data.Food += 0.3f;
-                ItemController.instance.foodBowl.Eat(0.3f);
-                if (!ItemController.instance.foodBowl.CanEat())
+                InputController.instance.SetTarget(PointType.Eat);
+                yield return StartCoroutine(MoveToPoint());
+            }
+            bool canEat = true;
+            if (ItemController.instance.FoodItem().CanEat() && !isAbort)
+            {
+                direction = Direction.LD;
+                anim.Play("Eat_LD" , 0);
+                yield return StartCoroutine(Wait(0.1f));
+                while (data.Food < data.maxFood && !isAbort && canEat)
                 {
-                    canEat = false;
+                    data.Food += 0.3f;
+                    ItemController.instance.FoodItem().Eat(0.3f);
+                    if (!ItemController.instance.FoodItem().CanEat())
+                    {
+                        canEat = false;
+                    }
+                    if (Vector2.Distance(this.transform.position, ItemController.instance.FoodItem().anchor.position) > 0.5f)
+                        canEat = false;
+                    yield return new WaitForEndOfFrame();
                 }
-                if (Vector2.Distance(this.transform.position, ItemController.instance.foodBowl.anchor.position) > 0.5f)
-                    canEat = false;
-                yield return new WaitForEndOfFrame();
             }
         }
         CheckAbort();
@@ -1094,32 +1093,33 @@ public class CharController : MonoBehaviour
 
     IEnumerator Drink()
     {
-
-        //Debug.Log("Drink");
-        if (!isAbort)
-        {
-            InputController.instance.SetTarget(PointType.Drink);
-            yield return StartCoroutine(MoveToPoint());
-        }
-
-        bool canDrink = true;
-
-        if (ItemController.instance.waterBowl.CanEat())
-        {
-             direction = Direction.LD;
-            anim.Play("Eat_LD" , 0);
-            yield return StartCoroutine(Wait(0.1f));
-            while (data.Water < data.maxWater && !isAbort && canDrink)
+        if(ItemController.instance.DrinkItem() != null){
+           //Debug.Log("Drink");
+            if (!isAbort)
             {
-                data.Water += 0.5f;
-                ItemController.instance.waterBowl.Eat(0.5f);
-                if (!ItemController.instance.waterBowl.CanEat())
+                InputController.instance.SetTarget(PointType.Drink);
+                yield return StartCoroutine(MoveToPoint());
+            }
+
+            bool canDrink = true;
+
+            if (ItemController.instance.DrinkItem().CanEat())
+            {
+                direction = Direction.LD;
+                anim.Play("Eat_LD" , 0);
+                yield return StartCoroutine(Wait(0.1f));
+                while (data.Water < data.maxWater && !isAbort && canDrink)
                 {
-                    canDrink = false;
+                    data.Water += 0.5f;
+                    ItemController.instance.DrinkItem().Eat(0.5f);
+                    if (!ItemController.instance.DrinkItem().CanEat())
+                    {
+                        canDrink = false;
+                    }
+                    if (Vector2.Distance(this.transform.position, ItemController.instance.DrinkItem().anchor.position) > 0.5f)
+                        canDrink = false;
+                    yield return new WaitForEndOfFrame();
                 }
-                if (Vector2.Distance(this.transform.position, ItemController.instance.waterBowl.anchor.position) > 0.5f)
-                    canDrink = false;
-                yield return new WaitForEndOfFrame();
             }
         }
         CheckAbort();

@@ -152,8 +152,8 @@ public class MouseController : MonoBehaviour
 		}
 		else if(state == MouseState.Eat){
 			
-			if(ItemController.instance.foodBowl.CanEat())
-				ItemController.instance.foodBowl.Eat(0.3f);
+			if(ItemController.instance.FoodItem().CanEat())
+				ItemController.instance.FoodItem().Eat(0.3f);
 			else 
 				Run();
 

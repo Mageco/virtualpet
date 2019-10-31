@@ -7,10 +7,9 @@ public class ItemController : MonoBehaviour
 	public static ItemController instance;
 	[HideInInspector]
 	public CharController character;
-	public FoodBowlItem foodBowl;
-	public FoodBowlItem waterBowl;
 
 	public List<ItemObject> items = new List<ItemObject>();
+	
 
 	void Awake()
 	{
@@ -53,6 +52,14 @@ public class ItemController : MonoBehaviour
 
 	public BathTubeItem GetBathTubeItem(){
 		return GameObject.FindObjectOfType<BathTubeItem>();
+	}
+
+	public FoodBowlItem FoodItem(){
+		return GameObject.FindObjectOfType<FoodBowlItem>();
+	}
+
+	public DrinkBowlItem DrinkItem(){
+		return GameObject.FindObjectOfType<DrinkBowlItem>();
 	}
 
 	public void UseItem(int itemId){
