@@ -123,18 +123,24 @@ namespace MageApi {
 			//this.loadingCircular.Hide ();
 			if (!isTimeout)
 			{
-				Debug.Log ("Response: " + www.text);
-				//File.AppendAllText (Application.dataPath + "/Images/result.txt", "\r\n" + www.text);
-				GenericResponse<TResult> result = BaseResponse.CreateFromJSON<GenericResponse<TResult>>(www.text);
-				if (result.status == 0) {
-					//save cache to runtime
-					Debug.Log(result.cache.ToJson());
-					RuntimeParameters.GetInstance().SetParam (ApiSettings.API_CACHE, result.cache);
-					callback ((TResult)result.data);
-				} else {
-					Debug.Log ("Error message: " + result.error);
-					errorCallback (result.status);
+				if (www.text != null) {
+					Debug.Log ("Response: " + www.text);
+					//File.AppendAllText (Application.dataPath + "/Images/result.txt", "\r\n" + www.text);
+					GenericResponse<TResult> result = BaseResponse.CreateFromJSON<GenericResponse<TResult>>(www.text);
+					if (result.status == 0) {
+						//save cache to runtime
+						Debug.Log(result.cache.ToJson());
+						RuntimeParameters.GetInstance().SetParam (ApiSettings.API_CACHE, result.cache);
+						callback ((TResult)result.data);
+					} else {
+						Debug.Log ("Error message: " + result.error);
+						errorCallback (result.status);
+					} 
 				} 
+				else {
+					Debug.Log ("Error message: Response is null");
+					errorCallback (-1);
+				}
 
 			}
 			else

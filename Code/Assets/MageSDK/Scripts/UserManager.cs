@@ -14,6 +14,7 @@ using Crs.Models.Request;
 using Crs;
 using Crs.Models.Response;
 using Mage.Models.Application;
+using Mage.Models.Game;
 
 public class UserManager : MonoBehaviour
 {
@@ -425,7 +426,11 @@ public class UserManager : MonoBehaviour
 	}
 
 	public void GetAudioFromTextClick() {
-		GetAudioFromTextRequest r = new GetAudioFromTextRequest ("Thử giọng nói tiếng Việt", "VN_vn");  // English wil be EN_en
+		GetAudioFromTextRequest r = new GetAudioFromTextRequest (
+												ApiSettings.GetVoiceCharacter(VoiceCharacterOptions.vi_VN_Wavenet_A), 
+												"Cún cưng",
+												ApiSettings.GetLanguageOption(LanguageOptions.vi_VN),  
+												"<speak>Cún cưng</speak>");  
 		
 		//call to login api
 		ApiHandler.instance.SendApi<GetAudioFromTextResponse>(
@@ -672,6 +677,79 @@ public class UserManager : MonoBehaviour
 			r2, 
 			(result) => {
 				Debug.Log("Success: update user data successfully");
+				Debug.Log("Messages result: " + result.ToJson());
+			},
+			(errorStatus) => {
+				Debug.Log("Error: " + errorStatus);
+				//do some other processing here
+			},
+			() => {
+				//timeout handler here
+				Debug.Log("Api call is timeout");
+			}
+		);
+	}
+
+	public void AddGameCharacterClick() {
+		AddGameCharacterRequest r = new AddGameCharacterRequest ("Cún cưng", "Shiba");
+
+		//call to login api
+		ApiHandler.instance.SendApi<AddGameCharacterResponse>(
+			ApiSettings.API_ADD_GAME_CHARACTER,
+			r, 
+			(result) => {
+				Debug.Log("Success: add game character successfully");
+				Debug.Log("Messages result: " + result.ToJson());
+			},
+			(errorStatus) => {
+				Debug.Log("Error: " + errorStatus);
+				//do some other processing here
+			},
+			() => {
+				//timeout handler here
+				Debug.Log("Api call is timeout");
+			}
+		);
+	}
+
+	public void UpdateGameCharacterNameClick() {
+		UpdateGameCharacterNameRequest r = new UpdateGameCharacterNameRequest ();
+
+		//call to login api
+		ApiHandler.instance.SendApi<UpdateGameCharacterNameResponse>(
+			ApiSettings.API_UPDATE_GAME_CHARACTER_NAME,
+			r, 
+			(result) => {
+				Debug.Log("Success: update game character name successfully");
+				Debug.Log("Messages result: " + result.ToJson());
+			},
+			(errorStatus) => {
+				Debug.Log("Error: " + errorStatus);
+				//do some other processing here
+			},
+			() => {
+				//timeout handler here
+				Debug.Log("Api call is timeout");
+			}
+		);
+	}
+
+	public void UpdateGameCharacterDataClick() {
+		UpdateGameCharacterDataRequest r = new UpdateGameCharacterDataRequest ("1");
+
+		r.CharacterDatas = new List<CharacterData>() {
+			new CharacterData("Coin", "200000", "Currency"),
+			new CharacterData("Diamond", "200000", "Currency"),
+			new CharacterData("2", "true", "Item"),
+			new CharacterData("3", "used", "Item"),
+		};
+
+		//call to login api
+		ApiHandler.instance.SendApi<UpdateGameCharacterDataResponse>(
+			ApiSettings.API_UPDATE_GAME_CHARACTER_DATAS,
+			r, 
+			(result) => {
+				Debug.Log("Success: update game character name successfully");
 				Debug.Log("Messages result: " + result.ToJson());
 			},
 			(errorStatus) => {

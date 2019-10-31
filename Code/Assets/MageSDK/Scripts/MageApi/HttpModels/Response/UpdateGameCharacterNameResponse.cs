@@ -4,17 +4,12 @@ using UnityEngine;
 using SimpleJSON;
 using System.Reflection;
 using System;
-using Mage.Models.Users;
-using Mage.Models.Application;
+using Mage.Models.Game;
 
 namespace MageApi.Models.Response{
 	[Serializable]
-	public class GetAudioFromTextResponse : BaseResponse
+	public class UpdateGameCharacterNameResponse : BaseResponse
 	{
-		public GeneratedVoice voice;
-
-		public GetAudioFromTextResponse() : base() {
-		}
+		public Character Character;
 	}
-
 }

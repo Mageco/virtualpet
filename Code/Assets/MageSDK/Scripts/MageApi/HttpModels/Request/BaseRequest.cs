@@ -19,7 +19,7 @@ namespace MageApi.Models.Request {
 		public string Token = "";
 		public string UserId = "";
 		public string SystemLanguage = "";
-		public ApiCache ApiCache = new ApiCache();
+		//public ApiCache ApiCache = new ApiCache();
 
  		private byte[] UploadFile;
 
@@ -49,7 +49,7 @@ namespace MageApi.Models.Request {
 				tmpApiCache = new ApiCache();
 				RuntimeParameters.GetInstance().SetParam(ApiSettings.API_CACHE, tmpApiCache);
 			}
-			this.ApiCache = tmpApiCache;
+			//this.ApiCache = tmpApiCache;
 			
 			this.UploadFile = new byte[]{};
 		}

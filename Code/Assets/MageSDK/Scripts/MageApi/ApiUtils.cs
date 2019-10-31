@@ -6,7 +6,6 @@ using System.Security.Cryptography;
 
 namespace MageApi
 {
-	
 	public class ApiUtils
 	{
 		private static ApiUtils _instance;

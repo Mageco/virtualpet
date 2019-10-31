@@ -5,6 +5,7 @@ using SimpleJSON;
 using System.Reflection;
 using System;
 using Mage.Models;
+using Mage.Models.Game;
 
 namespace Mage.Models.Users{
 	[Serializable]
@@ -25,6 +26,8 @@ namespace Mage.Models.Users{
 		public string country_code = "";
 
 		public List<UserData> user_datas = new List<UserData>();
+
+		public List<Character> characters = new List<Character>();
 
 		public User() : base () {
 			user_datas = new List<UserData>();
@@ -54,6 +57,22 @@ namespace Mage.Models.Users{
 			if (!found) {
 				user_datas.Add (data);
 			}
+		}
+
+		public Character GetCharacter(string id)
+		{
+			foreach (Character u in characters) {
+				if (u.id == id)
+					return u;
+			}
+			return null;
+		}
+
+		public void SetCharacter(Character data) {
+			//remove current data
+			var item = characters.RemoveAll(x => x.id == data.id);
+			characters.Add (data);
+
 		}
 	}
 }
