@@ -8,6 +8,11 @@ public class SoapItem : MonoBehaviour
 
 	bool isTouch = false;
 	CharController character;
+	public GameObject bubbleEffect;
+
+	void Awake(){
+		bubbleEffect.SetActive(false);
+	}
 
 	void Update()
 	{
@@ -23,6 +28,7 @@ public class SoapItem : MonoBehaviour
 
 	void OnMouseUp()
 	{
+		bubbleEffect.SetActive(false);
 		isTouch = false;
 	}
 
@@ -32,6 +38,7 @@ public class SoapItem : MonoBehaviour
 		if (other.GetComponent <CharController>() != null) {
 			character = other.GetComponent <CharController>();
 			if(character.actionType == ActionType.Bath && isTouch){
+				bubbleEffect.SetActive(true);
 				character.OnSoap();
 				ItemController.instance.GetBathTubeItem().OnSoap ();
 			}
@@ -41,6 +48,7 @@ public class SoapItem : MonoBehaviour
 	void OnTriggerExit2D(Collider2D other) {
 		if (other.GetComponent <CharController>() == character) {
 			character = null;
+			bubbleEffect.SetActive(false);
 		}
 	}
 

@@ -278,7 +278,7 @@ public class CharController : MonoBehaviour
     public void OffShower()
     {
         if (actionType == ActionType.Bath)
-            anim.Play("BathStart_D", 0);
+            anim.Play("Shake_D", 0);
     }
 
     public void OnTouch()
