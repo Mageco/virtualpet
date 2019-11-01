@@ -78,11 +78,11 @@ public class ShopPanel : MonoBehaviour
                     LoadItem(DataHolder.Item(i));
                 }               
             }else if(currentTab == 6){
-                 if(DataHolder.Item(i).itemType == ItemType.Picture || DataHolder.Item(i).itemType == ItemType.Table){
+                 if(DataHolder.Item(i).itemType == ItemType.Picture || DataHolder.Item(i).itemType == ItemType.Table || DataHolder.Item(i).itemType == ItemType.MedicineBox){
                     LoadItem(DataHolder.Item(i));
                 }               
             }else if(currentTab == 7){
-                 if(DataHolder.Item(i).itemType == ItemType.Food){
+                 if(DataHolder.Item(i).itemType == ItemType.Food || DataHolder.Item(i).itemType == ItemType.Bandage || DataHolder.Item(i).itemType == ItemType.Pill){
                     LoadItem(DataHolder.Item(i));
                 }               
             }
