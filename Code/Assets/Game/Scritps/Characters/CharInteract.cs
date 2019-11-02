@@ -134,4 +134,3 @@ public class CharInteract : MonoBehaviour
     #endregion
 }
 
-public enum InteractType {None,Drag,Drop,Touch,SwipeUp,SwipeDown,SwipeLeft,SwipeRight,DoubleClick};

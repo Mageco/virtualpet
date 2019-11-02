@@ -30,6 +30,7 @@ public class ApiManager : MonoBehaviour {
 	[HideInInspector]
 	public int option = 0;
 
+	public List<ActionData> actions;
 
 	void Awake()
 	{
