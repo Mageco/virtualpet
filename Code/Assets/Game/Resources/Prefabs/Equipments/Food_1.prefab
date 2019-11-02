@@ -130,11 +130,7 @@ GameObject:
   - component: {fileID: 4441679454418218587}
   - component: {fileID: 4441679454418218586}
   - component: {fileID: 4441679454418218589}
-  - component: {fileID: 4441679454418218590}
   - component: {fileID: 4441679454418218591}
-  - component: {fileID: 4441679454418218593}
-  - component: {fileID: 4441679454418218592}
-  - component: {fileID: 4441679454418218595}
   - component: {fileID: 4441679454418218594}
   - component: {fileID: 981964013}
   m_Layer: 0
@@ -152,7 +148,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4441679454418218584}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 27.87, y: -13.16, z: 0}
+  m_LocalPosition: {x: 28.67, y: -15.75, z: 0}
   m_LocalScale: {x: 1.5, y: 1.5, z: 1}
   m_Children:
   - {fileID: 4441679453747766629}
@@ -223,23 +219,6 @@ MonoBehaviour:
   invertPolygon: 0
   shapeType: 1
   extraOffset: 0
---- !u!114 &4441679454418218590
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4441679454418218584}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b554cbefb48494868a882fc8bfa192ae, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isReturn: 0
-  isObstruct: 1
-  isDragOffset: 1
-  isCameraControl: 0
-  isIgnoreUI: 1
 --- !u!50 &4441679454418218591
 Rigidbody2D:
   serializedVersion: 4
@@ -261,48 +240,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!114 &4441679454418218593
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4441679454418218584}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e11dce777e53644328cc52df02af4ff8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  initZ: -6
-  scaleFactor: 0.1
---- !u!114 &4441679454418218592
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4441679454418218584}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b70c853a102fb4bc9903072d50c08a6c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  itemType: 0
-  interactType: 0
---- !u!114 &4441679454418218595
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4441679454418218584}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d1989e930e76d475a8addf60dd5cc572, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isOrder: 1
-  isStatic: 0
 --- !u!114 &4441679454418218594
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -315,6 +252,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f28402dd3988141b6a38e2672737c4d3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initZ: -6
+  scaleFactor: 0.1
   maxfoodAmount: 200
   image: {fileID: 4441679454418218586}
   foodSprites:
@@ -332,7 +271,7 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}

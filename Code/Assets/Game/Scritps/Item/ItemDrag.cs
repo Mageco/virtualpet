@@ -97,6 +97,7 @@ public class ItemDrag : MonoBehaviour
 			yield return new WaitForEndOfFrame ();
 		}
 		isBusy = false;
+		
 	}
 
 	IEnumerator ReturnRotation(Quaternion rot)
@@ -111,16 +112,27 @@ public class ItemDrag : MonoBehaviour
 
 
 	void OnTriggerEnter2D(Collider2D other) {
-		if (other.GetComponent<PolyNavObstacle>() != null && isObstruct) {
-			isDragable = false;
-			Debug.Log ("Collide");
+		//if(isBusy)
+		//	return;
+		if (other.tag == "Floor" && isObstruct) {
+		 	isDragable = true;
 		}
+		 if (other.GetComponent<PolyNavObstacle>() != null && isObstruct) {
+		 	isDragable = false;
+		 }
+
 	}
 
 	void OnTriggerExit2D(Collider2D other) {
+		if(isBusy)
+			return;
 		if (other.GetComponent<PolyNavObstacle>() != null && isObstruct) {
-			isDragable = true;
+		 	isDragable = true;
 		}
+		if (other.tag == "Floor" && isObstruct) {
+			isDragable = false;
+		}
+
 	}
 
 

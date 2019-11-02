@@ -179,6 +179,9 @@ public class FlowerJarItem : MonoBehaviour
 
 	void OnMouseDown()
 	{
+		if(IsPointerOverUIObject())
+			return;
+
 		if (isBusy)
 			return;
 

@@ -55,11 +55,7 @@ GameObject:
   - component: {fileID: 3669580434300967882}
   - component: {fileID: 3669580434300967890}
   - component: {fileID: 3669580434300967891}
-  - component: {fileID: 3669580434300967884}
   - component: {fileID: 3669580434300967885}
-  - component: {fileID: 3669580434300967886}
-  - component: {fileID: 3669580434300967887}
-  - component: {fileID: 3669580434300967880}
   - component: {fileID: 1720226836}
   - component: {fileID: 2353112170194004574}
   m_Layer: 0
@@ -147,23 +143,6 @@ MonoBehaviour:
   invertPolygon: 0
   shapeType: 1
   extraOffset: 0
---- !u!114 &3669580434300967884
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3669580434300967883}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b554cbefb48494868a882fc8bfa192ae, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isReturn: 0
-  isObstruct: 1
-  isDragOffset: 1
-  isCameraControl: 0
-  isIgnoreUI: 1
 --- !u!50 &3669580434300967885
 Rigidbody2D:
   serializedVersion: 4
@@ -185,48 +164,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!114 &3669580434300967886
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3669580434300967883}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e11dce777e53644328cc52df02af4ff8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  initZ: -6
-  scaleFactor: 0.1
---- !u!114 &3669580434300967887
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3669580434300967883}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b70c853a102fb4bc9903072d50c08a6c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  itemType: 0
-  interactType: 0
---- !u!114 &3669580434300967880
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3669580434300967883}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d1989e930e76d475a8addf60dd5cc572, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isOrder: 1
-  isStatic: 0
 --- !u!61 &1720226836
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -265,6 +202,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e05f49d6b981b41639f492569bc2b7c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initZ: -6
+  scaleFactor: 0.1
+  isDrag: 0
+  isDragable: 1
+  isBusy: 0
   maxfoodAmount: 200
   image: {fileID: 3669580434300967890}
   foodSprites:

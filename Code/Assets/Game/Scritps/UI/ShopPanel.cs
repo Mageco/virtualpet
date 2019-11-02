@@ -82,7 +82,7 @@ public class ShopPanel : MonoBehaviour
                     LoadItem(DataHolder.Item(i));
                 }               
             }else if(currentTab == 7){
-                 if(DataHolder.Item(i).itemType == ItemType.Food || DataHolder.Item(i).itemType == ItemType.Bandage || DataHolder.Item(i).itemType == ItemType.Pill){
+                 if(DataHolder.Item(i).itemType == ItemType.Food || DataHolder.Item(i).itemType == ItemType.Drink || DataHolder.Item(i).itemType == ItemType.Bandage || DataHolder.Item(i).itemType == ItemType.Pill){
                     LoadItem(DataHolder.Item(i));
                 }               
             }

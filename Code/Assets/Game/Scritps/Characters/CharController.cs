@@ -229,7 +229,7 @@ public class CharController : MonoBehaviour
 
     public void OnHold()
     {
-        if(actionType == ActionType.Hold || actionType == ActionType.SkillUp)
+        if(actionType == ActionType.SkillUp)
             return;
 
         Abort();

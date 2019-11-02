@@ -152,7 +152,7 @@ public class MouseController : MonoBehaviour
 		}
 		else if(state == MouseState.Eat){
 			
-			if(ItemController.instance.FoodItem().CanEat())
+			if(ItemController.instance.FoodItem().CanEat() && Vector2.Distance(this.transform.position,InputController.instance.GetRandomPoint (PointType.MouseEat).position) < 1)
 				ItemController.instance.FoodItem().Eat(0.3f);
 			else 
 				Run();
