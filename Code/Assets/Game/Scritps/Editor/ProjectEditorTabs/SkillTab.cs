@@ -94,6 +94,7 @@ public class SkillTab : BaseTab
 			{
 				DataHolder.Skill(selection).coinValue = EditorGUILayout.IntField("Coin", DataHolder.Skill(selection).coinValue, GUILayout.Width(pw.mWidth));
                 DataHolder.Skill(selection).diamondValue = EditorGUILayout.IntField("Diamond", DataHolder.Skill(selection).diamondValue, GUILayout.Width(pw.mWidth));
+				DataHolder.Skill(selection).expValue = EditorGUILayout.IntField("Exp", DataHolder.Skill(selection).expValue, GUILayout.Width(pw.mWidth));
 				DataHolder.Skill(selection).itemId = EditorGUILayout.Popup("Item", 
 						DataHolder.Skill(selection).itemId, pw.GetItems(), GUILayout.Width(pw.mWidth));
 				EditorGUILayout.Separator();

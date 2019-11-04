@@ -107,6 +107,7 @@ public class QuestTab : BaseTab
 			{
 				DataHolder.Quest(selection).coinValue = EditorGUILayout.IntField("Coin", DataHolder.Quest(selection).coinValue, GUILayout.Width(pw.mWidth));
                 DataHolder.Quest(selection).diamondValue = EditorGUILayout.IntField("Diamond", DataHolder.Quest(selection).diamondValue, GUILayout.Width(pw.mWidth));
+                DataHolder.Quest(selection).expValue = EditorGUILayout.IntField("Exp", DataHolder.Quest(selection).expValue, GUILayout.Width(pw.mWidth));
 				DataHolder.Quest(selection).itemId = EditorGUILayout.Popup("Item", 
 						DataHolder.Quest(selection).itemId, pw.GetItems(), GUILayout.Width(pw.mWidth));
 				EditorGUILayout.Separator();

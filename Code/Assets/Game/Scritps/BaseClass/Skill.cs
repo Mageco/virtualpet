@@ -19,6 +19,7 @@ public class Skill
     public int itemId = 0;
     public int coinValue = 0;
     public int diamondValue = 0;
+	public int expValue = 0;
 
 
 	public Skill()

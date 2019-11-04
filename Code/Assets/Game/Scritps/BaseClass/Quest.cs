@@ -15,6 +15,7 @@ public class Quest
     public int itemId = 0;
     public int coinValue = 0;
     public int diamondValue = 0;
+    public int expValue = 0;
     //Dialog
     public int dialogId = 0;
 
