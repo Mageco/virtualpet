@@ -5,6 +5,9 @@ using UnityEngine;
 [System.Serializable]
 public class CharData
 {
+	//Common Data
+	public int level = 0;
+	public int exp = 0;
 	int[] skills;
 	public float food = 50;
 	public float water = 50;

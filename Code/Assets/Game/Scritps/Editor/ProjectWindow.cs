@@ -10,16 +10,19 @@ public class ProjectWindow : EditorWindow
 	public int mWidth = 300;
 	// section handling
 	private int currentSection = 0;
-	private string[] sections = new string[] {"Language","Skill","Item"};
+	private string[] sections = new string[] {"Language","Skill","Item","Dialog"};
 	
 	private int LANGUAGES = 0;
 	private int SKILL = 1;
 	private int ITEMS = 2;
 
+	private int DIALOGS = 3;
+
 	// tabs
 	private LanguageTab langTab = null;
 	private ItemTab itemTab = null;
 	private SkillTab skillTab = null;
+	private DialogTab dialogTab = null;
 
 	[MenuItem("Mage Kit/Item Editor")]
 	static void Init()
@@ -42,6 +45,9 @@ public class ProjectWindow : EditorWindow
 
 		if(skillTab == null) skillTab = new SkillTab(this);
 		else skillTab.Reload();
+				
+		if(dialogTab == null) dialogTab = new DialogTab(this);
+		else dialogTab.Reload();
 	}
 	
 	public void Save()
@@ -49,6 +55,7 @@ public class ProjectWindow : EditorWindow
 		DataHolder.Languages().SaveData();
 		DataHolder.Items().SaveData();
 		DataHolder.Skills().SaveData();
+		DataHolder.Dialogs().SaveData();
 	}
 
 	void OnGUI()
@@ -71,6 +78,8 @@ public class ProjectWindow : EditorWindow
 			this.itemTab.ShowTab ();
 		}  else if (currentSection == this.SKILL) {
 			this.skillTab.ShowTab ();
+		} else if (currentSection == this.DIALOGS) {
+			this.dialogTab.ShowTab ();
 		} 
 
 
@@ -97,12 +106,14 @@ public class ProjectWindow : EditorWindow
 	{
 		DataHolder.Items ().AddLanguage ();
 		DataHolder.Skills ().AddLanguage ();
+		DataHolder.Dialogs ().AddLanguage ();
 	}
 	
 	public void RemoveLanguage(int lang)
 	{
 		DataHolder.Items ().RemoveLanguage (lang);
 		DataHolder.Skills ().RemoveLanguage (lang);
+		DataHolder.Dialogs ().RemoveLanguage (lang);
 	}
 
 
@@ -156,6 +167,26 @@ public class ProjectWindow : EditorWindow
 	}
 
 	public void RemoveSkill(int item)
+	{
+
+	}
+
+	public int GetDialogCount()
+	{
+		return DataHolder.Dialogs().GetDataCount();
+	}
+
+	public string GetDialog(int index)
+	{
+		return DataHolder.Dialogs().GetName(index);
+	}
+
+	public string[] GetDialogs()
+	{
+		return DataHolder.Dialogs().GetNameList(true);
+	}
+
+	public void RemoveDialog(int item)
 	{
 
 	}

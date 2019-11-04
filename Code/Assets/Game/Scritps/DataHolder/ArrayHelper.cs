@@ -179,6 +179,23 @@ public class ArrayHelper
 	}
 
 
+	public static Dialog[] Add(Dialog n, Dialog[] list)
+	{
+		ArrayList tmp = new ArrayList();
+		foreach(Dialog str in list) tmp.Add(str);
+		tmp.Add(n);
+		return tmp.ToArray(typeof(Dialog)) as Dialog[];
+	}
+
+	public static Dialog[] Remove(int index, Dialog[] list)
+	{
+		ArrayList tmp = new ArrayList();
+		foreach(Dialog str in list) tmp.Add(str);
+		tmp.RemoveAt(index);
+		return tmp.ToArray(typeof(Dialog)) as Dialog[];
+	}
+
+
 
 	public static LanguageItem[] Add(LanguageItem n, LanguageItem[] list)
 	{

@@ -10,6 +10,8 @@ public class DataHolder
 	private LanguageData languages;
 	private SkillData skills;
 
+	private DialogData dialogs;
+
 	private DataHolder()
 	{
 		if(instance != null)
@@ -27,6 +29,7 @@ public class DataHolder
 		languages = new LanguageData();
 		items = new  ItemData();
 		skills = new SkillData ();
+		dialogs = new DialogData();
 	}
 
 
@@ -104,6 +107,35 @@ public class DataHolder
 			return 0;
 	}
 
+	public static DialogData Dialogs()
+	{
+		return DataHolder.Instance().dialogs;
+	}
+	
+	public static Dialog Dialog(int index)
+	{
+		return DataHolder.Instance().dialogs.dialogs[index];
+	}
+
+	public static Dialog GetDialog(int id)
+	{
+		return DataHolder.Instance().dialogs.GetDialog(id);
+	}
+
+	public static int GetDialogIndex(int id){
+		for(int i=0;i<DataHolder.Dialogs().GetDataCount();i++){
+			if(DataHolder.Dialog(i).iD == id)
+				return i;
+		}
+		return 0;
+	}
+
+	public static int LastDialogID(){
+		if(DataHolder.Instance().dialogs != null && DataHolder.Instance().dialogs.GetDataCount() > 0)
+			return DataHolder.Instance().dialogs.dialogs[DataHolder.Instance().dialogs.dialogs.Length - 1].iD;
+		else 
+			return -1;
+	}
 
 	public static LanguageData Languages()
 	{
