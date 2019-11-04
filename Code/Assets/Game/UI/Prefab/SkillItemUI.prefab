@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 93993035}
   - component: {fileID: 93993034}
   - component: {fileID: 93993036}
+  - component: {fileID: 2495507205143019615}
   m_Layer: 5
   m_Name: Active
   m_TagString: Untagged
@@ -95,6 +96,34 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &2495507205143019615
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 93993032}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: edc5e7a8a5bcb4acf98d4521e8a88aca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_OnClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1236847264435744323}
+        m_MethodName: Collect
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_TypeName: AnimatedButton+ButtonClickedEvent, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
 --- !u!1 &253970201
 GameObject:
   m_ObjectHideFlags: 0
@@ -162,7 +191,7 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_Sprite: {fileID: 21300000, guid: a139634ce96e3934aaa428ec7788aec5, type: 3}
   m_Type: 0
-  m_PreserveAspect: 0
+  m_PreserveAspect: 1
   m_FillCenter: 1
   m_FillMethod: 4
   m_FillAmount: 1
@@ -1150,6 +1179,12 @@ MonoBehaviour:
   skillDescription: {fileID: 1061549807105882993}
   progress: {fileID: 1061549807081325251}
   slider: {fileID: 422462350385951694}
+  rewardIcon: {fileID: 253970203}
+  coinIcon: {fileID: 21300000, guid: a139634ce96e3934aaa428ec7788aec5, type: 3}
+  diamonIcon: {fileID: 21300000, guid: b8a5e5c7536414a439ea7e171a00c95f, type: 3}
+  rewardValue: {fileID: 922268591}
+  collectbutton: {fileID: 2495507205143019615}
+  collectedButton: {fileID: 971866097}
 --- !u!1 &4140798333928993088
 GameObject:
   m_ObjectHideFlags: 0

@@ -11,6 +11,17 @@ public class SkillUI : MonoBehaviour
     public Text skillDescription;
     public Text progress;
     public Image slider;
+    public Image rewardIcon;
+    public Sprite coinIcon;
+    public Sprite diamonIcon;
+    public Text rewardValue;
+    public AnimatedButton collectbutton;
+    public GameObject collectedButton;
+
+    void Awake(){
+        collectbutton.gameObject.SetActive(false);
+        collectedButton.SetActive(false);
+    }
 
     // Start is called before the first frame update
     public void Load(Skill d)
@@ -23,8 +34,28 @@ public class SkillUI : MonoBehaviour
         skillDescription.text = d.GetDescription(0);
         progress.text = InputController.instance.character.data.GetSkillProgress(d.skillType).ToString() + "/" + d.maxProgress.ToString();
         slider.fillAmount = InputController.instance.character.data.GetSkillProgress(d.skillType) * 1f/d.maxProgress;
+        if(d.coinValue != 0){
+            rewardIcon.sprite = coinIcon;
+            rewardValue.text = d.coinValue.ToString();
+        }else if(d.diamondValue != 0){
+            rewardIcon.sprite = diamonIcon;
+            rewardValue.text = d.diamondValue.ToString();           
+        }else if(d.itemId != -1){
+            string itemurl = DataHolder.Item(d.itemId).iconUrl.Replace("Assets/Game/Resources/","");
+            itemurl = itemurl.Replace(".png","");
+            rewardIcon.sprite = Resources.Load<Sprite>(itemurl) as Sprite;
+            rewardValue.text = "1";
+        }
     }
 
+    public void Done(){
+        collectbutton.gameObject.SetActive(true);
+    }
+
+    public void Collect(){
+        collectbutton.gameObject.SetActive(false);
+        collectedButton.SetActive(true);
+    }
 
 
     // Update is called once per frame
