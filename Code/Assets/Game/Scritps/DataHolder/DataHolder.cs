@@ -9,8 +9,9 @@ public class DataHolder
 	private ItemData items;
 	private LanguageData languages;
 	private SkillData skills;
-
 	private DialogData dialogs;
+	private QuestData quests;
+
 
 	private DataHolder()
 	{
@@ -30,6 +31,7 @@ public class DataHolder
 		items = new  ItemData();
 		skills = new SkillData ();
 		dialogs = new DialogData();
+		quests = new QuestData();
 	}
 
 
@@ -133,6 +135,36 @@ public class DataHolder
 	public static int LastDialogID(){
 		if(DataHolder.Instance().dialogs != null && DataHolder.Instance().dialogs.GetDataCount() > 0)
 			return DataHolder.Instance().dialogs.dialogs[DataHolder.Instance().dialogs.dialogs.Length - 1].iD;
+		else 
+			return -1;
+	}
+
+	public static QuestData Quests()
+	{
+		return DataHolder.Instance().quests;
+	}
+	
+	public static Quest Quest(int index)
+	{
+		return DataHolder.Instance().quests.quests[index];
+	}
+
+	public static Quest GetQuest(int id)
+	{
+		return DataHolder.Instance().quests.GetQuest(id);
+	}
+
+	public static int GetQuestIndex(int id){
+		for(int i=0;i<DataHolder.Quests().GetDataCount();i++){
+			if(DataHolder.Quest(i).iD == id)
+				return i;
+		}
+		return 0;
+	}
+
+	public static int LastQuestID(){
+		if(DataHolder.Instance().quests != null && DataHolder.Instance().quests.GetDataCount() > 0)
+			return DataHolder.Instance().quests.quests[DataHolder.Instance().quests.quests.Length - 1].iD;
 		else 
 			return -1;
 	}

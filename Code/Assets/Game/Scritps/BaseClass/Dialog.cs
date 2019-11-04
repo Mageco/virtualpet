@@ -11,7 +11,7 @@ public class Dialog
 		for (int i = 0; i < languageItem.Length; i++) {
 			languageItem[i] = new LanguageItem();
 		}
-		languageItem[0].Name = "New Item";
+		languageItem[0].Name = "New Dialog";
 	}
 
 

@@ -187,6 +187,39 @@ public class ArrayHelper
 		return tmp.ToArray(typeof(Dialog)) as Dialog[];
 	}
 
+	public static Quest[] Remove(int index, Quest[] list)
+	{
+		ArrayList tmp = new ArrayList();
+		foreach(Quest str in list) tmp.Add(str);
+		tmp.RemoveAt(index);
+		return tmp.ToArray(typeof(Quest)) as Quest[];
+	}
+
+		public static Quest[] Add(Quest n, Quest[] list)
+	{
+		ArrayList tmp = new ArrayList();
+		foreach(Quest str in list) tmp.Add(str);
+		tmp.Add(n);
+		return tmp.ToArray(typeof(Quest)) as Quest[];
+	}
+
+
+	public static QuestRequirement[] Remove(int index, QuestRequirement[] list)
+	{
+		ArrayList tmp = new ArrayList();
+		foreach(QuestRequirement str in list) tmp.Add(str);
+		tmp.RemoveAt(index);
+		return tmp.ToArray(typeof(QuestRequirement)) as QuestRequirement[];
+	}
+
+		public static QuestRequirement[] Add(QuestRequirement n, QuestRequirement[] list)
+	{
+		ArrayList tmp = new ArrayList();
+		foreach(QuestRequirement str in list) tmp.Add(str);
+		tmp.Add(n);
+		return tmp.ToArray(typeof(QuestRequirement)) as QuestRequirement[];
+	}
+
 	public static Dialog[] Remove(int index, Dialog[] list)
 	{
 		ArrayList tmp = new ArrayList();

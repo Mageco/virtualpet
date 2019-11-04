@@ -88,6 +88,17 @@ public class SkillTab : BaseTab
 			DataHolder.Skill(selection).maxProgress = EditorGUILayout.IntField("Max Progress", DataHolder.Skill(selection).maxProgress, GUILayout.Width (pw.mWidth * 2));
 			EditorGUILayout.Separator();
 
+            EditorGUILayout.BeginVertical("box");
+			fold2 = EditorGUILayout.Foldout(fold2, "Skill Reward");
+			if(fold2)
+			{
+				DataHolder.Skill(selection).coinValue = EditorGUILayout.IntField("Coin", DataHolder.Skill(selection).coinValue, GUILayout.Width(pw.mWidth));
+                DataHolder.Skill(selection).diamondValue = EditorGUILayout.IntField("Diamond", DataHolder.Skill(selection).diamondValue, GUILayout.Width(pw.mWidth));
+				DataHolder.Skill(selection).itemId = EditorGUILayout.Popup("Item", 
+						DataHolder.Skill(selection).itemId, pw.GetItems(), GUILayout.Width(pw.mWidth));
+				EditorGUILayout.Separator();
+			}
+			EditorGUILayout.EndVertical();
 			
 			EditorGUILayout.EndHorizontal();
 			EditorGUILayout.EndVertical();

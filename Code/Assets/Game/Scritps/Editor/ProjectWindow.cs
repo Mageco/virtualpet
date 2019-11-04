@@ -10,19 +10,21 @@ public class ProjectWindow : EditorWindow
 	public int mWidth = 300;
 	// section handling
 	private int currentSection = 0;
-	private string[] sections = new string[] {"Language","Skill","Item","Dialog"};
+	private string[] sections = new string[] {"Language","Skill","Item","Dialog","Quest"};
 	
 	private int LANGUAGES = 0;
 	private int SKILL = 1;
 	private int ITEMS = 2;
-
 	private int DIALOGS = 3;
+	private int QUESTS = 4;
 
 	// tabs
 	private LanguageTab langTab = null;
 	private ItemTab itemTab = null;
 	private SkillTab skillTab = null;
 	private DialogTab dialogTab = null;
+	private QuestTab questTab = null;
+
 
 	[MenuItem("Mage Kit/Item Editor")]
 	static void Init()
@@ -48,6 +50,9 @@ public class ProjectWindow : EditorWindow
 				
 		if(dialogTab == null) dialogTab = new DialogTab(this);
 		else dialogTab.Reload();
+		
+		if(questTab == null) questTab = new QuestTab(this);
+		else questTab.Reload();
 	}
 	
 	public void Save()
@@ -56,6 +61,7 @@ public class ProjectWindow : EditorWindow
 		DataHolder.Items().SaveData();
 		DataHolder.Skills().SaveData();
 		DataHolder.Dialogs().SaveData();
+		DataHolder.Quests().SaveData();
 	}
 
 	void OnGUI()
@@ -80,6 +86,8 @@ public class ProjectWindow : EditorWindow
 			this.skillTab.ShowTab ();
 		} else if (currentSection == this.DIALOGS) {
 			this.dialogTab.ShowTab ();
+		} else if (currentSection == this.QUESTS) {
+			this.questTab.ShowTab ();
 		} 
 
 
@@ -107,6 +115,7 @@ public class ProjectWindow : EditorWindow
 		DataHolder.Items ().AddLanguage ();
 		DataHolder.Skills ().AddLanguage ();
 		DataHolder.Dialogs ().AddLanguage ();
+		DataHolder.Quests ().AddLanguage ();
 	}
 	
 	public void RemoveLanguage(int lang)
@@ -114,6 +123,7 @@ public class ProjectWindow : EditorWindow
 		DataHolder.Items ().RemoveLanguage (lang);
 		DataHolder.Skills ().RemoveLanguage (lang);
 		DataHolder.Dialogs ().RemoveLanguage (lang);
+		DataHolder.Quests ().RemoveLanguage (lang);
 	}
 
 
@@ -187,6 +197,26 @@ public class ProjectWindow : EditorWindow
 	}
 
 	public void RemoveDialog(int item)
+	{
+
+	}
+
+	public int GetQuestCount()
+	{
+		return DataHolder.Quests().GetDataCount();
+	}
+	
+	public string GetQuest(int index)
+	{
+		return DataHolder.Quests().GetName(index);
+	}
+	
+	public string[] GetQuests()
+	{
+		return DataHolder.Quests().GetNameList(true);
+	}
+	
+	public void RemoveQuest(int item)
 	{
 
 	}
