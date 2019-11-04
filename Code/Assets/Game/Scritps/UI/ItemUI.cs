@@ -14,8 +14,14 @@ public class ItemUI : MonoBehaviour
     public GameObject coinIcon;
     public GameObject diamonIcon;
     public GameObject moneyIcon;
+    Animator animator;
+    bool isBusy = false;
 
     ItemState state = ItemState.Buy;
+
+    void Awake(){
+        animator = this.GetComponent<Animator>();
+    }
 
     // Start is called before the first frame update
     public void Load(Item d)
@@ -50,6 +56,7 @@ public class ItemUI : MonoBehaviour
             buyButton.SetActive(false);
             useButton.SetActive(false);
             usedButton.SetActive(true);
+            animator.Play("Equiped",0);
         }
         
 
@@ -79,13 +86,26 @@ public class ItemUI : MonoBehaviour
     }
 
     public void OnBuy(){
-        if(state == ItemState.Used)
+        if(isBusy)
             return;
+        StartCoroutine(BuyCoroutine());
+   }
+
+   IEnumerator BuyCoroutine(){
+       isBusy = true;
+        if(state == ItemState.Used)
+            yield return null;
         else if(state == ItemState.Use){
+            animator.Play("Use",0);
+            yield return new WaitForSeconds(3f);
             UIManager.instance.UseItem(itemId);
+            
         }else {
+            animator.Play("Buy",0);
+            yield return new WaitForSeconds(1f);
             UIManager.instance.BuyItem(itemId);
-        }        
+        }   
+        isBusy = false;     
    }
 
     public void OnUse(){
