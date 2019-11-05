@@ -16,12 +16,12 @@ public class SkillLocation : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(InputController.instance.character.currentSkill == skillType){
+        if(InputController.instance.Character.currentSkill == skillType){
             skillEffect.SetActive(true);
-            if(isEnter && InputController.instance.character.charInteract.interactType != InteractType.Drop
-            && InputController.instance.character.charInteract.interactType != InteractType.Drag)
+            if(isEnter && InputController.instance.Character.charInteract.interactType != InteractType.Drop
+            && InputController.instance.Character.charInteract.interactType != InteractType.Drag)
             {
-                InputController.instance.character.LevelUpSkill(skillType);
+                InputController.instance.Character.LevelUpSkill(skillType);
             }
         }else
             skillEffect.SetActive(false);

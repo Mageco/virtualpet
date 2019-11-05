@@ -128,8 +128,8 @@ public class FlowerJarItem : MonoBehaviour
 			pos.z += 2;
 			this.transform.position = pos;
 
-			float l = Vector2.Distance(InputController.instance.character.transform.position,this.transform.position);
-			InputController.instance.character.OnListening(9 + 30f/l);
+			float l = Vector2.Distance(InputController.instance.Character.transform.position,this.transform.position);
+			InputController.instance.Character.OnListening(9 + 30f/l);
 			yield return StartCoroutine(DoAnim("Break",2));
 			InputController.instance.ResetCameraTarget();
 			yield return new WaitForSeconds(2);

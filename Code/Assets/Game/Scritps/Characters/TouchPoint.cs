@@ -19,11 +19,11 @@ public class TouchPoint : MonoBehaviour
     void OnMouseDown()
     {
         Debug.Log("Touch Down");
-        InputController.instance.character.OnTouch();
+        InputController.instance.Character.OnTouch();
     }
 
     void OnMouseUp(){
         Debug.Log("Touch Up");
-        InputController.instance.character.OffTouch();
+        InputController.instance.Character.OffTouch();
     }
 }

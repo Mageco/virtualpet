@@ -22,7 +22,7 @@ public class CharController : MonoBehaviour
     float maxDataTime = 1f;
 
     //Movement
-    public Transform target;
+    public Vector3 target;
 
     [HideInInspector]
     PolyNavAgent agent;
@@ -604,10 +604,10 @@ public class CharController : MonoBehaviour
     IEnumerator MoveToPoint()
     {
         isArrived = false;
-        if (Vector2.Distance(target.position, agent.transform.position) > 0.5f)
+        if (Vector2.Distance(target, agent.transform.position) > 0.5f)
         {
             if(!isAbort){
-                agent.SetDestination(target.position);
+                agent.SetDestination(target);
             }
 
             while (!isArrived && !isAbort)

@@ -59,9 +59,9 @@ public class PolyNavAgent : MonoBehaviour{
 
 	private static List<PolyNavAgent> allAgents = new List<PolyNavAgent>();
 
-	CharController character;
-
 	public float rotation;
+
+	CharController character;
 
 	///The position of the agent
 	public Vector2 position{
@@ -147,7 +147,11 @@ public class PolyNavAgent : MonoBehaviour{
 	void OnEnable(){ allAgents.Add(this); }
 	void OnDisable(){ allAgents.Remove(this); }
 	void Awake(){ _transform = transform; 
-		character = GameObject.FindObjectOfType<CharController> ();
+		
+	}
+
+	public void LoadCharacter(CharController c){
+		character = c;
 	}
 
 	///Set the destination for the agent. As a result the agent starts moving
@@ -354,10 +358,7 @@ public class PolyNavAgent : MonoBehaviour{
 		if (OnDestinationReached != null)
 			OnDestinationReached();
 
-		//if (type == AgentType.Char)
 		character.OnArrived ();
-		//else if (type == AgentType.Pet)
-		//	this.transform.GetComponent<CharController> ().OnArrived ();
 	}
 
 	//stop the agent and callback + message

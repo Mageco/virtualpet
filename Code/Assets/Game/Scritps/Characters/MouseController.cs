@@ -145,7 +145,7 @@ public class MouseController : MonoBehaviour
 			else
 				this.transform.localScale = originalScale;
 
-			if(state == MouseState.Seek && Vector2.Distance(this.body.transform.position,InputController.instance.character.transform.position) < 3){
+			if(state == MouseState.Seek && Vector2.Distance(this.body.transform.position,InputController.instance.Character.transform.position) < 3){
 				Run();
 			}		
 
@@ -157,7 +157,7 @@ public class MouseController : MonoBehaviour
 			else 
 				Run();
 
-			if(Vector2.Distance(this.body.transform.position,InputController.instance.character.transform.position) < 3){
+			if(Vector2.Distance(this.body.transform.position,InputController.instance.Character.transform.position) < 3){
 				Run();
 			}	
 		}

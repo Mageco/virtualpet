@@ -7,12 +7,12 @@ using UnityEngine.EventSystems;
 public class InputController : MonoBehaviour
 {
 	public static InputController instance;
-	public Transform target;
+
 	[HideInInspector]
-	public CharController character;
+	
 	public CameraController cameraController;
 
-
+	CharController character;
 	float time;
 	float maxDoubleClickTime = 0.4f;
 	bool isClick = false;
@@ -24,6 +24,18 @@ public class InputController : MonoBehaviour
 
 		character = GameObject.FindObjectOfType<CharController> ();
 		
+	}
+
+
+
+	public CharController Character{		
+		get
+		{
+			if(character == null)
+			character = GameObject.FindObjectOfType<CharController> ();
+		
+			return character;
+		}
 	}
 
 	List<GizmoPoint> GetPoints(PointType type)
@@ -53,8 +65,7 @@ public class InputController : MonoBehaviour
 	{
 		//Debug.Log (type);
 		if(this.GetRandomPoint (type) != null)
-			target.position = this.GetRandomPoint (type).position;
-		character.target = this.target;
+			Character.target = this.GetRandomPoint (type).position;
 	}
 
 	public List<Transform> GetRandomPoints(PointType type)
@@ -124,7 +135,6 @@ public class InputController : MonoBehaviour
 	{
 		Vector3 pos = Camera.main.ScreenToWorldPoint (Input.mousePosition);
 		pos.z = 0;
-		target.position = pos;
 	}
 
 	public void ResetCameraTarget()

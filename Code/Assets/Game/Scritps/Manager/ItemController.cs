@@ -6,7 +6,6 @@ public class ItemController : MonoBehaviour
 {
 	public static ItemController instance;
 	[HideInInspector]
-	public CharController character;
 
 	public List<ItemObject> items = new List<ItemObject>();
 	
@@ -16,12 +15,13 @@ public class ItemController : MonoBehaviour
 		if (instance == null)
 			instance = this;
 
-		character = GameObject.FindObjectOfType<CharController> ();
+		LoadItems();
+
 	}
     // Start is called before the first frame update
     void Start()
     {
-		LoadItems();
+		
     }
 
 	public void LoadItems(){
@@ -36,7 +36,6 @@ public class ItemController : MonoBehaviour
 		string url = DataHolder.GetItem(itemId).prefabName.Replace("Assets/Game/Resources/","");
 		url = url.Replace(".prefab",""); 
 		url = DataHolder.Items().GetPrefabPath() + url;
-		Debug.Log(url);
 		GameObject go = GameObject.Instantiate((Resources.Load(url) as GameObject),Vector3.zero,Quaternion.identity) as GameObject;		
 		ItemObject item = go.AddComponent<ItemObject>();
 		item.itemType = DataHolder.GetItem(itemId).itemType;

@@ -38,13 +38,14 @@ public class CameraController : MonoBehaviour
 
 	void Awake()
 	{
-		target = GameObject.FindObjectOfType<CharController> ().transform;
+		
 	}
 
 
 	void Start()
 	{
 		orthographicsize = Camera.main.orthographicSize;
+		target = GameObject.FindObjectOfType<CharController> ().transform;
 	}
 
 	void LateUpdate()

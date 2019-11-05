@@ -52,8 +52,8 @@ public class BathShowerItem : MonoBehaviour
 		isShower = true;
 		showerEffect.SetActive (true);
 		Debug.Log ("Shower");
-		if (InputController.instance.character.actionType == ActionType.Bath) {
-			ItemController.instance.character.OnShower ();
+		if (InputController.instance.Character.actionType == ActionType.Bath) {
+			InputController.instance.Character.OnShower ();
 			ItemController.instance.GetBathTubeItem().OnShower ();
 		}
 	}
@@ -62,8 +62,8 @@ public class BathShowerItem : MonoBehaviour
 		isShower = false;
 		showerEffect.SetActive (false);
 		Debug.Log ("OffShower");
-		if (ItemController.instance.character.actionType == ActionType.Bath) {
-			ItemController.instance.character.OffShower ();
+		if (InputController.instance.Character.actionType == ActionType.Bath) {
+			InputController.instance.Character.OffShower ();
 		}
 	}
 
