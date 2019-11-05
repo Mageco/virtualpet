@@ -21,6 +21,7 @@ public class CharManager : MonoBehaviour
         agent = this.GetComponentInChildren<PolyNavAgent>();
         LoadPet();
         agent.LoadCharacter(character);
+        character.agent = agent;
     }
 
     // Update is called once per frame

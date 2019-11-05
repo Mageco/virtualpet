@@ -61,7 +61,7 @@ MonoBehaviour:
   - {fileID: 421977823}
   - {fileID: 1921572739}
   - {fileID: 1633301633}
-  character: {fileID: 2776677470726071291}
+  character: {fileID: 0}
 --- !u!1 &77152043
 GameObject:
   m_ObjectHideFlags: 0
@@ -25638,10 +25638,10 @@ GameObject:
   - component: {fileID: 4405949453764750100}
   - component: {fileID: 2776677470726071295}
   - component: {fileID: 2776677470726071294}
-  - component: {fileID: 2776677470726071291}
   - component: {fileID: 2776677470726071293}
   - component: {fileID: 1491708381}
   - component: {fileID: 3919013787828678110}
+  - component: {fileID: 8390076603535999625}
   m_Layer: 0
   m_Name: Shiba1_Yellow_Normal
   m_TagString: Player
@@ -25731,70 +25731,6 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 4}
   serializedVersion: 2
   m_Radius: 5
---- !u!114 &2776677470726071291
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2776677470726071290}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6752bcb268be74d428ce2f1b1368a1b2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  data:
-    food: 40
-    water: 20
-    sleep: 50
-    energy: 50
-    health: 50
-    shit: 0
-    pee: 0
-    happy: 50
-    stamina: 50
-    dirty: 50
-    itchi: 50
-    fear: 0
-    curious: 0
-    basicEnergyConsume: 0.05
-    actionEnergyConsume: 0
-    healthConsume: 0.01
-    staminaConsume: 0.001
-    dirtyFactor: 0.01
-    happyConsume: 0.01
-    sleepConsume: 0.05
-    maxFood: 100
-    maxWater: 100
-    maxShit: 100
-    maxPee: 100
-    maxSleep: 100
-    maxEnergy: 100
-    maxHealth: 100
-    maxHappy: 100
-    maxStamina: 100
-    maxDirty: 100
-    maxItchi: 100
-    maxFear: 100
-    maxCurious: 100
-  enviromentType: 0
-  direction: 0
-  target: {fileID: 0}
-  isArrived: 1
-  isAbort: 0
-  actionType: 0
-  charInteract: {fileID: 0}
-  isTouch: 0
-  peePosition: {fileID: 5244646035458620630}
-  shitPosition: {fileID: 6884997947463412684}
-  peePrefab: {fileID: 7166089402494124037, guid: ccefdc6a159554ad68c454188f52587b,
-    type: 3}
-  shitPrefab: {fileID: 4887335964014193537, guid: 6cd2b87a2c28c424ba4e4c5f8d1ddfd2,
-    type: 3}
-  dirtyEffect: {fileID: 0}
-  touchObject: {fileID: 530351831}
-  currentSkill: 0
-  skillLearnEffect: {fileID: 3661641459515871219}
 --- !u!114 &2776677470726071293
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -25879,6 +25815,73 @@ MonoBehaviour:
       Culture=neutral, PublicKeyToken=null
   AllowMultiple: 1
   MultipleSwipeDelay: 0.5
+--- !u!114 &8390076603535999625
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2776677470726071290}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 927ae5f57c8b445c3beac52e0f98e757, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  data:
+    level: 0
+    exp: 0
+    food: 50
+    water: 50
+    sleep: 50
+    energy: 50
+    health: 50
+    shit: 0
+    pee: 0
+    happy: 50
+    stamina: 50
+    dirty: 50
+    itchi: 50
+    fear: 0
+    curious: 0
+    basicEnergyConsume: 0.05
+    actionEnergyConsume: 0
+    healthConsume: 0.01
+    staminaConsume: 0.001
+    dirtyFactor: 0.01
+    happyConsume: 0.01
+    sleepConsume: 0.05
+    maxFood: 100
+    maxWater: 100
+    maxShit: 100
+    maxPee: 100
+    maxSleep: 100
+    maxEnergy: 100
+    maxHealth: 100
+    maxHappy: 100
+    maxStamina: 100
+    maxDirty: 100
+    maxItchi: 100
+    maxFear: 100
+    maxCurious: 100
+  enviromentType: 0
+  direction: 1
+  target: {x: 0, y: 0, z: 0}
+  agent: {fileID: 0}
+  isArrived: 1
+  isAbort: 0
+  actionType: 0
+  charInteract: {fileID: 0}
+  isTouch: 0
+  peePosition: {fileID: 5244646035458620630}
+  shitPosition: {fileID: 6884997947463412684}
+  peePrefab: {fileID: 7166089402494124037, guid: ccefdc6a159554ad68c454188f52587b,
+    type: 3}
+  shitPrefab: {fileID: 4887335964014193537, guid: 6cd2b87a2c28c424ba4e4c5f8d1ddfd2,
+    type: 3}
+  dirtyEffect: {fileID: 0}
+  touchObject: {fileID: 530351831}
+  currentSkill: 0
+  skillLearnEffect: {fileID: 3661641459515871219}
 --- !u!1 &2799078269039525955
 GameObject:
   m_ObjectHideFlags: 0

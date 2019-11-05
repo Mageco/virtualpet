@@ -11496,11 +11496,11 @@ GameObject:
   - component: {fileID: 4405949453764750100}
   - component: {fileID: 2776677470726071295}
   - component: {fileID: 2776677470726071294}
-  - component: {fileID: 2776677470726071291}
   - component: {fileID: 2776677470726071293}
   - component: {fileID: 1491708381}
+  - component: {fileID: 3742445691520982159}
   m_Layer: 0
-  m_Name: Shiba1_Yellow_Normal
+  m_Name: Shiba3_Yellow_Normal
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -11586,7 +11586,7 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 4}
   serializedVersion: 2
   m_Radius: 5
---- !u!114 &2776677470726071291
+--- !u!114 &2776677470726071293
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -11595,12 +11595,44 @@ MonoBehaviour:
   m_GameObject: {fileID: 2776677470726071290}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6752bcb268be74d428ce2f1b1368a1b2, type: 3}
+  m_Script: {fileID: 11500000, guid: 7bb2bec2c1a824c41989665ca1b0ee8a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  initZ: -6
+  scaleFactor: 0.1
+--- !u!114 &1491708381
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2776677470726071290}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df9d8101753564fdbb81f1f49c910387, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  interactType: 0
+  isTouch: 0
+  touchDirection: 1
+  dragOffset: {x: 0, y: 0, z: 0}
+--- !u!114 &3742445691520982159
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2776677470726071290}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 927ae5f57c8b445c3beac52e0f98e757, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   data:
-    food: 40
-    water: 20
+    level: 0
+    exp: 0
+    food: 50
+    water: 50
     sleep: 50
     energy: 50
     health: 50
@@ -11633,11 +11665,13 @@ MonoBehaviour:
     maxFear: 100
     maxCurious: 100
   enviromentType: 0
-  direction: 0
-  target: {fileID: 0}
+  direction: 1
+  target: {x: 0, y: 0, z: 0}
+  agent: {fileID: 0}
   isArrived: 1
   isAbort: 0
   actionType: 0
+  charInteract: {fileID: 0}
   isTouch: 0
   peePosition: {fileID: 5244646035458620630}
   shitPosition: {fileID: 6884997947463412684}
@@ -11645,37 +11679,10 @@ MonoBehaviour:
     type: 3}
   shitPrefab: {fileID: 4887335964014193537, guid: 6cd2b87a2c28c424ba4e4c5f8d1ddfd2,
     type: 3}
+  dirtyEffect: {fileID: 0}
   touchObject: {fileID: 530351831}
---- !u!114 &2776677470726071293
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2776677470726071290}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7bb2bec2c1a824c41989665ca1b0ee8a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  initZ: -6
-  scaleFactor: 0.1
---- !u!114 &1491708381
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2776677470726071290}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: df9d8101753564fdbb81f1f49c910387, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  interactType: 0
-  isTouch: 0
-  touchDirection: 1
-  dragOffset: {x: 0, y: 0, z: 0}
+  currentSkill: 0
+  skillLearnEffect: {fileID: 0}
 --- !u!1 &2799078269039525955
 GameObject:
   m_ObjectHideFlags: 0
