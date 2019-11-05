@@ -124,73 +124,80 @@ public class CharController : MonoBehaviour
     #region Data
     void CalculateData()
     {
-        data.actionEnergyConsume = 0;
 
+        if(data.level < 3){
 
-        if (actionType == ActionType.Call)
-            data.actionEnergyConsume = 0.2f;
-        else if (actionType == ActionType.Mouse)
-            data.actionEnergyConsume = 0.7f;
-        else if (actionType == ActionType.Discover)
+        }else if(data.level < 10){
+
+        }else 
         {
-            data.actionEnergyConsume = 0.5f;
+            data.actionEnergyConsume = 0;
+            if (actionType == ActionType.Call)
+                data.actionEnergyConsume = 0.2f;
+            else if (actionType == ActionType.Mouse)
+                data.actionEnergyConsume = 0.7f;
+            else if (actionType == ActionType.Discover)
+            {
+                data.actionEnergyConsume = 0.5f;
+            }
+            else if (actionType == ActionType.Patrol)
+            {
+                data.actionEnergyConsume = 0.3f;
+            }else if (actionType == ActionType.Bath)
+                data.actionEnergyConsume = 0.05f;
+            else if (actionType == ActionType.Fear)
+                data.actionEnergyConsume = 0.3f;
+
+            data.Energy -= data.basicEnergyConsume + data.actionEnergyConsume;
+
+            data.Happy -= data.happyConsume;
+            if (actionType == ActionType.Call)
+                data.Happy += 0.01f;
+
+            if (data.Food > 0 && data.Water > 0)
+            {
+                float delta = 0.1f + data.Health * 0.001f + data.Happy * 0.001f;
+                data.Food -= delta;
+                data.Water -= delta;
+                data.Energy += delta;
+                data.Shit += delta;
+                data.Pee += delta * 2;
+            }
+
+            data.Dirty += data.dirtyFactor;
+            data.Itchi += data.Dirty * 0.001f;
+            data.Stamina -= data.staminaConsume;
+            data.Stamina += data.actionEnergyConsume;
+
+            data.Sleep -= data.sleepConsume;
+
+            float deltaHealth = data.healthConsume;
+
+            deltaHealth += (data.Happy - data.maxHappy * 0.3f) * 0.001f;
+
+            if (data.Dirty > data.maxDirty * 0.8f)
+                deltaHealth -= (data.Dirty - data.maxDirty * 0.8f) * 0.003f;
+
+            if (data.Pee > data.maxPee * 0.9f)
+                deltaHealth -= (data.Pee - data.maxPee * 0.9f) * 0.001f;
+
+            if (data.Shit > data.maxShit * 0.9f)
+                deltaHealth -= (data.Shit - data.maxShit * 0.9f) * 0.002f;
+
+            if (data.Food < data.maxFood * 0.1f)
+                deltaHealth -= (data.maxFood * 0.1f - data.Food) * 0.001f;
+
+            if (data.Water < data.maxWater * 0.1f)
+                deltaHealth -= (data.maxWater * 0.1f - data.Water) * 0.001f;
+
+            if (data.Sleep < data.maxSleep * 0.05f)
+                deltaHealth -= (data.maxSleep * 0.05f - data.Sleep) * 0.004f;
+
+            data.Health += deltaHealth;
+
+            data.curious += 0.1f;
         }
-        else if (actionType == ActionType.Patrol)
-        {
-            data.actionEnergyConsume = 0.3f;
-        }else if (actionType == ActionType.Bath)
-            data.actionEnergyConsume = 0.05f;
-        else if (actionType == ActionType.Fear)
-            data.actionEnergyConsume = 0.3f;
-
-        data.Energy -= data.basicEnergyConsume + data.actionEnergyConsume;
-
-        data.Happy -= data.happyConsume;
-        if (actionType == ActionType.Call)
-            data.Happy += 0.01f;
-
-        if (data.Food > 0 && data.Water > 0)
-        {
-            float delta = 0.1f + data.Health * 0.001f + data.Happy * 0.001f;
-            data.Food -= delta;
-            data.Water -= delta;
-            data.Energy += delta;
-            data.Shit += delta;
-            data.Pee += delta * 2;
-        }
-
-        data.Dirty += data.dirtyFactor;
-        data.Itchi += data.Dirty * 0.001f;
-        data.Stamina -= data.staminaConsume;
-        data.Stamina += data.actionEnergyConsume;
-
-        data.Sleep -= data.sleepConsume;
-
-        float deltaHealth = data.healthConsume;
-
-        deltaHealth += (data.Happy - data.maxHappy * 0.3f) * 0.001f;
-
-        if (data.Dirty > data.maxDirty * 0.8f)
-            deltaHealth -= (data.Dirty - data.maxDirty * 0.8f) * 0.003f;
-
-        if (data.Pee > data.maxPee * 0.9f)
-            deltaHealth -= (data.Pee - data.maxPee * 0.9f) * 0.001f;
-
-        if (data.Shit > data.maxShit * 0.9f)
-            deltaHealth -= (data.Shit - data.maxShit * 0.9f) * 0.002f;
-
-        if (data.Food < data.maxFood * 0.1f)
-            deltaHealth -= (data.maxFood * 0.1f - data.Food) * 0.001f;
-
-        if (data.Water < data.maxWater * 0.1f)
-            deltaHealth -= (data.maxWater * 0.1f - data.Water) * 0.001f;
-
-        if (data.Sleep < data.maxSleep * 0.05f)
-            deltaHealth -= (data.maxSleep * 0.05f - data.Sleep) * 0.004f;
-
-        data.Health += deltaHealth;
-
-        data.curious += 0.1f;
+        
     }
 
 

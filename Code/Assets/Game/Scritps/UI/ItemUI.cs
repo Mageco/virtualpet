@@ -52,6 +52,7 @@ public class ItemUI : MonoBehaviour
             buyButton.SetActive(false);
             useButton.SetActive(true);
             usedButton.SetActive(false);
+            animator.Play("Bought",0);
         }else if(state == ItemState.Used){
             buyButton.SetActive(false);
             useButton.SetActive(false);
