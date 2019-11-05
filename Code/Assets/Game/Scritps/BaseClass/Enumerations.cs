@@ -10,3 +10,4 @@ public enum InteractType {None,Drag,Drop,Touch,SwipeUp,SwipeDown,SwipeLeft,Sw
 public enum QuestRequirementType{Action,Interact,Skill};
 public enum SkillType {NONE,Toilet,Pee,Eat,Drink,Sleep,Call,Bath,Toy_Car,Toy_Circle,Toy_Ball};
 public enum Direction {R =0, D = 1, L = 2, U = 3, RU = 4,RD = 5,LU = 6,LD = 7};
+public enum CharAge{Small,Middle,Big};
