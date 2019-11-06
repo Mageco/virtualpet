@@ -67,7 +67,9 @@ namespace MageApi {
 		public const string API_ADD_GAME_CHARACTER = "AddGameCharacter";
 		public const string API_UPDATE_GAME_CHARACTER_NAME = "UpdateGameCharacterName";
 		public const string API_UPDATE_GAME_CHARACTER_DATAS = "UpdateGameCharacterData";
-		
+		public const string API_UPDATE_GAME_CHARACTER_ITEM_STATUS = "UpdateGameCharacterItemStatus";
+		public const string API_BUY_GAME_CHARACTER_ITEM = "BuyGameCharacterItem";
+		public const string API_GET_AVAILABLE_GAME_CHARACTER_ITEMS = "GetAvailableGameCharacterItems";
 
 		//defines Login method
 		public const string LOGIN_DEVICE_UUID = "0";

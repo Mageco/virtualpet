@@ -11,6 +11,7 @@ public class DataHolder
 	private SkillData skills;
 	private DialogData dialogs;
 	private QuestData quests;
+	private PetData pets;
 
 
 	private DataHolder()
@@ -21,7 +22,7 @@ public class DataHolder
 			return;
 		}
 		instance = this;
-		Init();
+		//Init();
 	}
 	
 	public void Init()
@@ -32,6 +33,7 @@ public class DataHolder
 		skills = new SkillData ();
 		dialogs = new DialogData();
 		quests = new QuestData();
+		pets = new PetData();
 	}
 
 
@@ -165,6 +167,36 @@ public class DataHolder
 	public static int LastQuestID(){
 		if(DataHolder.Instance().quests != null && DataHolder.Instance().quests.GetDataCount() > 0)
 			return DataHolder.Instance().quests.quests[DataHolder.Instance().quests.quests.Length - 1].iD;
+		else 
+			return -1;
+	}
+
+	public static PetData Pets()
+	{
+		return DataHolder.Instance().pets;
+	}
+	
+	public static Pet Pet(int index)
+	{
+		return DataHolder.Instance().pets.pets[index];
+	}
+
+	public static Pet GetPet(int id)
+	{
+		return DataHolder.Instance().pets.GetPet(id);
+	}
+
+	public static int GetPetIndex(int id){
+		for(int i=0;i<DataHolder.Pets().GetDataCount();i++){
+			if(DataHolder.Pet(i).iD == id)
+				return i;
+		}
+		return 0;
+	}
+
+	public static int LastPetID(){
+		if(DataHolder.Instance().pets != null && DataHolder.Instance().pets.GetDataCount() > 0)
+			return DataHolder.Instance().pets.pets[DataHolder.Instance().pets.pets.Length - 1].iD;
 		else 
 			return -1;
 	}

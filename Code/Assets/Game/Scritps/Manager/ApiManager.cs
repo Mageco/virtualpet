@@ -7,6 +7,7 @@ using MageApi.Models.Request;
 using MageApi.Models.Response;
 using UnityEngine.UI;
 using Mage.Models.Users;
+using Mage.Models.Game;
 using System.IO;
 using Mage.Models.Application;
 
@@ -15,6 +16,7 @@ public class ApiManager : MonoBehaviour {
 
 	[HideInInspector]
 	public User user;
+	public Character character;
 	public static ApiManager instance;
 	[HideInInspector]
 	public int testRound = 0;
@@ -41,13 +43,16 @@ public class ApiManager : MonoBehaviour {
 
 		DontDestroyOnLoad (this.gameObject);
 
+		character = new Character();
+		character.SetCharacterData (new CharacterData ("0",ItemState.Equiped.ToString(), "Pet"));
+
 		if (ES2.Exists ("User")) {
 			user = ES2.Load<User> ("User");
 		}else
 		{
 			user = new User();
+			user.SetCharacter(character);
 			LoadNewItem();
-			ItemController.instance.LoadItems();
 		}
 	}
 
@@ -62,14 +67,14 @@ public class ApiManager : MonoBehaviour {
 		user.SetUserData (new UserData ("11", ItemState.Equiped.ToString(), "Item"));
 		user.SetUserData (new UserData ("13", ItemState.Equiped.ToString(), "Item"));
 		user.SetUserData (new UserData ("17", ItemState.Equiped.ToString(), "Item"));
-		user.SetUserData (new UserData ("41", ItemState.Equiped.ToString(), "Item"));	
-			
+		user.SetUserData (new UserData ("41", ItemState.Equiped.ToString(), "Item"));		
 	}
 
 	void Start()
 	{
 		LoginWithDeviceID ();
-
+		ItemController.instance.LoadItems();
+		ItemController.instance.LoadPets();
 	}
 
 
@@ -115,11 +120,12 @@ public class ApiManager : MonoBehaviour {
 	void CreateNewUser()
 	{
 		Debug.Log ("NEw user created");
-		LoadNewItem();
+		//LoadNewItem();
 		SaveUserData ();
 		UpdateUserData ();
 		UpdateUserProfile ();
 		ItemController.instance.LoadItems();
+		
 	}
 
 	void CreateExistingUser(User u)
@@ -332,6 +338,7 @@ public class ApiManager : MonoBehaviour {
 
 	}
 
+	#region Item
 	public bool BuyItem(int itemId)
 	{
 		PriceType type = DataHolder.GetItem(itemId).priceType;
@@ -422,6 +429,90 @@ public class ApiManager : MonoBehaviour {
 		}
 		return items;
 	}
+	#endregion
+
+	#region Character
+public bool BuyPet(int petId)
+	{
+		PriceType type = DataHolder.GetPet(petId).priceType;
+		int price = DataHolder.GetPet(petId).buyPrice;
+		if(type == PriceType.Coin){
+			if (price > GetCoin ()) {
+				return false;
+			}
+			AddCoin (-price);
+			AddPet (petId);
+			return true;
+		}else if(type == PriceType.Diamond){
+			if (price > GetDiamond ()) {
+				return false;
+			}
+			AddDiamond (-price);
+			AddPet (petId);
+			return true;
+		}else
+		{
+			return false;
+		}
+	}
+
+
+	public void AddPet(int petId)
+	{
+		character.SetCharacterData (new CharacterData (petId.ToString(),ItemState.Have.ToString(), "Pet"));
+		SaveUserData ();
+		UpdateUserData ();
+	}
+
+	public void UsePet(int petId){
+		Debug.LogWarning(petId);
+		//if(HavePet(petId)){
+			character.SetCharacterData (new CharacterData (petId.ToString(), ItemState.Equiped.ToString(), "Pet"));
+			SaveUserData ();
+			UpdateUserData ();
+		//}
+	}
+
+	public bool HavePet(int petId)
+	{
+		if (character.GetCharacterData (petId.ToString()) == ItemState.Have.ToString() || character.GetCharacterData (petId.ToString()) == ItemState.Equiped.ToString() )
+			return true;
+		else
+			return false;
+	}
+
+	public bool EquipPet(int petId)
+	{
+		if (character.GetCharacterData (petId.ToString()) == ItemState.Equiped.ToString())
+			return true;
+		else
+			return false;
+	}
+
+	public List<int> GetBuyPets(){
+		List<int> pets = new List<int>();
+		for(int i=0;i<DataHolder.Pets().GetDataCount();i++){
+			if(HavePet(DataHolder.Pet(i).iD)){
+				pets.Add(DataHolder.Pet(i).iD);
+			}
+		}
+		return pets;
+	}
+
+	public List<int> GetEquipedPets(){
+		List<int> pets = new List<int>();
+		for(int i=0;i<DataHolder.Pets().GetDataCount();i++){
+			if(EquipPet(DataHolder.Pet(i).iD)){
+				pets.Add(DataHolder.Pet(i).iD);
+			}
+		}
+		return pets;
+	}
+
+
+
+
+	#endregion
 
 	public string GetName()
 	{

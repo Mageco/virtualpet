@@ -17,6 +17,8 @@ public class ItemUI : MonoBehaviour
     Animator animator;
     bool isBusy = false;
 
+    bool isCharacter = false;
+
     ItemState state = ItemState.OnShop;
 
     void Awake(){
@@ -79,6 +81,59 @@ public class ItemUI : MonoBehaviour
     }
 
 
+    public void Load(Pet d)
+    {
+        isCharacter = true;
+        itemId = d.iD;
+        //Debug.Log(d.iconUrl);
+        string url = d.iconUrl.Replace("Assets/Game/Resources/","");
+        url = url.Replace(".png","");
+        //Debug.Log(url);
+        icon.sprite = Resources.Load<Sprite>(url) as Sprite;
+        price.text = d.buyPrice.ToString();
+
+        if(ApiManager.instance.EquipPet(d.iD)){
+            state = ItemState.Equiped;
+        }
+        else if(ApiManager.instance.HavePet(d.iD)){
+            state = ItemState.Have;        
+        }else{
+            state = ItemState.OnShop;
+        }
+
+        if(state == ItemState.OnShop){
+            buyButton.SetActive(true);
+            useButton.SetActive(false);
+            usedButton.SetActive(false);
+        }else if(state == ItemState.Have){
+            buyButton.SetActive(false);
+            useButton.SetActive(true);
+            usedButton.SetActive(false);
+            animator.Play("Bought",0);
+        }else if(state == ItemState.Equiped){
+            buyButton.SetActive(false);
+            useButton.SetActive(false);
+            usedButton.SetActive(true);
+            animator.Play("Equiped",0);
+        }
+        
+
+        if(d.priceType == PriceType.Coin){
+            coinIcon.SetActive(true);
+            diamonIcon.SetActive(false);
+            moneyIcon.SetActive(false);
+        }else if(d.priceType == PriceType.Diamond)
+        {
+            coinIcon.SetActive(false);
+            diamonIcon.SetActive(true);      
+            moneyIcon.SetActive(false);      
+        }else if(d.priceType == PriceType.Money){
+            coinIcon.SetActive(false);
+            diamonIcon.SetActive(false);      
+            moneyIcon.SetActive(true);            
+        }
+
+    }
 
     // Update is called once per frame
     void UpdateState()
@@ -94,18 +149,36 @@ public class ItemUI : MonoBehaviour
 
    IEnumerator BuyCoroutine(){
        isBusy = true;
-        if(state == ItemState.Equiped)
-            yield return null;
-        else if(state == ItemState.Have){
-            animator.Play("Use",0);
-            yield return new WaitForSeconds(3f);
-            UIManager.instance.UseItem(itemId);
-            
-        }else {
-            animator.Play("Buy",0);
-            yield return new WaitForSeconds(1f);
-            UIManager.instance.BuyItem(itemId);
-        }   
+        
+        if(isCharacter){
+            if(state == ItemState.Equiped)
+                yield return null;
+            else if(state == ItemState.Have){
+                animator.Play("Use",0);
+                yield return new WaitForSeconds(3f);
+                UIManager.instance.UsePet(itemId);
+                
+            }else {
+                animator.Play("Buy",0);
+                yield return new WaitForSeconds(1f);
+                UIManager.instance.BuyPet(itemId);
+            }   
+
+        }else{
+            if(state == ItemState.Equiped)
+                yield return null;
+            else if(state == ItemState.Have){
+                animator.Play("Use",0);
+                yield return new WaitForSeconds(3f);
+                UIManager.instance.UseItem(itemId);
+                
+            }else {
+                animator.Play("Buy",0);
+                yield return new WaitForSeconds(1f);
+                UIManager.instance.BuyItem(itemId);
+            }   
+        }
+
         isBusy = false;     
    }
 

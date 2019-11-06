@@ -71,13 +71,36 @@ public class ItemTab : BaseTab
             }
             EditorGUILayout.LabelField(DataHolder.Item(selection).iconUrl);
             EditorGUILayout.EndHorizontal();
-            
-			if (this.tmpSprites != null)
+
+            if (this.tmpSprites != null)
             {
                 if (GUILayout.Button("Clear Image", GUILayout.Width(100)))
                 {
                     DataHolder.Item(selection).iconUrl = "";
                     tmpSprites = null;
+                }
+            }
+
+            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.LabelField("Icon Lock", GUILayout.MaxWidth(110));
+            if(DataHolder.Item(selection).iconLockUrl != null){
+                this.tmpLockSprites = AssetDatabase.LoadAssetAtPath<Texture2D>(DataHolder.Item(selection).iconLockUrl);
+            }
+            this.tmpLockSprites = (Texture2D)EditorGUILayout.ObjectField(GUIContent.none, this.tmpLockSprites, typeof(Texture2D), false, GUILayout.MaxWidth(100));
+            if (this.tmpLockSprites != null)
+            {
+                DataHolder.Item(selection).iconLockUrl = AssetDatabase.GetAssetPath(this.tmpLockSprites);
+
+            }
+            EditorGUILayout.LabelField(DataHolder.Item(selection).iconLockUrl);
+            EditorGUILayout.EndHorizontal();
+            
+			if (this.tmpLockSprites != null)
+            {
+                if (GUILayout.Button("Clear Image", GUILayout.Width(100)))
+                {
+                    DataHolder.Item(selection).iconLockUrl = "";
+                    tmpLockSprites = null;
                 }
             }
 

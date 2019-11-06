@@ -10,13 +10,14 @@ public class ProjectWindow : EditorWindow
 	public int mWidth = 300;
 	// section handling
 	private int currentSection = 0;
-	private string[] sections = new string[] {"Language","Skill","Item","Dialog","Quest"};
+	private string[] sections = new string[] {"Language","Skill","Item","Dialog","Quest","Pet"};
 	
 	private int LANGUAGES = 0;
 	private int SKILL = 1;
 	private int ITEMS = 2;
 	private int DIALOGS = 3;
 	private int QUESTS = 4;
+	private int PETS = 5;
 
 	// tabs
 	private LanguageTab langTab = null;
@@ -24,6 +25,7 @@ public class ProjectWindow : EditorWindow
 	private SkillTab skillTab = null;
 	private DialogTab dialogTab = null;
 	private QuestTab questTab = null;
+	private PetTab petTab = null;
 
 
 	[MenuItem("Mage Kit/Item Editor")]
@@ -53,6 +55,9 @@ public class ProjectWindow : EditorWindow
 		
 		if(questTab == null) questTab = new QuestTab(this);
 		else questTab.Reload();
+
+		if(petTab == null) petTab = new PetTab(this);
+		else petTab.Reload();
 	}
 	
 	public void Save()
@@ -62,6 +67,7 @@ public class ProjectWindow : EditorWindow
 		DataHolder.Skills().SaveData();
 		DataHolder.Dialogs().SaveData();
 		DataHolder.Quests().SaveData();
+		DataHolder.Pets().SaveData();
 	}
 
 	void OnGUI()
@@ -88,6 +94,8 @@ public class ProjectWindow : EditorWindow
 			this.dialogTab.ShowTab ();
 		} else if (currentSection == this.QUESTS) {
 			this.questTab.ShowTab ();
+		} else if (currentSection == this.PETS) {
+			this.petTab.ShowTab ();
 		} 
 
 
@@ -116,6 +124,7 @@ public class ProjectWindow : EditorWindow
 		DataHolder.Skills ().AddLanguage ();
 		DataHolder.Dialogs ().AddLanguage ();
 		DataHolder.Quests ().AddLanguage ();
+		DataHolder.Pets ().AddLanguage ();
 	}
 	
 	public void RemoveLanguage(int lang)
@@ -124,6 +133,7 @@ public class ProjectWindow : EditorWindow
 		DataHolder.Skills ().RemoveLanguage (lang);
 		DataHolder.Dialogs ().RemoveLanguage (lang);
 		DataHolder.Quests ().RemoveLanguage (lang);
+		DataHolder.Pets ().RemoveLanguage (lang);
 	}
 
 

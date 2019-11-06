@@ -187,6 +187,14 @@ public class ArrayHelper
 		return tmp.ToArray(typeof(Dialog)) as Dialog[];
 	}
 
+	public static Dialog[] Remove(int index, Dialog[] list)
+	{
+		ArrayList tmp = new ArrayList();
+		foreach(Dialog str in list) tmp.Add(str);
+		tmp.RemoveAt(index);
+		return tmp.ToArray(typeof(Dialog)) as Dialog[];
+	}
+
 	public static Quest[] Remove(int index, Quest[] list)
 	{
 		ArrayList tmp = new ArrayList();
@@ -212,7 +220,7 @@ public class ArrayHelper
 		return tmp.ToArray(typeof(QuestRequirement)) as QuestRequirement[];
 	}
 
-		public static QuestRequirement[] Add(QuestRequirement n, QuestRequirement[] list)
+	public static QuestRequirement[] Add(QuestRequirement n, QuestRequirement[] list)
 	{
 		ArrayList tmp = new ArrayList();
 		foreach(QuestRequirement str in list) tmp.Add(str);
@@ -220,14 +228,22 @@ public class ArrayHelper
 		return tmp.ToArray(typeof(QuestRequirement)) as QuestRequirement[];
 	}
 
-	public static Dialog[] Remove(int index, Dialog[] list)
+
+	public static Pet[] Add(Pet n, Pet[] list)
 	{
 		ArrayList tmp = new ArrayList();
-		foreach(Dialog str in list) tmp.Add(str);
-		tmp.RemoveAt(index);
-		return tmp.ToArray(typeof(Dialog)) as Dialog[];
+		foreach(Pet str in list) tmp.Add(str);
+		tmp.Add(n);
+		return tmp.ToArray(typeof(Pet)) as Pet[];
 	}
 
+	public static Pet[] Remove(int index, Pet[] list)
+	{
+		ArrayList tmp = new ArrayList();
+		foreach(Pet str in list) tmp.Add(str);
+		tmp.RemoveAt(index);
+		return tmp.ToArray(typeof(Pet)) as Pet[];
+	}
 
 
 	public static LanguageItem[] Add(LanguageItem n, LanguageItem[] list)

@@ -7,6 +7,7 @@ public class Item
 	public int iD = 0;
 	public int category = 0;
 	public string iconUrl = "";
+	public string iconLockUrl = "";
 	public LanguageItem[] languageItem = new LanguageItem[0];
 
 	public string prefabName = "";

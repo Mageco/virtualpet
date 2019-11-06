@@ -8,24 +8,22 @@ using Mage.Models;
 
 namespace Mage.Models.Game{
 	[Serializable]
-	public class CharacterItem : BaseModel
+	public class GameItem : BaseModel
 	{
-		public string id = "";
 		public string item_local_id = "";
 
-		public string character_id = "";
+		public string item_name = "";
+
+		public string item_type = "";
+		public Boolean is_consumable = false;
+		public int in_app_prince = 0;
+		public string in_app_currency = "";
+
+		public int total_bought = 0;
 		public string status = "";
-		public CharacterItem() : base () {
+		public GameItem() : base () {
 			
 		}
 		
-	}
-
-	public enum  CharacterItemStatus {
-		NOT_BUY = 0,
-		AVAILABLE = 1,
-		IN_USED = 2,
-		CONSUMED = 101,
-		DELETED = 100
 	}
 }

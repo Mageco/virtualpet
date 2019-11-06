@@ -7,6 +7,7 @@ public class BaseTab : EditorTab
 {
 	protected ProjectWindow pw;
 	protected Texture2D tmpSprites;
+	protected Texture2D tmpLockSprites;
 	protected int temcategory = 0;
 	protected int temorder = 0;
 

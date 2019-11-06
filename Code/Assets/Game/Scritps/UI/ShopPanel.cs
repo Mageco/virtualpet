@@ -54,14 +54,31 @@ public class ShopPanel : MonoBehaviour
 
         ES2.Save(id,"ShopToggle");
         ClearItems();
-        for(int i=0;i<DataHolder.Items().GetDataCount();i++){
-            if((int)DataHolder.Item(i).itemType == currentTab){
-                LoadItem(DataHolder.Item(i));      
+
+        if(currentTab == 1){
+
+        }else{
+            for(int i=0;i<DataHolder.Items().GetDataCount();i++){
+                if((int)DataHolder.Item(i).itemType == currentTab){
+                    LoadItem(DataHolder.Item(i));      
+                }   
             }   
-        }           
+        }
+
+        
     }
 
     void LoadItem(Item data){
+        GameObject go = GameObject.Instantiate(itemUIPrefab);
+       
+        go.transform.SetParent(this.anchor);
+        go.transform.localScale = Vector3.one;
+        ItemUI item = go.GetComponent<ItemUI>();
+        items.Add(item);
+        item.Load(data);
+    }
+
+    void LoadItem(Pet data){
         GameObject go = GameObject.Instantiate(itemUIPrefab);
        
         go.transform.SetParent(this.anchor);

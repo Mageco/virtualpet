@@ -762,5 +762,73 @@ public class UserManager : MonoBehaviour
 			}
 		);
 	}
+
+	public void GetAvailableGameCharacterItemsClick() {
+		GetAvailableGameCharacterItemsRequest r = new GetAvailableGameCharacterItemsRequest();
+
+		//call to login api
+		ApiHandler.instance.SendApi<GetAvailableGameCharacterItemsResponse>(
+			ApiSettings.API_GET_AVAILABLE_GAME_CHARACTER_ITEMS,
+			r, 
+			(result) => {
+				Debug.Log("Success: update game character name successfully");
+				Debug.Log("Messages result: " + result.ToJson());
+			},
+			(errorStatus) => {
+				Debug.Log("Error: " + errorStatus);
+				//do some other processing here
+			},
+			() => {
+				//timeout handler here
+				Debug.Log("Api call is timeout");
+			}
+		);
+	}
+
+	public void BuyGameCharacterItemClick() {
+		BuyGameCharacterItemRequest r = new BuyGameCharacterItemRequest("Hat_01");
+
+		//call to login api
+		ApiHandler.instance.SendApi<BuyGameCharacterItemResponse>(
+			ApiSettings.API_BUY_GAME_CHARACTER_ITEM,
+			r, 
+			(result) => {
+				Debug.Log("Success: update game character name successfully");
+				Debug.Log("Messages result: " + result.ToJson());
+			},
+			(errorStatus) => {
+				Debug.Log("Error: " + errorStatus);
+				//do some other processing here
+			},
+			() => {
+				//timeout handler here
+				Debug.Log("Api call is timeout");
+			}
+		);
+	}
+
+	public void UpdateGameCharacterItemStatusClick() {
+		
+		UpdateGameCharacterItemStatusRequest r = new UpdateGameCharacterItemStatusRequest("1", "1", CharacterItemStatus.AVAILABLE);
+
+		//call to login api
+		ApiHandler.instance.SendApi<UpdateGameCharacterItemStatusResponse>(
+			ApiSettings.API_UPDATE_GAME_CHARACTER_ITEM_STATUS,
+			r, 
+			(result) => {
+				Debug.Log("Success: update game character name successfully");
+				Debug.Log("Messages result: " + result.ToJson());
+			},
+			(errorStatus) => {
+				Debug.Log("Error: " + errorStatus);
+				//do some other processing here
+			},
+			() => {
+				//timeout handler here
+				Debug.Log("Api call is timeout");
+			}
+		);
+	}
+
 }
 

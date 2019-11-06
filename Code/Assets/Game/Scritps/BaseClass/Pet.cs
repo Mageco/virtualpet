@@ -1,17 +1,18 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 [System.Serializable]
 public class Pet
 {
 	public int iD = 0;
 	public string iconUrl = "";
+	public string iconLockUrl = "";
 	public LanguageItem[] languageItem = new LanguageItem[0];
 	public int buyPrice = 0;
 	public PriceType priceType = PriceType.Coin;
     public ItemState itemState = ItemState.OnShop;
-	public string prefabName = "";
+	public string petSmall = "";
+	public string petMiddle = "";
+	public string petBig = "";
 	//Common Data
 	public int level = 0;
 	public int exp = 0;
@@ -80,18 +81,64 @@ public class Pet
 	public float maxFear = 100;
 	public float maxCurious = 100;
 
-	public Pet(){
+	public Pet()
+	{
+		iD = DataHolder.LastPetID() + 1;
+/*  		languageItem = new LanguageItem[DataHolder.Languages ().GetDataCount ()];
+		for (int i = 0; i < languageItem.Length; i++) {
+			languageItem[i] = new LanguageItem();
+		}
+		languageItem[0].Name = "New Pet";  */
 		
 	}
 
-	public void Init(){
+	public void Load(){
 		skills = new int[DataHolder.Skills().GetDataCount()];
 	}
 
-	void Load()
+	public void AddLanguageItem()
 	{
-
+		this.languageItem = ArrayHelper.Add(new LanguageItem(), this.languageItem);
 	}
+
+	public void RemoveLanguage(int index)
+	{
+		this.languageItem = ArrayHelper.Remove (index, this.languageItem);
+	}
+
+	public string GetDescription(int languageID)
+	{
+		return languageItem[languageID].Description;  
+	}
+
+	public void SetDescription(int languageID,string text)
+	{
+		if (this.languageItem.Length > languageID) {
+			languageItem [languageID].Description = text;
+		} else {
+			LanguageItem item = new LanguageItem ();
+			item.Description = text;
+			this.languageItem = ArrayHelper.Add (item, this.languageItem);
+		}
+	}
+
+	public string GetName(int languageID)
+	{
+		return languageItem[languageID].Name;  
+	}
+
+	public void SetName(int languageID,string text)
+	{
+		if (this.languageItem.Length > languageID) {
+			languageItem [languageID].Name = text;
+		} else {
+			LanguageItem item = new LanguageItem ();
+			item.Name = text;
+			this.languageItem = ArrayHelper.Add (item, this.languageItem);
+		}
+	}
+
+
 
 	void Save()
 	{
@@ -337,5 +384,7 @@ public class Pet
 		}
 		return false;
 	}
+
+
 
 }

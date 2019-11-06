@@ -5,18 +5,15 @@ using UnityEngine;
 public class ItemController : MonoBehaviour
 {
 	public static ItemController instance;
-	[HideInInspector]
 
 	public List<ItemObject> items = new List<ItemObject>();
+	public List<CharController> pets = new List<CharController>();
 	
-
+	public CharAge age = CharAge.Big;
 	void Awake()
 	{
 		if (instance == null)
 			instance = this;
-
-		LoadItems();
-
 	}
     // Start is called before the first frame update
     void Start()
@@ -40,6 +37,35 @@ public class ItemController : MonoBehaviour
 		ItemObject item = go.AddComponent<ItemObject>();
 		item.itemType = DataHolder.GetItem(itemId).itemType;
 		items.Add(item);
+		go.transform.parent = this.transform;	
+	}
+
+
+	public void LoadPets(){
+		List<int> data = ApiManager.instance.GetEquipedPets();
+		for(int i=0;i<data.Count;i++){
+			Debug.Log(data[i]);
+			AddPet(data[i]);
+		}
+	}
+
+	void AddPet(int itemId){
+
+		string url = "";
+		if(age == CharAge.Big)
+		{
+			url = DataHolder.GetPet(itemId).petBig.Replace("Assets/Game/Resources/","");
+		}else if(age == CharAge.Middle){
+			url = DataHolder.GetPet(itemId).petMiddle.Replace("Assets/Game/Resources/","");
+		}else if(age == CharAge.Small){
+			url = DataHolder.GetPet(itemId).petSmall.Replace("Assets/Game/Resources/","");
+		}
+
+		url = url.Replace(".prefab",""); 
+		url = DataHolder.Pets().GetPrefabPath() + url;
+		GameObject go = GameObject.Instantiate((Resources.Load(url) as GameObject),Vector3.zero,Quaternion.identity) as GameObject;		
+		CharController pet = go.GetComponentInChildren<CharController>();
+		pets.Add(pet);
 		go.transform.parent = this.transform;	
 	}
 
@@ -70,5 +96,9 @@ public class ItemController : MonoBehaviour
 			}	
 		}
 		AddItem(itemId);
+	}
+
+	public void UsePet(int itemId){
+		AddPet(itemId);
 	}
 }

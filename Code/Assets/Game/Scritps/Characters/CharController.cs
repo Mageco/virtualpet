@@ -71,7 +71,7 @@ public class CharController : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        data.Init();
+        //data.Init();
         anim.Play("Idle_" + direction.ToString(), 0);
     }
     #endregion

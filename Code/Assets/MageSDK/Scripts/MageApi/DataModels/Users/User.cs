@@ -29,6 +29,8 @@ namespace Mage.Models.Users{
 
 		public List<Character> characters = new List<Character>();
 
+		public List<CharacterItem> character_items = new List<CharacterItem>();
+
 		public User() : base () {
 			user_datas = new List<UserData>();
 		}
@@ -73,6 +75,37 @@ namespace Mage.Models.Users{
 			var item = characters.RemoveAll(x => x.id == data.id);
 			characters.Add (data);
 
+		}
+
+		public CharacterItem GetCharacterItem(string id)
+		{
+			foreach (CharacterItem u in character_items) {
+				if (u.id == id)
+					return u;
+			}
+			return null;
+		}
+
+		public List<CharacterItem> GetUsedCharacterItems(string characterId)
+		{
+			List<CharacterItem> output = new List<CharacterItem>();
+
+			foreach (CharacterItem u in character_items) {
+				if (u.character_id == characterId)
+					output.Add(u);
+			}
+			return output;
+		}
+
+		public void SetCharacterItem(CharacterItem data) {
+			//remove current data
+			var item = character_items.RemoveAll(x => x.id == data.id);
+			character_items.Add (data);
+
+		}
+
+		public void RemoveCharacterItem(CharacterData data) {
+			var item = character_items.RemoveAll(x => x.id == data.id);
 		}
 	}
 }

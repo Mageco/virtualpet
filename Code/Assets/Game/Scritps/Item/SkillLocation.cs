@@ -16,7 +16,7 @@ public class SkillLocation : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(InputController.instance.Character.currentSkill == skillType){
+/*         if(InputController.instance.Character.currentSkill == skillType){
             skillEffect.SetActive(true);
             if(isEnter && InputController.instance.Character.charInteract.interactType != InteractType.Drop
             && InputController.instance.Character.charInteract.interactType != InteractType.Drag)
@@ -24,8 +24,10 @@ public class SkillLocation : MonoBehaviour
                 InputController.instance.Character.LevelUpSkill(skillType);
             }
         }else
-            skillEffect.SetActive(false);
+            skillEffect.SetActive(false); */
     }
+
+
 
     void OnTriggerStay2D(Collider2D other) {
 		if (other.tag == "Player") {

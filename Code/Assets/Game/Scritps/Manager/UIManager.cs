@@ -54,6 +54,17 @@ public class UIManager : MonoBehaviour
        ItemController.instance.UseItem(itemID);
 	   notification = NotificationType.Shop;
 	}
+
+	public void BuyPet(int itemID){
+	   ApiManager.instance.BuyPet(itemID);
+	   notification = NotificationType.Shop;
+	}
+
+	public void UsePet(int itemID){
+	   ApiManager.instance.UsePet(itemID);
+       ItemController.instance.UsePet(itemID);
+	   notification = NotificationType.Shop;
+	}
 }
 
 public enum NotificationType{None,Shop,Skill}

@@ -124,7 +124,7 @@ namespace MageApi {
 			if (!isTimeout)
 			{
 				if (www.text != null) {
-					Debug.Log ("Response: " + www.text);
+					//Debug.Log ("Response: " + www.text);
 					//File.AppendAllText (Application.dataPath + "/Images/result.txt", "\r\n" + www.text);
 					GenericResponse<TResult> result = BaseResponse.CreateFromJSON<GenericResponse<TResult>>(www.text);
 					if (result.status == 0) {

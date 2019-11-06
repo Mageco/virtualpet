@@ -23,6 +23,8 @@ public class ES2UserType_MageModelsUsersUser : ES2Type
 		writer.Write(data.notification_token);
 		writer.Write(data.country_code);
 		writer.Write(data.user_datas);
+		writer.Write(data.characters);
+		writer.Write(data.character_items);
 
 	}
 	
@@ -51,6 +53,8 @@ public class ES2UserType_MageModelsUsersUser : ES2Type
 		data.notification_token = reader.Read<System.String>();
 		data.country_code = reader.Read<System.String>();
 		data.user_datas = reader.ReadList<Mage.Models.Users.UserData>();
+		data.characters = reader.ReadList<Mage.Models.Game.Character>();
+		data.character_items = reader.ReadList<Mage.Models.Game.CharacterItem>();
 
 	}
 	
