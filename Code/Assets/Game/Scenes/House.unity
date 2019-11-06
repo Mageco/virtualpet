@@ -528,11 +528,6 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
-    - target: {fileID: 3400291681925613965, guid: 2c2c65fb0f0f3468886dd20533ec98cc,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 8559003093222354721, guid: 2c2c65fb0f0f3468886dd20533ec98cc,
         type: 3}
       propertyPath: m_Color.r
@@ -541,6 +536,11 @@ PrefabInstance:
     - target: {fileID: 8559003093222354721, guid: 2c2c65fb0f0f3468886dd20533ec98cc,
         type: 3}
       propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3400291681925613965, guid: 2c2c65fb0f0f3468886dd20533ec98cc,
+        type: 3}
+      propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -2591,6 +2591,36 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 5148635904589845283}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1970987359
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1970987360}
+  m_Layer: 0
+  m_Name: Tutorial_Milk
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1970987360
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1970987359}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 13
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!224 &1978098413 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1097760381281963890, guid: f2e5def0b68e74f65975ddef66f4a010,
@@ -3531,7 +3561,7 @@ PrefabInstance:
     - target: {fileID: 4593962749579971111, guid: 93aa24a0f1bad4994920f44d011ab6cc,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4593962749579971110, guid: 93aa24a0f1bad4994920f44d011ab6cc,
         type: 3}
