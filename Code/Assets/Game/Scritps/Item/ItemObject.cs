@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ItemObject : MonoBehaviour
 {
-	public ItemType itemType = ItemType.None;
+	public ItemType itemType = ItemType.Coin;
 	public ItemInteractType interactType = ItemInteractType.None;
 }
 

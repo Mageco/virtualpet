@@ -25,9 +25,9 @@ public class ItemController : MonoBehaviour
     }
 
 	public void LoadItems(){
-		List<int> data = ApiManager.instance.GetUsedItems();
+		List<int> data = ApiManager.instance.GetEquipedItems();
 		for(int i=0;i<data.Count;i++){
-			//Debug.Log(data[i]);
+			Debug.Log(data[i]);
 			AddItem(data[i]);
 		}
 	}

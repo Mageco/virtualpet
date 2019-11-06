@@ -15,12 +15,8 @@ public class CharSmall : CharController
 
         if (data.Sleep < data.maxSleep * 0.1f)
         {
-            int ran = Random.Range(0, 100);
-            if (ran > 30)
-            {
-                actionType = ActionType.Sleep;
-                return;
-            }
+            actionType = ActionType.Sleep;
+            return;
         }
 
         //Other Action
@@ -67,6 +63,10 @@ public class CharSmall : CharController
         StartCoroutine(Eat());
     }
 
+    public override void OnMouse(){
+        
+    }
+
 
     #region Main Action
 
@@ -74,42 +74,12 @@ public class CharSmall : CharController
 
     IEnumerator Table()
     {
-        int rand = Random.Range(0,100);    
-        if(rand < 50){
-            SetDirection(Direction.D);
-            anim.Play("BathStart_D", 0);
-            while (!isAbort)
-            {
-                yield return new WaitForEndOfFrame();
-            }
-        }   
-        else{
-            anim.Play("Jump_L",0);
-            //bool isDone = false;
-            Vector2 speed = new Vector2(-30,0);
-            Vector3 dropPosition = new Vector3(this.transform.position.x - 10,this.transform.position.y-15,0);
-            charInteract.interactType = InteractType.Drop;
+        anim.Play("Lay_LD", 0);
+        while (!isAbort)
+        {
+            yield return new WaitForEndOfFrame();
+        }
 
-            while (charInteract.interactType == InteractType.Drop && !isAbort)
-            {
-                speed += new Vector2(0,-100*Time.deltaTime);
-                if (speed.y < -50)
-                    speed = new Vector2(speed.x,-50);
-                Vector3 pos1 = agent.transform.position;
-                pos1.y += speed.y * Time.deltaTime;
-                pos1.x += speed.x * Time.deltaTime;
-                pos1.z = dropPosition.y;
-                agent.transform.position = pos1;
-
-                if (Mathf.Abs(agent.transform.position.y - dropPosition.y) < 2f)
-                {
-                    this.transform.rotation = Quaternion.identity;
-                    charInteract.interactType = InteractType.None;                
-                }
-                yield return new WaitForEndOfFrame();            
-            }
-            yield return DoAnim("Fall_L");
-        } 
         CheckAbort();
     }
 
@@ -124,8 +94,8 @@ public class CharSmall : CharController
         {
             Vector3 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition) - charInteract.dragOffset;
             pos.z = 0;
-            if (pos.y > 20)
-                pos.y = 20;
+            if (pos.y > dragOffset)
+                pos.y = dragOffset;
             else if (pos.y < -20)
                 pos.y = -20;
 
@@ -144,7 +114,7 @@ public class CharSmall : CharController
         //Start Drop
         RaycastHit2D[] hit = Physics2D.RaycastAll(transform.position + new Vector3(0, -2, 0), -Vector2.up, 100);
         Vector3 pos2 = this.transform.position;
-        pos2.y = pos2.y - 22;
+        pos2.y = pos2.y - dragOffset - 2;
         if (pos2.y < -20)
             pos2.y = -20;
         dropPosition = pos2;
@@ -186,27 +156,18 @@ public class CharSmall : CharController
             {
                 this.transform.rotation = Quaternion.identity;
 
-                if (data.Health < data.maxHealth * 0.1f)
+                if (fallSpeed < 30)
                 {
                     SetDirection(Direction.D);
-                    anim.Play("Drop_Sick_D", 0);
-                    maxTime = 3;
+                    anim.Play("Drop_Light_LD", 0);
+                    maxTime = 1;
                 }
                 else
                 {
-                    if (fallSpeed < 50)
-                    {
-                        SetDirection(Direction.D);
-                        anim.Play("Drop_Light_D", 0);
-                        maxTime = 1;
-                    }
-                    else
-                    {
-                        SetDirection(Direction.D);
-                        anim.Play("Drop_Hard_D", 0);
-                        maxTime = 3;
-                    }
-                }
+                    SetDirection(Direction.D);
+                    anim.Play("Drop_Hard_LD", 0);
+                    maxTime = 3;
+                }                
 
                 charInteract.interactType = InteractType.None;
             }
@@ -235,12 +196,8 @@ public class CharSmall : CharController
 
     IEnumerator Eat()
     {
+        
         if(ItemController.instance.FoodItem() != null){
-            if (!isAbort)
-            {
-                InputController.instance.SetTarget(PointType.Eat);
-                yield return StartCoroutine(MoveToPoint());
-            }
             bool canEat = true;
             if (ItemController.instance.FoodItem().CanEat() && !isAbort)
             {
@@ -295,23 +252,17 @@ public class CharSmall : CharController
         if (!isAbort)
         {
             int ran = Random.Range(0, 100);
-            if (ran < 20)
+            if (ran < 50)
             {
-                SetDirection(Direction.D);
-                anim.Play("Idle_Sit_D", 0);
+                anim.Play("Idle_LD", 0);
             }
-            else if (ran < 40)
+            else 
             {
-                if (this.direction == Direction.RD || this.direction == Direction.RU)
-                    anim.Play("Lay_RD", 0);
-                else
-                    anim.Play("Lay_LD", 0);
-            }else if(ran < 60){
-
+                anim.Play("Lay_LD", 0);
             }
         }
 
-        Debug.Log("Rest");
+        //Debug.Log("Rest");
         yield return StartCoroutine(Wait(maxTime));
         CheckAbort();
     }

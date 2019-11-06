@@ -3,12 +3,29 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-public class CharData
+public class Pet
 {
+	public int iD = 0;
+	public string iconUrl = "";
+	public LanguageItem[] languageItem = new LanguageItem[0];
+	public int buyPrice = 0;
+	public PriceType priceType = PriceType.Coin;
+    public ItemState itemState = ItemState.OnShop;
+	public string prefabName = "";
 	//Common Data
 	public int level = 0;
 	public int exp = 0;
 	int[] skills;
+
+	//Main Data
+	public float speed;
+	public float weight;
+	public float strength;
+	public float stamina = 50;
+
+
+
+	//Attribute Data
 	public float food = 50;
 	public float water = 50;
 	public float sleep = 50;
@@ -17,7 +34,7 @@ public class CharData
 	public float shit = 0;
 	public float pee = 0;
 	public float happy = 50;
-	public float stamina = 50;
+	
 	public float dirty = 50;
 	public float itchi = 50;
 	public float fear = 0;
@@ -63,7 +80,7 @@ public class CharData
 	public float maxFear = 100;
 	public float maxCurious = 100;
 
-	public CharData(){
+	public Pet(){
 		
 	}
 

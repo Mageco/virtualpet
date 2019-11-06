@@ -409,8 +409,8 @@ public class CharBig : CharController
         {
             Vector3 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition) - charInteract.dragOffset;
             pos.z = 0;
-            if (pos.y > 20)
-                pos.y = 20;
+            if (pos.y > dragOffset)
+                pos.y = dragOffset;
             else if (pos.y < -20)
                 pos.y = -20;
 
@@ -429,7 +429,7 @@ public class CharBig : CharController
         //Start Drop
         RaycastHit2D[] hit = Physics2D.RaycastAll(transform.position + new Vector3(0, -2, 0), -Vector2.up, 100);
         Vector3 pos2 = this.transform.position;
-        pos2.y = pos2.y - 22;
+        pos2.y = pos2.y - dragOffset - 2;
         if (pos2.y < -20)
             pos2.y = -20;
         dropPosition = pos2;

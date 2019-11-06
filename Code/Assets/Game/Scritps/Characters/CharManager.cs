@@ -6,6 +6,7 @@ public class CharManager : MonoBehaviour
 {
 
     public GameObject petSmallPrefab;
+
     public GameObject petNormalPrefab;
     public GameObject petMiddlePrefab;
 

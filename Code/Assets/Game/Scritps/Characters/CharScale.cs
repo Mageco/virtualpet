@@ -38,7 +38,7 @@ public class CharScale : MonoBehaviour
 			targetScale = dragScale;
 		}
 		else if (interact.interactType == InteractType.Drag) {
-			offset = initZ + 20;
+			offset = initZ + character.dragOffset;
 			if (character.transform.position.y > 2)
 			{
 				if (character.transform.position.y < offset)

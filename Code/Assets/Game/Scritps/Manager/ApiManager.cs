@@ -46,17 +46,24 @@ public class ApiManager : MonoBehaviour {
 		}else
 		{
 			user = new User();
-			user.SetUserData (new UserData ("Coin", "100000", ""));
-			user.SetUserData (new UserData ("Diamond", "50000", ""));
-			user.SetUserData (new UserData ("2", "used", "Item"));
-			user.SetUserData (new UserData ("4", "used", "Item"));
-			user.SetUserData (new UserData ("7", "used", "Item"));
-			user.SetUserData (new UserData ("8", "used", "Item"));
-			user.SetUserData (new UserData ("11", "used", "Item"));
-			user.SetUserData (new UserData ("13", "used", "Item"));
-			user.SetUserData (new UserData ("17", "used", "Item"));
-			user.SetUserData (new UserData ("41", "used", "Item"));
+			LoadNewItem();
+			ItemController.instance.LoadItems();
 		}
+	}
+
+	void LoadNewItem(){
+		
+		user.SetUserData (new UserData ("Coin", "100000", ""));
+		user.SetUserData (new UserData ("Diamond", "50000", ""));
+		user.SetUserData (new UserData ("2", ItemState.Equiped.ToString(), "Item"));
+		user.SetUserData (new UserData ("4", ItemState.Equiped.ToString(), "Item"));
+		user.SetUserData (new UserData ("7", ItemState.Equiped.ToString(), "Item"));
+		user.SetUserData (new UserData ("8", ItemState.Equiped.ToString(), "Item"));
+		user.SetUserData (new UserData ("11", ItemState.Equiped.ToString(), "Item"));
+		user.SetUserData (new UserData ("13", ItemState.Equiped.ToString(), "Item"));
+		user.SetUserData (new UserData ("17", ItemState.Equiped.ToString(), "Item"));
+		user.SetUserData (new UserData ("41", ItemState.Equiped.ToString(), "Item"));	
+			
 	}
 
 	void Start()
@@ -108,18 +115,7 @@ public class ApiManager : MonoBehaviour {
 	void CreateNewUser()
 	{
 		Debug.Log ("NEw user created");
-
-		user.SetUserData (new UserData ("Coin", "100000", ""));
-		user.SetUserData (new UserData ("Diamond", "50000", ""));
-		user.SetUserData (new UserData ("2", "used", "Item"));
-		user.SetUserData (new UserData ("4", "used", "Item"));
-		user.SetUserData (new UserData ("7", "used", "Item"));
-		user.SetUserData (new UserData ("8", "used", "Item"));
-		user.SetUserData (new UserData ("11", "used", "Item"));
-		user.SetUserData (new UserData ("13", "used", "Item"));
-		user.SetUserData (new UserData ("17", "used", "Item"));
-		user.SetUserData (new UserData ("41", "used", "Item"));
-
+		LoadNewItem();
 		SaveUserData ();
 		UpdateUserData ();
 		UpdateUserProfile ();
@@ -371,7 +367,7 @@ public class ApiManager : MonoBehaviour {
 
 	public void AddItem(int itemId)
 	{
-		user.SetUserData (new UserData (itemId.ToString(), "true", "Item"));
+		user.SetUserData (new UserData (itemId.ToString(),ItemState.Have.ToString(), "Item"));
 		SaveUserData ();
 		UpdateUserData ();
 	}
@@ -379,13 +375,13 @@ public class ApiManager : MonoBehaviour {
 	public void UseItem(int itemId){
 		Debug.LogWarning(itemId);
 		//if(HaveItem(itemId)){
-			List<int> items = GetUsedItems();
+			List<int> items = GetEquipedItems();
 			for(int i=0;i<items.Count;i++){
 				if(DataHolder.GetItem(items[i]).itemType == DataHolder.GetItem(itemId).itemType && DataHolder.GetItem(items[i]).iD != itemId){
-					user.SetUserData (new UserData (DataHolder.GetItem(items[i]).iD.ToString(), "true", "Item"));
+					user.SetUserData (new UserData (DataHolder.GetItem(items[i]).iD.ToString(), ItemState.Have.ToString(), "Item"));
 				}
 			}
-			user.SetUserData (new UserData (itemId.ToString(), "used", "Item"));
+			user.SetUserData (new UserData (itemId.ToString(), ItemState.Equiped.ToString(), "Item"));
 			SaveUserData ();
 			UpdateUserData ();
 		//}
@@ -393,15 +389,15 @@ public class ApiManager : MonoBehaviour {
 
 	public bool HaveItem(int itemId)
 	{
-		if (user.GetUserData (itemId.ToString()) == "true" || user.GetUserData (itemId.ToString()) == "used")
+		if (user.GetUserData (itemId.ToString()) == ItemState.Have.ToString() || user.GetUserData (itemId.ToString()) == ItemState.Equiped.ToString())
 			return true;
 		else
 			return false;
 	}
 
-	public bool UsedItem(int itemId)
+	public bool EquipItem(int itemId)
 	{
-		if (user.GetUserData (itemId.ToString()) == "used")
+		if (user.GetUserData (itemId.ToString()) == ItemState.Equiped.ToString())
 			return true;
 		else
 			return false;
@@ -417,10 +413,10 @@ public class ApiManager : MonoBehaviour {
 		return items;
 	}
 
-	public List<int> GetUsedItems(){
+	public List<int> GetEquipedItems(){
 		List<int> items = new List<int>();
 		for(int i=0;i<DataHolder.Items().GetDataCount();i++){
-			if(UsedItem(DataHolder.Item(i).iD)){
+			if(EquipItem(DataHolder.Item(i).iD)){
 				items.Add(DataHolder.Item(i).iD);
 			}
 		}

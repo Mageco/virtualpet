@@ -12,7 +12,7 @@ public class Item
 	public string prefabName = "";
 	public ItemType itemType = ItemType.Diamond;
 	public PriceType priceType = PriceType.Coin;
-    public ItemState itemState = ItemState.Buy;
+    public ItemState itemState = ItemState.OnShop;
 	public int buyPrice = 0;
 	public bool consume = true;
 	public ItemSkillType itemSkill = ItemSkillType.NONE;

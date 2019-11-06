@@ -17,7 +17,7 @@ public class ItemUI : MonoBehaviour
     Animator animator;
     bool isBusy = false;
 
-    ItemState state = ItemState.Buy;
+    ItemState state = ItemState.OnShop;
 
     void Awake(){
         animator = this.GetComponent<Animator>();
@@ -35,25 +35,25 @@ public class ItemUI : MonoBehaviour
         icon.sprite = Resources.Load<Sprite>(url) as Sprite;
         price.text = d.buyPrice.ToString();
 
-        if(ApiManager.instance.UsedItem(d.iD)){
-            state = ItemState.Used;
+        if(ApiManager.instance.EquipItem(d.iD)){
+            state = ItemState.Equiped;
         }
         else if(ApiManager.instance.HaveItem(d.iD)){
-            state = ItemState.Use;        
+            state = ItemState.Have;        
         }else{
-            state = ItemState.Buy;
+            state = ItemState.OnShop;
         }
 
-        if(state == ItemState.Buy){
+        if(state == ItemState.OnShop){
             buyButton.SetActive(true);
             useButton.SetActive(false);
             usedButton.SetActive(false);
-        }else if(state == ItemState.Use){
+        }else if(state == ItemState.Have){
             buyButton.SetActive(false);
             useButton.SetActive(true);
             usedButton.SetActive(false);
             animator.Play("Bought",0);
-        }else if(state == ItemState.Used){
+        }else if(state == ItemState.Equiped){
             buyButton.SetActive(false);
             useButton.SetActive(false);
             usedButton.SetActive(true);
@@ -94,9 +94,9 @@ public class ItemUI : MonoBehaviour
 
    IEnumerator BuyCoroutine(){
        isBusy = true;
-        if(state == ItemState.Used)
+        if(state == ItemState.Equiped)
             yield return null;
-        else if(state == ItemState.Use){
+        else if(state == ItemState.Have){
             animator.Play("Use",0);
             yield return new WaitForSeconds(3f);
             UIManager.instance.UseItem(itemId);

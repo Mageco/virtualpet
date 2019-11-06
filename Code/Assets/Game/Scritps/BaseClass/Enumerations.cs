@@ -2,9 +2,9 @@
 // Item
 public enum ItemSkillType {NONE, LEARN, USE};
 public enum ItemDropType {NONE, ITEM, EQUIPMENT, SKILL};
-public enum ItemType{None,Diamond,Coin,Food,Drink,Toy,Dog,House,Room,Bed,Toilet,Bath,Picture,Cleaner,Table,Clock,MedicineBox,Bandage,Pill};
+public enum ItemType{Diamond=0,Coin=0,Dog=1,Food=2,Drink=3,Toy=4,Bandage=5,Pill=6,Room=7,Bed=8,Toilet=9,Bath=10,Picture=11,Table=12,Clock=13,MedicineBox=14};
 public enum PriceType{Money,Coin,Diamond}
-public enum ItemState {Buy,Use,Used}
+public enum ItemState {OnShop,Have,Equiped,Locked}
 public enum ItemDragState{None,Drag,Drop,Fall,Hit,Hited};
 public enum InteractType {None,Drag,Drop,Touch,SwipeUp,SwipeDown,SwipeLeft,SwipeRight,DoubleClick};
 public enum QuestRequirementType{Action,Interact,Skill};

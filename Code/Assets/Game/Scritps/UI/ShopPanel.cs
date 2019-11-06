@@ -9,27 +9,30 @@ public class ShopPanel : MonoBehaviour
     List<ItemUI> items = new List<ItemUI>();
     public GameObject itemUIPrefab;
     int currentTab = 0;
-    public Toggle[] toggles;
-    public int[] toogleIds;
-    int currentToogle;
+    List<Toggle> toggles = new List<Toggle>();
+    public Transform toogleAnchor;
+    
     // Start is called before the first frame update
 
     void Awake(){
-        if(ES2.Exists("Shop"+toogleIds[0])){
-            currentToogle = ES2.Load<int>("Shop"+toogleIds[0]);
+        if(ES2.Exists("ShopToggle")){
+            currentTab = ES2.Load<int>("ShopToggle");
         }
 
     }
     void Start()
     {
-        for(int i=0;i<toogleIds.Length;i++){
+        for(int i=0;i<toogleAnchor.childCount;i++){
             int id = i;
-            toggles[i].onValueChanged.AddListener (delegate {OnTab(id);});
+            Toggle t = toogleAnchor.GetChild(i).GetComponent<Toggle>();
+            toggles.Add(t);
+            t.onValueChanged.AddListener (delegate {OnTab(id);});
         }
-        if(toggles[currentToogle].isOn){
-            OnTab(currentToogle);
+        
+        if(toggles[currentTab].isOn){
+            OnTab(currentTab);
         }else{
-            toggles[currentToogle].isOn = true; 
+            toggles[currentTab].isOn = true; 
         }
            
     }
@@ -41,53 +44,21 @@ public class ShopPanel : MonoBehaviour
     void Update()
     {
         if(UIManager.instance.notification == NotificationType.Shop){
-            OnTab(currentToogle);
+            OnTab(currentTab);
             UIManager.instance.notification = NotificationType.None;
         }
     }
 
     public void OnTab(int id){
-        currentTab = toogleIds[id];
-        currentToogle = id;
-        ES2.Save(id,"Shop"+toogleIds[0]);
+        currentTab = id;
+
+        ES2.Save(id,"ShopToggle");
         ClearItems();
         for(int i=0;i<DataHolder.Items().GetDataCount();i++){
-            if(currentTab == 0)
-            {
-                if(DataHolder.Item(i).itemType == ItemType.Coin || DataHolder.Item(i).itemType == ItemType.Diamond){
-                    LoadItem(DataHolder.Item(i));
-                }
-            }else if(currentTab == 1){
-                 if(DataHolder.Item(i).itemType == ItemType.Toy){
-                    LoadItem(DataHolder.Item(i));
-                }               
-            }else if(currentTab == 2){
-                 if(DataHolder.Item(i).itemType == ItemType.Dog){
-                    LoadItem(DataHolder.Item(i));
-                }               
-            }else if(currentTab == 3){
-                 if(DataHolder.Item(i).itemType == ItemType.Room){
-                    LoadItem(DataHolder.Item(i));
-                }               
-            }else if(currentTab == 4){
-                 if(DataHolder.Item(i).itemType == ItemType.Bed){
-                    LoadItem(DataHolder.Item(i));
-                }               
-            }else if(currentTab == 5){
-                 if(DataHolder.Item(i).itemType == ItemType.Bath || DataHolder.Item(i).itemType == ItemType.Toilet || DataHolder.Item(i).itemType == ItemType.Cleaner){
-                    LoadItem(DataHolder.Item(i));
-                }               
-            }else if(currentTab == 6){
-                 if(DataHolder.Item(i).itemType == ItemType.Picture || DataHolder.Item(i).itemType == ItemType.Table || DataHolder.Item(i).itemType == ItemType.MedicineBox){
-                    LoadItem(DataHolder.Item(i));
-                }               
-            }else if(currentTab == 7){
-                 if(DataHolder.Item(i).itemType == ItemType.Food || DataHolder.Item(i).itemType == ItemType.Drink || DataHolder.Item(i).itemType == ItemType.Bandage || DataHolder.Item(i).itemType == ItemType.Pill){
-                    LoadItem(DataHolder.Item(i));
-                }               
-            }
-
-        }
+            if((int)DataHolder.Item(i).itemType == currentTab){
+                LoadItem(DataHolder.Item(i));      
+            }   
+        }           
     }
 
     void LoadItem(Item data){

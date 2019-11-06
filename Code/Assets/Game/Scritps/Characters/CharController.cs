@@ -9,7 +9,7 @@ public class CharController : MonoBehaviour
 
     #region Declair
     //Data
-    public CharData data;
+    public Pet data;
     //[HideInInspector]
 
     //[HideInInspector]
@@ -54,6 +54,8 @@ public class CharController : MonoBehaviour
     protected float skillTime;
     protected float maxSkillTime = 20;
     public GameObject skillLearnEffect;
+
+    public float dragOffset = 20f;
 
     #region Load
 
@@ -290,7 +292,8 @@ public class CharController : MonoBehaviour
     {
         anim.speed = 1;
         isAbort = true;
-        touchObject.SetActive(false);
+        if(touchObject != null)
+            touchObject.SetActive(false);
     }
 
 
