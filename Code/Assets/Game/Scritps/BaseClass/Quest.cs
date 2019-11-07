@@ -11,6 +11,7 @@ public class Quest
     //Requirement
     public int charLevel;
     public QuestRequirement[] requirements;
+	public string prefabName = "";
     //Rewards
     public int itemId = 0;
     public int coinValue = 0;
@@ -90,7 +91,8 @@ public class QuestRequirement{
      public ActionType actionType;
      public InteractType interactType;
      public SkillType skillType;
-     public int value = 0;
+     public string key = "";
+	 public string value = "";
 
 }
 

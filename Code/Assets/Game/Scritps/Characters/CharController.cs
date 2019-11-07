@@ -56,6 +56,7 @@ public class CharController : MonoBehaviour
     public GameObject skillLearnEffect;
 
     public float dragOffset = 20f;
+    public float cameraSize = 24;
 
     #region Load
 
@@ -87,6 +88,7 @@ public class CharController : MonoBehaviour
         {
             Think();
             DoAction();
+            LogAction();
         }
 
 
@@ -170,7 +172,6 @@ public class CharController : MonoBehaviour
     protected void OnBath()
     {
         Abort();
-        SetDirection(Direction.D);
         SetDirection(Direction.D);
         actionType = ActionType.Bath;
     }
@@ -283,6 +284,12 @@ public class CharController : MonoBehaviour
     protected virtual void DoAction(){
 
     }
+
+    void LogAction(){
+        GameManager.instance.LogAction(actionType);
+    }
+
+
     #endregion
 
     #region Basic Action

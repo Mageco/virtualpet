@@ -60,14 +60,8 @@ public class ApiManager : MonoBehaviour {
 		
 		user.SetUserData (new UserData ("Coin", "100000", ""));
 		user.SetUserData (new UserData ("Diamond", "50000", ""));
-		user.SetUserData (new UserData ("2", ItemState.Equiped.ToString(), "Item"));
-		user.SetUserData (new UserData ("4", ItemState.Equiped.ToString(), "Item"));
-		user.SetUserData (new UserData ("7", ItemState.Equiped.ToString(), "Item"));
 		user.SetUserData (new UserData ("8", ItemState.Equiped.ToString(), "Item"));
-		user.SetUserData (new UserData ("11", ItemState.Equiped.ToString(), "Item"));
-		user.SetUserData (new UserData ("13", ItemState.Equiped.ToString(), "Item"));
 		user.SetUserData (new UserData ("17", ItemState.Equiped.ToString(), "Item"));
-		user.SetUserData (new UserData ("41", ItemState.Equiped.ToString(), "Item"));		
 	}
 
 	void Start()

@@ -17,11 +17,9 @@ public class CharSmall : CharController
         {
             actionType = ActionType.Sleep;
             return;
-        }
-
+        }else
         //Other Action
-        actionType = ActionType.Rest;
-
+            actionType = ActionType.Rest;
     }
 
 
@@ -32,10 +30,6 @@ public class CharSmall : CharController
         //Debug.Log("DoAction " + actionType);
         isAbort = false;
         agent.Stop();
-        if (actionType == ActionType.Rest)
-        {
-            StartCoroutine(Rest());
-        }
         if (actionType == ActionType.Rest)
         {
             StartCoroutine(Rest());

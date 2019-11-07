@@ -45,8 +45,10 @@ public class CameraController : MonoBehaviour
 	void Start()
 	{
 		orthographicsize = Camera.main.orthographicSize;
-		if(GameObject.FindObjectOfType<CharController> () != null)
+		if(GameObject.FindObjectOfType<CharController> () != null){
 			target = GameObject.FindObjectOfType<CharController> ().transform;
+			orthographicsize = target.GetComponent<CharController>().cameraSize;
+		}
 	}
 
 	void LateUpdate()

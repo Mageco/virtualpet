@@ -11446,7 +11446,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 2}
   serializedVersion: 2
-  m_Radius: 4
+  m_Radius: 5
 --- !u!114 &5765412172713205413
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11544,8 +11544,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   data:
+    iD: 0
+    iconUrl: 
+    iconLockUrl: 
+    languageItem: []
+    buyPrice: 0
+    priceType: 1
+    itemState: 0
+    petSmall: 
+    petMiddle: 
+    petBig: 
     level: 0
     exp: 0
+    speed: 0
+    weight: 0
+    strength: 0
+    stamina: 50
     food: 50
     water: 50
     sleep: 50
@@ -11554,7 +11568,6 @@ MonoBehaviour:
     shit: 0
     pee: 0
     happy: 50
-    stamina: 50
     dirty: 50
     itchi: 50
     fear: 0
@@ -11596,7 +11609,8 @@ MonoBehaviour:
   touchObject: {fileID: 0}
   currentSkill: 0
   skillLearnEffect: {fileID: 8571974803345717679}
-  dragOffset: 10
+  dragOffset: 12
+  cameraSize: 18
 --- !u!1 &9160374556642269446
 GameObject:
   m_ObjectHideFlags: 0

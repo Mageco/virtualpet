@@ -61,7 +61,7 @@ public class QuestData : BaseData
 		}
 	}
 
-	
+	public string GetPrefabPath() { return "Prefabs/Quests/"; }
 	
 	public override void RemoveData(int index)
 	{

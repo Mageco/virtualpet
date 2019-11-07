@@ -64,6 +64,16 @@ public class QuestTab : BaseTab
 				DataHolder.Quest(selection).dialogId = EditorGUILayout.Popup("Dialog", 
 						DataHolder.Quest(selection).dialogId, pw.GetDialogs(), GUILayout.Width(pw.mWidth));				
                 EditorGUILayout.Separator();
+                if(selection != tmpSelection) this.tmpPrefab = null;
+				if(this.tmpPrefab == null && "" != DataHolder.Item(selection).prefabName)
+				{
+					this.tmpPrefab = (GameObject)Resources.Load(DataHolder.Items().GetPrefabPath()+DataHolder.Item(selection).prefabName, typeof(GameObject));
+				}
+				this.tmpPrefab = (GameObject)EditorGUILayout.ObjectField("Prefab", this.tmpPrefab, typeof(GameObject), false, GUILayout.Width(pw.mWidth*2));
+				if(this.tmpPrefab) DataHolder.Item(selection).prefabName = this.tmpPrefab.name;
+				else DataHolder.Item(selection).prefabName = "";
+
+				EditorGUILayout.Separator();
                 for(int i=0;i<DataHolder.Quest(selection).requirements.Length;i++){
                     DataHolder.Quest(selection).requirements[i].requireType = (QuestRequirementType)EditorTab.EnumToolbar("Quest Type", (int)DataHolder.Quest(selection).requirements[i].requireType, typeof(QuestRequirementType));
                     if(DataHolder.Quest(selection).requirements[i].requireType == QuestRequirementType.Action){
@@ -85,6 +95,15 @@ public class QuestTab : BaseTab
                     }else if(DataHolder.Quest(selection).requirements[i].requireType == QuestRequirementType.Interact){
                         EditorGUILayout.BeginHorizontal();
                         DataHolder.Quest(selection).requirements[i].interactType = (InteractType)EditorGUILayout.Popup("Interact", (int)DataHolder.Quest(selection).requirements[i].interactType,System.Enum.GetNames(typeof(InteractType)),GUILayout.Width(pw.mWidth));
+                        if (GUILayout.Button("Remove", GUILayout.Width(pw.mWidth * 0.3f)))
+                        {
+                            DataHolder.Quest(selection).RemoveRequirement(i);
+                        }
+                        EditorGUILayout.EndHorizontal();
+                    }else if(DataHolder.Quest(selection).requirements[i].requireType == QuestRequirementType.Variable){
+                        EditorGUILayout.BeginHorizontal();
+                        DataHolder.Quest(selection).requirements[i].key = EditorGUILayout.TextField("Key", DataHolder.Quest(selection).requirements[i].key, GUILayout.Width(pw.mWidth));
+                        DataHolder.Quest(selection).requirements[i].value = EditorGUILayout.TextField("Value", DataHolder.Quest(selection).requirements[i].value, GUILayout.Width(pw.mWidth));
                         if (GUILayout.Button("Remove", GUILayout.Width(pw.mWidth * 0.3f)))
                         {
                             DataHolder.Quest(selection).RemoveRequirement(i);

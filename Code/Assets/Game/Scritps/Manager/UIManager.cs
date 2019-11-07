@@ -6,11 +6,13 @@ using UnityEngine.UI;
 public class UIManager : MonoBehaviour
 {
 
+	public GameObject questUIPrefab;
 	public static UIManager instance;
 	[HideInInspector]
 	public NotificationType notification = NotificationType.None;
 	public Text coinText;
 	public Text diamonText;
+	MPopup questNotification;
 
 	void Awake()
 	{
@@ -65,6 +67,22 @@ public class UIManager : MonoBehaviour
        ItemController.instance.UsePet(itemID);
 	   notification = NotificationType.Shop;
 	}
+
+	public MPopup OnQuestNotificationPopup(string description)
+	{
+		if (questNotification == null) {
+			var popup = Instantiate (questUIPrefab) as GameObject;
+			popup.SetActive (true);
+			popup.transform.localScale = Vector3.zero;
+			popup.transform.SetParent (GameObject.Find ("Canvas").transform, false);
+			popup.GetComponent<Popup> ().Open ();
+			questNotification = popup.GetComponent<MPopup> ();
+			questNotification.texts[0].text = description;
+		}
+		return questNotification;
+	}
+
+
 }
 
 public enum NotificationType{None,Shop,Skill}
