@@ -48,6 +48,8 @@ public class CharSmall : CharController
         }
         else if(actionType == ActionType.SkillUp){
             StartCoroutine(SkillUp());
+        }else if(actionType == ActionType.OnBed){
+            StartCoroutine(Bed());
         }
     }
     #endregion
@@ -131,6 +133,14 @@ public class CharSmall : CharController
                 enviromentType = EnviromentType.Bath;
                 break;
             }
+            else if (hit[i].collider.tag == "Bed")
+            {
+                pos2.y = hit[i].collider.transform.position.y;
+                pos2.z = hit[i].collider.transform.position.z;
+                dropPosition = pos2;
+                enviromentType = EnviromentType.Bed;
+                break;
+            }
         }
 
         float fallSpeed = 0;
@@ -154,13 +164,13 @@ public class CharSmall : CharController
                 {
                     SetDirection(Direction.D);
                     anim.Play("Drop_Light_LD", 0);
-                    maxTime = 1;
+                    maxTime = 2;
                 }
                 else
                 {
                     SetDirection(Direction.D);
                     anim.Play("Drop_Hard_LD", 0);
-                    maxTime = 3;
+                    maxTime = 2;
                 }                
 
                 charInteract.interactType = InteractType.None;
@@ -258,6 +268,16 @@ public class CharSmall : CharController
 
         //Debug.Log("Rest");
         yield return StartCoroutine(Wait(maxTime));
+        CheckAbort();
+    }
+
+    IEnumerator Bed()
+    {
+        anim.Play("Lay_LD", 0);
+        while(!isAbort && data.sleep > 0.3f*data.maxSleep){
+            yield return new WaitForEndOfFrame();
+        }
+
         CheckAbort();
     }
 

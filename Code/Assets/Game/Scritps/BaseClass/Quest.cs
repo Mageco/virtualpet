@@ -10,7 +10,7 @@ public class Quest
     public LanguageItem[] languageItem = new LanguageItem[0];
     //Requirement
     public int charLevel;
-    public QuestRequirement[] requirements;
+    public QuestRequirement[] requirements = new QuestRequirement[0];
 	public string prefabName = "";
     //Rewards
     public int itemId = 0;

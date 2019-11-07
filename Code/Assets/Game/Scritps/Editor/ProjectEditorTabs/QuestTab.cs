@@ -65,13 +65,13 @@ public class QuestTab : BaseTab
 						DataHolder.Quest(selection).dialogId, pw.GetDialogs(), GUILayout.Width(pw.mWidth));				
                 EditorGUILayout.Separator();
                 if(selection != tmpSelection) this.tmpPrefab = null;
-				if(this.tmpPrefab == null && "" != DataHolder.Item(selection).prefabName)
+				if(this.tmpPrefab == null && "" != DataHolder.Quest(selection).prefabName)
 				{
-					this.tmpPrefab = (GameObject)Resources.Load(DataHolder.Items().GetPrefabPath()+DataHolder.Item(selection).prefabName, typeof(GameObject));
+					this.tmpPrefab = (GameObject)Resources.Load(DataHolder.Quests().GetPrefabPath()+DataHolder.Quest(selection).prefabName, typeof(GameObject));
 				}
 				this.tmpPrefab = (GameObject)EditorGUILayout.ObjectField("Prefab", this.tmpPrefab, typeof(GameObject), false, GUILayout.Width(pw.mWidth*2));
-				if(this.tmpPrefab) DataHolder.Item(selection).prefabName = this.tmpPrefab.name;
-				else DataHolder.Item(selection).prefabName = "";
+				if(this.tmpPrefab) DataHolder.Quest(selection).prefabName = this.tmpPrefab.name;
+				else DataHolder.Quest(selection).prefabName = "";
 
 				EditorGUILayout.Separator();
                 for(int i=0;i<DataHolder.Quest(selection).requirements.Length;i++){

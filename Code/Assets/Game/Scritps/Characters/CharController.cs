@@ -176,6 +176,13 @@ public class CharController : MonoBehaviour
         actionType = ActionType.Bath;
     }
 
+    protected void OnBed()
+    {
+        Abort();
+        SetDirection(Direction.D);
+        actionType = ActionType.OnBed;
+    }
+
     protected void OnTable()
     {
         Abort();

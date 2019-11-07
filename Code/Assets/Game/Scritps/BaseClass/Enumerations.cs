@@ -10,6 +10,6 @@ public enum QuestRequirementType{Action,Interact,Skill,Variable};
 public enum SkillType {NONE,Toilet,Pee,Eat,Drink,Sleep,Call,Bath,Toy_Car,Toy_Circle,Toy_Ball};
 public enum Direction {R =0, D = 1, L = 2, U = 3, RU = 4,RD = 5,LU = 6,LD = 7};
 public enum CharAge{Small,Middle,Big};
-public enum EnviromentType { Room, Table, Bath };
-public enum ActionType { None, Mouse, Rest, Sleep, Eat, Drink, Patrol, Discover, Pee, Shit, Itchi, Sick, Sad, Fear, Happy, Tired, Call, Hold, OnTable, Bath, Listening,Fall,SkillUp,LevelUp}
+public enum EnviromentType { Room, Table, Bath,Bed };
+public enum ActionType { None, Mouse, Rest, Sleep, Eat, Drink, Patrol, Discover, Pee, Shit, Itchi, Sick, Sad, Fear, Happy, Tired, Call, Hold, OnTable, Bath, Listening,Fall,SkillUp,LevelUp,OnBed}
 
