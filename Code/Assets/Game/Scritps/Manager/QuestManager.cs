@@ -10,9 +10,10 @@ public class QuestManager : MonoBehaviour
     public int questID = 0;
     PlayableDirector playTimeLine;
     public bool isTimeline = false;
-
+    System.DateTime startTime;
     float time;
     float maxTimeCheck = 0.2f;
+    MPopup tipUI;
     // Start is called before the first frame update
     void Start()
     {
@@ -23,6 +24,7 @@ public class QuestManager : MonoBehaviour
         LoadQuestObject();
         PlayTip();
         isStart = true;
+        startTime = System.DateTime.Now;
     }
 
     void LoadQuestObject(){
@@ -43,13 +45,14 @@ public class QuestManager : MonoBehaviour
     }
 
     IEnumerator PlayTimeline(){
-        
         playTimeLine.gameObject.SetActive(true);
         playTimeLine.Play();
         Debug.Log(playTimeLine.duration);
         yield return new WaitForSeconds((float)playTimeLine.duration);
         playTimeLine.Stop();
         playTimeLine.gameObject.SetActive(false);
+        if(tipUI != null)
+            tipUI.Close();
     }
 
     public void ResetQuest(){
@@ -61,9 +64,34 @@ public class QuestManager : MonoBehaviour
         questID ++;
         isTimeline = false;
         isStart = false;
+        Debug.Log("Quest Complete");
     }
 
     public void CheckQuest(){
+        int count = 0;
+        int check = DataHolder.Quest(questID).requirements.Length;
+        for(int i=0;i<DataHolder.Quest(questID).requirements.Length;i++){
+            if(DataHolder.Quest(questID).requirements[i].requireType == QuestRequirementType.Action){
+                List<ActionData> actions = GameManager.instance.GetActionLogs(startTime);
+                if(actions != null){
+                    foreach(ActionData a in actions){
+                        if(a.actionType == DataHolder.Quest(questID).requirements[i].actionType){
+                            count ++;
+                        }
+                    }
+                }
+            }else if(DataHolder.Quest(questID).requirements[i].requireType == QuestRequirementType.Skill){
+
+            }else if(DataHolder.Quest(questID).requirements[i].requireType == QuestRequirementType.Interact){
+                
+            }else if(DataHolder.Quest(questID).requirements[i].requireType == QuestRequirementType.Variable){
+                
+            }
+        }
+        //Debug.Log(count +"   "+  check);
+        if(count >= check){
+            CompleteQuest();
+        }
 
     }
 
@@ -83,6 +111,6 @@ public class QuestManager : MonoBehaviour
     }
 
     public void OnQuestNotification(){
-        UIManager.instance.OnQuestNotificationPopup(DataHolder.Dialog(DataHolder.Quest(questID).dialogId).GetDescription(0));
+        tipUI = UIManager.instance.OnQuestNotificationPopup(DataHolder.Dialog(DataHolder.Quest(questID).dialogId).GetDescription(0));
     }   
 }

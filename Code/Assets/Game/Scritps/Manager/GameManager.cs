@@ -38,6 +38,16 @@ public class GameManager : MonoBehaviour
 		SaveAction();
 	}
 
+	public List<ActionData> GetActionLogs(System.DateTime t){
+		List<ActionData> temp = new List<ActionData>();
+		for(int i=0;i<actions.Count;i++){
+			if(actions[i].startTime > t){
+				temp.Add(actions[i]);
+			}
+		}
+		return temp;
+	}
+
 	void SaveAction(){
 		ES2.Save(actions,"ActionLog");
 	}

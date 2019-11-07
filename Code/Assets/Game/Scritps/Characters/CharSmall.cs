@@ -90,8 +90,8 @@ public class CharSmall : CharController
         {
             Vector3 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition) - charInteract.dragOffset;
             pos.z = 0;
-            if (pos.y > dragOffset)
-                pos.y = dragOffset;
+            if (pos.y > dragOffset-4)
+                pos.y = dragOffset-4;
             else if (pos.y < -20)
                 pos.y = -20;
 
@@ -160,7 +160,7 @@ public class CharSmall : CharController
             {
                 this.transform.rotation = Quaternion.identity;
 
-                if (fallSpeed < 30)
+                if (fallSpeed < 40)
                 {
                     SetDirection(Direction.D);
                     anim.Play("Drop_Light_LD", 0);
@@ -192,6 +192,10 @@ public class CharSmall : CharController
             else if (enviromentType == EnviromentType.Table)
             {
                 OnTable();
+            }
+            else if (enviromentType == EnviromentType.Bed)
+            {
+                OnBed();
             }
         }
 

@@ -383,7 +383,10 @@ public class CharController : MonoBehaviour
         if (!isAbort)
             actionType = ActionType.None;
         else
+        {
+            LogAction();
             DoAction();
+        }
     }
 
     #endregion
