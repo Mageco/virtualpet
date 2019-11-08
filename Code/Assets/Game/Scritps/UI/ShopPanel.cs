@@ -56,8 +56,12 @@ public class ShopPanel : MonoBehaviour
         ClearItems();
 
         if(currentTab == 1){
-
-        }else{
+            for (int i = 0; i < DataHolder.Pets().GetDataCount(); i++)
+            {
+                LoadItem(DataHolder.Pet(i));
+            }
+        }
+        else{
             for(int i=0;i<DataHolder.Items().GetDataCount();i++){
                 if((int)DataHolder.Item(i).itemType == currentTab){
                     LoadItem(DataHolder.Item(i));      
