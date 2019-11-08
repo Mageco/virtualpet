@@ -139,7 +139,7 @@ public class InputController : MonoBehaviour
 
 	public void ResetCameraTarget()
 	{
-		cameraController.SetTarget (this.character.gameObject);
+		cameraController.SetTarget (this.Character.gameObject);
 	}
 
 	private bool IsPointerOverUIObject() {

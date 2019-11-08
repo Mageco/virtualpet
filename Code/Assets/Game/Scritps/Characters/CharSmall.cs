@@ -204,49 +204,18 @@ public class CharSmall : CharController
 
     IEnumerator Eat()
     {
-        
-        if(ItemController.instance.FoodItem() != null){
-            bool canEat = true;
-            if (ItemController.instance.FoodItem().CanEat() && !isAbort)
-            {
-                direction = Direction.LD;
-                anim.Play("Eat_LD" , 0);
-                yield return StartCoroutine(Wait(0.1f));
-                while (data.Food < data.maxFood && !isAbort && canEat)
-                {
-                    data.Food += 0.3f;
-                    ItemController.instance.FoodItem().Eat(0.3f);
-                    if (!ItemController.instance.FoodItem().CanEat())
-                    {
-                        canEat = false;
-                    }
-                    if (Vector2.Distance(this.transform.position, ItemController.instance.FoodItem().anchor.position) > 0.5f)
-                        canEat = false;
-                    yield return new WaitForEndOfFrame();
-                }
-            }
-        }
+        anim.Play("Eat_LD", 0);
+        yield return new WaitForSeconds(3);
+        data.sleep -= 100;
         CheckAbort();
     }
 
    
     IEnumerator Sleep()
     {
-        //Debug.Log("Sleep");
-        if(data.SkillLearned(SkillType.Sleep)){
-            InputController.instance.SetTarget(PointType.Sleep);
-        }else{
-            OnLearnSkill(SkillType.Sleep);
-            InputController.instance.SetTarget(PointType.Patrol);
-        }
-           
-        yield return StartCoroutine(MoveToPoint());
-        if (!isAbort){
-             direction = Direction.LD;
-            anim.Play("Sleep_LD" , 0);
-        }
+        anim.Play("Sleep_LD" , 0);
 
-        while (data.Sleep < data.maxSleep && !isAbort)
+        while (data.Sleep < data.maxSleep)
         {
             data.Sleep += 0.01f;
             yield return new WaitForEndOfFrame();
