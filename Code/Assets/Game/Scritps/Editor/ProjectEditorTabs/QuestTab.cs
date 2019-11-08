@@ -4,6 +4,7 @@ using UnityEngine;
 public class QuestTab : BaseTab
 {
 	private GameObject tmpPrefab;
+    private int tempId = -1;
 
     public QuestTab(ProjectWindow pw) : base(pw)
     {
@@ -127,8 +128,16 @@ public class QuestTab : BaseTab
 				DataHolder.Quest(selection).coinValue = EditorGUILayout.IntField("Coin", DataHolder.Quest(selection).coinValue, GUILayout.Width(pw.mWidth));
                 DataHolder.Quest(selection).diamondValue = EditorGUILayout.IntField("Diamond", DataHolder.Quest(selection).diamondValue, GUILayout.Width(pw.mWidth));
                 DataHolder.Quest(selection).expValue = EditorGUILayout.IntField("Exp", DataHolder.Quest(selection).expValue, GUILayout.Width(pw.mWidth));
-				DataHolder.Quest(selection).itemId = EditorGUILayout.Popup("Item", 
-						DataHolder.Quest(selection).itemId, pw.GetItems(), GUILayout.Width(pw.mWidth));
+                DataHolder.Quest(selection).haveItem = EditorGUILayout.Toggle("Item Reward", DataHolder.Quest(selection).haveItem, GUILayout.Width(pw.mWidth));
+                if (DataHolder.Quest(selection).haveItem)
+                {
+                   if(tempId == -1)
+                        tempId = DataHolder.Items().GetItemPosition(DataHolder.Quest(selection).itemId);
+                   tempId = EditorGUILayout.Popup("Item",tempId, DataHolder.Items().GetNameList(true), GUILayout.Width(pw.mWidth));
+
+                    DataHolder.Quest(selection).itemId = DataHolder.Item(tempId).iD;
+                    
+                }
 				EditorGUILayout.Separator();
 			}
 			EditorGUILayout.EndVertical();

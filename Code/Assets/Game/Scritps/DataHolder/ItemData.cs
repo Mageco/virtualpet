@@ -206,9 +206,23 @@ public class ItemData : BaseData
 		return result.ToArray();
 	}
 
+    public int GetItemPosition(int id)
+    {
+
+        for (int i = 0; i < items.Length; i++)
+        {
+            if (items[i].iD == id)
+            {
+                return i;
+            }
+        }
+
+        return -1;
+    }
 
 
-	public int GetItemOrder(int id,int category)
+
+    public int GetItemOrder(int id,int category)
 	{
 		List<int> result = new List<int>();
 		if(items != null)

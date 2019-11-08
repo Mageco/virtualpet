@@ -62,7 +62,7 @@ public class ApiManager : MonoBehaviour {
 		user.SetUserData (new UserData ("Diamond", "50000", ""));
 		user.SetUserData (new UserData ("8", ItemState.Equiped.ToString(), "Item"));
 		user.SetUserData (new UserData ("17", ItemState.Equiped.ToString(), "Item"));
-	}
+    }
 
 	void Start()
 	{
@@ -374,7 +374,6 @@ public class ApiManager : MonoBehaviour {
 	}
 
 	public void UseItem(int itemId){
-		Debug.LogWarning(itemId);
 		//if(HaveItem(itemId)){
 			List<int> items = GetEquipedItems();
 			for(int i=0;i<items.Count;i++){

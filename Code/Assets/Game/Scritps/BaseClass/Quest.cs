@@ -13,6 +13,7 @@ public class Quest
     public QuestRequirement[] requirements = new QuestRequirement[0];
 	public string prefabName = "";
     //Rewards
+    public bool haveItem = false;
     public int itemId = 0;
     public int coinValue = 0;
     public int diamondValue = 0;

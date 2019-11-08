@@ -18,7 +18,9 @@ public class ItemController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-		
+        ApiManager.instance.AddItem(56);
+        ApiManager.instance.UseItem(56);
+        LoadItems();
     }
 
 	public void LoadItems(){

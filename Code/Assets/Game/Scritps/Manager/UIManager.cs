@@ -7,12 +7,14 @@ public class UIManager : MonoBehaviour
 {
 
 	public GameObject questUIPrefab;
-	public static UIManager instance;
+    public GameObject questCompletePrefab;
+    public static UIManager instance;
 	[HideInInspector]
 	public NotificationType notification = NotificationType.None;
 	public Text coinText;
 	public Text diamonText;
 	MPopup questNotification;
+    QuestPanel questComplete;
 
 	void Awake()
 	{
@@ -81,6 +83,20 @@ public class UIManager : MonoBehaviour
 		}
 		return questNotification;
 	}
+
+    public QuestPanel OnQuestCompletePopup()
+    {
+        if (questComplete == null)
+        {
+            var popup = Instantiate(questCompletePrefab) as GameObject;
+            popup.SetActive(true);
+            popup.transform.localScale = Vector3.zero;
+            popup.transform.SetParent(GameObject.Find("Canvas").transform, false);
+            popup.GetComponent<Popup>().Open();
+            questComplete = popup.GetComponent<QuestPanel>();
+        }
+        return questComplete;
+    }
 
 
 }

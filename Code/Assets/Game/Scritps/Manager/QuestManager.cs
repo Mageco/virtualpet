@@ -5,8 +5,10 @@ using UnityEngine.Timeline;
 using UnityEngine.Playables;
 
 public class QuestManager : MonoBehaviour
-{    
-    public bool isStart = false;
+{
+    public static QuestManager instance;
+    public bool isStartQuest = false;
+    public bool isEndQuest = false;
     public int questID = 0;
     PlayableDirector playTimeLine;
     public bool isTimeline = false;
@@ -14,6 +16,15 @@ public class QuestManager : MonoBehaviour
     float time;
     float maxTimeCheck = 0.2f;
     MPopup tipUI;
+
+    void Awake()
+    {
+        if(instance == null)
+        {
+            instance = this;
+        }
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -23,7 +34,7 @@ public class QuestManager : MonoBehaviour
     void StartQuest(){        
         LoadQuestObject();
         PlayTip();
-        isStart = true;
+        isStartQuest = true;
         startTime = System.DateTime.Now;
     }
 
@@ -32,7 +43,7 @@ public class QuestManager : MonoBehaviour
             string url = DataHolder.GetQuest(questID).prefabName.Replace("Assets/Game/Resources/","");
             url = url.Replace(".prefab",""); 
             url = DataHolder.Quests().GetPrefabPath() + url;
-            GameObject go = GameObject.Instantiate((Resources.Load(url) as GameObject),new Vector3(0,0,-200),Quaternion.identity) as GameObject;		
+            GameObject go = Instantiate((Resources.Load(url) as GameObject), new Vector3(0, 0, -200), Quaternion.identity) as GameObject;		
             playTimeLine = go.GetComponent<PlayableDirector>();
         }
     }
@@ -60,11 +71,29 @@ public class QuestManager : MonoBehaviour
         PlayTip();
     }
 
-    public void CompleteQuest(){
+    public void StartCompleteQuest(){
+        isEndQuest = true;
+        QuestPanel questPanel = UIManager.instance.OnQuestCompletePopup();
+        questPanel.Load(questID);
+        Debug.Log("Quest Complete");
+    }
+
+    public void EndCompleteQuest()
+    {
+        if (DataHolder.Quest(questID).haveItem)
+        {
+            ApiManager.instance.AddItem(DataHolder.Quest(questID).itemId);
+            ApiManager.instance.UseItem(DataHolder.Quest(questID).itemId);
+            ItemController.instance.LoadItems();
+        }
+
+        ApiManager.instance.AddCoin(DataHolder.Quest(questID).coinValue);
+        ApiManager.instance.AddDiamond(DataHolder.Quest(questID).diamondValue);
+
         questID ++;
         isTimeline = false;
-        isStart = false;
-        Debug.Log("Quest Complete");
+        isStartQuest = false;
+        isEndQuest = false;
     }
 
     public void CheckQuest(){
@@ -90,7 +119,7 @@ public class QuestManager : MonoBehaviour
         }
         //Debug.Log(count +"   "+  check);
         if(count >= check){
-            CompleteQuest();
+            StartCompleteQuest();
         }
 
     }
@@ -98,16 +127,20 @@ public class QuestManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(!isStart){
+        if(!isStartQuest){
             StartQuest();
         }else{
-            if(time > maxTimeCheck){
-                CheckQuest();
-                time = 0;
-            }else
-                time +=  Time.deltaTime;
+            if (!isEndQuest)
+            {
+                if (time > maxTimeCheck)
+                {
+                    CheckQuest();
+                    time = 0;
+                }
+                else
+                    time += Time.deltaTime;
+            }
         }
-        
     }
 
     public void OnQuestNotification(){
