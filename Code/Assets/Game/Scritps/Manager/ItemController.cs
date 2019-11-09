@@ -25,8 +25,46 @@ public class ItemController : MonoBehaviour
 
 	public void LoadItems(){
 		List<int> data = ApiManager.instance.GetEquipedItems();
-		for(int i=0;i<data.Count;i++){
-			Debug.Log(data[i]);
+        List<ItemObject> removes = new List<ItemObject>();
+        
+        foreach(ItemObject item in items)
+        {
+            bool isRemove = true;
+            for (int i = 0; i < data.Count; i++)
+            {
+                if(data[i] == item.itemID)
+                {
+                    isRemove = false;
+                }
+            }
+            if (isRemove)
+                removes.Add(item);
+        }
+
+        foreach(ItemObject item in removes)
+        {
+            RemoveItem(item.itemID);
+        }
+
+
+        List<int> adds = new List<int>();
+        for (int i = 0; i < data.Count; i++)
+        {
+            bool isAdd = true;
+            foreach (ItemObject item in items)
+            {
+                if (data[i] == item.itemID)
+                {
+                    isAdd = false;
+                }
+            }
+            if (isAdd)
+            {
+                adds.Add(data[i]);
+            }
+        }
+
+        for (int i=0;i<adds.Count;i++){
 			AddItem(data[i]);
 		}
 	}
@@ -35,15 +73,29 @@ public class ItemController : MonoBehaviour
 		string url = DataHolder.GetItem(itemId).prefabName.Replace("Assets/Game/Resources/","");
 		url = url.Replace(".prefab",""); 
 		url = DataHolder.Items().GetPrefabPath() + url;
-		GameObject go = GameObject.Instantiate((Resources.Load(url) as GameObject),Vector3.zero,Quaternion.identity) as GameObject;		
+		GameObject go = Instantiate((Resources.Load(url) as GameObject),Vector3.zero,Quaternion.identity) as GameObject;		
 		ItemObject item = go.AddComponent<ItemObject>();
 		item.itemType = DataHolder.GetItem(itemId).itemType;
+        item.itemID = itemId;
 		items.Add(item);
 		go.transform.parent = this.transform;	
 	}
 
+    void RemoveItem(int itemId)
+    {
+        foreach(ItemObject item in items)
+        {
+            if(item.itemID == itemId)
+            {
+                items.Remove(item);
+                Destroy(item.gameObject);
+                return;
+            }
+        }
+    }
 
-	public void LoadPets(){
+
+    public void LoadPets(){
 		List<int> data = ApiManager.instance.GetEquipedPets();
 		for(int i=0;i<data.Count;i++){
 			Debug.Log(data[i]);
@@ -65,7 +117,7 @@ public class ItemController : MonoBehaviour
 
 		url = url.Replace(".prefab",""); 
 		url = DataHolder.Pets().GetPrefabPath() + url;
-		GameObject go = GameObject.Instantiate((Resources.Load(url) as GameObject),Vector3.zero,Quaternion.identity) as GameObject;		
+		GameObject go = Instantiate((Resources.Load(url) as GameObject),Vector3.zero,Quaternion.identity) as GameObject;		
 		CharController pet = go.GetComponentInChildren<CharController>();
 		pets.Add(pet);
 		go.transform.parent = this.transform;	
@@ -78,26 +130,15 @@ public class ItemController : MonoBehaviour
     }
 
 	public BathTubeItem GetBathTubeItem(){
-		return GameObject.FindObjectOfType<BathTubeItem>();
+		return FindObjectOfType<BathTubeItem>();
 	}
 
 	public FoodBowlItem FoodItem(){
-		return GameObject.FindObjectOfType<FoodBowlItem>();
+		return FindObjectOfType<FoodBowlItem>();
 	}
 
 	public DrinkBowlItem DrinkItem(){
-		return GameObject.FindObjectOfType<DrinkBowlItem>();
-	}
-
-	public void UseItem(int itemId){
-		for(int i=0;i<items.Count;i++){
-			if(items[i].itemType == DataHolder.GetItem(itemId).itemType){
-				GameObject.Destroy(items[i].gameObject);
-				items.Remove(items[i]);
-				break;
-			}	
-		}
-		AddItem(itemId);
+		return FindObjectOfType<DrinkBowlItem>();
 	}
 
 	public void UsePet(int itemId){

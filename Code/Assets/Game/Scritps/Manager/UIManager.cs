@@ -55,7 +55,7 @@ public class UIManager : MonoBehaviour
 
 	public void UseItem(int itemID){
 	   ApiManager.instance.UseItem(itemID);
-       ItemController.instance.UseItem(itemID);
+       ItemController.instance.LoadItems();
 	   notification = NotificationType.Shop;
 	}
 
