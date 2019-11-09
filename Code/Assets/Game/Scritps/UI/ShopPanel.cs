@@ -99,5 +99,10 @@ public class ShopPanel : MonoBehaviour
         items.Clear();
     }
 
+    public void Close()
+    {
+        this.GetComponent<Popup>().Close();
+    }
+
 }
 

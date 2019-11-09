@@ -155,7 +155,7 @@ public class ItemUI : MonoBehaviour
                 yield return null;
             else if(state == ItemState.Have){
                 animator.Play("Use",0);
-                yield return new WaitForSeconds(3f);
+                yield return new WaitForSeconds(2f);
                 UIManager.instance.UsePet(itemId);
                 
             }else {
@@ -169,9 +169,8 @@ public class ItemUI : MonoBehaviour
                 yield return null;
             else if(state == ItemState.Have){
                 animator.Play("Use",0);
-                yield return new WaitForSeconds(3f);
+                yield return new WaitForSeconds(2f);
                 UIManager.instance.UseItem(itemId);
-                
             }else {
                 animator.Play("Buy",0);
                 yield return new WaitForSeconds(1f);

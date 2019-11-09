@@ -8,6 +8,7 @@ public class UIManager : MonoBehaviour
 
 	public GameObject questUIPrefab;
     public GameObject questCompletePrefab;
+    public GameObject shopUIPrefab;
     public static UIManager instance;
 	[HideInInspector]
 	public NotificationType notification = NotificationType.None;
@@ -15,6 +16,7 @@ public class UIManager : MonoBehaviour
 	public Text diamonText;
 	MPopup questNotification;
     QuestPanel questComplete;
+    ShopPanel shopPanel;
 
 	void Awake()
 	{
@@ -54,8 +56,9 @@ public class UIManager : MonoBehaviour
 	}
 
 	public void UseItem(int itemID){
+       shopPanel.Close();
 	   ApiManager.instance.UseItem(itemID);
-       ItemController.instance.LoadItems();
+       ItemController.instance.UseItem();
 	   notification = NotificationType.Shop;
 	}
 
@@ -97,6 +100,19 @@ public class UIManager : MonoBehaviour
         }
         return questComplete;
     }
+
+    public void OnShopPanel()
+    {
+        if (shopPanel == null)
+        {
+            var popup = Instantiate(shopUIPrefab) as GameObject;
+            popup.SetActive(true);
+            popup.transform.localScale = Vector3.zero;
+            popup.transform.SetParent(GameObject.Find("Canvas").transform, false);
+            popup.GetComponent<Popup>().Open();
+            shopPanel = popup.GetComponent<ShopPanel>();
+        }
+     }
 
 
 }

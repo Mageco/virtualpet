@@ -2229,6 +2229,7 @@ MonoBehaviour:
     type: 3}
   questCompletePrefab: {fileID: 8960736323230882429, guid: 46536c6c9cc12a34e82f9d3d50f1c742,
     type: 3}
+  shopUIPrefab: {fileID: 1475602191, guid: 6bb54a84d51ee4cc7b60d9fd55b43819, type: 3}
   notification: 0
   coinText: {fileID: 65223674}
   diamonText: {fileID: 949322702}
@@ -2263,8 +2264,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isStartQuest: 0
   isEndQuest: 0
-  questID: 0
-  isTimeline: 0
+  haveTimeline: 0
+  questID: 2
 --- !u!4 &1307597352
 Transform:
   m_ObjectHideFlags: 0
@@ -4794,7 +4795,7 @@ PrefabInstance:
     - target: {fileID: 9157358422731933656, guid: 0529875e70dd845038560f696488e0f5,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9157358422731933659, guid: 0529875e70dd845038560f696488e0f5,
         type: 3}
@@ -5092,7 +5093,18 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1475602191, guid: 6bb54a84d51ee4cc7b60d9fd55b43819,
         type: 3}
-    m_RemovedComponents: []
+    - target: {fileID: 4717822894845026038, guid: 531c60c75f799384984165f78ba93908,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1302946841}
+    - target: {fileID: 4717822894845026038, guid: 531c60c75f799384984165f78ba93908,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnShopPanel
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 4717822894845026036, guid: 531c60c75f799384984165f78ba93908, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 531c60c75f799384984165f78ba93908, type: 3}
 --- !u!1001 &5148635904589845283
 PrefabInstance:
@@ -5710,7 +5722,7 @@ PrefabInstance:
     - target: {fileID: 5207429179553003290, guid: 96fea4135ec2e42b89d3b51b28208b62,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5207429179553003291, guid: 96fea4135ec2e42b89d3b51b28208b62,
         type: 3}

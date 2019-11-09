@@ -23,16 +23,22 @@ public class ItemController : MonoBehaviour
         LoadItems();
     }
 
-	public void LoadItems(){
-		List<int> data = ApiManager.instance.GetEquipedItems();
+    public void UseItem()
+    {
+        StartCoroutine(UseItemCoroutine());
+    }
+
+    IEnumerator UseItemCoroutine()
+    {
+        List<int> data = ApiManager.instance.GetEquipedItems();
         List<ItemObject> removes = new List<ItemObject>();
-        
-        foreach(ItemObject item in items)
+
+        foreach (ItemObject item in items)
         {
             bool isRemove = true;
             for (int i = 0; i < data.Count; i++)
             {
-                if(data[i] == item.itemID)
+                if (data[i] == item.itemID)
                 {
                     isRemove = false;
                 }
@@ -41,9 +47,9 @@ public class ItemController : MonoBehaviour
                 removes.Add(item);
         }
 
-        foreach(ItemObject item in removes)
+        foreach (ItemObject item in removes)
         {
-            RemoveItem(item.itemID);
+            yield return StartCoroutine(RemoveItem(item.itemID));
         }
 
 
@@ -64,12 +70,21 @@ public class ItemController : MonoBehaviour
             }
         }
 
-        for (int i=0;i<adds.Count;i++){
-			AddItem(data[i]);
-		}
-	}
+        for (int i = 0; i < adds.Count; i++)
+        {
+            AddItem(adds[i],true);
+        }
+    }
 
-	void AddItem(int itemId){
+	public void LoadItems(){
+        List<int> data = ApiManager.instance.GetEquipedItems();
+        for (int i = 0; i < data.Count; i++)
+        {
+            AddItem(data[i],false);
+        }
+    }
+
+	void AddItem(int itemId,bool isAnim){
 		string url = DataHolder.GetItem(itemId).prefabName.Replace("Assets/Game/Resources/","");
 		url = url.Replace(".prefab",""); 
 		url = DataHolder.Items().GetPrefabPath() + url;
@@ -78,18 +93,32 @@ public class ItemController : MonoBehaviour
 		item.itemType = DataHolder.GetItem(itemId).itemType;
         item.itemID = itemId;
 		items.Add(item);
-		go.transform.parent = this.transform;	
+		go.transform.parent = this.transform;
+        if (isAnim)
+        {
+            Animator anim = item.GetComponent<Animator>();
+            anim.Play("Appear", 0);
+        }
 	}
 
-    void RemoveItem(int itemId)
+
+    IEnumerator RemoveItem(int itemId)
     {
         foreach(ItemObject item in items)
         {
             if(item.itemID == itemId)
             {
+                Animator anim = item.GetComponent<Animator>();
+                if(anim != null)
+                {
+                    anim.Play("Disaapear", 0);
+                    yield return new WaitForEndOfFrame();
+                    yield return new WaitForSeconds(anim.GetCurrentAnimatorStateInfo(0).length);
+                }
+                
                 items.Remove(item);
                 Destroy(item.gameObject);
-                return;
+                break;
             }
         }
     }
@@ -98,7 +127,6 @@ public class ItemController : MonoBehaviour
     public void LoadPets(){
 		List<int> data = ApiManager.instance.GetEquipedPets();
 		for(int i=0;i<data.Count;i++){
-			Debug.Log(data[i]);
 			AddPet(data[i]);
 		}
 	}

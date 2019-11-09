@@ -9,9 +9,10 @@ public class QuestManager : MonoBehaviour
     public static QuestManager instance;
     public bool isStartQuest = false;
     public bool isEndQuest = false;
+    public bool haveTimeline = false;
     public int questID = 0;
     PlayableDirector playTimeLine;
-    public bool isTimeline = false;
+    bool isTimeline = true;
     System.DateTime startTime;
     float time;
     float maxTimeCheck = 0.2f;
@@ -50,24 +51,32 @@ public class QuestManager : MonoBehaviour
 
     void PlayTip(){
         OnQuestNotification();
-        if(playTimeLine != null){
-            StartCoroutine(PlayTimeline());
-        }
+        StartCoroutine(PlayTimeline());
+        
     }
 
     IEnumerator PlayTimeline(){
-        playTimeLine.gameObject.SetActive(true);
-        playTimeLine.Play();
-        Debug.Log(playTimeLine.duration);
-        yield return new WaitForSeconds((float)playTimeLine.duration);
-        playTimeLine.Stop();
-        playTimeLine.gameObject.SetActive(false);
+        if(playTimeLine != null)
+        {
+            playTimeLine.gameObject.SetActive(true);
+            playTimeLine.Play();
+            Debug.Log(playTimeLine.duration);
+            yield return new WaitForSeconds((float)playTimeLine.duration);
+            playTimeLine.Stop();
+            playTimeLine.gameObject.SetActive(false);
+        }else
+        {
+            yield return new WaitForSeconds(3);
+        }
+        
         if(tipUI != null)
             tipUI.Close();
+        isTimeline = false;
     }
 
     public void ResetQuest(){
         playTimeLine.time = 0;
+
         PlayTip();
     }
 
@@ -90,15 +99,25 @@ public class QuestManager : MonoBehaviour
         ApiManager.instance.AddCoin(DataHolder.Quest(questID).coinValue);
         ApiManager.instance.AddDiamond(DataHolder.Quest(questID).diamondValue);
 
+        Destroy(playTimeLine.gameObject);
+
         questID ++;
         isTimeline = false;
         isStartQuest = false;
         isEndQuest = false;
+        isTimeline = true;
+
+
     }
 
     public void CheckQuest(){
+
+        if (isTimeline)
+            return;
+
         int count = 0;
         int check = DataHolder.Quest(questID).requirements.Length;
+
         for(int i=0;i<DataHolder.Quest(questID).requirements.Length;i++){
             if(DataHolder.Quest(questID).requirements[i].requireType == QuestRequirementType.Action){
                 List<ActionData> actions = GameManager.instance.GetActionLogs(startTime);
@@ -117,7 +136,7 @@ public class QuestManager : MonoBehaviour
                 
             }
         }
-        //Debug.Log(count +"   "+  check);
+        Debug.Log(count +"   "+  check);
         if(count >= check){
             StartCompleteQuest();
         }
