@@ -99,7 +99,8 @@ public class QuestManager : MonoBehaviour
         ApiManager.instance.AddCoin(DataHolder.Quest(questID).coinValue);
         ApiManager.instance.AddDiamond(DataHolder.Quest(questID).diamondValue);
 
-        Destroy(playTimeLine.gameObject);
+        if(playTimeLine != null)
+            Destroy(playTimeLine.gameObject);
 
         questID ++;
         isTimeline = false;
