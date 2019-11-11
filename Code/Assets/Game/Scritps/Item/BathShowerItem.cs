@@ -13,6 +13,7 @@ public class BathShowerItem : MonoBehaviour
 	bool isBusy = false;
 	bool isShower = false;
 	public GameObject showerEffect;
+    BathTubeItem bathTube;
 
 	void Awake()
 	{
@@ -54,7 +55,7 @@ public class BathShowerItem : MonoBehaviour
 		Debug.Log ("Shower");
 		if (InputController.instance.Character.actionType == ActionType.Bath) {
 			InputController.instance.Character.OnShower ();
-			ItemController.instance.GetBathTubeItem().OnShower ();
+            GetBathTube().OnShower ();
 		}
 	}
 
@@ -106,4 +107,11 @@ public class BathShowerItem : MonoBehaviour
 		EventSystem.current.RaycastAll(eventDataCurrentPosition, results);
 		return results.Count > 0;
 	}
+
+    BathTubeItem GetBathTube()
+    {
+        if (bathTube == null)
+            bathTube = FindObjectOfType<BathTubeItem>();
+        return bathTube;
+    }
 }

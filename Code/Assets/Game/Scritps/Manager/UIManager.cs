@@ -58,7 +58,7 @@ public class UIManager : MonoBehaviour
 	public void UseItem(int itemID){
        shopPanel.Close();
 	   ApiManager.instance.UseItem(itemID);
-       ItemController.instance.UseItem();
+       GameManager.instance.EquipeItem();
 	   notification = NotificationType.Shop;
 	}
 
@@ -69,7 +69,7 @@ public class UIManager : MonoBehaviour
 
 	public void UsePet(int itemID){
 	   ApiManager.instance.UsePet(itemID);
-       ItemController.instance.UsePet(itemID);
+        GameManager.instance.UsePet(itemID);
 	   notification = NotificationType.Shop;
 	}
 

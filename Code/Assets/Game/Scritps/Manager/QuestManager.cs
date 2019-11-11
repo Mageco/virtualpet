@@ -93,7 +93,7 @@ public class QuestManager : MonoBehaviour
         {
             ApiManager.instance.AddItem(DataHolder.Quest(questID).itemId);
             ApiManager.instance.UseItem(DataHolder.Quest(questID).itemId);
-            ItemController.instance.LoadItems();
+            GameManager.instance.LoadItems();
         }
 
         ApiManager.instance.AddCoin(DataHolder.Quest(questID).coinValue);

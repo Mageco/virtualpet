@@ -9,8 +9,9 @@ public class SoapItem : MonoBehaviour
 	bool isTouch = false;
 	CharController character;
 	public GameObject bubbleEffect;
+    BathTubeItem bathTube;
 
-	void Awake(){
+    void Awake(){
 		bubbleEffect.SetActive(false);
 	}
 
@@ -40,7 +41,7 @@ public class SoapItem : MonoBehaviour
 			if(character.actionType == ActionType.Bath && isTouch){
 				bubbleEffect.SetActive(true);
 				character.OnSoap();
-				ItemController.instance.GetBathTubeItem().OnSoap ();
+                GetBathTube().OnSoap ();
 			}
 		}
 	}
@@ -59,4 +60,11 @@ public class SoapItem : MonoBehaviour
 		EventSystem.current.RaycastAll(eventDataCurrentPosition, results);
 		return results.Count > 0;
 	}
+
+    BathTubeItem GetBathTube()
+    {
+        if (bathTube == null)
+            bathTube = FindObjectOfType<BathTubeItem>();
+        return bathTube;
+    }
 }

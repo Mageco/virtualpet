@@ -717,14 +717,14 @@ public class CharBig : CharController
 
     IEnumerator Eat()
     {
-        if(ItemController.instance.FoodItem() != null){
+        if(GetFoodItem() != null){
             if (!isAbort)
             {
                 InputController.instance.SetTarget(PointType.Eat);
                 yield return StartCoroutine(MoveToPoint());
             }
             bool canEat = true;
-            if (ItemController.instance.FoodItem().CanEat() && !isAbort)
+            if (GetFoodItem().CanEat() && !isAbort)
             {
                 direction = Direction.LD;
                 anim.Play("Eat_LD" , 0);
@@ -732,12 +732,12 @@ public class CharBig : CharController
                 while (data.Food < data.maxFood && !isAbort && canEat)
                 {
                     data.Food += 0.3f;
-                    ItemController.instance.FoodItem().Eat(0.3f);
-                    if (!ItemController.instance.FoodItem().CanEat())
+                    GetFoodItem().Eat(0.3f);
+                    if (!GetFoodItem().CanEat())
                     {
                         canEat = false;
                     }
-                    if (Vector2.Distance(this.transform.position, ItemController.instance.FoodItem().anchor.position) > 0.5f)
+                    if (Vector2.Distance(this.transform.position, GetFoodItem().anchor.position) > 0.5f)
                         canEat = false;
                     yield return new WaitForEndOfFrame();
                 }
@@ -748,7 +748,7 @@ public class CharBig : CharController
 
     IEnumerator Drink()
     {
-        if(ItemController.instance.DrinkItem() != null){
+        if(GetDrinkItem() != null){
            //Debug.Log("Drink");
             if (!isAbort)
             {
@@ -758,7 +758,7 @@ public class CharBig : CharController
 
             bool canDrink = true;
 
-            if (ItemController.instance.DrinkItem().CanEat())
+            if (GetDrinkItem().CanEat())
             {
                 direction = Direction.LD;
                 anim.Play("Eat_LD" , 0);
@@ -766,12 +766,12 @@ public class CharBig : CharController
                 while (data.Water < data.maxWater && !isAbort && canDrink)
                 {
                     data.Water += 0.5f;
-                    ItemController.instance.DrinkItem().Eat(0.5f);
-                    if (!ItemController.instance.DrinkItem().CanEat())
+                    GetDrinkItem().Eat(0.5f);
+                    if (!GetDrinkItem().CanEat())
                     {
                         canDrink = false;
                     }
-                    if (Vector2.Distance(this.transform.position, ItemController.instance.DrinkItem().anchor.position) > 0.5f)
+                    if (Vector2.Distance(this.transform.position, GetDrinkItem().anchor.position) > 0.5f)
                         canDrink = false;
                     yield return new WaitForEndOfFrame();
                 }

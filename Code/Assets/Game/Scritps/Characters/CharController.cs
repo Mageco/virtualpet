@@ -58,6 +58,9 @@ public class CharController : MonoBehaviour
     public float dragOffset = 20f;
     public float cameraSize = 24;
 
+    FoodBowlItem foodItem;
+    DrinkBowlItem drinkItem;
+
     #region Load
 
     void Awake()
@@ -423,20 +426,36 @@ public class CharController : MonoBehaviour
     #region Effect
     protected void SpawnPee()
     {
-        GameObject go = GameObject.Instantiate(peePrefab, peePosition.position + new Vector3(0, 0, 50), Quaternion.identity);
+        GameObject go = Instantiate(peePrefab, peePosition.position + new Vector3(0, 0, 50), Quaternion.identity);
     }
 
     protected void SpawnShit()
     {
-        GameObject go = GameObject.Instantiate(shitPrefab, shitPosition.position, Quaternion.identity);
+        GameObject go = Instantiate(shitPrefab, shitPosition.position, Quaternion.identity);
     }
 
     protected void SpawnFly(){
-        //GameObject go = GameObject.Instantiate(flyPrefab,Vector3.zero, Quaternion.identity); 
+        //GameObject go = Instantiate(flyPrefab,Vector3.zero, Quaternion.identity); 
     }
 
 
     #endregion
+
+    public FoodBowlItem GetFoodItem()
+    {
+        if(foodItem == null)
+            foodItem = FindObjectOfType<FoodBowlItem>();
+        return foodItem;
+    }
+
+    public DrinkBowlItem GetDrinkItem()
+    {
+        if (drinkItem == null)
+            drinkItem = FindObjectOfType<DrinkBowlItem>();
+        return drinkItem;
+    }
+
+    
 
 }
 

@@ -81,20 +81,68 @@ public class Pet
 	public float maxFear = 100;
 	public float maxCurious = 100;
 
-	public Pet()
+
+    CharController character;
+    PolyNavAgent agent;
+
+    public Pet()
 	{
 		iD = DataHolder.LastPetID() + 1;
-/*  		languageItem = new LanguageItem[DataHolder.Languages ().GetDataCount ()];
-		for (int i = 0; i < languageItem.Length; i++) {
-			languageItem[i] = new LanguageItem();
-		}
-		languageItem[0].Name = "New Pet";  */
-		
-	}
+        if(DataHolder.Languages() != null)
+        {
+            languageItem = new LanguageItem[DataHolder.Languages().GetDataCount()];
+            for (int i = 0; i < languageItem.Length; i++)
+            {
+                languageItem[i] = new LanguageItem();
+            }
+            languageItem[0].Name = "New Pet";
+        }
 
-	public void Load(){
-		skills = new int[DataHolder.Skills().GetDataCount()];
-	}
+    }
+
+    public Pet(int id)
+    {
+        Pet p = DataHolder.GetPet(id);
+        iD = p.iD;        
+        iconUrl = p.iconUrl;
+        iconLockUrl = p.iconLockUrl;
+
+        languageItem = new LanguageItem[p.languageItem.Length];
+        for(int i = 0; i < p.languageItem.Length; i++)
+        {
+            languageItem[i].Name = p.languageItem[i].Name;
+            languageItem[i].Description = p.languageItem[i].Description;
+        }
+        buyPrice = p.buyPrice;
+        priceType = p.priceType;
+        petSmall = p.petSmall;
+        petMiddle = p.petMiddle;
+        petBig = p.petBig;
+    }
+
+    public CharController Load(){
+
+        string url = "";
+        if (level > 5)
+        {
+            url = DataHolder.GetPet(iD).petBig.Replace("Assets/Game/Resources/", "");
+        }
+        else if (level > 2 )
+        {
+            url = DataHolder.GetPet(iD).petMiddle.Replace("Assets/Game/Resources/", "");
+        }
+        else
+        {
+            url = DataHolder.GetPet(iD).petSmall.Replace("Assets/Game/Resources/", "");
+        }
+
+        url = url.Replace(".prefab", "");
+        url = DataHolder.Pets().GetPrefabPath() + url;
+        GameObject go = GameObject.Instantiate((Resources.Load(url) as GameObject), Vector3.zero, Quaternion.identity) as GameObject;
+        CharSpawner c = go.GetComponentInChildren<CharSpawner>();
+        character = c.LoadPet();
+        return character;
+    }
 
 	public void AddLanguageItem()
 	{

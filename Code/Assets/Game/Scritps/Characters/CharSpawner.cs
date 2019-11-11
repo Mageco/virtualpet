@@ -9,27 +9,17 @@ public class CharSpawner : MonoBehaviour
     public GameObject agentPrefabs;
     CharController character;
     PolyNavAgent agent;
-    
-    // Start is called before the first frame update
-    void Awake()
-    {
-        LoadPet();
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 
-    void LoadPet(){
-        GameObject go = GameObject.Instantiate(petPrefab) as GameObject;
+    public CharController LoadPet(){
+        GameObject go = Instantiate(petPrefab) as GameObject;
         go.transform.parent = this.transform;
         character = go.GetComponent<CharController>();
 
-		GameObject go1 = GameObject.Instantiate(agentPrefabs) as GameObject;
-		PolyNavAgent agent = go1.GetComponent<PolyNavAgent>();
+		GameObject go1 = Instantiate(agentPrefabs) as GameObject;
+		agent = go1.GetComponent<PolyNavAgent>();
 		agent.LoadCharacter(character);
         character.agent = agent;
+        return character;
     }
 }

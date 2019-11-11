@@ -18,7 +18,10 @@ public class MouseController : MonoBehaviour
 	public float scaleFactor = 0.1f;
 	Vector3 originalScale;
 
-	public MouseState state = MouseState.Idle;
+    FoodBowlItem foodItem;
+    DrinkBowlItem drinkItem;
+
+    public MouseState state = MouseState.Idle;
 
 	Animator anim;
 
@@ -152,8 +155,8 @@ public class MouseController : MonoBehaviour
 		}
 		else if(state == MouseState.Eat){
 			
-			if(ItemController.instance.FoodItem().CanEat() && Vector2.Distance(this.transform.position,InputController.instance.GetRandomPoint (PointType.MouseEat).position) < 1)
-				ItemController.instance.FoodItem().Eat(0.3f);
+			if(GetFoodItem().CanEat() && Vector2.Distance(this.transform.position,InputController.instance.GetRandomPoint (PointType.MouseEat).position) < 1)
+                GetFoodItem().Eat(0.3f);
 			else 
 				Run();
 
@@ -178,6 +181,21 @@ public class MouseController : MonoBehaviour
 		if(state == MouseState.Eat || state == MouseState.Seek)
 			Run();
 	}
+
+
+    public FoodBowlItem GetFoodItem()
+    {
+        if (foodItem == null)
+            foodItem = FindObjectOfType<FoodBowlItem>();
+        return foodItem;
+    }
+
+    public DrinkBowlItem GetDrinkItem()
+    {
+        if (drinkItem == null)
+            drinkItem = FindObjectOfType<DrinkBowlItem>();
+        return drinkItem;
+    }
 
 
 }

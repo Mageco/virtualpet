@@ -6,17 +6,213 @@ public class GameManager : MonoBehaviour
 {
  	public static GameManager instance;
 
-	private Hashtable variables;
-	public List<ActionData> actions = new List<ActionData>();
-	public float gameTime = 0;
-	void Awake()
-	{
-		if (instance == null)
-			instance = this;
-        
+    private Hashtable variables;
+    public List<ActionData> actions = new List<ActionData>();
+    public float gameTime = 0;
+
+    public List<ItemObject> items = new List<ItemObject>();
+    public List<CharController> petObjects = new List<CharController>();
+    public List<Pet> pets = new List<Pet>();
+
+    void Awake()
+    {
+        if (instance == null)
+            instance = this;
+
         Application.targetFrameRate = 50;
         Load();
-	}
+
+    }
+ 
+
+    public void LoadNewUserData()
+    {
+        ApiManager.instance.AddItem(56);
+        ApiManager.instance.AddItem(8);
+        ApiManager.instance.AddItem(17);
+        ApiManager.instance.AddDiamond(50000);
+        ApiManager.instance.AddCoin(50000);
+        ApiManager.instance.AddPet(0);
+        ApiManager.instance.UsePet(0);
+    }
+
+    private void Start()
+    {
+        if (!ES2.Exists("User"))
+        {
+            LoadNewUserData();
+        }
+        LoadItems();
+        LoadPets();
+    }
+
+
+    public void EquipeItem()
+    {
+        StartCoroutine(UseItemCoroutine());
+    }
+
+    IEnumerator UseItemCoroutine()
+    {
+        List<int> data = ApiManager.instance.GetEquipedItems();
+        List<ItemObject> removes = new List<ItemObject>();
+
+        foreach (ItemObject item in items)
+        {
+            bool isRemove = true;
+            for (int i = 0; i < data.Count; i++)
+            {
+                if (data[i] == item.itemID)
+                {
+                    isRemove = false;
+                }
+            }
+            if (isRemove)
+                removes.Add(item);
+        }
+
+        foreach (ItemObject item in removes)
+        {
+            yield return StartCoroutine(RemoveItem(item.itemID));
+        }
+
+
+        List<int> adds = new List<int>();
+        for (int i = 0; i < data.Count; i++)
+        {
+            bool isAdd = true;
+            foreach (ItemObject item in items)
+            {
+                if (data[i] == item.itemID)
+                {
+                    isAdd = false;
+                }
+            }
+            if (isAdd)
+            {
+                adds.Add(data[i]);
+            }
+        }
+
+        for (int i = 0; i < adds.Count; i++)
+        {
+            AddItem(adds[i], true);
+        }
+    }
+
+    public void LoadItems()
+    {
+        List<int> data = ApiManager.instance.GetEquipedItems();
+        List<ItemObject> removes = new List<ItemObject>();
+
+        foreach (ItemObject item in items)
+        {
+            bool isRemove = true;
+            for (int i = 0; i < data.Count; i++)
+            {
+                if (data[i] == item.itemID)
+                {
+                    isRemove = false;
+                }
+            }
+            if (isRemove)
+                removes.Add(item);
+        }
+
+        foreach (ItemObject item in removes)
+        {
+            items.Remove(item);
+            Destroy(item.gameObject);
+        }
+
+
+        List<int> adds = new List<int>();
+        for (int i = 0; i < data.Count; i++)
+        {
+            bool isAdd = true;
+            foreach (ItemObject item in items)
+            {
+                if (data[i] == item.itemID)
+                {
+                    isAdd = false;
+                }
+            }
+            if (isAdd)
+            {
+                adds.Add(data[i]);
+            }
+        }
+
+        for (int i = 0; i < adds.Count; i++)
+        {
+            AddItem(adds[i], false);
+        }
+    }
+
+
+    void AddItem(int itemId, bool isAnim)
+    {
+        string url = DataHolder.GetItem(itemId).prefabName.Replace("Assets/Game/Resources/", "");
+        url = url.Replace(".prefab", "");
+        url = DataHolder.Items().GetPrefabPath() + url;
+        GameObject go = Instantiate((Resources.Load(url) as GameObject), Vector3.zero, Quaternion.identity) as GameObject;
+        ItemObject item = go.AddComponent<ItemObject>();
+        item.itemType = DataHolder.GetItem(itemId).itemType;
+        item.itemID = itemId;
+        items.Add(item);
+        go.transform.parent = this.transform;
+        if (isAnim)
+        {
+            Animator anim = item.GetComponent<Animator>();
+            if(anim != null)
+                anim.Play("Appear", 0);
+        }
+    }
+
+
+    IEnumerator RemoveItem(int itemId)
+    {
+        foreach (ItemObject item in items)
+        {
+            if (item.itemID == itemId)
+            {
+                Animator anim = item.GetComponent<Animator>();
+                if (anim != null)
+                {
+                    anim.Play("Disaapear", 0);
+                    yield return new WaitForEndOfFrame();
+                    yield return new WaitForSeconds(anim.GetCurrentAnimatorStateInfo(0).length);
+                }
+
+                items.Remove(item);
+                Destroy(item.gameObject);
+                break;
+            }
+        }
+    }
+
+
+    public void LoadPets()
+    {
+        List<int> data = ApiManager.instance.GetEquipedPets();
+        for (int i = 0; i < data.Count; i++)
+        {
+            AddPet(data[i]);
+        }
+    }
+
+    void AddPet(int itemId)
+    {
+        Pet p = new Pet(itemId);
+        CharController c = p.Load();
+        pets.Add(p);
+        petObjects.Add(c);
+    }
+
+    public void UsePet(int itemId)
+    {
+        AddPet(itemId);
+    }
 
 	void Update(){
 		gameTime += Time.deltaTime;

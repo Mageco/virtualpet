@@ -39,36 +39,25 @@ public class ApiManager : MonoBehaviour {
 		if (instance == null)
 			instance = this;
 		else
-			GameObject.Destroy (this.gameObject);
+			Destroy (this.gameObject);
 
 		DontDestroyOnLoad (this.gameObject);
 
 		character = new Character();
-		character.SetCharacterData (new CharacterData ("0",ItemState.Equiped.ToString(), "Pet"));
 
 		if (ES2.Exists ("User")) {
 			user = ES2.Load<User> ("User");
-		}else
+        }
+        else
 		{
 			user = new User();
-			user.SetCharacter(character);
-			LoadNewItem();
 		}
 	}
 
-	void LoadNewItem(){
-		
-		user.SetUserData (new UserData ("Coin", "100000", ""));
-		user.SetUserData (new UserData ("Diamond", "50000", ""));
-		user.SetUserData (new UserData ("8", ItemState.Equiped.ToString(), "Item"));
-		user.SetUserData (new UserData ("17", ItemState.Equiped.ToString(), "Item"));
-    }
 
 	void Start()
 	{
 		LoginWithDeviceID ();
-		ItemController.instance.LoadItems();
-		ItemController.instance.LoadPets();
 	}
 
 
@@ -114,33 +103,16 @@ public class ApiManager : MonoBehaviour {
 	void CreateNewUser()
 	{
 		Debug.Log ("NEw user created");
-		//LoadNewItem();
-		SaveUserData ();
+        SaveUserData ();
 		UpdateUserData ();
 		UpdateUserProfile ();
-		ItemController.instance.LoadItems();
-		
-	}
+    }
 
 	void CreateExistingUser(User u)
 	{
 		user = u;
-		bool isSave = false;
-			
-		if (user.GetUserData ("Coin") == null) {
-			isSave = true;
-			user.user_datas.Add (new UserData ("Coin", "100000", ""));
-		}
-		if (user.GetUserData ("Diamond") == null) {
-			isSave = true;
-			user.user_datas.Add (new UserData ("Diamond", "50000", ""));
-		}
-
-		if (isSave) {
-			UpdateUserData ();
-			UpdateUserProfile ();
-		}
-
+		UpdateUserData ();
+		UpdateUserProfile ();
 		SaveUserData ();
 	}
 
