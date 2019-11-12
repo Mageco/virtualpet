@@ -24,7 +24,6 @@ public class CharController : MonoBehaviour
     //Movement
     public Vector3 target;
 
-    [HideInInspector]
     public PolyNavAgent agent;
     public bool isArrived = true;
     public bool isAbort = false;
@@ -86,6 +85,8 @@ public class CharController : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
+        if (agent == null)
+            return;
 
         //Debug.Log(actionType.ToString() + "  " + charInteract.interactType.ToString());
         if (actionType == ActionType.None)

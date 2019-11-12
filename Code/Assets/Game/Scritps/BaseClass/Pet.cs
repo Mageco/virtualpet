@@ -132,7 +132,7 @@ public class Pet
     public CharController Load(){
 
         if (character != null)
-            GameObject.Destroy(character.gameObject);
+            GameObject.Destroy(character.transform.parent.gameObject);
 
         string url = "";
         if (level > 5)
@@ -154,7 +154,6 @@ public class Pet
         CharSpawner c = go.GetComponentInChildren<CharSpawner>();
         character = c.LoadPet();
         character.data = this;
-
         //Reset Data
         sleep = maxSleep;
         return character;

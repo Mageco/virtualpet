@@ -18,6 +18,7 @@ public class CharSpawner : MonoBehaviour
 
 		GameObject go1 = Instantiate(agentPrefabs) as GameObject;
 		agent = go1.GetComponent<PolyNavAgent>();
+        go1.transform.parent = transform;
 		agent.LoadCharacter(character);
         character.agent = agent;
         return character;
