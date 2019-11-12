@@ -9,6 +9,8 @@ public class ChickenController : AnimalController
     float maxSpeed = 20;
     float duration = 3;
     float time = 0;
+    public Vector2 boundx;
+    public Vector2 boundy;
 
     IEnumerator MoveToPoint(Vector3 target)
     {
@@ -20,6 +22,7 @@ public class ChickenController : AnimalController
             this.transform.position = Vector3.Lerp(this.transform.position, target, Time.deltaTime * speed);
             yield return new WaitForEndOfFrame();
         }
+        state = AnimalState.None;
     }
 
     protected override void Think()
@@ -39,5 +42,44 @@ public class ChickenController : AnimalController
         }
     }
 
-    
+    protected override void Idle()
+    {
+        anim.Play("Idle");
+        if(time > duration)
+        {
+            time = 0;
+            state = AnimalState.None;
+        }
+        else
+        {
+            time += Time.deltaTime;
+        }
+
+    }
+
+    protected override void Eat()
+    {
+        anim.Play("Eat");
+        if (time > duration)
+        {
+            time = 0;
+            state = AnimalState.None;
+        }
+        else
+        {
+            time += Time.deltaTime;
+        }
+
+    }
+
+    protected override void Run()
+    {
+        float x = Random.Range(boundx.x, boundx.y);
+        float y = Random.Range(boundy.x, boundy.y);
+
+        StartCoroutine(MoveToPoint(new Vector3(x, y, 0)));
+
+    }
+
+
 }
