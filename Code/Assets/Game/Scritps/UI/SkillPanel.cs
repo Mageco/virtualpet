@@ -14,7 +14,7 @@ public class SkillPanel : MonoBehaviour
         Load();
     }
 
-    void Load(){
+    public void Load(){
         ClearItems();
         for(int i=0;i<DataHolder.Skills().GetDataCount();i++){
             LoadItem(DataHolder.Skill(i));
@@ -24,16 +24,13 @@ public class SkillPanel : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(UIManager.instance.notification == NotificationType.Skill){
-            Load();
-            UIManager.instance.notification = NotificationType.None;
-        }
+        
     }
 
     
 
     void LoadItem(Skill data){
-        GameObject go = GameObject.Instantiate(skillUIPrefab);
+        GameObject go = Instantiate(skillUIPrefab);
        
         go.transform.SetParent(this.anchor);
         go.transform.localScale = Vector3.one;
@@ -44,7 +41,7 @@ public class SkillPanel : MonoBehaviour
 
     void ClearItems(){
         foreach(SkillUI s in skills){
-            GameObject.Destroy(s.gameObject);
+            Destroy(s.gameObject);
         }
         skills.Clear();
     }

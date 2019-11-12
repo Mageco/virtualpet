@@ -520,8 +520,8 @@ public class CharBig : CharController
 
     IEnumerator Mouse()
     {
-        while(AnimalController.instance.mouse.state != MouseState.Idle && !isAbort){
-            agent.SetDestination(AnimalController.instance.mouse.transform.position);
+        while(GetMouse().state != MouseState.Idle && !isAbort){
+            agent.SetDestination(GetMouse().transform.position);
             agent.speed = 45;
             //int ran = Random.Range(0,100);
             //if(ran > 50 && direction == Direction.LD){

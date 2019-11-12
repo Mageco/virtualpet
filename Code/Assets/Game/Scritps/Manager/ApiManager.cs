@@ -34,6 +34,9 @@ public class ApiManager : MonoBehaviour {
 
 	public List<ActionData> actions;
 
+    public bool isSaveDataLocal = false;
+    public bool isSaveDataOnline = false;
+
 	void Awake()
 	{
 		if (instance == null)
@@ -51,6 +54,7 @@ public class ApiManager : MonoBehaviour {
         else
 		{
 			user = new User();
+            user.SetCharacter(character);
 		}
 	}
 
@@ -110,7 +114,12 @@ public class ApiManager : MonoBehaviour {
 
 	void CreateExistingUser(User u)
 	{
-		user = u;
+        #if UNITY_EDITOR
+        if (!isSaveDataOnline)
+            return;
+        #endif
+
+        user = u;
 		UpdateUserData ();
 		UpdateUserProfile ();
 		SaveUserData ();
@@ -118,8 +127,13 @@ public class ApiManager : MonoBehaviour {
 
 	void SaveUserData()
 	{
-		ES2.Save<User> (user, "User");
-	}
+        #if UNITY_EDITOR
+        if(isSaveDataLocal)
+            ES2.Save<User> (user, "User");
+        #elif
+        ES2.Save<User> (user, "User");
+        #endif
+    }
 
 	public void GetApplicationAudioResourcesClick() {
 		GetApplicationAudioResourcesRequest r = new GetApplicationAudioResourcesRequest(1);  // English wil be EN_en
@@ -177,7 +191,12 @@ public class ApiManager : MonoBehaviour {
 		if (!isLogin)
 			return;
 
-		UpdateUserDataRequest r = new UpdateUserDataRequest ();
+#if UNITY_EDITOR
+        if (!isSaveDataOnline)
+            return;
+#endif
+
+        UpdateUserDataRequest r = new UpdateUserDataRequest ();
 		r.UserDatas = user.user_datas;
 		//call to login api
 		ApiHandler.instance.SendApi<UpdateUserDataResponse>(
@@ -197,13 +216,13 @@ public class ApiManager : MonoBehaviour {
 		);
 	}
 
-	#endregion
+#endregion
 
 
 	
 
 
-	#region Event
+#region Event
 	public void SendAppEvent(string eventName) {
 		SendUserEventRequest r = new SendUserEventRequest (eventName);
 
@@ -255,9 +274,9 @@ public class ApiManager : MonoBehaviour {
 			}
 		);
 	}
-	#endregion
+#endregion
 
-	#region Player Data
+#region Player Data
 	public int GetCoin()
 	{
 		if (user.GetUserData ("Coin") != null)
@@ -304,7 +323,7 @@ public class ApiManager : MonoBehaviour {
 
 	}
 
-	#region Item
+#region Item
 	public bool BuyItem(int itemId)
 	{
 		PriceType type = DataHolder.GetItem(itemId).priceType;
@@ -345,7 +364,7 @@ public class ApiManager : MonoBehaviour {
 		UpdateUserData ();
 	}
 
-	public void UseItem(int itemId){
+	public void EquipItem(int itemId){
 		//if(HaveItem(itemId)){
 			List<int> items = GetEquipedItems();
 			for(int i=0;i<items.Count;i++){
@@ -359,7 +378,7 @@ public class ApiManager : MonoBehaviour {
 		//}
 	}
 
-	public bool HaveItem(int itemId)
+	public bool IsHaveItem(int itemId)
 	{
 		if (user.GetUserData (itemId.ToString()) == ItemState.Have.ToString() || user.GetUserData (itemId.ToString()) == ItemState.Equiped.ToString())
 			return true;
@@ -367,7 +386,7 @@ public class ApiManager : MonoBehaviour {
 			return false;
 	}
 
-	public bool EquipItem(int itemId)
+	public bool IsEquipItem(int itemId)
 	{
 		if (user.GetUserData (itemId.ToString()) == ItemState.Equiped.ToString())
 			return true;
@@ -378,7 +397,7 @@ public class ApiManager : MonoBehaviour {
 	public List<int> GetBuyItems(){
 		List<int> items = new List<int>();
 		for(int i=0;i<DataHolder.Items().GetDataCount();i++){
-			if(HaveItem(DataHolder.Item(i).iD)){
+			if(IsHaveItem(DataHolder.Item(i).iD)){
 				items.Add(DataHolder.Item(i).iD);
 			}
 		}
@@ -388,15 +407,15 @@ public class ApiManager : MonoBehaviour {
 	public List<int> GetEquipedItems(){
 		List<int> items = new List<int>();
 		for(int i=0;i<DataHolder.Items().GetDataCount();i++){
-			if(EquipItem(DataHolder.Item(i).iD)){
+			if(IsEquipItem(DataHolder.Item(i).iD)){
 				items.Add(DataHolder.Item(i).iD);
 			}
 		}
 		return items;
 	}
-	#endregion
+#endregion
 
-	#region Character
+#region Character
 public bool BuyPet(int petId)
 	{
 		PriceType type = DataHolder.GetPet(petId).priceType;
@@ -429,8 +448,7 @@ public bool BuyPet(int petId)
 		UpdateUserData ();
 	}
 
-	public void UsePet(int petId){
-		Debug.LogWarning(petId);
+	public void EquipPet(int petId){
 		//if(HavePet(petId)){
 			character.SetCharacterData (new CharacterData (petId.ToString(), ItemState.Equiped.ToString(), "Pet"));
 			SaveUserData ();
@@ -438,7 +456,7 @@ public bool BuyPet(int petId)
 		//}
 	}
 
-	public bool HavePet(int petId)
+	public bool IsHavePet(int petId)
 	{
 		if (character.GetCharacterData (petId.ToString()) == ItemState.Have.ToString() || character.GetCharacterData (petId.ToString()) == ItemState.Equiped.ToString() )
 			return true;
@@ -446,7 +464,7 @@ public bool BuyPet(int petId)
 			return false;
 	}
 
-	public bool EquipPet(int petId)
+	public bool IsEquipPet(int petId)
 	{
 		if (character.GetCharacterData (petId.ToString()) == ItemState.Equiped.ToString())
 			return true;
@@ -457,7 +475,7 @@ public bool BuyPet(int petId)
 	public List<int> GetBuyPets(){
 		List<int> pets = new List<int>();
 		for(int i=0;i<DataHolder.Pets().GetDataCount();i++){
-			if(HavePet(DataHolder.Pet(i).iD)){
+			if(IsHavePet(DataHolder.Pet(i).iD)){
 				pets.Add(DataHolder.Pet(i).iD);
 			}
 		}
@@ -467,7 +485,7 @@ public bool BuyPet(int petId)
 	public List<int> GetEquipedPets(){
 		List<int> pets = new List<int>();
 		for(int i=0;i<DataHolder.Pets().GetDataCount();i++){
-			if(EquipPet(DataHolder.Pet(i).iD)){
+			if(IsEquipPet(DataHolder.Pet(i).iD)){
 				pets.Add(DataHolder.Pet(i).iD);
 			}
 		}
@@ -477,7 +495,7 @@ public bool BuyPet(int petId)
 
 
 
-	#endregion
+#endregion
 
 	public string GetName()
 	{
@@ -494,7 +512,7 @@ public bool BuyPet(int petId)
 
 
 
-	#endregion
+#endregion
 }
 
 

@@ -77,9 +77,12 @@ public class Pet
 	public float maxStamina = 100;
 	[HideInInspector]
 	public float maxDirty = 100;
-	public float maxItchi = 100;
-	public float maxFear = 100;
-	public float maxCurious = 100;
+    [HideInInspector]
+    public float maxItchi = 100;
+    [HideInInspector]
+    public float maxFear = 100;
+    [HideInInspector]
+    public float maxCurious = 100;
 
 
     CharController character;
@@ -110,8 +113,12 @@ public class Pet
         languageItem = new LanguageItem[p.languageItem.Length];
         for(int i = 0; i < p.languageItem.Length; i++)
         {
-            languageItem[i].Name = p.languageItem[i].Name;
-            languageItem[i].Description = p.languageItem[i].Description;
+            if (p.languageItem[i] != null)
+            {
+                languageItem[i] = new LanguageItem();
+                languageItem[i].Name = p.languageItem[i].Name;
+                languageItem[i].Description = p.languageItem[i].Description;
+            }
         }
         buyPrice = p.buyPrice;
         priceType = p.priceType;

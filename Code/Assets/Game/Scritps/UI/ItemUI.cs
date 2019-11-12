@@ -28,54 +28,67 @@ public class ItemUI : MonoBehaviour
     // Start is called before the first frame update
     public void Load(Item d)
     {
-        
+
         itemId = d.iD;
         //Debug.Log(d.iconUrl);
-        string url = d.iconUrl.Replace("Assets/Game/Resources/","");
-        url = url.Replace(".png","");
+        string url = d.iconUrl.Replace("Assets/Game/Resources/", "");
+        url = url.Replace(".png", "");
         //Debug.Log(url);
         icon.sprite = Resources.Load<Sprite>(url) as Sprite;
         price.text = d.buyPrice.ToString();
 
-        if(ApiManager.instance.EquipItem(d.iD)){
+        if (ApiManager.instance.IsEquipItem(d.iD))
+        {
             state = ItemState.Equiped;
         }
-        else if(ApiManager.instance.HaveItem(d.iD)){
-            state = ItemState.Have;        
-        }else{
+        else if (ApiManager.instance.IsHaveItem(d.iD))
+        {
+            state = ItemState.Have;
+        }
+        else
+        {
             state = ItemState.OnShop;
         }
 
-        if(state == ItemState.OnShop){
+        if (state == ItemState.OnShop)
+        {
             buyButton.SetActive(true);
             useButton.SetActive(false);
             usedButton.SetActive(false);
-        }else if(state == ItemState.Have){
+        }
+        else if (state == ItemState.Have)
+        {
             buyButton.SetActive(false);
             useButton.SetActive(true);
             usedButton.SetActive(false);
-            animator.Play("Bought",0);
-        }else if(state == ItemState.Equiped){
+            animator.Play("Bought", 0);
+        }
+        else if (state == ItemState.Equiped)
+        {
             buyButton.SetActive(false);
             useButton.SetActive(false);
             usedButton.SetActive(true);
-            animator.Play("Equiped",0);
+            animator.Play("Equiped", 0);
         }
-        
 
-        if(d.priceType == PriceType.Coin){
+
+        if (d.priceType == PriceType.Coin)
+        {
             coinIcon.SetActive(true);
             diamonIcon.SetActive(false);
             moneyIcon.SetActive(false);
-        }else if(d.priceType == PriceType.Diamond)
+        }
+        else if (d.priceType == PriceType.Diamond)
         {
             coinIcon.SetActive(false);
-            diamonIcon.SetActive(true);      
-            moneyIcon.SetActive(false);      
-        }else if(d.priceType == PriceType.Money){
+            diamonIcon.SetActive(true);
+            moneyIcon.SetActive(false);
+        }
+        else if (d.priceType == PriceType.Money)
+        {
             coinIcon.SetActive(false);
-            diamonIcon.SetActive(false);      
-            moneyIcon.SetActive(true);            
+            diamonIcon.SetActive(false);
+            moneyIcon.SetActive(true);
         }
 
     }
@@ -86,51 +99,64 @@ public class ItemUI : MonoBehaviour
         isCharacter = true;
         itemId = d.iD;
         //Debug.Log(d.iconUrl);
-        string url = d.iconUrl.Replace("Assets/Game/Resources/","");
-        url = url.Replace(".png","");
+        string url = d.iconUrl.Replace("Assets/Game/Resources/", "");
+        url = url.Replace(".png", "");
         //Debug.Log(url);
         icon.sprite = Resources.Load<Sprite>(url) as Sprite;
         price.text = d.buyPrice.ToString();
 
-        if(ApiManager.instance.EquipPet(d.iD)){
+        if (ApiManager.instance.IsEquipPet(d.iD))
+        {
             state = ItemState.Equiped;
         }
-        else if(ApiManager.instance.HavePet(d.iD)){
-            state = ItemState.Have;        
-        }else{
+        else if (ApiManager.instance.IsHavePet(d.iD))
+        {
+            state = ItemState.Have;
+        }
+        else
+        {
             state = ItemState.OnShop;
         }
 
-        if(state == ItemState.OnShop){
+        if (state == ItemState.OnShop)
+        {
             buyButton.SetActive(true);
             useButton.SetActive(false);
             usedButton.SetActive(false);
-        }else if(state == ItemState.Have){
+        }
+        else if (state == ItemState.Have)
+        {
             buyButton.SetActive(false);
             useButton.SetActive(true);
             usedButton.SetActive(false);
-            animator.Play("Bought",0);
-        }else if(state == ItemState.Equiped){
+            animator.Play("Bought", 0);
+        }
+        else if (state == ItemState.Equiped)
+        {
             buyButton.SetActive(false);
             useButton.SetActive(false);
             usedButton.SetActive(true);
-            animator.Play("Equiped",0);
+            animator.Play("Equiped", 0);
         }
-        
 
-        if(d.priceType == PriceType.Coin){
+
+        if (d.priceType == PriceType.Coin)
+        {
             coinIcon.SetActive(true);
             diamonIcon.SetActive(false);
             moneyIcon.SetActive(false);
-        }else if(d.priceType == PriceType.Diamond)
+        }
+        else if (d.priceType == PriceType.Diamond)
         {
             coinIcon.SetActive(false);
-            diamonIcon.SetActive(true);      
-            moneyIcon.SetActive(false);      
-        }else if(d.priceType == PriceType.Money){
+            diamonIcon.SetActive(true);
+            moneyIcon.SetActive(false);
+        }
+        else if (d.priceType == PriceType.Money)
+        {
             coinIcon.SetActive(false);
-            diamonIcon.SetActive(false);      
-            moneyIcon.SetActive(true);            
+            diamonIcon.SetActive(false);
+            moneyIcon.SetActive(true);
         }
 
     }
@@ -138,50 +164,62 @@ public class ItemUI : MonoBehaviour
     // Update is called once per frame
     void UpdateState()
     {
-        
+
     }
 
-    public void OnBuy(){
-        if(isBusy)
+    public void OnBuy()
+    {
+        if (isBusy)
             return;
         StartCoroutine(BuyCoroutine());
-   }
+    }
 
-   IEnumerator BuyCoroutine(){
-       isBusy = true;
-        
-        if(isCharacter){
-            if(state == ItemState.Equiped)
+    IEnumerator BuyCoroutine()
+    {
+        isBusy = true;
+
+        if (isCharacter)
+        {
+            if (state == ItemState.Equiped)
                 yield return null;
-            else if(state == ItemState.Have){
-                animator.Play("Use",0);
-                yield return new WaitForSeconds(2f);
+            else if (state == ItemState.Have)
+            {
+                animator.Play("Use", 0);
+                yield return new WaitForSeconds(0.5f);
                 UIManager.instance.UsePet(itemId);
-                
-            }else {
-                animator.Play("Buy",0);
+
+            }
+            else
+            {
+                animator.Play("Buy", 0);
                 yield return new WaitForSeconds(1f);
                 UIManager.instance.BuyPet(itemId);
-            }   
+            }
 
-        }else{
-            if(state == ItemState.Equiped)
+        }
+        else
+        {
+            if (state == ItemState.Equiped)
                 yield return null;
-            else if(state == ItemState.Have){
-                animator.Play("Use",0);
-                yield return new WaitForSeconds(2f);
+            else if (state == ItemState.Have)
+            {
+                animator.Play("Use", 0);
+                yield return new WaitForSeconds(0.5f);
                 UIManager.instance.UseItem(itemId);
-            }else {
-                animator.Play("Buy",0);
+            }
+            else
+            {
+                animator.Play("Buy", 0);
                 yield return new WaitForSeconds(1f);
                 UIManager.instance.BuyItem(itemId);
-            }   
+            }
         }
 
-        isBusy = false;     
-   }
+        isBusy = false;
+    }
 
-    public void OnUse(){
+    public void OnUse()
+    {
 
     }
 }

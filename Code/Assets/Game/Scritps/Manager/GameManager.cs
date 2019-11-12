@@ -13,6 +13,7 @@ public class GameManager : MonoBehaviour
     public List<ItemObject> items = new List<ItemObject>();
     public List<CharController> petObjects = new List<CharController>();
     public List<Pet> pets = new List<Pet>();
+    CameraController camera;
 
     void Awake()
     {
@@ -21,7 +22,7 @@ public class GameManager : MonoBehaviour
 
         Application.targetFrameRate = 50;
         Load();
-
+        camera = Camera.main.GetComponent<CameraController>();
     }
  
 
@@ -31,9 +32,12 @@ public class GameManager : MonoBehaviour
         ApiManager.instance.AddItem(8);
         ApiManager.instance.AddItem(17);
         ApiManager.instance.AddDiamond(50000);
-        ApiManager.instance.AddCoin(50000);
+        ApiManager.instance.AddCoin(1000);
         ApiManager.instance.AddPet(0);
-        ApiManager.instance.UsePet(0);
+        ApiManager.instance.EquipItem(56);
+        ApiManager.instance.EquipItem(8);
+        ApiManager.instance.EquipItem(17);
+        ApiManager.instance.EquipPet(0);
     }
 
     private void Start()
@@ -44,19 +48,22 @@ public class GameManager : MonoBehaviour
         }
         LoadItems();
         LoadPets();
+        camera.SetTarget(petObjects[0].gameObject);
+
     }
 
 
-    public void EquipeItem()
+    public void EquipItem()
     {
-        StartCoroutine(UseItemCoroutine());
+        StartCoroutine(EquipItemCoroutine());
     }
 
-    IEnumerator UseItemCoroutine()
+    IEnumerator EquipItemCoroutine()
     {
         List<int> data = ApiManager.instance.GetEquipedItems();
         List<ItemObject> removes = new List<ItemObject>();
 
+        
         foreach (ItemObject item in items)
         {
             bool isRemove = true;
@@ -73,7 +80,15 @@ public class GameManager : MonoBehaviour
 
         foreach (ItemObject item in removes)
         {
-            yield return StartCoroutine(RemoveItem(item.itemID));
+            camera.SetTarget(item.transform.GetChild(0).gameObject);
+            Animator anim = item.GetComponent<Animator>();
+            if (anim != null)
+            {
+                anim.Play("Disaapear", 0);
+                yield return new WaitForEndOfFrame();
+                yield return new WaitForSeconds(anim.GetCurrentAnimatorStateInfo(0).length);
+            }
+            RemoveItem(item);
         }
 
 
@@ -96,7 +111,19 @@ public class GameManager : MonoBehaviour
 
         for (int i = 0; i < adds.Count; i++)
         {
-            AddItem(adds[i], true);
+            ItemObject item = AddItem(adds[i]);
+            Animator anim = item.GetComponent<Animator>();
+            if (anim != null)
+            {
+                camera.SetTarget(item.transform.GetChild(0).gameObject);
+                anim.Play("Appear", 0);
+                yield return new WaitForEndOfFrame();
+                yield return new WaitForSeconds(anim.GetCurrentAnimatorStateInfo(0).length);
+            }
+
+            yield return new WaitForSeconds(1);
+            camera.SetTarget(petObjects[0].gameObject);
+
         }
     }
 
@@ -121,8 +148,7 @@ public class GameManager : MonoBehaviour
 
         foreach (ItemObject item in removes)
         {
-            items.Remove(item);
-            Destroy(item.gameObject);
+            RemoveItem(item);
         }
 
 
@@ -145,12 +171,12 @@ public class GameManager : MonoBehaviour
 
         for (int i = 0; i < adds.Count; i++)
         {
-            AddItem(adds[i], false);
+            AddItem(adds[i]);
         }
     }
 
 
-    void AddItem(int itemId, bool isAnim)
+    ItemObject AddItem(int itemId)
     {
         string url = DataHolder.GetItem(itemId).prefabName.Replace("Assets/Game/Resources/", "");
         url = url.Replace(".prefab", "");
@@ -161,34 +187,14 @@ public class GameManager : MonoBehaviour
         item.itemID = itemId;
         items.Add(item);
         go.transform.parent = this.transform;
-        if (isAnim)
-        {
-            Animator anim = item.GetComponent<Animator>();
-            if(anim != null)
-                anim.Play("Appear", 0);
-        }
+        return item;
     }
 
 
-    IEnumerator RemoveItem(int itemId)
+    void RemoveItem(ItemObject item)
     {
-        foreach (ItemObject item in items)
-        {
-            if (item.itemID == itemId)
-            {
-                Animator anim = item.GetComponent<Animator>();
-                if (anim != null)
-                {
-                    anim.Play("Disaapear", 0);
-                    yield return new WaitForEndOfFrame();
-                    yield return new WaitForSeconds(anim.GetCurrentAnimatorStateInfo(0).length);
-                }
-
-                items.Remove(item);
-                Destroy(item.gameObject);
-                break;
-            }
-        }
+        items.Remove(item);
+        Destroy(item.gameObject);
     }
 
 
@@ -209,7 +215,7 @@ public class GameManager : MonoBehaviour
         petObjects.Add(c);
     }
 
-    public void UsePet(int itemId)
+    public void EquipPet(int itemId)
     {
         AddPet(itemId);
     }

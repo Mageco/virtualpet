@@ -37,16 +37,14 @@ public class ShopPanel : MonoBehaviour
            
     }
 
-    void Load(){
+    public void ReLoad(){
+        OnTab(currentTab);
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(UIManager.instance.notification == NotificationType.Shop){
-            OnTab(currentTab);
-            UIManager.instance.notification = NotificationType.None;
-        }
+
     }
 
     public void OnTab(int id){
@@ -73,8 +71,7 @@ public class ShopPanel : MonoBehaviour
     }
 
     void LoadItem(Item data){
-        GameObject go = GameObject.Instantiate(itemUIPrefab);
-       
+        GameObject go = Instantiate(itemUIPrefab);
         go.transform.SetParent(this.anchor);
         go.transform.localScale = Vector3.one;
         ItemUI item = go.GetComponent<ItemUI>();
@@ -83,7 +80,7 @@ public class ShopPanel : MonoBehaviour
     }
 
     void LoadItem(Pet data){
-        GameObject go = GameObject.Instantiate(itemUIPrefab);
+        GameObject go = Instantiate(itemUIPrefab);
        
         go.transform.SetParent(this.anchor);
         go.transform.localScale = Vector3.one;
@@ -94,7 +91,7 @@ public class ShopPanel : MonoBehaviour
 
     void ClearItems(){
         foreach(ItemUI item in items){
-            GameObject.Destroy(item.gameObject);
+            Destroy(item.gameObject);
         }
         items.Clear();
     }

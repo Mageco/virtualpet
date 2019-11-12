@@ -60,6 +60,7 @@ public class CharController : MonoBehaviour
 
     FoodBowlItem foodItem;
     DrinkBowlItem drinkItem;
+    MouseController mouse;
 
     #region Load
 
@@ -76,7 +77,7 @@ public class CharController : MonoBehaviour
     void Start()
     {
         //data.Init();
-        anim.Play("Idle_" + direction.ToString(), 0);
+        //anim.Play("Idle_" + direction.ToString(), 0);
     }
     #endregion
 
@@ -410,7 +411,6 @@ public class CharController : MonoBehaviour
     public void LevelUpSkill(SkillType type){
         OffLearnSkill();
         data.LevelUpSkill(type);
-        UIManager.instance.OnNotify(NotificationType.Skill);
         Abort();
         actionType = ActionType.SkillUp;
     }
@@ -455,7 +455,12 @@ public class CharController : MonoBehaviour
         return drinkItem;
     }
 
-    
+    public MouseController GetMouse()
+    {
+        if (mouse == null)
+            mouse = FindObjectOfType<MouseController>();
+        return mouse;
+    }
 
 }
 

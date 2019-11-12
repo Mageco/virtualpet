@@ -11,7 +11,6 @@ public class UIManager : MonoBehaviour
     public GameObject shopUIPrefab;
     public static UIManager instance;
 	[HideInInspector]
-	public NotificationType notification = NotificationType.None;
 	public Text coinText;
 	public Text diamonText;
 	MPopup questNotification;
@@ -40,9 +39,6 @@ public class UIManager : MonoBehaviour
 		InputController.instance.OnCall ();
 	}
 
-	public void OnNotify(NotificationType type){
-		notification = type;
-	}
 
 	public void UpdateUI()
 	{
@@ -52,25 +48,26 @@ public class UIManager : MonoBehaviour
 
 	public void BuyItem(int itemID){
 	   ApiManager.instance.BuyItem(itemID);
-	   notification = NotificationType.Shop;
-	}
+        if (shopPanel != null)
+            shopPanel.ReLoad();
+    }
 
 	public void UseItem(int itemID){
        shopPanel.Close();
-	   ApiManager.instance.UseItem(itemID);
-       GameManager.instance.EquipeItem();
-	   notification = NotificationType.Shop;
+	   ApiManager.instance.EquipItem(itemID);
+       GameManager.instance.EquipItem();
 	}
 
 	public void BuyPet(int itemID){
 	   ApiManager.instance.BuyPet(itemID);
-	   notification = NotificationType.Shop;
+        if (shopPanel != null)
+            shopPanel.ReLoad();
 	}
 
 	public void UsePet(int itemID){
-	   ApiManager.instance.UsePet(itemID);
-        GameManager.instance.UsePet(itemID);
-	   notification = NotificationType.Shop;
+       shopPanel.Close();
+       ApiManager.instance.EquipPet(itemID);
+       GameManager.instance.EquipPet(itemID);
 	}
 
 	public MPopup OnQuestNotificationPopup(string description)
