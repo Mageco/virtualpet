@@ -14,7 +14,7 @@ public class Pet
 	public string petMiddle = "";
 	public string petBig = "";
 	//Common Data
-	public int level = 0;
+	public int level = 1;
 	public int exp = 0;
 	int[] skills;
 
@@ -129,12 +129,17 @@ public class Pet
 
     public CharController Load(){
 
+        if (character != null)
+            GameObject.Destroy(character.gameObject);
+
+        Debug.Log("Load Character " + level);
+
         string url = "";
         if (level > 5)
         {
             url = DataHolder.GetPet(iD).petBig.Replace("Assets/Game/Resources/", "");
         }
-        else if (level > 2 )
+        else if (level >= 2 )
         {
             url = DataHolder.GetPet(iD).petMiddle.Replace("Assets/Game/Resources/", "");
         }
@@ -148,6 +153,7 @@ public class Pet
         GameObject go = GameObject.Instantiate((Resources.Load(url) as GameObject), Vector3.zero, Quaternion.identity) as GameObject;
         CharSpawner c = go.GetComponentInChildren<CharSpawner>();
         character = c.LoadPet();
+        character.data = this;
         return character;
     }
 
@@ -192,8 +198,6 @@ public class Pet
 			this.languageItem = ArrayHelper.Add (item, this.languageItem);
 		}
 	}
-
-
 
 	void Save()
 	{
@@ -440,6 +444,10 @@ public class Pet
 		return false;
 	}
 
+    public void LevelUp()
+    {
+        level++;
+    }
 
 
 }

@@ -105,6 +105,7 @@ public class CharController : MonoBehaviour
         {
             CalculateData();
             dataTime = 0;
+            CheckLevel();
         }
         else
             dataTime += Time.deltaTime;
@@ -115,6 +116,8 @@ public class CharController : MonoBehaviour
             }else
                 skillTime += Time.deltaTime;
         }
+
+        
     }
     #endregion
 
@@ -126,6 +129,17 @@ public class CharController : MonoBehaviour
 
     protected virtual void CalculateDirection(){
 
+    }
+
+    void CheckLevel()
+    {
+        float e = 10 * data.level + 2 * data.level * data.level;
+        if(data.exp > e)
+        {
+            data.LevelUp();
+            OnLevelUp();
+            Debug.Log("Level up " + data.level);
+        }
     }
 
     #endregion
@@ -283,6 +297,12 @@ public class CharController : MonoBehaviour
         }
 
         isArrived = true;
+    }
+
+    public virtual void OnLevelUp()
+    {
+        Abort();
+        actionType = ActionType.LevelUp;
     }
 
     #endregion

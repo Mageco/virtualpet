@@ -106,6 +106,10 @@ public class QuestManager : MonoBehaviour
 
         ApiManager.instance.AddCoin(DataHolder.Quest(questID).coinValue);
         ApiManager.instance.AddDiamond(DataHolder.Quest(questID).diamondValue);
+        GameManager.instance.pets[0].exp += (DataHolder.Quest(questID).expValue);
+
+        Debug.Log("Exp " + GameManager.instance.pets[0].exp);
+           
 
         if (playTimeLine != null)
             Destroy(playTimeLine.gameObject);
@@ -115,7 +119,6 @@ public class QuestManager : MonoBehaviour
         isStartQuest = false;
         isEndQuest = false;
         isTimeline = true;
-
 
     }
 
@@ -157,7 +160,6 @@ public class QuestManager : MonoBehaviour
 
             }
         }
-        Debug.Log(count + "   " + check);
         if (count >= check)
         {
             StartCompleteQuest();

@@ -29,6 +29,8 @@ public class CharSmall : CharController
     {
         //Debug.Log("DoAction " + actionType);
         isAbort = false;
+        if (agent == null)
+            return;
         agent.Stop();
         if (actionType == ActionType.Rest)
         {
@@ -46,8 +48,8 @@ public class CharSmall : CharController
         {
             StartCoroutine(Table());
         }
-        else if(actionType == ActionType.SkillUp){
-            StartCoroutine(SkillUp());
+        else if(actionType == ActionType.LevelUp){
+            StartCoroutine(LevelUp());
         }else if(actionType == ActionType.OnBed){
             StartCoroutine(Bed());
         }
@@ -215,7 +217,7 @@ public class CharSmall : CharController
     {
         anim.Play("Sleep_LD" , 0);
 
-        while (data.Sleep < data.maxSleep)
+        while (!isAbort && data.Sleep < 0.9f * data.maxSleep)
         {
             data.Sleep += 0.01f;
             yield return new WaitForEndOfFrame();
@@ -254,8 +256,20 @@ public class CharSmall : CharController
         CheckAbort();
     }
 
-    
+    IEnumerator LevelUp()
+    {
+        Debug.Log("Level Up" + data.level);
+        yield return StartCoroutine(DoAnim("LevelUp_LD"));
 
-    
-    #endregion
+
+
+        if (data.level >= 2)
+            data.Load();
+
+        CheckAbort();
+
+    }
+
+
+    #endregion
 }
