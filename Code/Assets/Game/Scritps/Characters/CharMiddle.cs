@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CharMedium : CharController
+public class CharMiddle : CharController
 {
     protected override void CalculateData()
     {
@@ -200,6 +200,8 @@ public class CharMedium : CharController
     {
         //Debug.Log("DoAction " + actionType);
         isAbort = false;
+        if (agent == null)
+            return;
         agent.Stop();
         if (actionType == ActionType.Rest)
         {
@@ -303,24 +305,18 @@ public class CharMedium : CharController
         int maxCount = Random.Range(2, 5);
         while (!isAbort && n < maxCount)
         {
-            //if (!isAbort)
-            //{
             InputController.instance.SetTarget(PointType.Patrol);
             yield return StartCoroutine(MoveToPoint());
-            //}
-            //if (!isAbort)
-            //{
             int ran = Random.Range(0, 100);
             if (ran < 30)
             {
-                SetDirection(Direction.D);
-                anim.Play("BathStart_D", 0);
+                yield return StartCoroutine(DoAnim("Smell" + this.direction.ToString()));
             }
             else
+            {
                 anim.Play("Idle_" + this.direction.ToString(), 0);
-            yield return StartCoroutine(Wait(Random.Range(1, 3)));
-            //}
-
+                yield return StartCoroutine(Wait(Random.Range(1, 3)));
+            }
             n++;
         }
         CheckAbort();

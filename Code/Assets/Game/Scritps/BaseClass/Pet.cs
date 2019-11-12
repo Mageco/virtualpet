@@ -125,14 +125,14 @@ public class Pet
         petSmall = p.petSmall;
         petMiddle = p.petMiddle;
         petBig = p.petBig;
+
+        skills = new int[DataHolder.Skills().GetDataCount()];
     }
 
     public CharController Load(){
 
         if (character != null)
             GameObject.Destroy(character.gameObject);
-
-        Debug.Log("Load Character " + level);
 
         string url = "";
         if (level > 5)
@@ -154,6 +154,9 @@ public class Pet
         CharSpawner c = go.GetComponentInChildren<CharSpawner>();
         character = c.LoadPet();
         character.data = this;
+
+        //Reset Data
+        sleep = maxSleep;
         return character;
     }
 
