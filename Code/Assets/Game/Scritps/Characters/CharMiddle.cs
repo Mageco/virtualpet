@@ -233,25 +233,13 @@ public class CharMiddle : CharController
         {
             StartCoroutine(Sleep());
         }
-        else if (actionType == ActionType.Itchi)
-        {
-            StartCoroutine(Itchi());
-        }
         else if (actionType == ActionType.Sick)
         {
             StartCoroutine(Sick());
         }
-        else if (actionType == ActionType.Discover)
-        {
-            StartCoroutine(Discover());
-        }
         else if (actionType == ActionType.Hold)
         {
             StartCoroutine(Hold());
-        }
-        else if (actionType == ActionType.Mouse)
-        {
-            StartCoroutine(Mouse());
         }
         else if (actionType == ActionType.Bath)
         {
@@ -260,22 +248,6 @@ public class CharMiddle : CharController
         else if (actionType == ActionType.OnTable)
         {
             StartCoroutine(Table());
-        }
-        else if (actionType == ActionType.Fear)
-        {
-            StartCoroutine(Fear());
-        }
-        else if (actionType == ActionType.Tired)
-        {
-            StartCoroutine(Tired());
-        }
-        else if (actionType == ActionType.Sad)
-        {
-            StartCoroutine(Sad());
-        }
-        else if (actionType == ActionType.Happy)
-        {
-            StartCoroutine(Happy());
         }
         else if (actionType == ActionType.Call)
         {
@@ -292,6 +264,10 @@ public class CharMiddle : CharController
         else if (actionType == ActionType.SkillUp)
         {
             StartCoroutine(SkillUp());
+        }
+        else if (actionType == ActionType.LevelUp)
+        {
+            StartCoroutine(LevelUp());
         }
     }
     #endregion
@@ -375,28 +351,6 @@ public class CharMiddle : CharController
             }
             yield return DoAnim("Fall_L");
         }
-        CheckAbort();
-    }
-
-    IEnumerator Discover()
-    {
-        if (!isAbort && data.curious > data.maxCurious * 0.4f)
-        {
-            InputController.instance.SetTarget(PointType.MouseGate);
-            yield return StartCoroutine(MoveToPoint());
-            if (this.direction == Direction.RD || this.direction == Direction.RU)
-                yield return StartCoroutine(DoAnim("Smell_RD"));
-            else if (this.direction == Direction.LD || this.direction == Direction.LU)
-                yield return StartCoroutine(DoAnim("Smell_LD"));
-            else
-                yield return StartCoroutine(DoAnim("Smell_" + direction.ToString()));
-
-            yield return StartCoroutine(DoAnim("Smell_Bark_LD"));
-            data.curious -= 10;
-
-        }
-
-
         CheckAbort();
     }
 
@@ -527,23 +481,6 @@ public class CharMiddle : CharController
         CheckAbort();
     }
 
-    IEnumerator Mouse()
-    {
-        while (GetMouse().state != MouseState.Idle && !isAbort)
-        {
-            agent.SetDestination(GetMouse().transform.position);
-            agent.speed = 45;
-            //int ran = Random.Range(0,100);
-            //if(ran > 50 && direction == Direction.LD){
-            //    anim.Play("Jump_LookDown_D");
-            //}else
-            anim.Play("Run_" + this.direction.ToString(), 0);
-            anim.speed = 1.5f;
-            yield return StartCoroutine(Wait(0.2f));
-        }
-        CheckAbort();
-    }
-
     IEnumerator Call()
     {
         yield return StartCoroutine(DoAnim("Listen_" + direction.ToString()));
@@ -556,136 +493,10 @@ public class CharMiddle : CharController
 
         float t = 0;
         float maxTime = 6f;
-        bool isWait = true;
-        int n = 0;
-        n = Random.Range(0, 9);
 
-        while (!isAbort && isWait)
+        while (!isAbort && t < maxTime)
         {
-            if (!isTouch)
-            {
-                if (t == 0)
-                {
-                    n = Random.Range(0, 9);
-                }
-                if (n == 0)
-                {
-
-                    if (this.direction == Direction.RD || this.direction == Direction.RU)
-                        anim.Play("Wait_Lay_PetBack_RD", 0);
-                    else
-                        anim.Play("Wait_Lay_PetBack_LD", 0);
-                }
-                else if (n == 1)
-                {
-                    if (this.direction == Direction.RD || this.direction == Direction.RU)
-                        anim.Play("Wait_Lay_PetHead_RD", 0);
-                    else
-                        anim.Play("Wait_Lay_PetHead_LD", 0);
-                }
-                else if (n == 2)
-                {
-                    if (this.direction == Direction.RD || this.direction == Direction.RU)
-                        anim.Play("Wait_Lay_PetStomatch_RD", 0);
-                    else
-                        anim.Play("Wait_Lay_PetStomatch_LD", 0);
-                }
-                else if (n == 3)
-                {
-                    SetDirection(Direction.D);
-                    anim.Play("Wait_Sit_Pet_Up_D");
-                }
-                else if (n == 4)
-                {
-                    SetDirection(Direction.D);
-                    anim.Play("Wait_Sit_Pet_Down_D");
-                }
-                else if (n == 5)
-                {
-                    SetDirection(Direction.D);
-                    anim.Play("Wait_Sit_Pet_Left_D");
-                }
-                else if (n == 6)
-                {
-                    SetDirection(Direction.D);
-                    anim.Play("Wait_Sit_Pet_Right_D");
-                }
-                else if (n == 7)
-                {
-                    SetDirection(Direction.D);
-                    anim.Play("WaitHandshake_D");
-                }
-                else if (n == 8)
-                {
-                    SetDirection(Direction.D);
-                    anim.Play("WaitJumpRound_D");
-                }
-                t += Time.deltaTime;
-                if (t > maxTime)
-                {
-                    isWait = false;
-                    n = Random.Range(0, 9);
-                    maxTime = Random.Range(2f, 5f);
-                }
-            }
-            else
-            {
-                if (n == 0)
-                {
-                    if (this.direction == Direction.RD || this.direction == Direction.RU)
-                        anim.Play("Lay_PetBack_RD", 0);
-                    else
-                        anim.Play("Lay_PetBack_LD", 0);
-
-                }
-                else if (n == 1)
-                {
-                    if (this.direction == Direction.RD || this.direction == Direction.RU)
-                        anim.Play("Lay_PetHead_RD", 0);
-                    else
-                        anim.Play("Lay_PetHead_LD", 0);
-                }
-                else if (n == 2)
-                {
-                    if (this.direction == Direction.RD || this.direction == Direction.RU)
-                        anim.Play("Lay_PetStomatch_RD", 0);
-                    else
-                        anim.Play("Lay_PetStomatch_LD", 0);
-                }
-                else if (n == 3)
-                {
-                    SetDirection(Direction.D);
-                    anim.Play("Sit_Pet_Up_D", 0);
-                }
-                else if (n == 4)
-                {
-                    SetDirection(Direction.D);
-                    anim.Play("Sit_Pet_Down_D", 0);
-                }
-                else if (n == 5)
-                {
-                    SetDirection(Direction.D);
-                    anim.Play("Sit_Pet_Right_D", 0);
-                }
-                else if (n == 6)
-                {
-                    SetDirection(Direction.D);
-                    anim.Play("Sit_Pet_Left_D", 0);
-                }
-                else if (n == 7)
-                {
-                    SetDirection(Direction.D);
-                    anim.Play("Handshake_D", 0);
-                }
-                else if (n == 8)
-                {
-                    SetDirection(Direction.D);
-                    anim.Play("JumpRound_D", 0);
-                }
-                t = 0;
-
-
-            }
+            t += Time.deltaTime;
             yield return new WaitForEndOfFrame();
         }
         CheckAbort();
@@ -850,41 +661,7 @@ public class CharMiddle : CharController
         CheckAbort();
     }
 
-    IEnumerator Itchi()
-    {
-
-        int i = Random.Range(0, 3);
-
-        if (i == 0)
-        {
-            if (this.direction == Direction.RD || this.direction == Direction.RU)
-                anim.Play("Itchy_RD", 0);
-            else
-                anim.Play("Itchy_LD", 0);
-        }
-        else if (i == 1)
-        {
-            SetDirection(Direction.D);
-            anim.Play("Idle_ShedHair_D", 0);
-        }
-        else
-        {
-            SetDirection(Direction.D);
-            anim.Play("Shake_Hair_D", 0);
-        }
-
-
-
-        Debug.Log("Itchi");
-        while (data.itchi > 0.5 * data.maxItchi && !isAbort)
-        {
-            data.itchi -= 0.1f;
-            yield return new WaitForEndOfFrame();
-        }
-        yield return new WaitForEndOfFrame();
-        CheckAbort();
-    }
-
+    
     IEnumerator Sick()
     {
         if (this.direction == Direction.RD || this.direction == Direction.RU)
@@ -900,32 +677,6 @@ public class CharMiddle : CharController
         CheckAbort();
     }
 
-    IEnumerator Fear()
-    {
-        SetDirection(Direction.D);
-        yield return new WaitForEndOfFrame();
-        yield return StartCoroutine(DoAnim("Surprised_Hard_D"));
-
-        int n = 0;
-        int maxCount = Random.Range(2, 5);
-        while (!isAbort && n < maxCount)
-        {
-            InputController.instance.SetTarget(PointType.Patrol);
-            yield return StartCoroutine(MoveToPoint());
-            n++;
-        }
-
-        InputController.instance.SetTarget(PointType.Safe);
-        yield return StartCoroutine(MoveToPoint());
-
-        while (data.Fear > 10)
-        {
-            data.Fear -= 1;
-            yield return StartCoroutine(DoAnim("Scared_LD"));
-        }
-        CheckAbort();
-    }
-
     IEnumerator Fall()
     {
         if (this.direction == Direction.RD || this.direction == Direction.RU)
@@ -937,40 +688,18 @@ public class CharMiddle : CharController
     }
 
 
-    IEnumerator Tired()
+    IEnumerator LevelUp()
     {
-        if (this.direction == Direction.RD || this.direction == Direction.RU)
-            anim.Play("Tired_RD", 0);
-        else
-            anim.Play("Tired_LD", 0);
-        while (data.energy > data.maxEnergy * 0.4f && !isAbort)
-        {
-            yield return new WaitForEndOfFrame();
-        }
-        CheckAbort();
-    }
+        Debug.Log("Level Up" + data.level);
+        yield return StartCoroutine(DoAnim("LevelUp_LD"));
 
-    IEnumerator Sad()
-    {
-        if (this.direction == Direction.RD || this.direction == Direction.RU)
-            anim.Play("Lay_Sad_RD", 0);
-        else
-            anim.Play("Lay_Sad_LD", 0);
-        while (data.happy < data.maxHappy * 0.4f && !isAbort)
-        {
-            yield return new WaitForEndOfFrame();
-        }
-        CheckAbort();
-    }
 
-    IEnumerator Happy()
-    {
-        anim.Play("Itchy_RD", 0);
-        while (!isAbort)
-        {
-            yield return new WaitForEndOfFrame();
-        }
+
+        if (data.level >= 5)
+            data.Load();
+
         CheckAbort();
+
     }
 
 
