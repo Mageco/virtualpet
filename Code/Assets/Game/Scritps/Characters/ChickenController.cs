@@ -11,13 +11,14 @@ public class ChickenController : AnimalController
     float time = 0;
     public Vector2 boundx;
     public Vector2 boundy;
+    Direction direction;
 
     IEnumerator MoveToPoint(Vector3 target)
     {
         isArrived = false;
         while (!isArrived)
         {
-            anim.Play("Walk");
+            
             anim.speed = 1 + speed/maxSpeed;
             this.transform.position = Vector3.Lerp(this.transform.position, target, Time.deltaTime * speed);
             yield return new WaitForEndOfFrame();
@@ -44,7 +45,7 @@ public class ChickenController : AnimalController
 
     protected override void Idle()
     {
-        anim.Play("Idle");
+        anim.Play("Idle_L", 0);
         if(time > duration)
         {
             time = 0;
@@ -59,7 +60,7 @@ public class ChickenController : AnimalController
 
     protected override void Eat()
     {
-        anim.Play("Eat");
+        anim.Play("Eat_L", 0);
         if (time > duration)
         {
             time = 0;
@@ -76,7 +77,7 @@ public class ChickenController : AnimalController
     {
         float x = Random.Range(boundx.x, boundx.y);
         float y = Random.Range(boundy.x, boundy.y);
-
+        anim.Play("Run_L",0);
         StartCoroutine(MoveToPoint(new Vector3(x, y, 0)));
 
     }

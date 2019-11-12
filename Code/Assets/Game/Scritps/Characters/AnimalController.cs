@@ -10,7 +10,7 @@ public class AnimalController : MonoBehaviour
     public float initZ = -6;
     public float scaleFactor = 0.1f;
     protected Vector3 originalScale;
-    protected AnimalState state = AnimalState.Idle;
+    public AnimalState state = AnimalState.None;
     protected Animator anim;    
 
     void Awake()
