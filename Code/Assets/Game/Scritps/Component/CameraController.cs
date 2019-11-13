@@ -36,6 +36,11 @@ public class CameraController : MonoBehaviour
 		this.transform.position = new Vector3(t.x,t.y,this.transform.position.z);
 	}
 
+	public void FindTarget(){
+		if(GameObject.FindObjectOfType<CharController>() != null)
+			target = GameObject.FindObjectOfType<CharController>().transform;
+	}
+
 	void Awake()
 	{
 		
@@ -51,8 +56,14 @@ public class CameraController : MonoBehaviour
 		}
 	}
 
+	void Update(){
+		
+	}
+
 	void LateUpdate()
 	{
+		if(target == null)
+			FindTarget();
 		this.ExecuteCamera();
 	}
 
