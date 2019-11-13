@@ -180,18 +180,15 @@ public class CharMiddle : CharController
 
         //Other Action
         int id = Random.Range(0, 100);
-        if (id < 10)
+        if (id < 30)
         {
             actionType = ActionType.Rest;
         }
-        else if (id < 60)
+        else
         {
             actionType = ActionType.Patrol;
         }
-        else
-        {
-            actionType = ActionType.Discover;
-        }
+
 
     }
 
