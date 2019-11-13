@@ -63,7 +63,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 9205411041860689141}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &4727682987498414103
 SpriteRenderer:
@@ -301,6 +301,7 @@ Transform:
   m_Children:
   - {fileID: 594456465451773406}
   - {fileID: 330941290015819366}
+  - {fileID: 7335380398199647815}
   m_Father: {fileID: 9205411041860689141}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -519,7 +520,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9205411041860689141}
-  - component: {fileID: 7942703092300798377}
   m_Layer: 0
   m_Name: Chicken
   m_TagString: Untagged
@@ -536,34 +536,14 @@ Transform:
   m_GameObject: {fileID: 3540471681905237280}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -1.8433964, y: -0.9789526, z: -1.45}
-  m_LocalScale: {x: 0.28, y: 0.28, z: 1}
+  m_LocalScale: {x: 0.6, y: 0.6, z: 1}
   m_Children:
   - {fileID: 1099604492996700567}
-  - {fileID: 7335380398199647815}
   - {fileID: 8648798892671357443}
   - {fileID: 4800486261548195376}
   m_Father: {fileID: 5641894096649742644}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!95 &7942703092300798377
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3540471681905237280}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 18115a131682c294ca2f632f4be30308, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &3836149681955021100
 GameObject:
   m_ObjectHideFlags: 0
@@ -573,9 +553,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5641894096649742644}
-  - component: {fileID: 2570535433298908227}
   m_Layer: 0
-  m_Name: Snake
+  m_Name: Character
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -589,34 +568,15 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3836149681955021100}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 3.2384906, y: 2.6873815, z: 0.45}
-  m_LocalScale: {x: 2.5, y: 2.5, z: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0.45}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 4668316962356469999}
   - {fileID: 8694243550942103974}
   - {fileID: 9205411041860689141}
+  - {fileID: 4668316962356469999}
   m_Father: {fileID: 804311733396205326}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!95 &2570535433298908227
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3836149681955021100}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: f403be292e49a2b44b5a30f1f97c1913, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &3847800955912498129
 GameObject:
   m_ObjectHideFlags: 0
@@ -626,6 +586,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 804311733396205326}
+  - component: {fileID: 9152487464726139296}
   m_Layer: 0
   m_Name: Snake
   m_TagString: Untagged
@@ -648,6 +609,25 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!95 &9152487464726139296
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3847800955912498129}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: f403be292e49a2b44b5a30f1f97c1913, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &3969628171117416754
 GameObject:
   m_ObjectHideFlags: 0
@@ -677,7 +657,7 @@ Transform:
   m_LocalScale: {x: 0.6155555, y: 0.114, z: 1}
   m_Children: []
   m_Father: {fileID: 9205411041860689141}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &7669042780416693327
 SpriteRenderer:
@@ -1072,12 +1052,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5981930427005313669}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.606, y: -1.026, z: 0.1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.6060005, y: -1.0260006, z: 0.099999905}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 9205411041860689141}
-  m_RootOrder: 1
+  m_Father: {fileID: 1099604492996700567}
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &5197237246026403844
 SpriteRenderer:
@@ -1311,12 +1291,12 @@ Transform:
   m_GameObject: {fileID: 8311903534637742915}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -1.2953962, y: -1.0749526, z: -0.45}
-  m_LocalScale: {x: 0.4, y: 0.4, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 6426534618687864179}
   - {fileID: 4250587139453247765}
   m_Father: {fileID: 5641894096649742644}
-  m_RootOrder: 0
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &2113847148892400450
 SpriteRenderer:
@@ -1470,11 +1450,11 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8775085928231645699}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.36900368, y: -1.2909526, z: 0.55}
-  m_LocalScale: {x: 1.1768, y: 0.0516464, z: 1}
+  m_LocalPosition: {x: 3.028, y: -1.69, z: 0.55}
+  m_LocalScale: {x: 2.7619495, y: 0.11388031, z: 1}
   m_Children: []
   m_Father: {fileID: 5641894096649742644}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &5717214191882683719
 SpriteRenderer:
