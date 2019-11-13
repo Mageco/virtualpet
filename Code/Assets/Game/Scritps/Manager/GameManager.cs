@@ -48,7 +48,7 @@ public class GameManager : MonoBehaviour
         }
         LoadItems();
         LoadPets();
-        pets[0].exp += 30;
+        //pets[0].exp += 30;
         camera.SetTarget(petObjects[0].gameObject);
 
     }
