@@ -15,7 +15,7 @@ public class QuestPanel : MonoBehaviour
     
 
     void Awake(){
-
+        anim = this.GetComponent<Animator>();
     }
     // Start is called before the first frame update
     void Start()
