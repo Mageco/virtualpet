@@ -1209,10 +1209,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4566914726329281536}
-  - component: {fileID: 5129512962625730715}
   - component: {fileID: 769269032}
   - component: {fileID: 769269028}
-  - component: {fileID: 769269029}
   m_Layer: 0
   m_Name: Fox
   m_TagString: Untagged
@@ -1235,25 +1233,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!95 &5129512962625730715
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6049789912385570691}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 90141c5bb3766af488c87496ecbf9b5a, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!50 &769269032
 Rigidbody2D:
   serializedVersion: 4
@@ -1291,24 +1270,6 @@ CircleCollider2D:
   m_Offset: {x: -0.5, y: 4}
   serializedVersion: 2
   m_Radius: 5
---- !u!114 &769269029
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6049789912385570691}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1438ed117dc134e0eb176fedf8de30a6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxSpeed: 10
-  initZ: -6
-  scaleFactor: 0.1
-  state: 0
-  maxTimeWait: 5
-  target: {fileID: 0}
 --- !u!1 &6098704551657119955
 GameObject:
   m_ObjectHideFlags: 0
