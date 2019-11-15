@@ -10,6 +10,7 @@ public class CharController : MonoBehaviour
     #region Declair
     //Data
     public Pet data;
+    public GameObject petPrefab;
     //[HideInInspector]
 
     //[HideInInspector]
@@ -34,6 +35,7 @@ public class CharController : MonoBehaviour
     //Anim
     //CharAnim charAnim;
     protected Animator anim;
+    public GameObject body;
 
     //Interact
     public CharInteract charInteract;
@@ -65,8 +67,21 @@ public class CharController : MonoBehaviour
 
     void Awake()
     {
-        anim = this.GetComponent<Animator>();
+        LoadPrefab();
+    }
+
+    void LoadPrefab(){
+        GameObject go = Instantiate(petPrefab) as GameObject;
+        go.transform.parent = this.transform;
+
+        anim = go.transform.GetComponent<Animator>();
         charInteract = this.GetComponent<CharInteract>();
+
+        GameObject go1 = Instantiate(Resources.Load("Prefabs/Pets/Agent")) as GameObject;
+		agent = go1.GetComponent<PolyNavAgent>();
+		agent.LoadCharacter(this);
+
+        touchObject = this.transform.GetComponentInChildren<TouchPoint>(true).gameObject;
         if(touchObject != null)
             touchObject.SetActive(false);
         if(skillLearnEffect != null)
@@ -106,7 +121,6 @@ public class CharController : MonoBehaviour
         {
             CalculateData();
             dataTime = 0;
-            CheckLevel();
         }
         else
             dataTime += Time.deltaTime;
@@ -132,16 +146,7 @@ public class CharController : MonoBehaviour
 
     }
 
-    void CheckLevel()
-    {
-        float e = 10 * data.level + 2 * data.level * data.level;
-        if(data.exp > e)
-        {
-            data.LevelUp();
-            OnLevelUp();
-            Debug.Log("Level up " + data.level);
-        }
-    }
+
 
     #endregion
 
@@ -173,6 +178,11 @@ public class CharController : MonoBehaviour
             data.Fear += sound * 5;
             actionType = ActionType.Fear;
         } 
+    }
+
+    public void SetActionType(ActionType action){
+        Abort();
+        actionType = action;
     }
 
     public virtual void OnHold()
@@ -303,7 +313,12 @@ public class CharController : MonoBehaviour
     public virtual void OnLevelUp()
     {
         Abort();
-        actionType = ActionType.LevelUp;
+        if(actionType == ActionType.None)
+        {
+            actionType = ActionType.LevelUp;
+            DoAction();
+        }else
+            actionType = ActionType.LevelUp;
     }
 
     #endregion
@@ -318,7 +333,7 @@ public class CharController : MonoBehaviour
     }
 
     void LogAction(){
-        GameManager.instance.LogAction(actionType);
+        ApiManager.instance.LogAction(actionType);
     }
 
 
@@ -329,7 +344,8 @@ public class CharController : MonoBehaviour
     //Basic Action
     protected void Abort()
     {
-        anim.speed = 1;
+        if(anim != null)
+            anim.speed = 1;
         isAbort = true;
         if(touchObject != null)
             touchObject.SetActive(false);
@@ -481,6 +497,64 @@ public class CharController : MonoBehaviour
         if (mouse == null)
             mouse = FindObjectOfType<MouseController>();
         return mouse;
+    }
+
+    #region  getpoint
+    List<GizmoPoint> GetPoints(PointType type)
+	{
+		List<GizmoPoint> temp = new List<GizmoPoint>();
+		GizmoPoint[] points = GameObject.FindObjectsOfType <GizmoPoint> ();
+		for(int i=0;i<points.Length;i++)
+		{
+			if(points[i].type == type)
+				temp.Add(points[i]);
+		}
+		return temp;
+	}
+
+	public Transform GetRandomPoint(PointType type)
+	{
+		List<GizmoPoint> points = GetPoints (type);
+		if(points != null && points.Count > 0){
+			int id = Random.Range (0, points.Count);
+			return points [id].transform;
+		}else
+			return null;
+
+	}
+
+	public void SetTarget(PointType type)
+	{
+		//Debug.Log (type);
+		if(this.GetRandomPoint (type) != null)
+			this.target = this.GetRandomPoint (type).position;
+        else
+            this.target = Vector3.zero;
+	}
+
+	public List<Transform> GetRandomPoints(PointType type)
+	{
+		List<GizmoPoint> points = GetPoints (type);
+		List<Transform> randomPoints = new List<Transform> ();
+		for (int i = 0; i < points.Count; i++) {
+			randomPoints.Add (points [i].transform);
+		}
+
+		for (int i = 0; i < randomPoints.Count; i++) {
+			if (i < randomPoints.Count - 1) {
+				int j = Random.Range (i, randomPoints.Count);
+				Transform temp = randomPoints [i];
+				randomPoints [i] = randomPoints [j];
+				randomPoints [j] = temp;
+			}
+		}
+		return randomPoints;
+	}
+
+    #endregion
+
+    void OnDestroy(){
+        GameObject.Destroy(agent.gameObject);
     }
 
 }

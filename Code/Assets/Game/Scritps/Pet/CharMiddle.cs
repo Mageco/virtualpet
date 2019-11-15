@@ -280,7 +280,7 @@ public class CharMiddle : CharController
         int maxCount = Random.Range(2, 5);
         while (!isAbort && n < maxCount)
         {
-            InputController.instance.SetTarget(PointType.Patrol);
+            SetTarget(PointType.Patrol);
             yield return StartCoroutine(MoveToPoint());
             int ran = Random.Range(0, 100);
             if (ran < 30)
@@ -484,7 +484,7 @@ public class CharMiddle : CharController
 
         if (!isAbort)
         {
-            InputController.instance.SetTarget(PointType.Call);
+            SetTarget(PointType.Call);
             yield return StartCoroutine(MoveToPoint());
         }
 
@@ -540,7 +540,7 @@ public class CharMiddle : CharController
         {
             if (!isAbort)
             {
-                InputController.instance.SetTarget(PointType.Eat);
+                SetTarget(PointType.Eat);
                 yield return StartCoroutine(MoveToPoint());
             }
             bool canEat = true;
@@ -573,7 +573,7 @@ public class CharMiddle : CharController
             //Debug.Log("Drink");
             if (!isAbort)
             {
-                InputController.instance.SetTarget(PointType.Drink);
+                SetTarget(PointType.Drink);
                 yield return StartCoroutine(MoveToPoint());
             }
 
@@ -606,12 +606,12 @@ public class CharMiddle : CharController
         //Debug.Log("Sleep");
         if (data.SkillLearned(SkillType.Sleep))
         {
-            InputController.instance.SetTarget(PointType.Sleep);
+            SetTarget(PointType.Sleep);
         }
         else
         {
             OnLearnSkill(SkillType.Sleep);
-            InputController.instance.SetTarget(PointType.Patrol);
+            SetTarget(PointType.Patrol);
         }
 
         yield return StartCoroutine(MoveToPoint());

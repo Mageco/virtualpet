@@ -101,14 +101,14 @@ public class QuestManager : MonoBehaviour
         {
             ApiManager.instance.AddItem(DataHolder.Quest(questID).itemId);
             ApiManager.instance.EquipItem(DataHolder.Quest(questID).itemId);
-            GameManager.instance.LoadItems();
+            ItemManager.instance.LoadItems();
         }
 
         ApiManager.instance.AddCoin(DataHolder.Quest(questID).coinValue);
         ApiManager.instance.AddDiamond(DataHolder.Quest(questID).diamondValue);
-        GameManager.instance.pets[0].exp += (DataHolder.Quest(questID).expValue);
+        GameManager.instance.pets[0].AddExp(DataHolder.Quest(questID).expValue);
 
-        Debug.Log("Exp " + GameManager.instance.pets[0].exp);
+        Debug.Log("Exp " + GameManager.instance.pets[0].GetExp());
            
 
         if (playTimeLine != null)
@@ -135,7 +135,7 @@ public class QuestManager : MonoBehaviour
         {
             if (DataHolder.Quest(questID).requirements[i].requireType == QuestRequirementType.Action)
             {
-                List<ActionData> actions = GameManager.instance.GetActionLogs(startTime);
+                List<ActionData> actions = ApiManager.instance.GetActionLogs(startTime);
                 if (actions != null)
                 {
                     foreach (ActionData a in actions)

@@ -29,7 +29,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 6627409634175611776}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!208 &1015453163679035703
 NavMeshObstacle:
@@ -61,7 +61,7 @@ GameObject:
   - component: {fileID: 8594863835136830115}
   - component: {fileID: 8378744691791457126}
   m_Layer: 0
-  m_Name: Touch (1)
+  m_Name: Touch
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -11360,15 +11360,10 @@ GameObject:
   m_Component:
   - component: {fileID: 6627409634175611776}
   - component: {fileID: 7411898445686459358}
-  - component: {fileID: 4144027043638472800}
-  - component: {fileID: 1024605723738085289}
-  - component: {fileID: 5765412172713205413}
-  - component: {fileID: 3389177098287209081}
-  - component: {fileID: 737707786463723500}
-  - component: {fileID: 917260418819587920}
+  - component: {fileID: 6489943861272398337}
   m_Layer: 0
   m_Name: Shiba1_Yellow_Small
-  m_TagString: Player
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -11386,7 +11381,6 @@ Transform:
   m_Children:
   - {fileID: 6627409634363059595}
   - {fileID: 5534563430182494809}
-  - {fileID: 2492627240274018248}
   - {fileID: 8701501842170597470}
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -11410,44 +11404,7 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!50 &4144027043638472800
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9039274759009141552}
-  m_BodyType: 1
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
---- !u!58 &1024605723738085289
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9039274759009141552}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 2}
-  serializedVersion: 2
-  m_Radius: 4
---- !u!114 &5765412172713205413
+--- !u!114 &6489943861272398337
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -11456,161 +11413,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 9039274759009141552}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7bb2bec2c1a824c41989665ca1b0ee8a, type: 3}
+  m_Script: {fileID: 11500000, guid: 61c58be95bc0b4154808fbf11c56427f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initZ: -6
-  scaleFactor: 0.1
---- !u!114 &3389177098287209081
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9039274759009141552}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: df9d8101753564fdbb81f1f49c910387, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  interactType: 0
-  isTouch: 0
-  touchDirection: 1
-  dragOffset: {x: 0, y: 0, z: 0}
---- !u!114 &737707786463723500
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9039274759009141552}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0c6f41fb25ffc7b4a8308db03a8bfc41, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  IgnoreStartedOverGui: 1
-  IgnoreIsOverGui: 0
-  RequiredSelectable: {fileID: 0}
-  CheckAngle: 0
-  Angle: 0
-  AngleThreshold: 90
-  Clamp: 0
-  Multiplier: 1
-  onSwipe:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 3389177098287209081}
-        m_MethodName: OnFingerSwipe
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_TypeName: Lean.Touch.LeanFingerSwipe+LeanFingerEvent, Assembly-CSharp, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
-  onSwipeDelta:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 3389177098287209081}
-        m_MethodName: OnFingerTouchUp
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_TypeName: Lean.Touch.LeanFingerSwipe+Vector2Event, Assembly-CSharp, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
-  AllowMultiple: 1
-  MultipleSwipeDelay: 0.5
---- !u!114 &917260418819587920
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9039274759009141552}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a9529c5e5ea204a3ab12a5b94b384533, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  data:
-    iD: 0
-    iconUrl: 
-    iconLockUrl: 
-    languageItem: []
-    buyPrice: 0
-    priceType: 1
-    itemState: 0
-    petSmall: 
-    petMiddle: 
-    petBig: 
-    level: 0
-    exp: 0
-    speed: 0
-    weight: 0
-    strength: 0
-    stamina: 50
-    food: 50
-    water: 50
-    sleep: 50
-    energy: 50
-    health: 50
-    shit: 0
-    pee: 0
-    happy: 50
-    dirty: 50
-    itchi: 50
-    fear: 0
-    curious: 0
-    basicEnergyConsume: 0.05
-    actionEnergyConsume: 0
-    healthConsume: 0.01
-    staminaConsume: 0.001
-    dirtyFactor: 0.01
-    happyConsume: 0.01
-    sleepConsume: 0.05
-    maxFood: 100
-    maxWater: 100
-    maxShit: 100
-    maxPee: 100
-    maxSleep: 100
-    maxEnergy: 100
-    maxHealth: 100
-    maxHappy: 100
-    maxStamina: 100
-    maxDirty: 100
-    maxItchi: 100
-    maxFear: 100
-    maxCurious: 100
-  enviromentType: 0
-  direction: 1
-  target: {x: 0, y: 0, z: 0}
-  agent: {fileID: 0}
-  isArrived: 1
-  isAbort: 0
-  actionType: 0
-  charInteract: {fileID: 0}
-  isTouch: 0
-  peePosition: {fileID: 0}
-  shitPosition: {fileID: 0}
-  peePrefab: {fileID: 0}
-  shitPrefab: {fileID: 0}
-  dirtyEffect: {fileID: 0}
-  touchObject: {fileID: 0}
-  currentSkill: 0
-  skillLearnEffect: {fileID: 8571974803345717679}
-  dragOffset: 12
-  cameraSize: 16
 --- !u!1 &9160374556642269446
 GameObject:
   m_ObjectHideFlags: 0
@@ -16307,92 +16112,6 @@ Transform:
   m_Father: {fileID: 6627409633602542563}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1001 &5945110569277462967
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 6627409634175611776}
-    m_Modifications:
-    - target: {fileID: 2626868770633752600, guid: cfddceefac7c84370899b298b4da83e5,
-        type: 3}
-      propertyPath: m_Name
-      value: Skill_Lightbulb_Icon (1)
-      objectReference: {fileID: 0}
-    - target: {fileID: 2626868770633752600, guid: cfddceefac7c84370899b298b4da83e5,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8076873693651445375, guid: cfddceefac7c84370899b298b4da83e5,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8076873693651445375, guid: cfddceefac7c84370899b298b4da83e5,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 2.51
-      objectReference: {fileID: 0}
-    - target: {fileID: 8076873693651445375, guid: cfddceefac7c84370899b298b4da83e5,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8076873693651445375, guid: cfddceefac7c84370899b298b4da83e5,
-        type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8076873693651445375, guid: cfddceefac7c84370899b298b4da83e5,
-        type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8076873693651445375, guid: cfddceefac7c84370899b298b4da83e5,
-        type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8076873693651445375, guid: cfddceefac7c84370899b298b4da83e5,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8076873693651445375, guid: cfddceefac7c84370899b298b4da83e5,
-        type: 3}
-      propertyPath: m_RootOrder
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 8076873693651445375, guid: cfddceefac7c84370899b298b4da83e5,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8076873693651445375, guid: cfddceefac7c84370899b298b4da83e5,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8076873693651445375, guid: cfddceefac7c84370899b298b4da83e5,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: cfddceefac7c84370899b298b4da83e5, type: 3}
---- !u!1 &8571974803345717679 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2626868770633752600, guid: cfddceefac7c84370899b298b4da83e5,
-    type: 3}
-  m_PrefabInstance: {fileID: 5945110569277462967}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &2492627240274018248 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 8076873693651445375, guid: cfddceefac7c84370899b298b4da83e5,
-    type: 3}
-  m_PrefabInstance: {fileID: 5945110569277462967}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &8628767804519448499
 PrefabInstance:
   m_ObjectHideFlags: 0

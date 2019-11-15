@@ -55,7 +55,7 @@ public class UIManager : MonoBehaviour
 	public void UseItem(int itemID){
        shopPanel.Close();
 	   ApiManager.instance.EquipItem(itemID);
-       GameManager.instance.EquipItem();
+       ItemManager.instance.EquipItem();
 	}
 
 	public void BuyPet(int itemID){

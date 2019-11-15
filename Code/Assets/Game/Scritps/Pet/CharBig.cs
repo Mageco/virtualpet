@@ -91,7 +91,6 @@ public class CharBig : CharController
     #region Thinking
     protected override void Think()
     {
-
         if (data.Shit > data.maxShit * 0.9f)
         {
             actionType = ActionType.Shit;
@@ -280,6 +279,8 @@ public class CharBig : CharController
             StartCoroutine(Listening());
         }else if(actionType == ActionType.SkillUp){
             StartCoroutine(SkillUp());
+        }else if(actionType == ActionType.LevelUp){
+            StartCoroutine(LevelUp());
         }
     }
     #endregion
@@ -297,7 +298,7 @@ public class CharBig : CharController
         {
             //if (!isAbort)
             //{
-                InputController.instance.SetTarget(PointType.Patrol);
+                SetTarget(PointType.Patrol);
                 yield return StartCoroutine(MoveToPoint());
             //}
             //if (!isAbort)
@@ -374,7 +375,7 @@ public class CharBig : CharController
     {
         if (!isAbort && data.curious > data.maxCurious * 0.4f)
         {
-            InputController.instance.SetTarget(PointType.MouseGate);
+            SetTarget(PointType.MouseGate);
             yield return StartCoroutine(MoveToPoint());
              if (this.direction == Direction.RD || this.direction == Direction.RU)
                  yield return StartCoroutine(DoAnim("Smell_RD")) ;
@@ -540,7 +541,7 @@ public class CharBig : CharController
 
         if (!isAbort)
         {
-            InputController.instance.SetTarget(PointType.Call);
+            SetTarget(PointType.Call);
             yield return StartCoroutine(MoveToPoint());
         }
 
@@ -720,7 +721,7 @@ public class CharBig : CharController
         if(GetFoodItem() != null){
             if (!isAbort)
             {
-                InputController.instance.SetTarget(PointType.Eat);
+                SetTarget(PointType.Eat);
                 yield return StartCoroutine(MoveToPoint());
             }
             bool canEat = true;
@@ -752,7 +753,7 @@ public class CharBig : CharController
            //Debug.Log("Drink");
             if (!isAbort)
             {
-                InputController.instance.SetTarget(PointType.Drink);
+                SetTarget(PointType.Drink);
                 yield return StartCoroutine(MoveToPoint());
             }
 
@@ -784,10 +785,10 @@ public class CharBig : CharController
     {
         //Debug.Log("Sleep");
         if(data.SkillLearned(SkillType.Sleep)){
-            InputController.instance.SetTarget(PointType.Sleep);
+            SetTarget(PointType.Sleep);
         }else{
             OnLearnSkill(SkillType.Sleep);
-            InputController.instance.SetTarget(PointType.Patrol);
+            SetTarget(PointType.Patrol);
         }
            
         yield return StartCoroutine(MoveToPoint());
@@ -891,12 +892,12 @@ public class CharBig : CharController
         int maxCount = Random.Range(2, 5);
         while (!isAbort && n < maxCount)
         {
-            InputController.instance.SetTarget(PointType.Patrol);
+            SetTarget(PointType.Patrol);
             yield return StartCoroutine(MoveToPoint());
             n++;
         }
 
-        InputController.instance.SetTarget(PointType.Safe);
+        SetTarget(PointType.Safe);
         yield return StartCoroutine(MoveToPoint());
 
         while(data.Fear > 10){
@@ -951,6 +952,18 @@ public class CharBig : CharController
             yield return new WaitForEndOfFrame();
         }
         CheckAbort();
+    }
+
+    IEnumerator LevelUp()
+    {
+        Debug.Log("Level Up" + data.level);
+        yield return StartCoroutine(DoAnim("LevelUp_LD"));
+
+        if (data.level >= 5)
+            data.Load();
+
+        CheckAbort();
+
     }
 
     

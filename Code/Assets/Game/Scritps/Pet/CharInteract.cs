@@ -74,6 +74,7 @@ public class CharInteract : MonoBehaviour
         if (isTouch && angle > -60&& angle <60&& interactType == InteractType.None) {
             touchDirection = Direction.U;
             character.OnHold ();
+            interactType = InteractType.Drag;
         }else if(isTouch && (angle > 115 || angle < -115)) {
             touchDirection = Direction.D;
             //interactType = InteractType.SwipeDown;

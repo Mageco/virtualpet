@@ -32,7 +32,10 @@ public class ApiManager : MonoBehaviour {
 	[HideInInspector]
 	public int option = 0;
 
-	public List<ActionData> actions;
+
+	public List<ActionData> actions = new List<ActionData>();
+
+	private Hashtable variables;
 
     public bool isSaveDataLocal = false;
     public bool isSaveDataOnline = false;
@@ -191,10 +194,10 @@ public class ApiManager : MonoBehaviour {
 		if (!isLogin)
 			return;
 
-#if UNITY_EDITOR
-        if (!isSaveDataOnline)
-            return;
-#endif
+	#if UNITY_EDITOR
+			if (!isSaveDataOnline)
+				return;
+	#endif
 
         UpdateUserDataRequest r = new UpdateUserDataRequest ();
 		r.UserDatas = user.user_datas;
@@ -216,13 +219,13 @@ public class ApiManager : MonoBehaviour {
 		);
 	}
 
-#endregion
+	#endregion
 
 
 	
 
 
-#region Event
+	#region Event
 	public void SendAppEvent(string eventName) {
 		SendUserEventRequest r = new SendUserEventRequest (eventName);
 
@@ -274,9 +277,9 @@ public class ApiManager : MonoBehaviour {
 			}
 		);
 	}
-#endregion
+	#endregion
 
-#region Player Data
+	#region Player Data
 	public int GetCoin()
 	{
 		if (user.GetUserData ("Coin") != null)
@@ -322,8 +325,10 @@ public class ApiManager : MonoBehaviour {
 		}
 
 	}
+	#endregion
 
-#region Item
+
+	#region Item
 	public bool BuyItem(int itemId)
 	{
 		PriceType type = DataHolder.GetItem(itemId).priceType;
@@ -413,10 +418,10 @@ public class ApiManager : MonoBehaviour {
 		}
 		return items;
 	}
-#endregion
+	#endregion
 
-#region Character
-public bool BuyPet(int petId)
+	#region Character
+	public bool BuyPet(int petId)
 	{
 		PriceType type = DataHolder.GetPet(petId).priceType;
 		int price = DataHolder.GetPet(petId).buyPrice;
@@ -495,7 +500,9 @@ public bool BuyPet(int petId)
 
 
 
-#endregion
+	#endregion
+
+	
 
 	public string GetName()
 	{
@@ -509,10 +516,72 @@ public bool BuyPet(int petId)
 		UpdateUserProfile ();
 	}
 
+	#region Actions
+	public void LogAction(ActionType t){
+		ActionData a = new ActionData();
+		a.actionType = t;
+		a.startTime = System.DateTime.Now;
+		actions.Add(a);
+		Debug.Log(a.actionType + "  " + a.startTime.ToShortTimeString());
+		SaveAction();
+	}
+
+	public List<ActionData> GetActionLogs(System.DateTime t){
+		List<ActionData> temp = new List<ActionData>();
+		for(int i=0;i<actions.Count;i++){
+			if(actions[i].startTime > t){
+				temp.Add(actions[i]);
+			}
+		}
+		return temp;
+	}
+
+	void SaveAction(){
+		ES2.Save(actions,"ActionLog");
+	}
+
+	void LoadAction(){
+		if(ES2.Exists("ActionLog")){
+			ES2.LoadList<ActionData>("ActionLog");
+		}
+	}
+
+	#endregion
+
+	#region  Variable
+	public void SaveVariables()
+	{
+		List <string> keys = new List<string> ();
+		List <string> values = new List<string> ();
+		foreach (DictionaryEntry entry in variables) {
+			keys.Add ((string)entry.Key);
+			values.Add ((string)entry.Value);
+		}
+		ES2.Save(keys, "variablesKey");
+		ES2.Save(values, "variablesValue");
+
+	}
+
+	public void LoadVariables()
+	{
+		List <string> keys = new List<string> ();
+		List <string> values = new List<string> ();
+
+		if(ES2.Exists("variablesKey"))
+			keys = ES2.LoadList<string>("variablesKey");
+		if(ES2.Exists("variablesValue"))
+			values = ES2.LoadList<string>("variablesValue");
+
+		for (int i = 0; i < keys.Count;i++) {
+			if(i < values.Count)
+				variables.Add (keys [i], values [i]);
+
+			Debug.Log ("Load Variables " + keys [i] + " " + values [i]);
+		}
+	}
 
 
-
-#endregion
+	#endregion
 }
 
 
