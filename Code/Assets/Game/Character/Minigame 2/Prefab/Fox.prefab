@@ -1212,6 +1212,7 @@ GameObject:
   - component: {fileID: 769269032}
   - component: {fileID: 769269028}
   - component: {fileID: 6255036432635875040}
+  - component: {fileID: 7815906668072434674}
   m_Layer: 0
   m_Name: Fox
   m_TagString: Untagged
@@ -1228,7 +1229,7 @@ Transform:
   m_GameObject: {fileID: 6049789912385570691}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 2.86, y: -0.71, z: -1.0657827}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0, y: 1, z: 1}
   m_Children:
   - {fileID: 1985876182775124439}
   - {fileID: 2876165263168896216}
@@ -1291,6 +1292,24 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &7815906668072434674
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6049789912385570691}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1438ed117dc134e0eb176fedf8de30a6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxSpeed: 20
+  initZ: -6
+  scaleFactor: 0.05
+  state: 0
+  maxTimeWait: 5
+  target: {fileID: 0}
 --- !u!1 &6098704551657119955
 GameObject:
   m_ObjectHideFlags: 0

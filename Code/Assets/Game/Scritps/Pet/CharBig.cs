@@ -91,7 +91,6 @@ public class CharBig : CharController
     #region Thinking
     protected override void Think()
     {
-
         if (data.Shit > data.maxShit * 0.9f)
         {
             actionType = ActionType.Shit;
@@ -280,6 +279,8 @@ public class CharBig : CharController
             StartCoroutine(Listening());
         }else if(actionType == ActionType.SkillUp){
             StartCoroutine(SkillUp());
+        }else if(actionType == ActionType.LevelUp){
+            StartCoroutine(LevelUp());
         }
     }
     #endregion
@@ -951,6 +952,18 @@ public class CharBig : CharController
             yield return new WaitForEndOfFrame();
         }
         CheckAbort();
+    }
+
+    IEnumerator LevelUp()
+    {
+        Debug.Log("Level Up" + data.level);
+        yield return StartCoroutine(DoAnim("LevelUp_LD"));
+
+        if (data.level >= 5)
+            data.Load();
+
+        CheckAbort();
+
     }
 
     

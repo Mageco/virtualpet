@@ -48,6 +48,9 @@ public class GameManager : MonoBehaviour
             LoadNewUserData();
         }
         
+        if(ItemManager.instance != null)
+            ItemManager.instance.LoadItems();
+
         LoadPets();
         
         if(camera != null){

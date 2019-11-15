@@ -10,6 +10,7 @@ public class CharController : MonoBehaviour
     #region Declair
     //Data
     public Pet data;
+    public GameObject petPrefab;
     //[HideInInspector]
 
     //[HideInInspector]
@@ -34,6 +35,7 @@ public class CharController : MonoBehaviour
     //Anim
     //CharAnim charAnim;
     protected Animator anim;
+    public GameObject body;
 
     //Interact
     public CharInteract charInteract;
@@ -65,8 +67,21 @@ public class CharController : MonoBehaviour
 
     void Awake()
     {
-        anim = this.GetComponent<Animator>();
+        LoadPrefab();
+    }
+
+    void LoadPrefab(){
+        GameObject go = Instantiate(petPrefab) as GameObject;
+        go.transform.parent = this.transform;
+
+        anim = go.transform.GetComponent<Animator>();
         charInteract = this.GetComponent<CharInteract>();
+
+        GameObject go1 = Instantiate(Resources.Load("Prefabs/Pets/Agent")) as GameObject;
+		agent = go1.GetComponent<PolyNavAgent>();
+		agent.LoadCharacter(this);
+
+        touchObject = this.transform.GetComponentInChildren<TouchPoint>(true).gameObject;
         if(touchObject != null)
             touchObject.SetActive(false);
         if(skillLearnEffect != null)
@@ -163,6 +178,11 @@ public class CharController : MonoBehaviour
             data.Fear += sound * 5;
             actionType = ActionType.Fear;
         } 
+    }
+
+    public void SetActionType(ActionType action){
+        Abort();
+        actionType = action;
     }
 
     public virtual void OnHold()
@@ -293,7 +313,12 @@ public class CharController : MonoBehaviour
     public virtual void OnLevelUp()
     {
         Abort();
-        actionType = ActionType.LevelUp;
+        if(actionType == ActionType.None)
+        {
+            actionType = ActionType.LevelUp;
+            DoAction();
+        }else
+            actionType = ActionType.LevelUp;
     }
 
     #endregion
@@ -319,7 +344,8 @@ public class CharController : MonoBehaviour
     //Basic Action
     protected void Abort()
     {
-        anim.speed = 1;
+        if(anim != null)
+            anim.speed = 1;
         isAbort = true;
         if(touchObject != null)
             touchObject.SetActive(false);
@@ -526,6 +552,10 @@ public class CharController : MonoBehaviour
 	}
 
     #endregion
+
+    void OnDestroy(){
+        GameObject.Destroy(agent.gameObject);
+    }
 
 }
 

@@ -132,7 +132,7 @@ public class Pet
     public CharController Load(){
 
         if (character != null)
-            GameObject.Destroy(character.transform.parent.gameObject);
+            GameObject.Destroy(character.gameObject);
 
 		Debug.Log(level);
 
@@ -153,8 +153,7 @@ public class Pet
         url = url.Replace(".prefab", "");
         url = DataHolder.Pets().GetPrefabPath() + url;
         GameObject go = GameObject.Instantiate((Resources.Load(url) as GameObject), Vector3.zero, Quaternion.identity) as GameObject;
-        CharSpawner c = go.GetComponentInChildren<CharSpawner>();
-        character = c.LoadPet();
+        character = go.GetComponent<CharController>();      
         character.data = this;
         //Reset Data
         sleep = maxSleep;

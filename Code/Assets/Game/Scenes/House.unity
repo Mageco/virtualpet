@@ -1228,6 +1228,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 852301776}
+  - component: {fileID: 852301775}
   m_Layer: 0
   m_Name: ItemController
   m_TagString: Untagged
@@ -1235,6 +1236,19 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &852301775
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 852301774}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b146038a7333a40caac67941a9d20a1d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  items: []
 --- !u!4 &852301776
 Transform:
   m_ObjectHideFlags: 0
@@ -2233,7 +2247,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1307597351
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2468,11 +2482,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da96cd6f545b144abaa9e37a7997e249, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  actions: []
   gameTime: 0
-  items: []
   petObjects: []
   pets: []
+  camera: {fileID: 0}
 --- !u!4 &1464435084
 Transform:
   m_ObjectHideFlags: 0
@@ -2858,6 +2871,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Level up
+      objectReference: {fileID: 0}
+    - target: {fileID: 446058300178337227, guid: 784fe3f7ba496a949aa8c771350af7b6,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 446058300178337228, guid: 784fe3f7ba496a949aa8c771350af7b6,
         type: 3}
