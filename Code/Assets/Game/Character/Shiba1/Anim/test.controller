@@ -48,14 +48,14 @@ AnimatorState:
   m_MirrorParameter: 
   m_CycleOffsetParameter: 
   m_TimeParameter: 
---- !u!1102 &1102665626050347354
+--- !u!1102 &1102115702634802740
 AnimatorState:
   serializedVersion: 5
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Shiba1_Middle_Drop_Hard_D
+  m_Name: Shiba1_Bark_D
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -68,20 +68,20 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: e51417adb4d054d2ea6fb3c5241fc702, type: 2}
+  m_Motion: {fileID: 7400000, guid: 7f012c32dea134325ae963c6338b95d3, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
   m_CycleOffsetParameter: 
   m_TimeParameter: 
---- !u!1102 &1102793935427254814
+--- !u!1102 &1102196082578565088
 AnimatorState:
   serializedVersion: 5
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Shiba1_Middle_Drop_Light_Sick_D
+  m_Name: Shiba1_Idle_Angry_D
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -94,20 +94,20 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: e31f2f3c8098045d18216da282c5ef3e, type: 2}
+  m_Motion: {fileID: 7400000, guid: 8c5c5b1a6954d472b945fdba9a20d1c8, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
   m_CycleOffsetParameter: 
   m_TimeParameter: 
---- !u!1102 &1102838473165750316
+--- !u!1102 &1102868726634647650
 AnimatorState:
   serializedVersion: 5
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Shiba1_Middle_Drop_Hard_Sick_D
+  m_Name: Shiba1_Bark_Angry_D
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -120,33 +120,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: 23d9c8702fa7a4a4b96891963ab6a5a7, type: 2}
-  m_Tag: 
-  m_SpeedParameter: 
-  m_MirrorParameter: 
-  m_CycleOffsetParameter: 
-  m_TimeParameter: 
---- !u!1102 &1102951229401107612
-AnimatorState:
-  serializedVersion: 5
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: Shiba1_Middle_Drop_Light_D
-  m_Speed: 1
-  m_CycleOffset: 0
-  m_Transitions: []
-  m_StateMachineBehaviours: []
-  m_Position: {x: 50, y: 50, z: 0}
-  m_IKOnFeet: 0
-  m_WriteDefaultValues: 1
-  m_Mirror: 0
-  m_SpeedParameterActive: 0
-  m_MirrorParameterActive: 0
-  m_CycleOffsetParameterActive: 0
-  m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: 349275472bd3d4a7cacf329d7740488c, type: 2}
+  m_Motion: {fileID: 7400000, guid: a015807221f0d42afbeaba053c05f688, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -162,17 +136,14 @@ AnimatorStateMachine:
   m_Name: Base Layer
   m_ChildStates:
   - serializedVersion: 1
-    m_State: {fileID: 1102665626050347354}
-    m_Position: {x: 464.48187, y: 685.145, z: 0}
+    m_State: {fileID: 1102196082578565088}
+    m_Position: {x: 768, y: 420, z: 0}
   - serializedVersion: 1
-    m_State: {fileID: 1102838473165750316}
-    m_Position: {x: 493.85956, y: 802.65564, z: 0}
+    m_State: {fileID: 1102115702634802740}
+    m_Position: {x: 768, y: 516, z: 0}
   - serializedVersion: 1
-    m_State: {fileID: 1102951229401107612}
-    m_Position: {x: 681.14215, y: 468.48462, z: 0}
-  - serializedVersion: 1
-    m_State: {fileID: 1102793935427254814}
-    m_Position: {x: 706.8476, y: 545.6011, z: 0}
+    m_State: {fileID: 1102868726634647650}
+    m_Position: {x: 779.04376, y: 597.49426, z: 0}
   m_ChildStateMachines: []
   m_AnyStateTransitions: []
   m_EntryTransitions: []
@@ -182,4 +153,4 @@ AnimatorStateMachine:
   m_EntryPosition: {x: 50, y: 120, z: 0}
   m_ExitPosition: {x: 800, y: 120, z: 0}
   m_ParentStateMachinePosition: {x: 800, y: 20, z: 0}
-  m_DefaultState: {fileID: 1102665626050347354}
+  m_DefaultState: {fileID: 1102196082578565088}
