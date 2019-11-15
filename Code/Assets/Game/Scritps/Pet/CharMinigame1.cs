@@ -102,7 +102,7 @@ public class CharMinigame1 : CharController
 
     void CheckAnimal(){
         for(int i=0;i<animals.Length;i++){
-            if(Minigame.instance.IsInBound(animals[i].transform.position) && animals[i].state == AnimalState.Seek){
+            if(Minigame.instance.IsInBound(animals[i].transform.position) && (animals[i].state == AnimalState.Seek || animals[i].state == AnimalState.Hit)){
                 animalTargets.Add(animals[i]);
             }else
             {
