@@ -38,54 +38,7 @@ public class InputController : MonoBehaviour
 		}
 	}
 
-	List<GizmoPoint> GetPoints(PointType type)
-	{
-		List<GizmoPoint> temp = new List<GizmoPoint>();
-		GizmoPoint[] points = GameObject.FindObjectsOfType <GizmoPoint> ();
-		for(int i=0;i<points.Length;i++)
-		{
-			if(points[i].type == type)
-				temp.Add(points[i]);
-		}
-		return temp;
-	}
-
-	public Transform GetRandomPoint(PointType type)
-	{
-		List<GizmoPoint> points = GetPoints (type);
-		if(points != null){
-			int id = Random.Range (0, points.Count);
-			return points [id].transform;
-		}else
-			return null;
-
-	}
-
-	public void SetTarget(PointType type)
-	{
-		//Debug.Log (type);
-		if(this.GetRandomPoint (type) != null)
-			Character.target = this.GetRandomPoint (type).position;
-	}
-
-	public List<Transform> GetRandomPoints(PointType type)
-	{
-		List<GizmoPoint> points = GetPoints (type);
-		List<Transform> randomPoints = new List<Transform> ();
-		for (int i = 0; i < points.Count; i++) {
-			randomPoints.Add (points [i].transform);
-		}
-
-		for (int i = 0; i < randomPoints.Count; i++) {
-			if (i < randomPoints.Count - 1) {
-				int j = Random.Range (i, randomPoints.Count);
-				Transform temp = randomPoints [i];
-				randomPoints [i] = randomPoints [j];
-				randomPoints [j] = temp;
-			}
-		}
-		return randomPoints;
-	}
+	
 
     // Start is called before the first frame update
     void Start()

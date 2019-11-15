@@ -13,6 +13,8 @@ public class Minigame1 : MonoBehaviour
     float maxTimeSpawn = 0.1f;
     float speed = 3;
     GameObject item;
+    CharController petObjects;
+    
     // Start is called before the first frame update
 
     void Awake(){

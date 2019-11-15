@@ -106,7 +106,6 @@ public class CharController : MonoBehaviour
         {
             CalculateData();
             dataTime = 0;
-            CheckLevel();
         }
         else
             dataTime += Time.deltaTime;
@@ -132,16 +131,7 @@ public class CharController : MonoBehaviour
 
     }
 
-    void CheckLevel()
-    {
-        float e = 10 * data.level + 2 * data.level * data.level;
-        if(data.exp > e)
-        {
-            data.LevelUp();
-            OnLevelUp();
-            Debug.Log("Level up " + data.level);
-        }
-    }
+
 
     #endregion
 
@@ -318,7 +308,7 @@ public class CharController : MonoBehaviour
     }
 
     void LogAction(){
-        GameManager.instance.LogAction(actionType);
+        ApiManager.instance.LogAction(actionType);
     }
 
 
@@ -482,6 +472,60 @@ public class CharController : MonoBehaviour
             mouse = FindObjectOfType<MouseController>();
         return mouse;
     }
+
+    #region  getpoint
+    List<GizmoPoint> GetPoints(PointType type)
+	{
+		List<GizmoPoint> temp = new List<GizmoPoint>();
+		GizmoPoint[] points = GameObject.FindObjectsOfType <GizmoPoint> ();
+		for(int i=0;i<points.Length;i++)
+		{
+			if(points[i].type == type)
+				temp.Add(points[i]);
+		}
+		return temp;
+	}
+
+	public Transform GetRandomPoint(PointType type)
+	{
+		List<GizmoPoint> points = GetPoints (type);
+		if(points != null && points.Count > 0){
+			int id = Random.Range (0, points.Count);
+			return points [id].transform;
+		}else
+			return null;
+
+	}
+
+	public void SetTarget(PointType type)
+	{
+		//Debug.Log (type);
+		if(this.GetRandomPoint (type) != null)
+			this.target = this.GetRandomPoint (type).position;
+        else
+            this.target = Vector3.zero;
+	}
+
+	public List<Transform> GetRandomPoints(PointType type)
+	{
+		List<GizmoPoint> points = GetPoints (type);
+		List<Transform> randomPoints = new List<Transform> ();
+		for (int i = 0; i < points.Count; i++) {
+			randomPoints.Add (points [i].transform);
+		}
+
+		for (int i = 0; i < randomPoints.Count; i++) {
+			if (i < randomPoints.Count - 1) {
+				int j = Random.Range (i, randomPoints.Count);
+				Transform temp = randomPoints [i];
+				randomPoints [i] = randomPoints [j];
+				randomPoints [j] = temp;
+			}
+		}
+		return randomPoints;
+	}
+
+    #endregion
 
 }
 

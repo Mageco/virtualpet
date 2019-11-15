@@ -39,8 +39,6 @@ public class SnakeController : AnimalController
         {
             StartCoroutine(Flee());
         }
-
-        Debug.Log(state);
     }
 
 

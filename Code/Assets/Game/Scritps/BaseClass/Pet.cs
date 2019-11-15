@@ -15,7 +15,7 @@ public class Pet
 	public string petBig = "";
 	//Common Data
 	public int level = 1;
-	public int exp = 0;
+	int exp = 0;
 	int[] skills;
 
 	//Main Data
@@ -133,6 +133,8 @@ public class Pet
 
         if (character != null)
             GameObject.Destroy(character.transform.parent.gameObject);
+
+		Debug.Log(level);
 
         string url = "";
         if (level > 5)
@@ -398,7 +400,7 @@ public class Pet
 		}
 	}
 
-		public float Curious
+	public float Curious
 	{
 		get
 		{
@@ -412,6 +414,30 @@ public class Pet
 			else if (this.curious > maxCurious)
 				this.curious = maxCurious;
 		}
+	}
+
+	public void AddExp(int n)
+	{
+		int temp = level;
+		this.exp += n;
+		float e = 10 * level + 2 * level * level;
+		while(exp > e)
+		{
+			e = 10 * level + 2 * level * level;
+			level ++;
+		}
+		if(level > temp){
+			if(temp < 5)
+				Load();	
+			if(character != null){
+				character.OnLevelUp();
+			}
+		}
+			
+	}
+
+	public int GetExp(){
+		return exp;
 	}
 
 	public int GetSkillProgress(SkillType type){
@@ -446,10 +472,8 @@ public class Pet
 		return false;
 	}
 
-    public void LevelUp()
-    {
-        level++;
-    }
+
+
 
 
 }

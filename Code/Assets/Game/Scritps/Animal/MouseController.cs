@@ -56,8 +56,8 @@ public class MouseController : MonoBehaviour
 		
 		lastPosition = this.transform.position;
 
-		List<Transform> points = InputController.instance.GetRandomPoints (PointType.MouseEat);
-		List<Transform> pointRandoms = InputController.instance.GetRandomPoints (PointType.Mouse);
+		List<Transform> points = GetRandomPoints (PointType.MouseEat);
+		List<Transform> pointRandoms = GetRandomPoints (PointType.Mouse);
 
 		if(points == null || pointRandoms == null || points.Count == 0 || pointRandoms.Count == 0){
 			return;
@@ -92,7 +92,7 @@ public class MouseController : MonoBehaviour
 		anim.Play("Run",0);
 		state = MouseState.Run;
 		lastPosition = this.transform.position;
-		List<Transform> points = InputController.instance.GetRandomPoints (PointType.Mouse);
+		List<Transform> points = GetRandomPoints (PointType.Mouse);
 		int max = Random.Range (3, points.Count);
 		paths = new Vector3[max + 1];
 		paths [max] = originalPosition;
@@ -148,19 +148,19 @@ public class MouseController : MonoBehaviour
 			else
 				this.transform.localScale = originalScale;
 
-			if(state == MouseState.Seek && Vector2.Distance(this.body.transform.position,InputController.instance.Character.transform.position) < 3){
+			if(state == MouseState.Seek && Vector2.Distance(this.body.transform.position,GameManager.instance.petObjects[0].transform.position) < 3){
 				Run();
 			}		
 
 		}
 		else if(state == MouseState.Eat){
 			
-			if(GetFoodItem().CanEat() && Vector2.Distance(this.transform.position,InputController.instance.GetRandomPoint (PointType.MouseEat).position) < 1)
+			if(GetFoodItem().CanEat() && Vector2.Distance(this.transform.position,GetRandomPoint (PointType.MouseEat).position) < 1)
                 GetFoodItem().Eat(0.3f);
 			else 
 				Run();
 
-			if(Vector2.Distance(this.body.transform.position,InputController.instance.Character.transform.position) < 3){
+			if(Vector2.Distance(this.body.transform.position,GameManager.instance.petObjects[0].transform.position) < 3){
 				Run();
 			}	
 		}
@@ -196,6 +196,51 @@ public class MouseController : MonoBehaviour
             drinkItem = FindObjectOfType<DrinkBowlItem>();
         return drinkItem;
     }
+
+	#region  getpoint
+    List<GizmoPoint> GetPoints(PointType type)
+	{
+		List<GizmoPoint> temp = new List<GizmoPoint>();
+		GizmoPoint[] points = GameObject.FindObjectsOfType <GizmoPoint> ();
+		for(int i=0;i<points.Length;i++)
+		{
+			if(points[i].type == type)
+				temp.Add(points[i]);
+		}
+		return temp;
+	}
+
+	public Transform GetRandomPoint(PointType type)
+	{
+		List<GizmoPoint> points = GetPoints (type);
+		if(points != null){
+			int id = Random.Range (0, points.Count);
+			return points [id].transform;
+		}else
+			return null;
+
+	}
+
+	public List<Transform> GetRandomPoints(PointType type)
+	{
+		List<GizmoPoint> points = GetPoints (type);
+		List<Transform> randomPoints = new List<Transform> ();
+		for (int i = 0; i < points.Count; i++) {
+			randomPoints.Add (points [i].transform);
+		}
+
+		for (int i = 0; i < randomPoints.Count; i++) {
+			if (i < randomPoints.Count - 1) {
+				int j = Random.Range (i, randomPoints.Count);
+				Transform temp = randomPoints [i];
+				randomPoints [i] = randomPoints [j];
+				randomPoints [j] = temp;
+			}
+		}
+		return randomPoints;
+	}
+
+    #endregion
 
 
 }
