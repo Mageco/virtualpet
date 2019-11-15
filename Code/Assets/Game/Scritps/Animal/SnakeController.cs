@@ -2,13 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FoxController : AnimalController
+public class SnakeController : AnimalController
 {
     public float maxTimeWait = 5;
     public ChickenController target;
+    BoxCollider2D collider2D;
 
     protected override void Load(){
         speed = maxSpeed/2f;
+        collider2D = this.GetComponent<BoxCollider2D>();
     }
 
     protected override void Think()
@@ -119,6 +121,7 @@ public class FoxController : AnimalController
 
     IEnumerator Run()
     {
+        //yield return StartCoroutine(DoAnim("Bite_" + direction.ToString()));
         speed = Random.Range(maxSpeed/1.5f,maxSpeed);
         if(originalPosition.x > this.transform.position.x){
             SetDirection(Direction.R);

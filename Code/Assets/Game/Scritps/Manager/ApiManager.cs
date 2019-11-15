@@ -130,7 +130,7 @@ public class ApiManager : MonoBehaviour {
         #if UNITY_EDITOR
         if(isSaveDataLocal)
             ES2.Save<User> (user, "User");
-        #elif
+        #else
         ES2.Save<User> (user, "User");
         #endif
     }
