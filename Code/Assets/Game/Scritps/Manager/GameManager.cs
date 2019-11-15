@@ -12,6 +12,8 @@ public class GameManager : MonoBehaviour
     public List<Pet> pets = new List<Pet>();
     public CameraController camera;
 
+    public GameType gameType = GameType.House;
+
     void Awake()
     {
         if (instance == null)
@@ -25,7 +27,6 @@ public class GameManager : MonoBehaviour
         Load();
         camera = Camera.main.GetComponent<CameraController>();
     }
- 
 
     public void LoadNewUserData()
     {
@@ -60,9 +61,6 @@ public class GameManager : MonoBehaviour
     }
 
 
-    
-
-
     public void LoadPets()
     {
         List<int> data = ApiManager.instance.GetEquipedPets();
@@ -77,7 +75,6 @@ public class GameManager : MonoBehaviour
         Pet p = new Pet(itemId);
        
         CharController c = p.Load();
-        p.AddExp(2000);
         pets.Add(p);
         petObjects.Add(c);
     }

@@ -64,6 +64,11 @@ public class AnimalController : MonoBehaviour
  
     }
 
+    public virtual void OnFlee(){
+        isAbort = true;
+        state = AnimalState.Flee;
+    }
+
     protected void SetDirection(Direction d)
     {
         direction = d;            

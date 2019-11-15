@@ -13,6 +13,8 @@ public class Minigame : MonoBehaviour
 
     public GameObject winPrefab;
     public GameObject losePrefab;
+    public Vector2 boundX;
+    public Vector2 boundY;
 
     void Awake(){
         if(instance == null){
@@ -46,5 +48,18 @@ public class Minigame : MonoBehaviour
 
     public virtual void OnLose(){
 
+    }
+
+    public bool IsInBound(Vector3 pos){
+        if(pos.x > boundX.x && pos.x < boundX.y && pos.y > boundY.x && pos.y < boundY.y){
+            return true;
+        }else
+            return false;
+    }
+
+    public Vector3 GetPointInBound(){
+        float x = Random.Range(Minigame.instance.boundX.x, Minigame.instance.boundX.y);
+        float y = Random.Range(Minigame.instance.boundY.x, Minigame.instance.boundY.y);
+        return new Vector3(x, y, 0);
     }
 }

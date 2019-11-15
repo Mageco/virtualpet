@@ -68,6 +68,7 @@ public class CharController : MonoBehaviour
     void Awake()
     {
         LoadPrefab();
+        Load();
     }
 
     void LoadPrefab(){
@@ -86,6 +87,10 @@ public class CharController : MonoBehaviour
             touchObject.SetActive(false);
         if(skillLearnEffect != null)
             skillLearnEffect.SetActive(false);
+    }
+
+    protected virtual void Load(){
+
     }
     // Use this for initialization
     void Start()
@@ -143,7 +148,18 @@ public class CharController : MonoBehaviour
     }
 
     protected virtual void CalculateDirection(){
-
+        if (agent.transform.eulerAngles.z < 30f && agent.transform.eulerAngles.z > -30f || (agent.transform.eulerAngles.z > 330f && agent.transform.eulerAngles.z < 390f) || (agent.transform.eulerAngles.z < -330f && agent.transform.eulerAngles.z > -390f))
+            direction = Direction.U;
+        else if ((agent.transform.eulerAngles.z > 30f && agent.transform.eulerAngles.z < 80f) || (agent.transform.eulerAngles.z > -330f && agent.transform.eulerAngles.z < -280f))
+            direction = Direction.LU;
+        else if ((agent.transform.eulerAngles.z >= 80f && agent.transform.eulerAngles.z <= 150f) || (agent.transform.eulerAngles.z >= -280f && agent.transform.eulerAngles.z <= -210f))
+            direction = Direction.LD;
+        else if ((agent.transform.eulerAngles.z <= -30f && agent.transform.eulerAngles.z >= -80f) || (agent.transform.eulerAngles.z >= 280f && agent.transform.eulerAngles.z <= 330f))
+            direction = Direction.RU;
+        else if ((agent.transform.eulerAngles.z <= -80 && agent.transform.eulerAngles.z >= -150) || (agent.transform.eulerAngles.z >= 210f && agent.transform.eulerAngles.z <= 280f))
+            direction = Direction.RD;
+        else
+            direction = Direction.D;
     }
 
 
@@ -554,7 +570,8 @@ public class CharController : MonoBehaviour
     #endregion
 
     void OnDestroy(){
-        GameObject.Destroy(agent.gameObject);
+        if(agent != null)
+            GameObject.Destroy(agent.gameObject);
     }
 
 }

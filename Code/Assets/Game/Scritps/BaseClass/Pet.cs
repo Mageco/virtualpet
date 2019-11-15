@@ -13,6 +13,7 @@ public class Pet
 	public string petSmall = "";
 	public string petMiddle = "";
 	public string petBig = "";
+	public string petMiniGame1 = "";
 	//Common Data
 	public int level = 1;
 	int exp = 0;
@@ -137,7 +138,11 @@ public class Pet
 		Debug.Log(level);
 
         string url = "";
-        if (level > 5)
+
+		if(GameManager.instance.gameType == GameType.Minigame1){
+			url = DataHolder.GetPet(iD).petMiniGame1.Replace("Assets/Game/Resources/", "");
+		}
+        else if (level > 5)
         {
             url = DataHolder.GetPet(iD).petBig.Replace("Assets/Game/Resources/", "");
         }

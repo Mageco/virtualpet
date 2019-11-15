@@ -37,8 +37,6 @@ public class FoxController : AnimalController
         {
             StartCoroutine(Flee());
         }
-
-        Debug.Log(state);
     }
 
 
@@ -98,7 +96,7 @@ public class FoxController : AnimalController
         Debug.Log("Hit");
         anim.Play("Hit_" + direction.ToString(),0);
         yield return StartCoroutine(Wait(Random.Range(2,3))); 
-        state = AnimalState.Flee;
+        state = AnimalState.Seek;
         DoAction();     
     }
 

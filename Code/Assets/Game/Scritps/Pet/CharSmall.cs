@@ -23,6 +23,8 @@ public class CharSmall : CharController
     }
 
 
+
+
     
 
     protected override void DoAction()

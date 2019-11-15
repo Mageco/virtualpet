@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class ChickenController : AnimalController
 {
-    public Vector2 boundx;
-    public Vector2 boundy;
 
     public bool isCatched;
 
@@ -80,9 +78,7 @@ public class ChickenController : AnimalController
 
     IEnumerator Run()
     {
-        float x = Random.Range(boundx.x, boundx.y);
-        float y = Random.Range(boundy.x, boundy.y);
-        Vector3 target = new Vector3(x, y, 0);
+        Vector3 target = Minigame.instance.GetPointInBound();
         speed = Random.Range(maxSpeed/2,maxSpeed/1.5f);
         if(target.x > this.transform.position.x){
             SetDirection(Direction.R);

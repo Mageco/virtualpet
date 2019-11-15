@@ -9,6 +9,7 @@ public class PetTab : BaseTab
 	private GameObject tmp1Prefab;
     private GameObject tmp2Prefab;
     private GameObject tmp3Prefab;
+    private GameObject tmp4Prefab;
 
     public PetTab(ProjectWindow pw) : base(pw)
     {
@@ -135,6 +136,15 @@ public class PetTab : BaseTab
 				}
 				this.tmp3Prefab = (GameObject)EditorGUILayout.ObjectField("Pet Big Prefab", this.tmp3Prefab, typeof(GameObject), false, GUILayout.Width(pw.mWidth*2));
 				if(this.tmp3Prefab) DataHolder.Pet(selection).petBig = this.tmp3Prefab.name;
+				else DataHolder.Pet(selection).petBig = "";
+
+                if(selection != tmpSelection) this.tmp4Prefab = null;
+				if(this.tmp4Prefab == null && "" != DataHolder.Pet(selection).petMiniGame1)
+				{
+					this.tmp4Prefab = (GameObject)Resources.Load(DataHolder.Pets().GetPrefabPath()+DataHolder.Pet(selection).petMiniGame1, typeof(GameObject));
+				}
+				this.tmp4Prefab = (GameObject)EditorGUILayout.ObjectField("Pet Big Prefab", this.tmp4Prefab, typeof(GameObject), false, GUILayout.Width(pw.mWidth*2));
+				if(this.tmp4Prefab) DataHolder.Pet(selection).petMiniGame1 = this.tmp4Prefab.name;
 				else DataHolder.Pet(selection).petBig = "";
 
 				EditorGUILayout.Separator();

@@ -1,0 +1,321 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1786678155666974602
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3260102857673776288}
+  m_Layer: 0
+  m_Name: BooPosition
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3260102857673776288
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1786678155666974602}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1.58, y: 2.2, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 193803885500558729}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2846764735703140346
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 193803885500558729}
+  - component: {fileID: 6069416419954332819}
+  - component: {fileID: 6069416419954332818}
+  - component: {fileID: 6069416419954332817}
+  - component: {fileID: 8264768739620265649}
+  - component: {fileID: 4958877875913284274}
+  - component: {fileID: 8264768739376955380}
+  - component: {fileID: 4527378153441509039}
+  m_Layer: 0
+  m_Name: Shiba_Minigame1_1
+  m_TagString: Player
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &193803885500558729
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2846764735703140346}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.7, y: 0.7, z: 1}
+  m_Children:
+  - {fileID: 3260102857673776288}
+  - {fileID: 4213929617894132666}
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!50 &6069416419954332819
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2846764735703140346}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
+--- !u!58 &6069416419954332818
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2846764735703140346}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 4}
+  serializedVersion: 2
+  m_Radius: 5
+--- !u!114 &6069416419954332817
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2846764735703140346}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7bb2bec2c1a824c41989665ca1b0ee8a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  initZ: -6
+  scaleFactor: 0.05
+--- !u!114 &8264768739620265649
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2846764735703140346}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df9d8101753564fdbb81f1f49c910387, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  interactType: 0
+  isTouch: 0
+  touchDirection: 1
+  dragOffset: {x: 0, y: 0, z: 0}
+--- !u!114 &4958877875913284274
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2846764735703140346}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c6f41fb25ffc7b4a8308db03a8bfc41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  IgnoreStartedOverGui: 1
+  IgnoreIsOverGui: 0
+  RequiredSelectable: {fileID: 0}
+  CheckAngle: 0
+  Angle: 0
+  AngleThreshold: 90
+  Clamp: 0
+  Multiplier: 1
+  onSwipe:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8264768739620265649}
+        m_MethodName: OnFingerSwipe
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_TypeName: Lean.Touch.LeanFingerSwipe+LeanFingerEvent, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  onSwipeDelta:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8264768739620265649}
+        m_MethodName: OnFingerTouchUp
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_TypeName: Lean.Touch.LeanFingerSwipe+Vector2Event, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  AllowMultiple: 1
+  MultipleSwipeDelay: 0.5
+--- !u!114 &8264768739376955380
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2846764735703140346}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 61c58be95bc0b4154808fbf11c56427f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &4527378153441509039
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2846764735703140346}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d44fff18a436c495686872c82f0b0db1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  data:
+    iD: 5
+    iconUrl: 
+    iconLockUrl: 
+    languageItem:
+    - Name: New Pet
+      Description: 
+    - Name: 
+      Description: 
+    buyPrice: 0
+    priceType: 1
+    itemState: 0
+    petSmall: 
+    petMiddle: 
+    petBig: 
+    petMiniGame1: 
+    level: 1
+    speed: 0
+    weight: 0
+    strength: 0
+    stamina: 50
+    food: 50
+    water: 50
+    sleep: 50
+    energy: 50
+    health: 50
+    shit: 0
+    pee: 0
+    happy: 50
+    dirty: 50
+    itchi: 50
+    fear: 0
+    curious: 0
+    basicEnergyConsume: 0.05
+    actionEnergyConsume: 0
+    healthConsume: 0.01
+    staminaConsume: 0.001
+    dirtyFactor: 0.01
+    happyConsume: 0.01
+    sleepConsume: 0.05
+    maxFood: 100
+    maxWater: 100
+    maxShit: 100
+    maxPee: 100
+    maxSleep: 100
+    maxEnergy: 100
+    maxHealth: 100
+    maxHappy: 100
+    maxStamina: 100
+    maxDirty: 100
+    maxItchi: 100
+    maxFear: 100
+    maxCurious: 100
+  petPrefab: {fileID: 2776677470726071290, guid: 3797fb804e6b34eb68df6fb3034ea531,
+    type: 3}
+  enviromentType: 0
+  direction: 1
+  target: {x: 0, y: 0, z: 0}
+  agent: {fileID: 0}
+  isArrived: 1
+  isAbort: 0
+  actionType: 0
+  body: {fileID: 0}
+  charInteract: {fileID: 0}
+  isTouch: 0
+  peePosition: {fileID: 0}
+  shitPosition: {fileID: 0}
+  peePrefab: {fileID: 0}
+  shitPrefab: {fileID: 0}
+  dirtyEffect: {fileID: 0}
+  touchObject: {fileID: 0}
+  currentSkill: 0
+  skillLearnEffect: {fileID: 0}
+  dragOffset: 20
+  cameraSize: 24
+--- !u!1 &9196184388795707476
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4213929617894132666}
+  m_Layer: 0
+  m_Name: PeePosition
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4213929617894132666
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9196184388795707476}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -4.68, y: 0.73, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 193803885500558729}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
