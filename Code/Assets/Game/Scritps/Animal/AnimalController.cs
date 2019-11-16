@@ -65,8 +65,11 @@ public class AnimalController : MonoBehaviour
     }
 
     public virtual void OnFlee(){
-        isAbort = true;
-        state = AnimalState.Flee;
+        if(state != AnimalState.Flee)
+        {
+            isAbort = true;
+            state = AnimalState.Flee;
+        }
     }
 
     protected void SetDirection(Direction d)
@@ -99,7 +102,6 @@ public class AnimalController : MonoBehaviour
                 anim.speed = 1;
             }
         }
-       CheckAbort();
     }
 
     protected IEnumerator Wait(float maxT)
@@ -125,4 +127,4 @@ public class AnimalController : MonoBehaviour
 
 }
 
-public enum AnimalState {None,Idle,Seek,Eat,Run,Flee,Hit }
+public enum AnimalState {None,Idle,Seek,Eat,Run,Flee,Hit,Hold }

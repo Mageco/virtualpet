@@ -7,8 +7,8 @@ public class Minigame : MonoBehaviour
     public static Minigame instance;
     public int score;
     public int highScore;
-    public int live;
     public int maxLive;
+    public int live;
     public int level;
 
     public GameObject winPrefab;
@@ -20,6 +20,13 @@ public class Minigame : MonoBehaviour
         if(instance == null){
             instance = this;
         }
+        Load();
+    }
+
+    protected virtual void Load(){
+        GetComponent<Camera> ();
+        float ratio = (float)Screen.width / (float)Screen.height;
+         Camera.main.orthographicSize = 54f/ratio;
     }
         
     // Start is called before the first frame update
@@ -41,6 +48,13 @@ public class Minigame : MonoBehaviour
     public virtual void AddDiamon(){
         
     }
+
+    public virtual void AddLive(int n){
+        live += n;
+        if(live < 0)
+            OnLose();
+    }
+
 
     public virtual void OnWin(){
 

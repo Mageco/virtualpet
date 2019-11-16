@@ -6,6 +6,7 @@ public class FoxController : AnimalController
 {
     public float maxTimeWait = 5;
     public ChickenController target;
+    public ChickenController[] targets;
 
     protected override void Load(){
         speed = maxSpeed/2f;
@@ -13,7 +14,10 @@ public class FoxController : AnimalController
 
     protected override void Think()
     {
-        state = AnimalState.Idle;
+        if(Minigame.instance.IsInBound(this.transform.position))
+            state = AnimalState.Seek;
+        else
+            state = AnimalState.Idle;
     }
 
     protected override void DoAction()
@@ -45,24 +49,52 @@ public class FoxController : AnimalController
             Debug.Log("Hit");
             isAbort = true;
             state = AnimalState.Hit;
+        }else if(state == AnimalState.Run){
+            target.gameObject.SetActive(true);
+            target.transform.position = this.transform.position;
+            Minigame.instance.AddLive(1);
+            state = AnimalState.Hit;
+            isAbort = true;
         }
     }
+
+    public override void OnFlee(){
+        if(state != AnimalState.Flee)
+        {
+            Debug.Log("Flee");
+            isAbort = true;
+            if(state == AnimalState.Run)
+            {
+                Debug.Log("Run");
+                target.gameObject.SetActive(true);
+                target.transform.position = this.transform.position;
+                Minigame.instance.AddLive(1);
+            }
+            state = AnimalState.Flee;
+        }
+    }
+
 
     IEnumerator Idle()
     {
         anim.Play("Idle_" + direction.ToString());
         yield return StartCoroutine(Wait(maxTimeWait));
         GetTarget();
-        if(target != null)
+        if(target != null){
+            isAbort = true;
             state = AnimalState.Seek;
-        DoAction();
+        }
+        CheckAbort();
     }
 
     IEnumerator Seek()
     {
         GetTarget();
         speed = Random.Range(maxSpeed/1.5f,maxSpeed);
-        while(!isAbort && target != null && target.gameObject.activeSelf && Vector2.Distance(this.transform.position,target.transform.position) > 1f){
+        while(!isAbort){
+            if(!target.gameObject.activeSelf){
+                GetTarget();
+            }
             if(target.transform.position.x > this.transform.position.x){
                 SetDirection(Direction.R);
             }else
@@ -71,24 +103,15 @@ public class FoxController : AnimalController
             Vector3 d = Vector3.Normalize(target.transform.position - this.transform.position);
             this.transform.position += d * speed * Time.deltaTime;
             yield return new WaitForEndOfFrame(); 
-        }
-        
-        if(!isAbort)
-        {
-            if(target != null && target.gameObject.activeSelf){
+            if(!isAbort && target.gameObject.activeSelf && Vector2.Distance(this.transform.position,target.transform.position) < 1f){
+                Minigame.instance.AddLive(-1);
                 state = AnimalState.Run;
                 target.gameObject.SetActive(false);
+                isAbort = true;
             }
-            else{
-                GetTarget();
-                if(target != null)
-                    state = AnimalState.Seek;
-                else
-                    state = AnimalState.Flee;
-            }
+
         }
-        yield return new WaitForEndOfFrame(); 
-        DoAction();
+        CheckAbort();
     }
 
     IEnumerator Hit()
@@ -97,22 +120,23 @@ public class FoxController : AnimalController
         anim.Play("Hit_" + direction.ToString(),0);
         yield return StartCoroutine(Wait(Random.Range(2,3))); 
         state = AnimalState.Seek;
-        DoAction();     
+        isAbort = true;
+        CheckAbort(); 
     }
 
     IEnumerator Flee()
-    {
-        Vector3 target = originalPosition;
-        speed = Random.Range(maxSpeed/1.5f,maxSpeed);
-        if(target.x > this.transform.position.x){
+    {    
+        speed = Random.Range(maxSpeed,maxSpeed*1.3f);
+        if(originalPosition.x > this.transform.position.x){
             SetDirection(Direction.R);
         }else
             SetDirection(Direction.L);
         anim.Play("Flee_" + direction.ToString(),0);
 
-        yield return StartCoroutine(MoveToPoint(target));
-        state = AnimalState.Idle;
-        DoAction();   
+        yield return StartCoroutine(MoveToPoint(originalPosition));
+        if(!isAbort)
+            state = AnimalState.Idle;
+       CheckAbort();
     }
 
     IEnumerator Run()
@@ -125,16 +149,18 @@ public class FoxController : AnimalController
         anim.Play("Run_" + direction.ToString(),0);
 
         yield return StartCoroutine(MoveToPoint(originalPosition));
-        state = AnimalState.Idle;
-        DoAction(); 
+        if(!isAbort)
+            state = AnimalState.Idle;
+        CheckAbort();
     }
 
     void GetTarget(){
-        ChickenController[] t = GameObject.FindObjectsOfType<ChickenController>();
-        if(t != null && t.Length > 0)
-        {
-            int id = Random.Range(0,t.Length);
-            target = t[id];
+         targets = GameObject.FindObjectsOfType<ChickenController>();
+        for(int i=0;i<targets.Length;i++){
+            if(targets[i].gameObject.activeSelf){
+                target = targets[i];
+                return;
+            }
         }
     }
 

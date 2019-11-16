@@ -26,6 +26,8 @@ public class CharMinigame1 : CharController
 
     protected override void Load(){
         LoadAnimal();
+        this.data.speed = 20;
+        this.agent.speed = 20;
     }
 
     protected override void DoAction()
@@ -50,68 +52,81 @@ public class CharMinigame1 : CharController
 
     IEnumerator Patrol()
     {
-        animalTarget =  animalTargets[0];
         isArrived = false;
         float time = 1;
+        animalTarget = GetTarget();
         while (!isArrived && !isAbort)
         {
-            if(time > 0.5f)
+            if(time > 01f)
             {
-                target = animalTarget.transform.position;
-                agent.SetDestination(target);
+                animalTarget = GetTarget();
+                agent.SetDestination(animalTarget.transform.position);
                 time = 0;
             }else
             {
                 time += Time.deltaTime;
             }
             
-            anim.Play("Run_" + this.direction.ToString(), 0);
+            anim.Play("Run_Angry_" + this.direction.ToString(), 0);
 
-            if(Vector2.Distance(this.transform.position,target) < 3f){
+            if(Vector2.Distance(this.transform.position,animalTarget.transform.position) < 10f){
                 isArrived = true;
                 agent.Stop();
+                anim.Play("Bark_Angry_" +direction.ToString(),0);
                 animalTarget.OnFlee();
+                yield return StartCoroutine(Wait(0.5f));
             }
             yield return new WaitForEndOfFrame();
         }
-       
-        yield return StartCoroutine(DoAnim("Bark_D"));
         CheckAbort();
     }
 
     IEnumerator Rest()
     {
-        int ran = Random.Range(0,100);
-        if(ran < 10){
-            anim.Play("Lay_LD", 0);
-        }    
-        else if(ran < 20){
-            anim.Play("Idle"+direction.ToString(), 0);
-        }
-        else if(ran < 50){
-            anim.Play("Seat_D", 0);
-        } else{
-            anim.Play("BathStart_D", 0);
-        }
-            
+        if(Minigame.instance.live < Minigame.instance.maxLive)
+        {
+            anim.Play("Idle_Angry_" + direction.ToString());
+            yield return StartCoroutine(Wait(Random.Range(0.1f,0.5f)));
+        }else
+        {
+            int ran = Random.Range(0,100);
 
-        yield return StartCoroutine(Wait(Random.Range(1,2)));
+            if(ran < 10){
+                anim.Play("Lay_LD", 0);
+            }    
+            else if(ran < 20){
+                anim.Play("Idle_"+direction.ToString(), 0);
+            }
+            else if(ran < 50){
+                anim.Play("Idle_Sit_D", 0);
+            } else{
+                anim.Play("BathStart_D", 0);
+            }
+            yield return StartCoroutine(Wait(Random.Range(0.5f,1)));
+        } 
         CheckAbort();
     }    
 
 
     void CheckAnimal(){
+        animalTargets.Clear();
         for(int i=0;i<animals.Length;i++){
-            if(Minigame.instance.IsInBound(animals[i].transform.position) && (animals[i].state == AnimalState.Seek || animals[i].state == AnimalState.Hit)){
+            if(Minigame.instance.IsInBound(animals[i].transform.position) && (animals[i].tag == "Animal")){
                 animalTargets.Add(animals[i]);
-            }else
-            {
-                if(animalTargets.Contains(animals[i]))
-                {
-                    animalTargets.Remove(animals[i]);
-                }
             }
         }
+    }
+
+    AnimalController GetTarget(){
+        float l = 1000;
+        int id = 0;
+        for(int i=0;i<animalTargets.Count;i++){
+            if(l > Vector2.Distance(this.transform.position,animalTargets[i].transform.position)){
+                id = i;
+                l = Vector2.Distance(this.transform.position,animalTargets[i].transform.position);
+            }
+        }
+        return animalTargets[id];
     }
 
     void LoadAnimal(){

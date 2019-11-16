@@ -7,9 +7,14 @@ public class ChickenController : AnimalController
 
     public bool isCatched;
 
+
     protected override void Load(){
         speed = maxSpeed/2f;
         //this.originalScale = this.originalScale * Random.Range(0.9f,1.1f);
+    }
+
+    public void OnHold(){
+
     }
 
     protected override void Think()
@@ -44,6 +49,10 @@ public class ChickenController : AnimalController
         else if (state == AnimalState.Run)
         {
             StartCoroutine(Run());
+        }
+        else if (state == AnimalState.Hold)
+        {
+            StartCoroutine(Hold());
         }
     }
 
@@ -87,6 +96,21 @@ public class ChickenController : AnimalController
         anim.Play("Run_" + direction.ToString(),0);
 
         yield return StartCoroutine(MoveToPoint(target));
+        CheckAbort();
+    }
+
+    IEnumerator Hold()
+    {
+        int n = Random.Range(1,4);
+        for(int i=0;i<n;i++){
+            int ran = Random.Range(0,100);
+            if(ran > 50)
+                direction = Direction.L;
+            else
+                direction = Direction.R;
+            anim.Play("Idle_"+direction.ToString(),0);
+            yield return StartCoroutine(Wait(Random.Range(1,2)));
+        }
         CheckAbort();
     }
 }
