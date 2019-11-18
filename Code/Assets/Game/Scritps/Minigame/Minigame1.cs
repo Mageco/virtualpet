@@ -8,6 +8,7 @@ public class Minigame1 : Minigame
 { 
     public ChickenController[] chickens;
     public Text chickenNumber;
+    public Text timeText;
     
     void Start(){
         chickens = GameObject.FindObjectsOfType<ChickenController>();
@@ -27,6 +28,17 @@ public class Minigame1 : Minigame
 
         chickenNumber.text = live.ToString();
         Debug.Log("Update Live " + live.ToString());
+        if(live <= 0){
+            OnLose();
+        }
+    }
+
+    protected override void Update(){
+        base.Update();
+        float t = maxTime - time;
+        float m = (int)(t/60);
+        float s = (int)(t - m*60);
+        timeText.text  = m.ToString("00") + ":" + s.ToString("00");
     }
 }
 

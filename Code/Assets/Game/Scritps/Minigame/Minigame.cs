@@ -10,11 +10,16 @@ public class Minigame : MonoBehaviour
     public int maxLive;
     public int live;
     public int level;
+    protected float time = 0;
+    public float maxTime;
 
     public GameObject winPrefab;
     public GameObject losePrefab;
     public Vector2 boundX;
     public Vector2 boundY;
+
+    WinPanel winPanel;
+    LosePanel losePanel;
 
     void Awake(){
         if(instance == null){
@@ -36,9 +41,22 @@ public class Minigame : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    protected virtual void Update()
     {
-        
+        time += Time.deltaTime;
+        if(time >= maxTime){
+            if(live == maxLive){
+                OnWin(3);
+            }else if(live == maxLive - 1)
+            {
+                OnWin(2);
+            }else if(live == maxLive - 2){
+                OnWin(1);
+            }else {
+                OnWin(0);
+            }
+
+        }
     }
 
     public virtual void AddCoin(){
@@ -54,7 +72,7 @@ public class Minigame : MonoBehaviour
     }
 
 
-    public virtual void OnWin(){
+    public virtual void OnWin(int start){
 
     }
 
