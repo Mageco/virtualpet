@@ -1,12 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class ChickenController : AnimalController
 {
-
-    public bool isCatched;
-
+    public GameObject[] bodies;
+    public InteractType interactType;
+    Vector3 dragOffset;
 
     protected override void Load(){
         speed = maxSpeed/2f;
@@ -14,7 +15,24 @@ public class ChickenController : AnimalController
     }
 
     public void OnHold(){
+        state = AnimalState.Hold;
+        isAbort = true;
+    }
 
+    public void OnCached(){
+        for(int i=0;i<bodies.Length;i++){
+            bodies[i].SetActive(false);
+        }
+        state = AnimalState.Cached;
+        isAbort = true;
+    }
+
+    public void OffCached(){
+        for(int i=0;i<bodies.Length;i++){
+            bodies[i].SetActive(true);
+        }
+        state = AnimalState.None;
+        isAbort = true;
     }
 
     protected override void Think()
@@ -101,16 +119,62 @@ public class ChickenController : AnimalController
 
     IEnumerator Hold()
     {
-        int n = Random.Range(1,4);
-        for(int i=0;i<n;i++){
-            int ran = Random.Range(0,100);
-            if(ran > 50)
-                direction = Direction.L;
-            else
-                direction = Direction.R;
-            anim.Play("Idle_"+direction.ToString(),0);
-            yield return StartCoroutine(Wait(Random.Range(1,2)));
+interactType = InteractType.Drag;
+        Vector3 dropPosition = Vector3.zero;
+        SetDirection(Direction.D);
+        anim.Play("Idle_" + direction.ToString(), 0);
+
+        while (interactType == InteractType.Drag)
+        {
+            Vector3 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition) - dragOffset;
+            pos.z = 0;
+            if (pos.y > 10)
+                pos.y = 10;
+            else if (pos.y < -30)
+                pos.y = -30;
+
+            if (pos.x > 50)
+                pos.x = 50;
+            else if (pos.x < -50)
+                pos.x = -50;
+
+            pos.z = -50;
+            this.transform.position = pos;
+            yield return new WaitForEndOfFrame();
         }
+
+        //Start Drop
+
         CheckAbort();
     }
+
+    void OnMouseDown()
+    {
+        if (IsPointerOverUIObject ()) {
+            return;
+        }
+        if(state != AnimalState.Hold){
+            dragOffset = Camera.main.ScreenToWorldPoint (Input.mousePosition) - this.transform.position ;
+            interactType = InteractType.Drag;
+            OnHold();
+        }
+
+    }
+
+    void OnMouseUp()
+    {
+        dragOffset = Vector3.zero;
+        if (interactType == InteractType.Drag) {
+            interactType = InteractType.Drop;
+        } 
+    }
+
+    private bool IsPointerOverUIObject() {
+        PointerEventData eventDataCurrentPosition = new PointerEventData(EventSystem.current);
+        eventDataCurrentPosition.position = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
+        List<RaycastResult> results = new List<RaycastResult>();
+        EventSystem.current.RaycastAll(eventDataCurrentPosition, results);
+        return results.Count > 0;
+    }
+
 }

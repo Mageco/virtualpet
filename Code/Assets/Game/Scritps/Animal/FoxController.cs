@@ -12,6 +12,10 @@ public class FoxController : AnimalController
         speed = maxSpeed/2f;
     }
 
+    void Start(){
+        targets = GameObject.FindObjectsOfType<ChickenController>();
+    }
+
     protected override void Think()
     {
         if(Minigame.instance.IsInBound(this.transform.position))
@@ -50,9 +54,6 @@ public class FoxController : AnimalController
             isAbort = true;
             state = AnimalState.Hit;
         }else if(state == AnimalState.Run){
-            target.gameObject.SetActive(true);
-            target.transform.position = this.transform.position;
-            Minigame.instance.AddLive(1);
             state = AnimalState.Hit;
             isAbort = true;
         }
@@ -66,9 +67,9 @@ public class FoxController : AnimalController
             if(state == AnimalState.Run)
             {
                 Debug.Log("Run");
-                target.gameObject.SetActive(true);
+                target.OffCached();
                 target.transform.position = this.transform.position;
-                Minigame.instance.AddLive(1);
+                Minigame.instance.UpdateLive();
             }
             state = AnimalState.Flee;
         }
@@ -92,7 +93,7 @@ public class FoxController : AnimalController
         GetTarget();
         speed = Random.Range(maxSpeed/1.5f,maxSpeed);
         while(!isAbort){
-            if(!target.gameObject.activeSelf){
+            if(target.state == AnimalState.Cached || target.state == AnimalState.Hold){
                 GetTarget();
             }
             if(target.transform.position.x > this.transform.position.x){
@@ -103,10 +104,11 @@ public class FoxController : AnimalController
             Vector3 d = Vector3.Normalize(target.transform.position - this.transform.position);
             this.transform.position += d * speed * Time.deltaTime;
             yield return new WaitForEndOfFrame(); 
-            if(!isAbort && target.gameObject.activeSelf && Vector2.Distance(this.transform.position,target.transform.position) < 1f){
-                Minigame.instance.AddLive(-1);
+            if(!isAbort  && Vector2.Distance(this.transform.position,target.transform.position) < 1f && target.state != AnimalState.Cached && target.state != AnimalState.Hold){
+                
                 state = AnimalState.Run;
-                target.gameObject.SetActive(false);
+                target.OnCached();
+                Minigame.instance.UpdateLive();
                 isAbort = true;
             }
 
@@ -155,30 +157,11 @@ public class FoxController : AnimalController
     }
 
     void GetTarget(){
-         targets = GameObject.FindObjectsOfType<ChickenController>();
         for(int i=0;i<targets.Length;i++){
-            if(targets[i].gameObject.activeSelf){
+            if(targets[i].state != AnimalState.Cached){
                 target = targets[i];
                 return;
             }
         }
     }
-
-    void OnTriggerEnter2D(Collider2D other)
-    {
-        if (other.tag == "Chicken")
-        {
-            if(other.transform.parent.GetComponent<ChickenController>() != null && state == AnimalState.Seek){
-                //other.transform.parent.GetComponent<ChickenController>().gameObject.SetActive(false);
-                //OnRun();
-            }            
-        }
-    }
-
-    void OnTriggerExit2D(Collider2D other)
-    {
-
-    }
-
- 
 }

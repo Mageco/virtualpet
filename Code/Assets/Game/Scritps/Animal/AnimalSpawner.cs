@@ -11,7 +11,7 @@ public class AnimalSpawner : MonoBehaviour
     public GameObject[] prefabs;
     List<AnimalController> animals = new List<AnimalController>();
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         GizmoPoint[] temp = this.transform.GetComponentsInChildren<GizmoPoint>();
         for(int i=0;i<temp.Length;i++){

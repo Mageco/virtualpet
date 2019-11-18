@@ -135,7 +135,6 @@ public class Pet
         if (character != null)
             GameObject.Destroy(character.gameObject);
 
-		Debug.Log(level);
 
         string url = "";
 

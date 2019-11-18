@@ -57,7 +57,7 @@ public class CharMinigame1 : CharController
         animalTarget = GetTarget();
         while (!isArrived && !isAbort)
         {
-            if(time > 01f)
+            if(time > 0.1f)
             {
                 animalTarget = GetTarget();
                 agent.SetDestination(animalTarget.transform.position);

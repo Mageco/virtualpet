@@ -49,10 +49,8 @@ public class Minigame : MonoBehaviour
         
     }
 
-    public virtual void AddLive(int n){
-        live += n;
-        if(live < 0)
-            OnLose();
+    public virtual void UpdateLive(){
+
     }
 
 
