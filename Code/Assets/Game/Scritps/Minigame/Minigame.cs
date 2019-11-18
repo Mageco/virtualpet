@@ -55,7 +55,7 @@ public class Minigame : MonoBehaviour
             }else {
                 OnWin(0);
             }
-
+            Debug.Log("Win");
         }
     }
 
@@ -73,11 +73,27 @@ public class Minigame : MonoBehaviour
 
 
     public virtual void OnWin(int start){
-
+        if (winPanel == null)
+        {
+            var popup = Instantiate(winPrefab) as GameObject;
+            popup.transform.SetParent(this.transform);
+            popup.transform.localScale = Vector3.one;
+            popup.transform.localPosition = Vector3.zero;
+            popup.SetActive(true);
+            winPanel = popup.GetComponent<WinPanel>();
+        }
     }
 
     public virtual void OnLose(){
-
+        if (losePanel == null)
+        {
+            var popup = Instantiate(losePrefab) as GameObject;
+            popup.transform.SetParent(this.transform);
+            popup.transform.localScale = Vector3.one;
+            popup.transform.localPosition = Vector3.zero;
+            popup.SetActive(true);
+            losePanel = popup.GetComponent<LosePanel>();
+        }
     }
 
     public bool IsInBound(Vector3 pos){

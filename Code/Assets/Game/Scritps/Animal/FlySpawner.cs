@@ -16,7 +16,7 @@ public class FlySpawner : MonoBehaviour
     void Start()
     {
        maxCount = Random.Range(1,maxCount);
-       
+       character = this.GetComponentInParent<CharController>();
     }
 
 

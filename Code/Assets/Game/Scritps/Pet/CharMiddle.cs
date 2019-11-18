@@ -248,6 +248,9 @@ public class CharMiddle : CharController
         else if (actionType == ActionType.LevelUp)
         {
             StartCoroutine(LevelUp());
+        } else if (actionType == ActionType.OnBed)
+        {
+            StartCoroutine(Bed());
         }
     }
     #endregion
@@ -268,7 +271,7 @@ public class CharMiddle : CharController
             int ran = Random.Range(0, 100);
             if (ran < 30)
             {
-                yield return StartCoroutine(DoAnim("Smell" + this.direction.ToString()));
+                yield return StartCoroutine(DoAnim("Smell_" + this.direction.ToString()));
             }
             else
             {
@@ -283,7 +286,7 @@ public class CharMiddle : CharController
     IEnumerator Bath()
     {
 
-        anim.Play("BathStart_D", 0);
+        anim.Play("Idle_D", 0);
         while (!isAbort)
         {
             yield return new WaitForEndOfFrame();
@@ -293,44 +296,14 @@ public class CharMiddle : CharController
 
     IEnumerator Table()
     {
-        int rand = Random.Range(0, 100);
-        if (rand < 50)
-        {
-            SetDirection(Direction.D);
-            anim.Play("BathStart_D", 0);
-            while (!isAbort)
-            {
-                yield return new WaitForEndOfFrame();
-            }
-        }
-        else
-        {
-            anim.Play("Jump_L", 0);
-            //bool isDone = false;
-            Vector2 speed = new Vector2(-30, 0);
-            Vector3 dropPosition = new Vector3(this.transform.position.x - 10, this.transform.position.y - 15, 0);
-            charInteract.interactType = InteractType.Drop;
 
-            while (charInteract.interactType == InteractType.Drop && !isAbort)
-            {
-                speed += new Vector2(0, -100 * Time.deltaTime);
-                if (speed.y < -50)
-                    speed = new Vector2(speed.x, -50);
-                Vector3 pos1 = agent.transform.position;
-                pos1.y += speed.y * Time.deltaTime;
-                pos1.x += speed.x * Time.deltaTime;
-                pos1.z = dropPosition.y;
-                agent.transform.position = pos1;
-
-                if (Mathf.Abs(agent.transform.position.y - dropPosition.y) < 2f)
-                {
-                    this.transform.rotation = Quaternion.identity;
-                    charInteract.interactType = InteractType.None;
-                }
-                yield return new WaitForEndOfFrame();
-            }
-            yield return DoAnim("Fall_L");
+        SetDirection(Direction.D);
+        anim.Play("Idle_D", 0);
+        while (!isAbort)
+        {
+            yield return new WaitForEndOfFrame();
         }
+        
         CheckAbort();
     }
 
@@ -395,11 +368,19 @@ public class CharMiddle : CharController
                 enviromentType = EnviromentType.Bath;
                 break;
             }
+            else if (hit[i].collider.tag == "Bed")
+            {
+                pos2.y = hit[i].collider.transform.position.y;
+                pos2.z = hit[i].collider.transform.position.z;
+                dropPosition = pos2;
+                enviromentType = EnviromentType.Bed;
+                break;
+            }
         }
 
         float fallSpeed = 0;
         float maxTime = 1;
-        while (charInteract.interactType == InteractType.Drop)
+        while (charInteract.interactType == InteractType.Drop && !isAbort)
         {
             fallSpeed += 100f * Time.deltaTime;
             if (fallSpeed > 50)
@@ -413,6 +394,10 @@ public class CharMiddle : CharController
             if (Vector2.Distance(agent.transform.position, dropPosition) < fallSpeed * Time.deltaTime * 2)
             {
                 this.transform.rotation = Quaternion.identity;
+                Vector3 pos3 = agent.transform.position;
+                pos3.y = dropPosition.y;
+                agent.transform.position = pos3;
+
 
                 if (data.Health < data.maxHealth * 0.1f)
                 {
@@ -432,7 +417,7 @@ public class CharMiddle : CharController
                     {
                         SetDirection(Direction.D);
                         anim.Play("Drop_Hard_D", 0);
-                        maxTime = 3;
+                        maxTime = 2;
                     }
                 }
 
@@ -448,13 +433,19 @@ public class CharMiddle : CharController
         }
         else
         {
-            if (enviromentType == EnviromentType.Bath)
-            {
-                OnBath();
-            }
-            else if (enviromentType == EnviromentType.Table)
-            {
-                OnTable();
+            if(!isAbort){
+                if (enviromentType == EnviromentType.Bath)
+                {
+                    OnBath();
+                }
+                else if (enviromentType == EnviromentType.Table)
+                {
+                    OnTable();
+                }
+                else if (enviromentType == EnviromentType.Bed)
+                {
+                    OnBed();
+                }
             }
         }
 
@@ -617,23 +608,10 @@ public class CharMiddle : CharController
         float maxTime = Random.Range(2, 5);
         if (!isAbort)
         {
-            int ran = Random.Range(0, 100);
-            if (ran < 20)
-            {
-                SetDirection(Direction.D);
-                anim.Play("Idle_Sit_D", 0);
-            }
-            else if (ran < 40)
-            {
-                if (this.direction == Direction.RD || this.direction == Direction.RU)
-                    anim.Play("Lay_RD", 0);
-                else
-                    anim.Play("Lay_LD", 0);
-            }
-            else if (ran < 60)
-            {
 
-            }
+                SetDirection(Direction.D);
+                anim.Play("Idle_"+direction.ToString(), 0);
+
         }
 
         Debug.Log("Rest");
@@ -663,6 +641,52 @@ public class CharMiddle : CharController
             yield return StartCoroutine(DoAnim("Fall_Water_R"));
         else
             yield return StartCoroutine(DoAnim("Fall_Water_L"));
+
+        CheckAbort();
+    }
+
+    IEnumerator Bed()
+    {
+        if(data.sleep < 0.3f*data.maxSleep){
+            actionType = ActionType.Sleep;
+            isAbort = true;
+        }
+        else{
+            int ran = Random.Range(0,100);
+            if(ran > 0){
+                if(!isAbort){
+                    anim.Play("Jump_D", 0);
+                    float speed = 5;
+                    Vector3 dropPosition = new Vector3(this.transform.position.x, this.transform.position.y - 10, 0);
+                    charInteract.interactType = InteractType.Drop;
+                    while (charInteract.interactType == InteractType.Drop && !isAbort)
+                    {
+                        speed -= 30 * Time.deltaTime;
+                        if (speed < -50)
+                            speed = -50;
+                        Vector3 pos1 = agent.transform.position;
+                        pos1.y += speed * Time.deltaTime;
+                        pos1.x = agent.transform.position.x;
+                        pos1.z = dropPosition.y;
+                        agent.transform.position = pos1;
+
+                        if (Mathf.Abs(agent.transform.position.y - dropPosition.y) < 2f)
+                        {
+                            this.transform.rotation = Quaternion.identity;
+                            charInteract.interactType = InteractType.None;
+                        }
+                        yield return new WaitForEndOfFrame();
+                    }
+                }
+            }else
+            {
+                anim.Play("Idle_" + direction.ToString(),0);
+                while(!isAbort){   
+                    yield return new WaitForEndOfFrame();
+                }
+            }
+
+        }
 
         CheckAbort();
     }

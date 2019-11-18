@@ -3,15 +3,15 @@ using System.Collections.Generic;
 
 namespace Lean.Touch
 {
-	/// <summary>This class stores a snapshot of where a finger was at a previous point in time.</summary>
+	/// <summary>This class stores a snapshot of where a finger was at a specific point in time, and provides methods to look back in time to find a point based on a time.</summary>
 	public class LeanSnapshot
 	{
 		/// <summary>The age of the finger when this snapshot was created.</summary>
 		public float Age;
-		
+
 		/// <summary>The screen position of the finger when this snapshot was created.</summary>
 		public Vector2 ScreenPosition;
-		
+
 		/// <summary>This will return the world position of this snapshot based on the distance from the camera.</summary>
 		public Vector3 GetWorldPosition(float distance, Camera camera = null)
 		{
@@ -21,14 +21,14 @@ namespace Lean.Touch
 			if (camera != null)
 			{
 				var point = new Vector3(ScreenPosition.x, ScreenPosition.y, distance);
-				
+
 				return camera.ScreenToWorldPoint(point);
 			}
 			else
 			{
 				Debug.LogError("Failed to find camera. Either tag your cameras MainCamera, or set one in this component.");
 			}
-			
+
 			return default(Vector3);
 		}
 
@@ -93,13 +93,13 @@ namespace Lean.Touch
 			if (index >= 0 && index < snapshots.Count)
 			{
 				var snapshot = snapshots[index];
-				
+
 				age            = snapshot.Age;
 				screenPosition = snapshot.ScreenPosition;
 
 				return true;
 			}
-			
+
 			return true;
 		}
 

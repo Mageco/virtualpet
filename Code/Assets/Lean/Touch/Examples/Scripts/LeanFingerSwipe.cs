@@ -1,137 +1,53 @@
 using UnityEngine;
-using UnityEngine.Events;
-using UnityEngine.Serialization;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 namespace Lean.Touch
 {
-	/// <summary>This script fires events if a finger has been held for a certain amount of time without moving.</summary>
+	/// <summary>This component fires events if a finger has swiped across the screen.
+	/// A swipe is defined as a touch that began and ended within the LeanTouch.TapThreshold time, and moved more than the LeanTouch.SwipeThreshold distance.</summary>
 	[HelpURL(LeanTouch.HelpUrlPrefix + "LeanFingerSwipe")]
-	public class LeanFingerSwipe : MonoBehaviour
+	[AddComponentMenu(LeanTouch.ComponentPathPrefix + "Finger Swipe")]
+	public class LeanFingerSwipe : LeanSwipeBase
 	{
-		public enum ClampType
-		{
-			None,
-			Normalize,
-			Direction4,
-			ScaledDelta
-		}
-
-		// Event signature
-		[System.Serializable] public class LeanFingerEvent : UnityEvent<LeanFinger> {}
-		[System.Serializable] public class Vector2Event : UnityEvent<Vector2> {}
-
+		/// <summary>Ignore fingers with StartedOverGui?</summary>
 		[Tooltip("Ignore fingers with StartedOverGui?")]
 		public bool IgnoreStartedOverGui = true;
 
+		/// <summary>Ignore fingers with IsOverGui?</summary>
 		[Tooltip("Ignore fingers with IsOverGui?")]
 		public bool IgnoreIsOverGui;
 
+		/// <summary>Do nothing if this LeanSelectable isn't selected?</summary>
 		[Tooltip("Do nothing if this LeanSelectable isn't selected?")]
 		public LeanSelectable RequiredSelectable;
-
-		[Tooltip("Must the swipe be in a specific direction?")]
-		public bool CheckAngle;
-
-		[Tooltip("The required angle of the swipe in degrees, where 0 is up, and 90 is right")]
-		public float Angle;
-
-		[Tooltip("The left/right tolerance of the swipe angle in degrees")]
-		public float AngleThreshold = 90.0f;
-
-		[Tooltip("Should the swipe delta be modified before use?")]
-		public ClampType Clamp;
-
-		[Tooltip("The swipe delta multiplier, useful if you're using a Clamp mode")]
-		public float Multiplier = 1.0f;
-
-		// Called on the first frame the conditions are met
-		public LeanFingerEvent OnSwipe { get { if (onSwipe == null) onSwipe = new LeanFingerEvent(); return onSwipe; } } [FormerlySerializedAs("OnSwipe")] [SerializeField] private LeanFingerEvent onSwipe;
-
-		public Vector2Event OnSwipeDelta { get { if (onSwipeDelta == null) onSwipeDelta = new Vector2Event(); return onSwipeDelta; } } [FormerlySerializedAs("OnSwipeDelta")] [SerializeField] private Vector2Event onSwipeDelta;
-
 #if UNITY_EDITOR
 		protected virtual void Reset()
 		{
-			Start();
+			RequiredSelectable = GetComponentInParent<LeanSelectable>();
 		}
 #endif
-
-		protected bool CheckSwipe(LeanFinger finger, Vector2 swipeDelta)
+		protected virtual void Awake()
 		{
-			// Invalid angle?
-			if (CheckAngle == true)
+			if (RequiredSelectable == null)
 			{
-				var angle = Mathf.Atan2(swipeDelta.x, swipeDelta.y) * Mathf.Rad2Deg;
-				var delta = Mathf.DeltaAngle(angle, Angle);
-
-				if (delta < AngleThreshold * -0.5f || delta >= AngleThreshold * 0.5f)
-				{
-					return false;
-				}
+				RequiredSelectable = GetComponentInParent<LeanSelectable>();
 			}
-
-			// Clamp delta?
-			switch (Clamp)
-			{
-				case ClampType.Normalize:
-				{
-					swipeDelta = swipeDelta.normalized;
-				}
-				break;
-
-				case ClampType.Direction4:
-				{
-					if (swipeDelta.x < -Mathf.Abs(swipeDelta.y)) swipeDelta = -Vector2.right;
-					if (swipeDelta.x >  Mathf.Abs(swipeDelta.y)) swipeDelta =  Vector2.right;
-					if (swipeDelta.y < -Mathf.Abs(swipeDelta.x)) swipeDelta = -Vector2.up;
-					if (swipeDelta.y >  Mathf.Abs(swipeDelta.x)) swipeDelta =  Vector2.up;
-				}
-				break;
-
-				case ClampType.ScaledDelta:
-				{
-					swipeDelta *= LeanTouch.ScalingFactor;
-				}
-				break;
-			}
-
-			// Call event
-			if (onSwipe != null)
-			{
-				onSwipe.Invoke(finger);
-			}
-
-			if (onSwipeDelta != null)
-			{
-				onSwipeDelta.Invoke(swipeDelta * Multiplier);
-			}
-
-			return true;
 		}
 
 		protected virtual void OnEnable()
 		{
-			// Hook events
-			LeanTouch.OnFingerSwipe += FingerSwipe;
-		}
-
-		protected virtual void Start()
-		{
-			if (RequiredSelectable == null)
-			{
-				RequiredSelectable = GetComponent<LeanSelectable>();
-			}
+			LeanTouch.OnFingerSwipe += HandleFingerSwipe;
 		}
 
 		protected virtual void OnDisable()
 		{
-			// Unhook events
-			LeanTouch.OnFingerSwipe -= FingerSwipe;
+			LeanTouch.OnFingerSwipe -= HandleFingerSwipe;
 		}
 
-		private void FingerSwipe(LeanFinger finger)
+		private void HandleFingerSwipe(LeanFinger finger)
 		{
-			// Ignore?
 			if (IgnoreStartedOverGui == true && finger.StartedOverGui == true)
 			{
 				return;
@@ -147,8 +63,26 @@ namespace Lean.Touch
 				return;
 			}
 
-			// Perform final swipe check and fire event
-			CheckSwipe(finger, finger.SwipeScreenDelta);
+			HandleFingerSwipe(finger, finger.StartScreenPosition, finger.ScreenPosition);
 		}
 	}
 }
+
+#if UNITY_EDITOR
+namespace Lean.Touch
+{
+	[CanEditMultipleObjects]
+	[CustomEditor(typeof(LeanFingerSwipe))]
+	public class LeanFingerSwipe_Inspector : LeanSwipeBase_Inspector<LeanFingerSwipe>
+	{
+		protected override void DrawInspector()
+		{
+			Draw("IgnoreStartedOverGui");
+			Draw("IgnoreIsOverGui");
+			Draw("RequiredSelectable");
+
+			base.DrawInspector();
+		}
+	}
+}
+#endif

@@ -58,7 +58,7 @@
 
 			void Frag(v2f i, out float4 o:COLOR0)
 			{
-				float rim = _Shift - pow(1.0f - normalize(i.normal).z, _Rim);
+				float rim = _Shift - pow(saturate(1.0f - normalize(i.normal).z), _Rim);
 
 				o = tex2D(_MainTex, i.uv) * lerp(_Color1, _Color2, rim) * i.color;
 			}

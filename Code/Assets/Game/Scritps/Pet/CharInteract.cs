@@ -10,7 +10,7 @@ public class CharInteract : MonoBehaviour
     float doubleClickTime;
     float maxDoubleClickTime = 0.4f;
     bool isClick = false;
-    public bool isTouch = false;
+    //public bool isTouch = false;
     public Direction touchDirection = Direction.D;
 
     public Vector3 dragOffset;
@@ -41,14 +41,15 @@ public class CharInteract : MonoBehaviour
             return;
         }
         dragOffset = Camera.main.ScreenToWorldPoint (Input.mousePosition) - this.transform.position ;
-        isTouch = true;
-
-    }
+        //isTouch = true;
+        interactType = InteractType.Drag;
+        character.OnHold ();
+    }
 
     void OnMouseUp()
     {
         dragOffset = Vector3.zero;
-        isTouch = false;
+        //isTouch = false;
         if (interactType == InteractType.Drag) {
             interactType = InteractType.Drop;
         } 
@@ -68,38 +69,7 @@ public class CharInteract : MonoBehaviour
         }
     }
 
-    public void OnFingerTouchUp(Vector2 delta)
-    {
-        float angle = Mathf.Atan2(delta.x, delta.y) * Mathf.Rad2Deg;
-        if (isTouch && angle > -60&& angle <60&& interactType == InteractType.None) {
-            touchDirection = Direction.U;
-            character.OnHold ();
-            interactType = InteractType.Drag;
-        }else if(isTouch && (angle > 115 || angle < -115)) {
-            touchDirection = Direction.D;
-            //interactType = InteractType.SwipeDown;
-        }else if(isTouch && (angle > 45 && angle < 115)) {
-            touchDirection = Direction.L;
-            //interactType = InteractType.SwipeLeft;
-        }else if(isTouch && (angle > 115 && angle < 205)) {
-            touchDirection = Direction.R;
-            //interactType = InteractType.SwipeRight;
-        }
-
-    }
-
-    public void OnFingerSwipe(LeanFinger finger)
-    {
-        if (interactType == InteractType.Drag) {
-            float angle = finger.ScreenDelta.x;
-            if (angle > 30)
-                angle = 30;
-            if (angle < -30)
-                angle = -30;
-
-            this.transform.rotation = Quaternion.Euler (0, 0, -angle);
-        }
-    }
+    
 
     void OnTriggerEnter2D(Collider2D other) {
         if (other.tag == "Mouse") {

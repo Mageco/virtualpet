@@ -194,6 +194,11 @@ namespace Lean.Common
 			return EditorGUI.EndChangeCheck();
 		}
 
+		protected bool DrawDefault(string propertyPath, string overrideTooltip = null, string overrideText = null)
+		{
+			return Draw(propertyPath, overrideTooltip, overrideText);
+		}
+
 		protected bool Draw(string propertyPath, string overrideTooltip = null, string overrideText = null)
 		{
 			var property = serializedObject.FindProperty(propertyPath);

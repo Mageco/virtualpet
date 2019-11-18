@@ -20,7 +20,7 @@ public class Pet
 	int[] skills;
 
 	//Main Data
-	public float speed;
+	public float speed = 20;
 	public float weight;
 	public float strength;
 	public float stamina = 50;

@@ -1,4 +1,3 @@
-using UnityEngine;
 using System.Collections.Generic;
 
 namespace Lean.Touch
@@ -8,6 +7,42 @@ namespace Lean.Touch
 	{
 		// The finger associated with this link
 		public LeanFinger Finger;
+
+		public static int Count<T>(List<T> fingerDatas)
+			where T : LeanFingerData
+		{
+			var count = 0;
+
+			if (fingerDatas != null)
+			{
+				for (var i = fingerDatas.Count - 1; i >= 0; i--)
+				{
+					if (fingerDatas[i].Finger != null)
+					{
+						count++;
+					}
+				}
+			}
+			
+			return count;
+		}
+
+		public static bool Exists<T>(List<T> fingerDatas, LeanFinger finger)
+			where T : LeanFingerData
+		{
+			if (fingerDatas != null)
+			{
+				for (var i = fingerDatas.Count - 1; i >= 0; i--)
+				{
+					if (fingerDatas[i].Finger == finger)
+					{
+						return true;
+					}
+				}
+			}
+			
+			return false;
+		}
 
 		public static void Remove<T>(List<T> fingerDatas, LeanFinger finger, Stack<T> pool = null)
 			where T : LeanFingerData
@@ -28,6 +63,23 @@ namespace Lean.Touch
 						}
 					}
 				}
+			}
+		}
+
+		public static void RemoveAll<T>(List<T> fingerDatas, Stack<T> pool = null)
+			where T : LeanFingerData
+		{
+			if (fingerDatas != null)
+			{
+				if (pool != null)
+				{
+					for (var i = fingerDatas.Count - 1; i >= 0; i--)
+					{
+						pool.Push(fingerDatas[i]);
+					}
+				}
+
+				fingerDatas.Clear();
 			}
 		}
 

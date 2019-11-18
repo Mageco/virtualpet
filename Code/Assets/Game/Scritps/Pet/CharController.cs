@@ -224,7 +224,6 @@ public class CharController : MonoBehaviour
     protected void OnBed()
     {
         Abort();
-        SetDirection(Direction.D);
         actionType = ActionType.OnBed;
     }
 

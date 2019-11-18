@@ -43,7 +43,6 @@ GameObject:
   - component: {fileID: 6069416419954332818}
   - component: {fileID: 6069416419954332817}
   - component: {fileID: 8264768739620265649}
-  - component: {fileID: 4958877875913284274}
   - component: {fileID: 494781705592010213}
   - component: {fileID: 8264768739376955380}
   m_Layer: 0
@@ -137,60 +136,6 @@ MonoBehaviour:
   isTouch: 0
   touchDirection: 1
   dragOffset: {x: 0, y: 0, z: 0}
---- !u!114 &4958877875913284274
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2846764735703140346}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0c6f41fb25ffc7b4a8308db03a8bfc41, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  IgnoreStartedOverGui: 1
-  IgnoreIsOverGui: 0
-  RequiredSelectable: {fileID: 0}
-  CheckAngle: 0
-  Angle: 0
-  AngleThreshold: 90
-  Clamp: 0
-  Multiplier: 1
-  onSwipe:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 8264768739620265649}
-        m_MethodName: OnFingerSwipe
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_TypeName: Lean.Touch.LeanFingerSwipe+LeanFingerEvent, Assembly-CSharp, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
-  onSwipeDelta:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 8264768739620265649}
-        m_MethodName: OnFingerTouchUp
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_TypeName: Lean.Touch.LeanFingerSwipe+Vector2Event, Assembly-CSharp, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
-  AllowMultiple: 1
-  MultipleSwipeDelay: 0.5
 --- !u!114 &494781705592010213
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -214,6 +159,7 @@ MonoBehaviour:
     petSmall: 
     petMiddle: 
     petBig: 
+    petMiniGame1: 
     level: 0
     speed: 0
     weight: 0
@@ -260,6 +206,7 @@ MonoBehaviour:
   isArrived: 1
   isAbort: 0
   actionType: 0
+  body: {fileID: 0}
   charInteract: {fileID: 0}
   isTouch: 0
   peePosition: {fileID: 4213929617894132666}
@@ -342,6 +289,7 @@ SpriteRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -473,6 +421,7 @@ SpriteRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0

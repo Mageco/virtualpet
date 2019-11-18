@@ -32,24 +32,33 @@ public class CharScale : MonoBehaviour
     void LateUpdate()
     {
 		offset = initZ;
-		if (interact.interactType == InteractType.Drop)
-		{
-			//return;
-			targetScale = dragScale;
-		}
-		else if (interact.interactType == InteractType.Drag) {
-			offset = initZ + character.dragOffset;
-			if (character.transform.position.y > 2)
+		if(character.actionType == ActionType.Hold){
+			if (interact.interactType == InteractType.Drop)
 			{
+				//return;
+				targetScale = dragScale;
+			}
+			else if (interact.interactType == InteractType.Drag) {
+				offset = initZ + character.dragOffset;
+				if (character.transform.position.y > 2)
+				{
+					if (character.transform.position.y < offset)
+						targetScale = originalScale * (1 + (-character.transform.position.y + offset) * scaleFactor);
+					else
+						targetScale = originalScale;
+				}else{
+					targetScale = originalScale * (1 + (-2 + offset) * scaleFactor);
+				}
+				dragScale = targetScale;
+			}else{
 				if (character.transform.position.y < offset)
 					targetScale = originalScale * (1 + (-character.transform.position.y + offset) * scaleFactor);
 				else
-					targetScale = originalScale;
-			}else{
-				targetScale = originalScale * (1 + (-2 + offset) * scaleFactor);
+					targetScale = originalScale;				
 			}
-			dragScale = targetScale;
-		}else{
+			
+		}
+		else{
 			if (character.transform.position.y < offset)
 				targetScale = originalScale * (1 + (-character.transform.position.y + offset) * scaleFactor);
 			else

@@ -1,161 +1,64 @@
 using UnityEngine;
-
 #if UNITY_EDITOR
 using UnityEditor;
-
-namespace Lean.Touch
-{
-	[CustomPropertyDrawer(typeof(LeanScreenDepth))]
-	public class LeanScreenDepth_Drawer : PropertyDrawer
-	{
-		public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
-		{
-			var conversion = (LeanScreenDepth.ConversionType)property.FindPropertyRelative("Conversion").enumValueIndex;
-			var height     = base.GetPropertyHeight(property, label);
-
-			switch (conversion)
-			{
-				case LeanScreenDepth.ConversionType.CameraDistance: return height * 3;
-				case LeanScreenDepth.ConversionType.DepthIntercept: return height * 3;
-				case LeanScreenDepth.ConversionType.PhysicsRaycast: return height * 4;
-				case LeanScreenDepth.ConversionType.PlaneIntercept: return height * 4;
-				case LeanScreenDepth.ConversionType.PathClosest:    return height * 3;
-			}
-
-			return height;
-		}
-
-		public override void OnGUI(Rect rect, SerializedProperty property, GUIContent label)
-		{
-			var conversion = (LeanScreenDepth.ConversionType)property.FindPropertyRelative("Conversion").enumValueIndex;
-			var height     = base.GetPropertyHeight(property, label);
-
-			rect.height = height;
-
-			DrawProperty(ref rect, property, label, "Conversion", label.text, label.tooltip);
-
-			EditorGUI.indentLevel++;
-			{
-				DrawProperty(ref rect, property, label, "Camera");
-
-				switch (conversion)
-				{
-					case LeanScreenDepth.ConversionType.CameraDistance:
-					{
-						var color = GUI.color; if (property.FindPropertyRelative("Distance").floatValue == 0.0f) GUI.color = Color.red;
-						DrawProperty(ref rect, property, label, "Distance", "Distance", "The world space distance from the camera the point will be placed. This should be greater than 0.");
-						GUI.color = color;
-					}
-					break;
-
-					case LeanScreenDepth.ConversionType.DepthIntercept:
-					{
-						DrawProperty(ref rect, property, label, "Distance", "Z =", "The world space point along the Z axis the plane will be placed. For normal 2D scenes this should be 0.");
-					}
-					break;
-
-					case LeanScreenDepth.ConversionType.PhysicsRaycast:
-					{
-						var color = GUI.color; if (property.FindPropertyRelative("Layers").intValue == 0) GUI.color = Color.red;
-							DrawProperty(ref rect, property, label, "Layers");
-						GUI.color = color;
-						DrawProperty(ref rect, property, label, "Distance", "Offset", "The world space offset from the raycast hit point.");
-					}
-					break;
-
-					case LeanScreenDepth.ConversionType.PlaneIntercept:
-					{
-						DrawObjectProperty<LeanPlane>(ref rect, property, "Plane");
-						DrawProperty(ref rect, property, label, "Distance", "Offset", "The world space offset from the intercept hit point.");
-					}
-					break;
-
-					case LeanScreenDepth.ConversionType.PathClosest:
-					{
-						DrawObjectProperty<LeanPath>(ref rect, property, "Path");
-					}
-					break;
-				}
-			}
-			EditorGUI.indentLevel--;
-		}
-
-		private void DrawObjectProperty<T>(ref Rect rect, SerializedProperty property, string title)
-			where T : Object
-		{
-			var propertyObject = property.FindPropertyRelative("Object");
-			var oldValue       = propertyObject.objectReferenceValue as T;
-
-			var color = GUI.color; if (oldValue == null) GUI.color = Color.red;
-				var mixed = EditorGUI.showMixedValue; EditorGUI.showMixedValue = propertyObject.hasMultipleDifferentValues;
-					var newValue = EditorGUI.ObjectField(rect, title, oldValue, typeof(T), true);
-				EditorGUI.showMixedValue = mixed;
-			GUI.color = color;
-
-			if (oldValue != newValue)
-			{
-				propertyObject.objectReferenceValue = newValue;
-			}
-
-			rect.y += rect.height;
-		}
-
-		private void DrawProperty(ref Rect rect, SerializedProperty property, GUIContent label, string childName, string overrideName = null, string overrideTooltip = null)
-		{
-			var childProperty = property.FindPropertyRelative(childName);
-
-			if (string.IsNullOrEmpty(overrideName) == false)
-			{
-				label.text    = overrideName;
-				label.tooltip = overrideTooltip;
-
-				EditorGUI.PropertyField(rect, childProperty, label);
-			}
-			else
-			{
-				EditorGUI.PropertyField(rect, childProperty);
-			}
-
-			rect.y += rect.height;
-		}
-	}
-}
 #endif
 
 namespace Lean.Touch
 {
-	/// <summary>This struct allows you to convert from a screen point to a world point using a variety of different methods.</summary>
+	/// <summary>This struct handles the conversion between screen coordinates, and world coordinates.
+	/// This conversion is required for many touch interactions, and there are numerous ways it can be performed.</summary>
 	[System.Serializable]
 	public struct LeanScreenDepth
 	{
 		public enum ConversionType
 		{
-			CameraDistance,
+			FixedDistance,
 			DepthIntercept,
 			PhysicsRaycast,
 			PlaneIntercept,
 			PathClosest,
+			AutoDistance,
+			HeightIntercept
 		}
 
-		[Tooltip("The conversion method used to find a world point from a screen point.")]
+		/// <summary>The method used to convert between screen coordinates, and world coordinates.
+		/// FixedDistance = A point will be projected out from the camera.
+		/// DepthIntercept = A point will be intercepted out from the camera on a surface lying flat on the XY plane.
+		/// PhysicsRaycast = A ray will be cast from the camera.
+		/// PathClosest = A point will be intercepted out from the camera to the closest point on the specified path.
+		/// AutoDistance = A point will be projected out from the camera based on the current Transform depth.
+		/// HeightIntercept = A point will be intercepted out from the camera on a surface lying flat on the XZ plane.</summary>
 		public ConversionType Conversion;
 
-		[Tooltip("The camera the depth calculations will be done using (None = MainCamera).")]
+		/// <summary>The camera the depth calculations will be done using.
+		/// None = MainCamera.</summary>
+		[Tooltip("The camera the depth calculations will be done using.\n\nNone = MainCamera.")]
 		public Camera Camera;
 
+		/// <summary>The plane/path/etc that will be intercepted.</summary>
 		[Tooltip("The plane/path/etc that will be intercepted.")]
 		public Object Object;
 
+		/// <summary>The layers used in the raycast.</summary>
 		[Tooltip("The layers used in the raycast.")]
 		public LayerMask Layers;
 
-		// Toolips are modified at runtime based on Conversion setting
+		/// <summary>Toolips are modified at runtime based on Conversion setting.</summary>
 		public float Distance;
 
 		/// <summary>When performing a ScreenDepth conversion, the converted point can have a normal associated with it. This stores that.</summary>
 		public static Vector3 LastWorldNormal = Vector3.forward;
 
-		private static RaycastHit[] hits = new RaycastHit[128];
+		private static readonly RaycastHit[] hits = new RaycastHit[128];
+
+		public LeanScreenDepth(ConversionType newConversion, int newLayers = Physics.DefaultRaycastLayers, float newDistance = 0.0f)
+		{
+			Conversion = newConversion;
+			Camera     = null;
+			Object     = null;
+			Layers     = newLayers;
+			Distance   = newDistance;
+		}
 
 		// This will do the actual conversion
 		public Vector3 Convert(Vector2 screenPoint, GameObject gameObject = null, Transform ignore = null)
@@ -185,7 +88,7 @@ namespace Lean.Touch
 			{
 				switch (Conversion)
 				{
-					case ConversionType.CameraDistance:
+					case ConversionType.FixedDistance:
 					{
 						var screenPoint3 = new Vector3(screenPoint.x, screenPoint.y, Distance);
 
@@ -203,7 +106,7 @@ namespace Lean.Touch
 
 						if (slope != 0.0f)
 						{
-							var scale = (ray.origin.z + Distance) / slope;
+							var scale = (ray.origin.z - Distance) / slope;
 
 							position = ray.GetPoint(scale);
 
@@ -285,6 +188,40 @@ namespace Lean.Touch
 						}
 					}
 					break;
+
+					case ConversionType.AutoDistance:
+					{
+						if (gameObject != null)
+						{
+							var depth        = camera.WorldToScreenPoint(gameObject.transform.position).z;
+							var screenPoint3 = new Vector3(screenPoint.x, screenPoint.y, depth + Distance);
+
+							position = camera.ScreenToWorldPoint(screenPoint3);
+
+							LastWorldNormal = -camera.transform.forward;
+
+							return true;
+						}
+					}
+					break;
+
+					case ConversionType.HeightIntercept:
+					{
+						var ray   = camera.ScreenPointToRay(screenPoint);
+						var slope = -ray.direction.y;
+
+						if (slope != 0.0f)
+						{
+							var scale = (ray.origin.y - Distance) / slope;
+
+							position = ray.GetPoint(scale);
+
+							LastWorldNormal = Vector3.down;
+
+							return true;
+						}
+					}
+					break;
 				}
 			}
 			else
@@ -320,3 +257,132 @@ namespace Lean.Touch
 		}
 	}
 }
+
+#if UNITY_EDITOR
+namespace Lean.Touch
+{
+	[CustomPropertyDrawer(typeof(LeanScreenDepth))]
+	public class LeanScreenDepth_Drawer : PropertyDrawer
+	{
+		public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
+		{
+			var conversion = (LeanScreenDepth.ConversionType)property.FindPropertyRelative("Conversion").enumValueIndex;
+			var height     = base.GetPropertyHeight(property, label);
+			var step       = height + 2;
+
+			switch (conversion)
+			{
+				case LeanScreenDepth.ConversionType.FixedDistance:   height += step * 2; break;
+				case LeanScreenDepth.ConversionType.DepthIntercept:  height += step * 2; break;
+				case LeanScreenDepth.ConversionType.PhysicsRaycast:  height += step * 3; break;
+				case LeanScreenDepth.ConversionType.PlaneIntercept:  height += step * 3; break;
+				case LeanScreenDepth.ConversionType.PathClosest:     height += step * 2; break;
+				case LeanScreenDepth.ConversionType.AutoDistance:    height += step * 2; break;
+				case LeanScreenDepth.ConversionType.HeightIntercept: height += step * 2; break;
+			}
+
+			return height;
+		}
+
+		public override void OnGUI(Rect rect, SerializedProperty property, GUIContent label)
+		{
+			var conversion = (LeanScreenDepth.ConversionType)property.FindPropertyRelative("Conversion").enumValueIndex;
+			var height     = base.GetPropertyHeight(property, label);
+
+			rect.height = height;
+
+			DrawProperty(ref rect, property, label, "Conversion", label.text, "The method used to convert between screen coordinates, and world coordinates.\n\nFixedDistance = A point will be projected out from the camera.\n\nDepthIntercept = A point will be intercepted out from the camera on a surface lying flat on the XY plane.\n\nPhysicsRaycast = A ray will be cast from the camera.\n\nPathClosest = A point will be intercepted out from the camera to the closest point on the specified path.\n\nAutoDistance = A point will be projected out from the camera based on the current Transform depth.\n\nHeightIntercept = A point will be intercepted out from the camera on a surface lying flat on the XZ plane.");
+
+			EditorGUI.indentLevel++;
+			{
+				DrawProperty(ref rect, property, label, "Camera");
+
+				switch (conversion)
+				{
+					case LeanScreenDepth.ConversionType.FixedDistance:
+					{
+						var color = GUI.color; if (property.FindPropertyRelative("Distance").floatValue == 0.0f) GUI.color = Color.red;
+						DrawProperty(ref rect, property, label, "Distance", "Distance", "The world space distance from the camera the point will be placed. This should be greater than 0.");
+						GUI.color = color;
+					}
+					break;
+
+					case LeanScreenDepth.ConversionType.DepthIntercept:
+					{
+						DrawProperty(ref rect, property, label, "Distance", "Z =", "The world space point along the Z axis the plane will be placed. For normal 2D scenes this should be 0.");
+					}
+					break;
+
+					case LeanScreenDepth.ConversionType.PhysicsRaycast:
+					{
+						var color = GUI.color; if (property.FindPropertyRelative("Layers").intValue == 0) GUI.color = Color.red;
+							DrawProperty(ref rect, property, label, "Layers");
+						GUI.color = color;
+						DrawProperty(ref rect, property, label, "Distance", "Offset", "The world space offset from the raycast hit point.");
+					}
+					break;
+
+					case LeanScreenDepth.ConversionType.PlaneIntercept:
+					{
+						DrawObjectProperty<LeanPlane>(ref rect, property, "Plane");
+						DrawProperty(ref rect, property, label, "Distance", "Offset", "The world space offset from the intercept hit point.");
+					}
+					break;
+
+					case LeanScreenDepth.ConversionType.PathClosest:
+					{
+						DrawObjectProperty<LeanPath>(ref rect, property, "Path");
+					}
+					break;
+
+					case LeanScreenDepth.ConversionType.AutoDistance:
+					{
+						DrawProperty(ref rect, property, label, "Distance", "Offset", "The depth offset from the calculated point.");
+					}
+					break;
+
+					case LeanScreenDepth.ConversionType.HeightIntercept:
+					{
+						DrawProperty(ref rect, property, label, "Distance", "Z =", "The world space point along the Y axis the plane will be placed. For normal top down scenes this should be 0.");
+					}
+					break;
+				}
+			}
+			EditorGUI.indentLevel--;
+		}
+
+		private void DrawObjectProperty<T>(ref Rect rect, SerializedProperty property, string title)
+			where T : Object
+		{
+			var propertyObject = property.FindPropertyRelative("Object");
+			var oldValue       = propertyObject.objectReferenceValue as T;
+
+			var color = GUI.color; if (oldValue == null) GUI.color = Color.red;
+				var mixed = EditorGUI.showMixedValue; EditorGUI.showMixedValue = propertyObject.hasMultipleDifferentValues;
+					var newValue = EditorGUI.ObjectField(rect, title, oldValue, typeof(T), true);
+				EditorGUI.showMixedValue = mixed;
+			GUI.color = color;
+
+			if (oldValue != newValue)
+			{
+				propertyObject.objectReferenceValue = newValue;
+			}
+
+			rect.y += rect.height;
+		}
+
+		private void DrawProperty(ref Rect rect, SerializedProperty property, GUIContent label, string childName, string overrideName = null, string overrideTooltip = null)
+		{
+			var childProperty = property.FindPropertyRelative(childName);
+
+			label.text = string.IsNullOrEmpty(overrideName) == false ? overrideName : childProperty.displayName;
+
+			label.tooltip = string.IsNullOrEmpty(overrideTooltip) == false ? overrideTooltip : childProperty.tooltip;
+
+			EditorGUI.PropertyField(rect, childProperty, label);
+
+			rect.y += rect.height + 2;
+		}
+	}
+}
+#endif

@@ -6,25 +6,22 @@ namespace Lean.Touch
 	/// <summary>This component allows you to change the color of the Graphic (e.g. Image) attached to the current GameObject when selected.</summary>
 	[RequireComponent(typeof(Graphic))]
 	[HelpURL(LeanTouch.HelpUrlPrefix + "LeanSelectableGraphicColor")]
+	[AddComponentMenu(LeanTouch.ComponentPathPrefix + "Selectable Graphic Color")]
 	public class LeanSelectableGraphicColor : LeanSelectableBehaviour
 	{
+		/// <summary>Automatically read the DefaultColor from the Renderer.material?</summary>
 		[Tooltip("Automatically read the DefaultColor from the Renderer.material?")]
 		public bool AutoGetDefaultColor;
 
-		[Tooltip("The default color given to the Renderer.material")]
+		/// <summary>The default color given to the Renderer.material.</summary>
+		[Tooltip("The default color given to the Renderer.material.")]
 		public Color DefaultColor = Color.white;
 
-		[Tooltip("The color given to the Renderer.material when selected")]
+		/// <summary>The color given to the Renderer.material when selected.</summary>
+		[Tooltip("The color given to the Renderer.material when selected.")]
 		public Color SelectedColor = Color.green;
 
-#if UNITY_EDITOR
-		protected virtual void Reset()
-		{
-			Start();
-		}
-#endif
-
-		protected virtual void Start()
+		protected virtual void Awake()
 		{
 			if (AutoGetDefaultColor == true)
 			{

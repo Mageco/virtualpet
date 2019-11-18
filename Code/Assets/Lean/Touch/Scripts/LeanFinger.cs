@@ -28,6 +28,9 @@ namespace Lean.Touch
 		/// <summary>Did this finger just swipe the screen?</summary>
 		public bool Swipe;
 
+		/// <summary>If this finger has been touching the screen for more than TapThreshold, this will be true.</summary>
+		public bool Old;
+
 		/// <summary>If this finger has been inactive for more than TapThreshold, this will be true.</summary>
 		public bool Expired;
 

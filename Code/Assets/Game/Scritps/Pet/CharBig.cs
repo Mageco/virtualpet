@@ -390,7 +390,8 @@ public class CharBig : CharController
         {
             anim.Play("Hold_Sick_D", 0);
         }
-        else{
+        else
+        {
             anim.Play("Hold_D", 0);
         }
         while (charInteract.interactType == InteractType.Drag)
@@ -440,11 +441,19 @@ public class CharBig : CharController
                 enviromentType = EnviromentType.Bath;
                 break;
             }
+            else if (hit[i].collider.tag == "Bed")
+            {
+                pos2.y = hit[i].collider.transform.position.y;
+                pos2.z = hit[i].collider.transform.position.z;
+                dropPosition = pos2;
+                enviromentType = EnviromentType.Bed;
+                break;
+            }
         }
 
         float fallSpeed = 0;
         float maxTime = 1;
-        while (charInteract.interactType == InteractType.Drop)
+        while (charInteract.interactType == InteractType.Drop && !isAbort)
         {
             fallSpeed += 100f * Time.deltaTime;
             if (fallSpeed > 50)
@@ -493,13 +502,19 @@ public class CharBig : CharController
         }
         else
         {
-            if (enviromentType == EnviromentType.Bath)
-            {
-                OnBath();
-            }
-            else if (enviromentType == EnviromentType.Table)
-            {
-                OnTable();
+            if(!isAbort){
+                if (enviromentType == EnviromentType.Bath)
+                {
+                    OnBath();
+                }
+                else if (enviromentType == EnviromentType.Table)
+                {
+                    OnTable();
+                }
+                else if (enviromentType == EnviromentType.Bed)
+                {
+                    OnBed();
+                }
             }
         }
 

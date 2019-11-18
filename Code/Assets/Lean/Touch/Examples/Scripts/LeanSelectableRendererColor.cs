@@ -5,29 +5,27 @@ namespace Lean.Touch
 	/// <summary>This component allows you to change the color of the Renderer (e.g. MeshRenderer) attached to the current GameObject when selected.</summary>
 	[RequireComponent(typeof(Renderer))]
 	[HelpURL(LeanTouch.HelpUrlPrefix + "LeanSelectableRendererColor")]
+	[AddComponentMenu(LeanTouch.ComponentPathPrefix + "Selectable Renderer Color")]
 	public class LeanSelectableRendererColor : LeanSelectableBehaviour
 	{
+		/// <summary>Automatically read the DefaultColor from the material?</summary>
 		[Tooltip("Automatically read the DefaultColor from the material?")]
 		public bool AutoGetDefaultColor;
 
-		[Tooltip("The default color given to the materials")]
+		/// <summary>The default color given to the materials.</summary>
+		[Tooltip("The default color given to the materials.")]
 		public Color DefaultColor = Color.white;
 
-		[Tooltip("The color given to the materials when selected")]
+		/// <summary>The color given to the materials when selected.</summary>
+		[Tooltip("The color given to the materials when selected.")]
 		public Color SelectedColor = Color.green;
 
+		/// <summary>Should the materials get cloned at the start?</summary>
 		[Tooltip("Should the materials get cloned at the start?")]
 		public bool CloneMaterials = true;
 
 		[System.NonSerialized]
 		private Renderer cachedRenderer;
-
-#if UNITY_EDITOR
-		protected virtual void Reset()
-		{
-			Awake();
-		}
-#endif
 
 		protected virtual void Awake()
 		{

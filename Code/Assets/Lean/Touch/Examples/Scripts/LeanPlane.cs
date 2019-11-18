@@ -4,9 +4,10 @@ namespace Lean.Touch
 {
 	/// <summary>This component stores information about a 3D plane. By default this plane lays on the XY axis, or faces the Z axis.</summary>
 	[HelpURL(LeanTouch.HelpUrlPrefix + "LeanPlane")]
+	[AddComponentMenu(LeanTouch.ComponentPathPrefix + "Plane")]
 	public class LeanPlane : MonoBehaviour
 	{
-		[Header("Clamp")]
+		/// <summary>Should the plane be clamped on the x axis?</summary>
 		[Tooltip("Should the plane be clamped on the x axis?")]
 		public bool ClampX;
 
@@ -14,6 +15,8 @@ namespace Lean.Touch
 
 		public float MaxX;
 
+		[Space]
+		/// <summary>Should the plane be clamped on the y axis?</summary>
 		[Tooltip("Should the plane be clamped on the y axis?")]
 		public bool ClampY;
 
@@ -21,11 +24,13 @@ namespace Lean.Touch
 
 		public float MaxY;
 
-		[Header("Snap")]
-		[Tooltip("The distance between each position snap on the x axis")]
+		[Space]
+		/// <summary>The distance between each position snap on the x axis.</summary>
+		[Tooltip("The distance between each position snap on the x axis.")]
 		public float SnapX;
 
-		[Tooltip("The distance between each position snap on the x axis")]
+		/// <summary>The distance between each position snap on the x axis.</summary>
+		[Tooltip("The distance between each position snap on the x axis.")]
 		public float SnapY;
 
 		public Vector3 GetClosest(Vector3 position, float offset = 0.0f)

@@ -73,7 +73,7 @@ public class GameManager : MonoBehaviour
     void AddPet(int itemId)
     {
         Pet p = new Pet(itemId);
-       
+        p.AddExp(30);
         CharController c = p.Load();
         pets.Add(p);
         petObjects.Add(c);

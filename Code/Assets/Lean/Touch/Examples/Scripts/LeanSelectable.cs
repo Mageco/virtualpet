@@ -2,65 +2,9 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Serialization;
 using System.Collections.Generic;
-
+using Lean.Common;
 #if UNITY_EDITOR
 using UnityEditor;
-
-namespace Lean.Touch
-{
-	[CanEditMultipleObjects]
-	[CustomEditor(typeof(LeanSelectable))]
-	public class LeanSelectable_Inspector : Common.LeanInspector<LeanSelectable>
-	{
-		private bool showUnusedEvents;
-
-		// Draw the whole inspector
-		protected override void DrawInspector()
-		{
-			// isSelected modified?
-			if (Draw("isSelected") == true)
-			{
-				// Grab the new value
-				var isSelected = serializedObject.FindProperty("isSelected").boolValue;
-
-				// Apply it directly to each instance before the SerializedObject applies it when this method returns
-				Each(t => t.IsSelected = isSelected);
-			}
-			Draw("DeselectOnUp");
-			Draw("HideWithFinger");
-			Draw("IsolateSelectingFingers");
-
-			EditorGUILayout.Separator();
-
-			var usedA = Any(t => t.OnSelect.GetPersistentEventCount() > 0);
-			var usedB = Any(t => t.OnSelectSet.GetPersistentEventCount() > 0);
-			var usedC = Any(t => t.OnSelectUp.GetPersistentEventCount() > 0);
-			var usedD = Any(t => t.OnDeselect.GetPersistentEventCount() > 0);
-
-			showUnusedEvents = EditorGUILayout.Foldout(showUnusedEvents, "Show Unused Events");
-
-			if (usedA == true || showUnusedEvents == true)
-			{
-				Draw("onSelect");
-			}
-
-			if (usedB == true || showUnusedEvents == true)
-			{
-				Draw("onSelectSet");
-			}
-
-			if (usedC == true || showUnusedEvents == true)
-			{
-				Draw("onSelectUp");
-			}
-
-			if (usedD == true || showUnusedEvents == true)
-			{
-				Draw("onDeselect");
-			}
-		}
-	}
-}
 #endif
 
 namespace Lean.Touch
@@ -73,20 +17,20 @@ namespace Lean.Touch
 	[ExecuteInEditMode]
 	[DisallowMultipleComponent]
 	[HelpURL(LeanTouch.HelpUrlPrefix + "LeanSelectable")]
+	[AddComponentMenu(LeanTouch.ComponentPathPrefix + "Selectable")]
 	public class LeanSelectable : MonoBehaviour
 	{
-		// Event signature
 		[System.Serializable] public class LeanFingerEvent : UnityEvent<LeanFinger> {}
 
-		public static List<LeanSelectable> Instances = new List<LeanSelectable>();
+		public static LinkedList<LeanSelectable> Instances = new LinkedList<LeanSelectable>();
 
-		public static System.Action<LeanSelectable, LeanFinger> OnSelectGlobal;
+		public static event System.Action<LeanSelectable, LeanFinger> OnSelectGlobal;
 
-		public static System.Action<LeanSelectable, LeanFinger> OnSelectSetGlobal;
+		public static event System.Action<LeanSelectable, LeanFinger> OnSelectSetGlobal;
 
-		public static System.Action<LeanSelectable, LeanFinger> OnSelectUpGlobal;
+		public static event System.Action<LeanSelectable, LeanFinger> OnSelectUpGlobal;
 
-		public static System.Action<LeanSelectable> OnDeselectGlobal;
+		public static event System.Action<LeanSelectable> OnDeselectGlobal;
 
 		[Tooltip("Should this get deselected when the selecting finger goes up?")]
 		public bool DeselectOnUp;
@@ -118,6 +62,9 @@ namespace Lean.Touch
 		// If a finger goes up then it will be removed from this list
 		[System.NonSerialized]
 		private List<LeanFinger> selectingFingers = new List<LeanFinger>();
+
+		[System.NonSerialized]
+		private LinkedListNode<LeanSelectable> node;
 
 		/// <summary>Returns isSelected, or false if HideWithFinger is true and SelectingFinger is still set.</summary>
 		public bool IsSelected
@@ -162,9 +109,9 @@ namespace Lean.Touch
 			{
 				var count = 0;
 
-				for (var i = Instances.Count - 1; i >= 0; i--)
+				foreach (var selectable in Instances)
 				{
-					if (Instances[i].IsSelected == true)
+					if (selectable.IsSelected == true)
 					{
 						count += 1;
 					}
@@ -215,29 +162,48 @@ namespace Lean.Touch
 					fingers.Clear();
 
 					fingers.AddRange(requiredSelectable.selectingFingers);
+
+					if (requiredFingerCount > 0 && fingers.Count != requiredFingerCount)
+					{
+						fingers.Clear();
+					}
 				}
 			}
 
 			return fingers;
 		}
 
+		private static List<LeanSelectable> tempSelectables = new List<LeanSelectable>();
+
+		/// <summary>This allows you to fill a list of all selected instances.</summary>
+		public static void GetSelected(List<LeanSelectable> list)
+		{
+			if (list != null)
+			{
+				list.Clear();
+
+				foreach (var selectable in Instances)
+				{
+					if (selectable.IsSelected == true)
+					{
+						list.Add(selectable);
+					}
+				}
+			}
+		}
+
 		/// <summary>This allows you to limit how many objects can be selected in your scene.</summary>
 		public static void Cull(int maxCount)
 		{
-			var count = 0;
+			GetSelected(tempSelectables);
 
-			for (var i = Instances.Count - 1; i >= 0; i--)
+			for (var i = maxCount; i < tempSelectables.Count; i++)
 			{
-				var selectable = Instances[i];
+				var selectable = tempSelectables[i];
 
-				if (selectable.IsSelected == true)
+				if (selectable != null) // If one selectable deselection triggers destruction of another, it may cause it to be null
 				{
-					count += 1;
-
-					if (count > maxCount)
-					{
-						selectable.Deselect();
-					}
+					selectable.Deselect();
 				}
 			}
 		}
@@ -245,10 +211,8 @@ namespace Lean.Touch
 		/// <summary>If the specified finger selected an object, this will return the first one.</summary>
 		public static LeanSelectable FindSelectable(LeanFinger finger)
 		{
-			for (var i = Instances.Count - 1; i >= 0; i--)
+			foreach (var selectable in Instances)
 			{
-				var selectable = Instances[i];
-
 				if (selectable.IsSelectedBy(finger) == true)
 				{
 					return selectable;
@@ -266,11 +230,19 @@ namespace Lean.Touch
 			// Deselect missing selectables
 			if (selectables != null)
 			{
-				for (var i = Instances.Count - 1; i >= 0; i--)
-				{
-					var selectable = Instances[i];
+				tempSelectables.Clear();
 
+				foreach (var selectable in Instances)
+				{
 					if (selectable.isSelected == true && selectables.Contains(selectable) == false)
+					{
+						tempSelectables.Add(selectable);
+					}
+				}
+
+				foreach (var selectable in tempSelectables)
+				{
+					if (selectable != null) // If one selectable deselection triggers destruction of another, it may cause it to be null
 					{
 						selectable.Deselect();
 					}
@@ -352,14 +324,6 @@ namespace Lean.Touch
 			{
 				OnSelectGlobal(this, finger);
 			}
-
-			// Make sure FingerUp is only registered once
-			LeanTouch.OnFingerUp -= FingerUp;
-			LeanTouch.OnFingerUp += FingerUp;
-
-			// Make sure FingerSet is only registered once
-			LeanTouch.OnFingerSet -= FingerSet;
-			LeanTouch.OnFingerSet += FingerSet;
 		}
 
 		/// <summary>This deselects the current object.</summary>
@@ -406,21 +370,35 @@ namespace Lean.Touch
 		/// <summary>This deselects all objects in the scene.</summary>
 		public static void DeselectAll()
 		{
-			for (var i = Instances.Count - 1; i >= 0; i--)
+			GetSelected(tempSelectables);
+
+			foreach (var selectable in tempSelectables)
 			{
-				Instances[i].Deselect();
+				selectable.Deselect();
 			}
 		}
 
 		protected virtual void OnEnable()
 		{
-			// Register instance
-			Instances.Add(this);
+			Instances.AddLast(this);
+
+			if (Instances.Count == 1)
+			{
+				LeanTouch.OnFingerSet      += HandleFingerSet;
+				LeanTouch.OnFingerUp       += HandleFingerUp;
+				LeanTouch.OnFingerInactive += HandleFingerInactive;
+			}
 		}
 
 		protected virtual void OnDisable()
 		{
-			// Unregister instance
+			if (Instances.Count == 1)
+			{
+				LeanTouch.OnFingerSet      -= HandleFingerSet;
+				LeanTouch.OnFingerUp       -= HandleFingerUp;
+				LeanTouch.OnFingerInactive -= HandleFingerInactive;
+			}
+
 			Instances.Remove(this);
 
 			if (isSelected == true)
@@ -429,30 +407,26 @@ namespace Lean.Touch
 			}
 		}
 
-		protected virtual void LateUpdate()
+		private static void BuildTempSelectables(LeanFinger finger)
 		{
-			// Null the selecting finger?
-			// NOTE: This is done in LateUpdate so certain OnFingerUp actions that require checking SelectingFinger can still work properly
-			for (var i = selectingFingers.Count - 1; i >= 0; i--)
-			{
-				var selectingFinger = selectingFingers[i];
+			tempSelectables.Clear();
 
-				if (selectingFinger.Set == false || isSelected == false)
+			foreach (var selectable in Instances)
+			{
+				if (selectable.IsSelectedBy(finger) == true)
 				{
-					selectingFingers.RemoveAt(i);
+					tempSelectables.Add(selectable);
 				}
 			}
 		}
 
-		private static void FingerSet(LeanFinger finger)
+		private static void HandleFingerSet(LeanFinger finger)
 		{
-			// Loop through all selectables
-			for (var i = Instances.Count - 1; i >= 0; i--)
-			{
-				var selectable = Instances[i];
+			BuildTempSelectables(finger);
 
-				// Was this selected with this finger?
-				if (selectable.IsSelectedBy(finger) == true)
+			foreach (var selectable in tempSelectables)
+			{
+				if (selectable != null) // If one selectable deselection triggers destruction of another, it may cause it to be null
 				{
 					if (selectable.onSelectSet != null)
 					{
@@ -467,36 +441,117 @@ namespace Lean.Touch
 			}
 		}
 
-		private static void FingerUp(LeanFinger finger)
+		private bool AnyFingersSet
 		{
-			// Loop through all selectables
-			for (var i = Instances.Count - 1; i >= 0; i--)
+			get
 			{
-				var selectable = Instances[i];
-
-				// Was this selected with this finger?
-				for (var j = selectable.selectingFingers.Count - 1; j >= 0; j--)
+				for (var i = selectingFingers.Count - 1; i >= 0; i--)
 				{
-					if (selectable.selectingFingers[j] == finger)
+					if (selectingFingers[i].Set == true)
 					{
-						if (selectable.DeselectOnUp == true && selectable.IsSelected == true && selectable.selectingFingers.Count == 1)
-						{
-							selectable.Deselect();
-						}
-						// Deselection will call onSelectUp
-						else
-						{
-							// Null the finger and call onSelectUp
-							selectable.selectingFingers.RemoveAt(j);
+						return true;
+					}
+				}
 
-							if (selectable.onSelectUp != null)
-							{
-								selectable.onSelectUp.Invoke(finger);
-							}
+				return false;
+			}
+		}
+
+		private static void HandleFingerUp(LeanFinger finger)
+		{
+			BuildTempSelectables(finger);
+
+			foreach (var selectable in tempSelectables)
+			{
+				if (selectable != null) // If one selectable deselection triggers destruction of another, it may cause it to be null
+				{
+					if (selectable.DeselectOnUp == true && selectable.IsSelected == true && selectable.AnyFingersSet == false)
+					{
+						selectable.Deselect();
+					}
+					// Deselection will call onSelectUp
+					else
+					{
+						if (selectable.onSelectUp != null)
+						{
+							selectable.onSelectUp.Invoke(finger);
+						}
+
+						if (OnSelectUpGlobal != null)
+						{
+							OnSelectUpGlobal(selectable, finger);
 						}
 					}
 				}
 			}
 		}
+
+		private static void HandleFingerInactive(LeanFinger finger)
+		{
+			foreach (var selectable in Instances)
+			{
+				selectable.selectingFingers.Remove(finger);
+			}
+		}
 	}
 }
+
+#if UNITY_EDITOR
+namespace Lean.Touch
+{
+	[CanEditMultipleObjects]
+	[CustomEditor(typeof(LeanSelectable))]
+	public class LeanSelectable_Inspector : LeanInspector<LeanSelectable>
+	{
+		private bool showUnusedEvents;
+
+		// Draw the whole inspector
+		protected override void DrawInspector()
+		{
+			// isSelected modified?
+			if (Draw("isSelected") == true)
+			{
+				// Grab the new value
+				var isSelected = serializedObject.FindProperty("isSelected").boolValue;
+
+				// Apply it directly to each instance before the SerializedObject applies it when this method returns
+				Each(t => t.IsSelected = isSelected);
+			}
+			Draw("DeselectOnUp");
+			Draw("HideWithFinger");
+			Draw("IsolateSelectingFingers");
+
+			EditorGUILayout.Separator();
+
+			var usedA = Any(t => t.OnSelect.GetPersistentEventCount() > 0);
+			var usedB = Any(t => t.OnSelectSet.GetPersistentEventCount() > 0);
+			var usedC = Any(t => t.OnSelectUp.GetPersistentEventCount() > 0);
+			var usedD = Any(t => t.OnDeselect.GetPersistentEventCount() > 0);
+
+			showUnusedEvents = EditorGUILayout.Foldout(showUnusedEvents, "Show Unused Events");
+
+			EditorGUILayout.Separator();
+
+			if (usedA == true || showUnusedEvents == true)
+			{
+				Draw("onSelect");
+			}
+
+			if (usedB == true || showUnusedEvents == true)
+			{
+				Draw("onSelectSet");
+			}
+
+			if (usedC == true || showUnusedEvents == true)
+			{
+				Draw("onSelectUp");
+			}
+
+			if (usedD == true || showUnusedEvents == true)
+			{
+				Draw("onDeselect");
+			}
+		}
+	}
+}
+#endif

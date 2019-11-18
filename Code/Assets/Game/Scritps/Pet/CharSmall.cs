@@ -149,7 +149,7 @@ public class CharSmall : CharController
 
         float fallSpeed = 0;
         float maxTime = 1;
-        while (charInteract.interactType == InteractType.Drop)
+        while (charInteract.interactType == InteractType.Drop && !isAbort)
         {
             fallSpeed += 100f * Time.deltaTime;
             if (fallSpeed > 50)
@@ -189,17 +189,19 @@ public class CharSmall : CharController
         }
         else
         {
-            if (enviromentType == EnviromentType.Bath)
-            {
-                OnBath();
-            }
-            else if (enviromentType == EnviromentType.Table)
-            {
-                OnTable();
-            }
-            else if (enviromentType == EnviromentType.Bed)
-            {
-                OnBed();
+            if(!isAbort){
+                if (enviromentType == EnviromentType.Bath)
+                {
+                    OnBath();
+                }
+                else if (enviromentType == EnviromentType.Table)
+                {
+                    OnTable();
+                }
+                else if (enviromentType == EnviromentType.Bed)
+                {
+                    OnBed();
+                }
             }
         }
 

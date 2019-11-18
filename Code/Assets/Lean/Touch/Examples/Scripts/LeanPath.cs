@@ -5,18 +5,23 @@ namespace Lean.Touch
 {
 	/// <summary>This component stores a list of points that form a path.</summary>
 	[HelpURL(LeanTouch.HelpUrlPrefix + "LeanPath")]
+	[AddComponentMenu(LeanTouch.ComponentPathPrefix + "Path")]
 	public class LeanPath : MonoBehaviour
 	{
-		[Tooltip("The points along the path")]
+		/// <summary>The points along the path.</summary>
+		[Tooltip("The points along the path.")]
 		public List<Vector3> Points;
 
+		/// <summary>Do these points loop back to the start?</summary>
 		[Tooltip("Do these points loop back to the start?")]
 		public bool Loop;
 
-		[Tooltip("The coordinate system for the points")]
+		/// <summary>The coordinate system for the points.</summary>
+		[Tooltip("The coordinate system for the points.")]
 		public Space Space = Space.Self;
 
-		[Tooltip("The amount of lines between each path point when read from LeanScreenDepth")]
+		/// <summary>The amount of lines between each path point when read from LeanScreenDepth.</summary>
+		[Tooltip("The amount of lines between each path point when read from LeanScreenDepth.")]
 		public int Smoothing = 1;
 
 		public static Vector3 LastWorldNormal = Vector3.forward;
