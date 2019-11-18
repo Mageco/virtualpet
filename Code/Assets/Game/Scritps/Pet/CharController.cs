@@ -227,6 +227,12 @@ public class CharController : MonoBehaviour
         actionType = ActionType.OnBed;
     }
 
+    protected void OnToilet()
+    {
+        Abort();
+        actionType = ActionType.OnToilet;
+    }
+
     protected void OnTable()
     {
         Abort();

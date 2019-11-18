@@ -268,6 +268,8 @@ public class CharBig : CharController
             StartCoroutine(SkillUp());
         }else if(actionType == ActionType.LevelUp){
             StartCoroutine(LevelUp());
+        }else if(actionType == ActionType.OnBed){
+            StartCoroutine(Bed());
         }
     }
     #endregion
@@ -966,6 +968,52 @@ public class CharBig : CharController
 
         CheckAbort();
 
+    }
+
+    IEnumerator Bed()
+    {
+        if(data.sleep < 0.3f*data.maxSleep){
+            actionType = ActionType.Sleep;
+            isAbort = true;
+        }
+        else{
+            int ran = Random.Range(0,100);
+            if(ran > 0){
+                if(!isAbort){
+                    anim.Play("Jump_D", 0);
+                    float speed = 5;
+                    Vector3 dropPosition = new Vector3(this.transform.position.x, this.transform.position.y - 10, 0);
+                    charInteract.interactType = InteractType.Drop;
+                    while (charInteract.interactType == InteractType.Drop && !isAbort)
+                    {
+                        speed -= 30 * Time.deltaTime;
+                        if (speed < -50)
+                            speed = -50;
+                        Vector3 pos1 = agent.transform.position;
+                        pos1.y += speed * Time.deltaTime;
+                        pos1.x = agent.transform.position.x;
+                        pos1.z = dropPosition.y;
+                        agent.transform.position = pos1;
+
+                        if (Mathf.Abs(agent.transform.position.y - dropPosition.y) < 2f)
+                        {
+                            this.transform.rotation = Quaternion.identity;
+                            charInteract.interactType = InteractType.None;
+                        }
+                        yield return new WaitForEndOfFrame();
+                    }
+                }
+            }else
+            {
+                anim.Play("Idle_" + direction.ToString(),0);
+                while(!isAbort){   
+                    yield return new WaitForEndOfFrame();
+                }
+            }
+
+        }
+
+        CheckAbort();
     }
 
     
