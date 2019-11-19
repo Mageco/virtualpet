@@ -322,6 +322,8 @@ public class CharMiddle : CharController
                     }
                     yield return new WaitForEndOfFrame();
                 }
+                enviromentType = EnviromentType.Room;
+                OnLearnSkill(SkillType.Bath);
             }
         }
 

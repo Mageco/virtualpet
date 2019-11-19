@@ -63,7 +63,7 @@ public class ItemSkill : MonoBehaviour
     public void OnActive(){
         isActive = true;
         if(animator != null)
-            animator.Play("Active",0);
+            animator.Play("Skill",0);
     }
 
     public void DeActive(){
@@ -77,7 +77,7 @@ public class ItemSkill : MonoBehaviour
     void CompleteSkill(){
         DeActive();
         if(character != null){
-            character.OnLearnSkill(this.skillType);
+            character.LevelUpSkill(this.skillType);
         }
     }
 
@@ -90,7 +90,7 @@ public class ItemSkill : MonoBehaviour
 
 	void OnTriggerExit2D(Collider2D other) {
         if (other.tag == "Player") {
-
+            isEnter = false;
 		}
 	}
 }

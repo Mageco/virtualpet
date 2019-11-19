@@ -62,7 +62,6 @@ public class ItemManager : MonoBehaviour
                 if (anim != null)
                 {
                     anim.Play("Disappear", 0);
-                    yield return new WaitForEndOfFrame();
                 }
             }
             yield return new WaitForSeconds(1);
@@ -90,9 +89,9 @@ public class ItemManager : MonoBehaviour
         for (int i = 0; i < adds.Count; i++)
         {
             ItemObject item = AddItem(adds[i]);
-            yield return new WaitForSeconds(2);
-           
+            GameManager.instance.camera.SetTarget(item.transform.GetChild(0).gameObject);
         }
+        yield return new WaitForSeconds(2);
         GameManager.instance.camera.SetTarget( GameManager.instance.petObjects[0].gameObject);
     }
 
