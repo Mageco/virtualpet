@@ -26,6 +26,8 @@ public class CameraController : MonoBehaviour
 	public Vector2 boundX;
 	public Vector2 boundY;
 
+	public bool isFollow = true;
+
 	public void SetTarget(GameObject t)
 	{
 		this.target = t.transform;
@@ -62,6 +64,9 @@ public class CameraController : MonoBehaviour
 
 	void LateUpdate()
 	{
+		if(!isFollow)
+			return;
+
 		if(target == null)
 			FindTarget();
 		this.ExecuteCamera();
