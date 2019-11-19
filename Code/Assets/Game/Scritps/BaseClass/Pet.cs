@@ -462,6 +462,7 @@ public class Pet
 				skills[i] ++;
 				if(skills[i] > DataHolder.Skill(i).maxProgress)
 					skills[i] = DataHolder.Skill(i).maxProgress;
+				Debug.Log("Skill Progress " + type.ToString() + " " + skills[i]);				
 				return;
 			}
 		}

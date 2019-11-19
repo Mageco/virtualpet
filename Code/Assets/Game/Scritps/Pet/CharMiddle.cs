@@ -288,7 +288,8 @@ public class CharMiddle : CharController
 
     IEnumerator Bath()
     {
-        if(data.GetSkillProgress(SkillType.Bath) > 10){
+        int ran = Random.Range(0,100);
+        if(ran < data.GetSkillProgress(SkillType.Bath) * 10){
             anim.Play("Idle_" + direction.ToString(),0);
             while(!isAbort){   
                 yield return new WaitForEndOfFrame();

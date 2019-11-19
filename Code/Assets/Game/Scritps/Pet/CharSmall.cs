@@ -24,9 +24,6 @@ public class CharSmall : CharController
 
 
 
-
-    
-
     protected override void DoAction()
     {
         //Debug.Log("DoAction " + actionType);
@@ -262,21 +259,6 @@ public class CharSmall : CharController
 
         CheckAbort();
     }
-
-    IEnumerator LevelUp()
-    {
-        Debug.Log("Level Up" + data.level);
-        yield return StartCoroutine(DoAnim("LevelUp_LD"));
-
-
-
-        if (data.level >= 2)
-            data.Load();
-
-        CheckAbort();
-
-    }
-
 
     #endregion
 }

@@ -28,6 +28,8 @@ public class ItemSkill : MonoBehaviour
         if(isEnter && isActive && character != null && skillType == character.currentSkill){
 
             if(time > maxTime){
+                if(character != null)
+                    character.OffLearnSkill();
                 DeActive();
                 return;
             }else

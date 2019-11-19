@@ -476,10 +476,36 @@ public class CharController : MonoBehaviour
     }
 
     protected IEnumerator SkillUp(){
-        yield return StartCoroutine(DoAnim("JumpRound_SkillUp_D"));
+        yield return StartCoroutine(DoAnim("SkillUp"));
+        if (enviromentType == EnviromentType.Bath)
+        {
+            OnBath();
+        }
+        else if (enviromentType == EnviromentType.Table)
+        {
+            OnTable();
+        }
+        else if (enviromentType == EnviromentType.Bed)
+        {
+            OnBed();
+        }
+        else if (enviromentType == EnviromentType.Toilet)
+        {
+            OnToilet();
+        }
         CheckAbort();
     }
 
+    protected IEnumerator LevelUp()
+    {
+        Debug.Log("Level Up" + data.level);
+        yield return StartCoroutine(DoAnim("LevelUp_LD"));
+
+        if (data.level >= 2)
+            data.Load();
+
+        CheckAbort();
+    }
 
     #endregion
 
