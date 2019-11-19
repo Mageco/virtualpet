@@ -211,24 +211,6 @@ public class ArrayHelper
 		return tmp.ToArray(typeof(Quest)) as Quest[];
 	}
 
-
-	public static QuestRequirement[] Remove(int index, QuestRequirement[] list)
-	{
-		ArrayList tmp = new ArrayList();
-		foreach(QuestRequirement str in list) tmp.Add(str);
-		tmp.RemoveAt(index);
-		return tmp.ToArray(typeof(QuestRequirement)) as QuestRequirement[];
-	}
-
-	public static QuestRequirement[] Add(QuestRequirement n, QuestRequirement[] list)
-	{
-		ArrayList tmp = new ArrayList();
-		foreach(QuestRequirement str in list) tmp.Add(str);
-		tmp.Add(n);
-		return tmp.ToArray(typeof(QuestRequirement)) as QuestRequirement[];
-	}
-
-
 	public static Pet[] Add(Pet n, Pet[] list)
 	{
 		ArrayList tmp = new ArrayList();

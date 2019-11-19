@@ -212,7 +212,7 @@ public class CharSmall : CharController
     {
         anim.Play("Eat_LD", 0);
         yield return new WaitForSeconds(3);
-        data.sleep -= 100;
+        data.food = 100;
         CheckAbort();
     }
 

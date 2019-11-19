@@ -127,40 +127,21 @@ public class QuestManager : MonoBehaviour
 
         if (isTimeline)
             return;
+        bool isComplete = false;
 
-        int count = 0;
-        int check = DataHolder.Quest(questID).requirements.Length;
-
-        for (int i = 0; i < DataHolder.Quest(questID).requirements.Length; i++)
-        {
-            if (DataHolder.Quest(questID).requirements[i].requireType == QuestRequirementType.Action)
-            {
-                List<ActionData> actions = ApiManager.instance.GetActionLogs(startTime);
-                if (actions != null)
-                {
-                    foreach (ActionData a in actions)
-                    {
-                        if (a.actionType == DataHolder.Quest(questID).requirements[i].actionType)
-                        {
-                            count++;
-                        }
-                    }
-                }
+        if(questID == 0){
+            if(GameManager.instance.petObjects[0].actionType == ActionType.OnBed){
+                isComplete = true;
             }
-            else if (DataHolder.Quest(questID).requirements[i].requireType == QuestRequirementType.Skill)
-            {
-
+        }else if(questID == 1){
+            if(GameManager.instance.pets[0].food > 90){
+                isComplete = true;
             }
-            else if (DataHolder.Quest(questID).requirements[i].requireType == QuestRequirementType.Interact)
-            {
-
-            }
-            else if (DataHolder.Quest(questID).requirements[i].requireType == QuestRequirementType.Variable)
-            {
-
-            }
-        }
-        if (count >= check)
+        }else if(questID == 2){
+            isComplete = true;
+        }      
+        
+        if (isComplete)
         {
             StartCompleteQuest();
         }

@@ -10,7 +10,6 @@ public class Quest
     public LanguageItem[] languageItem = new LanguageItem[0];
     //Requirement
     public int charLevel;
-    public QuestRequirement[] requirements = new QuestRequirement[0];
 	public string prefabName = "";
     //Rewards
     public bool haveItem = false;
@@ -42,15 +41,6 @@ public class Quest
 		this.languageItem = ArrayHelper.Remove (index, this.languageItem);
 	}
 
-    public void AddRequirement()
-	{
-		this.requirements = ArrayHelper.Add(new QuestRequirement(), this.requirements);
-	}
-
-	public void RemoveRequirement(int index)
-	{
-		this.requirements = ArrayHelper.Remove (index, this.requirements);
-	}
 
 	public string GetDescription(int languageID)
 	{
@@ -85,16 +75,6 @@ public class Quest
 	}
 }
 
-[System.Serializable]
-public class QuestRequirement{
 
-     public QuestRequirementType requireType;
-     public ActionType actionType;
-     public InteractType interactType;
-     public SkillType skillType;
-     public string key = "";
-	 public string value = "";
-
-}
 
 
