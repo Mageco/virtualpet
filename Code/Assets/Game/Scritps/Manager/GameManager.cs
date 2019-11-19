@@ -77,7 +77,7 @@ public class GameManager : MonoBehaviour
     void AddPet(int itemId)
     {
         Pet p = new Pet(itemId);
-        p.Exp +=30;
+        //p.Exp +=30;
         CharController c = p.Load();
         pets.Add(p);
         petObjects.Add(c);

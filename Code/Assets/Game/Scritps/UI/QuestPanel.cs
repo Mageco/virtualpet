@@ -11,8 +11,9 @@ public class QuestPanel : MonoBehaviour
     public Image coin;
     public Image diamon;
     public Image item;
-    public Animator anim;
+    Animator anim;
     
+    public GameObject[] itemEffects;
 
     void Awake(){
         anim = this.GetComponent<Animator>();
@@ -20,7 +21,7 @@ public class QuestPanel : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        anim.Play("Appear");
+
     }
 
     public void Load(int id)
@@ -81,10 +82,16 @@ public class QuestPanel : MonoBehaviour
     IEnumerator CloseCoroutine()
     {
         Debug.Log("Close Quest");
-        anim.Play("Disappear");
+        anim.Play("Close");    
         yield return new WaitForEndOfFrame();
-        yield return new WaitForSeconds(anim.GetCurrentAnimatorStateInfo(0).length);
-        QuestManager.instance.EndCompleteQuest();
+        for(int i=0;i<itemEffects.Length;i++){
+            if(itemEffects[i].transform.parent.gameObject.activeSelf){
+                itemEffects[i].SetActive(true);
+                yield return new WaitForSeconds(0.5f);
+            }
+        }
         this.GetComponent<Popup>().Close();
+        yield return new WaitForSeconds(0.5f);
+        QuestManager.instance.EndCompleteQuest();
     }
 }
