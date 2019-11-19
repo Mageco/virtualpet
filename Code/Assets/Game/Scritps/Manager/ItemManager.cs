@@ -7,6 +7,8 @@ public class ItemManager : MonoBehaviour
     public static ItemManager instance;
 
     public List<ItemObject> items = new List<ItemObject>();
+    public List<ItemSkill> itemSkills = new List<ItemSkill>();
+
 
     void Awake()
     {
