@@ -5,9 +5,16 @@ using UnityEngine;
 public class ItemSkill : MonoBehaviour
 {
     public SkillType skillType;
+    public ActionType actionType;
+    public InteractType interactType;
+    public EnviromentType enviromentType;
     bool isEnter = false;
     bool isActive = false;
-    Animator animator;
+    public Animator animator;
+    CharController character;
+
+    float time;
+    public float maxTime = 10;
 
     // Start is called before the first frame update
     void Start()
@@ -18,30 +25,72 @@ public class ItemSkill : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(isEnter && isActive && character != null && skillType == character.currentSkill){
 
+            if(time > maxTime){
+                DeActive();
+                return;
+            }else
+                time += Time.deltaTime;
+
+            bool done = true;
+            if(actionType != ActionType.None && actionType != character.actionType){
+                done = false;
+                return;
+            }
+
+            if(actionType != ActionType.None && actionType != character.actionType){
+                done = false;
+                return;
+            }
+
+           if(interactType != InteractType.None && interactType != character.charInteract.interactType){
+                done = false;
+                return;
+            }
+
+            if(enviromentType != EnviromentType.Room && enviromentType != character.enviromentType){
+                done = false;
+                return;
+            }
+            
+            if(done){
+                CompleteSkill();
+            }
+        }
     }
 
     public void OnActive(){
         isActive = true;
-        animator.Play("Active",0);
+        if(animator != null)
+            animator.Play("Active",0);
     }
 
     public void DeActive(){
         isActive = false;
-        animator.Play("Idle",0);
+        isEnter = false;
+        time = 0;
+        if(animator != null)
+            animator.Play("Idle",0);
     }
 
+    void CompleteSkill(){
+        DeActive();
+        if(character != null){
+            character.OnLearnSkill(this.skillType);
+        }
+    }
 
     void OnTriggerStay2D(Collider2D other) {
 		if (other.tag == "Player") {
-            //Debug.Log("Enter");
+            character = other.GetComponent<CharController>();
             isEnter = true;
 		}
 	}
 
 	void OnTriggerExit2D(Collider2D other) {
         if (other.tag == "Player") {
-            isEnter = false;
+
 		}
 	}
 }

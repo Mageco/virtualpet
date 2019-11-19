@@ -459,9 +459,11 @@ public class CharController : MonoBehaviour
         currentSkill = type;
         skillTime = 0;
         skillLearnEffect.SetActive(true);
+        ItemManager.instance.ActivateSkillItems(type);
     }
 
     public void OffLearnSkill(){
+        ItemManager.instance.DeActivateSkillItems(currentSkill);
         skillTime = 0;
         currentSkill = SkillType.NONE;
         skillLearnEffect.SetActive(false);

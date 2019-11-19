@@ -106,9 +106,9 @@ public class QuestManager : MonoBehaviour
 
         ApiManager.instance.AddCoin(DataHolder.Quest(questID).coinValue);
         ApiManager.instance.AddDiamond(DataHolder.Quest(questID).diamondValue);
-        GameManager.instance.pets[0].AddExp(DataHolder.Quest(questID).expValue);
+        GameManager.instance.pets[0].Exp += DataHolder.Quest(questID).expValue;
 
-        Debug.Log("Exp " + GameManager.instance.pets[0].GetExp());
+        Debug.Log("Exp " + GameManager.instance.pets[0].Exp);
            
 
         if (playTimeLine != null)

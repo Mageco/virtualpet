@@ -7,7 +7,7 @@ public class ItemManager : MonoBehaviour
     public static ItemManager instance;
 
     public List<ItemObject> items = new List<ItemObject>();
-    public List<ItemSkill> itemSkills = new List<ItemSkill>();
+    
 
 
     void Awake()
@@ -172,4 +172,34 @@ public class ItemManager : MonoBehaviour
         items.Remove(item);
         Destroy(item.gameObject);
     }
+
+    #region Skill
+
+    public void ActivateSkillItems(SkillType type){
+        List<ItemSkill> itemSkills = GetSkillItem(type);
+        foreach(ItemSkill s in itemSkills){
+            s.OnActive();
+        }
+    }
+
+    public void DeActivateSkillItems(SkillType type){
+        List<ItemSkill> itemSkills = GetSkillItem(type);
+        foreach(ItemSkill s in itemSkills){
+            s.DeActive();
+        }
+    }
+
+    List<ItemSkill> GetSkillItem(SkillType type){
+        List<ItemSkill> itemSkills = new List<ItemSkill>();
+        ItemSkill[] skills = GameObject.FindObjectsOfType<ItemSkill>();
+        for(int i=0;i<skills.Length;i++){
+            if(skills[i].skillType == type){
+                itemSkills.Add(skills[i]);
+            }
+        }
+        return itemSkills;
+    }
+
+
+    #endregion
 }

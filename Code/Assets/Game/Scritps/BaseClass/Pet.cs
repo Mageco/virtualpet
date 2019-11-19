@@ -16,7 +16,7 @@ public class Pet
 	public string petMiniGame1 = "";
 	//Common Data
 	public int level = 1;
-	int exp = 0;
+	public int exp = 0;
 	int[] skills;
 
 	//Main Data
@@ -419,28 +419,32 @@ public class Pet
 		}
 	}
 
-	public void AddExp(int n)
+	public int Exp
 	{
-		int temp = level;
-		this.exp += n;
-		float e = 10 * level + 2 * level * level;
-		while(exp > e)
+		get
 		{
-			e = 10 * level + 2 * level * level;
-			level ++;
+			return this.exp;
 		}
-		if(level > temp){
-			if(temp < 5)
-				Load();	
-			if(character != null){
-				character.OnLevelUp();
+		set
+		{
+			this.exp = value;
+			int temp = level;
+			level = 1;
+			float e = 10 * level + 2 * level * level;
+			while(exp > e)
+			{
+				e = 10 * level + 2 * level * level;
+				level ++;
 			}
-		}
-			
-	}
-
-	public int GetExp(){
-		return exp;
+			Debug.Log(level);
+			if(level > temp){
+				if(temp < 5)
+					Load();	
+				if(character != null){
+					character.OnLevelUp();
+				}
+			}
+		}	
 	}
 
 	public int GetSkillProgress(SkillType type){
