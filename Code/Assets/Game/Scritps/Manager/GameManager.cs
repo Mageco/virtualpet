@@ -99,9 +99,14 @@ public class GameManager : MonoBehaviour
 		//Debug.Log(DataHolder.Items().GetDataCount());
     }
 
+    public void OffCameraFollow(){
+        camera.isFollow = false;
+    }
 
 
-
+    public void OnCameraFollow(){
+        camera.isFollow = true;
+    }
 
 	
 }

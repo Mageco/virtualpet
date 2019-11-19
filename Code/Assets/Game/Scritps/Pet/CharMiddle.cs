@@ -602,7 +602,7 @@ public class CharMiddle : CharController
             if (GetDrinkItem().CanEat())
             {
                 direction = Direction.LD;
-                anim.Play("Eat_LD", 0);
+                anim.Play("Drink_LD", 0);
                 yield return StartCoroutine(Wait(0.1f));
                 while (data.Water < data.maxWater && !isAbort && canDrink)
                 {
