@@ -31,6 +31,9 @@ public class CameraController : MonoBehaviour
 	public void SetTarget(GameObject t)
 	{
 		this.target = t.transform;
+		if(target.GetComponent<CharController>() != null){
+			orthographicsize = target.GetComponent<CharController>().cameraSize;
+		}
 	}
 
 	public void SetPosition(Vector3 t)
@@ -39,8 +42,11 @@ public class CameraController : MonoBehaviour
 	}
 
 	public void FindTarget(){
-		if(GameObject.FindObjectOfType<CharController>() != null)
+		if(GameObject.FindObjectOfType<CharController>() != null){
 			target = GameObject.FindObjectOfType<CharController>().transform;
+			orthographicsize = target.GetComponent<CharController>().cameraSize;
+		}
+			
 	}
 
 	void Awake()

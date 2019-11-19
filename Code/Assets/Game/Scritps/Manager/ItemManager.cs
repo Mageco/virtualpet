@@ -57,13 +57,15 @@ public class ItemManager : MonoBehaviour
         foreach (ItemObject item in removes)
         {
             GameManager.instance.camera.SetTarget(item.transform.GetChild(0).gameObject);
-            Animator anim = item.GetComponent<Animator>();
-            if (anim != null)
-            {
-                anim.Play("Disaapear", 0);
-                yield return new WaitForEndOfFrame();
-                yield return new WaitForSeconds(anim.GetCurrentAnimatorStateInfo(0).length);
+            for(int i=0;i<item.transform.childCount;i++){
+                Animator anim = item.transform.GetChild(i).GetComponent<Animator>();
+                if (anim != null)
+                {
+                    anim.Play("Disappear", 0);
+                    yield return new WaitForEndOfFrame();
+                }
             }
+            yield return new WaitForSeconds(1);
             RemoveItem(item);
         }
 
@@ -88,19 +90,10 @@ public class ItemManager : MonoBehaviour
         for (int i = 0; i < adds.Count; i++)
         {
             ItemObject item = AddItem(adds[i]);
-            Animator anim = item.GetComponent<Animator>();
-            if (anim != null)
-            {
-                GameManager.instance.camera.SetTarget(item.transform.GetChild(0).gameObject);
-                anim.Play("Appear", 0);
-                yield return new WaitForEndOfFrame();
-                yield return new WaitForSeconds(anim.GetCurrentAnimatorStateInfo(0).length);
-            }
-
-            yield return new WaitForSeconds(1);
-            GameManager.instance.camera.SetTarget( GameManager.instance.petObjects[0].gameObject);
-
+            yield return new WaitForSeconds(2);
+           
         }
+        GameManager.instance.camera.SetTarget( GameManager.instance.petObjects[0].gameObject);
     }
 
     public void LoadItems()
