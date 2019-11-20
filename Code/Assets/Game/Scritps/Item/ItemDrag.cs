@@ -69,7 +69,7 @@ public class ItemDrag : MonoBehaviour
 		lastPosition = this.transform.position;
 
 		if (isCameraControl) {
-			InputController.instance.cameraController.SetTarget (this.gameObject);
+			GameManager.instance.SetCameraTarget (this.gameObject);
 		}
 	}
 
@@ -85,7 +85,7 @@ public class ItemDrag : MonoBehaviour
 			StartCoroutine (ReturnPosition (lastPosition));
 		isDrag = false;
 		if (isCameraControl) {
-			InputController.instance.ResetCameraTarget();
+			GameManager.instance.ResetCameraTarget();
 		}
 	}
 

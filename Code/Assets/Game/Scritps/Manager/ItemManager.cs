@@ -56,7 +56,7 @@ public class ItemManager : MonoBehaviour
 
         foreach (ItemObject item in removes)
         {
-            GameManager.instance.camera.SetTarget(item.transform.GetChild(0).gameObject);
+            GameManager.instance.SetCameraTarget(item.transform.GetChild(0).gameObject);
             for(int i=0;i<item.transform.childCount;i++){
                 Animator anim = item.transform.GetChild(i).GetComponent<Animator>();
                 if (anim != null)
@@ -89,10 +89,10 @@ public class ItemManager : MonoBehaviour
         for (int i = 0; i < adds.Count; i++)
         {
             ItemObject item = AddItem(adds[i]);
-            GameManager.instance.camera.SetTarget(item.transform.GetChild(0).gameObject);
+            GameManager.instance.SetCameraTarget(item.transform.GetChild(0).gameObject);
         }
         yield return new WaitForSeconds(2);
-        GameManager.instance.camera.SetTarget( GameManager.instance.GetPetObject(0).gameObject);
+        GameManager.instance.ResetCameraTarget();
     }
 
     public void LoadItems()
@@ -168,6 +168,16 @@ public class ItemManager : MonoBehaviour
         foreach(ItemObject item in items){
             if(DataHolder.GetItem(item.itemID).itemType == type){
                 return item.gameObject;
+            }
+        }
+        return null;
+    }
+
+    public GameObject GetItemChildObject(ItemType type){
+        foreach(ItemObject item in items){
+            if(DataHolder.GetItem(item.itemID).itemType == type){
+                Debug.Log(item.name);
+                return item.transform.GetChild(0).gameObject;
             }
         }
         return null;

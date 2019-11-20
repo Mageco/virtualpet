@@ -14,6 +14,7 @@ public class BathShowerItem : MonoBehaviour
 	bool isShower = false;
 	public GameObject showerEffect;
     BathTubeItem bathTube;
+	CharController character;
 
 	void Awake()
 	{
@@ -53,8 +54,8 @@ public class BathShowerItem : MonoBehaviour
 		isShower = true;
 		showerEffect.SetActive (true);
 		Debug.Log ("Shower");
-		if (InputController.instance.Character.actionType == ActionType.Bath) {
-			InputController.instance.Character.OnShower ();
+		if (GameManager.instance.GetPetObject(0).actionType == ActionType.Bath) {
+			GameManager.instance.GetPetObject(0).OnShower ();
             GetBathTube().OnShower ();
 		}
 	}
@@ -63,8 +64,8 @@ public class BathShowerItem : MonoBehaviour
 		isShower = false;
 		showerEffect.SetActive (false);
 		Debug.Log ("OffShower");
-		if (InputController.instance.Character.actionType == ActionType.Bath) {
-			InputController.instance.Character.OffShower ();
+		if (GameManager.instance.GetPetObject(0).actionType == ActionType.Bath) {
+			GameManager.instance.GetPetObject(0).OffShower ();
 		}
 	}
 

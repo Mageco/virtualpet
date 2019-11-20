@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TouchPoint : MonoBehaviour
+public class EventPanel : MonoBehaviour
 {
     // Start is called before the first frame update
     void Start()
@@ -16,14 +16,11 @@ public class TouchPoint : MonoBehaviour
         
     }
 
-    void OnMouseDown()
-    {
-        Debug.Log("Touch Down");
-        GameManager.instance.GetPetObject(0).OnTouch();
+    public void OnEvent(){
+        MageManager.instance.LoadSceneWithLoading("Minigame2");
     }
 
-    void OnMouseUp(){
-        Debug.Log("Touch Up");
-        GameManager.instance.GetPetObject(0).OffTouch();
+    public void Close(){
+        this.GetComponent<Popup>().Close();
     }
 }

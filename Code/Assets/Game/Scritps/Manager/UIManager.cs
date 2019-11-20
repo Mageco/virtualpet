@@ -9,6 +9,7 @@ public class UIManager : MonoBehaviour
 	public GameObject questUIPrefab;
     public GameObject questCompletePrefab;
     public GameObject shopUIPrefab;
+    public GameObject eventUIPrefab;
     public static UIManager instance;
 	[HideInInspector]
 	public Text coinText;
@@ -16,6 +17,7 @@ public class UIManager : MonoBehaviour
 	MPopup questNotification;
     QuestPanel questComplete;
     ShopPanel shopPanel;
+    EventPanel eventPanel;
 
 	void Awake()
 	{
@@ -108,6 +110,19 @@ public class UIManager : MonoBehaviour
             popup.transform.SetParent(GameObject.Find("Canvas").transform, false);
             popup.GetComponent<Popup>().Open();
             shopPanel = popup.GetComponent<ShopPanel>();
+        }
+     }
+
+    public void OnEventPanel()
+    {
+        if (eventPanel == null)
+        {
+            var popup = Instantiate(eventUIPrefab) as GameObject;
+            popup.SetActive(true);
+            popup.transform.localScale = Vector3.zero;
+            popup.transform.SetParent(GameObject.Find("Canvas").transform, false);
+            popup.GetComponent<Popup>().Open();
+            eventPanel = popup.GetComponent<EventPanel>();
         }
      }
 

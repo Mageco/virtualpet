@@ -14,7 +14,7 @@ public class EatItem : MonoBehaviour
 	Vector3 originalPosition;
 	Vector3 lastPosition;
 	public bool isBusy = false;
-	float foodAmount = 0;
+	public float foodAmount = 0;
 	public float maxfoodAmount = 100;
 	public SpriteRenderer image;
 	public Sprite[] foodSprites;

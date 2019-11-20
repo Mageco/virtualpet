@@ -10,7 +10,7 @@ public class GameManager : MonoBehaviour
     public float gameTime = 0;
     List<CharController> petObjects = new List<CharController>();
     List<Pet> pets = new List<Pet>();
-    public CameraController camera;
+    CameraController camera;
 
     public GameType gameType = GameType.House;
 
@@ -112,6 +112,14 @@ public class GameManager : MonoBehaviour
 		DataHolder.Instance();
 		DataHolder.Instance().Init();
 		//Debug.Log(DataHolder.Items().GetDataCount());
+    }
+
+    public void SetCameraTarget(GameObject t){
+        camera.SetTarget(t);
+    }
+
+    public void ResetCameraTarget(){
+        camera.FindTarget();
     }
 
     public void OffCameraFollow(){

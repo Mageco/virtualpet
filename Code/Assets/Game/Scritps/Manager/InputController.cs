@@ -8,11 +8,6 @@ public class InputController : MonoBehaviour
 {
 	public static InputController instance;
 
-	[HideInInspector]
-	
-	public CameraController cameraController;
-
-	CharController character;
 	float time;
 	float maxDoubleClickTime = 0.4f;
 	bool isClick = false;
@@ -22,21 +17,8 @@ public class InputController : MonoBehaviour
 		if (instance == null)
 			instance = this;
 
-		character = GameObject.FindObjectOfType<CharController> ();
-		
 	}
 
-
-
-	public CharController Character{		
-		get
-		{
-			if(character == null)
-			character = GameObject.FindObjectOfType<CharController> ();
-		
-			return character;
-		}
-	}
 
 	
 
@@ -56,7 +38,7 @@ public class InputController : MonoBehaviour
 
 	public void OnCall()
 	{
-		character.OnCall ();
+		GameManager.instance.GetPetObject(0).OnCall ();
 	}
 
 	void OnMouseDown()
@@ -88,11 +70,6 @@ public class InputController : MonoBehaviour
 	{
 		Vector3 pos = Camera.main.ScreenToWorldPoint (Input.mousePosition);
 		pos.z = 0;
-	}
-
-	public void ResetCameraTarget()
-	{
-		cameraController.SetTarget (this.Character.gameObject);
 	}
 
 	private bool IsPointerOverUIObject() {

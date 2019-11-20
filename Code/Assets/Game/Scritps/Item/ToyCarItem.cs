@@ -122,7 +122,7 @@ public class ToyCarItem : MonoBehaviour
 	IEnumerator OnHit(){
 		state = ItemDragState.Hited;
 		yield return StartCoroutine(DoAnim("Hit",0.5f));
-		InputController.instance.ResetCameraTarget();
+		GameManager.instance.ResetCameraTarget();
 		Vector3 pos = originalPosition;
 		pos.x = this.transform.position.x;
 		pos.y = this.transform.position.y;
@@ -166,7 +166,7 @@ public class ToyCarItem : MonoBehaviour
 			dragOffset = Camera.main.ScreenToWorldPoint (Input.mousePosition) - this.transform.position ;
 			state = ItemDragState.Drag;
 			lastPosition = this.transform.position;
-			InputController.instance.cameraController.SetTarget (this.gameObject);
+			GameManager.instance.SetCameraTarget (this.gameObject);
 		}
 
 	}

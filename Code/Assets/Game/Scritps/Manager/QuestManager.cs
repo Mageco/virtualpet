@@ -51,6 +51,7 @@ public class QuestManager : MonoBehaviour
             GameManager.instance.GetPet(0).sleep = 0;
         }else if(questID == 3){
             delayTime = 3;
+            GameManager.instance.SetCameraTarget(ItemManager.instance.GetItemChildObject(ItemType.Food));
         }
     }
 
@@ -154,8 +155,9 @@ public class QuestManager : MonoBehaviour
             if(GameManager.instance.GetPet(0).sleep >= 90){
                 isComplete = true;
             }
-        }else if(questID == 2){
-            if(ItemManager.instance.sleep >= 90){
+        }else if(questID == 3){
+            if(ItemManager.instance.GetItem(ItemType.Food).GetComponentInChildren<FoodBowlItem>().foodAmount > 90){
+                GameManager.instance.ResetCameraTarget();
                 isComplete = true;
             }
         }          

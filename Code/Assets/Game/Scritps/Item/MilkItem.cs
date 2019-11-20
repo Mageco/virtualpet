@@ -27,7 +27,7 @@ public class MilkItem : BaseDragItem
             pet.OnEat();
             eated = true;
         }
-        InputController.instance.ResetCameraTarget();
+        GameManager.instance.ResetCameraTarget();
         ApiManager.instance.RemoveItem(item.itemID);
         Destroy(this.transform.parent.gameObject);
     }
