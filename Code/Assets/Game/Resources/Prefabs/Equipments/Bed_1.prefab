@@ -25,7 +25,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1140540291}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -22.7, y: 0.1, z: 50}
+  m_LocalPosition: {x: -23.58, y: -4.55, z: 50}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 652627862347865378}
@@ -4898,7 +4898,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &384845040076946133
 Transform:
   m_ObjectHideFlags: 0
@@ -9658,6 +9658,63 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   OnlyDeactivate: 0
+--- !u!1 &3735345141947707149
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6352439758060185403}
+  - component: {fileID: 2525311393715968126}
+  m_Layer: 0
+  m_Name: BedCollider
+  m_TagString: Bed
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6352439758060185403
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3735345141947707149}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 2}
+  m_LocalScale: {x: 0.75, y: 0.75, z: 2.302236}
+  m_Children: []
+  m_Father: {fileID: 6156094059106791757}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!61 &2525311393715968126
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3735345141947707149}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0.5}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 2.5, y: 0.5}
+  m_EdgeRadius: 0
 --- !u!1 &4109204398295387162
 GameObject:
   m_ObjectHideFlags: 0
@@ -9748,8 +9805,8 @@ GameObject:
   m_Component:
   - component: {fileID: 6156094059106791757}
   - component: {fileID: 7980756189725471513}
-  - component: {fileID: 7621141153105375409}
   - component: {fileID: 3496216689732433814}
+  - component: {fileID: 4852075995302127747}
   m_Layer: 0
   m_Name: Bed
   m_TagString: Untagged
@@ -9771,6 +9828,7 @@ Transform:
   - {fileID: 7869791109958889702}
   - {fileID: 384845040076946133}
   - {fileID: 341785973683771228}
+  - {fileID: 6352439758060185403}
   m_Father: {fileID: 652627862347865378}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -9800,24 +9858,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 5.45, y: 1}
   m_EdgeRadius: 0
---- !u!114 &7621141153105375409
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6156094059106791758}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f6a733d7c833d435b9d5859e7e52a1a3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  skillType: 5
-  actionType: 0
-  interactType: 0
-  enviromentType: 0
-  animator: {fileID: 0}
-  maxTime: 10
 --- !u!95 &3496216689732433814
 Animator:
   serializedVersion: 3
@@ -9837,6 +9877,24 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &4852075995302127747
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6156094059106791758}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6a733d7c833d435b9d5859e7e52a1a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  skillType: 5
+  actionType: 0
+  interactType: 0
+  enviromentType: 3
+  animator: {fileID: 3496216689732433814}
+  maxTime: 10
 --- !u!1 &6914270279969226562
 GameObject:
   m_ObjectHideFlags: 0

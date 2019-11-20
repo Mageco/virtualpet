@@ -8,8 +8,8 @@ public class GameManager : MonoBehaviour
 
     
     public float gameTime = 0;
-    public List<CharController> petObjects = new List<CharController>();
-    public List<Pet> pets = new List<Pet>();
+    List<CharController> petObjects = new List<CharController>();
+    List<Pet> pets = new List<Pet>();
     public CameraController camera;
 
     public GameType gameType = GameType.House;
@@ -91,6 +91,21 @@ public class GameManager : MonoBehaviour
 	void Update(){
 		gameTime += Time.deltaTime;
 	}
+
+    public CharController GetPetObject(int id){
+        return petObjects[id];
+    }
+
+    public void UpdatePetObjects(){
+        petObjects.Clear();
+        for(int i=0;i<pets.Count;i++){
+            petObjects.Add(pets[i].character);
+        }
+    }
+
+    public Pet GetPet(int id){
+        return pets[id];
+    }
 
     void Load(){
 		Screen.sleepTimeout = SleepTimeout.NeverSleep;

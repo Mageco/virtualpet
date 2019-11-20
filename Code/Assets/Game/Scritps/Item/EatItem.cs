@@ -14,8 +14,8 @@ public class EatItem : MonoBehaviour
 	Vector3 originalPosition;
 	Vector3 lastPosition;
 	public bool isBusy = false;
-	float foodAmount;
-	public float maxfoodAmount = 200;
+	float foodAmount = 0;
+	public float maxfoodAmount = 100;
 	public SpriteRenderer image;
 	public Sprite[] foodSprites;
 	public Transform anchor;
@@ -31,7 +31,7 @@ public class EatItem : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-		foodAmount = maxfoodAmount - 1;   
+		  
     }
 
     // Update is called once per frame

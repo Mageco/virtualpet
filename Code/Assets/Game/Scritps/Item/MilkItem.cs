@@ -5,12 +5,18 @@ using UnityEngine.EventSystems;
 
 public class MilkItem : BaseDragItem
 {
+    ItemObject item;
     public CharController pet;
     bool eated = false;
 
     public void OnDestroy()
     {
         
+    }
+
+    protected override void Start(){
+        base.Start();
+        item = this.transform.parent.GetComponent<ItemObject>();
     }
 
     protected override void OnActive()
@@ -22,7 +28,8 @@ public class MilkItem : BaseDragItem
             eated = true;
         }
         InputController.instance.ResetCameraTarget();
-        Destroy(this.gameObject);
+        ApiManager.instance.RemoveItem(item.itemID);
+        Destroy(this.transform.parent.gameObject);
     }
 
     protected override void OnHit()
