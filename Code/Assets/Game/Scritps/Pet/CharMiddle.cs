@@ -766,12 +766,10 @@ public class CharMiddle : CharController
     }
 
 
-    IEnumerator LevelUp()
+    protected override IEnumerator LevelUp()
     {
         Debug.Log("Level Up" + data.level);
         yield return StartCoroutine(DoAnim("LevelUp_LD"));
-
-
 
         if (data.level >= 5)
             data.Load();
