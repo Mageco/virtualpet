@@ -104,6 +104,7 @@ public class EatItem : MonoBehaviour
 	void Fill()
 	{
 		foodAmount = maxfoodAmount-1;
+		GameManager.instance.GetPetObject(0).OnLearnSkill(SkillType.Eat);
 	}
 
 	void OnMouseDown()

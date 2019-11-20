@@ -159,8 +159,7 @@ public class Pet
         GameObject go = GameObject.Instantiate((Resources.Load(url) as GameObject), Vector3.zero, Quaternion.identity) as GameObject;
         character = go.GetComponent<CharController>();      
         character.data = this;
-        //Reset Data
-        sleep = maxSleep;
+		GameManager.instance.UpdatePetObjects();
         return character;
     }
 

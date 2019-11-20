@@ -50,8 +50,10 @@ public class QuestManager : MonoBehaviour
         }else if(questID == 2){
             GameManager.instance.GetPet(0).sleep = 0;
         }else if(questID == 3){
-            delayTime = 3;
+            delayTime = 1;
             GameManager.instance.SetCameraTarget(ItemManager.instance.GetItemChildObject(ItemType.Food));
+        }else if(questID == 4){
+            GameManager.instance.GetPet(0).food = 0;            
         }
     }
 
@@ -97,7 +99,6 @@ public class QuestManager : MonoBehaviour
     public void ResetQuest()
     {
         playTimeLine.time = 0;
-        delayTime = 0;
         PlayTip();
     }
 
@@ -115,7 +116,7 @@ public class QuestManager : MonoBehaviour
         {
             ApiManager.instance.AddItem(DataHolder.Quest(questID).itemId);
             ApiManager.instance.EquipItem(DataHolder.Quest(questID).itemId);
-            ItemManager.instance.EquipItem();
+            ItemManager.instance.LoadItems();
         }
 
         ApiManager.instance.AddCoin(DataHolder.Quest(questID).coinValue);
@@ -133,6 +134,7 @@ public class QuestManager : MonoBehaviour
         isStartQuest = false;
         isEndQuest = false;
         isTimeline = true;
+        delayTime = 0;
 
     }
 
