@@ -86,7 +86,7 @@ public class Pet
     public float maxCurious = 100;
 
 
-    CharController character;
+    public CharController character;
     PolyNavAgent agent;
 
     public Pet()

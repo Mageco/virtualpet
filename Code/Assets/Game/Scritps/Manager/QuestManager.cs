@@ -17,6 +17,7 @@ public class QuestManager : MonoBehaviour
     float time;
     float maxTimeCheck = 0.2f;
     MPopup tipUI;
+    float delayTime = 0;
 
     void Awake()
     {
@@ -42,13 +43,14 @@ public class QuestManager : MonoBehaviour
 
     void LoadQuestObject()
     {
-        if (DataHolder.Quest(questID).prefabName != "")
-        {
-            string url = DataHolder.GetQuest(questID).prefabName.Replace("Assets/Game/Resources/", "");
-            url = url.Replace(".prefab", "");
-            url = DataHolder.Quests().GetPrefabPath() + url;
-            GameObject go = Instantiate((Resources.Load(url) as GameObject), new Vector3(0, 0, -200), Quaternion.identity) as GameObject;
-            playTimeLine = go.GetComponent<PlayableDirector>();
+        if(questID == 0){
+
+        }else if(questID == 1){
+
+        }else if(questID == 2){
+            GameManager.instance.GetPet(0).sleep = 0;
+        }else if(questID == 3){
+            delayTime = 3;
         }
     }
 
@@ -61,6 +63,15 @@ public class QuestManager : MonoBehaviour
 
     IEnumerator PlayTimeline()
     {
+        yield return new WaitForSeconds(delayTime);
+        if (DataHolder.Quest(questID).prefabName != "")
+        {
+            string url = DataHolder.GetQuest(questID).prefabName.Replace("Assets/Game/Resources/", "");
+            url = url.Replace(".prefab", "");
+            url = DataHolder.Quests().GetPrefabPath() + url;
+            GameObject go = Instantiate((Resources.Load(url) as GameObject), new Vector3(0, 0, -200), Quaternion.identity) as GameObject;
+            playTimeLine = go.GetComponent<PlayableDirector>();
+        }
         if (playTimeLine != null)
         {
             playTimeLine.gameObject.SetActive(true);
@@ -77,13 +88,15 @@ public class QuestManager : MonoBehaviour
 
         if (tipUI != null)
             tipUI.Close();
+
+        
         isTimeline = false;
     }
 
     public void ResetQuest()
     {
         playTimeLine.time = 0;
-
+        delayTime = 0;
         PlayTip();
     }
 
@@ -101,14 +114,14 @@ public class QuestManager : MonoBehaviour
         {
             ApiManager.instance.AddItem(DataHolder.Quest(questID).itemId);
             ApiManager.instance.EquipItem(DataHolder.Quest(questID).itemId);
-            ItemManager.instance.LoadItems();
+            ItemManager.instance.EquipItem();
         }
 
         ApiManager.instance.AddCoin(DataHolder.Quest(questID).coinValue);
         ApiManager.instance.AddDiamond(DataHolder.Quest(questID).diamondValue);
-        GameManager.instance.pets[0].Exp += DataHolder.Quest(questID).expValue;
+        GameManager.instance.GetPet(0).Exp += DataHolder.Quest(questID).expValue;
 
-        Debug.Log("Exp " + GameManager.instance.pets[0].Exp);
+        Debug.Log("Exp " + GameManager.instance.GetPet(0).Exp);
            
 
         if (playTimeLine != null)
@@ -130,16 +143,22 @@ public class QuestManager : MonoBehaviour
         bool isComplete = false;
 
         if(questID == 0){
-            if(GameManager.instance.petObjects[0].actionType == ActionType.OnBed){
+            if(GameManager.instance.GetPetObject(0).actionType == ActionType.OnBed){
                 isComplete = true;
             }
         }else if(questID == 1){
-            if(GameManager.instance.pets[0].food > 90){
+            if(GameManager.instance.GetPet(0).food > 90){
                 isComplete = true;
             }
         }else if(questID == 2){
-            isComplete = true;
-        }      
+            if(GameManager.instance.GetPet(0).sleep >= 90){
+                isComplete = true;
+            }
+        }else if(questID == 2){
+            if(ItemManager.instance.(0).sleep >= 90){
+                isComplete = true;
+            }
+        }          
         
         if (isComplete)
         {

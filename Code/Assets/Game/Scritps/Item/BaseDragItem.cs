@@ -7,7 +7,7 @@ public class BaseDragItem : MonoBehaviour
 {
 	Vector3 dragOffset;
     protected Animator anim;
-    protected ItemDragState state = ItemDragState.None;
+    public ItemDragState state = ItemDragState.None;
     protected Vector3 originalPosition;
     protected Quaternion originalRotation;
     protected Vector3 originalScale;
@@ -25,7 +25,7 @@ public class BaseDragItem : MonoBehaviour
 	float offset = 0;
 
     // Start is called before the first frame update
-    void Start()
+    protected virtual void Start()
     {
         anim = this.GetComponent<Animator> ();
 		originalPosition = this.transform.position;
@@ -84,7 +84,7 @@ public class BaseDragItem : MonoBehaviour
 				targetScale = originalScale;
 		}
 
-		//Debug.Log(targetScale);
+		//Debug.Log(gameObject.name + " "+ originalScale + "  " + targetScale);
 		this.transform.localScale = Vector3.Lerp(targetScale,this.transform.localScale,Time.deltaTime *  3f);
 
     }

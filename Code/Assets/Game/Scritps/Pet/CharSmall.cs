@@ -12,7 +12,6 @@ public class CharSmall : CharController
     #region Thinking
     protected override void Think()
     {
-
         if (data.Sleep < data.maxSleep * 0.1f)
         {
             actionType = ActionType.Sleep;
@@ -183,27 +182,21 @@ public class CharSmall : CharController
         }
 
         yield return StartCoroutine(Wait(maxTime));
-        if (data.Health < data.maxHealth * 0.1f)
-        {
-            actionType = ActionType.None;
-        }
-        else
-        {
-            if(!isAbort){
-                if (enviromentType == EnviromentType.Bath)
-                {
-                    OnBath();
-                }
-                else if (enviromentType == EnviromentType.Table)
-                {
-                    OnTable();
-                }
-                else if (enviromentType == EnviromentType.Bed)
-                {
-                    OnBed();
-                }
+
+        if(!isAbort){
+            if (enviromentType == EnviromentType.Bath)
+            {
+                OnBath();
             }
-        }
+            else if (enviromentType == EnviromentType.Table)
+            {
+                OnTable();
+            }
+            else if (enviromentType == EnviromentType.Bed)
+            {
+                OnBed();
+            }
+        }        
 
         CheckAbort();
     }
@@ -211,8 +204,11 @@ public class CharSmall : CharController
     IEnumerator Eat()
     {
         anim.Play("Eat_LD", 0);
-        yield return new WaitForSeconds(3);
-        data.food = 100;
+        while (!isAbort && data.Food < 0.95f * data.maxFood)
+        {
+            data.Food += 0.2f;
+            yield return new WaitForEndOfFrame();
+        }
         CheckAbort();
     }
 
@@ -223,7 +219,7 @@ public class CharSmall : CharController
 
         while (!isAbort && data.Sleep < 0.9f * data.maxSleep)
         {
-            data.Sleep += 0.01f;
+            data.Sleep += 0.2f;
             yield return new WaitForEndOfFrame();
         }
         CheckAbort();
@@ -252,11 +248,19 @@ public class CharSmall : CharController
 
     IEnumerator Bed()
     {
-        anim.Play("Lay_LD", 0);
-        while(!isAbort && data.sleep > 0.3f*data.maxSleep){
-            yield return new WaitForEndOfFrame();
+        if(data.food > data.maxFood * 0.9f)
+        {
+            anim.Play("Sleep_LD", 0);
+            while(!isAbort && data.sleep > 0.9f*data.maxSleep){
+                yield return new WaitForEndOfFrame();
+            }
+        }else
+        {
+            anim.Play("Lay_LD", 0);
+            while(!isAbort){
+                yield return new WaitForEndOfFrame();
+            }
         }
-
         CheckAbort();
     }
 
