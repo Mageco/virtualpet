@@ -22,8 +22,8 @@ public class ProfileUI : MonoBehaviour
     }
 
     public void UpdateProfile(){
-        energy.fillAmount = GameManager.instance.pets[0].energy/GameManager.instance.pets[0].maxEnergy;
-        level.text = GameManager.instance.pets[0].level.ToString();
+        energy.fillAmount = GameManager.instance.GetPet(0).energy/GameManager.instance.GetPet(0).maxEnergy;
+        level.text = GameManager.instance.GetPet(0).level.ToString();
         if(energy.fillAmount < 0.25f){
             energy.color = Color.red;
         }else if(energy.fillAmount < 0.6f)

@@ -92,7 +92,7 @@ public class ItemManager : MonoBehaviour
             GameManager.instance.camera.SetTarget(item.transform.GetChild(0).gameObject);
         }
         yield return new WaitForSeconds(2);
-        GameManager.instance.camera.SetTarget( GameManager.instance.petObjects[0].gameObject);
+        GameManager.instance.camera.SetTarget( GameManager.instance.GetPetObject(0).gameObject);
     }
 
     public void LoadItems()
@@ -158,11 +158,19 @@ public class ItemManager : MonoBehaviour
         return item;
     }
 
-
     void RemoveItem(ItemObject item)
     {
         items.Remove(item);
         Destroy(item.gameObject);
+    }
+
+    public GameObject GetItem(ItemType type){
+        foreach(ItemObject item in items){
+            if(DataHolder.GetItem(item.itemID).itemType == type){
+                return item.gameObject;
+            }
+        }
+        return null;
     }
 
     #region Skill

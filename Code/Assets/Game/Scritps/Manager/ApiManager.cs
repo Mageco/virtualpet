@@ -369,6 +369,13 @@ public class ApiManager : MonoBehaviour {
 		UpdateUserData ();
 	}
 
+	public void RemoveItem(int itemId)
+	{
+		user.SetUserData (new UserData (itemId.ToString(),ItemState.OnShop.ToString(), "Item"));
+		SaveUserData ();
+		UpdateUserData ();
+	}
+
 	public void EquipItem(int itemId){
 		//if(HaveItem(itemId)){
 			List<int> items = GetEquipedItems();

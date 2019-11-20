@@ -87,11 +87,11 @@ public class QuestTab : BaseTab
                 DataHolder.Quest(selection).haveItem = EditorGUILayout.Toggle("Item Reward", DataHolder.Quest(selection).haveItem, GUILayout.Width(pw.mWidth));
                 if (DataHolder.Quest(selection).haveItem)
                 {
-                   if(tempId == -1)
-                        tempId = DataHolder.Items().GetItemPosition(DataHolder.Quest(selection).itemId);
+                   //if(tempId == -1)
+                   tempId = DataHolder.Items().GetItemPosition(DataHolder.Quest(selection).itemId);
                    tempId = EditorGUILayout.Popup("Item",tempId, DataHolder.Items().GetNameList(true), GUILayout.Width(pw.mWidth));
 
-                    DataHolder.Quest(selection).itemId = DataHolder.Item(tempId).iD;
+                   DataHolder.Quest(selection).itemId = DataHolder.Item(tempId).iD;
                     
                 }
 				EditorGUILayout.Separator();
