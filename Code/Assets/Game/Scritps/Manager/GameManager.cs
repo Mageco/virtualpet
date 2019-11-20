@@ -14,6 +14,8 @@ public class GameManager : MonoBehaviour
 
     public GameType gameType = GameType.House;
 
+    public int addExp = 0;
+
     void Awake()
     {
         if (instance == null)
@@ -30,20 +32,29 @@ public class GameManager : MonoBehaviour
 
     public void LoadNewUserData()
     {
-        ApiManager.instance.AddItem(56);
-        ApiManager.instance.AddItem(8);
         ApiManager.instance.AddItem(17);
-        ApiManager.instance.AddItem(2);
-        ApiManager.instance.AddItem(11);
+        ApiManager.instance.AddItem(56);
         ApiManager.instance.AddDiamond(50000);
         ApiManager.instance.AddCoin(1000);
         ApiManager.instance.AddPet(0);
-        ApiManager.instance.EquipItem(56);
-        ApiManager.instance.EquipItem(8);
+
         ApiManager.instance.EquipItem(17);
-        ApiManager.instance.EquipItem(2);
-        ApiManager.instance.EquipItem(11);
         ApiManager.instance.EquipPet(0);
+         ApiManager.instance.EquipItem(56);
+
+   /*      
+        ApiManager.instance.AddItem(2);
+        ApiManager.instance.AddItem(11);
+                
+        ApiManager.instance.AddItem(8);
+
+
+        
+        ApiManager.instance.EquipItem(2);
+        ApiManager.instance.EquipItem(11); 
+               
+        ApiManager.instance.EquipItem(8);*/
+        
     }
 
     private void Start()
@@ -77,7 +88,7 @@ public class GameManager : MonoBehaviour
     void AddPet(int itemId)
     {
         Pet p = new Pet(itemId);
-        //p.Exp +=30;
+        p.Exp +=addExp;
         CharController c = p.Load();
         pets.Add(p);
         petObjects.Add(c);

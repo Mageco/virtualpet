@@ -4,7 +4,8 @@ using UnityEngine;
 public class QuestTab : BaseTab
 {
 	private GameObject tmpPrefab;
-    private int tempId = -1;
+    private int tempId = 0;
+    int lastSellection = -1;
 
     public QuestTab(ProjectWindow pw) : base(pw)
     {
@@ -87,11 +88,17 @@ public class QuestTab : BaseTab
                 DataHolder.Quest(selection).haveItem = EditorGUILayout.Toggle("Item Reward", DataHolder.Quest(selection).haveItem, GUILayout.Width(pw.mWidth));
                 if (DataHolder.Quest(selection).haveItem)
                 {
-                   //if(tempId == -1)
-                   tempId = DataHolder.Items().GetItemPosition(DataHolder.Quest(selection).itemId);
+                   if(lastSellection != selection)
+                        tempId = DataHolder.Items().GetItemPosition(DataHolder.Quest(selection).itemId);
+
+                    if(tempId == -1)
+                        tempId = 0;
+                 
                    tempId = EditorGUILayout.Popup("Item",tempId, DataHolder.Items().GetNameList(true), GUILayout.Width(pw.mWidth));
 
-                   DataHolder.Quest(selection).itemId = DataHolder.Item(tempId).iD;
+                   if(DataHolder.Item(tempId) != null)
+                        DataHolder.Quest(selection).itemId = DataHolder.Item(tempId).iD;
+                   lastSellection = selection;
                     
                 }
 				EditorGUILayout.Separator();

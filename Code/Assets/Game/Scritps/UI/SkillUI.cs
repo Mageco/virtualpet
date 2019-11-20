@@ -40,11 +40,6 @@ public class SkillUI : MonoBehaviour
         }else if(d.diamondValue != 0){
             rewardIcon.sprite = diamonIcon;
             rewardValue.text = d.diamondValue.ToString();           
-        }else if(d.itemId != -1){
-            string itemurl = DataHolder.Item(d.itemId).iconUrl.Replace("Assets/Game/Resources/","");
-            itemurl = itemurl.Replace(".png","");
-            rewardIcon.sprite = Resources.Load<Sprite>(itemurl) as Sprite;
-            rewardValue.text = "1";
         }
     }
 

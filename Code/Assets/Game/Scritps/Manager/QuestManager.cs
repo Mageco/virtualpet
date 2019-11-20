@@ -51,9 +51,16 @@ public class QuestManager : MonoBehaviour
             GameManager.instance.GetPet(0).sleep = 0;
         }else if(questID == 3){
             delayTime = 1;
+            GameManager.instance.GetPet(0).food = 10;  
             GameManager.instance.SetCameraTarget(ItemManager.instance.GetItemChildObject(ItemType.Food));
         }else if(questID == 4){
-            GameManager.instance.GetPet(0).food = 0;            
+            GameManager.instance.GetPet(0).water = 10;        
+            GameManager.instance.SetCameraTarget(ItemManager.instance.GetItemChildObject(ItemType.Drink));  
+        }else if(questID == 5){
+            ItemManager.instance.SetExpireSkillTime(1000);
+            GameManager.instance.GetPet(0).pee = 100;        
+        }else if(questID == 6){
+            GameManager.instance.GetPet(0).dirty = 70;        
         }
     }
 
@@ -158,11 +165,25 @@ public class QuestManager : MonoBehaviour
                 isComplete = true;
             }
         }else if(questID == 3){
-            if(ItemManager.instance.GetItem(ItemType.Food).GetComponentInChildren<FoodBowlItem>().foodAmount > 90){
+            if(GameManager.instance.GetPet(0).food > 90){
                 GameManager.instance.ResetCameraTarget();
                 isComplete = true;
             }
-        }          
+        } else if(questID == 4){
+            if(GameManager.instance.GetPet(0).water > 90){
+                GameManager.instance.ResetCameraTarget();
+                isComplete = true;
+            }
+        }else if(questID == 5){
+            if(GameManager.instance.GetPet(0).GetSkillProgress(SkillType.Pee) > 0){
+                ItemManager.instance.ResetExpireSkillTime();
+                isComplete = true;
+            }
+        }else if(questID == 6){
+            if(GameManager.instance.GetPet(0).dirty < 10){
+                isComplete = true;
+            }
+        }                
         
         if (isComplete)
         {

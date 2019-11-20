@@ -30,7 +30,7 @@ public class Pet
 	//Attribute Data
 	public float food = 50;
 	public float water = 50;
-	public float sleep = 50;
+	public float sleep = 60;
 	public float energy = 50;
 	public float health = 50;
 	public float shit = 0;

@@ -248,10 +248,10 @@ public class CharSmall : CharController
 
     IEnumerator Bed()
     {
-        if(data.food > data.maxFood * 0.9f)
+        if(data.food > data.maxFood * 0.9f || data.sleep < data.maxSleep * 0.5f)
         {
             anim.Play("Sleep_LD", 0);
-            while(!isAbort && data.sleep > 0.9f*data.maxSleep){
+            while(!isAbort && data.sleep < 0.9f*data.maxSleep){
                 yield return new WaitForEndOfFrame();
             }
         }else

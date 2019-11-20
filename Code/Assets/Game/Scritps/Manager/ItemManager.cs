@@ -7,7 +7,7 @@ public class ItemManager : MonoBehaviour
     public static ItemManager instance;
 
     public List<ItemObject> items = new List<ItemObject>();
-    
+    public float expireTime = 10;
 
 
     void Awake()
@@ -161,7 +161,8 @@ public class ItemManager : MonoBehaviour
     void RemoveItem(ItemObject item)
     {
         items.Remove(item);
-        Destroy(item.gameObject);
+        if(item != null)
+            Destroy(item.gameObject);
     }
 
     public GameObject GetItem(ItemType type){
@@ -188,7 +189,7 @@ public class ItemManager : MonoBehaviour
     public void ActivateSkillItems(SkillType type){
         List<ItemSkill> itemSkills = GetSkillItem(type);
         foreach(ItemSkill s in itemSkills){
-            s.OnActive();
+            s.OnActive(expireTime);
         }
     }
 
@@ -210,6 +211,13 @@ public class ItemManager : MonoBehaviour
         return itemSkills;
     }
 
+    public void SetExpireSkillTime(float t){
+        expireTime = t;
+    }
+
+    public void ResetExpireSkillTime(){
+        expireTime = 10;
+    }
 
     #endregion
 }

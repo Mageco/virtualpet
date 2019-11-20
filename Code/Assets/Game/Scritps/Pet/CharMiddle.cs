@@ -530,6 +530,7 @@ public class CharMiddle : CharController
 
     IEnumerator Pee()
     {
+        agent.Stop();
         SetDirection(Direction.D);
         anim.Play("Pee_D", 0);
         Debug.Log("Pee");

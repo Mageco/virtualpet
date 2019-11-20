@@ -62,7 +62,8 @@ public class ItemSkill : MonoBehaviour
         }
     }
 
-    public void OnActive(){
+    public void OnActive(float t){
+        maxTime = t;
         isActive = true;
         if(animator != null)
             animator.Play("Skill",0);

@@ -16,7 +16,6 @@ public class Skill
 	public int maxProgress = 10;
 
 	//Rewards
-    public int itemId = -1;
     public int coinValue = 0;
     public int diamondValue = 0;
 	public int expValue = 0;

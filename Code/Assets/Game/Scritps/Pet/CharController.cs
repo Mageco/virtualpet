@@ -52,8 +52,6 @@ public class CharController : MonoBehaviour
 
     //Skill
     public SkillType currentSkill = SkillType.NONE;
-    protected float skillTime;
-    protected float maxSkillTime = 20;
     public GameObject skillLearnEffect;
 
     public float dragOffset = 20f;
@@ -130,13 +128,6 @@ public class CharController : MonoBehaviour
         else
             dataTime += Time.deltaTime;
 
-        if(currentSkill != SkillType.NONE){
-            if(skillTime > maxSkillTime){
-                OffLearnSkill();
-            }else
-                skillTime += Time.deltaTime;
-        }
-
         
     }
     #endregion
@@ -211,7 +202,15 @@ public class CharController : MonoBehaviour
     }
 
     public virtual void OnEat(){
-        
+        if(actionType == ActionType.Patrol || actionType == ActionType.Rest){
+            actionType = ActionType.Eat;
+            isAbort = true;
+        }
+    }
+
+    public virtual void OnDrink(){
+        actionType = ActionType.Drink;
+        isAbort = true;
     }
 
     protected void OnBath()
@@ -329,6 +328,17 @@ public class CharController : MonoBehaviour
         }
 
         isArrived = true;
+    }
+
+    public virtual void OnEvent(ItemEventType e){
+        if(e == ItemEventType.Eat){
+            if(data.food < 50)
+                OnEat();    
+        }else if(e == ItemEventType.Drink){
+            if(data.water < 50){
+                OnDrink();
+            }
+        }
     }
 
     public virtual void OnLevelUp()
@@ -457,14 +467,12 @@ public class CharController : MonoBehaviour
 
     public void OnLearnSkill(SkillType type){
         currentSkill = type;
-        skillTime = 0;
         skillLearnEffect.SetActive(true);
         ItemManager.instance.ActivateSkillItems(type);
     }
 
     public void OffLearnSkill(){
         ItemManager.instance.DeActivateSkillItems(currentSkill);
-        skillTime = 0;
         currentSkill = SkillType.NONE;
         skillLearnEffect.SetActive(false);
     }
