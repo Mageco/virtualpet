@@ -155,7 +155,7 @@ public class QuestManager : MonoBehaviour
                 isComplete = true;
             }
         }else if(questID == 2){
-            if(ItemManager.instance.(0).sleep >= 90){
+            if(ItemManager.instance.sleep >= 90){
                 isComplete = true;
             }
         }          
