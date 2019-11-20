@@ -32,8 +32,8 @@ public class SkillUI : MonoBehaviour
         icon.sprite = Resources.Load<Sprite>(url) as Sprite;
         skillName.text = d.GetName(0);
         skillDescription.text = d.GetDescription(0);
-        progress.text = InputController.instance.Character.data.GetSkillProgress(d.skillType).ToString() + "/" + d.maxProgress.ToString();
-        slider.fillAmount = InputController.instance.Character.data.GetSkillProgress(d.skillType) * 1f/d.maxProgress;
+        progress.text = GameManager.instance.GetPetObject(0).data.GetSkillProgress(d.skillType).ToString() + "/" + d.maxProgress.ToString();
+        slider.fillAmount = GameManager.instance.GetPetObject(0).data.GetSkillProgress(d.skillType) * 1f/d.maxProgress;
         if(d.coinValue != 0){
             rewardIcon.sprite = coinIcon;
             rewardValue.text = d.coinValue.ToString();

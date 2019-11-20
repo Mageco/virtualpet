@@ -224,7 +224,7 @@ public class BaseDragItem : MonoBehaviour
         {
             dragOffset = Camera.main.ScreenToWorldPoint(Input.mousePosition) - this.transform.position;
             state = ItemDragState.Drag;
-            InputController.instance.cameraController.SetTarget(this.gameObject);
+            GameManager.instance.SetCameraTarget(this.gameObject);
         }
 
     }

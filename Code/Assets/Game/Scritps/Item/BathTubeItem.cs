@@ -38,7 +38,7 @@ public class BathTubeItem : MonoBehaviour
 		if (isSoap) {
 			anim.Play ("Bath_End", 0);
 			isSoap = false;
-			InputController.instance.Character.data.dirty -= 50;
+			GameManager.instance.GetPetObject(0).data.dirty -= 50;
 		}
 	}
 }
