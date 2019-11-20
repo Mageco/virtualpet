@@ -44,31 +44,31 @@ public class UIManager : MonoBehaviour
 
 	public void UpdateUI()
 	{
-		coinText.text = ApiManager.instance.GetCoin().ToString();
-		diamonText.text = ApiManager.instance.GetDiamond().ToString();
+		coinText.text = ApiManager.GetInstance().GetCoin().ToString();
+		diamonText.text = ApiManager.GetInstance().GetDiamond().ToString();
 	}
 
 	public void BuyItem(int itemID){
-	   ApiManager.instance.BuyItem(itemID);
+	   ApiManager.GetInstance().BuyItem(itemID);
         if (shopPanel != null)
             shopPanel.ReLoad();
     }
 
 	public void UseItem(int itemID){
        shopPanel.Close();
-	   ApiManager.instance.EquipItem(itemID);
+	   ApiManager.GetInstance().EquipItem(itemID);
        ItemManager.instance.EquipItem();
 	}
 
 	public void BuyPet(int itemID){
-	   ApiManager.instance.BuyPet(itemID);
+	   ApiManager.GetInstance().BuyPet(itemID);
         if (shopPanel != null)
             shopPanel.ReLoad();
 	}
 
 	public void UsePet(int itemID){
        shopPanel.Close();
-       ApiManager.instance.EquipPet(itemID);
+       ApiManager.GetInstance().EquipPet(itemID);
        GameManager.instance.EquipPet(itemID);
 	}
 

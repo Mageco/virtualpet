@@ -13,7 +13,6 @@ public class ES2UserType_MageModelsGameCharacter : ES2Type
 		writer.Write(data.character_name);
 		writer.Write(data.character_type);
 		writer.Write(data.status);
-		writer.Write(data.character_datas);
 
 	}
 	
@@ -32,7 +31,6 @@ public class ES2UserType_MageModelsGameCharacter : ES2Type
 		data.character_name = reader.Read<System.String>();
 		data.character_type = reader.Read<System.String>();
 		data.status = reader.Read<System.String>();
-		data.character_datas = reader.ReadList<Mage.Models.Game.CharacterData>();
 
 	}
 	

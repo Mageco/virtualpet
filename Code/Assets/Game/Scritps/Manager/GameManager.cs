@@ -32,28 +32,28 @@ public class GameManager : MonoBehaviour
 
     public void LoadNewUserData()
     {
-        ApiManager.instance.AddItem(17);
-        ApiManager.instance.AddItem(56);
-        ApiManager.instance.AddDiamond(50000);
-        ApiManager.instance.AddCoin(1000);
-        ApiManager.instance.AddPet(0);
+        ApiManager.GetInstance().AddItem(17);
+        ApiManager.GetInstance().AddItem(56);
+        ApiManager.GetInstance().AddDiamond(50000);
+        ApiManager.GetInstance().AddCoin(1000);
+        ApiManager.GetInstance().AddPet(0);
 
-        ApiManager.instance.EquipItem(17);
-        ApiManager.instance.EquipPet(0);
-         ApiManager.instance.EquipItem(56);
+        ApiManager.GetInstance().EquipItem(17);
+        ApiManager.GetInstance().EquipPet(0);
+         ApiManager.GetInstance().EquipItem(56);
 
    /*      
-        ApiManager.instance.AddItem(2);
-        ApiManager.instance.AddItem(11);
+        ApiManager.GetInstance().AddItem(2);
+        ApiManager.GetInstance().AddItem(11);
                 
-        ApiManager.instance.AddItem(8);
+        ApiManager.GetInstance().AddItem(8);
 
 
         
-        ApiManager.instance.EquipItem(2);
-        ApiManager.instance.EquipItem(11); 
+        ApiManager.GetInstance().EquipItem(2);
+        ApiManager.GetInstance().EquipItem(11); 
                
-        ApiManager.instance.EquipItem(8);*/
+        ApiManager.GetInstance().EquipItem(8);*/
         
     }
 
@@ -78,7 +78,7 @@ public class GameManager : MonoBehaviour
 
     public void LoadPets()
     {
-        List<int> data = ApiManager.instance.GetEquipedPets();
+        List<int> data = ApiManager.GetInstance().GetEquipedPets();
         for (int i = 0; i < data.Count; i++)
         {
             AddPet(data[i]);

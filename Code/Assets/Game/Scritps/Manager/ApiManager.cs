@@ -10,21 +10,14 @@ using Mage.Models.Users;
 using Mage.Models.Game;
 using System.IO;
 using Mage.Models.Application;
+using MageSDK.Client;
 
+public class ApiManager : MageEngine {
 
-public class ApiManager : MonoBehaviour {
-
-	[HideInInspector]
-	public User user;
-	public Character character;
-	public static ApiManager instance;
 	[HideInInspector]
 	public int testRound = 0;
 	[HideInInspector]
 	public int testSequence = 0;
-	[HideInInspector]
-	public bool isLogin = false;
-
 	[HideInInspector]
 	public string contactUrl = "";
 	[HideInInspector]
@@ -32,258 +25,22 @@ public class ApiManager : MonoBehaviour {
 	[HideInInspector]
 	public int option = 0;
 
-
 	public List<ActionData> actions = new List<ActionData>();
 
 	private Hashtable variables;
 
-    public bool isSaveDataLocal = false;
-    public bool isSaveDataOnline = false;
+    //public bool isSaveDataLocal = false;
+    //public bool isSaveDataOnline = false;
 
-	void Awake()
-	{
-		if (instance == null)
-			instance = this;
-		else
-			Destroy (this.gameObject);
-
-		DontDestroyOnLoad (this.gameObject);
-
-		character = new Character();
-
-		if (ES2.Exists ("User")) {
-			user = ES2.Load<User> ("User");
-        }
-        else
-		{
-			user = new User();
-            user.SetCharacter(character);
-		}
+	public static ApiManager GetInstance() {
+		return (ApiManager)MageEngine.instance;
 	}
-
-
-	void Start()
-	{
-		LoginWithDeviceID ();
-	}
-
-
-	#region User API
-	public void LoginWithDeviceID() {
-		LoginRequest r = new LoginRequest (ApiSettings.LOGIN_DEVICE_UUID);
-
-		//call to login api
-		ApiHandler.instance.SendApi<LoginResponse>(
-			ApiSettings.API_LOGIN, 
-			r, 
-			(result) => {
-				//do some other processing here
-				Debug.Log("User token: " + result.Token);
-				Debug.Log("Loggin usserID: " + result.User.id);
-				isLogin = true;
-				MageManager.instance.SetLocation(result.User.country_code);
-				OnCompleteLogin (result);
-				GetApplicationData ();
-			},
-			(errorStatus) => {
-				Debug.Log("Error: " + errorStatus);
-				//do some other processing here
-			}, 
-			() => {
-				//timeout handler here
-				Debug.Log("Api call is timeout");
-			}
-		);
-	}
-
-	void OnCompleteLogin(LoginResponse result)
-	{
-		RuntimeParameters.GetInstance().SetParam(ApiSettings.SESSION_LOGIN_TOKEN, result.Token);
-		RuntimeParameters.GetInstance().SetParam(ApiSettings.LOGGED_IN_USER, result.User);
-		Debug.Log(result.User.ToJson());
-		if (result.User.status == "5") {
-			CreateNewUser ();
-		}else
-			CreateExistingUser (result.User);
-	}
-
-	void CreateNewUser()
-	{
-		Debug.Log ("NEw user created");
-        SaveUserData ();
-		UpdateUserData ();
-		UpdateUserProfile ();
-    }
-
-	void CreateExistingUser(User u)
-	{
-        #if UNITY_EDITOR
-        if (!isSaveDataOnline)
-            return;
-        #endif
-
-        user = u;
-		UpdateUserData ();
-		UpdateUserProfile ();
-		SaveUserData ();
-	}
-
-	void SaveUserData()
-	{
-        #if UNITY_EDITOR
-        if(isSaveDataLocal)
-            ES2.Save<User> (user, "User");
-        #else
-        ES2.Save<User> (user, "User");
-        #endif
-    }
-
-	public void GetApplicationAudioResourcesClick() {
-		GetApplicationAudioResourcesRequest r = new GetApplicationAudioResourcesRequest(1);  // English wil be EN_en
-
-		//call to login api
-		ApiHandler.instance.SendApi<GetApplicationAudioResourcesResponse>(
-			ApiSettings.API_GET_APPLICATION_AUDIO_RESOURCES,
-			r, 
-			(result) => {
-				Debug.Log("Get audio successful");
-				//do all things like login
-				Debug.Log("Result: " + result.Resources.ToString());
-				int n=0;
-			},
-			(errorStatus) => {
-				Debug.Log("Error: " + errorStatus);
-				//do some other processing here
-			},
-			() => {
-				//timeout handler here
-				Debug.Log("Api call is timeout");
-			}
-		);
-	}
-
-	public void UpdateUserProfile() {
-
-		if (!isLogin)
-			return;
-
-		UpdateProfileRequest r = new UpdateProfileRequest ();
-		r.Fullname = user.fullname;
-
-		//call to login api
-		ApiHandler.instance.SendApi<UpdateProfileResponse>(
-			ApiSettings.API_UPDATE_PROFILE,
-			r, 
-			(result) => {
-				Debug.Log("Success: Upload profile successfully");
-				Debug.Log("New Avatar: " + result.User.avatar);
-			},
-			(errorStatus) => {
-				Debug.Log("Error: " + errorStatus);
-				//do some other processing here
-			},
-			() => {
-				//timeout handler here
-				Debug.Log("Api call is timeout");
-			}
-		);
-	}
-
-	public void UpdateUserData() {
-
-		if (!isLogin)
-			return;
-
-	#if UNITY_EDITOR
-			if (!isSaveDataOnline)
-				return;
-	#endif
-
-        UpdateUserDataRequest r = new UpdateUserDataRequest ();
-		r.UserDatas = user.user_datas;
-		//call to login api
-		ApiHandler.instance.SendApi<UpdateUserDataResponse>(
-			ApiSettings.API_UPDATE_USER_DATA, 
-			r, 
-			(result) => {
-				Debug.Log("Success: Update user data");
-			},
-			(errorStatus) => {
-				Debug.Log("Error: " + errorStatus);
-				//do some other processing here
-			},
-			() => {
-				//timeout handler here
-				Debug.Log("Api call is timeout");
-			}
-		);
-	}
-
-	#endregion
-
-
-	
-
-
-	#region Event
-	public void SendAppEvent(string eventName) {
-		SendUserEventRequest r = new SendUserEventRequest (eventName);
-
-		//call to login api
-		ApiHandler.instance.SendApi<SendUserEventResponse>(
-			ApiSettings.API_SEND_USER_EVENT,
-			r, 
-			(result) => {
-				Debug.Log("Success: send event successfully");
-			},
-			(errorStatus) => {
-				Debug.Log("Error: " + errorStatus);
-				//do some other processing here
-			},
-			() => {
-				//timeout handler here
-				Debug.Log("Api call is timeout");
-			}
-		);
-	}
-
-	public void GetApplicationData() {
-
-		GetApplicationDataRequest r = new GetApplicationDataRequest ();
-
-		//call to login api
-		ApiHandler.instance.SendApi<GetApplicationDataResponse>(
-			ApiSettings.API_GET_APPLICATION_DATA,
-			r, 
-			(result) => {
-				Debug.Log("Success: send event successfully");
-				Debug.Log("Messages result: " + result.ToJson());
-				foreach(ApplicationData data in result.ApplicationDatas)
-				{
-					if(data.attr_name == "ContactPhone")
-						contactPhone = data.attr_value;
-
-					if(data.attr_name == "ContactWeb")
-						contactUrl = data.attr_value;
-				}
-			},
-			(errorStatus) => {
-				Debug.Log("Error: " + errorStatus);
-				//do some other processing here
-			},
-			() => {
-				//timeout handler here
-				Debug.Log("Api call is timeout");
-			}
-		);
-	}
-	#endregion
 
 	#region Player Data
 	public int GetCoin()
 	{
-		if (user.GetUserData ("Coin") != null)
-			return int.Parse (user.GetUserData ("Coin"));
+		if (GetUser().GetUserData ("Coin") != null)
+			return int.Parse (GetUser().GetUserData ("Coin"));
 		else
 			return 0;
 	}
@@ -293,10 +50,7 @@ public class ApiManager : MonoBehaviour {
 		int c1 = GetCoin();
 		if (c1 + c >= 0) {
 			c1 += c;
-			user.SetUserData (new UserData ("Coin", c1.ToString (), ""));
-			SaveUserData ();
-			UpdateUserData ();
-
+			UpdateUserData (new UserData ("Coin", c1.ToString (), ""));
 		} else {
 			Debug.Log ("Not Enough Coin");
 		}
@@ -305,8 +59,8 @@ public class ApiManager : MonoBehaviour {
 
 	public int GetDiamond()
 	{
-		if (user.GetUserData ("Diamond") != null)
-			return int.Parse (user.GetUserData ("Diamond"));
+		if (GetUser().GetUserData ("Diamond") != null)
+			return int.Parse (GetUser().GetUserData ("Diamond"));
 		else
 			return 0;
 	}
@@ -316,10 +70,7 @@ public class ApiManager : MonoBehaviour {
 		int c1 = GetDiamond();
 		if (c1 + c >= 0) {
 			c1 += c;
-			user.SetUserData (new UserData ("Diamond", c1.ToString (), ""));
-			SaveUserData ();
-			UpdateUserData ();
-
+			UpdateUserData (new UserData ("Diamond", c1.ToString (), ""));
 		} else {
 			Debug.Log ("Not Enough Diamond");
 		}
@@ -364,16 +115,12 @@ public class ApiManager : MonoBehaviour {
 
 	public void AddItem(int itemId)
 	{
-		user.SetUserData (new UserData (itemId.ToString(),ItemState.Have.ToString(), "Item"));
-		SaveUserData ();
-		UpdateUserData ();
+		GetUser().SetUserData (new UserData (itemId.ToString(),ItemState.Have.ToString(), "Item"));
 	}
 
 	public void RemoveItem(int itemId)
 	{
-		user.SetUserData (new UserData (itemId.ToString(),ItemState.OnShop.ToString(), "Item"));
-		SaveUserData ();
-		UpdateUserData ();
+		GetUser().SetUserData (new UserData (itemId.ToString(),ItemState.OnShop.ToString(), "Item"));
 	}
 
 	public void EquipItem(int itemId){
@@ -381,18 +128,16 @@ public class ApiManager : MonoBehaviour {
 			List<int> items = GetEquipedItems();
 			for(int i=0;i<items.Count;i++){
 				if(DataHolder.GetItem(items[i]).itemType == DataHolder.GetItem(itemId).itemType && DataHolder.GetItem(items[i]).iD != itemId){
-					user.SetUserData (new UserData (DataHolder.GetItem(items[i]).iD.ToString(), ItemState.Have.ToString(), "Item"));
+					GetUser().SetUserData (new UserData (DataHolder.GetItem(items[i]).iD.ToString(), ItemState.Have.ToString(), "Item"));
 				}
 			}
-			user.SetUserData (new UserData (itemId.ToString(), ItemState.Equiped.ToString(), "Item"));
-			SaveUserData ();
-			UpdateUserData ();
+			GetUser().SetUserData (new UserData (itemId.ToString(), ItemState.Equiped.ToString(), "Item"));
 		//}
 	}
 
 	public bool IsHaveItem(int itemId)
 	{
-		if (user.GetUserData (itemId.ToString()) == ItemState.Have.ToString() || user.GetUserData (itemId.ToString()) == ItemState.Equiped.ToString())
+		if (GetUser().GetUserData (itemId.ToString()) == ItemState.Have.ToString() || GetUser().GetUserData (itemId.ToString()) == ItemState.Equiped.ToString())
 			return true;
 		else
 			return false;
@@ -400,7 +145,7 @@ public class ApiManager : MonoBehaviour {
 
 	public bool IsEquipItem(int itemId)
 	{
-		if (user.GetUserData (itemId.ToString()) == ItemState.Equiped.ToString())
+		if (GetUser().GetUserData (itemId.ToString()) == ItemState.Equiped.ToString())
 			return true;
 		else
 			return false;
@@ -455,22 +200,18 @@ public class ApiManager : MonoBehaviour {
 
 	public void AddPet(int petId)
 	{
-		character.SetCharacterData (new CharacterData (petId.ToString(),ItemState.Have.ToString(), "Pet"));
-		SaveUserData ();
-		UpdateUserData ();
+		UpdateGameCharacterData(new CharacterData (petId.ToString(),ItemState.Have.ToString(), "Pet"));
 	}
 
 	public void EquipPet(int petId){
 		//if(HavePet(petId)){
-			character.SetCharacterData (new CharacterData (petId.ToString(), ItemState.Equiped.ToString(), "Pet"));
-			SaveUserData ();
-			UpdateUserData ();
+		UpdateGameCharacterData (new CharacterData (petId.ToString(), ItemState.Equiped.ToString(), "Pet"));
 		//}
 	}
 
 	public bool IsHavePet(int petId)
 	{
-		if (character.GetCharacterData (petId.ToString()) == ItemState.Have.ToString() || character.GetCharacterData (petId.ToString()) == ItemState.Equiped.ToString() )
+		if (GetActiveCharacter().GetCharacterData (petId.ToString()) == ItemState.Have.ToString() || GetActiveCharacter().GetCharacterData (petId.ToString()) == ItemState.Equiped.ToString() )
 			return true;
 		else
 			return false;
@@ -478,7 +219,7 @@ public class ApiManager : MonoBehaviour {
 
 	public bool IsEquipPet(int petId)
 	{
-		if (character.GetCharacterData (petId.ToString()) == ItemState.Equiped.ToString())
+		if (GetActiveCharacter().GetCharacterData (petId.ToString()) == ItemState.Equiped.ToString())
 			return true;
 		else
 			return false;
@@ -513,14 +254,14 @@ public class ApiManager : MonoBehaviour {
 
 	public string GetName()
 	{
-		return user.fullname;
+		return GetUser().fullname;
 	}
 
 	public void SetName(string n)
 	{
-		user.fullname = n;
-		SaveUserData ();
-		UpdateUserProfile ();
+		User u = GetUser();
+		u.fullname = n;
+		UpdateUserProfile (u);
 	}
 
 	#region Actions
