@@ -18,15 +18,10 @@ public class MageManager : MonoBehaviour {
 	public Mprogress loadingBar;
 	public GameObject notificationPopupPrefab;
 	public GameObject confirmationPopUpPrefab;
-	public GameObject settingPopUpPrefab;
-	public GameObject winPopUpPrefab;
-	public GameObject losePopUpPrefab;
 	public GameObject verificationPrefab;
 	MPopup notificationPopup;
 	MPopup confirmationPopup;
-	SettingPopUp settingPopup;
-	MPopup winPopup;
-	MPopup losePopup;
+
 	VerifyWindow verifyPopup;
 
 	[HideInInspector]
@@ -498,45 +493,6 @@ public class MageManager : MonoBehaviour {
 
 		}
 		return confirmationPopup;
-	}
-
-	public SettingPopUp OnSettingPopup()
-	{
-		if (settingPopup == null) {
-			var popup = Instantiate (settingPopUpPrefab) as GameObject;
-			popup.SetActive (true);
-			popup.transform.localScale = Vector3.zero;
-			popup.transform.SetParent (GameObject.Find ("Canvas").transform, false);
-			popup.GetComponent<Popup> ().Open ();
-			settingPopup = popup.GetComponent<SettingPopUp> ();
-		}
-		return settingPopup;
-	}
-
-	public MPopup OnWinPopup()
-	{
-		if (winPopup == null) {
-			var popup = Instantiate (winPopUpPrefab) as GameObject;
-			popup.SetActive (true);
-			popup.transform.localScale = Vector3.zero;
-			popup.transform.SetParent (GameObject.Find ("Canvas").transform, false);
-			popup.GetComponent<Popup> ().Open ();
-			winPopup = popup.GetComponent<MPopup> ();
-		}
-		return winPopup;
-	}
-
-	public MPopup OnLosePopup()
-	{
-		if (winPopup == null) {
-			var popup = Instantiate (losePopUpPrefab) as GameObject;
-			popup.SetActive (true);
-			popup.transform.localScale = Vector3.zero;
-			popup.transform.SetParent (GameObject.Find ("Canvas").transform, false);
-			popup.GetComponent<Popup> ().Open ();
-			losePopup = popup.GetComponent<MPopup> ();
-		}
-		return losePopup;
 	}
 
 	public void OnWaiting()

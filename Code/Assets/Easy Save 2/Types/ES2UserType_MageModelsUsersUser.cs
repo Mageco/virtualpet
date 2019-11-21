@@ -49,7 +49,7 @@ public class ES2UserType_MageModelsUsersUser : ES2Type
 		data.phone = reader.Read<System.String>();
 		data.email = reader.Read<System.String>();
 		data.avatar = reader.Read<System.String>();
-		data.status = reader.Read<Mage.Models.Users.UserStatus>();
+		data.status = reader.Read<System.String>();
 		data.notification_token = reader.Read<System.String>();
 		data.country_code = reader.Read<System.String>();
 		data.user_datas = reader.ReadList<Mage.Models.Users.UserData>();

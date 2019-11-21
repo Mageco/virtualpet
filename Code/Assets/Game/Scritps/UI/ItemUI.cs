@@ -37,11 +37,11 @@ public class ItemUI : MonoBehaviour
         icon.sprite = Resources.Load<Sprite>(url) as Sprite;
         price.text = d.buyPrice.ToString();
 
-        if (ApiManager.GetInstance().IsEquipItem(d.iD))
+        if (ApiManager.instance.IsEquipItem(d.iD))
         {
             state = ItemState.Equiped;
         }
-        else if (ApiManager.GetInstance().IsHaveItem(d.iD))
+        else if (ApiManager.instance.IsHaveItem(d.iD))
         {
             state = ItemState.Have;
         }
@@ -105,11 +105,11 @@ public class ItemUI : MonoBehaviour
         icon.sprite = Resources.Load<Sprite>(url) as Sprite;
         price.text = d.buyPrice.ToString();
 
-        if (ApiManager.GetInstance().IsEquipPet(d.iD))
+        if (ApiManager.instance.IsEquipPet(d.iD))
         {
             state = ItemState.Equiped;
         }
-        else if (ApiManager.GetInstance().IsHavePet(d.iD))
+        else if (ApiManager.instance.IsHavePet(d.iD))
         {
             state = ItemState.Have;
         }

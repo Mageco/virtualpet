@@ -121,8 +121,7 @@ public class ChickenController : AnimalController
     {
 interactType = InteractType.Drag;
         Vector3 dropPosition = Vector3.zero;
-        SetDirection(Direction.D);
-        anim.Play("Idle_" + direction.ToString(), 0);
+
 
         while (interactType == InteractType.Drag)
         {

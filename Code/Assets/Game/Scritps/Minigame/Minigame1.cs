@@ -40,5 +40,7 @@ public class Minigame1 : Minigame
         float s = (int)(t - m*60);
         timeText.text  = m.ToString("00") + ":" + s.ToString("00");
     }
+
+    
 }
 

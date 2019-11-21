@@ -108,4 +108,10 @@ public class Minigame : MonoBehaviour
         float y = Random.Range(Minigame.instance.boundY.x, Minigame.instance.boundY.y);
         return new Vector3(x, y, 0);
     }
+
+    public void OnHome(){
+        GameManager.instance.gameType = GameType.House;
+        GameManager.instance.GetPet(0).Load();
+        MageManager.instance.LoadSceneWithLoading("House");
+    }
 }

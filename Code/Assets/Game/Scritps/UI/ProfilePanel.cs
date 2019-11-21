@@ -1,9 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class EventPanel : MonoBehaviour
+public class ProfilePanel : MonoBehaviour
 {
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -14,14 +16,5 @@ public class EventPanel : MonoBehaviour
     void Update()
     {
         
-    }
-
-    public void OnEvent(){
-        this.Close();
-        GameManager.instance.OnEvent();
-    }
-
-    public void Close(){
-        this.GetComponent<Popup>().Close();
     }
 }
