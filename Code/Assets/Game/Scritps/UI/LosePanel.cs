@@ -21,6 +21,7 @@ public class LosePanel : MonoBehaviour
     }
 
     public void Close(){
+        Minigame.instance.OnHome();
         this.GetComponent<Popup>().Close();
     }
 }

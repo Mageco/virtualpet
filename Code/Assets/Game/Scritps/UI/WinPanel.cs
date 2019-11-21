@@ -46,6 +46,7 @@ public class WinPanel : MonoBehaviour
     }
 
     public void Close(){
+        Minigame.instance.OnHome();
         this.GetComponent<Popup>().Close();
     }
 }
