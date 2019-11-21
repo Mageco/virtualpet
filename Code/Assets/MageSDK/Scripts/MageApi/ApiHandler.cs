@@ -55,6 +55,13 @@ namespace MageApi {
 			
 		}
 
+		public static ApiHandler GetInstance() {
+			if (null == instance) {
+				instance = new ApiHandler ();
+			} 
+			return instance;
+		}
+
 		public void SendApi<TResult>(string apiName, BaseRequest request, Action<TResult> callback, Action<int> errorCallback, Action timeoutCallback) where TResult : BaseResponse{
 			//prepare request
 			var form = new WWWForm();

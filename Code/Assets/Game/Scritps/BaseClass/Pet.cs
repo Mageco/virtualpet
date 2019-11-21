@@ -437,11 +437,11 @@ public class Pet
 			}
 			Debug.Log(level);
 			if(level > temp){
-				if(temp < 5)
-					Load();	
 				if(character != null){
 					character.OnLevelUp();
 				}
+				//if(temp < 5)
+				//	Load();	
 			}
 		}	
 	}

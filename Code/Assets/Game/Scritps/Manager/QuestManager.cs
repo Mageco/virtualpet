@@ -18,6 +18,7 @@ public class QuestManager : MonoBehaviour
     float maxTimeCheck = 0.2f;
     MPopup tipUI;
     float delayTime = 0;
+    bool isActive = true;
 
     void Awake()
     {
@@ -44,13 +45,36 @@ public class QuestManager : MonoBehaviour
     void LoadQuestObject()
     {
         if(questID == 0){
+        }else if(questID == 1){
+        }else if(questID == 2){
+        }else if(questID == 3){
+            delayTime = 16;
+        }else if(questID == 4){
+        }else if(questID == 5){
+        }else if(questID == 6){
+        }else if(questID == 7){
+        }
+    }
+
+    void PlayTip()
+    {
+       
+        StartCoroutine(PlayTimeline());
+
+    }
+
+    IEnumerator PlayTimeline()
+    {
+        yield return new WaitForSeconds(delayTime);
+         OnQuestNotification();
+
+        if(questID == 0){
 
         }else if(questID == 1){
 
         }else if(questID == 2){
             GameManager.instance.GetPet(0).sleep = 0;
         }else if(questID == 3){
-            delayTime = 1;
             GameManager.instance.GetPet(0).food = 10;  
             GameManager.instance.SetCameraTarget(ItemManager.instance.GetItemChildObject(ItemType.Food));
         }else if(questID == 4){
@@ -61,19 +85,10 @@ public class QuestManager : MonoBehaviour
             GameManager.instance.GetPet(0).pee = 100;        
         }else if(questID == 6){
             GameManager.instance.GetPet(0).dirty = 70;        
+        }else if(questID == 7){
+            GameManager.instance.SetCameraTarget(ItemManager.instance.GetItemChildObject(ItemType.Clean));         
         }
-    }
 
-    void PlayTip()
-    {
-        OnQuestNotification();
-        StartCoroutine(PlayTimeline());
-
-    }
-
-    IEnumerator PlayTimeline()
-    {
-        yield return new WaitForSeconds(delayTime);
         if (DataHolder.Quest(questID).prefabName != "")
         {
             string url = DataHolder.GetQuest(questID).prefabName.Replace("Assets/Game/Resources/", "");
@@ -121,13 +136,13 @@ public class QuestManager : MonoBehaviour
     {
         if (DataHolder.Quest(questID).haveItem)
         {
-            ApiManager.instance.AddItem(DataHolder.Quest(questID).itemId);
-            ApiManager.instance.EquipItem(DataHolder.Quest(questID).itemId);
+            ApiManager.GetInstance().AddItem(DataHolder.Quest(questID).itemId);
+            ApiManager.GetInstance().EquipItem(DataHolder.Quest(questID).itemId);
             ItemManager.instance.LoadItems();
         }
 
-        ApiManager.instance.AddCoin(DataHolder.Quest(questID).coinValue);
-        ApiManager.instance.AddDiamond(DataHolder.Quest(questID).diamondValue);
+        ApiManager.GetInstance().AddCoin(DataHolder.Quest(questID).coinValue);
+        ApiManager.GetInstance().AddDiamond(DataHolder.Quest(questID).diamondValue);
         GameManager.instance.GetPet(0).Exp += DataHolder.Quest(questID).expValue;
 
         Debug.Log("Exp " + GameManager.instance.GetPet(0).Exp);
@@ -183,6 +198,11 @@ public class QuestManager : MonoBehaviour
             if(GameManager.instance.GetPet(0).dirty < 10){
                 isComplete = true;
             }
+        }else if(questID == 7){
+            if(GameObject.FindObjectOfType<ItemDirty>() == null){
+                GameManager.instance.ResetCameraTarget();
+                isComplete = true;
+            }
         }                
         
         if (isComplete)
@@ -195,8 +215,16 @@ public class QuestManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(!isActive)
+            return;
+
         if (!isStartQuest)
         {
+            if(questID >= DataHolder.Quests().GetDataCount()){
+                isActive = false;
+                return;
+            }
+                
             StartQuest();
         }
         else

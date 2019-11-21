@@ -36,7 +36,7 @@ public class ItemManager : MonoBehaviour
 
     IEnumerator EquipItemCoroutine()
     {
-        List<int> data = ApiManager.instance.GetEquipedItems();
+        List<int> data = ApiManager.GetInstance().GetEquipedItems();
         List<ItemObject> removes = new List<ItemObject>();
 
         
@@ -97,7 +97,7 @@ public class ItemManager : MonoBehaviour
 
     public void LoadItems()
     {
-        List<int> data = ApiManager.instance.GetEquipedItems();
+        List<int> data = ApiManager.GetInstance().GetEquipedItems();
         List<ItemObject> removes = new List<ItemObject>();
 
         foreach (ItemObject item in items)

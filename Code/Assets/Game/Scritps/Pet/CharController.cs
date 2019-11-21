@@ -61,6 +61,8 @@ public class CharController : MonoBehaviour
     DrinkBowlItem drinkItem;
     MouseController mouse;
 
+    public GameObject growUpTimeline;
+
     #region Load
 
     void Awake()
@@ -364,7 +366,7 @@ public class CharController : MonoBehaviour
     }
 
     void LogAction(){
-        ApiManager.instance.LogAction(actionType);
+        ApiManager.GetInstance().LogAction(actionType);
     }
 
 
@@ -504,13 +506,16 @@ public class CharController : MonoBehaviour
         CheckAbort();
     }
 
-    protected IEnumerator LevelUp()
+    protected virtual IEnumerator LevelUp()
     {
         Debug.Log("Level Up" + data.level);
         yield return StartCoroutine(DoAnim("LevelUp_LD"));
 
-        if (data.level >= 2)
+        if (data.level >= 2){
+            GrowUp();
             data.Load();
+        }
+           
 
         CheckAbort();
     }
@@ -532,6 +537,9 @@ public class CharController : MonoBehaviour
         //GameObject go = Instantiate(flyPrefab,Vector3.zero, Quaternion.identity); 
     }
 
+    protected void GrowUp(){
+         GameObject go = Instantiate(growUpTimeline, new Vector3(0, 0, -50), Quaternion.identity);
+    }
 
     #endregion
 
