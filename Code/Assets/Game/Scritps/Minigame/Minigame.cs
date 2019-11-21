@@ -76,11 +76,12 @@ public class Minigame : MonoBehaviour
         if (winPanel == null)
         {
             var popup = Instantiate(winPrefab) as GameObject;
-            popup.transform.SetParent(this.transform);
-            popup.transform.localScale = Vector3.one;
-            popup.transform.localPosition = Vector3.zero;
             popup.SetActive(true);
+            popup.transform.localScale = Vector3.zero;
+            popup.transform.SetParent(GameObject.Find("Canvas").transform, false);
+            popup.GetComponent<Popup>().Open();
             winPanel = popup.GetComponent<WinPanel>();
+            winPanel.Load(3,4,5,3);
         }
     }
 
@@ -88,10 +89,10 @@ public class Minigame : MonoBehaviour
         if (losePanel == null)
         {
             var popup = Instantiate(losePrefab) as GameObject;
-            popup.transform.SetParent(this.transform);
-            popup.transform.localScale = Vector3.one;
-            popup.transform.localPosition = Vector3.zero;
             popup.SetActive(true);
+            popup.transform.localScale = Vector3.zero;
+            popup.transform.SetParent(GameObject.Find("Canvas").transform, false);
+            popup.GetComponent<Popup>().Open();
             losePanel = popup.GetComponent<LosePanel>();
         }
     }
