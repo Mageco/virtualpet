@@ -21,6 +21,6 @@ public class LosePanel : MonoBehaviour
     }
 
     public void Close(){
-        
+        this.GetComponent<Popup>().Close();
     }
 }
