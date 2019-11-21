@@ -41,8 +41,6 @@ public class CharBig : CharController
 
         data.Dirty += data.dirtyFactor;
         data.Itchi += data.Dirty * 0.001f;
-        data.Stamina -= data.staminaConsume;
-        data.Stamina += data.actionEnergyConsume;
 
         data.Sleep -= data.sleepConsume;
 
