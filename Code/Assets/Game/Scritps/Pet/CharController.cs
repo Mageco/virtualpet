@@ -79,6 +79,7 @@ public class CharController : MonoBehaviour
         charInteract = this.GetComponent<CharInteract>();
 
         GameObject go1 = Instantiate(Resources.Load("Prefabs/Pets/Agent")) as GameObject;
+        go1.transform.parent = GameManager.instance.transform;
 		agent = go1.GetComponent<PolyNavAgent>();
 		agent.LoadCharacter(this);
 
@@ -366,7 +367,7 @@ public class CharController : MonoBehaviour
     }
 
     void LogAction(){
-        ApiManager.GetInstance().LogAction(actionType);
+        ApiManager.instance.LogAction(actionType);
     }
 
 

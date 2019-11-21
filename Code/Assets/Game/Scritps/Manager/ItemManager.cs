@@ -18,9 +18,16 @@ public class ItemManager : MonoBehaviour
             GameObject.Destroy(this.gameObject);
     }
     // Start is called before the first frame update
-    void Start()
+    IEnumerator Start()
     {
-        
+        bool isLoad = false;
+        while(!isLoad){
+            if(GameManager.instance.isLoad){
+                LoadItems();
+                isLoad = true;
+            }
+            yield return new WaitForEndOfFrame();
+        }
     }
 
     // Update is called once per frame
@@ -36,7 +43,7 @@ public class ItemManager : MonoBehaviour
 
     IEnumerator EquipItemCoroutine()
     {
-        List<int> data = ApiManager.GetInstance().GetEquipedItems();
+        List<int> data = ApiManager.instance.GetEquipedItems();
         List<ItemObject> removes = new List<ItemObject>();
 
         
@@ -97,7 +104,7 @@ public class ItemManager : MonoBehaviour
 
     public void LoadItems()
     {
-        List<int> data = ApiManager.GetInstance().GetEquipedItems();
+        List<int> data = ApiManager.instance.GetEquipedItems();
         List<ItemObject> removes = new List<ItemObject>();
 
         foreach (ItemObject item in items)

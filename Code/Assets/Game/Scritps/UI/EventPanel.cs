@@ -17,7 +17,8 @@ public class EventPanel : MonoBehaviour
     }
 
     public void OnEvent(){
-        MageManager.instance.LoadSceneWithLoading("Minigame2");
+        this.Close();
+        GameManager.instance.OnEvent();
     }
 
     public void Close(){

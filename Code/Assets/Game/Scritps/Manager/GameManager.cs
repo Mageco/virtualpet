@@ -12,9 +12,12 @@ public class GameManager : MonoBehaviour
     List<Pet> pets = new List<Pet>();
     CameraController camera;
 
+    public int questId = 0;
+
     public GameType gameType = GameType.House;
 
     public int addExp = 0;
+    public bool isLoad = false;
 
     void Awake()
     {
@@ -32,28 +35,28 @@ public class GameManager : MonoBehaviour
 
     public void LoadNewUserData()
     {
-        ApiManager.GetInstance().AddItem(17);
-        ApiManager.GetInstance().AddItem(56);
-        ApiManager.GetInstance().AddDiamond(50000);
-        ApiManager.GetInstance().AddCoin(1000);
-        ApiManager.GetInstance().AddPet(0);
+        ApiManager.instance.AddItem(17);
+        ApiManager.instance.AddItem(56);
+        ApiManager.instance.AddDiamond(50000);
+        ApiManager.instance.AddCoin(1000);
+        ApiManager.instance.AddPet(0);
 
-        ApiManager.GetInstance().EquipItem(17);
-        ApiManager.GetInstance().EquipPet(0);
-         ApiManager.GetInstance().EquipItem(56);
+        ApiManager.instance.EquipItem(17);
+        ApiManager.instance.EquipPet(0);
+         ApiManager.instance.EquipItem(56);
 
    /*      
-        ApiManager.GetInstance().AddItem(2);
-        ApiManager.GetInstance().AddItem(11);
+        ApiManager.instance.AddItem(2);
+        ApiManager.instance.AddItem(11);
                 
-        ApiManager.GetInstance().AddItem(8);
+        ApiManager.instance.AddItem(8);
 
 
         
-        ApiManager.GetInstance().EquipItem(2);
-        ApiManager.GetInstance().EquipItem(11); 
+        ApiManager.instance.EquipItem(2);
+        ApiManager.instance.EquipItem(11); 
                
-        ApiManager.GetInstance().EquipItem(8);*/
+        ApiManager.instance.EquipItem(8);*/
         
     }
 
@@ -62,11 +65,9 @@ public class GameManager : MonoBehaviour
         if (!ES2.Exists("User"))
         {
             LoadNewUserData();
+            isLoad = true;
         }
         
-        if(ItemManager.instance != null)
-            ItemManager.instance.LoadItems();
-
         LoadPets();
         
         if(camera != null){
@@ -78,7 +79,7 @@ public class GameManager : MonoBehaviour
 
     public void LoadPets()
     {
-        List<int> data = ApiManager.GetInstance().GetEquipedPets();
+        List<int> data = ApiManager.instance.GetEquipedPets();
         for (int i = 0; i < data.Count; i++)
         {
             AddPet(data[i]);
@@ -142,5 +143,22 @@ public class GameManager : MonoBehaviour
         camera.isFollow = true;
     }
 
+    public void OnEvent(){
+        MageManager.instance.LoadSceneWithLoading("Minigame1");
+        gameType = GameType.Minigame1;
+        pets[0].Load();
+    }
+
+    public void AddCoin(int c){
+        ApiManager.instance.AddCoin(c);
+    }
+
+    public void AddDiamon(int d){
+        ApiManager.instance.AddDiamond(d);
+    }
+
+    public void AddExp(int e){
+         pets[0].Exp += e;
+    }
 	
 }

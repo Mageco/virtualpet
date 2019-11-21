@@ -30,6 +30,10 @@ public class CharMinigame1 : CharController
         this.agent.speed = 20;
     }
 
+    public override void OnHold(){
+
+    }
+
     protected override void DoAction()
     {
         //Debug.Log("DoAction " + actionType);
@@ -74,6 +78,7 @@ public class CharMinigame1 : CharController
                 agent.Stop();
                 anim.Play("Bark_Angry_" +direction.ToString(),0);
                 animalTarget.OnFlee();
+                GameManager.instance.AddCoin(1);
                 yield return StartCoroutine(Wait(0.5f));
             }
             yield return new WaitForEndOfFrame();
@@ -83,7 +88,7 @@ public class CharMinigame1 : CharController
 
     IEnumerator Rest()
     {
-        if(Minigame.instance.live < Minigame.instance.maxLive)
+        if(Minigame.instance != null && Minigame.instance.live < Minigame.instance.maxLive)
         {
             anim.Play("Idle_Angry_" + direction.ToString());
             yield return StartCoroutine(Wait(Random.Range(0.1f,0.5f)));
@@ -102,13 +107,15 @@ public class CharMinigame1 : CharController
             } else{
                 anim.Play("BathStart_D", 0);
             }
-            yield return StartCoroutine(Wait(Random.Range(0.5f,1)));
+            yield return StartCoroutine(Wait(Random.Range(0.1f,0.5f)));
         } 
         CheckAbort();
     }    
 
 
     void CheckAnimal(){
+        if(animals.Length ==0)
+            LoadAnimal();
         animalTargets.Clear();
         for(int i=0;i<animals.Length;i++){
             if(Minigame.instance.IsInBound(animals[i].transform.position) && (animals[i].tag == "Animal")){
@@ -118,6 +125,11 @@ public class CharMinigame1 : CharController
     }
 
     AnimalController GetTarget(){
+        if(animals.Length ==0){
+            LoadAnimal();
+            CheckAnimal();
+        }
+           
         float l = 1000;
         int id = 0;
         for(int i=0;i<animalTargets.Count;i++){

@@ -10,8 +10,9 @@ public class UIManager : MonoBehaviour
     public GameObject questCompletePrefab;
     public GameObject shopUIPrefab;
     public GameObject eventUIPrefab;
+
+    public GameObject profileUIPrefab;
     public static UIManager instance;
-	[HideInInspector]
 	public Text coinText;
 	public Text diamonText;
 	MPopup questNotification;
@@ -19,15 +20,22 @@ public class UIManager : MonoBehaviour
     ShopPanel shopPanel;
     EventPanel eventPanel;
 
+    ProfilePanel profilePanel;
+
 	void Awake()
 	{
 		if (instance == null)
 			instance = this;
+        else 
+            GameObject.Destroy(this.gameObject);
+
+        DontDestroyOnLoad(this.gameObject);
 	}
     // Start is called before the first frame update
     void Start()
     {
         UpdateUI();
+
     }
 
     // Update is called once per frame
@@ -44,31 +52,31 @@ public class UIManager : MonoBehaviour
 
 	public void UpdateUI()
 	{
-		coinText.text = ApiManager.GetInstance().GetCoin().ToString();
-		diamonText.text = ApiManager.GetInstance().GetDiamond().ToString();
+		coinText.text = ApiManager.instance.GetCoin().ToString();
+		diamonText.text = ApiManager.instance.GetDiamond().ToString();
 	}
 
 	public void BuyItem(int itemID){
-	   ApiManager.GetInstance().BuyItem(itemID);
+	   ApiManager.instance.BuyItem(itemID);
         if (shopPanel != null)
             shopPanel.ReLoad();
     }
 
 	public void UseItem(int itemID){
        shopPanel.Close();
-	   ApiManager.GetInstance().EquipItem(itemID);
+	   ApiManager.instance.EquipItem(itemID);
        ItemManager.instance.EquipItem();
 	}
 
 	public void BuyPet(int itemID){
-	   ApiManager.GetInstance().BuyPet(itemID);
+	   ApiManager.instance.BuyPet(itemID);
         if (shopPanel != null)
             shopPanel.ReLoad();
 	}
 
 	public void UsePet(int itemID){
        shopPanel.Close();
-       ApiManager.GetInstance().EquipPet(itemID);
+       ApiManager.instance.EquipPet(itemID);
        GameManager.instance.EquipPet(itemID);
 	}
 
@@ -124,6 +132,24 @@ public class UIManager : MonoBehaviour
             popup.GetComponent<Popup>().Open();
             eventPanel = popup.GetComponent<EventPanel>();
         }
+     }
+
+    public void OnProfilePanel()
+    {
+        if (profilePanel == null)
+        {
+            var popup = Instantiate(profileUIPrefab) as GameObject;
+            popup.SetActive(true);
+            popup.transform.localScale = Vector3.zero;
+            popup.transform.SetParent(GameObject.Find("Canvas").transform, false);
+            popup.GetComponent<Popup>().Open();
+            profilePanel = popup.GetComponent<ProfilePanel>();
+            profilePanel.Load(0);
+        }
+     }
+
+     public void OnHome(){
+         MageManager.instance.LoadSceneWithLoading("House");
      }
 
 

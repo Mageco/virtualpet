@@ -18,12 +18,13 @@ public class Pet
 	public int level = 1;
 	public int exp = 0;
 	int[] skills;
+	public string petName = "";
 
 	//Main Data
 	public float speed = 20;
 	public float weight;
 	public float strength;
-	public float stamina = 50;
+	public float intelligent = 10;
 
 
 
@@ -157,7 +158,8 @@ public class Pet
         url = url.Replace(".prefab", "");
         url = DataHolder.Pets().GetPrefabPath() + url;
         GameObject go = GameObject.Instantiate((Resources.Load(url) as GameObject), Vector3.zero, Quaternion.identity) as GameObject;
-        character = go.GetComponent<CharController>();      
+        character = go.GetComponent<CharController>();
+		go.transform.parent = GameManager.instance.transform;      
         character.data = this;
 		GameManager.instance.UpdatePetObjects();
         return character;
@@ -335,22 +337,6 @@ public class Pet
 				this.happy = 0;
 			else if (this.happy > maxHappy)
 				this.happy = maxHappy;
-		}
-	}
-
-	public float Stamina
-	{
-		get
-		{
-			return this.stamina;
-		}
-		set
-		{
-			this.stamina = value;
-			if (this.stamina < 0)
-				this.stamina = 0;
-			else if (this.stamina > maxStamina)
-				this.stamina = maxStamina;
 		}
 	}
 
