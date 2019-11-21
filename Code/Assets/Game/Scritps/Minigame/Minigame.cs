@@ -81,6 +81,7 @@ public class Minigame : MonoBehaviour
             popup.transform.localPosition = Vector3.zero;
             popup.SetActive(true);
             winPanel = popup.GetComponent<WinPanel>();
+            winPanel.Load(3,4,5,3);
         }
     }
 
