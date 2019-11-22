@@ -723,26 +723,23 @@ public class CharMiddle : CharController
 
     IEnumerator Bed()
     {
-        if(data.sleep < 0.3f*data.maxSleep){
-            actionType = ActionType.Sleep;
-            Abort();
+
+        int ran = Random.Range(0,100);
+        if(ran < data.GetSkillProgress(SkillType.Sleep) * 10){
+            if(data.sleep < 0.3f*data.maxSleep){
+                actionType = ActionType.Sleep;
+                Abort();
+            }else{                    
+                anim.Play("Lay_LD",0);
+                yield return StartCoroutine(Wait(Random.Range(2,6)));
+                yield return StartCoroutine(JumpOut(7,5));
+            }
         }
         else{
-            int ran = Random.Range(0,100);
-            if(ran < data.GetSkillProgress(SkillType.Sleep) * 10){
-                if(data.sleep < 0.5f*data.maxSleep){
-                    actionType = ActionType.Sleep;
-                    Abort();
-                }else{                    
-                    anim.Play("Lay_LD",0);
-                    yield return StartCoroutine(Wait(Random.Range(2,6)));
-                    yield return StartCoroutine(JumpOut(7,5));
-                }
-            }
-            else
-                yield return StartCoroutine(JumpOut(7,5));
+            yield return StartCoroutine(JumpOut(7,5));
+            OnLearnSkill(SkillType.Sleep);
         }
-
+        
         CheckAbort();
     }
 

@@ -116,6 +116,20 @@ public class UIManager : MonoBehaviour
         }
      }
 
+    public void OnShopPanel(int id)
+    {
+        if (shopPanel == null)
+        {
+            var popup = Instantiate(shopUIPrefab) as GameObject;
+            popup.SetActive(true);
+            popup.transform.localScale = Vector3.zero;
+            popup.transform.SetParent(GameObject.Find("Canvas").transform, false);
+            popup.GetComponent<Popup>().Open();
+            shopPanel = popup.GetComponent<ShopPanel>();
+            shopPanel.ReLoadTab(id);
+        }
+     }
+
     public void OnEventPanel()
     {
         if (eventPanel == null)

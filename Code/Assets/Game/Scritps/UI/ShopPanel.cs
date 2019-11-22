@@ -41,6 +41,11 @@ public class ShopPanel : MonoBehaviour
         OnTab(currentTab);
     }
 
+    public void ReLoadTab(int id){
+        currentTab = id;
+        OnTab(currentTab);
+    }
+
     // Update is called once per frame
     void Update()
     {

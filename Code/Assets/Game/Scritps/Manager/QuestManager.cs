@@ -89,6 +89,10 @@ public class QuestManager : MonoBehaviour
             GameManager.instance.GetPet(0).dirty = 70;        
         }else if(GameManager.instance.questId == 7){
             GameManager.instance.SetCameraTarget(ItemManager.instance.GetItemChildObject(ItemType.Clean));         
+        }else if(GameManager.instance.questId == 8){
+                     
+        }else if(GameManager.instance.questId == 9){
+            GameManager.instance.GetPet(0).sleep = 10;   
         }
 
 
@@ -218,7 +222,7 @@ public class QuestManager : MonoBehaviour
                 isComplete = true;
             }
         }else if(GameManager.instance.questId == 9){
-            if(GameManager.instance.GetPet(0).GetSkillProgress(SkillType.Sleep) > 0){
+            if(GameManager.instance.GetPetObject(0).actionType ==  ActionType.Sleep &&  GameManager.instance.GetPetObject(0).enviromentType ==  EnviromentType.Bed){
                 isComplete = true;
             }
         }                            
