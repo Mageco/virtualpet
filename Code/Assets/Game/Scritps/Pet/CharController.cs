@@ -106,6 +106,9 @@ public class CharController : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
+        if(GameManager.instance.isPause)
+            return;
+
         if (agent == null)
             return;
 

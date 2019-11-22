@@ -9,6 +9,9 @@ public class Minigame1 : Minigame
     public ChickenController[] chickens;
     public Text chickenNumber;
     public Text timeText;
+
+    public AnimalSpawner chickenSpawner;
+    public AnimalSpawner foxSpawner;
     
     void Start(){
         chickens = GameObject.FindObjectsOfType<ChickenController>();
@@ -16,7 +19,21 @@ public class Minigame1 : Minigame
         this.live = this.maxLive;
         UpdateLive();
         Debug.Log(live);
+ 
     }
+
+    protected override void Load(){
+        base.Load();
+        maxTime = 55 + level * 5;
+        chickenSpawner.maxNumber = 5 + level/3;
+        foxSpawner.maxNumber = 2 + level/4;
+        chickenSpawner.speed = 10;
+        foxSpawner.speed = 10 + level;
+
+        chickenSpawner.Spawn();
+        foxSpawner.Spawn();
+
+    } 
 
     public override void UpdateLive(){
         live = 0;
@@ -26,10 +43,11 @@ public class Minigame1 : Minigame
             }
         }
 
-        chickenNumber.text = live.ToString();
+        chickenNumber.text = live.ToString() + "/" + maxLive.ToString();
         Debug.Log("Update Live " + live.ToString());
         if(live <= 0){
             OnLose();
+            EndGame();
         }
     }
 
@@ -41,6 +59,13 @@ public class Minigame1 : Minigame
         timeText.text  = m.ToString("00") + ":" + s.ToString("00");
     }
 
+    public override void EndGame(){
+        isEnd = true;
+        AnimalController[] animals = GameObject.FindObjectsOfType<FoxController>();
+        for(int i=0;i<animals.Length;i++){
+            animals[i].gameObject.SetActive(false);
+        }
+    }
     
 }
 

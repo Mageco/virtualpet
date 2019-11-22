@@ -105,7 +105,7 @@ public class ChickenController : AnimalController
 
     IEnumerator Run()
     {
-        Vector3 target = Minigame.instance.GetPointInBound();
+        Vector3 target = Minigame.instance.GetPointInBound()/1.5f;
         speed = Random.Range(maxSpeed/2,maxSpeed/1.5f);
         if(target.x > this.transform.position.x){
             SetDirection(Direction.R);

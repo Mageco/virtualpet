@@ -10,10 +10,7 @@ public class FoxController : AnimalController
 
     protected override void Load(){
         speed = maxSpeed/2f;
-    }
-
-    void Start(){
-        targets = GameObject.FindObjectsOfType<ChickenController>();
+         targets = GameObject.FindObjectsOfType<ChickenController>();
     }
 
     protected override void Think()

@@ -4,9 +4,8 @@ using UnityEngine;
 
 public class Minigame : MonoBehaviour
 {
+    public int gameLevel = 1;
     public static Minigame instance;
-    public int score;
-    public int highScore;
     public int maxLive;
     public int live;
     public int level;
@@ -17,6 +16,11 @@ public class Minigame : MonoBehaviour
     public GameObject losePrefab;
     public Vector2 boundX;
     public Vector2 boundY;
+    public int exp = 1; 
+    public int coin = 10;
+    public int diamon = 0;
+
+    protected bool isEnd = false;
 
     WinPanel winPanel;
     LosePanel losePanel;
@@ -31,7 +35,7 @@ public class Minigame : MonoBehaviour
     protected virtual void Load(){
         GetComponent<Camera> ();
         float ratio = (float)Screen.width / (float)Screen.height;
-         Camera.main.orthographicSize = 54f/ratio;
+         Camera.main.orthographicSize = 34f/ratio;
     }
         
     // Start is called before the first frame update
@@ -44,27 +48,18 @@ public class Minigame : MonoBehaviour
     protected virtual void Update()
     {
         time += Time.deltaTime;
-        if(time >= maxTime){
+        if(time >= maxTime && !isEnd){
+            EndGame();
             if(live == maxLive){
                 OnWin(3);
             }else if(live == maxLive - 1)
             {
                 OnWin(2);
-            }else if(live == maxLive - 2){
+            }else{
                 OnWin(1);
-            }else {
-                OnWin(0);
             }
             Debug.Log("Win");
         }
-    }
-
-    public virtual void AddCoin(){
-
-    }
-
-    public virtual void AddDiamon(){
-        
     }
 
     public virtual void UpdateLive(){
@@ -72,7 +67,7 @@ public class Minigame : MonoBehaviour
     }
 
 
-    public virtual void OnWin(int start){
+    public virtual void OnWin(int star){
         if (winPanel == null)
         {
             var popup = Instantiate(winPrefab) as GameObject;
@@ -81,7 +76,7 @@ public class Minigame : MonoBehaviour
             popup.transform.SetParent(GameObject.Find("Canvas").transform, false);
             popup.GetComponent<Popup>().Open();
             winPanel = popup.GetComponent<WinPanel>();
-            winPanel.Load(3,4,5,3);
+            winPanel.Load(star,gameLevel*star*exp,gameLevel*star*diamon,gameLevel*star*coin);
         }
     }
 
@@ -114,5 +109,9 @@ public class Minigame : MonoBehaviour
         GameManager.instance.gameType = GameType.House;
         GameManager.instance.GetPet(0).Load();
         MageManager.instance.LoadSceneWithLoading("House");
+    }
+
+    public virtual void EndGame(){
+
     }
 }

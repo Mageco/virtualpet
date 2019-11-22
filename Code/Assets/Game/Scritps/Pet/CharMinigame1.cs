@@ -98,16 +98,24 @@ public class CharMinigame1 : CharController
 
             if(ran < 10){
                 anim.Play("Lay_LD", 0);
+                 yield return StartCoroutine(Wait(Random.Range(0.4f,0.6f)));
             }    
             else if(ran < 20){
                 anim.Play("Idle_"+direction.ToString(), 0);
+                 yield return StartCoroutine(Wait(Random.Range(0.4f,0.6f)));
             }
-            else if(ran < 50){
+            else if(ran < 30){
                 anim.Play("Idle_Sit_D", 0);
-            } else{
+                 yield return StartCoroutine(Wait(Random.Range(0.4f,0.6f)));
+            } else if(ran < 40){
                 anim.Play("BathStart_D", 0);
+                 yield return StartCoroutine(Wait(Random.Range(0.4f,0.6f)));
+            }else
+            {
+                target = GetChiken().transform.position;
+                yield return StartCoroutine(MoveToPoint());
             }
-            yield return StartCoroutine(Wait(Random.Range(0.1f,0.5f)));
+           
         } 
         CheckAbort();
     }    
@@ -143,5 +151,10 @@ public class CharMinigame1 : CharController
 
     void LoadAnimal(){
         animals = GameObject.FindObjectsOfType<AnimalController>();
+    }
+
+    GameObject GetChiken(){
+        ChickenController[] chickens = GameObject.FindObjectsOfType<ChickenController>();
+        return chickens[Random.Range(0,chickens.Length)].gameObject;
     }
 }

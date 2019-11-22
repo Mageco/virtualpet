@@ -111,7 +111,6 @@ public class Pet
         iD = p.iD;        
         iconUrl = p.iconUrl;
         iconLockUrl = p.iconLockUrl;
-
         languageItem = new LanguageItem[p.languageItem.Length];
         for(int i = 0; i < p.languageItem.Length; i++)
         {
@@ -119,6 +118,7 @@ public class Pet
             {
                 languageItem[i] = new LanguageItem();
                 languageItem[i].Name = p.languageItem[i].Name;
+				Debug.Log(languageItem[i].Name);
                 languageItem[i].Description = p.languageItem[i].Description;
             }
         }
@@ -127,6 +127,13 @@ public class Pet
         petSmall = p.petSmall;
         petMiddle = p.petMiddle;
         petBig = p.petBig;
+		weight = p.weight;
+		speed = p.speed;
+		strength = p.strength;
+		maxEnergy = p.maxEnergy;
+		intelligent = p.intelligent;
+
+
 
         skills = new int[DataHolder.Skills().GetDataCount()];
     }

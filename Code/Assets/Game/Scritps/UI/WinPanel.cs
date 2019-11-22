@@ -29,20 +29,26 @@ public class WinPanel : MonoBehaviour
     public void Load(int star,int e, int d, int c){
         animator = this.GetComponent<Animator>();
         animator.SetInteger("star",star);
-        if(e > 0)
+        if(e > 0){
             exp.text = e.ToString();
+            GameManager.instance.AddExp(e);
+        }
         else
             exp.transform.parent.gameObject.SetActive(false);
         
-        if(c > 0)
+        if(c > 0){
             coin.text = c.ToString();
+            GameManager.instance.AddCoin(c);
+        }
         else
             coin.transform.parent.gameObject.SetActive(false);
 
-        if(d > 0)
+        if(d > 0){
             diamon.text = d.ToString();
+            GameManager.instance.AddDiamon(d);
+        }
         else
-            diamon.transform.parent.gameObject.SetActive(false);
+            diamon.transform.parent.gameObject.SetActive(false);        
     }
 
     public void Close(){

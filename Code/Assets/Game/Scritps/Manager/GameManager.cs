@@ -18,6 +18,7 @@ public class GameManager : MonoBehaviour
 
     public int addExp = 0;
     public bool isLoad = false;
+    public bool isPause = false;
 
     void Awake()
     {
@@ -127,20 +128,32 @@ public class GameManager : MonoBehaviour
     }
 
     public void SetCameraTarget(GameObject t){
-        camera.SetTarget(t);
+        if(camera == null)
+            camera = Camera.main.GetComponent<CameraController>();
+        if(camera != null)
+            camera.SetTarget(t);
     }
 
     public void ResetCameraTarget(){
-        camera.FindTarget();
+        if(camera == null)
+            camera = Camera.main.GetComponent<CameraController>();
+        if(camera != null)
+            camera.FindTarget();
     }
 
     public void OffCameraFollow(){
-        camera.isFollow = false;
+        if(camera == null)
+            camera = Camera.main.GetComponent<CameraController>();
+        if(camera != null)
+            camera.isFollow = false;
     }
 
 
     public void OnCameraFollow(){
-        camera.isFollow = true;
+        if(camera == null)
+            camera = Camera.main.GetComponent<CameraController>();
+        if(camera != null)
+            camera.isFollow = true;
     }
 
     public void OnEvent(){
@@ -161,4 +174,12 @@ public class GameManager : MonoBehaviour
          pets[0].Exp += e;
     }
 	
+    public void Pause(){
+        isPause = true;
+    }
+
+    public void UnPause(){
+        isPause = false;
+    }
+
 }

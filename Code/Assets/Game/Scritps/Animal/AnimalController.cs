@@ -20,6 +20,10 @@ public class AnimalController : MonoBehaviour
 
    void Awake()
     {
+
+    }
+
+    void Start(){
         originalPosition = this.transform.position;
         lastPosition = this.transform.position;
         originalScale = this.transform.localScale;

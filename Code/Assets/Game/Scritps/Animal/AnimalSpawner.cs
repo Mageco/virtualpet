@@ -6,24 +6,25 @@ public class AnimalSpawner : MonoBehaviour
 {
 
     List<GizmoPoint> spawnPoints = new List<GizmoPoint>();
-    public int minNumber;
     public int maxNumber;
+    public float speed = 10;
     public GameObject[] prefabs;
     List<AnimalController> animals = new List<AnimalController>();
     // Start is called before the first frame update
     void Awake()
     {
+  
+ 
+    }
+
+
+   public  void Spawn(){
         GizmoPoint[] temp = this.transform.GetComponentsInChildren<GizmoPoint>();
         for(int i=0;i<temp.Length;i++){
             spawnPoints.Add(temp[i]);
         }
-        Spawn();
 
-    }
-
-
-    void Spawn(){
-        int n = Random.Range(minNumber,maxNumber + 1 );
+        int n = Random.Range(maxNumber-1,maxNumber + 1 );
         for(int i=0;i<n;i++){
             int id = Random.Range(0,prefabs.Length);
             int id1 = Random.Range(0,spawnPoints.Count);
@@ -32,6 +33,8 @@ public class AnimalSpawner : MonoBehaviour
             go.transform.position = spawnPoints[id1].transform.position;
             go.transform.parent = this.transform;
             spawnPoints.RemoveAt(id1);
+            AnimalController a = go.GetComponent<AnimalController>();
+            a.maxSpeed = this.speed;
         }
     }
 

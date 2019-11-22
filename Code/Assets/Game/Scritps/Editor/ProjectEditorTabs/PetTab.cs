@@ -160,6 +160,10 @@ public class PetTab : BaseTab
 			if(fold3)
 			{
                 DataHolder.Pet(selection).speed = EditorGUILayout.FloatField("Speed", DataHolder.Pet(selection).speed, GUILayout.Width(pw.mWidth));
+                DataHolder.Pet(selection).maxEnergy = EditorGUILayout.FloatField("Stamina", DataHolder.Pet(selection).maxEnergy, GUILayout.Width(pw.mWidth));
+                DataHolder.Pet(selection).strength = EditorGUILayout.FloatField("Strength", DataHolder.Pet(selection).strength, GUILayout.Width(pw.mWidth));
+                DataHolder.Pet(selection).intelligent = EditorGUILayout.FloatField("Intelligent", DataHolder.Pet(selection).intelligent, GUILayout.Width(pw.mWidth));
+                DataHolder.Pet(selection).weight = EditorGUILayout.FloatField("Weight", DataHolder.Pet(selection).weight, GUILayout.Width(pw.mWidth));
 			}
 			EditorGUILayout.EndVertical(); 
 
