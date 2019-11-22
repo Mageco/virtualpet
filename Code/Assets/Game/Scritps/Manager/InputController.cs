@@ -36,11 +36,6 @@ public class InputController : MonoBehaviour
 	}
 
 
-	public void OnCall()
-	{
-		GameManager.instance.GetPetObject(0).OnCall ();
-	}
-
 	void OnMouseDown()
 	{
 		if (IsPointerOverUIObject ()) {
@@ -70,6 +65,7 @@ public class InputController : MonoBehaviour
 	{
 		Vector3 pos = Camera.main.ScreenToWorldPoint (Input.mousePosition);
 		pos.z = 0;
+		GameManager.instance.GetPetObject(0).OnCall(pos);
 	}
 
 	private bool IsPointerOverUIObject() {

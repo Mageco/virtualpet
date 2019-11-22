@@ -505,7 +505,7 @@ public class CharMiddle : CharController
 
         if (!isAbort)
         {
-            SetTarget(PointType.Call);
+            //SetTarget(PointType.Call);
             yield return StartCoroutine(MoveToPoint());
         }
 
@@ -514,6 +514,7 @@ public class CharMiddle : CharController
 
         while (!isAbort && t < maxTime)
         {
+            anim.Play("Idle_" +direction.ToString());
             t += Time.deltaTime;
             yield return new WaitForEndOfFrame();
         }
