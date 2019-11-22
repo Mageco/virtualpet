@@ -59,6 +59,12 @@ public class ItemSkill : MonoBehaviour
             if(done){
                 CompleteSkill();
             }
+        }else if(skillType == SkillType.Call){
+            if(time > maxTime){
+                GameObject.Destroy(this.gameObject);
+                return;
+            }else
+                time += Time.deltaTime;
         }
     }
 

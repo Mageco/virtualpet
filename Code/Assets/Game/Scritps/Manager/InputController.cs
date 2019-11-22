@@ -7,6 +7,7 @@ using UnityEngine.EventSystems;
 public class InputController : MonoBehaviour
 {
 	public static InputController instance;
+	public GameObject doubleClickEffect;
 
 	float time;
 	float maxDoubleClickTime = 0.4f;
@@ -35,11 +36,6 @@ public class InputController : MonoBehaviour
 			time += Time.deltaTime;
 	}
 
-
-	public void OnCall()
-	{
-		GameManager.instance.GetPetObject(0).OnCall ();
-	}
 
 	void OnMouseDown()
 	{
@@ -70,6 +66,8 @@ public class InputController : MonoBehaviour
 	{
 		Vector3 pos = Camera.main.ScreenToWorldPoint (Input.mousePosition);
 		pos.z = 0;
+		GameManager.instance.GetPetObject(0).OnCall(pos);
+		GameObject go = GameObject.Instantiate(doubleClickEffect,pos,Quaternion.identity);
 	}
 
 	private bool IsPointerOverUIObject() {

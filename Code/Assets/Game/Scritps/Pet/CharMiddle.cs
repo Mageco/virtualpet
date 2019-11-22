@@ -501,11 +501,11 @@ public class CharMiddle : CharController
 
     IEnumerator Call()
     {
-        yield return StartCoroutine(DoAnim("Listen_" + direction.ToString()));
+        yield return StartCoroutine(DoAnim("Listen_D"));
 
         if (!isAbort)
         {
-            SetTarget(PointType.Call);
+            //SetTarget(PointType.Call);
             yield return StartCoroutine(MoveToPoint());
         }
 
@@ -514,6 +514,7 @@ public class CharMiddle : CharController
 
         while (!isAbort && t < maxTime)
         {
+            anim.Play("Idle_" +direction.ToString());
             t += Time.deltaTime;
             yield return new WaitForEndOfFrame();
         }
@@ -522,7 +523,7 @@ public class CharMiddle : CharController
 
     IEnumerator Listening()
     {
-        yield return StartCoroutine(DoAnim("Listen_" + direction.ToString()));
+        yield return StartCoroutine(DoAnim("Listen_D" ));
         CheckAbort();
     }
 

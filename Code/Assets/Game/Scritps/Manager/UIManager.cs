@@ -44,11 +44,6 @@ public class UIManager : MonoBehaviour
         UpdateUI();
     }
 
-	public void OnCall()
-	{
-		InputController.instance.OnCall ();
-	}
-
 
 	public void UpdateUI()
 	{

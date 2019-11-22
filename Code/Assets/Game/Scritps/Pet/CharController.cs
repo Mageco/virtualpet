@@ -165,15 +165,25 @@ public class CharController : MonoBehaviour
 
 
     #region Interact
-    public virtual void OnCall()
+    public virtual void OnCall(Vector3 pos)
     {
         if (actionType == ActionType.Hold || actionType == ActionType.Call || actionType == ActionType.Sick || actionType == ActionType.Sleep)
         {
             return;
         }
         Abort();
-        actionType = ActionType.Call;
-        touchObject.SetActive(true);
+        int ran = Random.Range(0,100);
+
+        if(ran < data.GetSkillProgress(SkillType.Call) * 10){
+            target = pos;
+            actionType = ActionType.Call;
+        }else{
+            actionType = ActionType.Listening;
+            OnLearnSkill(SkillType.Call);
+        }
+            
+       
+        //touchObject.SetActive(true);
     }
 
     public virtual void OnListening(float sound)

@@ -20,15 +20,12 @@ public class CleanItem : MonoBehaviour
 	void Update()
 	{
 		if (isTouch) {
-			anim.Play("Active",0);
+
 			targetAngle = Mathf.Lerp (targetAngle, 0, Time.deltaTime * 4);
 			this.transform.rotation = Quaternion.Lerp (this.transform.rotation, Quaternion.Euler (new Vector3 (0, 0,-targetAngle)), Time.deltaTime * 2);
 			if(dirtyItem != null){
 				dirtyItem.OnClean(clean);
 			}
-		}else
-		{
-			anim.Play("Idle",0);
 		}
 	}
 
@@ -49,12 +46,14 @@ public class CleanItem : MonoBehaviour
 	void OnTriggerEnter2D(Collider2D other) {
 		if (other.GetComponent <ItemDirty>() != null) {
 			dirtyItem = other.GetComponent <ItemDirty>();
+			anim.Play("Active",0);
 		}
 	}
 
 	void OnTriggerExit2D(Collider2D other) {
 		if (other.GetComponent <ItemDirty>() == dirtyItem) {
 			dirtyItem = null;
+			anim.Play("Idle",0);
 		}
 	}
 
