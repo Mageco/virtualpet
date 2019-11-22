@@ -194,8 +194,10 @@ public class ItemManager : MonoBehaviour
     #region Skill
 
     public void ActivateSkillItems(SkillType type){
+        Debug.Log(type);
         List<ItemSkill> itemSkills = GetSkillItem(type);
         foreach(ItemSkill s in itemSkills){
+            
             s.OnActive(expireTime);
         }
     }
@@ -211,6 +213,7 @@ public class ItemManager : MonoBehaviour
         List<ItemSkill> itemSkills = new List<ItemSkill>();
         ItemSkill[] skills = GameObject.FindObjectsOfType<ItemSkill>();
         for(int i=0;i<skills.Length;i++){
+            Debug.Log(skills[i].skillType);
             if(skills[i].skillType == type){
                 itemSkills.Add(skills[i]);
             }
