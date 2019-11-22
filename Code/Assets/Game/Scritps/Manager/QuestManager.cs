@@ -19,6 +19,8 @@ public class QuestManager : MonoBehaviour
     float delayTime = 0;
     bool isActive = true;
 
+    float fadeDuration = 1f;
+
     void Awake()
     {
         if (instance == null)
@@ -57,15 +59,13 @@ public class QuestManager : MonoBehaviour
 
     void PlayTip()
     {
-       
         StartCoroutine(PlayTimeline());
-
     }
 
     IEnumerator PlayTimeline()
     {
-        yield return new WaitForSeconds(delayTime);
-         OnQuestNotification();
+        yield return new WaitForSeconds(1f + delayTime);
+        OnQuestNotification();
 
         if(GameManager.instance.questId == 0){
 
@@ -80,6 +80,9 @@ public class QuestManager : MonoBehaviour
             GameManager.instance.GetPet(0).water = 10;        
             GameManager.instance.SetCameraTarget(ItemManager.instance.GetItemChildObject(ItemType.Drink));  
         }else if(GameManager.instance.questId == 5){
+            GameManager.instance.SetCameraTarget(ItemManager.instance.GetItemChildObject(ItemType.Toilet));
+            yield return new WaitForSeconds(2);
+            GameManager.instance.ResetCameraTarget();  
             ItemManager.instance.SetExpireSkillTime(1000);
             GameManager.instance.GetPet(0).pee = 100;        
         }else if(GameManager.instance.questId == 6){
@@ -88,8 +91,13 @@ public class QuestManager : MonoBehaviour
             GameManager.instance.SetCameraTarget(ItemManager.instance.GetItemChildObject(ItemType.Clean));         
         }
 
+
+
         if (DataHolder.Quest(GameManager.instance.questId).prefabName != "")
         {
+            MageManager.instance.ScreenFadeOut(fadeDuration);
+            yield return new WaitForSeconds(fadeDuration);
+            MageManager.instance.ScreenFadeIn(fadeDuration);
             string url = DataHolder.GetQuest(GameManager.instance.questId).prefabName.Replace("Assets/Game/Resources/", "");
             url = url.Replace(".prefab", "");
             url = DataHolder.Quests().GetPrefabPath() + url;
@@ -101,7 +109,10 @@ public class QuestManager : MonoBehaviour
             playTimeLine.gameObject.SetActive(true);
             playTimeLine.Play();
             Debug.Log(playTimeLine.duration);
-            yield return new WaitForSeconds((float)playTimeLine.duration);
+            yield return new WaitForSeconds((float)playTimeLine.duration - fadeDuration);
+            MageManager.instance.ScreenFadeOut(fadeDuration);
+            yield return new WaitForSeconds(fadeDuration);
+            MageManager.instance.ScreenFadeIn(fadeDuration);
             playTimeLine.Stop();
             playTimeLine.gameObject.SetActive(false);
         }
@@ -189,12 +200,12 @@ public class QuestManager : MonoBehaviour
                 isComplete = true;
             }
         }else if(GameManager.instance.questId == 5){
-            if(GameManager.instance.GetPet(0).GetSkillProgress(SkillType.Pee) > 0){
+            if(GameManager.instance.GetPet(0).GetSkillProgress(SkillType.Toilet) > 0){
                 ItemManager.instance.ResetExpireSkillTime();
                 isComplete = true;
             }
         }else if(GameManager.instance.questId == 6){
-            if(GameManager.instance.GetPet(0).dirty < 10){
+            if(GameManager.instance.GetPet(0).dirty < 30){
                 isComplete = true;
             }
         }else if(GameManager.instance.questId == 7){
@@ -202,7 +213,11 @@ public class QuestManager : MonoBehaviour
                 GameManager.instance.ResetCameraTarget();
                 isComplete = true;
             }
-        }                
+        }else if(GameManager.instance.questId == 8){
+            if(GameManager.instance.GetPet(0).GetSkillProgress(SkillType.Call) > 0){
+                isComplete = true;
+            }
+        }                       
         
         if (isComplete)
         {

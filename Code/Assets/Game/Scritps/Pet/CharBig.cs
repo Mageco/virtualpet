@@ -695,7 +695,7 @@ public class CharBig : CharController
         anim.Play("Pee_D" , 0);
         Debug.Log("Pee");
         SpawnPee();
-        OnLearnSkill(SkillType.Pee);
+        OnLearnSkill(SkillType.Toilet);
         while (data.Pee > 1 && !isAbort)
         {
             data.Pee -= 0.5f;

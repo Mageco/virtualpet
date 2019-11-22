@@ -534,7 +534,7 @@ public class CharMiddle : CharController
         anim.Play("Pee_D", 0);
         Debug.Log("Pee");
         SpawnPee();
-        OnLearnSkill(SkillType.Pee);
+        OnLearnSkill(SkillType.Toilet);
         while (data.Pee > 1 && !isAbort)
         {
             data.Pee -= 0.5f;
@@ -770,8 +770,11 @@ public class CharMiddle : CharController
         Debug.Log("Level Up" + data.level);
         yield return StartCoroutine(DoAnim("LevelUp_LD"));
 
-        if (data.level >= 5)
+        if (data.level >= 10){
+            GrowUp();
             data.Load();
+        }
+           
 
         CheckAbort();
 

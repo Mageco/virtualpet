@@ -9,7 +9,7 @@ public class CharInteract : MonoBehaviour
     public InteractType interactType = InteractType.None;
     float doubleClickTime;
     float maxDoubleClickTime = 0.4f;
-    bool isClick = false;
+    public bool isClick = false;
     //public bool isTouch = false;
     public Direction touchDirection = Direction.D;
 
@@ -52,7 +52,9 @@ public class CharInteract : MonoBehaviour
         //isTouch = false;
         if (interactType == InteractType.Drag) {
             interactType = InteractType.Drop;
-        } 
+        }else if(interactType == InteractType.Drop){
+            interactType = InteractType.None;
+        }
 
         if (isClick) {
             if (doubleClickTime > maxDoubleClickTime) {
