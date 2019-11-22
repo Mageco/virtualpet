@@ -173,11 +173,15 @@ public class CharController : MonoBehaviour
         }
         Abort();
         int ran = Random.Range(0,100);
+
         if(ran < data.GetSkillProgress(SkillType.Call) * 10){
             target = pos;
             actionType = ActionType.Call;
-        }else
+        }else{
             actionType = ActionType.Listening;
+            OnLearnSkill(SkillType.Call);
+        }
+            
        
         //touchObject.SetActive(true);
     }
