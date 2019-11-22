@@ -217,7 +217,11 @@ public class QuestManager : MonoBehaviour
             if(GameManager.instance.GetPet(0).GetSkillProgress(SkillType.Call) > 0){
                 isComplete = true;
             }
-        }                       
+        }else if(GameManager.instance.questId == 9){
+            if(GameManager.instance.GetPet(0).GetSkillProgress(SkillType.Sleep) > 0){
+                isComplete = true;
+            }
+        }                            
         
         if (isComplete)
         {

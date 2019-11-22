@@ -261,6 +261,34 @@ public class CharMiddle : CharController
 
     #region Main Action
 
+    IEnumerator JumpOut(float height,float upSpeed){
+        if(!isAbort){
+            anim.Play("Jump_D", 0);
+            float speed = upSpeed;
+            Vector3 dropPosition = new Vector3(this.transform.position.x, this.transform.position.y - height, 0);
+            charInteract.interactType = InteractType.Drop;
+            while (charInteract.interactType == InteractType.Drop && !isAbort)
+            {
+                speed -= 30 * Time.deltaTime;
+                if (speed < -50)
+                    speed = -50;
+                Vector3 pos1 = agent.transform.position;
+                pos1.y += speed * Time.deltaTime;
+                pos1.x = agent.transform.position.x;
+                pos1.z = dropPosition.y;
+                agent.transform.position = pos1;
+
+                if (Mathf.Abs(agent.transform.position.y - dropPosition.y) < 2f)
+                {
+                    this.transform.rotation = Quaternion.identity;
+                    charInteract.interactType = InteractType.None;
+                }
+                yield return new WaitForEndOfFrame();
+            }
+            enviromentType = EnviromentType.Room;
+        }
+    }
+
     IEnumerator Patrol()
     {
         int n = 0;
@@ -295,6 +323,8 @@ public class CharMiddle : CharController
         }
         else{
             if(!isAbort){
+                yield return StartCoroutine(JumpOut(10,15));
+                /*
                 anim.Play("Jump_D", 0);
                 float speed = 15;
                 Vector3 dropPosition = new Vector3(this.transform.position.x, this.transform.position.y - 10, 0);
@@ -322,6 +352,7 @@ public class CharMiddle : CharController
                     yield return new WaitForEndOfFrame();
                 }
                 enviromentType = EnviromentType.Room;
+                */
                 OnLearnSkill(SkillType.Bath);
             }
         }
@@ -626,29 +657,27 @@ public class CharMiddle : CharController
 
     IEnumerator Sleep()
     {
-        //Debug.Log("Sleep");
-        if (data.SkillLearned(SkillType.Sleep))
-        {
-            SetTarget(PointType.Sleep);
-        }
-        else
-        {
-            OnLearnSkill(SkillType.Sleep);
-            SetTarget(PointType.Patrol);
-        }
 
-        yield return StartCoroutine(MoveToPoint());
-        if (!isAbort)
-        {
-            direction = Direction.LD;
-            anim.Play("Sleep_LD", 0);
-        }
+        direction = Direction.LD;
+        anim.Play("Sleep_LD", 0);
 
         while (data.Sleep < data.maxSleep && !isAbort)
         {
             data.Sleep += 0.01f;
             yield return new WaitForEndOfFrame();
         }
+        CheckAbort();
+    }
+
+    IEnumerator Sleepy()
+    {
+        //Debug.Log("Sleep");
+        if (data.SkillLearned(SkillType.Sleep))
+        {
+            SetTarget(PointType.Sleep);
+        }
+        yield return StartCoroutine(MoveToPoint());
+
         CheckAbort();
     }
 
@@ -696,34 +725,22 @@ public class CharMiddle : CharController
     {
         if(data.sleep < 0.3f*data.maxSleep){
             actionType = ActionType.Sleep;
-            isAbort = true;
+            Abort();
         }
         else{
-            if(!isAbort){
-                anim.Play("Jump_D", 0);
-                float speed = 5;
-                Vector3 dropPosition = new Vector3(this.transform.position.x, this.transform.position.y - 10, 0);
-                charInteract.interactType = InteractType.Drop;
-                while (charInteract.interactType == InteractType.Drop && !isAbort)
-                {
-                    speed -= 30 * Time.deltaTime;
-                    if (speed < -50)
-                        speed = -50;
-                    Vector3 pos1 = agent.transform.position;
-                    pos1.y += speed * Time.deltaTime;
-                    pos1.x = agent.transform.position.x;
-                    pos1.z = dropPosition.y;
-                    agent.transform.position = pos1;
-
-                    if (Mathf.Abs(agent.transform.position.y - dropPosition.y) < 2f)
-                    {
-                        this.transform.rotation = Quaternion.identity;
-                        charInteract.interactType = InteractType.None;
-                    }
-                    yield return new WaitForEndOfFrame();
+            int ran = Random.Range(0,100);
+            if(ran < data.GetSkillProgress(SkillType.Sleep) * 10){
+                if(data.sleep < 0.5f*data.maxSleep){
+                    actionType = ActionType.Sleep;
+                    Abort();
+                }else{                    
+                    anim.Play("Lay_LD",0);
+                    yield return StartCoroutine(Wait(Random.Range(2,6)));
+                    yield return StartCoroutine(JumpOut(7,5));
                 }
-                enviromentType = EnviromentType.Room;
             }
+            else
+                yield return StartCoroutine(JumpOut(7,5));
         }
 
         CheckAbort();
@@ -736,29 +753,7 @@ public class CharMiddle : CharController
             isAbort = true;
         }
         else{
-            anim.Play("Jump_D", 0);
-            float speed = 5;
-            Vector3 dropPosition = new Vector3(this.transform.position.x, this.transform.position.y - 5, 0);
-            charInteract.interactType = InteractType.Drop;
-            while (charInteract.interactType == InteractType.Drop && !isAbort)
-            {
-                speed -= 30 * Time.deltaTime;
-                if (speed < -50)
-                    speed = -50;
-                Vector3 pos1 = agent.transform.position;
-                pos1.y += speed * Time.deltaTime;
-                pos1.x = agent.transform.position.x;
-                pos1.z = dropPosition.y;
-                agent.transform.position = pos1;
-
-                if (Mathf.Abs(agent.transform.position.y - dropPosition.y) < 2f)
-                {
-                    this.transform.rotation = Quaternion.identity;
-                    charInteract.interactType = InteractType.None;
-                }
-                yield return new WaitForEndOfFrame();
-            }
-            enviromentType = EnviromentType.Room;
+            yield return StartCoroutine(JumpOut(5,5));           
         }
 
         CheckAbort();
