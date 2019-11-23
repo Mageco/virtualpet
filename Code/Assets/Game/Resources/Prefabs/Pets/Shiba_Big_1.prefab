@@ -24,7 +24,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1786678155666974602}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.58, y: 2.2, z: 0}
+  m_LocalPosition: {x: 1.58, y: 1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 193803885500558729}
@@ -133,7 +133,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   interactType: 0
-  isTouch: 0
+  isClick: 0
   touchDirection: 1
   dragOffset: {x: 0, y: 0, z: 0}
 --- !u!114 &494781705592010213
@@ -161,10 +161,13 @@ MonoBehaviour:
     petBig: 
     petMiniGame1: 
     level: 0
+    exp: 0
+    skills: 
+    petName: 
     speed: 0
     weight: 0
     strength: 0
-    stamina: 50
+    intelligent: 10
     food: 50
     water: 50
     sleep: 50
@@ -197,6 +200,7 @@ MonoBehaviour:
     maxItchi: 100
     maxFear: 100
     maxCurious: 100
+    character: {fileID: 0}
   petPrefab: {fileID: 2776677470726071290, guid: 3797fb804e6b34eb68df6fb3034ea531,
     type: 3}
   enviromentType: 0
@@ -221,6 +225,7 @@ MonoBehaviour:
   skillLearnEffect: {fileID: 4639438657381562527}
   dragOffset: 20
   cameraSize: 24
+  growUpTimeline: {fileID: 0}
 --- !u!114 &8264768739376955380
 MonoBehaviour:
   m_ObjectHideFlags: 0

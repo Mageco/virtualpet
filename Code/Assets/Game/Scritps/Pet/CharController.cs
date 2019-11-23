@@ -453,6 +453,7 @@ public class CharController : MonoBehaviour
         }
         else
         {
+            agent.transform.position = target;
             isArrived = true;
             agent.Stop();
         }
@@ -469,7 +470,7 @@ public class CharController : MonoBehaviour
         }
     }
 
-    protected IEnumerator JumpDown(float height,float upSpeed){
+    protected IEnumerator JumpDown(float height,float upSpeed,float accelerator){
         if(!isAbort){
             anim.Play("Jump_D", 0);
             float speed = upSpeed;
@@ -477,7 +478,7 @@ public class CharController : MonoBehaviour
             charInteract.interactType = InteractType.Drop;
             while (charInteract.interactType == InteractType.Drop && !isAbort)
             {
-                speed -= 30 * Time.deltaTime;
+                speed -= accelerator * Time.deltaTime;
                 if (speed < -50)
                     speed = -50;
                 Vector3 pos1 = agent.transform.position;

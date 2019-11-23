@@ -297,7 +297,7 @@ public class CharMiddle : CharController
         }
         else{
             if(!isAbort){
-                yield return StartCoroutine(JumpDown(7,12));
+                yield return StartCoroutine(JumpDown(7,12,30));
                 OnLearnSkill(SkillType.Bath);
             }
         }
@@ -440,7 +440,6 @@ public class CharMiddle : CharController
 
         if (!isAbort)
         {
-            //SetTarget(PointType.Call);
             yield return StartCoroutine(MoveToPoint());
         }
 
@@ -472,7 +471,7 @@ public class CharMiddle : CharController
             isAbort = true;
         }
         else{
-            yield return StartCoroutine(JumpDown(5,5));           
+            yield return StartCoroutine(JumpDown(5,5,30));           
         }
 
         CheckAbort();
@@ -504,7 +503,7 @@ public class CharMiddle : CharController
         }
 
         if(enviromentType == EnviromentType.Toilet && !isAbort){
-            yield return StartCoroutine(JumpDown(5,5));     
+            yield return StartCoroutine(JumpDown(5,5,30));     
         }
         
         CheckAbort();
@@ -535,7 +534,7 @@ public class CharMiddle : CharController
         }
 
         if(enviromentType == EnviromentType.Toilet && !isAbort){
-            yield return StartCoroutine(JumpDown(5,5));     
+            yield return StartCoroutine(JumpDown(5,5,30));     
         }
         CheckAbort();
     }
@@ -611,6 +610,26 @@ public class CharMiddle : CharController
         CheckAbort();
     }
 
+    IEnumerator Bed()
+    {
+        int ran = Random.Range(0,100);
+        if(ran < data.GetSkillProgress(SkillType.Sleep) * 10){
+            if(data.sleep < 0.3f*data.maxSleep){
+                actionType = ActionType.Sleep;
+                Abort();
+            }else{                    
+                anim.Play("Idle_" + direction.ToString(),0);
+                yield return StartCoroutine(Wait(Random.Range(2,6)));
+                yield return StartCoroutine(JumpDown(7,5,30));
+            }
+        }
+        else{
+            yield return StartCoroutine(JumpDown(7,5,30));
+        }
+        
+        CheckAbort();
+    }
+
     IEnumerator Sleep()
     {
         if(enviromentType != EnviromentType.Bed)
@@ -638,7 +657,7 @@ public class CharMiddle : CharController
         
 
         if(enviromentType == EnviromentType.Bed && !isAbort){
-             yield return StartCoroutine(JumpDown(7,5));
+             yield return StartCoroutine(JumpDown(7,5,30));
         }
 
         CheckAbort();
@@ -684,25 +703,7 @@ public class CharMiddle : CharController
         CheckAbort();
     }
 
-    IEnumerator Bed()
-    {
-        int ran = Random.Range(0,100);
-        if(ran < data.GetSkillProgress(SkillType.Sleep) * 10){
-            if(data.sleep < 0.3f*data.maxSleep){
-                actionType = ActionType.Sleep;
-                Abort();
-            }else{                    
-                anim.Play("Idle_" + direction.ToString(),0);
-                yield return StartCoroutine(Wait(Random.Range(2,6)));
-                yield return StartCoroutine(JumpDown(7,5));
-            }
-        }
-        else{
-            yield return StartCoroutine(JumpDown(7,5));
-        }
-        
-        CheckAbort();
-    }
+
 
 
 

@@ -27,14 +27,6 @@ public class ItemSkill : MonoBehaviour
     {
         if(isEnter && isActive && character != null && skillType == character.currentSkill){
 
-            if(time > maxTime){
-                if(character != null)
-                    character.OffLearnSkill();
-                DeActive();
-                return;
-            }else
-                time += Time.deltaTime;
-
             bool done = true;
             if(actionType != ActionType.None && actionType != character.actionType){
                 done = false;
@@ -62,6 +54,14 @@ public class ItemSkill : MonoBehaviour
         }else if(skillType == SkillType.Call && !isActive){
             if(time > maxTime){
                 GameObject.Destroy(this.gameObject);
+                return;
+            }else
+                time += Time.deltaTime;
+        }else if(isActive){
+            if(time > maxTime){
+                if(character != null)
+                    character.OffLearnSkill();
+                DeActive();
                 return;
             }else
                 time += Time.deltaTime;
