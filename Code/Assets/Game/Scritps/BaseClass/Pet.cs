@@ -17,7 +17,7 @@ public class Pet
 	//Common Data
 	public int level = 1;
 	public int exp = 0;
-	int[] skills;
+	public int[] skills;
 	public string petName = "";
 
 	//Main Data
@@ -118,7 +118,6 @@ public class Pet
             {
                 languageItem[i] = new LanguageItem();
                 languageItem[i].Name = p.languageItem[i].Name;
-				Debug.Log(languageItem[i].Name);
                 languageItem[i].Description = p.languageItem[i].Description;
             }
         }
@@ -132,9 +131,6 @@ public class Pet
 		strength = p.strength;
 		maxEnergy = p.maxEnergy;
 		intelligent = p.intelligent;
-
-
-
         skills = new int[DataHolder.Skills().GetDataCount()];
     }
 
@@ -168,6 +164,7 @@ public class Pet
         character = go.GetComponent<CharController>();
 		go.transform.parent = GameManager.instance.transform;      
         character.data = this;
+		character.LoadPrefab();
 		GameManager.instance.UpdatePetObjects();
         return character;
     }
@@ -428,7 +425,6 @@ public class Pet
 				e = 10 * level + 2 * level * level;
 				level ++;
 			}
-			Debug.Log(level);
 			if(level > temp){
 				if(character != null){
 					character.OnLevelUp();
@@ -463,7 +459,7 @@ public class Pet
 	public bool SkillLearned(SkillType type){
 		for(int i=0;i<skills.Length;i++){
 			if(DataHolder.Skill(i).skillType == type){
-				if(skills[i] == DataHolder.Skill(i).maxProgress)
+				if(skills[i] >= DataHolder.Skill(i).maxProgress)
 					return true;
 				else 
 					return false;

@@ -153,6 +153,7 @@ public class PolyNavAgent : MonoBehaviour{
 	public void LoadCharacter(CharController c){
 		character = c;
 		this.maxSpeed = c.data.speed;
+		this.speed = c.data.speed;
 	}
 
 	///Set the destination for the agent. As a result the agent starts moving

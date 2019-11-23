@@ -65,7 +65,7 @@ public class QuestManager : MonoBehaviour
     IEnumerator PlayTimeline()
     {
         yield return new WaitForSeconds(1f + delayTime);
-        OnQuestNotification();
+        
 
         if(GameManager.instance.questId == 0){
 
@@ -102,11 +102,16 @@ public class QuestManager : MonoBehaviour
             MageManager.instance.ScreenFadeOut(fadeDuration);
             yield return new WaitForSeconds(fadeDuration);
             MageManager.instance.ScreenFadeIn(fadeDuration);
+            OnQuestNotification();
             string url = DataHolder.GetQuest(GameManager.instance.questId).prefabName.Replace("Assets/Game/Resources/", "");
             url = url.Replace(".prefab", "");
             url = DataHolder.Quests().GetPrefabPath() + url;
             GameObject go = Instantiate((Resources.Load(url) as GameObject), new Vector3(0, 0, -200), Quaternion.identity) as GameObject;
             playTimeLine = go.GetComponent<PlayableDirector>();
+        }
+        else
+        {
+            OnQuestNotification();
         }
         if (playTimeLine != null)
         {

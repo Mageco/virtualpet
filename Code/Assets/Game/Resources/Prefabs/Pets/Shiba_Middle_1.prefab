@@ -160,7 +160,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 150854982141075761}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2214332900037585256
 GameObject:
@@ -192,53 +192,6 @@ Transform:
   m_Father: {fileID: 331583831463415789}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &4150713724979622064
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 7241667489095714186}
-  - component: {fileID: 2623305583909039725}
-  m_Layer: 0
-  m_Name: Obstruct (2)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &7241667489095714186
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4150713724979622064}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 150854982141075761}
-  m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!208 &2623305583909039725
-NavMeshObstacle:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4150713724979622064}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Shape: 1
-  m_Extents: {x: 3, y: 1.5, z: 0.5}
-  m_MoveThreshold: 0.1
-  m_Carve: 0
-  m_CarveOnlyStationary: 1
-  m_Center: {x: -0.5, y: 0, z: 0}
-  m_TimeToStationary: 0.5
 --- !u!1 &4794878555421412697
 GameObject:
   m_ObjectHideFlags: 0
@@ -304,7 +257,6 @@ Transform:
   m_Children:
   - {fileID: 331583831463415789}
   - {fileID: 6124915107150507913}
-  - {fileID: 7241667489095714186}
   - {fileID: 3435329573724837491}
   - {fileID: 5844443038394761090}
   m_Father: {fileID: 0}
@@ -374,6 +326,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   interactType: 0
+  isClick: 0
   touchDirection: 1
   dragOffset: {x: 0, y: 0, z: 0}
 --- !u!114 &2310713338209235754
@@ -401,10 +354,13 @@ MonoBehaviour:
     petBig: 
     petMiniGame1: 
     level: 1
+    exp: 0
+    skills: 
+    petName: 
     speed: 0
     weight: 0
     strength: 0
-    stamina: 50
+    intelligent: 10
     food: 50
     water: 50
     sleep: 50
@@ -437,6 +393,7 @@ MonoBehaviour:
     maxItchi: 100
     maxFear: 100
     maxCurious: 100
+    character: {fileID: 0}
   petPrefab: {fileID: 7402462767086857704, guid: bbcc7c4a4a87d405099789335ce788f2,
     type: 3}
   enviromentType: 0
@@ -461,6 +418,7 @@ MonoBehaviour:
   skillLearnEffect: {fileID: 99716053274896878}
   dragOffset: 15
   cameraSize: 20
+  growUpTimeline: {fileID: 0}
 --- !u!114 &3990936362384477127
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -531,7 +489,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 150854982141075761}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7195393148440492787
 GameObject:

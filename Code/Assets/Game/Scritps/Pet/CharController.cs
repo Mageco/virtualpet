@@ -55,6 +55,8 @@ public class CharController : MonoBehaviour
     public GameObject skillLearnEffect;
 
     public float dragOffset = 20f;
+
+    protected Vector3 dropPosition;
     public float cameraSize = 24;
 
     FoodBowlItem foodItem;
@@ -67,11 +69,10 @@ public class CharController : MonoBehaviour
 
     void Awake()
     {
-        LoadPrefab();
-        Load();
+
     }
 
-    void LoadPrefab(){
+    public void LoadPrefab(){
         GameObject go = Instantiate(petPrefab) as GameObject;
         go.transform.parent = this.transform;
 
@@ -88,6 +89,8 @@ public class CharController : MonoBehaviour
             touchObject.SetActive(false);
         if(skillLearnEffect != null)
             skillLearnEffect.SetActive(false);
+
+        Load();
     }
 
     protected virtual void Load(){
@@ -466,6 +469,116 @@ public class CharController : MonoBehaviour
         }
     }
 
+    protected IEnumerator JumpDown(float height,float upSpeed){
+        if(!isAbort){
+            anim.Play("Jump_D", 0);
+            float speed = upSpeed;
+            dropPosition = new Vector3(this.transform.position.x, this.transform.position.y - height, 0);
+            charInteract.interactType = InteractType.Drop;
+            while (charInteract.interactType == InteractType.Drop && !isAbort)
+            {
+                speed -= 30 * Time.deltaTime;
+                if (speed < -50)
+                    speed = -50;
+                Vector3 pos1 = agent.transform.position;
+                pos1.y += speed * Time.deltaTime;
+                pos1.x = agent.transform.position.x;
+                
+                if(speed < 0)
+                    pos1.z = dropPosition.y;
+                else 
+                    pos1.z = agent.transform.position.y;
+                agent.transform.position = pos1;
+
+                if (Mathf.Abs(agent.transform.position.y - dropPosition.y) < 2f)
+                {
+                    this.transform.rotation = Quaternion.identity;
+                    charInteract.interactType = InteractType.None;
+                }
+                yield return new WaitForEndOfFrame();
+            }
+            enviromentType = EnviromentType.Room;
+        }
+    }
+
+    protected IEnumerator JumpUp(float height,float upSpeed){
+        if(!isAbort){
+            anim.Play("Jump_U", 0);
+            float speed = upSpeed;
+            CheckDrop(5);
+            charInteract.interactType = InteractType.Drop;
+            while (charInteract.interactType == InteractType.Drop && !isAbort)
+            {
+                speed -= 30 * Time.deltaTime;
+                if (speed < -50)
+                    speed = -50;
+                Vector3 pos1 = agent.transform.position;
+                pos1.y += speed * Time.deltaTime;
+                pos1.x = agent.transform.position.x;
+                pos1.z = dropPosition.y;
+                agent.transform.position = pos1;
+
+                if (speed < 0 && Mathf.Abs(agent.transform.position.y - dropPosition.y) < 1f)
+                {
+                    this.transform.rotation = Quaternion.identity;
+                    charInteract.interactType = InteractType.None;
+                    pos1.y = dropPosition.y;
+                    pos1.x = agent.transform.position.x;
+                    pos1.z = dropPosition.y;
+                    agent.transform.position = pos1;
+                }
+                yield return new WaitForEndOfFrame();
+            }
+            enviromentType = EnviromentType.Room;
+        }
+    }
+
+    protected void CheckDrop(float y){
+        RaycastHit2D[] hit = Physics2D.RaycastAll(transform.position + new Vector3(0, y, 0), -Vector2.up, 100);
+        Vector3 pos2 = this.transform.position;
+        pos2.y = pos2.y - dragOffset - 2;
+        if (pos2.y < -20)
+            pos2.y = -20;
+        dropPosition = pos2;
+        enviromentType = EnviromentType.Room;
+
+        for (int i = 0; i < hit.Length; i++)
+        {
+            if (hit[i].collider.tag == "Table")
+            {
+                pos2.y = hit[i].collider.transform.position.y;
+                pos2.z = hit[i].collider.transform.position.z;
+                dropPosition = pos2;
+                enviromentType = EnviromentType.Table;
+                break;
+            }
+            else if (hit[i].collider.tag == "Bath")
+            {
+                pos2.y = hit[i].collider.transform.position.y;
+                pos2.z = hit[i].collider.transform.position.z;
+                dropPosition = pos2;
+                enviromentType = EnviromentType.Bath;
+                break;
+            }
+            else if (hit[i].collider.tag == "Bed")
+            {
+                pos2.y = hit[i].collider.transform.position.y;
+                pos2.z = hit[i].collider.transform.position.z;
+                dropPosition = pos2;
+                enviromentType = EnviromentType.Bed;
+                break;
+            }
+            else if (hit[i].collider.tag == "Toilet")
+            {
+                pos2.y = hit[i].collider.transform.position.y;
+                pos2.z = hit[i].collider.transform.position.z;
+                dropPosition = pos2;
+                enviromentType = EnviromentType.Toilet;
+                break;
+            }
+        }
+    }
+
     protected void CheckAbort()
     {
         if (!isAbort)
@@ -597,11 +710,14 @@ public class CharController : MonoBehaviour
 
 	public void SetTarget(PointType type)
 	{
-		//Debug.Log (type);
-		if(this.GetRandomPoint (type) != null)
-			this.target = this.GetRandomPoint (type).position;
-        else
-            this.target = Vector3.zero;
+        int n = 0;
+        Vector3 pos = this.GetRandomPoint (type).position;
+        while(pos == target && n<10)
+        {
+            pos = this.GetRandomPoint (type).position;
+            n++;
+        }
+        target = pos;
 	}
 
 	public List<Transform> GetRandomPoints(PointType type)

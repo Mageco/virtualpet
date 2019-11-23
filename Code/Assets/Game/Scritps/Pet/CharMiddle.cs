@@ -261,33 +261,7 @@ public class CharMiddle : CharController
 
     #region Main Action
 
-    IEnumerator JumpOut(float height,float upSpeed){
-        if(!isAbort){
-            anim.Play("Jump_D", 0);
-            float speed = upSpeed;
-            Vector3 dropPosition = new Vector3(this.transform.position.x, this.transform.position.y - height, 0);
-            charInteract.interactType = InteractType.Drop;
-            while (charInteract.interactType == InteractType.Drop && !isAbort)
-            {
-                speed -= 30 * Time.deltaTime;
-                if (speed < -50)
-                    speed = -50;
-                Vector3 pos1 = agent.transform.position;
-                pos1.y += speed * Time.deltaTime;
-                pos1.x = agent.transform.position.x;
-                pos1.z = dropPosition.y;
-                agent.transform.position = pos1;
-
-                if (Mathf.Abs(agent.transform.position.y - dropPosition.y) < 2f)
-                {
-                    this.transform.rotation = Quaternion.identity;
-                    charInteract.interactType = InteractType.None;
-                }
-                yield return new WaitForEndOfFrame();
-            }
-            enviromentType = EnviromentType.Room;
-        }
-    }
+    
 
     IEnumerator Patrol()
     {
@@ -323,36 +297,7 @@ public class CharMiddle : CharController
         }
         else{
             if(!isAbort){
-                yield return StartCoroutine(JumpOut(10,15));
-                /*
-                anim.Play("Jump_D", 0);
-                float speed = 15;
-                Vector3 dropPosition = new Vector3(this.transform.position.x, this.transform.position.y - 10, 0);
-                charInteract.interactType = InteractType.Drop;
-                
-                while (charInteract.interactType == InteractType.Drop && !isAbort)
-                {
-                    speed -= 40 * Time.deltaTime;
-                    if (speed < -50)
-                        speed = -50;
-                    Vector3 pos1 = agent.transform.position;
-                    pos1.y += speed * Time.deltaTime;
-                    pos1.x = agent.transform.position.x;
-                    if(speed > 0)
-                        pos1.z = pos1.y;
-                    else
-                        pos1.z = dropPosition.y;
-                    agent.transform.position = pos1;
-
-                    if (Mathf.Abs(agent.transform.position.y - dropPosition.y) < 2f)
-                    {
-                        this.transform.rotation = Quaternion.identity;
-                        charInteract.interactType = InteractType.None;
-                    }
-                    yield return new WaitForEndOfFrame();
-                }
-                enviromentType = EnviromentType.Room;
-                */
+                yield return StartCoroutine(JumpDown(7,12));
                 OnLearnSkill(SkillType.Bath);
             }
         }
@@ -377,7 +322,7 @@ public class CharMiddle : CharController
     {
         charInteract.interactType = InteractType.Drag;
         enviromentType = EnviromentType.Room;
-        Vector3 dropPosition = Vector3.zero;
+
         SetDirection(Direction.D);
         if (data.Health < data.maxHealth * 0.1f)
         {
@@ -409,48 +354,7 @@ public class CharMiddle : CharController
         }
 
         //Start Drop
-        RaycastHit2D[] hit = Physics2D.RaycastAll(transform.position + new Vector3(0, -2, 0), -Vector2.up, 100);
-        Vector3 pos2 = this.transform.position;
-        pos2.y = pos2.y - dragOffset - 2;
-        if (pos2.y < -20)
-            pos2.y = -20;
-        dropPosition = pos2;
-        enviromentType = EnviromentType.Room;
-
-        for (int i = 0; i < hit.Length; i++)
-        {
-            if (hit[i].collider.tag == "Table")
-            {
-                pos2.y = hit[i].collider.transform.position.y;
-                dropPosition = pos2;
-                enviromentType = EnviromentType.Table;
-                break;
-            }
-            else if (hit[i].collider.tag == "Bath")
-            {
-                pos2.y = hit[i].collider.transform.position.y;
-                pos2.z = hit[i].collider.transform.position.z;
-                dropPosition = pos2;
-                enviromentType = EnviromentType.Bath;
-                break;
-            }
-            else if (hit[i].collider.tag == "Bed")
-            {
-                pos2.y = hit[i].collider.transform.position.y;
-                pos2.z = hit[i].collider.transform.position.z;
-                dropPosition = pos2;
-                enviromentType = EnviromentType.Bed;
-                break;
-            }
-            else if (hit[i].collider.tag == "Toilet")
-            {
-                pos2.y = hit[i].collider.transform.position.y;
-                pos2.z = hit[i].collider.transform.position.z;
-                dropPosition = pos2;
-                enviromentType = EnviromentType.Toilet;
-                break;
-            }
-        }
+        CheckDrop(-2);
 
         float fallSpeed = 0;
         float maxTime = 1;
@@ -558,32 +462,80 @@ public class CharMiddle : CharController
         CheckAbort();
     }
 
+    IEnumerator Toilet()
+    {
+        if(data.shit > 0.7*data.maxShit){
+            actionType = ActionType.Shit;
+            isAbort = true;
+        }else if(data.pee > 0.7f*data.maxPee){
+            actionType = ActionType.Pee;
+            isAbort = true;
+        }
+        else{
+            yield return StartCoroutine(JumpDown(5,5));           
+        }
+
+        CheckAbort();
+    }
+
     IEnumerator Pee()
     {
-        agent.Stop();
+        if(enviromentType != EnviromentType.Toilet)
+        {
+            if (data.SkillLearned(SkillType.Toilet) )
+            {
+                SetTarget(PointType.Toilet);
+                yield return StartCoroutine(MoveToPoint());
+                yield return StartCoroutine(JumpUp(10,15));
+                enviromentType = EnviromentType.Toilet;
+            }else{
+                OnLearnSkill(SkillType.Toilet);
+            }
+        }
+
         SetDirection(Direction.D);
         anim.Play("Pee_D", 0);
         Debug.Log("Pee");
         SpawnPee();
-        OnLearnSkill(SkillType.Toilet);
         while (data.Pee > 1 && !isAbort)
         {
             data.Pee -= 0.5f;
             yield return new WaitForEndOfFrame();
         }
+
+        if(enviromentType == EnviromentType.Toilet && !isAbort){
+            yield return StartCoroutine(JumpDown(5,5));     
+        }
+        
         CheckAbort();
     }
 
     IEnumerator Shit()
     {
+        if(enviromentType != EnviromentType.Toilet)
+        {
+            if (data.SkillLearned(SkillType.Toilet) )
+            {
+                SetTarget(PointType.Toilet);
+                yield return StartCoroutine(MoveToPoint());
+                yield return StartCoroutine(JumpUp(10,15));
+                enviromentType = EnviromentType.Toilet;
+            }else{
+                OnLearnSkill(SkillType.Toilet);
+            }
+        }
+
         SetDirection(Direction.D);
         anim.Play("Poop_D", 0);
         SpawnShit();
-        OnLearnSkill(SkillType.Toilet);
         while (data.Shit > 1 && !isAbort)
         {
             data.Shit -= 0.5f;
             yield return new WaitForEndOfFrame();
+        }
+
+        if(enviromentType == EnviromentType.Toilet && !isAbort){
+            yield return StartCoroutine(JumpDown(5,5));     
         }
         CheckAbort();
     }
@@ -615,6 +567,8 @@ public class CharMiddle : CharController
                         canEat = false;
                     yield return new WaitForEndOfFrame();
                 }
+            }else{
+                yield return DoAnim("Bark_" + direction.ToString());
             }
         }
         CheckAbort();
@@ -633,7 +587,7 @@ public class CharMiddle : CharController
 
             bool canDrink = true;
 
-            if (GetDrinkItem().CanEat())
+            if (GetDrinkItem().CanEat() && !isAbort)
             {
                 direction = Direction.LD;
                 anim.Play("Drink_LD", 0);
@@ -650,6 +604,8 @@ public class CharMiddle : CharController
                         canDrink = false;
                     yield return new WaitForEndOfFrame();
                 }
+            }else{
+                yield return DoAnim("Bark_" + direction.ToString());
             }
         }
         CheckAbort();
@@ -657,7 +613,20 @@ public class CharMiddle : CharController
 
     IEnumerator Sleep()
     {
+        if(enviromentType != EnviromentType.Bed)
+        {
+            if (data.SkillLearned(SkillType.Sleep) )
+            {
+                SetTarget(PointType.Sleep);
+                yield return StartCoroutine(MoveToPoint());
+                yield return StartCoroutine(JumpUp(10,15));
+                enviromentType = EnviromentType.Bed;
+            }else{
+                OnLearnSkill(SkillType.Sleep);
+            }
+        }
 
+       
         direction = Direction.LD;
         anim.Play("Sleep_LD", 0);
 
@@ -666,17 +635,11 @@ public class CharMiddle : CharController
             data.Sleep += 0.01f;
             yield return new WaitForEndOfFrame();
         }
-        CheckAbort();
-    }
+        
 
-    IEnumerator Sleepy()
-    {
-        //Debug.Log("Sleep");
-        if (data.SkillLearned(SkillType.Sleep))
-        {
-            SetTarget(PointType.Sleep);
+        if(enviromentType == EnviromentType.Bed && !isAbort){
+             yield return StartCoroutine(JumpDown(7,5));
         }
-        yield return StartCoroutine(MoveToPoint());
 
         CheckAbort();
     }
@@ -723,38 +686,27 @@ public class CharMiddle : CharController
 
     IEnumerator Bed()
     {
-
         int ran = Random.Range(0,100);
         if(ran < data.GetSkillProgress(SkillType.Sleep) * 10){
             if(data.sleep < 0.3f*data.maxSleep){
                 actionType = ActionType.Sleep;
                 Abort();
             }else{                    
-                anim.Play("Lay_LD",0);
+                anim.Play("Idle_" + direction.ToString(),0);
                 yield return StartCoroutine(Wait(Random.Range(2,6)));
-                yield return StartCoroutine(JumpOut(7,5));
+                yield return StartCoroutine(JumpDown(7,5));
             }
         }
         else{
-            yield return StartCoroutine(JumpOut(7,5));
-            OnLearnSkill(SkillType.Sleep);
+            yield return StartCoroutine(JumpDown(7,5));
         }
         
         CheckAbort();
     }
 
-    IEnumerator Toilet()
-    {
-        if(data.pee > 0.7f*data.maxPee){
-            actionType = ActionType.Pee;
-            isAbort = true;
-        }
-        else{
-            yield return StartCoroutine(JumpOut(5,5));           
-        }
 
-        CheckAbort();
-    }
+
+
 
 
     protected override IEnumerator LevelUp()

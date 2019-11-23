@@ -7,6 +7,7 @@ public class ItemDirty : MonoBehaviour
 
 	public float maxDirty = 100;
 	float dirty = 0;
+	bool isClearning = false;
 	Vector3 originalScale;
     // Start is called before the first frame update
     void Start()
@@ -19,6 +20,9 @@ public class ItemDirty : MonoBehaviour
     void Update()
     {
 		this.transform.localScale = dirty / maxDirty * originalScale;
+		if(isClearning){
+			OnClean(0.2f);
+		}
     }
 
 	public void OnClean(float clean)
@@ -31,6 +35,8 @@ public class ItemDirty : MonoBehaviour
 	void OnTriggerEnter2D(Collider2D other) {
         if (other.tag == "Player") {
            other.GetComponent<CharController>().data.Dirty += this.dirty/10f;   
+		}else if(other.tag == "Toilet"){
+			isClearning = true;
 		}        
     }
 	
