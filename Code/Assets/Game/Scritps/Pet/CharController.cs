@@ -607,14 +607,19 @@ public class CharController : MonoBehaviour
         skillLearnEffect.SetActive(false);
     }
     public void LevelUpSkill(SkillType type){
-        OffLearnSkill();
         data.LevelUpSkill(type);
+        if(data.SkillLearned(currentSkill))
+            UIManager.instance.OnSkillCompletePanel(currentSkill);
+        
+       
+        OffLearnSkill();
         Abort();
         actionType = ActionType.SkillUp;
     }
 
     protected IEnumerator SkillUp(){
         yield return StartCoroutine(DoAnim("SkillUp"));
+        
         if (enviromentType == EnviromentType.Bath)
         {
             OnBath();

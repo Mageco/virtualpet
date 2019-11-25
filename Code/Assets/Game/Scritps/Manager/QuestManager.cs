@@ -19,6 +19,9 @@ public class QuestManager : MonoBehaviour
     float delayTime = 0;
     bool isActive = true;
 
+    float replayTime = 0;
+    float maxReplayTime = 10;
+
     float fadeDuration = 1f;
 
     void Awake()
@@ -97,7 +100,7 @@ public class QuestManager : MonoBehaviour
 
 
 
-        if (DataHolder.Quest(GameManager.instance.questId).prefabName != "")
+        if (playTimeLine == null && DataHolder.Quest(GameManager.instance.questId).prefabName != "")
         {
             MageManager.instance.ScreenFadeOut(fadeDuration);
             yield return new WaitForSeconds(fadeDuration);
@@ -133,12 +136,13 @@ public class QuestManager : MonoBehaviour
         if (tipUI != null)
             tipUI.Close();
 
-        
         isTimeline = false;
     }
 
-    public void ResetQuest()
+    public void ReplayQuest()
     {
+        replayTime = 0;
+        isTimeline = true;
         playTimeLine.time = 0;
         PlayTip();
     }
@@ -176,6 +180,7 @@ public class QuestManager : MonoBehaviour
         isEndQuest = false;
         isTimeline = true;
         delayTime = 0;
+        replayTime = 0;
 
     }
 
@@ -258,6 +263,13 @@ public class QuestManager : MonoBehaviour
         {
             if (!isEndQuest)
             {
+                if(!isTimeline){
+                    if(replayTime > maxReplayTime){
+                        ReplayQuest();
+                    }else
+                        replayTime += Time.deltaTime;
+                }
+
                 if (time > maxTimeCheck)
                 {
                     CheckQuest();

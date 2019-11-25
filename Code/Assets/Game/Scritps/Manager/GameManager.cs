@@ -47,14 +47,14 @@ public class GameManager : MonoBehaviour
         ApiManager.instance.EquipItem(56);
 
          
-        ApiManager.instance.AddItem(2);
+       ApiManager.instance.AddItem(2);
         ApiManager.instance.AddItem(11);                
         ApiManager.instance.AddItem(8);
         ApiManager.instance.EquipItem(2);
         ApiManager.instance.EquipItem(11);                
         ApiManager.instance.EquipItem(8);
         ApiManager.instance.AddItem(4);
-        ApiManager.instance.EquipItem(4);
+        ApiManager.instance.EquipItem(4); 
         
     }
 

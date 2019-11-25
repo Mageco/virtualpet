@@ -562,7 +562,7 @@ public class CharMiddle : CharController
                     {
                         canEat = false;
                     }
-                    if (Vector2.Distance(this.transform.position, GetFoodItem().anchor.position) > 0.5f)
+                    if (Vector2.Distance(this.transform.position, GetFoodItem().anchor.position) > 1f)
                         canEat = false;
                     yield return new WaitForEndOfFrame();
                 }
@@ -599,7 +599,7 @@ public class CharMiddle : CharController
                     {
                         canDrink = false;
                     }
-                    if (Vector2.Distance(this.transform.position, GetDrinkItem().anchor.position) > 0.5f)
+                    if (Vector2.Distance(this.transform.position, GetDrinkItem().anchor.position) > 1f)
                         canDrink = false;
                     yield return new WaitForEndOfFrame();
                 }

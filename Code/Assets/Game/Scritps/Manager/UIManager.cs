@@ -12,6 +12,7 @@ public class UIManager : MonoBehaviour
     public GameObject eventUIPrefab;
 
     public GameObject profileUIPrefab;
+    public GameObject skillCompletePrefab;
     public static UIManager instance;
 	public Text coinText;
 	public Text diamonText;
@@ -19,6 +20,7 @@ public class UIManager : MonoBehaviour
     QuestPanel questComplete;
     ShopPanel shopPanel;
     EventPanel eventPanel;
+    SkillCompletePanel skillCompletePanel;
 
     ProfilePanel profilePanel;
 
@@ -154,6 +156,20 @@ public class UIManager : MonoBehaviour
             popup.GetComponent<Popup>().Open();
             profilePanel = popup.GetComponent<ProfilePanel>();
             profilePanel.Load(0);
+        }
+     }
+
+    public void OnSkillCompletePanel(SkillType t)
+    {
+        if (skillCompletePanel == null)
+        {
+            var popup = Instantiate(skillCompletePrefab) as GameObject;
+            popup.SetActive(true);
+            //popup.transform.localScale = Vector3.zero;
+            popup.transform.SetParent(GameObject.Find("Canvas").transform, false);
+            popup.GetComponent<Popup>().Open();
+            skillCompletePanel = popup.GetComponent<SkillCompletePanel>();
+            skillCompletePanel.Load(t);
         }
      }
 
