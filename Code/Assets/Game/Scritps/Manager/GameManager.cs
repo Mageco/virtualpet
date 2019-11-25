@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class GameManager : MonoBehaviour
 {
  	public static GameManager instance;
@@ -69,8 +70,7 @@ public class GameManager : MonoBehaviour
         
         if(camera != null){
             camera.SetTarget(petObjects[0].gameObject);
-        }
-       
+        }      
     }
 
 

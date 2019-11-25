@@ -326,8 +326,9 @@ public class CharBig : CharController
 
     IEnumerator Table()
     {
+        
         int rand = Random.Range(0,100);    
-        if(rand < 50){
+        if(rand < data.GetSkillProgress(SkillType.Table)){
             SetDirection(Direction.D);
             anim.Play("BathStart_D", 0);
             while (!isAbort)
@@ -361,6 +362,7 @@ public class CharBig : CharController
                 yield return new WaitForEndOfFrame();            
             }
             yield return DoAnim("Fall_L");
+            OnLearnSkill(SkillType.Table);
         } 
         CheckAbort();
     }
