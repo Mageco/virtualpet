@@ -1,7 +1,8 @@
-﻿using UnityEngine;
+﻿using Mage.Models;
+using UnityEngine;
 
 [System.Serializable]
-public class Pet
+public class Pet : BaseModel
 {
 	public int iD = 0;
 	public string iconUrl = "";

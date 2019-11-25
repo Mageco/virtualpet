@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using Mage.Models;
+using System;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -10,6 +12,7 @@ using UnityEditor;
 public class PetData : BaseData
 {
 	public Pet[] pets = new Pet[0];
+	public List<Pet> petsList = new List<Pet>();
 	string fileName = "PetData";
 
 	public PetData()
