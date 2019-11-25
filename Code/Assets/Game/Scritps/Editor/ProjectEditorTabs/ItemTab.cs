@@ -50,57 +50,60 @@ public class ItemTab : BaseTab
             EditorGUILayout.BeginHorizontal();
             EditorGUILayout.BeginVertical();
 
-            EditorGUILayout.LabelField("Item ID: " + DataHolder.Item(selection).iD.ToString(), GUILayout.Width(pw.mWidth * 2));
+            EditorGUILayout.LabelField("Item ID: " + DataHolder.Items().GetItem(selection,temcategory).iD.ToString(), GUILayout.Width(pw.mWidth * 2));
+            Debug.Log(temcategory + "  " + selection);
+            DataHolder.Items().GetItem(selection,temcategory).shopOrder = EditorGUILayout.IntField("Shop Order", DataHolder.Items().GetItem(selection,temcategory).shopOrder, GUILayout.Width(pw.mWidth));
+            
             for (int i = 0; i < DataHolder.Languages().GetDataCount(); i++)
             {
                 EditorGUILayout.LabelField(DataHolder.Language(i));
-                DataHolder.Item(selection).languageItem[i].Name = EditorGUILayout.TextField("Name", DataHolder.Item(selection).languageItem[i].Name, GUILayout.Width(pw.mWidth * 2));
-                DataHolder.Item(selection).languageItem[i].Description = EditorGUILayout.TextField("Description", DataHolder.Item(selection).languageItem[i].Description, GUILayout.Width(pw.mWidth * 2));
+                DataHolder.Items().GetItem(selection,temcategory).languageItem[i].Name = EditorGUILayout.TextField("Name", DataHolder.Items().GetItem(selection,temcategory).languageItem[i].Name, GUILayout.Width(pw.mWidth * 2));
+                DataHolder.Items().GetItem(selection,temcategory).languageItem[i].Description = EditorGUILayout.TextField("Description", DataHolder.Items().GetItem(selection,temcategory).languageItem[i].Description, GUILayout.Width(pw.mWidth * 2));
                 EditorGUILayout.Separator();
             }
 
             EditorGUILayout.BeginHorizontal();
             EditorGUILayout.LabelField("Icon", GUILayout.MaxWidth(110));
-            if(DataHolder.Item(selection).iconUrl != null){
-                this.tmpSprites = AssetDatabase.LoadAssetAtPath<Texture2D>(DataHolder.Item(selection).iconUrl);
+            if(DataHolder.Items().GetItem(selection,temcategory).iconUrl != null){
+                this.tmpSprites = AssetDatabase.LoadAssetAtPath<Texture2D>(DataHolder.Items().GetItem(selection,temcategory).iconUrl);
             }
             this.tmpSprites = (Texture2D)EditorGUILayout.ObjectField(GUIContent.none, this.tmpSprites, typeof(Texture2D), false, GUILayout.MaxWidth(100));
             if (this.tmpSprites != null)
             {
-                DataHolder.Item(selection).iconUrl = AssetDatabase.GetAssetPath(this.tmpSprites);
+                DataHolder.Items().GetItem(selection,temcategory).iconUrl = AssetDatabase.GetAssetPath(this.tmpSprites);
 
             }
-            EditorGUILayout.LabelField(DataHolder.Item(selection).iconUrl);
+            EditorGUILayout.LabelField(DataHolder.Items().GetItem(selection,temcategory).iconUrl);
             EditorGUILayout.EndHorizontal();
 
             if (this.tmpSprites != null)
             {
                 if (GUILayout.Button("Clear Image", GUILayout.Width(100)))
                 {
-                    DataHolder.Item(selection).iconUrl = "";
+                    DataHolder.Items().GetItem(selection,temcategory).iconUrl = "";
                     tmpSprites = null;
                 }
             }
 
             EditorGUILayout.BeginHorizontal();
             EditorGUILayout.LabelField("Icon Lock", GUILayout.MaxWidth(110));
-            if(DataHolder.Item(selection).iconLockUrl != null){
-                this.tmpLockSprites = AssetDatabase.LoadAssetAtPath<Texture2D>(DataHolder.Item(selection).iconLockUrl);
+            if(DataHolder.Items().GetItem(selection,temcategory).iconLockUrl != null){
+                this.tmpLockSprites = AssetDatabase.LoadAssetAtPath<Texture2D>(DataHolder.Items().GetItem(selection,temcategory).iconLockUrl);
             }
             this.tmpLockSprites = (Texture2D)EditorGUILayout.ObjectField(GUIContent.none, this.tmpLockSprites, typeof(Texture2D), false, GUILayout.MaxWidth(100));
             if (this.tmpLockSprites != null)
             {
-                DataHolder.Item(selection).iconLockUrl = AssetDatabase.GetAssetPath(this.tmpLockSprites);
+                DataHolder.Items().GetItem(selection,temcategory).iconLockUrl = AssetDatabase.GetAssetPath(this.tmpLockSprites);
 
             }
-            EditorGUILayout.LabelField(DataHolder.Item(selection).iconLockUrl);
+            EditorGUILayout.LabelField(DataHolder.Items().GetItem(selection,temcategory).iconLockUrl);
             EditorGUILayout.EndHorizontal();
             
 			if (this.tmpLockSprites != null)
             {
                 if (GUILayout.Button("Clear Image", GUILayout.Width(100)))
                 {
-                    DataHolder.Item(selection).iconLockUrl = "";
+                    DataHolder.Items().GetItem(selection,temcategory).iconLockUrl = "";
                     tmpLockSprites = null;
                 }
             }
@@ -111,20 +114,22 @@ public class ItemTab : BaseTab
 			if(fold2)
 			{
 				if(selection != tmpSelection) this.tmpPrefab = null;
-				if(this.tmpPrefab == null && "" != DataHolder.Item(selection).prefabName)
+				if(this.tmpPrefab == null && "" != DataHolder.Items().GetItem(selection,temcategory).prefabName)
 				{
-					this.tmpPrefab = (GameObject)Resources.Load(DataHolder.Items().GetPrefabPath()+DataHolder.Item(selection).prefabName, typeof(GameObject));
+					this.tmpPrefab = (GameObject)Resources.Load(DataHolder.Items().GetPrefabPath()+DataHolder.Items().GetItem(selection,temcategory).prefabName, typeof(GameObject));
 				}
 				this.tmpPrefab = (GameObject)EditorGUILayout.ObjectField("Prefab", this.tmpPrefab, typeof(GameObject), false, GUILayout.Width(pw.mWidth*2));
-				if(this.tmpPrefab) DataHolder.Item(selection).prefabName = this.tmpPrefab.name;
-				else DataHolder.Item(selection).prefabName = "";
+				if(this.tmpPrefab) DataHolder.Items().GetItem(selection,temcategory).prefabName = this.tmpPrefab.name;
+				else DataHolder.Items().GetItem(selection,temcategory).prefabName = "";
 
 				EditorGUILayout.Separator();
-				DataHolder.Item(selection).itemType = (ItemType)EditorGUILayout.EnumPopup("Item Type", DataHolder.Item(selection).itemType, GUILayout.Width (pw.mWidth * 2));
+				DataHolder.Items().GetItem(selection,temcategory).itemType = (ItemType)EditorGUILayout.EnumPopup("Item Type", DataHolder.Items().GetItem(selection,temcategory).itemType, GUILayout.Width (pw.mWidth * 2));
 				EditorGUILayout.Separator();
 				EditorGUILayout.Separator();
-				DataHolder.Item(selection).buyPrice = EditorGUILayout.IntField("Buy price", DataHolder.Item(selection).buyPrice, GUILayout.Width(pw.mWidth));
-                DataHolder.Item(selection).priceType = (PriceType)EditorTab.EnumToolbar("Price Type", (int)DataHolder.Item(selection).priceType, typeof(PriceType));    
+				DataHolder.Items().GetItem(selection,temcategory).buyPrice = EditorGUILayout.IntField("Buy price", DataHolder.Items().GetItem(selection,temcategory).buyPrice, GUILayout.Width(pw.mWidth));
+                DataHolder.Items().GetItem(selection,temcategory).priceType = (PriceType)EditorTab.EnumToolbar("Price Type", (int)DataHolder.Items().GetItem(selection,temcategory).priceType, typeof(PriceType));    
+                DataHolder.Items().GetItem(selection,temcategory).levelRequire = EditorGUILayout.IntField("RequireLevel", DataHolder.Items().GetItem(selection,temcategory).levelRequire, GUILayout.Width(pw.mWidth));
+                DataHolder.Items().GetItem(selection,temcategory).isAvailable = EditorGUILayout.Toggle("Available", DataHolder.Items().GetItem(selection,temcategory).isAvailable, GUILayout.Width(pw.mWidth));
 
 
 				//EditorGUILayout.EndToggleGroup();
@@ -139,19 +144,19 @@ public class ItemTab : BaseTab
 			fold3 = EditorGUILayout.Foldout(fold3, "Usage Settings");
 			if(fold3)
 			{
-				DataHolder.Item(selection).consume = EditorGUILayout.Toggle("Consume", DataHolder.Item(selection).consume, GUILayout.Width(pw.mWidth));
+				DataHolder.Items().GetItem(selection,temcategory).consume = EditorGUILayout.Toggle("Consume", DataHolder.Items().GetItem(selection,temcategory).consume, GUILayout.Width(pw.mWidth));
 				EditorGUILayout.Separator();
-				DataHolder.Item(selection).itemSkill = (ItemSkillType)EditorTab.EnumToolbar("Item skill", (int)DataHolder.Item(selection).itemSkill, typeof(ItemSkillType));
-				if(!ItemSkillType.NONE.Equals(DataHolder.Item(selection).itemSkill))
+				DataHolder.Items().GetItem(selection,temcategory).itemSkill = (ItemSkillType)EditorTab.EnumToolbar("Item skill", (int)DataHolder.Items().GetItem(selection,temcategory).itemSkill, typeof(ItemSkillType));
+				if(!ItemSkillType.NONE.Equals(DataHolder.Items().GetItem(selection,temcategory).itemSkill))
 				{
-					DataHolder.Item(selection).skillID = EditorGUILayout.Popup("Skill", 
-						DataHolder.Item(selection).skillID, pw.GetSkills(), GUILayout.Width(pw.mWidth));
+					DataHolder.Items().GetItem(selection,temcategory).skillID = EditorGUILayout.Popup("Skill", 
+						DataHolder.Items().GetItem(selection,temcategory).skillID, pw.GetSkills(), GUILayout.Width(pw.mWidth));
 				}
 
 			}
 			EditorGUILayout.EndVertical(); 
 
- 
+            
 
             
             EditorGUILayout.EndHorizontal();

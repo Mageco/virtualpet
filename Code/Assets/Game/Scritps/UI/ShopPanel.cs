@@ -58,6 +58,8 @@ public class ShopPanel : MonoBehaviour
         ES2.Save(id,"ShopToggle");
         ClearItems();
 
+        List<Item> items = new List<Item>();
+
         if(currentTab == 1){
             for (int i = 0; i < DataHolder.Pets().GetDataCount(); i++)
             {
@@ -67,9 +69,15 @@ public class ShopPanel : MonoBehaviour
         else{
             for(int i=0;i<DataHolder.Items().GetDataCount();i++){
                 if((int)DataHolder.Item(i).itemType == currentTab){
-                    LoadItem(DataHolder.Item(i));      
+                    items.Add(DataHolder.Item(i));
                 }   
             }   
+        }
+
+
+        items.Sort((p1,p2)=>(p2.shopOrder).CompareTo(p1.shopOrder));
+        foreach(Item item in items){
+            LoadItem(item);
         }
 
         

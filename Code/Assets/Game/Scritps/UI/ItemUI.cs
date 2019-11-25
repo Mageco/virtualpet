@@ -14,8 +14,13 @@ public class ItemUI : MonoBehaviour
     public GameObject coinIcon;
     public GameObject diamonIcon;
     public GameObject moneyIcon;
+
+    public GameObject commingSoon;
+    public GameObject locked;
+    public Text levelRequired;
     Animator animator;
     bool isBusy = false;
+    bool isInteract = true;
 
     bool isCharacter = false;
 
@@ -32,6 +37,22 @@ public class ItemUI : MonoBehaviour
         itemId = d.iD;
         //Debug.Log(d.iconUrl);
         string url = d.iconUrl.Replace("Assets/Game/Resources/", "");
+        if(!d.isAvailable || d.levelRequire > GameManager.instance.GetPet(0).level){
+            url = d.iconLockUrl.Replace("Assets/Game/Resources/", "");
+            isInteract = false;
+        }
+
+        if(!d.isAvailable){
+            commingSoon.SetActive(true);
+        }else
+            commingSoon.SetActive(false);
+
+        if(d.levelRequire > GameManager.instance.GetPet(0).level){
+            locked.SetActive(true);
+            levelRequired.text = "Level " + d.levelRequire.ToString();
+        }else
+            locked.SetActive(false);
+       
         url = url.Replace(".png", "");
         //Debug.Log(url);
         icon.sprite = Resources.Load<Sprite>(url) as Sprite;
@@ -169,8 +190,10 @@ public class ItemUI : MonoBehaviour
 
     public void OnBuy()
     {
-        if (isBusy)
+        if (isBusy || !isInteract)
             return;
+
+
         StartCoroutine(BuyCoroutine());
     }
 

@@ -8,7 +8,8 @@ public class BaseTab : EditorTab
 	protected ProjectWindow pw;
 	protected Texture2D tmpSprites;
 	protected Texture2D tmpLockSprites;
-	protected int temcategory = 0;
+	protected int temcategory = -1;
+	protected ItemType tempItemType = ItemType.All;
 	protected int temorder = 0;
 
 	public BaseTab(ProjectWindow pw) : base()
@@ -27,7 +28,9 @@ public class BaseTab : EditorTab
 		EditorGUILayout.BeginHorizontal();
 		EditorGUILayout.BeginVertical(GUILayout.Width(pw.mWidth*0.7f));
 		EditorGUILayout.BeginHorizontal();
-		//temcategory = EditorGUILayout.Popup ("Category",temcategory, DataHolder.Categories ().GetNameList (true), GUILayout.Width (pw.mWidth * 0.7f));
+		tempItemType =  (ItemType)EditorGUILayout.EnumPopup("Item Type", tempItemType);
+		
+		temcategory = (int)tempItemType;
 		EditorGUILayout.EndHorizontal();
 		EditorGUILayout.Separator();
 		EditorGUILayout.BeginVertical("box");
@@ -35,10 +38,12 @@ public class BaseTab : EditorTab
 
 		if(data.GetDataCount() > 0)
 		{
+			if(data.GetNameListFilter(temcategory).Length - 1 < selection)
+				selection = 0;
 			var prev = selection;
-			temorder = GUILayout.SelectionGrid(temorder, data.GetNameListFilter(temcategory), 1);
-			selection =  DataHolder.Items ().GetItemOrder (temorder, temcategory);
-			if(prev != temorder)
+			selection = GUILayout.SelectionGrid(selection, data.GetNameListFilter(temcategory), 1);
+			//selection =  DataHolder.Items ().GetItemOrder (temorder, temcategory);
+			if(prev != selection)
 			{
 				GUI.FocusControl("ID");
 			}

@@ -132,7 +132,7 @@ public class ItemData : BaseData
 		{
 			for(int i=0; i<items.Length; i++)
 			{
-				if (category == 0 || items [i].category == category) {
+				if (category == -1 || (int)items [i].itemType == category) {
 					string text = items[i].iD.ToString() + " : " + items [i].GetName(0); 
 					result.Add (text);
 				}
@@ -148,7 +148,7 @@ public class ItemData : BaseData
 		{
 			for(int i=0; i<items.Length; i++)
 			{
-				if (category == 0 || items [i].category == category) {
+				if (category == -1 || (int)items [i].itemType == category) {
 					string text = items [i].iD.ToString(); 
 					result.Add (text);
 				}
@@ -179,7 +179,7 @@ public class ItemData : BaseData
 		{
 			for(int i=0; i<items.Length; i++)
 			{
-				if (category == 0 || items [i].category == category) {
+				if (category == -1 || (int)items [i].itemType == category) {
 					result.Add (items[i]);
 				}
 			}
@@ -197,7 +197,7 @@ public class ItemData : BaseData
 		{
 			for(int i=0; i<items.Length; i++)
 			{
-				if (category == 0 || items [i].category == category) {
+				if (category == -1 || items [i].category == category) {
 					result.Add (items[i]);
 				}
 			}
@@ -229,7 +229,8 @@ public class ItemData : BaseData
 		{
 			for(int i=0; i<items.Length; i++)
 			{
-				if (category == 0 || items [i].category == category){
+
+				if (category == -1 || (int)items [i].itemType == category){
 					result.Add (i);
 				}
 			}
@@ -247,7 +248,7 @@ public class ItemData : BaseData
 		{
 			for(int i=0; i<items.Length; i++)
 			{
-				if (category == 0 || items [i].category == category) {
+				if (category == -1 || (int)items [i].itemType == category) {
 					result.Add (i);
 				}
 			}
@@ -255,5 +256,4 @@ public class ItemData : BaseData
 			
 		return result.ToArray();
 	}
-
 }

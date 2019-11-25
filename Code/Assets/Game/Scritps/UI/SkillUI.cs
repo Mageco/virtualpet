@@ -15,12 +15,11 @@ public class SkillUI : MonoBehaviour
     public Sprite coinIcon;
     public Sprite diamonIcon;
     public Text rewardValue;
-    public AnimatedButton collectbutton;
-    public GameObject collectedButton;
+    public Image itemBG;
+
 
     void Awake(){
-        collectbutton.gameObject.SetActive(false);
-        collectedButton.SetActive(false);
+
     }
 
     // Start is called before the first frame update
@@ -41,17 +40,11 @@ public class SkillUI : MonoBehaviour
             rewardIcon.sprite = diamonIcon;
             rewardValue.text = d.diamondValue.ToString();           
         }
-    }
 
-    public void Done(){
-        collectbutton.gameObject.SetActive(true);
+        if(GameManager.instance.GetPetObject(0).data.SkillLearned(d.skillType)){
+            itemBG.color = Color.grey;
+        }
     }
-
-    public void Collect(){
-        collectbutton.gameObject.SetActive(false);
-        collectedButton.SetActive(true);
-    }
-
 
     // Update is called once per frame
     void Update()
