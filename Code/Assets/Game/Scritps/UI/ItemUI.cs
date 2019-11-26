@@ -38,7 +38,7 @@ public class ItemUI : MonoBehaviour
         //Debug.Log(d.iconUrl);
         string url = d.iconUrl.Replace("Assets/Game/Resources/", "");
         if(!d.isAvailable || d.levelRequire > GameManager.instance.GetPet(0).level){
-            url = d.iconLockUrl.Replace("Assets/Game/Resources/", "");
+            //url = d.iconLockUrl.Replace("Assets/Game/Resources/", "");
             isInteract = false;
         }
 
@@ -222,20 +222,33 @@ public class ItemUI : MonoBehaviour
         }
         else
         {
-            if (state == ItemState.Equiped)
-                yield return null;
-            else if (state == ItemState.Have)
+            if(DataHolder.GetItem(itemId).itemType == ItemType.Diamond){
+                
+            }else if(DataHolder.GetItem(itemId).itemType == ItemType.Coin){
+                if(ApiManager.instance.GetDiamond() > (DataHolder.GetItem(itemId).buyPrice)){
+                    ApiManager.instance.AddDiamond(-DataHolder.GetItem(itemId).buyPrice);
+                    GameManager.instance.AddCoin(DataHolder.GetItem(itemId).sellPrice);
+                }
+            }else
             {
-                animator.Play("Use", 0);
-                yield return new WaitForSeconds(0.5f);
-                UIManager.instance.UseItem(itemId);
+                if (state == ItemState.Equiped)
+                    yield return null;
+                else if (state == ItemState.Have)
+                {
+                    animator.Play("Use", 0);
+                    yield return new WaitForSeconds(0.5f);
+                    UIManager.instance.UseItem(itemId);
+                }
+                else
+                {
+                    animator.Play("Buy", 0);
+                    yield return new WaitForSeconds(1f);
+                    UIManager.instance.BuyItem(itemId);
+                }
             }
-            else
-            {
-                animator.Play("Buy", 0);
-                yield return new WaitForSeconds(1f);
-                UIManager.instance.BuyItem(itemId);
-            }
+
+            
+
         }
 
         isBusy = false;

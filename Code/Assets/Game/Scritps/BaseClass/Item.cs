@@ -15,6 +15,7 @@ public class Item
 	public PriceType priceType = PriceType.Coin;
     public ItemState itemState = ItemState.OnShop;
 	public int buyPrice = 0;
+	public int sellPrice = 0;
 	public bool consume = true;
 	public ItemSkillType itemSkill = ItemSkillType.NONE;
 	public int skillID = 0;

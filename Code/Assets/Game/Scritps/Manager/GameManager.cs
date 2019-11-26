@@ -169,6 +169,7 @@ public class GameManager : MonoBehaviour
     public void AddExp(int e){
          pets[0].Exp += e;
     }
+
 	
     public void Pause(){
         isPause = true;

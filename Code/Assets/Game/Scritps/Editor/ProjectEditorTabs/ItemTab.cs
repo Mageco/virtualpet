@@ -128,6 +128,12 @@ public class ItemTab : BaseTab
 				EditorGUILayout.Separator();
 				DataHolder.Items().GetItem(selection,temcategory).buyPrice = EditorGUILayout.IntField("Buy price", DataHolder.Items().GetItem(selection,temcategory).buyPrice, GUILayout.Width(pw.mWidth));
                 DataHolder.Items().GetItem(selection,temcategory).priceType = (PriceType)EditorTab.EnumToolbar("Price Type", (int)DataHolder.Items().GetItem(selection,temcategory).priceType, typeof(PriceType));    
+                if(DataHolder.Items().GetItem(selection,temcategory).itemType == ItemType.Diamond){
+                    DataHolder.Items().GetItem(selection,temcategory).sellPrice = EditorGUILayout.IntField("Diamond Amount", DataHolder.Items().GetItem(selection,temcategory).sellPrice, GUILayout.Width(pw.mWidth));
+                }else if(DataHolder.Items().GetItem(selection,temcategory).itemType == ItemType.Coin){
+                    DataHolder.Items().GetItem(selection,temcategory).sellPrice = EditorGUILayout.IntField("Coin Amount", DataHolder.Items().GetItem(selection,temcategory).sellPrice, GUILayout.Width(pw.mWidth));
+                }
+                
                 DataHolder.Items().GetItem(selection,temcategory).levelRequire = EditorGUILayout.IntField("RequireLevel", DataHolder.Items().GetItem(selection,temcategory).levelRequire, GUILayout.Width(pw.mWidth));
                 DataHolder.Items().GetItem(selection,temcategory).isAvailable = EditorGUILayout.Toggle("Available", DataHolder.Items().GetItem(selection,temcategory).isAvailable, GUILayout.Width(pw.mWidth));
 

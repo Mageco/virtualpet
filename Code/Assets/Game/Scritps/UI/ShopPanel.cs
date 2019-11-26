@@ -65,6 +65,12 @@ public class ShopPanel : MonoBehaviour
             {
                 LoadItem(DataHolder.Pet(i));
             }
+        }else if(currentTab == 0){
+            for(int i=0;i<DataHolder.Items().GetDataCount();i++){
+                if((int)DataHolder.Item(i).itemType == 0 || (int)DataHolder.Item(i).itemType == 1){
+                    items.Add(DataHolder.Item(i));
+                }   
+            }               
         }
         else{
             for(int i=0;i<DataHolder.Items().GetDataCount();i++){
