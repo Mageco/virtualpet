@@ -41,8 +41,6 @@ public class ApiManager : MageEngine {
 			Destroy (this.gameObject);
 
 		DontDestroyOnLoad (this.gameObject);
-		Debug.Log("ApiManger: " + IsLogin());
-
 	}
 
 	public static ApiManager GetInstance() {
@@ -215,7 +213,7 @@ public class ApiManager : MageEngine {
 
 	public void AddPet(int petId)
 	{
-		Character c = AddNewCharacter (new Character() {
+		Character c = SetCharacter (new Character() {
 			id = petId.ToString(),
 			character_name = "New Pet",
 			character_type = "0",
@@ -226,7 +224,7 @@ public class ApiManager : MageEngine {
 	}
 
 	public void EquipPet(int petId){
-		Character c = AddNewCharacter (new Character() {
+		Character c = SetCharacter (new Character() {
 			id = petId.ToString(),
 			character_name = "New Pet",
 			character_type = "0",

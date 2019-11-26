@@ -17,7 +17,6 @@ using Mage.Models;
 namespace MageSDK.Client {
 	public class MageEngine : MonoBehaviour {
 
-		public static MageEngine instance1;
 		///<summary>isLocalApplicationData is using to indicate where to get Application Data.</summary>
 		// this is used to test application in Editor mode, if this is true then Application Data will be load from local resources
 		public bool isLocalApplicationData = true;
@@ -28,51 +27,45 @@ namespace MageSDK.Client {
 
 		#region private variables
 		private bool _isLogin = false;
+		private static bool _isLoaded = false;
 		#endregion
 
 		void Awake() {
+			if (!_isLoaded) {
+				_isLoaded = true;
+				Load();
 
-			if(instance1 == null)
-				instance1 = this;
-			else
-				GameObject.DestroyImmediate(this.gameObject);
+				// get application data from server
+				GetApplicationData();
 
-			Load();
-
-			
-			
-			// get application data from server
-			GetApplicationData();
-
-			// at start initiate Default user
-			InitDefaultUser();
-			
-			#if UNITY_EDITOR
-				if (resetUserDataOnStart) {
-					// in unity and test mode don't reuse user saved previously, always initate new user
-					_isLogin = true;
-				} else {
+				// at start initiate Default user
+				InitDefaultUser();
+				
+				#if UNITY_EDITOR
+					if (resetUserDataOnStart) {
+						// in unity and test mode don't reuse user saved previously, always initate new user
+						_isLogin = true;
+					} else {
+						// login user during start
+						if (loginMethod == ClientLoginMethod.LOGIN_DEVICE_UUID) {
+							LoginWithDeviceID();
+						}
+					}
+				#else
 					// login user during start
 					if (loginMethod == ClientLoginMethod.LOGIN_DEVICE_UUID) {
 						LoginWithDeviceID();
 					}
-				}
-			#else
-				// login user during start
-				if (loginMethod == ClientLoginMethod.LOGIN_DEVICE_UUID) {
-					LoginWithDeviceID();
-				}
-			#endif
-
-			Debug.Log("IsLogin: " + _isLogin);
+				#endif
+			}
+			
 		}
 
+		///<summary>Other implementation will override this function</summary>
 		protected virtual void Load()
 		{
 
 		}
-		
-
 
 		#region Login & user handling
 		///<summary>Login using device id</summary>
@@ -104,10 +97,6 @@ namespace MageSDK.Client {
 			// initiate default user
 			User defaultUser = GetApplicationDataItem<User>(MageEngineSettings.GAME_ENGINE_DEFAULT_USER_DATA);
 			defaultUser.id = randomId;
-			//Character defaultCharacter = GetApplicationDataItem<Character>(MageEngineSettings.GAME_ENGINE_DEFAULT_CHARACTER_DATA);
-			//.id = randomId;
-			//defaultUser.SetCharacter(defaultCharacter);
-			Debug.Log("Default User: " + defaultUser.ToJson());
 
 			// update user to game engine
 			#if UNITY_EDITOR
@@ -166,7 +155,7 @@ namespace MageSDK.Client {
 		///<summary>If this is new user then it will need to create a default profile</summary>
 		private void CreateNewUser(User u) {
 			Debug.Log("Create new user");
-			this.AddNewCharacter(this.GetApplicationDataItem<Character>(MageEngineSettings.GAME_ENGINE_DEFAULT_CHARACTER_DATA));
+			this.SetCharacter(this.GetApplicationDataItem<Character>(MageEngineSettings.GAME_ENGINE_DEFAULT_CHARACTER_DATA));
 			this.UpdateUserData(this.GetApplicationDataItem<User>(MageEngineSettings.GAME_ENGINE_DEFAULT_USER_DATA).user_datas);
 			SetUser(u);
 		}
@@ -174,7 +163,7 @@ namespace MageSDK.Client {
 		void CreateExistingUser(User u) {
 			if (u.characters.Count == 0 || u.characters[0] == null) {
 				//update character to store
-				this.AddNewCharacter(this.GetApplicationDataItem<Character>(MageEngineSettings.GAME_ENGINE_DEFAULT_CHARACTER_DATA));
+				this.SetCharacter(this.GetApplicationDataItem<Character>(MageEngineSettings.GAME_ENGINE_DEFAULT_CHARACTER_DATA));
 			}
 
 			List<UserData> defaultUserData = GetApplicationDataItem<User>(MageEngineSettings.GAME_ENGINE_DEFAULT_USER_DATA).user_datas;
@@ -189,12 +178,11 @@ namespace MageSDK.Client {
 				// update data to store
 				UpdateUserData(u.user_datas);
 			}
-
 		}
 
 
 		///<summary>Add new character to current user. Once complete, save data to cache</summary>
-		public Character AddNewCharacter(Character newCharacter) {
+		public Character SetCharacter(Character newCharacter) {
 			// if newCharacter is null then exist
 			if (null == newCharacter) {
 				return null;
@@ -322,13 +310,36 @@ namespace MageSDK.Client {
 		///<summary>Get character data of a character</summary>
 		public T GetGameCharacterData<T>(string characterId) where T:BaseModel{
 			Character c = GetCharacter(characterId);
+			if (null == c) {
+				return default(T);
+			}
 			return BaseModel.CreateFromJSON<T>(c.GetCharacterData(ApiHandler.GetInstance().ApplicationKey + "_" +  typeof(T).Name));
 		}
 
 		///<summary>Get character data of a character</summary>
 		public string GetGameCharacterData(string characterId, string key) {
 			Character c = GetCharacter(characterId);
+			if (null == c) {
+				return "";
+			}
 			return c.GetCharacterData(key);
+		}
+
+		
+		///<summary>Get character data of a character</summary>
+		public int GetGameCharacterDataInteger(string characterId, string key) {
+			Character c = GetCharacter(characterId);
+			if (null == c) {
+				return 0;
+			}
+
+			if ("" != c.GetCharacterData(key)) {
+				return int.Parse(c.GetCharacterData(key));
+			} else {
+				return 0;
+			}
+
+
 		}
 
 		///<summary>Update user data to current user. Once complete, save data to cache</summary>
