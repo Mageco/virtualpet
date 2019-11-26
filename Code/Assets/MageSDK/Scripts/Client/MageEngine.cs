@@ -16,6 +16,8 @@ using Mage.Models;
 
 namespace MageSDK.Client {
 	public class MageEngine : MonoBehaviour {
+
+		public static MageEngine instance1;
 		///<summary>isLocalApplicationData is using to indicate where to get Application Data.</summary>
 		// this is used to test application in Editor mode, if this is true then Application Data will be load from local resources
 		public bool isLocalApplicationData = true;
@@ -28,7 +30,16 @@ namespace MageSDK.Client {
 		private bool _isLogin = false;
 		#endregion
 
-		protected void Awake() {
+		void Awake() {
+
+			if(instance1 == null)
+				instance1 = this;
+			else
+				GameObject.DestroyImmediate(this.gameObject);
+
+			Load();
+
+			
 			
 			// get application data from server
 			GetApplicationData();
@@ -55,11 +66,12 @@ namespace MageSDK.Client {
 
 			Debug.Log("IsLogin: " + _isLogin);
 		}
-		
 
-		public void Start() {
+		protected virtual void Load()
+		{
 
 		}
+		
 
 
 		#region Login & user handling
@@ -92,9 +104,9 @@ namespace MageSDK.Client {
 			// initiate default user
 			User defaultUser = GetApplicationDataItem<User>(MageEngineSettings.GAME_ENGINE_DEFAULT_USER_DATA);
 			defaultUser.id = randomId;
-			Character defaultCharacter = GetApplicationDataItem<Character>(MageEngineSettings.GAME_ENGINE_DEFAULT_CHARACTER_DATA);
-			defaultCharacter.id = randomId;
-			defaultUser.SetCharacter(defaultCharacter);
+			//Character defaultCharacter = GetApplicationDataItem<Character>(MageEngineSettings.GAME_ENGINE_DEFAULT_CHARACTER_DATA);
+			//.id = randomId;
+			//defaultUser.SetCharacter(defaultCharacter);
 			Debug.Log("Default User: " + defaultUser.ToJson());
 
 			// update user to game engine

@@ -33,24 +33,19 @@ public class ApiManager : MageEngine {
 	private Hashtable variables;
 
 
-	protected void Awake()
+	protected override void Load()
 	{
-		base.Awake();
-
 		if (instance == null)
 			instance = this;
 		else
 			Destroy (this.gameObject);
 
 		DontDestroyOnLoad (this.gameObject);
-
 		Debug.Log("ApiManger: " + IsLogin());
 
 	}
 
 	public static ApiManager GetInstance() {
-		if (instance == null)
-			instance = new ApiManager();
 		return instance;
 	}
 
@@ -304,7 +299,7 @@ public class ApiManager : MageEngine {
 		a.actionType = t;
 		a.startTime = System.DateTime.Now;
 		actions.Add(a);
-		Debug.Log(a.actionType + "  " + a.startTime.ToShortTimeString());
+//		Debug.Log(a.actionType + "  " + a.startTime.ToShortTimeString());
 		SaveAction();
 	}
 

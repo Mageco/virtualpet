@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using MageApi;
 using UnityEngine;
 
 public class ItemManager : MonoBehaviour
@@ -44,6 +45,7 @@ public class ItemManager : MonoBehaviour
     IEnumerator EquipItemCoroutine()
     {
         List<int> data =ApiManager.GetInstance().GetEquipedItems();
+        
         List<ItemObject> removes = new List<ItemObject>();
 
         
@@ -104,7 +106,10 @@ public class ItemManager : MonoBehaviour
 
     public void LoadItems()
     {
+        //Debug.Log(RuntimeParameters.GetInstance().GetParam<User>(MageEngineSettigns);
+        Debug.Log(ApiManager.GetInstance().GetUser().ToJson());
         List<int> data =ApiManager.GetInstance().GetEquipedItems();
+        Debug.Log("Data " + data.Count);
         List<ItemObject> removes = new List<ItemObject>();
 
         foreach (ItemObject item in items)

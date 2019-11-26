@@ -131,4 +131,4 @@ public class AnimalController : MonoBehaviour
 
 }
 
-public enum AnimalState {None,Idle,Seek,Eat,Run,Flee,Hit,Hold,Cached }
+public enum AnimalState {None,Idle,Seek,Eat,Run,Flee,Hit,Hit_Grab,Hold,Cached }

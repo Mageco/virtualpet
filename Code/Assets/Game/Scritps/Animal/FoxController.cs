@@ -41,6 +41,9 @@ public class FoxController : AnimalController
         }else if (state == AnimalState.Flee)
         {
             StartCoroutine(Flee());
+        }else if (state == AnimalState.Hit_Grab)
+        {
+            StartCoroutine(Hit_Grab());
         }
     }
 
@@ -51,7 +54,7 @@ public class FoxController : AnimalController
             isAbort = true;
             state = AnimalState.Hit;
         }else if(state == AnimalState.Run){
-            state = AnimalState.Hit;
+            state = AnimalState.Hit_Grab;
             isAbort = true;
         }
     }
@@ -61,7 +64,7 @@ public class FoxController : AnimalController
         {
             Debug.Log("Flee");
             isAbort = true;
-            if(state == AnimalState.Run)
+            if(state == AnimalState.Run || state == AnimalState.Hit_Grab)
             {
                 Debug.Log("Run");
                 target.OffCached();
@@ -119,6 +122,16 @@ public class FoxController : AnimalController
         anim.Play("Hit_" + direction.ToString(),0);
         yield return StartCoroutine(Wait(Random.Range(2,3))); 
         state = AnimalState.Seek;
+        isAbort = true;
+        CheckAbort(); 
+    }
+
+    IEnumerator Hit_Grab()
+    {
+        Debug.Log("Hit_Grab");
+        anim.Play("Hit_Grab_" + direction.ToString(),0);
+        yield return StartCoroutine(Wait(Random.Range(2,3))); 
+        state = AnimalState.Run;
         isAbort = true;
         CheckAbort(); 
     }

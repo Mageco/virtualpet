@@ -8,7 +8,6 @@ public class Minigame : MonoBehaviour
     public static Minigame instance;
     public int maxLive;
     public int live;
-    public int level;
     protected float time = 0;
     public float maxTime;
 

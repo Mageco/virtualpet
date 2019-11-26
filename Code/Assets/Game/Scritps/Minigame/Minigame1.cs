@@ -18,17 +18,17 @@ public class Minigame1 : Minigame
         this.maxLive = chickens.Length;
         this.live = this.maxLive;
         UpdateLive();
-        Debug.Log(live);
+//        Debug.Log(live);
  
     }
 
     protected override void Load(){
         base.Load();
-        maxTime = 55 + level * 5;
-        chickenSpawner.maxNumber = 5 + level/3;
-        foxSpawner.maxNumber = 2 + level/4;
+        maxTime = 55 + gameLevel * 5;
+        chickenSpawner.maxNumber = 5 + gameLevel/2;
+        foxSpawner.maxNumber = 2 + gameLevel/2;
         chickenSpawner.speed = 10;
-        foxSpawner.speed = 10 + level;
+        foxSpawner.speed = 10 + gameLevel;
 
         chickenSpawner.Spawn();
         foxSpawner.Spawn();

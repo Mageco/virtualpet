@@ -216,7 +216,7 @@ public class CharController : MonoBehaviour
         {
             CalculateData();
             dataTime = 0;
-            Debug.Log((System.DateTime.Now - playTime).Seconds);
+//            Debug.Log((System.DateTime.Now - playTime).Seconds);
             if((System.DateTime.Now - playTime).Seconds > 10){
                 LoadTime((System.DateTime.Now - playTime).Seconds);
             }

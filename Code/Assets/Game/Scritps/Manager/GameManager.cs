@@ -53,13 +53,16 @@ public class GameManager : MonoBehaviour
         ApiManager.GetInstance().EquipItem(8);
         ApiManager.GetInstance().AddItem(4);
         ApiManager.GetInstance().EquipItem(4); 
-        
     }
 
     private void Start()
     {
-
-        LoadNewUserData();
+        Debug.Log(ApiManager.GetInstance().GetUser().characters.Count);
+        if(ApiManager.GetInstance().GetUser().characters.Count == 0){
+            LoadNewUserData();
+            isLoad = true;
+        }
+            
         
         LoadPets();
         

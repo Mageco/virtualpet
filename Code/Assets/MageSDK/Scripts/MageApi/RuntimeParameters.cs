@@ -13,7 +13,7 @@ namespace MageApi {
 		public RuntimeParameters() {
 			_container = new Hashtable ();
 			//add in some already known parameters
-			
+			Debug.Log("Newdsfsdgsadfsdfsfsadfsad");
 		}
 
 		public static RuntimeParameters GetInstance() {
