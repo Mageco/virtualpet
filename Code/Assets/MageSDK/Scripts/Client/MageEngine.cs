@@ -23,11 +23,17 @@ namespace MageSDK.Client {
 		///<summary>resetUserDataOnStart is used during test in Unity editor to reset user data whenever editor is running.</summary>
 		// if this variable is false, then data will be save to local storage and server accordingly
 		public bool resetUserDataOnStart = true;
+
+		public bool isWorkingOnline = false;
 		public ClientLoginMethod loginMethod;
+
+		public List<ActionData> actions = new List<ActionData>();
 
 		#region private variables
 		private bool _isLogin = false;
 		private static bool _isLoaded = false;
+
+		private Hashtable variables;
 		#endregion
 
 		void Awake() {
@@ -42,7 +48,7 @@ namespace MageSDK.Client {
 				InitDefaultUser();
 				
 				#if UNITY_EDITOR
-					if (resetUserDataOnStart) {
+					if (this.resetUserDataOnStart || !this.isWorkingOnline) {
 						// in unity and test mode don't reuse user saved previously, always initate new user
 						_isLogin = true;
 					} else {
@@ -52,7 +58,7 @@ namespace MageSDK.Client {
 						}
 					}
 				#else
-					// login user during start
+					// Always connect to server login user during start
 					if (loginMethod == ClientLoginMethod.LOGIN_DEVICE_UUID) {
 						LoginWithDeviceID();
 					}
@@ -62,8 +68,7 @@ namespace MageSDK.Client {
 		}
 
 		///<summary>Other implementation will override this function</summary>
-		protected virtual void Load()
-		{
+		protected virtual void Load() {
 
 		}
 
@@ -116,10 +121,10 @@ namespace MageSDK.Client {
 				// if not in Editor mode, check the user saved in local and use the saved one
 				// if there is no user saved locally, then initate a default user
 				if (ES2.Exists (MageEngineSettings.GAME_ENGINE_USER)) {
-						SetUser(ES2.Load<User> (MageEngineSettings.GAME_ENGINE_USER));
-					} else {
-						SetUser(defaultUser);
-					}
+					SetUser(ES2.Load<User> (MageEngineSettings.GAME_ENGINE_USER));
+				} else {
+					SetUser(defaultUser);
+				}
 			#endif
 		}
 
@@ -201,7 +206,7 @@ namespace MageSDK.Client {
 
 			// update user to game engine
 			#if UNITY_EDITOR
-				if (this.resetUserDataOnStart) {
+				if (this.resetUserDataOnStart || !this.isWorkingOnline) {
 					u.SetCharacter(newCharacter);
 					this.SaveCacheData<User>(u, MageEngineSettings.GAME_ENGINE_USER);
 					return newCharacter;	
@@ -254,7 +259,7 @@ namespace MageSDK.Client {
 
 			// update user to game engine
 			#if UNITY_EDITOR
-				if (this.resetUserDataOnStart) {
+				if (this.resetUserDataOnStart || !this.isWorkingOnline) {
 					u.SetCharacter(character);
 					this.SaveCacheData<User>(u, MageEngineSettings.GAME_ENGINE_USER);
 					return;	
@@ -378,7 +383,7 @@ namespace MageSDK.Client {
 
 			// update user to game engine
 			#if UNITY_EDITOR
-				if (this.resetUserDataOnStart) {
+				if (this.resetUserDataOnStart || !this.isWorkingOnline) {
 					this.SaveCacheData<User>(u, MageEngineSettings.GAME_ENGINE_USER);
 					return;	
 				}
@@ -461,7 +466,7 @@ namespace MageSDK.Client {
 
 			// update user to game engine
 			#if UNITY_EDITOR
-				if (this.resetUserDataOnStart) {
+				if (this.resetUserDataOnStart || !this.isWorkingOnline) {
 					this.SaveCacheData<User>(u, MageEngineSettings.GAME_ENGINE_USER);
 					return;	
 				}
@@ -507,7 +512,6 @@ namespace MageSDK.Client {
 
 		#region Get & Set information
 		public bool IsLogin() {
-			Debug.Log("IsLogin: " + _isLogin);
 			return _isLogin;
 		}
 
@@ -660,6 +664,13 @@ namespace MageSDK.Client {
 
 		#region Event 
 		public void SendAppEvent(string eventName) {
+
+			#if UNITY_EDITOR
+				if (this.resetUserDataOnStart || !this.isWorkingOnline) {
+					return;
+				}
+			#endif
+
 			SendUserEventRequest r = new SendUserEventRequest (eventName);
 
 			//call to login api
@@ -678,6 +689,73 @@ namespace MageSDK.Client {
 				}
 			);
 		}
+		#endregion
+
+		#region Actions
+		public void LogAction(ActionType t){
+			ActionData a = new ActionData();
+			a.actionType = t;
+			a.startTime = System.DateTime.Now;
+			actions.Add(a);
+	//		Debug.Log(a.actionType + "  " + a.startTime.ToShortTimeString());
+			SaveAction();
+		}
+
+		public List<ActionData> GetActionLogs(System.DateTime t){
+			List<ActionData> temp = new List<ActionData>();
+			for(int i=0;i<actions.Count;i++){
+				if(actions[i].startTime > t){
+					temp.Add(actions[i]);
+				}
+			}
+			return temp;
+		}
+
+		void SaveAction(){
+			ES2.Save(actions,"ActionLog");
+		}
+
+		void LoadAction(){
+			if(ES2.Exists("ActionLog")){
+				ES2.LoadList<ActionData>("ActionLog");
+			}
+		}
+
+		#endregion
+
+		#region  Variable
+		public void SaveVariables()
+		{
+			List <string> keys = new List<string> ();
+			List <string> values = new List<string> ();
+			foreach (DictionaryEntry entry in variables) {
+				keys.Add ((string)entry.Key);
+				values.Add ((string)entry.Value);
+			}
+			ES2.Save(keys, "variablesKey");
+			ES2.Save(values, "variablesValue");
+
+		}
+
+		public void LoadVariables()
+		{
+			List <string> keys = new List<string> ();
+			List <string> values = new List<string> ();
+
+			if(ES2.Exists("variablesKey"))
+				keys = ES2.LoadList<string>("variablesKey");
+			if(ES2.Exists("variablesValue"))
+				values = ES2.LoadList<string>("variablesValue");
+
+			for (int i = 0; i < keys.Count;i++) {
+				if(i < values.Count)
+					variables.Add (keys [i], values [i]);
+
+				Debug.Log ("Load Variables " + keys [i] + " " + values [i]);
+			}
+		}
+
+
 		#endregion
 	}
 }
