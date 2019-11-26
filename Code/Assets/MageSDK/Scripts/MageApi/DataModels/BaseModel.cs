@@ -17,7 +17,12 @@ namespace Mage.Models {
 
 		public static TResult CreateFromJSON<TResult>(string jsonString) where TResult: BaseModel
 		{
-			return JsonUtility.FromJson<TResult>(jsonString);
+			try {
+				return JsonUtility.FromJson<TResult>(jsonString);
+			} catch (Exception e) {
+				return default(TResult);
+			}
+			
 		}
 	}
 }

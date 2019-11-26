@@ -473,7 +473,7 @@ public class CharController : MonoBehaviour
     }
 
     void LogAction(){
-        ApiManager.instance.LogAction(actionType);
+        ApiManager.GetInstance().LogAction(actionType);
     }
 
 

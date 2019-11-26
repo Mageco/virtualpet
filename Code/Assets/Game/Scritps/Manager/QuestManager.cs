@@ -159,13 +159,13 @@ public class QuestManager : MonoBehaviour
     {
         if (DataHolder.Quest(GameManager.instance.questId).haveItem)
         {
-            ApiManager.instance.AddItem(DataHolder.Quest(GameManager.instance.questId).itemId);
-            ApiManager.instance.EquipItem(DataHolder.Quest(GameManager.instance.questId).itemId);
+           ApiManager.GetInstance().AddItem(DataHolder.Quest(GameManager.instance.questId).itemId);
+           ApiManager.GetInstance().EquipItem(DataHolder.Quest(GameManager.instance.questId).itemId);
             ItemManager.instance.LoadItems();
         }
 
-        ApiManager.instance.AddCoin(DataHolder.Quest(GameManager.instance.questId).coinValue);
-        ApiManager.instance.AddDiamond(DataHolder.Quest(GameManager.instance.questId).diamondValue);
+       ApiManager.GetInstance().AddCoin(DataHolder.Quest(GameManager.instance.questId).coinValue);
+       ApiManager.GetInstance().AddDiamond(DataHolder.Quest(GameManager.instance.questId).diamondValue);
         GameManager.instance.GetPet(0).Exp += DataHolder.Quest(GameManager.instance.questId).expValue;
 
         Debug.Log("Exp " + GameManager.instance.GetPet(0).Exp);

@@ -117,6 +117,6 @@ public class ActivationWindow : MonoBehaviour {
 
 	public void OnWeb()
 	{
-		Application.OpenURL (ApiManager.instance.contactUrl);
+		Application.OpenURL (ApiManager.GetInstance().contactUrl);
 	}
 }

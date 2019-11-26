@@ -58,11 +58,11 @@ public class ItemUI : MonoBehaviour
         icon.sprite = Resources.Load<Sprite>(url) as Sprite;
         price.text = d.buyPrice.ToString();
 
-        if (ApiManager.instance.IsEquipItem(d.iD))
+        if (ApiManager.GetInstance().IsEquipItem(d.iD))
         {
             state = ItemState.Equiped;
         }
-        else if (ApiManager.instance.IsHaveItem(d.iD))
+        else if (ApiManager.GetInstance().IsHaveItem(d.iD))
         {
             state = ItemState.Have;
         }
@@ -126,11 +126,11 @@ public class ItemUI : MonoBehaviour
         icon.sprite = Resources.Load<Sprite>(url) as Sprite;
         price.text = d.buyPrice.ToString();
 
-        if (ApiManager.instance.IsEquipPet(d.iD))
+        if (ApiManager.GetInstance().IsEquipPet(d.iD))
         {
             state = ItemState.Equiped;
         }
-        else if (ApiManager.instance.IsHavePet(d.iD))
+        else if (ApiManager.GetInstance().IsHavePet(d.iD))
         {
             state = ItemState.Have;
         }
@@ -225,8 +225,8 @@ public class ItemUI : MonoBehaviour
             if(DataHolder.GetItem(itemId).itemType == ItemType.Diamond){
                 
             }else if(DataHolder.GetItem(itemId).itemType == ItemType.Coin){
-                if(ApiManager.instance.GetDiamond() > (DataHolder.GetItem(itemId).buyPrice)){
-                    ApiManager.instance.AddDiamond(-DataHolder.GetItem(itemId).buyPrice);
+                if(ApiManager.GetInstance().GetDiamond() > (DataHolder.GetItem(itemId).buyPrice)){
+                    ApiManager.GetInstance().AddDiamond(-DataHolder.GetItem(itemId).buyPrice);
                     GameManager.instance.AddCoin(DataHolder.GetItem(itemId).sellPrice);
                 }
             }else

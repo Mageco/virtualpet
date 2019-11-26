@@ -21,7 +21,7 @@ namespace Mage.Models.Users{
 		public string phone = "";
 		public string email = "";
 		public string avatar = "";
-		public string status = "";
+		public UserStatus status = UserStatus.ACTIVE;
 		public string notification_token = "";
 		public string country_code = "";
 
@@ -108,4 +108,15 @@ namespace Mage.Models.Users{
 			var item = character_items.RemoveAll(x => x.id == data.id);
 		}
 	}
+
+	public enum UserStatus {
+		DELETED = -1,
+		ACTIVE = 1,	
+		CLOSED = 2,
+		CHANGE_INFO_REQUIRED = 3,
+		CHANGE_PASSWORD_REQUIRED = 4,
+		FIRST_LOGIN = 5,
+		INACTIVE = 100
+	}
 }
+

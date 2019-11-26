@@ -41,6 +41,15 @@ namespace MageApi {
 			}
 		}
 
+		public T GetParam<T>(string key) {
+
+			if (_container.Contains(key)) {
+				return (T)_container [key];
+			} else {
+				return default(T);
+			}
+		}
+
 
 		public void SetParam(string key, object obj) {
 			if (_container.Contains(key)) {

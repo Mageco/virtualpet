@@ -301,19 +301,19 @@ public class MageManager : MonoBehaviour {
 
 	public void LoadScene(string sceneName,float time)
 	{
-		ApiManager.instance.SendAppEvent ("Scene_" + sceneName);
+		ApiManager.GetInstance().SendAppEvent ("Scene_" + sceneName);
 		StartCoroutine(LoadSceneCouroutine(sceneName,time));
 	}
 
 	public void LoadScene(string sceneName,float time1,float time2)
 	{
-		ApiManager.instance.SendAppEvent ("Scene_" + sceneName);
+		ApiManager.GetInstance().SendAppEvent ("Scene_" + sceneName);
 		StartCoroutine(LoadSceneCouroutine(sceneName,time1,time2));
 	}
 
 	public void LoadSceneWithLoading(string sceneName)
 	{
-		ApiManager.instance.SendAppEvent ("Scene_" + sceneName);
+		ApiManager.GetInstance().SendAppEvent ("Scene_" + sceneName);
 		StartCoroutine (LoadSceneWithLoadingCouroutine (sceneName));
 	}
 
