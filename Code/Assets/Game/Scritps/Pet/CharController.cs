@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using Lean.Touch;
 
+
 public class CharController : MonoBehaviour
 {
 
@@ -64,6 +65,7 @@ public class CharController : MonoBehaviour
     MouseController mouse;
 
     public GameObject growUpTimeline;
+    System.DateTime playTime = System.DateTime.Now;
 
     #region Load
 
@@ -71,6 +73,7 @@ public class CharController : MonoBehaviour
     {
 
     }
+
 
     public void LoadPrefab(){
         GameObject go = Instantiate(petPrefab) as GameObject;
@@ -90,7 +93,88 @@ public class CharController : MonoBehaviour
         if(skillLearnEffect != null)
             skillLearnEffect.SetActive(false);
 
+        if(ES2.Exists("PlayTime")){
+            playTime = ES2.Load<System.DateTime>("PlayTime");
+        }
+
         Load();
+    }
+
+    public void LoadTime(float t){
+
+        Debug.Log("Load Time " + t);
+        int n = (int)(t/10);
+        data.Sleep = data.maxSleep - (t%28800)*0.005f; 
+        
+        for(int i=0;i<n;i++){
+            data.actionEnergyConsume = 3;
+            data.Energy -= data.basicEnergyConsume * 10 + data.actionEnergyConsume;
+            data.Happy -= data.happyConsume * 10;
+ 
+            if (data.Food > 0)
+            {
+                data.Food -= 1;
+                data.Energy += 1;
+                data.Shit += 1;
+            }else{
+                if(GetFoodItem() != null){
+                    if(GetFoodItem().foodAmount >= data.maxFood){
+                        data.Food = data.maxFood;
+                        GetFoodItem().foodAmount -= data.maxFood;
+                    }else{
+                        data.Food += GetFoodItem().foodAmount;
+                        GetFoodItem().foodAmount = 0;
+                    }
+                }
+            }
+
+            if (data.Water > 0)
+            {
+                data.Water -= 1;
+                data.Energy += 1;
+                data.Pee += 1;
+            }else{
+                if(GetDrinkItem() != null){
+                    if(GetDrinkItem().foodAmount >= data.maxWater){
+                        data.Water = data.maxWater;
+                        GetDrinkItem().foodAmount -= data.maxWater;
+                    }else{
+                        data.Water += GetFoodItem().foodAmount;
+                        GetDrinkItem().foodAmount = 0;
+                    }
+                }
+            }
+
+            if(data.Shit > data.maxShit){
+                float y = Random.Range(-20,20);
+                SpawnShit( new Vector3(Random.Range(-40,40),y,y));
+                data.Shit = 0;
+            }
+
+            if(data.Pee > data.maxPee){
+                SpawnPee( new Vector3(Random.Range(-40,40),Random.Range(-20,20),50));
+                data.Pee = 0;
+            }
+
+            data.Dirty += data.dirtyFactor * 10;
+            data.Itchi += data.Dirty * 0.01f;
+            
+            float deltaHealth = data.healthConsume;
+
+            deltaHealth += (data.Happy - data.maxHappy * 0.3f) * 0.01f;
+
+            if (data.Dirty > data.maxDirty * 0.8f)
+                deltaHealth -= (data.Dirty - data.maxDirty * 0.8f) * 0.03f;
+
+            if (data.Food < data.maxFood * 0.1f)
+                deltaHealth -= (data.maxFood * 0.1f - data.Food) * 0.01f;
+
+            if (data.Water < data.maxWater * 0.1f)
+                deltaHealth -= (data.maxWater * 0.1f - data.Water) * 0.01f;
+
+            data.Health += deltaHealth;
+        }
+
     }
 
     protected virtual void Load(){
@@ -99,8 +183,7 @@ public class CharController : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        //data.Init();
-        //anim.Play("Idle_" + direction.ToString(), 0);
+
     }
     #endregion
 
@@ -133,9 +216,16 @@ public class CharController : MonoBehaviour
         {
             CalculateData();
             dataTime = 0;
+            Debug.Log((System.DateTime.Now - playTime).Seconds);
+            if((System.DateTime.Now - playTime).Seconds > 10){
+                LoadTime((System.DateTime.Now - playTime).Seconds);
+            }
+            playTime = System.DateTime.Now;
+            ES2.Save(playTime,"PlayTime");
         }
         else
             dataTime += Time.deltaTime;
+
 
         
     }
@@ -649,14 +739,14 @@ public class CharController : MonoBehaviour
     #endregion
 
     #region Effect
-    protected void SpawnPee()
+    protected void SpawnPee(Vector3 pos)
     {
-        GameObject go = Instantiate(peePrefab, peePosition.position + new Vector3(0, 0, 50), Quaternion.identity);
+        GameObject go = Instantiate(peePrefab, pos, Quaternion.identity);
     }
 
-    protected void SpawnShit()
+    protected void SpawnShit(Vector3 pos)
     {
-        GameObject go = Instantiate(shitPrefab, shitPosition.position, Quaternion.identity);
+        GameObject go = Instantiate(shitPrefab, pos, Quaternion.identity);
     }
 
     protected void SpawnFly(){

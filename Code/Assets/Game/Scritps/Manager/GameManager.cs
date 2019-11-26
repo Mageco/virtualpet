@@ -6,13 +6,10 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
  	public static GameManager instance;
-
-    
     public float gameTime = 0;
     List<CharController> petObjects = new List<CharController>();
     List<Pet> pets = new List<Pet>();
     CameraController camera;
-
     public int questId = 0;
 
     public GameType gameType = GameType.House;
@@ -20,6 +17,7 @@ public class GameManager : MonoBehaviour
     public int addExp = 0;
     public bool isLoad = false;
     public bool isPause = false;
+
 
     void Awake()
     {
@@ -47,7 +45,7 @@ public class GameManager : MonoBehaviour
         ApiManager.instance.EquipItem(56);
 
          
-       ApiManager.instance.AddItem(2);
+        ApiManager.instance.AddItem(2);
         ApiManager.instance.AddItem(11);                
         ApiManager.instance.AddItem(8);
         ApiManager.instance.EquipItem(2);

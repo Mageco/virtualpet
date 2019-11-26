@@ -704,7 +704,7 @@ public class CharBig : CharController
         SetDirection(Direction.D);
         anim.Play("Pee_D", 0);
         Debug.Log("Pee");
-        SpawnPee();
+        SpawnPee(peePosition.position + new Vector3(0, 0, 50));
         while (data.Pee > 1 && !isAbort)
         {
             data.Pee -= 0.5f;
@@ -735,7 +735,7 @@ public class CharBig : CharController
 
         SetDirection(Direction.D);
         anim.Play("Poop_D", 0);
-        SpawnShit();
+        SpawnShit(shitPosition.position);
         while (data.Shit > 1 && !isAbort)
         {
             data.Shit -= 0.5f;

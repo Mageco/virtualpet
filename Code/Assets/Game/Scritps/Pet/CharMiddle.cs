@@ -89,11 +89,6 @@ public class CharMiddle : CharController
             return;
         }
 
-        if (data.Health < data.maxHealth * 0.1f)
-        {
-            actionType = ActionType.Sick;
-            return;
-        }
 
         if (data.Food < data.maxFood * 0.2f)
         {
@@ -125,16 +120,6 @@ public class CharMiddle : CharController
             }
         }
 
-        if (data.Itchi > data.maxItchi * 0.7f)
-        {
-            int ran = Random.Range(0, 100);
-            if (ran > 50)
-            {
-                actionType = ActionType.Itchi;
-                return;
-            }
-        }
-
         if (data.Energy < data.maxEnergy * 0.1f)
         {
             actionType = ActionType.Tired;
@@ -143,18 +128,6 @@ public class CharMiddle : CharController
         else if (data.Energy < data.maxEnergy * 0.3f)
         {
             actionType = ActionType.Rest;
-            return;
-        }
-
-        if (data.happy < data.maxHappy * 0.1f)
-        {
-            actionType = ActionType.Sad;
-            return;
-        }
-
-        if (data.curious > data.maxCurious * 0.9f)
-        {
-            actionType = ActionType.Discover;
             return;
         }
 
@@ -495,7 +468,7 @@ public class CharMiddle : CharController
         SetDirection(Direction.D);
         anim.Play("Pee_D", 0);
         Debug.Log("Pee");
-        SpawnPee();
+        SpawnPee(peePosition.position + new Vector3(0, 0, 50));
         while (data.Pee > 1 && !isAbort)
         {
             data.Pee -= 0.5f;
@@ -526,7 +499,7 @@ public class CharMiddle : CharController
 
         SetDirection(Direction.D);
         anim.Play("Poop_D", 0);
-        SpawnShit();
+        SpawnShit(shitPosition.position);
         while (data.Shit > 1 && !isAbort)
         {
             data.Shit -= 0.5f;
