@@ -17,5 +17,6 @@ public enum ActionType { None, Mouse, Rest, Sleep, Eat, Drink, Patrol, Discover,
 
 public enum WeatherType{None,Sunny,Rain,Snow,Storm}
 public enum AnimalState {None,Idle,Seek,Eat,Run,Flee,Hit,Hit_Grab,Hold,Cached,InActive }
+public enum SickType{Sick,Injured};
 
 

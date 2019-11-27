@@ -329,6 +329,14 @@ public class CharController : MonoBehaviour
         actionType = ActionType.Bath;
     }
 
+    public void OnHealth(SickType type,float value){
+        if(type == SickType.Injured){
+            data.Damage += value * Time.deltaTime;
+        }else if(type ==SickType.Sick){
+            data.Health += value * Time.deltaTime;
+        }
+    }
+
     protected void OnBed()
     {
         Abort();
@@ -678,6 +686,25 @@ public class CharController : MonoBehaviour
         {
             LogAction();
             DoAction();
+        }
+    }
+
+    protected void CheckEnviroment(){
+        if (enviromentType == EnviromentType.Bath)
+        {
+            OnBath();
+        }
+        else if (enviromentType == EnviromentType.Table)
+        {
+            OnTable();
+        }
+        else if (enviromentType == EnviromentType.Bed)
+        {
+            OnBed();
+        }
+        else if (enviromentType == EnviromentType.Toilet)
+        {
+            OnToilet();
         }
     }
 

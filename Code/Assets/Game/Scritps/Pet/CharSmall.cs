@@ -184,18 +184,7 @@ public class CharSmall : CharController
         yield return StartCoroutine(Wait(maxTime));
 
         if(!isAbort){
-            if (enviromentType == EnviromentType.Bath)
-            {
-                OnBath();
-            }
-            else if (enviromentType == EnviromentType.Table)
-            {
-                OnTable();
-            }
-            else if (enviromentType == EnviromentType.Bed)
-            {
-                OnBed();
-            }
+            CheckEnviroment();
         }        
 
         CheckAbort();

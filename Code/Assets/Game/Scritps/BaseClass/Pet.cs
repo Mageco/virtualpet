@@ -28,14 +28,13 @@ public class Pet : BaseModel
 	public float strength;
 	public float intelligent = 10;
 
-
-
 	//Attribute Data
 	public float food = 50;
 	public float water = 50;
 	public float sleep = 60;
 	public float energy = 50;
 	public float health = 50;
+	public float damage = 0;
 	public float shit = 0;
 	public float pee = 0;
 	public float happy = 50;
@@ -75,6 +74,8 @@ public class Pet : BaseModel
 	public float maxEnergy = 100;
 	[HideInInspector]
 	public float maxHealth = 100;
+	[HideInInspector]
+	public float maxDamage = 100;
 	[HideInInspector]
 	public float maxHappy = 100;
 	[HideInInspector]
@@ -294,6 +295,22 @@ public class Pet : BaseModel
 				this.health = 0;
 			else if (this.health > maxHealth)
 				this.health = maxHealth;
+		}
+	}
+
+	public float Damage
+	{
+		get
+		{
+			return this.damage;
+		}
+		set
+		{
+			this.damage = value;
+			if (this.damage < 0)
+				this.damage = 0;
+			else if (this.damage > maxDamage)
+				this.damage = maxDamage;
 		}
 	}
 

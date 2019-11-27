@@ -6,6 +6,7 @@ public class FirstAidItem : MonoBehaviour
 {
     bool isOpen = false;
     Animator animator;
+    public HealthItem[] healthItems;
 
     void Awake(){
         animator = this.GetComponent<Animator>();
@@ -24,6 +25,7 @@ public class FirstAidItem : MonoBehaviour
 
     void OnMouseUp()
     {
+        Debug.Log("Mouse Up");
         if(isOpen){
             Close();
         }else
@@ -33,12 +35,19 @@ public class FirstAidItem : MonoBehaviour
     }
 
     void Open(){
+        Debug.Log("Open");
         isOpen = true;
+        for(int i=0;i<healthItems.Length;i++){
+            healthItems[i].Open();
+        }
         animator.Play("Open",0);
     }
 
     void Close(){
         isOpen = false;
-        animator.Play("Close",0);
+        for(int i=0;i<healthItems.Length;i++){
+            healthItems[i].Close();
+        }
+        animator.Play("Idle",0);
     }
 }

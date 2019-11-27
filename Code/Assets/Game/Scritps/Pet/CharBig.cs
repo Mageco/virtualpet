@@ -357,7 +357,8 @@ public class CharBig : CharController
                 if (Mathf.Abs(agent.transform.position.y - dropPosition.y) < 2f)
                 {
                     this.transform.rotation = Quaternion.identity;
-                    charInteract.interactType = InteractType.None;                
+                    charInteract.interactType = InteractType.None;   
+                    enviromentType = EnviromentType.Room;             
                 }
                 yield return new WaitForEndOfFrame();            
             }
@@ -482,22 +483,7 @@ public class CharBig : CharController
         else
         {
             if(!isAbort){
-                if (enviromentType == EnviromentType.Bath)
-                {
-                    OnBath();
-                }
-                else if (enviromentType == EnviromentType.Table)
-                {
-                    OnTable();
-                }
-                else if (enviromentType == EnviromentType.Bed)
-                {
-                    OnBed();
-                }
-                else if (enviromentType == EnviromentType.Toilet)
-                {
-                    OnToilet();
-                }
+                CheckEnviroment();
             }
         }
 
@@ -946,6 +932,7 @@ public class CharBig : CharController
             yield return new WaitForEndOfFrame();
         }
         yield return new WaitForEndOfFrame();
+        CheckEnviroment();
         CheckAbort();
     }
 
@@ -956,7 +943,7 @@ public class CharBig : CharController
         yield return StartCoroutine(DoAnim("Surprised_Hard_D"));
         
         int n = 0;
-        int maxCount = Random.Range(2, 5);
+        int maxCount = Random.Range(1, 3);
         while (!isAbort && n < maxCount)
         {
             SetTarget(PointType.Patrol);

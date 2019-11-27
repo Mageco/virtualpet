@@ -385,22 +385,7 @@ public class CharMiddle : CharController
         else
         {
             if(!isAbort){
-                if (enviromentType == EnviromentType.Bath)
-                {
-                    OnBath();
-                }
-                else if (enviromentType == EnviromentType.Table)
-                {
-                    OnTable();
-                }
-                else if (enviromentType == EnviromentType.Bed)
-                {
-                    OnBed();
-                }
-                else if (enviromentType == EnviromentType.Toilet)
-                {
-                    OnToilet();
-                }
+                CheckEnviroment();
             }
         }
 

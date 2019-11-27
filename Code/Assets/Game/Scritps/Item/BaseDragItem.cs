@@ -11,7 +11,7 @@ public class BaseDragItem : MonoBehaviour
     protected Vector3 originalPosition;
     protected Quaternion originalRotation;
     protected Vector3 originalScale;
-	bool isDragable = true;
+	protected bool isDragable = true;
 	bool isBusy = false;
     protected bool isHighlight = false;
 	
