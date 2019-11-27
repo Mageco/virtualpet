@@ -19,6 +19,7 @@ public class Quest
     public int expValue = 0;
     //Dialog
     public int dialogId = 0;
+	public bool isReplay = true;
 
     public Quest()
 	{

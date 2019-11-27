@@ -34,7 +34,7 @@ public class QuestTab : BaseTab
         EditorGUILayout.EndHorizontal();
 
         // color list
-        this.AddItemFilterList(DataHolder.Quests());
+        this.AddItemList(DataHolder.Quests());
 
         // color settings
 
@@ -61,6 +61,7 @@ public class QuestTab : BaseTab
 			fold2 = EditorGUILayout.Foldout(fold2, "Quest Info");
 			if(fold2)
 			{
+                DataHolder.Quest(selection).isReplay = EditorGUILayout.Toggle("Replay Quest?", DataHolder.Quest(selection).isReplay, GUILayout.Width(pw.mWidth));
 				DataHolder.Quest(selection).charLevel = EditorGUILayout.IntField("Pet Level", DataHolder.Quest(selection).charLevel, GUILayout.Width(pw.mWidth));
 				EditorGUILayout.Separator();
 				DataHolder.Quest(selection).dialogId = EditorGUILayout.Popup("Dialog", 

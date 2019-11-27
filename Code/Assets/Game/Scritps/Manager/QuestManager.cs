@@ -24,6 +24,8 @@ public class QuestManager : MonoBehaviour
 
     float fadeDuration = 1f;
 
+    bool isReplay = true;
+
     void Awake()
     {
         if (instance == null)
@@ -58,6 +60,8 @@ public class QuestManager : MonoBehaviour
         }else if(GameManager.instance.questId == 6){
         }else if(GameManager.instance.questId == 7){
         }
+
+        isReplay = DataHolder.GetQuest(GameManager.instance.questId).isReplay;
     }
 
     void PlayTip()
@@ -143,7 +147,8 @@ public class QuestManager : MonoBehaviour
     {
         replayTime = 0;
         isTimeline = true;
-        playTimeLine.time = 0;
+        if(playTimeLine != null)
+            playTimeLine.time = 0;
         PlayTip();
     }
 
@@ -263,7 +268,7 @@ public class QuestManager : MonoBehaviour
         {
             if (!isEndQuest)
             {
-                if(!isTimeline){
+                if(!isTimeline && isReplay){
                     if(replayTime > maxReplayTime){
                         ReplayQuest();
                     }else
