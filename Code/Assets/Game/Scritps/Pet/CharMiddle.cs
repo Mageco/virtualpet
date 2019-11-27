@@ -684,5 +684,7 @@ public class CharMiddle : CharController
     }
 
 
+
+
     #endregion
 }

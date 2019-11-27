@@ -152,12 +152,9 @@ public class GameManager : MonoBehaviour
     }
 
     public void OnEvent(){
-        if(GameManager.instance.GetPet(0).level > 10){
-            MageManager.instance.LoadSceneWithLoading("Minigame1");
-            gameType = GameType.Minigame1;
-            pets[0].Load();
-        }else
-            MageManager.instance.OnNotificationPopup ("Bạn cần phải đạt được level 10");
+        MageManager.instance.LoadSceneWithLoading("Minigame1");
+        gameType = GameType.Minigame1;
+        pets[0].Load();
     }
 
     public void AddCoin(int c){

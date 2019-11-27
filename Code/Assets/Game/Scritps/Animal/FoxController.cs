@@ -91,27 +91,33 @@ public class FoxController : AnimalController
     IEnumerator Seek()
     {
         GetTarget();
-        speed = Random.Range(maxSpeed/1.5f,maxSpeed);
-        while(!isAbort){
-            if(target.state == AnimalState.Cached || target.state == AnimalState.Hold){
-                GetTarget();
-            }
-            if(target.transform.position.x > this.transform.position.x){
-                SetDirection(Direction.R);
-            }else
-                SetDirection(Direction.L);
-            anim.Play("Seek_" + direction.ToString(),0);   
-            Vector3 d = Vector3.Normalize(target.transform.position - this.transform.position);
-            this.transform.position += d * speed * Time.deltaTime;
-            yield return new WaitForEndOfFrame(); 
-            if(!isAbort  && Vector2.Distance(this.transform.position,target.transform.position) < 1f && target.state != AnimalState.Cached && target.state != AnimalState.Hold){
-                
-                state = AnimalState.Run;
-                target.OnCached();
-                Minigame.instance.UpdateLive();
-                isAbort = true;
-            }
+        if(target == null){
+            isAbort = true;
+            state = AnimalState.Flee;
+        }else
+        {
+            speed = Random.Range(maxSpeed/1.5f,maxSpeed);
+            while(!isAbort){
+                if(target.state == AnimalState.Cached || target.state == AnimalState.Hold){
+                    GetTarget();
+                }
+                if(target.transform.position.x > this.transform.position.x){
+                    SetDirection(Direction.R);
+                }else
+                    SetDirection(Direction.L);
+                anim.Play("Seek_" + direction.ToString(),0);   
+                Vector3 d = Vector3.Normalize(target.transform.position - this.transform.position);
+                this.transform.position += d * speed * Time.deltaTime;
+                yield return new WaitForEndOfFrame(); 
+                if(!isAbort  && Vector2.Distance(this.transform.position,target.transform.position) < 1f && target.state != AnimalState.Cached && target.state != AnimalState.Hold){
+                    
+                    state = AnimalState.Run;
+                    target.OnCached();
+                    Minigame.instance.UpdateLive();
+                    isAbort = true;
+                }
 
+            }
         }
         CheckAbort();
     }
