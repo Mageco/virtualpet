@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    
  	public static GameManager instance;
     public float gameTime = 0;
     List<CharController> petObjects = new List<CharController>();
@@ -19,6 +20,7 @@ public class GameManager : MonoBehaviour
     public bool isPause = false;
 
     public int[] gameLevels = new int[1];
+    public GameObject expPrefab;
 
     void Awake()
     {
@@ -38,8 +40,8 @@ public class GameManager : MonoBehaviour
     {
         ApiManager.GetInstance().AddItem(17);
         ApiManager.GetInstance().AddItem(56);
-        ApiManager.GetInstance().AddDiamond(50000);
-        ApiManager.GetInstance().AddCoin(1000);
+        ApiManager.GetInstance().AddDiamond(5);
+        ApiManager.GetInstance().AddCoin(0);
         ApiManager.GetInstance().AddPet(0);
         ApiManager.GetInstance().EquipPet(0);
         ApiManager.GetInstance().EquipItem(17);        
@@ -167,6 +169,10 @@ public class GameManager : MonoBehaviour
 
     public void AddExp(int e){
          pets[0].Exp += e;
+         if(petObjects[0] != null){
+            GameObject go = GameObject.Instantiate(expPrefab,petObjects[0].transform.position,Quaternion.identity);
+            go.GetComponent<ExpItem>().Load(e);
+         }
     }
 
 	

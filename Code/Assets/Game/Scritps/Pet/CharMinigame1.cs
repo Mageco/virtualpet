@@ -7,6 +7,14 @@ public class CharMinigame1 : CharController
     protected override void CalculateData()
     {
         data.Sleep -= data.sleepConsume;
+        data.actionEnergyConsume = 0;
+        if (actionType == ActionType.Patrol)
+            data.actionEnergyConsume = 1f;
+        else if (actionType == ActionType.Rest)
+            data.actionEnergyConsume = 0.1f;
+
+        data.Energy -= data.basicEnergyConsume + data.actionEnergyConsume;
+
     }
 
     public AnimalController[] animals;
@@ -16,6 +24,11 @@ public class CharMinigame1 : CharController
     #region Thinking
     protected override void Think()
     {
+        if(data.energy < data.maxEnergy * 0.1f){
+            actionType = ActionType.Tired;
+            return;
+        }
+
         CheckAnimal();
         if(animalTargets.Count > 0)
         {
@@ -48,6 +61,9 @@ public class CharMinigame1 : CharController
         else if (actionType == ActionType.Patrol)
         {
             StartCoroutine(Patrol());
+        }else if (actionType == ActionType.Tired)
+        {
+            StartCoroutine(Tired());
         }
 
     }
@@ -79,7 +95,8 @@ public class CharMinigame1 : CharController
                 anim.Play("Bark_Angry_" +direction.ToString(),0);
                 animalTarget.OnFlee();
                 GameManager.instance.AddCoin(1);
-                yield return StartCoroutine(Wait(0.5f));
+                GameManager.instance.AddExp(5);
+                yield return StartCoroutine(Wait(0.5f)); 
             }
             yield return new WaitForEndOfFrame();
         }
@@ -158,5 +175,16 @@ public class CharMinigame1 : CharController
         if(chickens != null && chickens.Length > 0)
             return chickens[Random.Range(0,chickens.Length)].gameObject;
         else return null;
+    }
+
+    IEnumerator Tired()
+    {
+        UIManager.instance.OnQuestNotificationPopup("Chó của bạn cần nghỉ ngơi để lấy lại sức");
+        anim.Play("Idle_Tired_D",0);
+        while (data.energy > data.maxEnergy * 0.4f && !isAbort)
+        {
+            yield return new WaitForEndOfFrame();
+        }
+        CheckAbort();
     }
 }

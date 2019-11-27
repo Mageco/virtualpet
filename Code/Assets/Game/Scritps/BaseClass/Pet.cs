@@ -147,7 +147,7 @@ public class Pet : BaseModel
 		if(GameManager.instance.gameType == GameType.Minigame1){
 			url = DataHolder.GetPet(iD).petMiniGame1.Replace("Assets/Game/Resources/", "");
 		}
-        else if (level >= 10)
+        else if (level >= 5)
         {
             url = DataHolder.GetPet(iD).petBig.Replace("Assets/Game/Resources/", "");
         }
@@ -437,11 +437,11 @@ public class Pet : BaseModel
 			this.exp = value;
 			int temp = level;
 			level = 1;
-			float e = 10 * level + 2 * level * level;
+			float e = 10 * level + 10 * level * level;
 			while(exp > e)
 			{
-				e = 10 * level + 2 * level * level;
 				level ++;
+				e = 10 * level + 10 * level * level;
 			}
 			if(level > temp){
 				if(character != null){

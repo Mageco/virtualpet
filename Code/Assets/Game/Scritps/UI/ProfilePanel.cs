@@ -27,7 +27,7 @@ public class ProfilePanel : MonoBehaviour
         data = GameManager.instance.GetPet(id);
         petName.text = data.petName;
         level.text = "Level " + data.level.ToString();
-        float e = 10 * (data.level + 1) + 2 * (data.level+1) * (data.level+1);
+        float e = 10 * (data.level) + 10 * (data.level) * (data.level);
         exp.text = data.Exp.ToString("F0") + "/" + e.ToString("F0");
         energy.text = data.energy.ToString("F0") + "/" + data.maxEnergy.ToString("F0");
         expProgress.fillAmount = data.Exp/e;

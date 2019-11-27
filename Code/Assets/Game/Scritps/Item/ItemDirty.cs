@@ -28,8 +28,11 @@ public class ItemDirty : MonoBehaviour
 	public void OnClean(float clean)
 	{
 		dirty -= clean;
-		if (dirty < 0)
+		if (dirty < 0){
+			GameManager.instance.AddCoin(5);
 			GameObject.Destroy (this.gameObject);
+		}
+			
 	}
 
 	void OnTriggerEnter2D(Collider2D other) {

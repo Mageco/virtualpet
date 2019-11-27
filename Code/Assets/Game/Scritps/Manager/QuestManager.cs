@@ -20,7 +20,7 @@ public class QuestManager : MonoBehaviour
     bool isActive = true;
 
     float replayTime = 0;
-    float maxReplayTime = 10;
+    float maxReplayTime = 15;
 
     float fadeDuration = 1f;
 
@@ -57,8 +57,23 @@ public class QuestManager : MonoBehaviour
             delayTime = 16;
         }else if(GameManager.instance.questId == 4){
         }else if(GameManager.instance.questId == 5){
+            delayTime = 5;
         }else if(GameManager.instance.questId == 6){
+            delayTime = 5;
         }else if(GameManager.instance.questId == 7){
+            delayTime = 5;
+        }else if(GameManager.instance.questId == 8){
+            delayTime = 5;
+        }else if(GameManager.instance.questId == 9){
+            delayTime = 10;
+        }else if(GameManager.instance.questId == 10){
+            delayTime = 10;
+        }else if(GameManager.instance.questId == 11){
+            delayTime = 10;
+        }else if(GameManager.instance.questId == 12){
+            delayTime = 10;
+        }else if(GameManager.instance.questId == 13){
+            delayTime = 10;
         }
 
         isReplay = DataHolder.GetQuest(GameManager.instance.questId).isReplay;
@@ -100,6 +115,14 @@ public class QuestManager : MonoBehaviour
                      
         }else if(GameManager.instance.questId == 9){
             GameManager.instance.GetPet(0).sleep = 10;   
+        }else if(GameManager.instance.questId == 10){
+             
+        }else if(GameManager.instance.questId == 11){
+             
+        }else if(GameManager.instance.questId == 12){
+             
+        }else if(GameManager.instance.questId == 13){
+             GameManager.instance.GetPet(0).Health = 1;   
         }
 
 
@@ -240,7 +263,23 @@ public class QuestManager : MonoBehaviour
             if(GameManager.instance.GetPetObject(0).actionType ==  ActionType.Sleep &&  GameManager.instance.GetPetObject(0).enviromentType ==  EnviromentType.Bed){
                 isComplete = true;
             }
-        }                            
+        }else if(GameManager.instance.questId == 10){
+           if(GameManager.instance.GetPet(0).GetSkillProgress(SkillType.Table) > 0){
+                isComplete = true;
+            }
+        }else if(GameManager.instance.questId == 11){
+            if(GameManager.instance.GetPet(0).level >=  6){
+                isComplete = true;
+            }
+        }else if(GameManager.instance.questId == 12){
+            if(GameManager.instance.gameLevels[0] >=  1){
+                isComplete = true;
+            }
+        }else if(GameManager.instance.questId == 13){
+            if(GameManager.instance.GetPet(0).Health >=  10){
+                isComplete = true;
+            }
+        }                                
         
         if (isComplete)
         {

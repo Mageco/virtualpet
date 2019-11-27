@@ -673,7 +673,7 @@ public class CharMiddle : CharController
         Debug.Log("Level Up" + data.level);
         yield return StartCoroutine(DoAnim("LevelUp_LD"));
 
-        if (data.level >= 10){
+        if (data.level >= 5){
             GrowUp();
             data.Load();
         }

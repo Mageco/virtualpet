@@ -761,10 +761,12 @@ public class CharBig : CharController
                         canEat = false;
                     yield return new WaitForEndOfFrame();
                 }
+                GameManager.instance.AddExp(5);
             }else{
                 yield return DoAnim("Bark_" + direction.ToString());
             }
         }
+        
         CheckAbort();
     }
 
@@ -798,6 +800,7 @@ public class CharBig : CharController
                         canDrink = false;
                     yield return new WaitForEndOfFrame();
                 }
+                GameManager.instance.AddExp(5);
             }else{
                 yield return DoAnim("Bark_" + direction.ToString());
             }
@@ -849,7 +852,7 @@ public class CharBig : CharController
             data.Sleep += 0.01f;
             yield return new WaitForEndOfFrame();
         }
-        
+        GameManager.instance.AddExp(10);
 
         if(enviromentType == EnviromentType.Bed && !isAbort){
              yield return StartCoroutine(JumpDown(7,5,30));
@@ -974,6 +977,7 @@ public class CharBig : CharController
 
     IEnumerator Tired()
     {
+        yield return StartCoroutine(DoAnim("Idle_Tired_D"));
         if (this.direction == Direction.RD || this.direction == Direction.RU)
              anim.Play("Tired_RD", 0);
         else
@@ -1012,10 +1016,6 @@ public class CharBig : CharController
     {
         Debug.Log("Level Up" + data.level);
         yield return StartCoroutine(DoAnim("LevelUp_LD"));
-
-        if (data.level >= 5)
-            data.Load();
-
         CheckAbort();
 
     }
