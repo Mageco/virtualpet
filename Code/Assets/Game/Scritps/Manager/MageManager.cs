@@ -19,8 +19,8 @@ public class MageManager : MonoBehaviour {
 	public GameObject notificationPopupPrefab;
 	public GameObject confirmationPopUpPrefab;
 	public GameObject verificationPrefab;
-	MPopup notificationPopup;
-	MPopup confirmationPopup;
+	NotificationPopup notificationPopup;
+	ConfirmationPopup confirmationPopup;
 
 	VerifyWindow verifyPopup;
 
@@ -464,7 +464,7 @@ public class MageManager : MonoBehaviour {
 
 
 	#region UI
-	public MPopup OnNotificationPopup(string title,string description)
+	public NotificationPopup OnNotificationPopup(string description)
 	{
 		if (notificationPopup == null) {
 			var popup = Instantiate (notificationPopupPrefab) as GameObject;
@@ -472,14 +472,13 @@ public class MageManager : MonoBehaviour {
 			popup.transform.localScale = Vector3.zero;
 			popup.transform.SetParent (GameObject.Find ("Canvas").transform, false);
 			popup.GetComponent<Popup> ().Open ();
-			notificationPopup = popup.GetComponent<MPopup> ();
-			notificationPopup.texts [0].text = title;
-			notificationPopup.texts [1].text = description;
+			notificationPopup = popup.GetComponent<NotificationPopup>();
+			notificationPopup.Load("",description);
 		}
 		return notificationPopup;
 	}
 
-	public MPopup OnConfirmationPopup(string title,string description)
+	public ConfirmationPopup OnConfirmationPopup(string title,string description)
 	{
 		if (confirmationPopup == null) {
 			var popup = Instantiate (confirmationPopUpPrefab) as GameObject;
@@ -487,10 +486,8 @@ public class MageManager : MonoBehaviour {
 			popup.transform.localScale = Vector3.zero;
 			popup.transform.SetParent (GameObject.Find ("Canvas").transform, false);
 			popup.GetComponent<Popup> ().Open ();
-			confirmationPopup = popup.GetComponent<MPopup> ();
-			confirmationPopup.texts [0].text = title;
-			confirmationPopup.texts [1].text = description;
-
+			confirmationPopup = popup.GetComponent<ConfirmationPopup> ();
+			confirmationPopup.Load(title,description);
 		}
 		return confirmationPopup;
 	}

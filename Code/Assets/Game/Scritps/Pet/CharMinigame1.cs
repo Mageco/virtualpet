@@ -155,6 +155,8 @@ public class CharMinigame1 : CharController
 
     GameObject GetChiken(){
         ChickenController[] chickens = GameObject.FindObjectsOfType<ChickenController>();
-        return chickens[Random.Range(0,chickens.Length)].gameObject;
+        if(chickens != null && chickens.Length > 0)
+            return chickens[Random.Range(0,chickens.Length)].gameObject;
+        else return null;
     }
 }

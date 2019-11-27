@@ -6,7 +6,6 @@ public class Pet : BaseModel
 {
 	public int iD = 0;
 	public string iconUrl = "";
-	public string iconLockUrl = "";
 	public LanguageItem[] languageItem = new LanguageItem[0];
 	public int buyPrice = 0;
 	public PriceType priceType = PriceType.Coin;
@@ -15,6 +14,8 @@ public class Pet : BaseModel
 	public string petMiddle = "";
 	public string petBig = "";
 	public string petMiniGame1 = "";
+	public int levelRequire = 0;
+	public bool isAvailable = true;
 	//Common Data
 	public int level = 1;
 	public int exp = 0;
@@ -111,7 +112,6 @@ public class Pet : BaseModel
         Pet p = DataHolder.GetPet(id);
         iD = p.iD;        
         iconUrl = p.iconUrl;
-        iconLockUrl = p.iconLockUrl;
         languageItem = new LanguageItem[p.languageItem.Length];
         for(int i = 0; i < p.languageItem.Length; i++)
         {

@@ -15,9 +15,17 @@ public class SkillPanel : MonoBehaviour
     }
 
     public void Load(){
+        List<Skill> items = new List<Skill>();
+
         ClearItems();
         for(int i=0;i<DataHolder.Skills().GetDataCount();i++){
-            LoadItem(DataHolder.Skill(i));
+            items.Add(DataHolder.Skill(i));
+        }   
+
+        items.Sort((p1,p2)=>(p1.skillOrder).CompareTo(p2.skillOrder));
+
+        for(int i=0;i<items.Count;i++){
+            LoadItem(items[i]);
         }
     }
 

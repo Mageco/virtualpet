@@ -84,28 +84,6 @@ public class PetTab : BaseTab
                 }
             }
 
-            EditorGUILayout.BeginHorizontal();
-            EditorGUILayout.LabelField("Icon Lock", GUILayout.MaxWidth(110));
-            if(DataHolder.Pet(selection).iconLockUrl != null){
-                this.tmpLockSprites = AssetDatabase.LoadAssetAtPath<Texture2D>(DataHolder.Pet(selection).iconLockUrl);
-            }
-            this.tmpLockSprites = (Texture2D)EditorGUILayout.ObjectField(GUIContent.none, this.tmpLockSprites, typeof(Texture2D), false, GUILayout.MaxWidth(100));
-            if (this.tmpLockSprites != null)
-            {
-                DataHolder.Pet(selection).iconLockUrl = AssetDatabase.GetAssetPath(this.tmpLockSprites);
-
-            }
-            EditorGUILayout.LabelField(DataHolder.Pet(selection).iconLockUrl);
-            EditorGUILayout.EndHorizontal();
-            
-			if (this.tmpLockSprites != null)
-            {
-                if (GUILayout.Button("Clear Image", GUILayout.Width(100)))
-                {
-                    DataHolder.Pet(selection).iconLockUrl = "";
-                    tmpLockSprites = null;
-                }
-            }
 
 			EditorGUILayout.BeginVertical("box");
 			fold2 = EditorGUILayout.Foldout(fold2, "Pet Settings");
@@ -152,6 +130,10 @@ public class PetTab : BaseTab
 				EditorGUILayout.Separator();
                 DataHolder.Pet(selection).priceType = (PriceType)EditorTab.EnumToolbar("Price Type", (int)DataHolder.Pet(selection).priceType, typeof(PriceType));    
 				DataHolder.Pet(selection).buyPrice = EditorGUILayout.IntField("Buy price", DataHolder.Pet(selection).buyPrice, GUILayout.Width(pw.mWidth));
+                DataHolder.Pet(selection).isAvailable = EditorGUILayout.Toggle("Available", DataHolder.Pet(selection).isAvailable, GUILayout.Width(pw.mWidth));
+                if(DataHolder.Pet(selection).isAvailable)                
+                        DataHolder.Pet(selection).levelRequire = EditorGUILayout.IntField("RequireLevel", DataHolder.Pet(selection).levelRequire, GUILayout.Width(pw.mWidth));
+
 			}
 			EditorGUILayout.EndVertical();
 

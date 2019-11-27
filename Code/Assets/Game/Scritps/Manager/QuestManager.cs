@@ -15,7 +15,7 @@ public class QuestManager : MonoBehaviour
     System.DateTime startTime;
     float time;
     float maxTimeCheck = 0.2f;
-    MPopup tipUI;
+    NotificationPopup tipUI;
     float delayTime = 0;
     bool isActive = true;
 

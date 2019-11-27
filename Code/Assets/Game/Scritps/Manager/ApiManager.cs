@@ -92,10 +92,7 @@ public class ApiManager : MageEngine {
 		int price = DataHolder.GetItem(itemId).buyPrice;
 		if(type == PriceType.Coin){
 			if (price > GetCoin ()) {
-/* 				if(MageManager.instance.GetLanguageName () == "English") 
-					MageManager.instance.OnNotificationPopup ("Warning", "You have not enough Coin");
-				else
-					MageManager.instance.OnNotificationPopup ("Chú ý", "Bạn không đủ vàng để mua sản phẩm này"); */
+				MageManager.instance.OnNotificationPopup ("You have not enough Coin");
 				return false;
 			}
 			AddCoin (-price);
@@ -103,10 +100,7 @@ public class ApiManager : MageEngine {
 			return true;
 		}else if(type == PriceType.Diamond){
 			if (price > GetDiamond ()) {
-/* 				if(MageManager.instance.GetLanguageName () == "English") 
-					MageManager.instance.OnNotificationPopup ("Warning", "You have not enough Ruby");
-				else
-					MageManager.instance.OnNotificationPopup ("Chú ý", "Bạn không đủ ngọc để mua sản phẩm này"); */
+				MageManager.instance.OnNotificationPopup ("You have not enough Coin");
 				return false;
 			}
 			AddDiamond (-price);

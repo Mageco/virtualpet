@@ -18,6 +18,7 @@ public class GameManager : MonoBehaviour
     public bool isLoad = false;
     public bool isPause = false;
 
+    public int[] gameLevels = new int[1];
 
     void Awake()
     {
@@ -151,9 +152,12 @@ public class GameManager : MonoBehaviour
     }
 
     public void OnEvent(){
-        MageManager.instance.LoadSceneWithLoading("Minigame1");
-        gameType = GameType.Minigame1;
-        pets[0].Load();
+        if(GameManager.instance.GetPet(0).level > 10){
+            MageManager.instance.LoadSceneWithLoading("Minigame1");
+            gameType = GameType.Minigame1;
+            pets[0].Load();
+        }else
+            MageManager.instance.OnNotificationPopup ("Bạn cần phải đạt được level 10");
     }
 
     public void AddCoin(int c){

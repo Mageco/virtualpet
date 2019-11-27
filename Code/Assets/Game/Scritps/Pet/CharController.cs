@@ -689,6 +689,8 @@ public class CharController : MonoBehaviour
         currentSkill = type;
         skillLearnEffect.SetActive(true);
         ItemManager.instance.ActivateSkillItems(type);
+        if(data.GetSkillProgress(type) == 1)
+            UIManager.instance.OnQuestNotificationPopup("Bạn có thể dậy cho thú cưng kỹ năng rồi đấy, Hãy bế chó vào vị trí như chỉ dẫn");
     }
 
     public void OffLearnSkill(){
@@ -701,6 +703,10 @@ public class CharController : MonoBehaviour
         if(data.SkillLearned(currentSkill))
             UIManager.instance.OnSkillCompletePanel(currentSkill);
         
+        if(data.GetSkillProgress(type) == 1)
+            UIManager.instance.OnQuestNotificationPopup("Bạn đã hoàn thành được 1 điểm kỹ năng hãy tiếp tục nhé");
+        else if(data.GetSkillProgress(type) == 5)
+            UIManager.instance.OnQuestNotificationPopup("Cố lên bạn sắp hoàn thành rồi");
        
         OffLearnSkill();
         Abort();

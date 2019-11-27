@@ -35,7 +35,7 @@ public class SkillTab : BaseTab
 		EditorGUILayout.EndHorizontal();
 
 		// color list
-		this.AddItemFilterList(DataHolder.Skills());
+		this.AddItemList(DataHolder.Skills());
 
 		// color settings
 
@@ -49,6 +49,8 @@ public class SkillTab : BaseTab
 			EditorGUILayout.Separator();
 			EditorGUILayout.BeginHorizontal();
 			EditorGUILayout.BeginVertical();
+
+			DataHolder.Skill(selection).skillOrder = EditorGUILayout.IntField("Skill Order", DataHolder.Skill(selection).skillOrder, GUILayout.Width(pw.mWidth));
 
 			for (int i = 0; i < DataHolder.Languages().GetDataCount(); i++)
 			{

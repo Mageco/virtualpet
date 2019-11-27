@@ -85,29 +85,7 @@ public class ItemTab : BaseTab
                 }
             }
 
-            EditorGUILayout.BeginHorizontal();
-            EditorGUILayout.LabelField("Icon Lock", GUILayout.MaxWidth(110));
-            if(DataHolder.Items().GetItem(selection,temcategory).iconLockUrl != null){
-                this.tmpLockSprites = AssetDatabase.LoadAssetAtPath<Texture2D>(DataHolder.Items().GetItem(selection,temcategory).iconLockUrl);
-            }
-            this.tmpLockSprites = (Texture2D)EditorGUILayout.ObjectField(GUIContent.none, this.tmpLockSprites, typeof(Texture2D), false, GUILayout.MaxWidth(100));
-            if (this.tmpLockSprites != null)
-            {
-                DataHolder.Items().GetItem(selection,temcategory).iconLockUrl = AssetDatabase.GetAssetPath(this.tmpLockSprites);
-
-            }
-            EditorGUILayout.LabelField(DataHolder.Items().GetItem(selection,temcategory).iconLockUrl);
-            EditorGUILayout.EndHorizontal();
             
-			if (this.tmpLockSprites != null)
-            {
-                if (GUILayout.Button("Clear Image", GUILayout.Width(100)))
-                {
-                    DataHolder.Items().GetItem(selection,temcategory).iconLockUrl = "";
-                    tmpLockSprites = null;
-                }
-            }
-
 
 			EditorGUILayout.BeginVertical("box");
 			fold2 = EditorGUILayout.Foldout(fold2, "Item Settings");
@@ -133,9 +111,9 @@ public class ItemTab : BaseTab
                 }else if(DataHolder.Items().GetItem(selection,temcategory).itemType == ItemType.Coin){
                     DataHolder.Items().GetItem(selection,temcategory).sellPrice = EditorGUILayout.IntField("Coin Amount", DataHolder.Items().GetItem(selection,temcategory).sellPrice, GUILayout.Width(pw.mWidth));
                 }
-                
-                DataHolder.Items().GetItem(selection,temcategory).levelRequire = EditorGUILayout.IntField("RequireLevel", DataHolder.Items().GetItem(selection,temcategory).levelRequire, GUILayout.Width(pw.mWidth));
                 DataHolder.Items().GetItem(selection,temcategory).isAvailable = EditorGUILayout.Toggle("Available", DataHolder.Items().GetItem(selection,temcategory).isAvailable, GUILayout.Width(pw.mWidth));
+                if(DataHolder.Items().GetItem(selection,temcategory).isAvailable)                
+                    DataHolder.Items().GetItem(selection,temcategory).levelRequire = EditorGUILayout.IntField("RequireLevel", DataHolder.Items().GetItem(selection,temcategory).levelRequire, GUILayout.Width(pw.mWidth));
 
 
 				//EditorGUILayout.EndToggleGroup();

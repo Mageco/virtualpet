@@ -20,7 +20,13 @@ public class NotificationPopup : MonoBehaviour {
 
 	public void Load(string t,string d)
 	{
-		title.text = t;
-		description.text = d;
+		if(title != null)
+			title.text = t;
+		if(description != null)
+			description.text = d;
+	}
+
+	public void Close(){
+		this.GetComponent<Popup>().Close();
 	}
 }

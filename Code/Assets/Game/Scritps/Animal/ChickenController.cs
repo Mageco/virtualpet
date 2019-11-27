@@ -71,6 +71,9 @@ public class ChickenController : AnimalController
         else if (state == AnimalState.Hold)
         {
             StartCoroutine(Hold());
+        }else if (state == AnimalState.InActive)
+        {
+            this.gameObject.SetActive(false);
         }
     }
 

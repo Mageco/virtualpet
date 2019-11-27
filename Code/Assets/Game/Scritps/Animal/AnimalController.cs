@@ -68,6 +68,11 @@ public class AnimalController : MonoBehaviour
  
     }
 
+    public virtual void InActive(){
+        state = AnimalState.InActive;
+        isAbort = true;
+    }
+
     public virtual void OnFlee(){
         if(state != AnimalState.Flee)
         {
@@ -131,4 +136,3 @@ public class AnimalController : MonoBehaviour
 
 }
 
-public enum AnimalState {None,Idle,Seek,Eat,Run,Flee,Hit,Hit_Grab,Hold,Cached }

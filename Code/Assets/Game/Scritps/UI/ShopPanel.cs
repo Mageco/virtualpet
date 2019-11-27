@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class ShopPanel : MonoBehaviour
 {
+    public ScrollRect scroll;
     public Transform anchor;
     List<ItemUI> items = new List<ItemUI>();
     public GameObject itemUIPrefab;
@@ -81,7 +82,7 @@ public class ShopPanel : MonoBehaviour
         }
 
 
-        items.Sort((p1,p2)=>(p2.shopOrder).CompareTo(p1.shopOrder));
+        items.Sort((p1,p2)=>(p1.shopOrder).CompareTo(p2.shopOrder));
         foreach(Item item in items){
             LoadItem(item);
         }
@@ -118,6 +119,16 @@ public class ShopPanel : MonoBehaviour
     public void Close()
     {
         this.GetComponent<Popup>().Close();
+    }
+
+    public void OnLeft(){
+        if(scroll.horizontalNormalizedPosition > 0)
+            scroll.horizontalNormalizedPosition -= 0.1f; 
+    }
+
+    public void OnRight(){
+        if(scroll.horizontalNormalizedPosition < 1)
+            scroll.horizontalNormalizedPosition += 0.1f; 
     }
 
 }

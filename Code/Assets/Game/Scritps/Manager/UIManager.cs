@@ -16,7 +16,7 @@ public class UIManager : MonoBehaviour
     public static UIManager instance;
 	public Text coinText;
 	public Text diamonText;
-	MPopup questNotification;
+	NotificationPopup questNotification;
     QuestPanel questComplete;
     ShopPanel shopPanel;
     EventPanel eventPanel;
@@ -77,7 +77,7 @@ public class UIManager : MonoBehaviour
        GameManager.instance.EquipPet(itemID);
 	}
 
-	public MPopup OnQuestNotificationPopup(string description)
+	public NotificationPopup OnQuestNotificationPopup(string description)
 	{
 		if (questNotification == null) {
 			var popup = Instantiate (questUIPrefab) as GameObject;
@@ -85,8 +85,8 @@ public class UIManager : MonoBehaviour
 			popup.transform.localScale = Vector3.zero;
 			popup.transform.SetParent (GameObject.Find ("Canvas").transform, false);
 			popup.GetComponent<Popup> ().Open ();
-			questNotification = popup.GetComponent<MPopup> ();
-			questNotification.texts[0].text = description;
+			questNotification = popup.GetComponent<NotificationPopup> ();
+			questNotification.Load("",description);
 		}
 		return questNotification;
 	}
