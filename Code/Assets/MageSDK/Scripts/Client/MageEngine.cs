@@ -47,7 +47,7 @@ namespace MageSDK.Client {
 				// at start initiate Default user
 				InitDefaultUser();
 				
-				#if UNITY_EDITOR
+				#if UNITY_EDITOR || UNITY_STANDALONE || UNITY_IOS || UNITY_ANDROID
 					if (this.resetUserDataOnStart || !this.isWorkingOnline) {
 						// in unity and test mode don't reuse user saved previously, always initate new user
 						_isLogin = true;
@@ -104,7 +104,7 @@ namespace MageSDK.Client {
 			defaultUser.id = randomId;
 
 			// update user to game engine
-			#if UNITY_EDITOR
+			#if UNITY_EDITOR || UNITY_STANDALONE || UNITY_STANDALONE || UNITY_IOS || UNITY_ANDROID
 				if (resetUserDataOnStart) {
 					// in unity and test mode don't reuse user saved previously, always initate new user
 					SetUser(defaultUser);
@@ -135,7 +135,7 @@ namespace MageSDK.Client {
 			RuntimeParameters.GetInstance().SetParam(ApiSettings.SESSION_LOGIN_TOKEN, result.Token);
 			RuntimeParameters.GetInstance().SetParam(ApiSettings.LOGGED_IN_USER, result.User);
 
-			#if UNITY_EDITOR
+			#if UNITY_EDITOR || UNITY_STANDALONE || UNITY_STANDALONE || UNITY_IOS || UNITY_ANDROID
 				if (resetUserDataOnStart) {
 					// in unity and test mode don't reuse user saved previously, always initate new user
 					CreateNewUser (result.User);
@@ -205,7 +205,7 @@ namespace MageSDK.Client {
 			}
 
 			// update user to game engine
-			#if UNITY_EDITOR
+			#if UNITY_EDITOR || UNITY_STANDALONE || UNITY_STANDALONE || UNITY_IOS || UNITY_ANDROID
 				if (this.resetUserDataOnStart || !this.isWorkingOnline) {
 					u.SetCharacter(newCharacter);
 					this.SaveCacheData<User>(u, MageEngineSettings.GAME_ENGINE_USER);
@@ -258,7 +258,7 @@ namespace MageSDK.Client {
 			}
 
 			// update user to game engine
-			#if UNITY_EDITOR
+			#if UNITY_EDITOR || UNITY_STANDALONE || UNITY_STANDALONE || UNITY_IOS || UNITY_ANDROID
 				if (this.resetUserDataOnStart || !this.isWorkingOnline) {
 					u.SetCharacter(character);
 					this.SaveCacheData<User>(u, MageEngineSettings.GAME_ENGINE_USER);
@@ -382,7 +382,7 @@ namespace MageSDK.Client {
 			}
 
 			// update user to game engine
-			#if UNITY_EDITOR
+			#if UNITY_EDITOR || UNITY_STANDALONE || UNITY_STANDALONE || UNITY_IOS || UNITY_ANDROID
 				if (this.resetUserDataOnStart || !this.isWorkingOnline) {
 					this.SaveCacheData<User>(u, MageEngineSettings.GAME_ENGINE_USER);
 					return;	
@@ -465,7 +465,7 @@ namespace MageSDK.Client {
 			}
 
 			// update user to game engine
-			#if UNITY_EDITOR
+			#if UNITY_EDITOR || UNITY_STANDALONE || UNITY_STANDALONE || UNITY_IOS || UNITY_ANDROID
 				if (this.resetUserDataOnStart || !this.isWorkingOnline) {
 					this.SaveCacheData<User>(u, MageEngineSettings.GAME_ENGINE_USER);
 					return;	
@@ -530,7 +530,7 @@ namespace MageSDK.Client {
 		public void GetApplicationData() {
 
 			// Load application data
-			#if UNITY_EDITOR
+			#if UNITY_EDITOR || UNITY_STANDALONE || UNITY_STANDALONE || UNITY_IOS || UNITY_ANDROID
 				if (isLocalApplicationData) {
 					// in unity and test mode application data can be retrieved from local Resources
 					LoadApplicationDataFromResources();
@@ -650,7 +650,7 @@ namespace MageSDK.Client {
 
 		///<summary>Use this function to save data to both Engine / Local file</summary>
 		public void SaveCacheData<T>(T data, string cacheName) {
-			#if UNITY_EDITOR
+			#if UNITY_EDITOR || UNITY_STANDALONE || UNITY_STANDALONE || UNITY_IOS || UNITY_ANDROID
 				if (!this.resetUserDataOnStart) {
 					ES2.Save<T>(data, cacheName);
 				}
@@ -665,7 +665,7 @@ namespace MageSDK.Client {
 		#region Event 
 		public void SendAppEvent(string eventName) {
 
-			#if UNITY_EDITOR
+			#if UNITY_EDITOR || UNITY_STANDALONE
 				if (this.resetUserDataOnStart || !this.isWorkingOnline) {
 					return;
 				}
