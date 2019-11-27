@@ -1,9 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class EventPanel : MonoBehaviour
 {
+     public ScrollRect scroll;
     // Start is called before the first frame update
     void Start()
     {
@@ -16,12 +18,33 @@ public class EventPanel : MonoBehaviour
         
     }
 
-    public void OnEvent(){
-        this.Close();
-        GameManager.instance.OnEvent();
+    public void OnEvent(int id){
+        if(id > 0)
+        {
+             MageManager.instance.OnNotificationPopup ("Trò chơi này chưa ra mắt");
+        }else{
+            if(GameManager.instance.GetPet(0).level > 10){
+                this.Close();
+                GameManager.instance.OnEvent();
+            }else
+            {
+                MageManager.instance.OnNotificationPopup ("Bạn cần tiến hoá lên chó trưởng thành");
+            }
+        }
+       
     }
 
     public void Close(){
         this.GetComponent<Popup>().Close();
+    }
+
+     public void OnLeft(){
+        if(scroll.horizontalNormalizedPosition > 0)
+            scroll.horizontalNormalizedPosition -= 0.333f; 
+    }
+
+    public void OnRight(){
+        if(scroll.horizontalNormalizedPosition < 1)
+            scroll.horizontalNormalizedPosition += 0.333f; 
     }
 }

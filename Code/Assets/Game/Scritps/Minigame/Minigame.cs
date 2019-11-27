@@ -32,9 +32,9 @@ public class Minigame : MonoBehaviour
     }
 
     protected virtual void Load(){
-        GetComponent<Camera> ();
-        float ratio = (float)Screen.width / (float)Screen.height;
-        Camera.main.orthographicSize = 34f/ratio;
+        //GetComponent<Camera> ();
+        //float ratio = (float)Screen.width / (float)Screen.height;
+        //Camera.main.orthographicSize = 34f/ratio;
         gameLevel = GameManager.instance.gameLevels[0];
     }
         

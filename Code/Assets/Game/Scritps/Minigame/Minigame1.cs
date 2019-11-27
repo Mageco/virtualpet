@@ -29,23 +29,27 @@ public class Minigame1 : Minigame
     protected override void Load(){
         base.Load();
         maxTime = 55 + gameLevel * 5;
-        chickenSpawner.maxNumber = 5 + gameLevel/2;
+        chickenSpawner.maxNumber = 5 + gameLevel/5;
         chickenSpawner.speed = 10;
 
-        foxSpawner.maxNumber = 2 + gameLevel/2;
-        foxSpawner.speed = 10 + gameLevel;
+        float addSpeed = gameLevel/2f;
+        if(addSpeed > 10)
+            addSpeed = 10;
+
+        foxSpawner.maxNumber = 2 + gameLevel/5;
+        foxSpawner.speed = 10 + addSpeed/3f;
 
         if(gameLevel > 5){
             int n = gameLevel - 5;
-            snakeSpawner.maxNumber = 2 + n/2;
-            snakeSpawner.speed = 10 + n;
+            snakeSpawner.maxNumber = 2 + n/7;
+            snakeSpawner.speed = 10 + addSpeed/2f;
         }else
             snakeSpawner.maxNumber = 0;
 
         if(gameLevel > 10){
             int n = gameLevel - 10;
-            eagleSpawner.maxNumber = 2 + n/2;
-            eagleSpawner.speed = 10 + n;
+            eagleSpawner.maxNumber = 2 + n/10;
+            eagleSpawner.speed = 10 + addSpeed;
         }else
             eagleSpawner.maxNumber = 0;
 
