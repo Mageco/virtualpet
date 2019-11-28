@@ -38,6 +38,10 @@ public class ApiManager : MageEngine {
 		DontDestroyOnLoad (this.gameObject);
 	}
 
+	protected override void OnLoginCompleteCallback() {
+		GameManager.instance.Start_UsingCallback();
+	}
+
 	public static ApiManager GetInstance() {
 		return instance;
 	}

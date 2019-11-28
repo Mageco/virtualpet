@@ -58,9 +58,14 @@ public class GameManager : MonoBehaviour
         ApiManager.GetInstance().EquipItem(4); */
     }
 
-    private void Start()
+    private void Start() {
+
+    }
+
+    public void Start_UsingCallback()
     {
-        Debug.Log(ApiManager.GetInstance().GetUser().characters.Count);
+
+        // needs to fix the issue of login complete first
         if(ApiManager.GetInstance().GetUser().characters.Count == 0){
             LoadNewUserData();
             isLoad = true;
@@ -114,6 +119,9 @@ public class GameManager : MonoBehaviour
     }
 
     public Pet GetPet(int id){
+        if (!isLoad) {
+            return null;
+        }
         return pets[id];
     }
 

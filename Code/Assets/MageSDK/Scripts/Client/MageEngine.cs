@@ -1,4 +1,15 @@
-﻿using System.Collections;
+﻿// Change this if needs to define platform test. Remember to change this to production release
+// UNITY_EDITOR || UNITY_ANDROID || UNITY_IOS || UNITY_STANDALONE_OSX || UNITY_STANDALONE_WIN || UNITY_WEBGL
+// Production build
+/*#if UNITY_EDITOR 
+#define PLATFORM_TEST
+#endif*/
+
+#if UNITY_EDITOR || UNITY_ANDROID || UNITY_IOS || UNITY_STANDALONE_OSX || UNITY_STANDALONE_WIN || UNITY_WEBGL
+#define PLATFORM_TEST
+#endif
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
@@ -13,6 +24,7 @@ using Mage.Models.Users;
 using Mage.Models.Game;
 using Mage.Models.Application;
 using Mage.Models;
+
 
 namespace MageSDK.Client {
 	public class MageEngine : MonoBehaviour {
@@ -47,10 +59,12 @@ namespace MageSDK.Client {
 				// at start initiate Default user
 				InitDefaultUser();
 				
-				#if UNITY_EDITOR || UNITY_STANDALONE || UNITY_IOS || UNITY_ANDROID
+				#if PLATFORM_TEST
 					if (this.resetUserDataOnStart || !this.isWorkingOnline) {
 						// in unity and test mode don't reuse user saved previously, always initate new user
 						_isLogin = true;
+						//test callback
+						OnLoginCompleteCallback();
 					} else {
 						// login user during start
 						if (loginMethod == ClientLoginMethod.LOGIN_DEVICE_UUID) {
@@ -72,6 +86,11 @@ namespace MageSDK.Client {
 
 		}
 
+		// Test callback first, needs to implement event handler
+		protected virtual void OnLoginCompleteCallback() {
+
+		}
+
 		#region Login & user handling
 		///<summary>Login using device id</summary>
 		public void LoginWithDeviceID() {
@@ -83,6 +102,7 @@ namespace MageSDK.Client {
 				r, 
 				(result) => {
 					//do some other processing here
+					Debug.Log("Login: " + result.ToJson());
 					OnCompleteLogin (result);
 					//GetApplicationData ();
 				},
@@ -104,7 +124,7 @@ namespace MageSDK.Client {
 			defaultUser.id = randomId;
 
 			// update user to game engine
-			#if UNITY_EDITOR || UNITY_STANDALONE || UNITY_STANDALONE || UNITY_IOS || UNITY_ANDROID
+			#if PLATFORM_TEST
 				if (resetUserDataOnStart) {
 					// in unity and test mode don't reuse user saved previously, always initate new user
 					SetUser(defaultUser);
@@ -135,7 +155,7 @@ namespace MageSDK.Client {
 			RuntimeParameters.GetInstance().SetParam(ApiSettings.SESSION_LOGIN_TOKEN, result.Token);
 			RuntimeParameters.GetInstance().SetParam(ApiSettings.LOGGED_IN_USER, result.User);
 
-			#if UNITY_EDITOR || UNITY_STANDALONE || UNITY_STANDALONE || UNITY_IOS || UNITY_ANDROID
+			#if PLATFORM_TEST
 				if (resetUserDataOnStart) {
 					// in unity and test mode don't reuse user saved previously, always initate new user
 					CreateNewUser (result.User);
@@ -155,21 +175,24 @@ namespace MageSDK.Client {
 					CreateExistingUser (result.User);
 				}
 			#endif
+
+			//test callback
+			OnLoginCompleteCallback();
 		}
 
 		///<summary>If this is new user then it will need to create a default profile</summary>
 		private void CreateNewUser(User u) {
-			Debug.Log("Create new user");
-			this.SetCharacter(this.GetApplicationDataItem<Character>(MageEngineSettings.GAME_ENGINE_DEFAULT_CHARACTER_DATA));
+			//Debug.Log("Create new user");
+			//this.SetCharacter(this.GetApplicationDataItem<Character>(MageEngineSettings.GAME_ENGINE_DEFAULT_CHARACTER_DATA));
 			this.UpdateUserData(this.GetApplicationDataItem<User>(MageEngineSettings.GAME_ENGINE_DEFAULT_USER_DATA).user_datas);
 			SetUser(u);
 		}
 
 		void CreateExistingUser(User u) {
-			if (u.characters.Count == 0 || u.characters[0] == null) {
+			/*if (u.characters.Count == 0 || u.characters[0] == null) {
 				//update character to store
 				this.SetCharacter(this.GetApplicationDataItem<Character>(MageEngineSettings.GAME_ENGINE_DEFAULT_CHARACTER_DATA));
-			}
+			}*/
 
 			List<UserData> defaultUserData = GetApplicationDataItem<User>(MageEngineSettings.GAME_ENGINE_DEFAULT_USER_DATA).user_datas;
 
@@ -205,7 +228,7 @@ namespace MageSDK.Client {
 			}
 
 			// update user to game engine
-			#if UNITY_EDITOR || UNITY_STANDALONE || UNITY_STANDALONE || UNITY_IOS || UNITY_ANDROID
+			#if PLATFORM_TEST
 				if (this.resetUserDataOnStart || !this.isWorkingOnline) {
 					u.SetCharacter(newCharacter);
 					this.SaveCacheData<User>(u, MageEngineSettings.GAME_ENGINE_USER);
@@ -258,7 +281,7 @@ namespace MageSDK.Client {
 			}
 
 			// update user to game engine
-			#if UNITY_EDITOR || UNITY_STANDALONE || UNITY_STANDALONE || UNITY_IOS || UNITY_ANDROID
+			#if PLATFORM_TEST
 				if (this.resetUserDataOnStart || !this.isWorkingOnline) {
 					u.SetCharacter(character);
 					this.SaveCacheData<User>(u, MageEngineSettings.GAME_ENGINE_USER);
@@ -382,7 +405,7 @@ namespace MageSDK.Client {
 			}
 
 			// update user to game engine
-			#if UNITY_EDITOR || UNITY_STANDALONE || UNITY_STANDALONE || UNITY_IOS || UNITY_ANDROID
+			#if PLATFORM_TEST
 				if (this.resetUserDataOnStart || !this.isWorkingOnline) {
 					this.SaveCacheData<User>(u, MageEngineSettings.GAME_ENGINE_USER);
 					return;	
@@ -465,7 +488,7 @@ namespace MageSDK.Client {
 			}
 
 			// update user to game engine
-			#if UNITY_EDITOR || UNITY_STANDALONE || UNITY_STANDALONE || UNITY_IOS || UNITY_ANDROID
+			#if PLATFORM_TEST
 				if (this.resetUserDataOnStart || !this.isWorkingOnline) {
 					this.SaveCacheData<User>(u, MageEngineSettings.GAME_ENGINE_USER);
 					return;	
@@ -530,7 +553,7 @@ namespace MageSDK.Client {
 		public void GetApplicationData() {
 
 			// Load application data
-			#if UNITY_EDITOR || UNITY_STANDALONE || UNITY_STANDALONE || UNITY_IOS || UNITY_ANDROID
+			#if PLATFORM_TEST
 				if (isLocalApplicationData) {
 					// in unity and test mode application data can be retrieved from local Resources
 					LoadApplicationDataFromResources();
@@ -650,7 +673,7 @@ namespace MageSDK.Client {
 
 		///<summary>Use this function to save data to both Engine / Local file</summary>
 		public void SaveCacheData<T>(T data, string cacheName) {
-			#if UNITY_EDITOR || UNITY_STANDALONE || UNITY_STANDALONE || UNITY_IOS || UNITY_ANDROID
+			#if PLATFORM_TEST
 				if (!this.resetUserDataOnStart) {
 					ES2.Save<T>(data, cacheName);
 				}
@@ -665,7 +688,7 @@ namespace MageSDK.Client {
 		#region Event 
 		public void SendAppEvent(string eventName) {
 
-			#if UNITY_EDITOR || UNITY_STANDALONE
+			#if PLATFORM_TEST
 				if (this.resetUserDataOnStart || !this.isWorkingOnline) {
 					return;
 				}
