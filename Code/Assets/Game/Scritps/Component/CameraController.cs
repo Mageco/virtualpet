@@ -126,8 +126,6 @@ public class CameraController : MonoBehaviour
 				x = Mathf.Clamp (x, boundX.x + width,boundX.y - width);
 				y = Mathf.Clamp (y, boundY.x + height, boundY.y - height);
 
-				Debug.Log(x + "  " + y);
-
 				this.transform.position = new Vector3 (x, y, this.transform.position.z);
 
 			}
