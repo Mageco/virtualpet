@@ -57,23 +57,14 @@ public class QuestManager : MonoBehaviour
             delayTime = 16;
         }else if(GameManager.instance.questId == 4){
         }else if(GameManager.instance.questId == 5){
-            delayTime = 5;
         }else if(GameManager.instance.questId == 6){
-            delayTime = 5;
         }else if(GameManager.instance.questId == 7){
-            delayTime = 5;
         }else if(GameManager.instance.questId == 8){
-            delayTime = 5;
         }else if(GameManager.instance.questId == 9){
-            delayTime = 10;
         }else if(GameManager.instance.questId == 10){
-            delayTime = 10;
         }else if(GameManager.instance.questId == 11){
-            delayTime = 10;
         }else if(GameManager.instance.questId == 12){
-            delayTime = 10;
         }else if(GameManager.instance.questId == 13){
-            delayTime = 10;
         }
 
         isReplay = DataHolder.GetQuest(GameManager.instance.questId).isReplay;
