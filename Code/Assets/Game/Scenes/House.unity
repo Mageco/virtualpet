@@ -1890,6 +1890,7 @@ GameObject:
   - component: {fileID: 1159892322}
   - component: {fileID: 1159892321}
   - component: {fileID: 1159892324}
+  - component: {fileID: 1159892325}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -1980,7 +1981,28 @@ MonoBehaviour:
   offset: {x: 0, y: 6}
   boundX: {x: -67, y: 67}
   boundY: {x: -26, y: 31}
-  isFollow: 1
+  isFollow: 0
+--- !u!114 &1159892325
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1159892320}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4eda371e5375f454490a86f21559ee38, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Use:
+    Filter: 0
+    IgnoreStartedOverGui: 1
+    RequiredFingerCount: 0
+    RequiredMouseButtons: 0
+    RequiredSelectable: {fileID: 0}
+  Camera: {fileID: 0}
+  Dampening: 5
+  remainingTranslation: {x: 0, y: 0, z: 0}
 --- !u!1 &1179590531
 GameObject:
   m_ObjectHideFlags: 0
@@ -3737,6 +3759,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalPosition.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6884017935589811434, guid: 2690067ddedd64631953f52f26e327fb,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 65.71094
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2690067ddedd64631953f52f26e327fb, type: 3}
@@ -5936,7 +5963,7 @@ PrefabInstance:
     - target: {fileID: 7629980631625239534, guid: da4a7d975ac124a23850b2bb20c236a9,
         type: 3}
       propertyPath: addExp
-      value: 100
+      value: 500
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: da4a7d975ac124a23850b2bb20c236a9, type: 3}

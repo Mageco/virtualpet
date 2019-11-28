@@ -81,6 +81,7 @@ public class CharSmall : CharController
 
     IEnumerator Hold()
     {
+        GameManager.instance.SetCameraTarget(this.gameObject);
         charInteract.interactType = InteractType.Drag;
         enviromentType = EnviromentType.Room;
         Vector3 dropPosition = Vector3.zero;
@@ -183,6 +184,7 @@ public class CharSmall : CharController
 
         yield return StartCoroutine(Wait(maxTime));
 
+        GameManager.instance.ResetCameraTarget();
         if(!isAbort){
             CheckEnviroment();
         }        

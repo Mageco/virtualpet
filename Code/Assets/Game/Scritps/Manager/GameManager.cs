@@ -44,9 +44,6 @@ public class GameManager : MonoBehaviour
         ApiManager.GetInstance().AddCoin(0);
         ApiManager.GetInstance().AddPet(0);
         ApiManager.GetInstance().EquipPet(0);
-        ApiManager.GetInstance().EquipPet(0);
-        ApiManager.GetInstance().EquipPet(0);
-        ApiManager.GetInstance().EquipPet(0);
         ApiManager.GetInstance().EquipItem(17);        
         ApiManager.GetInstance().EquipItem(56);
 
@@ -62,24 +59,27 @@ public class GameManager : MonoBehaviour
     }
 
     private void Start() {
-        Start_UsingCallback();
+        LoadNewUserData();
+        isLoad = true;
+
+        LoadPets();
+        
+        if(camera != null){
+            //camera.SetTarget(petObjects[0].gameObject);
+        }   
     }
 
     public void Start_UsingCallback()
     {
 
         // needs to fix the issue of login complete first
-        if(ApiManager.GetInstance().GetUser().characters.Count == 0){
-            LoadNewUserData();
-            isLoad = true;
-        }
+        //if(ApiManager.GetInstance().GetUser().characters.Count == 0){
+        //    LoadNewUserData();
+        //    isLoad = true;
+        //}
             
         
-        LoadPets();
-        
-        if(camera != null){
-            camera.SetTarget(petObjects[0].gameObject);
-        }      
+   
     }
 
 
@@ -138,15 +138,18 @@ public class GameManager : MonoBehaviour
     public void SetCameraTarget(GameObject t){
         if(camera == null)
             camera = Camera.main.GetComponent<CameraController>();
-        if(camera != null)
+        if(camera != null){
             camera.SetTarget(t);
+            camera.isFollow = true;
+        }
+            
     }
 
     public void ResetCameraTarget(){
         if(camera == null)
             camera = Camera.main.GetComponent<CameraController>();
         if(camera != null)
-            camera.FindTarget();
+            camera.isFollow = false;
     }
 
     public void OffCameraFollow(){
