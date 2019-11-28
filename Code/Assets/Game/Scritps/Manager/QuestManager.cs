@@ -118,33 +118,33 @@ public class QuestManager : MonoBehaviour
 
 
 
-        if (playTimeLine == null && DataHolder.Quest(GameManager.instance.questId).prefabName != "")
-        {
-            MageManager.instance.ScreenFadeOut(fadeDuration);
-            yield return new WaitForSeconds(fadeDuration);
-            MageManager.instance.ScreenFadeIn(fadeDuration);
+        // if (playTimeLine == null && DataHolder.Quest(GameManager.instance.questId).prefabName != "")
+        // {
+        //     MageManager.instance.ScreenFadeOut(fadeDuration);
+        //     yield return new WaitForSeconds(fadeDuration);
+        //     MageManager.instance.ScreenFadeIn(fadeDuration);
+        //     OnQuestNotification();
+        //     string url = DataHolder.GetQuest(GameManager.instance.questId).prefabName.Replace("Assets/Game/Resources/", "");
+        //     url = url.Replace(".prefab", "");
+        //     url = DataHolder.Quests().GetPrefabPath() + url;
+        //     GameObject go = Instantiate((Resources.Load(url) as GameObject), new Vector3(0, 0, -200), Quaternion.identity) as GameObject;
+        //     playTimeLine = go.GetComponent<PlayableDirector>();
+        // }
+        // else
+        // {
             OnQuestNotification();
-            string url = DataHolder.GetQuest(GameManager.instance.questId).prefabName.Replace("Assets/Game/Resources/", "");
-            url = url.Replace(".prefab", "");
-            url = DataHolder.Quests().GetPrefabPath() + url;
-            GameObject go = Instantiate((Resources.Load(url) as GameObject), new Vector3(0, 0, -200), Quaternion.identity) as GameObject;
-            playTimeLine = go.GetComponent<PlayableDirector>();
-        }
-        else
-        {
-            OnQuestNotification();
-        }
+        //}
         if (playTimeLine != null)
         {
-            playTimeLine.gameObject.SetActive(true);
-            playTimeLine.Play();
-            Debug.Log(playTimeLine.duration);
-            yield return new WaitForSeconds((float)playTimeLine.duration - fadeDuration);
-            MageManager.instance.ScreenFadeOut(fadeDuration);
-            yield return new WaitForSeconds(fadeDuration);
-            MageManager.instance.ScreenFadeIn(fadeDuration);
-            playTimeLine.Stop();
-            playTimeLine.gameObject.SetActive(false);
+            // playTimeLine.gameObject.SetActive(true);
+            // playTimeLine.Play();
+            // Debug.Log(playTimeLine.duration);
+            // yield return new WaitForSeconds((float)playTimeLine.duration - fadeDuration);
+            // MageManager.instance.ScreenFadeOut(fadeDuration);
+            // yield return new WaitForSeconds(fadeDuration);
+            // MageManager.instance.ScreenFadeIn(fadeDuration);
+            // playTimeLine.Stop();
+            // playTimeLine.gameObject.SetActive(false);
         }
         else
         {

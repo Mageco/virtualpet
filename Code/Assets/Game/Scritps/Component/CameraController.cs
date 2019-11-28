@@ -70,11 +70,6 @@ public class CameraController : MonoBehaviour
 
 	void LateUpdate()
 	{
-		if(!isFollow)
-			return;
-
-		if(target == null)
-			FindTarget();
 		this.ExecuteCamera();
 	}
 
@@ -102,26 +97,40 @@ public class CameraController : MonoBehaviour
 
 	void  ExecuteCamera()
 	{
-		if (target == null)
-			return;
 
 		height = Camera.main.orthographicSize;
 		width = height * Screen.width / Screen.height;
 
 		Camera.main.orthographicSize = Mathf.Lerp (Camera.main.orthographicSize, orthographicsize, damping * Time.deltaTime);
 
-		if (this.target) {
+		if(isFollow){
+			if (this.target) {
 
+				if (isBound) {
+					float x = Mathf.Lerp (this.transform.position.x, target.position.x + offset.x, damping * Time.deltaTime);
+					float y = Mathf.Lerp (this.transform.position.y, target.position.y + offset.y, damping * Time.deltaTime);
+
+					x = Mathf.Clamp (x, boundX.x + width,boundX.y - width);
+					y = Mathf.Clamp (y, boundY.x + height, boundY.y - height);
+
+					this.transform.position = new Vector3 (x, y, this.transform.position.z);
+
+				}
+			}
+		}
+		else {
 			if (isBound) {
-				float x = Mathf.Lerp (this.transform.position.x, target.position.x + offset.x, damping * Time.deltaTime);
-				float y = Mathf.Lerp (this.transform.position.y, target.position.y + offset.y, damping * Time.deltaTime);
+				float x = this.transform.position.x;
+				float y = this.transform.position.y;
 
 				x = Mathf.Clamp (x, boundX.x + width,boundX.y - width);
 				y = Mathf.Clamp (y, boundY.x + height, boundY.y - height);
 
+				Debug.Log(x + "  " + y);
+
 				this.transform.position = new Vector3 (x, y, this.transform.position.z);
 
 			}
-		} 
+		}
 	}
 }

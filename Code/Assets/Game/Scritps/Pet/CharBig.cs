@@ -394,7 +394,7 @@ public class CharBig : CharController
     {
         charInteract.interactType = InteractType.Drag;
         enviromentType = EnviromentType.Room;
-        
+        GameManager.instance.SetCameraTarget(this.gameObject);
         SetDirection(Direction.D);
         if (data.Health < data.maxHealth * 0.1f)
         {
@@ -486,6 +486,7 @@ public class CharBig : CharController
                 CheckEnviroment();
             }
         }
+        GameManager.instance.ResetCameraTarget();
 
         CheckAbort();
     }
