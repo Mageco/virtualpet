@@ -39,7 +39,8 @@ public class ApiManager : MageEngine {
 	}
 
 	protected override void OnLoginCompleteCallback() {
-		GameManager.instance.Start_UsingCallback();
+		if(GameManager.instance != null)
+			GameManager.instance.Start_UsingCallback();
 	}
 
 	public static ApiManager GetInstance() {

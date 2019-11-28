@@ -59,7 +59,7 @@ public class GameManager : MonoBehaviour
     }
 
     private void Start() {
-
+        Start_UsingCallback();
     }
 
     public void Start_UsingCallback()
