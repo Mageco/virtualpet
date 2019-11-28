@@ -44,6 +44,9 @@ public class GameManager : MonoBehaviour
         ApiManager.GetInstance().AddCoin(0);
         ApiManager.GetInstance().AddPet(0);
         ApiManager.GetInstance().EquipPet(0);
+        ApiManager.GetInstance().EquipPet(0);
+        ApiManager.GetInstance().EquipPet(0);
+        ApiManager.GetInstance().EquipPet(0);
         ApiManager.GetInstance().EquipItem(17);        
         ApiManager.GetInstance().EquipItem(56);
 

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class LosePanel : MonoBehaviour
 {
@@ -22,6 +23,16 @@ public class LosePanel : MonoBehaviour
 
     public void Close(){
         Minigame.instance.OnHome();
+        this.GetComponent<Popup>().Close();
+    }
+
+    public void OnHome(){
+        Minigame.instance.OnHome();
+        this.GetComponent<Popup>().Close();
+    }
+
+    public void Replay(){
+        MageManager.instance.LoadScene(SceneManager.GetActiveScene().name,0.5f);
         this.GetComponent<Popup>().Close();
     }
 }

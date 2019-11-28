@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class WinPanel : MonoBehaviour
 {
@@ -49,6 +50,16 @@ public class WinPanel : MonoBehaviour
         }
         else
             diamon.transform.parent.gameObject.SetActive(false);        
+    }
+
+    public void OnHome(){
+        Minigame.instance.OnHome();
+        this.GetComponent<Popup>().Close();
+    }
+
+    public void Replay(){
+        MageManager.instance.LoadScene(SceneManager.GetActiveScene().name,0.5f);
+        this.GetComponent<Popup>().Close();
     }
 
     public void Close(){
