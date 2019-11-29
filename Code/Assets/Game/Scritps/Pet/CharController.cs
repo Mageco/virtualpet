@@ -1,8 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
-using Lean.Touch;
+using PolyNav;
 
 
 public class CharController : MonoBehaviour
@@ -85,8 +84,7 @@ public class CharController : MonoBehaviour
         GameObject go1 = Instantiate(Resources.Load("Prefabs/Pets/Agent")) as GameObject;
         go1.transform.parent = GameManager.instance.transform;
 		agent = go1.GetComponent<PolyNavAgent>();
-		agent.LoadCharacter(this);
-
+        agent.OnDestinationReached += OnArrived;
         touchObject = this.transform.GetComponentInChildren<TouchPoint>(true).gameObject;
         if(touchObject != null)
             touchObject.SetActive(false);
@@ -190,7 +188,7 @@ public class CharController : MonoBehaviour
     #region Update
 
     // Update is called once per frame
-    void LateUpdate()
+    void Update()
     {
         if(GameManager.instance.isPause)
             return;
@@ -226,7 +224,7 @@ public class CharController : MonoBehaviour
 
 
         CalculateDirection();
-
+        
         this.transform.position = agent.transform.position;
 
         //Calculate Attribue Data
@@ -246,6 +244,12 @@ public class CharController : MonoBehaviour
 
 
         
+    }
+
+    void LateUpdate(){
+        Vector3 pos = this.transform.position;
+        pos.z = this.transform.position.y;
+        this.transform.position = pos;
     }
     #endregion
 
@@ -461,7 +465,7 @@ public class CharController : MonoBehaviour
         if (actionType == ActionType.Mouse)
         {
             actionType = ActionType.None;
-            agent.speed = 30;
+            //agent.speed = 30;
             anim.speed = 1;
         }
 
@@ -481,8 +485,12 @@ public class CharController : MonoBehaviour
 
     public virtual void OnLevelUp()
     {
-        Abort();
-        actionType = ActionType.LevelUp;
+        
+        if(GameManager.instance.gameType != GameType.Minigame1)
+        {
+            Abort();
+            actionType = ActionType.LevelUp;
+        }
     }
 
     #endregion
@@ -558,7 +566,9 @@ public class CharController : MonoBehaviour
 
             while (!isArrived && !isAbort)
             {
-                if(actionType == ActionType.Fear ){
+                if(GameManager.instance.gameType == GameType.Minigame1){
+                    anim.Play("Run_Angry_" + this.direction.ToString(), 0);
+                }else if(actionType == ActionType.Fear ){
                     anim.Play("RunScared_" + this.direction.ToString(), 0);
                 }else
                     anim.Play("Run_" + this.direction.ToString(), 0);

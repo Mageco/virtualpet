@@ -682,10 +682,7 @@ public class CharMiddle : CharController
             GrowUp();
             data.Load();
         }
-           
-
         CheckAbort();
-
     }
 
 

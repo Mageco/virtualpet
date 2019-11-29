@@ -495,9 +495,9 @@ public class CharBig : CharController
     {
         while(GetMouse().state != MouseState.Idle && !isAbort){
             agent.SetDestination(GetMouse().transform.position);
-            agent.speed = 45;
+            //agent.maxSpeed = data.speed * 1.5f;
             anim.Play("Run_" + this.direction.ToString(), 0);
-            anim.speed = 1.5f;
+            //anim.speed = 1.5f;
             yield return StartCoroutine(Wait(0.2f));
         }
         CheckAbort();

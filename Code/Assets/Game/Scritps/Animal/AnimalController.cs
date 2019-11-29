@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using PolyNav;
 
 public class AnimalController : MonoBehaviour
 {
@@ -18,16 +19,30 @@ public class AnimalController : MonoBehaviour
     protected bool isArrived = false;
     protected Direction direction = Direction.L;
 
+    protected PolyNavAgent agent;
+
    void Awake()
     {
-
+        LoadPrefab();
     }
+
+    public void LoadPrefab(){
+        GameObject go1 = Instantiate(Resources.Load("Prefabs/Pets/Agent")) as GameObject;
+        go1.name = "Agent " + this.gameObject.name;
+		agent = go1.GetComponent<PolyNavAgent>();
+        agent.OnDestinationReached += OnArrived;
+        
+        Load();
+    }
+
 
     void Start(){
         originalPosition = this.transform.position;
         lastPosition = this.transform.position;
         originalScale = this.transform.localScale;
         anim = this.GetComponent<Animator>();
+        agent.transform.position = this.transform.position;
+        agent.maxSpeed = this.maxSpeed;
         Load();
     }
 
@@ -38,6 +53,16 @@ public class AnimalController : MonoBehaviour
             Think();
             DoAction();
         }
+
+        CalculateDirection();
+        this.transform.position = agent.transform.position;
+    }
+
+    protected virtual void CalculateDirection(){
+        if (agent.transform.eulerAngles.z < 180f && agent.transform.eulerAngles.z > 0f || (agent.transform.eulerAngles.z > -360f && agent.transform.eulerAngles.z < -180f))
+            direction = Direction.L;
+        else 
+            direction = Direction.R;
     }
 
     protected virtual void Load(){
@@ -56,6 +81,10 @@ public class AnimalController : MonoBehaviour
             this.transform.localScale = originalScale * (1 + (-this.transform.position.y + offset) * scaleFactor);
         else
             this.transform.localScale = originalScale;
+    }
+
+    public void OnArrived(){
+        isArrived = true;
     }
 
     protected virtual void Think()
@@ -100,16 +129,25 @@ public class AnimalController : MonoBehaviour
 
     protected IEnumerator MoveToPoint(Vector3 target)
     {
-        while (!isArrived && !isAbort)
+        isArrived = false;
+        if (Vector2.Distance(target, agent.transform.position) > 0.5f)
         {
-            anim.speed = 1 + speed/maxSpeed;
-            Vector3 d = Vector3.Normalize(target - this.transform.position);
-            this.transform.position += d * speed * Time.deltaTime;
-            yield return new WaitForEndOfFrame();
-            if(Vector2.Distance(this.transform.position,target) < 1f){
-                isArrived = true;
-                anim.speed = 1;
+            if(!isAbort){
+                agent.SetDestination(target);
             }
+            anim.speed = 1 + speed/maxSpeed;
+
+            while (!isArrived && !isAbort)
+            {
+                yield return new WaitForEndOfFrame();
+            }
+            anim.speed = 1;
+        }
+        else
+        {
+            agent.transform.position = target;
+            isArrived = true;
+            agent.Stop();
         }
     }
 

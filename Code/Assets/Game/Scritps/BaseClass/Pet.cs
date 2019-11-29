@@ -1,5 +1,6 @@
 ﻿using Mage.Models;
 using UnityEngine;
+using PolyNav;
 
 [System.Serializable]
 public class Pet : BaseModel

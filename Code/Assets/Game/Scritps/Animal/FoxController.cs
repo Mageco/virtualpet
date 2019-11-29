@@ -49,11 +49,14 @@ public class FoxController : AnimalController
 
 
     void OnMouseUp(){
+       
         if(state == AnimalState.Seek){
+             agent.Stop();
             Debug.Log("Hit");
             isAbort = true;
             state = AnimalState.Hit;
         }else if(state == AnimalState.Run){
+             agent.Stop();
             state = AnimalState.Hit_Grab;
             isAbort = true;
         }
@@ -101,22 +104,17 @@ public class FoxController : AnimalController
                 if(target.state == AnimalState.Cached || target.state == AnimalState.Hold){
                     GetTarget();
                 }
-                if(target.transform.position.x > this.transform.position.x){
-                    SetDirection(Direction.R);
-                }else
-                    SetDirection(Direction.L);
+
                 anim.Play("Seek_" + direction.ToString(),0);   
-                Vector3 d = Vector3.Normalize(target.transform.position - this.transform.position);
-                this.transform.position += d * speed * Time.deltaTime;
-                yield return new WaitForEndOfFrame(); 
+                agent.SetDestination(target.transform.position);
+                yield return StartCoroutine(Wait(0.1f)); 
                 if(!isAbort  && Vector2.Distance(this.transform.position,target.transform.position) < 1f && target.state != AnimalState.Cached && target.state != AnimalState.Hold){
-                    
                     state = AnimalState.Run;
+                    agent.Stop();
                     target.OnCached();
                     Minigame.instance.UpdateLive();
                     isAbort = true;
                 }
-
             }
         }
         CheckAbort();
@@ -145,6 +143,7 @@ public class FoxController : AnimalController
     IEnumerator Flee()
     {    
         speed = Random.Range(maxSpeed,maxSpeed*1.3f);
+        agent.maxSpeed = this.speed;
         if(originalPosition.x > this.transform.position.x){
             SetDirection(Direction.R);
         }else
@@ -173,10 +172,13 @@ public class FoxController : AnimalController
     }
 
     void GetTarget(){
+        float l = 1000;
         for(int i=0;i<targets.Length;i++){
             if(targets[i].state != AnimalState.Cached){
-                target = targets[i];
-                return;
+                if(Vector2.Distance(this.transform.position,targets[i].transform.position) < l){
+                    target = targets[i];
+                    l = Vector2.Distance(this.transform.position,targets[i].transform.position);
+                }
             }
         }
     }

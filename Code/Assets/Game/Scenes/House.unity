@@ -2846,10 +2846,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f01b895e078212419b3a7c52085d19e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  generateOnUpdate: 1
-  navObstacles: []
-  inflateRadius: 0.1
-  regenerateFlag: 1
+  obstaclesMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  autoRegenerateInterval: 60
+  radiusOffset: 0.1
+  invertMasterPolygon: 0
 --- !u!1 &1632503734
 GameObject:
   m_ObjectHideFlags: 0
@@ -6816,7 +6818,7 @@ PrefabInstance:
     - target: {fileID: 7629980631625239534, guid: da4a7d975ac124a23850b2bb20c236a9,
         type: 3}
       propertyPath: addExp
-      value: 0
+      value: 200
       objectReference: {fileID: 0}
     - target: {fileID: 7629980631625239534, guid: da4a7d975ac124a23850b2bb20c236a9,
         type: 3}

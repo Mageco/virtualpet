@@ -1,9 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using PolyNav;
 
 public class CharMinigame1 : CharController
 {
+    float timeCheck = 0;
+    float maxTimeCheck = 0.1f;
+    bool isStart = false;
     protected override void CalculateData()
     {
         data.Sleep -= data.sleepConsume;
@@ -13,7 +17,12 @@ public class CharMinigame1 : CharController
         else if (actionType == ActionType.Rest)
             data.actionEnergyConsume = 0.1f;
 
+
         data.Energy -= data.basicEnergyConsume + data.actionEnergyConsume;
+        if(data.Food > 0){
+            data.Food -= 0.2f;
+            data.Energy += 0.2f;
+        }
 
     }
 
@@ -32,15 +41,37 @@ public class CharMinigame1 : CharController
         CheckAnimal();
         if(animalTargets.Count > 0)
         {
+            isStart = true;
             actionType = ActionType.Patrol;
         }else 
             actionType = ActionType.Rest;
     }
 
+     protected override void CalculateDirection(){
+        if (agent.transform.eulerAngles.z < 30f && agent.transform.eulerAngles.z > -30f || (agent.transform.eulerAngles.z > 330f && agent.transform.eulerAngles.z < 390f) || (agent.transform.eulerAngles.z < -330f && agent.transform.eulerAngles.z > -390f))
+            direction = Direction.U;
+        else if ((agent.transform.eulerAngles.z > 30f && agent.transform.eulerAngles.z < 80f) || (agent.transform.eulerAngles.z > -330f && agent.transform.eulerAngles.z < -280f))
+            direction = Direction.LU;
+        else if ((agent.transform.eulerAngles.z >= 80f && agent.transform.eulerAngles.z <= 150f) || (agent.transform.eulerAngles.z >= -280f && agent.transform.eulerAngles.z <= -210f))
+            direction = Direction.LD;
+        else if ((agent.transform.eulerAngles.z <= -30f && agent.transform.eulerAngles.z >= -80f) || (agent.transform.eulerAngles.z >= 280f && agent.transform.eulerAngles.z <= 330f))
+            direction = Direction.RU;
+        else if ((agent.transform.eulerAngles.z <= -80 && agent.transform.eulerAngles.z >= -150) || (agent.transform.eulerAngles.z >= 210f && agent.transform.eulerAngles.z <= 280f))
+            direction = Direction.RD;
+        else
+            direction = Direction.D;
+
+        if(timeCheck > maxTimeCheck){
+            CheckAnimal();
+            timeCheck = 0;
+        }else
+            timeCheck += Time.deltaTime;
+    }
+
     protected override void Load(){
         LoadAnimal();
-        this.data.speed = 20;
-        this.agent.speed = 20;
+        //this.data.speed = 20;
+        this.agent.maxSpeed = data.speed;
     }
 
     public override void OnHold(){
@@ -53,7 +84,7 @@ public class CharMinigame1 : CharController
         isAbort = false;
         if (agent == null)
             return;
-        agent.Stop();
+        //agent.Stop();
         if (actionType == ActionType.Rest)
         {
             StartCoroutine(Rest());
@@ -74,12 +105,10 @@ public class CharMinigame1 : CharController
     {
         isArrived = false;
         float time = 1;
-        animalTarget = GetTarget();
         while (!isArrived && !isAbort)
         {
             if(time > 0.1f)
             {
-                animalTarget = GetTarget();
                 agent.SetDestination(animalTarget.transform.position);
                 time = 0;
             }else
@@ -89,7 +118,7 @@ public class CharMinigame1 : CharController
             
             anim.Play("Run_Angry_" + this.direction.ToString(), 0);
 
-            if(Vector2.Distance(this.transform.position,animalTarget.transform.position) < 10f){
+            if(Vector2.Distance(this.transform.position,animalTarget.transform.position) < 5f){
                 isArrived = true;
                 agent.Stop();
                 anim.Play("Bark_Angry_" +direction.ToString(),0);
@@ -105,26 +134,22 @@ public class CharMinigame1 : CharController
 
     IEnumerator Rest()
     {
-        if(Minigame.instance != null && Minigame.instance.live < Minigame.instance.maxLive)
+        if(isStart)
         {
+            target = GetChiken().transform.position;  
+            anim.Play("Run_Angry_" + this.direction.ToString(), 0);
+            yield return StartCoroutine(MoveToPoint());    
             anim.Play("Idle_Angry_" + direction.ToString());
-            yield return StartCoroutine(Wait(Random.Range(0.1f,0.5f)));
+            yield return StartCoroutine(Wait(Random.Range(0.5f,1f)));
         }else
         {
             int ran = Random.Range(0,100);
 
-            if(ran < 10){
-                anim.Play("Lay_LD", 0);
-                 yield return StartCoroutine(Wait(Random.Range(0.4f,0.6f)));
-            }    
-            else if(ran < 20){
+            if(ran < 30){
                 anim.Play("Idle_"+direction.ToString(), 0);
                  yield return StartCoroutine(Wait(Random.Range(0.4f,0.6f)));
             }
-            else if(ran < 30){
-                anim.Play("Idle_Sit_D", 0);
-                 yield return StartCoroutine(Wait(Random.Range(0.4f,0.6f)));
-            } else if(ran < 40){
+            else if(ran < 60){
                 anim.Play("BathStart_D", 0);
                  yield return StartCoroutine(Wait(Random.Range(0.4f,0.6f)));
             }else
@@ -139,31 +164,22 @@ public class CharMinigame1 : CharController
 
 
     void CheckAnimal(){
-        if(animals.Length ==0)
-            LoadAnimal();
-        animalTargets.Clear();
-        for(int i=0;i<animals.Length;i++){
-            if(Minigame.instance.IsInBound(animals[i].transform.position) && (animals[i].tag == "Animal")){
-                animalTargets.Add(animals[i]);
-            }
-        }
-    }
-
-    AnimalController GetTarget(){
-        if(animals.Length ==0){
-            LoadAnimal();
-            CheckAnimal();
-        }
-           
+        LoadAnimal();
+        animalTarget = null;
         float l = 1000;
-        int id = 0;
-        for(int i=0;i<animalTargets.Count;i++){
-            if(l > Vector2.Distance(this.transform.position,animalTargets[i].transform.position)){
-                id = i;
-                l = Vector2.Distance(this.transform.position,animalTargets[i].transform.position);
+        for(int i=0;i<animals.Length;i++){
+            if(Minigame.instance.IsInBound(animals[i].transform.position) && (animals[i].tag == "Animal") && animals[i].state != AnimalState.Flee){
+                animalTarget = animals[i];
+                break;
             }
         }
-        return animalTargets[id];
+        if(animalTarget != null && actionType == ActionType.Rest){
+            isAbort = true;
+            actionType = ActionType.Patrol;
+        }else if(animalTarget == null && actionType == ActionType.Patrol){
+            isAbort = true;
+            actionType = ActionType.Rest;
+        }
     }
 
     void LoadAnimal(){
@@ -179,7 +195,8 @@ public class CharMinigame1 : CharController
 
     IEnumerator Tired()
     {
-        UIManager.instance.OnQuestNotificationPopup("Chó của bạn cần nghỉ ngơi để lấy lại sức");
+        if(UIManager.instance != null)
+            UIManager.instance.OnQuestNotificationPopup("Chó của bạn cần nghỉ ngơi để lấy lại sức");
         anim.Play("Idle_Tired_D",0);
         while (data.energy > data.maxEnergy * 0.4f && !isAbort)
         {
