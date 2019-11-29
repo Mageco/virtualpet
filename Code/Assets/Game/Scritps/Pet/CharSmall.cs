@@ -186,10 +186,10 @@ public class CharSmall : CharController
             }
             yield return new WaitForEndOfFrame();
         }
-
+        GameManager.instance.ResetCameraTarget();
         yield return StartCoroutine(Wait(maxTime));
 
-        GameManager.instance.ResetCameraTarget();
+        
         if(!isAbort){
             CheckEnviroment();
         }        

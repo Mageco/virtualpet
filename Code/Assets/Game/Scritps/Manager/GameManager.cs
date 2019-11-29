@@ -56,11 +56,15 @@ public class GameManager : MonoBehaviour
             ApiManager.GetInstance().AddItem(2);
             ApiManager.GetInstance().AddItem(11);                
             ApiManager.GetInstance().AddItem(8);
+            ApiManager.GetInstance().AddItem(41);
+            ApiManager.GetInstance().AddItem(58);
             ApiManager.GetInstance().EquipItem(2);
             ApiManager.GetInstance().EquipItem(11);                
             ApiManager.GetInstance().EquipItem(8);
             ApiManager.GetInstance().AddItem(4);
             ApiManager.GetInstance().EquipItem(4); 
+            ApiManager.GetInstance().EquipItem(41);
+            ApiManager.GetInstance().EquipItem(58);
         }
         #endif
 

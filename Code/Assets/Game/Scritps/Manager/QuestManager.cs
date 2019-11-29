@@ -85,6 +85,8 @@ public class QuestManager : MonoBehaviour
             GameManager.instance.GetPet(0).sleep = 40;
             yield return new WaitForSeconds(2);
             GameManager.instance.SetCameraTarget(GameManager.instance.GetPetObject(0).gameObject);
+            yield return new WaitForEndOfFrame();
+            GameManager.instance.ResetCameraTarget();
         }else if(GameManager.instance.questId == 2){
             
         }else if(GameManager.instance.questId == 3){

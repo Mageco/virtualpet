@@ -100,8 +100,10 @@ public class ItemManager : MonoBehaviour
             ItemObject item = AddItem(adds[i]);
             GameManager.instance.SetCameraTarget(item.transform.GetChild(0).gameObject);
         }
+        
         yield return new WaitForSeconds(2);
         GameManager.instance.ResetCameraTarget();
+        
     }
 
     public void LoadItems()

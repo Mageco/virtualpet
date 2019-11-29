@@ -146,7 +146,7 @@ public class Pet : BaseModel
 		if(GameManager.instance.gameType == GameType.Minigame1){
 			url = DataHolder.GetPet(iD).petMiniGame1.Replace("Assets/Game/Resources/", "");
 		}
-        else if (level >= 5)
+        else if (level >= 6)
         {
             url = DataHolder.GetPet(iD).petBig.Replace("Assets/Game/Resources/", "");
         }

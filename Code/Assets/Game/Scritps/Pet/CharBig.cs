@@ -474,7 +474,7 @@ public class CharBig : CharController
             }
             yield return new WaitForEndOfFrame();
         }
-
+        GameManager.instance.ResetCameraTarget();
         yield return StartCoroutine(Wait(maxTime));
         if (data.Health < data.maxHealth * 0.1f)
         {
@@ -486,7 +486,7 @@ public class CharBig : CharController
                 CheckEnviroment();
             }
         }
-        GameManager.instance.ResetCameraTarget();
+        
 
         CheckAbort();
     }

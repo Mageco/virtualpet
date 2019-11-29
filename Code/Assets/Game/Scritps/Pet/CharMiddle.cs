@@ -376,7 +376,7 @@ public class CharMiddle : CharController
             }
             yield return new WaitForEndOfFrame();
         }
-
+        GameManager.instance.ResetCameraTarget();
         yield return StartCoroutine(Wait(maxTime));
         if (data.Health < data.maxHealth * 0.1f)
         {
@@ -388,7 +388,7 @@ public class CharMiddle : CharController
                 CheckEnviroment();
             }
         }
-        GameManager.instance.ResetCameraTarget();
+       
         CheckAbort();
     }
 
@@ -678,7 +678,7 @@ public class CharMiddle : CharController
         Debug.Log("Level Up" + data.level);
         yield return StartCoroutine(DoAnim("LevelUp_LD"));
 
-        if (data.level >= 5){
+        if (data.level >= 6){
             GrowUp();
             data.Load();
         }

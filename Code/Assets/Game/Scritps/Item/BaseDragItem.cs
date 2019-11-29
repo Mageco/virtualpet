@@ -150,16 +150,6 @@ public class BaseDragItem : MonoBehaviour
 		if (pos2.y < -20)
 			pos2.y = -20;
 		dropPosition = pos2;
-
-		for (int i = 0; i < hit.Length; i++)
-		{
-			if (hit[i].collider.tag == "Table")
-			{
-				pos2.y = hit[i].collider.transform.position.y;
-				dropPosition = pos2 + new Vector3(0, 0.5f, 0);
-				break;
-			}
-		}
         state = ItemDragState.Fall;
     }
 

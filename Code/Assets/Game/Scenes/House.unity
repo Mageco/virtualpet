@@ -2315,7 +2315,7 @@ Camera:
   far clip plane: 10000
   field of view: 2.3
   orthographic: 1
-  orthographic size: 30
+  orthographic size: 24
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -3530,18 +3530,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1302946841}
-        m_MethodName: OnProfilePanel
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!1 &2085501194
 GameObject:
   m_ObjectHideFlags: 0
@@ -5882,6 +5871,16 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: OnEventPanel
       objectReference: {fileID: 0}
+    - target: {fileID: 2158795675072036378, guid: 531c60c75f799384984165f78ba93908,
+        type: 3}
+      propertyPath: m_Name
+      value: Achivement
+      objectReference: {fileID: 0}
+    - target: {fileID: 2158795675072036378, guid: 531c60c75f799384984165f78ba93908,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 4717822894845026036, guid: 531c60c75f799384984165f78ba93908, type: 3}
     - {fileID: 5510129514890209030, guid: 531c60c75f799384984165f78ba93908, type: 3}
@@ -6817,7 +6816,7 @@ PrefabInstance:
     - target: {fileID: 7629980631625239534, guid: da4a7d975ac124a23850b2bb20c236a9,
         type: 3}
       propertyPath: addExp
-      value: 100
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7629980631625239534, guid: da4a7d975ac124a23850b2bb20c236a9,
         type: 3}

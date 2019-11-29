@@ -84,7 +84,7 @@ public class EatItem : MonoBehaviour
 		if (isDrag && !isDragable)
 			StartCoroutine (ReturnPosition (lastPosition));
 		isDrag = false;
-		//InputController.instance.ResetCameraTarget();
+		GameManager.instance.ResetCameraTarget();
 
 		if (isClick) {
 			if (time > maxDoubleClickTime) {
@@ -124,7 +124,7 @@ public class EatItem : MonoBehaviour
 		isDrag = true;
 		lastPosition = this.transform.position;
 
-		//InputController.instance.cameraController.SetTarget (this.gameObject);
+		GameManager.instance.SetCameraTarget(this.gameObject);
 	}
 
 	IEnumerator ReturnPosition(Vector3 pos)

@@ -342,6 +342,9 @@ public class CharController : MonoBehaviour
 
     protected void OnBath()
     {
+        if(data.GetSkillProgress(SkillType.Bath) == 0){
+            UIManager.instance.OnQuestNotificationPopup("Bạn có thể dùng xà bông và vòi hoa sen để tắm cho thú cưng");
+        }
         Abort();
         SetDirection(Direction.D);
         actionType = ActionType.Bath;
@@ -729,7 +732,7 @@ public class CharController : MonoBehaviour
         currentSkill = type;
         //skillLearnEffect.SetActive(true);
         ItemManager.instance.ActivateSkillItems(type);
-        if(data.GetSkillProgress(type) == 1){
+        if(data.GetSkillProgress(type) == 0){
             if(type == SkillType.Bath){
                 UIManager.instance.OnQuestNotificationPopup("Thú cưng cửa bạn không phải lúc nào cũng muốn tắm, hãy kiên trì nhé, bạn thú cưng sẽ quen dần!");
             }else if(type == SkillType.Sleep){
@@ -749,10 +752,8 @@ public class CharController : MonoBehaviour
     }
     public void LevelUpSkill(SkillType type){
         data.LevelUpSkill(type);
-        if(data.SkillLearned(currentSkill))
-            UIManager.instance.OnSkillCompletePanel(currentSkill);
-        
-       
+        //if(data.SkillLearned(currentSkill))
+        //    UIManager.instance.OnSkillCompletePanel(currentSkill);
         OffLearnSkill();
         Abort();
         actionType = ActionType.SkillUp;
