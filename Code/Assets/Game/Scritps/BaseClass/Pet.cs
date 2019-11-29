@@ -38,7 +38,6 @@ public class Pet : BaseModel
 	public float shit = 0;
 	public float pee = 0;
 	public float happy = 50;
-	
 	public float dirty = 50;
 	public float itchi = 50;
 	public float fear = 0;
@@ -151,7 +150,7 @@ public class Pet : BaseModel
         {
             url = DataHolder.GetPet(iD).petBig.Replace("Assets/Game/Resources/", "");
         }
-        else if (level >= 2 )
+        else if (level >= 3 )
         {
             url = DataHolder.GetPet(iD).petMiddle.Replace("Assets/Game/Resources/", "");
         }
@@ -443,6 +442,8 @@ public class Pet : BaseModel
 				level ++;
 				e = 10 * level + 10 * level * level;
 			}
+			maxEnergy = 100 + level;
+			strength = 100 + level;
 			if(level > temp){
 				if(character != null){
 					character.OnLevelUp();
@@ -451,6 +452,34 @@ public class Pet : BaseModel
 				//	Load();	
 			}
 		}	
+	}
+
+	public float Intelligent
+	{
+		get
+		{
+			float s = intelligent;
+			for(int i=0;i<skills.Length;i++){
+				s += skills[i];
+			}
+			return s + level/2;
+		}
+		set
+		{
+			this.intelligent = value;
+		}
+	}
+
+	public float Speed
+	{
+		get
+		{
+			return Mathf.Clamp(this.speed + level/2,0,40);
+		}
+		set
+		{
+			this.speed = value;
+		}
 	}
 
 	public int GetSkillProgress(SkillType type){

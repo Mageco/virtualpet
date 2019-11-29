@@ -22,6 +22,8 @@ public class GameManager : MonoBehaviour
     public int[] gameLevels = new int[1];
     public GameObject expPrefab;
 
+    public bool isTest = false;
+
     void Awake()
     {
         if (instance == null)
@@ -49,15 +51,19 @@ public class GameManager : MonoBehaviour
         //ApiManager.GetInstance().EquipItem(56);
         ApiManager.GetInstance().EquipItem(57);
 
-        /*
-        ApiManager.GetInstance().AddItem(2);
-        ApiManager.GetInstance().AddItem(11);                
-        ApiManager.GetInstance().AddItem(8);
-        ApiManager.GetInstance().EquipItem(2);
-        ApiManager.GetInstance().EquipItem(11);                
-        ApiManager.GetInstance().EquipItem(8);
-        ApiManager.GetInstance().AddItem(4);
-        ApiManager.GetInstance().EquipItem(4); */
+        #if UNITY_EDITOR
+        if(isTest){
+            ApiManager.GetInstance().AddItem(2);
+            ApiManager.GetInstance().AddItem(11);                
+            ApiManager.GetInstance().AddItem(8);
+            ApiManager.GetInstance().EquipItem(2);
+            ApiManager.GetInstance().EquipItem(11);                
+            ApiManager.GetInstance().EquipItem(8);
+            ApiManager.GetInstance().AddItem(4);
+            ApiManager.GetInstance().EquipItem(4); 
+        }
+        #endif
+
     }
 
     private void Start() {

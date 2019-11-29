@@ -202,7 +202,24 @@ public class CharController : MonoBehaviour
         if (actionType == ActionType.None && charInteract.interactType == InteractType.None)
         {
             Debug.Log("Think");
-            Think();
+            if (enviromentType == EnviromentType.Bath)
+            {
+                OnBath();
+            }
+            else if (enviromentType == EnviromentType.Table)
+            {
+                OnTable();
+            }
+            else if (enviromentType == EnviromentType.Bed)
+            {
+                OnBed();
+            }
+            else if (enviromentType == EnviromentType.Toilet)
+            {
+                OnToilet();
+            }else{
+                Think();                
+            }
             DoAction();
             LogAction();
         }
@@ -710,10 +727,19 @@ public class CharController : MonoBehaviour
 
     public void OnLearnSkill(SkillType type){
         currentSkill = type;
-        skillLearnEffect.SetActive(true);
+        //skillLearnEffect.SetActive(true);
         ItemManager.instance.ActivateSkillItems(type);
-        if(data.GetSkillProgress(type) == 1)
-            UIManager.instance.OnQuestNotificationPopup("Bạn có thể dậy cho thú cưng kỹ năng rồi đấy, Hãy bế chó vào vị trí như chỉ dẫn");
+        if(data.GetSkillProgress(type) == 1){
+            if(type == SkillType.Bath){
+                UIManager.instance.OnQuestNotificationPopup("Thú cưng cửa bạn không phải lúc nào cũng muốn tắm, hãy kiên trì nhé, bạn thú cưng sẽ quen dần!");
+            }else if(type == SkillType.Sleep){
+                UIManager.instance.OnQuestNotificationPopup("Ngủ đúng chỗ sẽ có giấc ngủ ngon hơn và được nhiều điểm kinh nghiệm hơn, hãy huấn luyện thú cưng của bạn nhé!");
+            }else if(type == SkillType.Toilet){
+                UIManager.instance.OnQuestNotificationPopup("Đi ị và tè không đúng chỗ sẽ rất bẩn đấy, hãy huấn luyện chó của bạn dần nhé!");
+            }else if(type == SkillType.Table){
+                UIManager.instance.OnQuestNotificationPopup("Nhảy trên cao xuống có thể sẽ bị chấn thương đấy bạn cần huấn luyện nhé!");
+            }
+        }   
     }
 
     public void OffLearnSkill(){
@@ -726,10 +752,6 @@ public class CharController : MonoBehaviour
         if(data.SkillLearned(currentSkill))
             UIManager.instance.OnSkillCompletePanel(currentSkill);
         
-        if(data.GetSkillProgress(type) == 1)
-            UIManager.instance.OnQuestNotificationPopup("Bạn đã hoàn thành được 1 điểm kỹ năng hãy tiếp tục nhé");
-        else if(data.GetSkillProgress(type) == 5)
-            UIManager.instance.OnQuestNotificationPopup("Cố lên bạn sắp hoàn thành rồi");
        
         OffLearnSkill();
         Abort();

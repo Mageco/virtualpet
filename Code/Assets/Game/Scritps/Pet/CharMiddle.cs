@@ -461,6 +461,7 @@ public class CharMiddle : CharController
         }
 
         if(enviromentType == EnviromentType.Toilet && !isAbort){
+            GameManager.instance.AddExp(5);
             yield return StartCoroutine(JumpDown(5,5,30));     
         }
         
@@ -492,6 +493,7 @@ public class CharMiddle : CharController
         }
 
         if(enviromentType == EnviromentType.Toilet && !isAbort){
+            GameManager.instance.AddExp(5);
             yield return StartCoroutine(JumpDown(5,5,30));     
         }
         CheckAbort();
@@ -524,6 +526,7 @@ public class CharMiddle : CharController
                         canEat = false;
                     yield return new WaitForEndOfFrame();
                 }
+                GameManager.instance.AddExp(5);
             }else{
                 yield return DoAnim("Bark_" + direction.ToString());
             }
@@ -561,6 +564,7 @@ public class CharMiddle : CharController
                         canDrink = false;
                     yield return new WaitForEndOfFrame();
                 }
+                GameManager.instance.AddExp(5);
             }else{
                 yield return DoAnim("Bark_" + direction.ToString());
             }
@@ -571,7 +575,7 @@ public class CharMiddle : CharController
     IEnumerator Bed()
     {
         int ran = Random.Range(0,100);
-        if(ran < data.GetSkillProgress(SkillType.Sleep) * 10){
+        if(ran < 50 + data.GetSkillProgress(SkillType.Sleep) * 5){
             if(data.sleep < 0.3f*data.maxSleep){
                 actionType = ActionType.Sleep;
                 Abort();
@@ -615,7 +619,8 @@ public class CharMiddle : CharController
         
 
         if(enviromentType == EnviromentType.Bed && !isAbort){
-             yield return StartCoroutine(JumpDown(7,5,30));
+            GameManager.instance.AddExp(5);
+            yield return StartCoroutine(JumpDown(7,5,30));
         }
 
         CheckAbort();

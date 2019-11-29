@@ -8,6 +8,7 @@ public class CharSmall : CharController
     {
         data.Sleep -= data.sleepConsume;
         data.Food -= 0.05f;
+        data.energy += 0.05f;
     }
 
     #region Thinking
@@ -109,7 +110,6 @@ public class CharSmall : CharController
             agent.transform.position = pos;
 
             this.transform.rotation = Quaternion.Lerp(this.transform.rotation, Quaternion.identity, Time.deltaTime * 2);
-            Debug.Log("Drag");
             yield return new WaitForEndOfFrame();
         }
 
@@ -203,6 +203,7 @@ public class CharSmall : CharController
         while (!isAbort && data.Food < 0.95f * data.maxFood)
         {
             data.Food += 0.2f;
+            data.Sleep -= 0.1f;
             yield return new WaitForEndOfFrame();
         }
         GameManager.instance.AddExp(5);
@@ -216,10 +217,10 @@ public class CharSmall : CharController
         
         while (!isAbort && data.Sleep < 0.9f * data.maxSleep)
         {
-            data.Sleep += 0.2f;
+            data.Sleep += 0.1f;
+            data.Food -= 0.1f;
             yield return new WaitForEndOfFrame();
         }
-        GameManager.instance.AddExp(5);
         CheckAbort();
     }
 
@@ -250,8 +251,8 @@ public class CharSmall : CharController
         {
             anim.Play("Sleep_LD", 0);
             while(!isAbort && data.sleep < 0.9f*data.maxSleep){
-                data.Sleep += 0.1f;
-                Debug.Log(isAbort + "   " + actionType);
+                data.Sleep += 0.2f;
+                data.Food -= 0.2f;
                 yield return new WaitForEndOfFrame();
             }
             GameManager.instance.AddExp(5);
@@ -270,7 +271,7 @@ public class CharSmall : CharController
         Debug.Log("Level Up" + data.level);
         yield return StartCoroutine(DoAnim("LevelUp_LD"));
 
-        if (data.level >= 2){
+        if (data.level >= 3){
             GrowUp();
             data.Load();
         }
