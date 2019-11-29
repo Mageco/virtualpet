@@ -26,10 +26,17 @@ public class MilkItem : BaseDragItem
         {
             pet.OnEat();
             eated = true;
+            GameManager.instance.ResetCameraTarget();
+            this.transform.position = new Vector3(1000,1000,0);
+            Invoke("OnReturn",5);
         }
-        GameManager.instance.ResetCameraTarget();
-       ApiManager.GetInstance().RemoveItem(item.itemID);
-        Destroy(this.transform.parent.gameObject);
+    }
+
+    void OnReturn(){
+        state = ItemDragState.None;
+        anim.Play("Idle");
+        eated = false;
+        this.transform.position = originalPosition;
     }
 
     protected override void OnHit()

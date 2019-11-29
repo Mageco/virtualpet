@@ -21,7 +21,7 @@ public class QuestPanel : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        GameManager.instance.OffCameraFollow();
+
     }
 
     public void Load(int id)
@@ -93,6 +93,5 @@ public class QuestPanel : MonoBehaviour
         this.GetComponent<Popup>().Close();
         yield return new WaitForSeconds(0.1f);
         QuestManager.instance.EndCompleteQuest();
-        GameManager.instance.OnCameraFollow();
     }
 }

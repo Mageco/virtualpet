@@ -7,6 +7,7 @@ public class CharSmall : CharController
     protected override void CalculateData()
     {
         data.Sleep -= data.sleepConsume;
+        data.Food -= 0.05f;
     }
 
     #region Thinking
@@ -50,13 +51,16 @@ public class CharSmall : CharController
             StartCoroutine(LevelUp());
         }else if(actionType == ActionType.OnBed){
             StartCoroutine(Bed());
+        }else if(actionType == ActionType.Eat){
+            StartCoroutine(Eat());
         }
     }
     #endregion
 
 
     public override void OnEat(){
-        StartCoroutine(Eat());
+        actionType = ActionType.Eat;
+        isAbort = true;
     }
 
     public override void OnMouse(){
@@ -105,6 +109,7 @@ public class CharSmall : CharController
             agent.transform.position = pos;
 
             this.transform.rotation = Quaternion.Lerp(this.transform.rotation, Quaternion.identity, Time.deltaTime * 2);
+            Debug.Log("Drag");
             yield return new WaitForEndOfFrame();
         }
 
@@ -200,6 +205,7 @@ public class CharSmall : CharController
             data.Food += 0.2f;
             yield return new WaitForEndOfFrame();
         }
+        GameManager.instance.AddExp(5);
         CheckAbort();
     }
 
@@ -207,12 +213,13 @@ public class CharSmall : CharController
     IEnumerator Sleep()
     {
         anim.Play("Sleep_LD" , 0);
-
+        
         while (!isAbort && data.Sleep < 0.9f * data.maxSleep)
         {
             data.Sleep += 0.2f;
             yield return new WaitForEndOfFrame();
         }
+        GameManager.instance.AddExp(5);
         CheckAbort();
     }
 
@@ -239,12 +246,15 @@ public class CharSmall : CharController
 
     IEnumerator Bed()
     {
-        if(data.food > data.maxFood * 0.9f || data.sleep < data.maxSleep * 0.5f)
+        if(data.Food > data.maxFood * 0.9f || data.Sleep < data.maxSleep * 0.5f)
         {
             anim.Play("Sleep_LD", 0);
             while(!isAbort && data.sleep < 0.9f*data.maxSleep){
+                data.Sleep += 0.1f;
+                Debug.Log(isAbort + "   " + actionType);
                 yield return new WaitForEndOfFrame();
             }
+            GameManager.instance.AddExp(5);
         }else
         {
             anim.Play("Lay_LD", 0);

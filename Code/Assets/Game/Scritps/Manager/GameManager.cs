@@ -39,13 +39,15 @@ public class GameManager : MonoBehaviour
     public void LoadNewUserData()
     {
         ApiManager.GetInstance().AddItem(17);
-        ApiManager.GetInstance().AddItem(56);
+        //ApiManager.GetInstance().AddItem(56);
+        ApiManager.GetInstance().AddItem(57);
         ApiManager.GetInstance().AddDiamond(5);
         ApiManager.GetInstance().AddCoin(0);
         ApiManager.GetInstance().AddPet(0);
         ApiManager.GetInstance().EquipPet(0);
         ApiManager.GetInstance().EquipItem(17);        
-        ApiManager.GetInstance().EquipItem(56);
+        //ApiManager.GetInstance().EquipItem(56);
+        ApiManager.GetInstance().EquipItem(57);
 
         /*
         ApiManager.GetInstance().AddItem(2);
@@ -140,7 +142,6 @@ public class GameManager : MonoBehaviour
             camera = Camera.main.GetComponent<CameraController>();
         if(camera != null){
             camera.SetTarget(t);
-            camera.isFollow = true;
         }
             
     }
@@ -149,23 +150,9 @@ public class GameManager : MonoBehaviour
         if(camera == null)
             camera = Camera.main.GetComponent<CameraController>();
         if(camera != null)
-            camera.isFollow = false;
+            camera.target = null;
     }
 
-    public void OffCameraFollow(){
-        if(camera == null)
-            camera = Camera.main.GetComponent<CameraController>();
-        if(camera != null)
-            camera.isFollow = false;
-    }
-
-
-    public void OnCameraFollow(){
-        if(camera == null)
-            camera = Camera.main.GetComponent<CameraController>();
-        if(camera != null)
-            camera.isFollow = true;
-    }
 
     public void OnEvent(){
         MageManager.instance.LoadSceneWithLoading("Minigame1");

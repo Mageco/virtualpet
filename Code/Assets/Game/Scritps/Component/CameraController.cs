@@ -26,8 +26,6 @@ public class CameraController : MonoBehaviour
 	public Vector2 boundX;
 	public Vector2 boundY;
 
-	public bool isFollow = true;
-
 	public void SetTarget(GameObject t)
 	{
 		this.target = t.transform;
@@ -103,7 +101,7 @@ public class CameraController : MonoBehaviour
 
 		Camera.main.orthographicSize = Mathf.Lerp (Camera.main.orthographicSize, orthographicsize, damping * Time.deltaTime);
 
-		if(isFollow){
+
 			if (this.target) {
 
 				if (isBound) {
@@ -117,18 +115,18 @@ public class CameraController : MonoBehaviour
 
 				}
 			}
-		}
-		else {
-			if (isBound) {
-				float x = this.transform.position.x;
-				float y = this.transform.position.y;
+		
+			else {
+				if (isBound) {
+					float x = this.transform.position.x;
+					float y = this.transform.position.y;
 
-				x = Mathf.Clamp (x, boundX.x + width,boundX.y - width);
-				y = Mathf.Clamp (y, boundY.x + height, boundY.y - height);
+					x = Mathf.Clamp (x, boundX.x + width,boundX.y - width);
+					y = Mathf.Clamp (y, boundY.x + height, boundY.y - height);
 
-				this.transform.position = new Vector3 (x, y, this.transform.position.z);
+					this.transform.position = new Vector3 (x, y, this.transform.position.z);
 
+				}
 			}
-		}
 	}
 }

@@ -190,7 +190,7 @@ public class CharController : MonoBehaviour
     #region Update
 
     // Update is called once per frame
-    void FixedUpdate()
+    void LateUpdate()
     {
         if(GameManager.instance.isPause)
             return;
@@ -199,8 +199,9 @@ public class CharController : MonoBehaviour
             return;
 
         //Debug.Log(actionType.ToString() + "  " + charInteract.interactType.ToString());
-        if (actionType == ActionType.None)
+        if (actionType == ActionType.None && charInteract.interactType == InteractType.None)
         {
+            Debug.Log("Think");
             Think();
             DoAction();
             LogAction();
@@ -461,12 +462,7 @@ public class CharController : MonoBehaviour
     public virtual void OnLevelUp()
     {
         Abort();
-        if(actionType == ActionType.None)
-        {
-            actionType = ActionType.LevelUp;
-            DoAction();
-        }else
-            actionType = ActionType.LevelUp;
+        actionType = ActionType.LevelUp;
     }
 
     #endregion

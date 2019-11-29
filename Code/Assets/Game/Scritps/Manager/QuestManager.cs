@@ -24,7 +24,7 @@ public class QuestManager : MonoBehaviour
 
     float fadeDuration = 1f;
 
-    bool isReplay = true;
+    bool isReplay = false;
 
     void Awake()
     {
@@ -67,7 +67,7 @@ public class QuestManager : MonoBehaviour
         }else if(GameManager.instance.questId == 13){
         }
 
-        isReplay = DataHolder.GetQuest(GameManager.instance.questId).isReplay;
+        //isReplay = DataHolder.GetQuest(GameManager.instance.questId).isReplay;
     }
 
     void PlayTip()
@@ -77,15 +77,15 @@ public class QuestManager : MonoBehaviour
 
     IEnumerator PlayTimeline()
     {
-        yield return new WaitForSeconds(1f + delayTime);
+        yield return new WaitForSeconds(delayTime);
         
 
         if(GameManager.instance.questId == 0){
-
+            GameManager.instance.SetCameraTarget(ItemManager.instance.GetItemChildObject(ItemType.Food));
         }else if(GameManager.instance.questId == 1){
-
+            GameManager.instance.GetPet(0).sleep = 40;
         }else if(GameManager.instance.questId == 2){
-            GameManager.instance.GetPet(0).sleep = 0;
+            
         }else if(GameManager.instance.questId == 3){
             GameManager.instance.GetPet(0).food = 10;  
             GameManager.instance.SetCameraTarget(ItemManager.instance.GetItemChildObject(ItemType.Food));
@@ -211,15 +211,15 @@ public class QuestManager : MonoBehaviour
         bool isComplete = false;
 
         if(GameManager.instance.questId == 0){
-            if(GameManager.instance.GetPetObject(0).actionType == ActionType.OnBed){
-                isComplete = true;
-            }
-        }else if(GameManager.instance.questId == 1){
             if(GameManager.instance.GetPet(0).food > 90){
                 isComplete = true;
             }
-        }else if(GameManager.instance.questId == 2){
+        }else if(GameManager.instance.questId == 1){
             if(GameManager.instance.GetPet(0).sleep >= 90){
+                isComplete = true;
+            }
+        }else if(GameManager.instance.questId == 2){
+            if(GameManager.instance.GetPet(0).level >= 2){
                 isComplete = true;
             }
         }else if(GameManager.instance.questId == 3){

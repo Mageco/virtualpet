@@ -18,7 +18,6 @@ public class SkillCompletePanel : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        GameManager.instance.OffCameraFollow();
     }
 
     public void Load(SkillType type)
