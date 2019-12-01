@@ -30,26 +30,26 @@ public class Minigame1 : Minigame
         base.Load();
         maxTime = 55 + gameLevel * 5;
         chickenSpawner.maxNumber = 5 + gameLevel/5;
-        chickenSpawner.speed = 10;
+        chickenSpawner.speed = 5;
 
         float addSpeed = gameLevel/2f;
         if(addSpeed > 10)
             addSpeed = 10;
 
         foxSpawner.maxNumber = 2 + gameLevel/5;
-        foxSpawner.speed = 10 + addSpeed/3f;
+        foxSpawner.speed = 12 + addSpeed/3f;
 
         if(gameLevel > 5){
             int n = gameLevel - 5;
             snakeSpawner.maxNumber = 2 + n/7;
-            snakeSpawner.speed = 10 + addSpeed/2f;
+            snakeSpawner.speed = 12 + addSpeed/2f;
         }else
             snakeSpawner.maxNumber = 0;
 
         if(gameLevel > 10){
             int n = gameLevel - 10;
             eagleSpawner.maxNumber = 2 + n/10;
-            eagleSpawner.speed = 10 + addSpeed;
+            eagleSpawner.speed = 15 + addSpeed;
         }else
             eagleSpawner.maxNumber = 0;
 
@@ -82,10 +82,13 @@ public class Minigame1 : Minigame
 
     protected override void Update(){
         base.Update();
-        float t = maxTime - time;
-        float m = (int)(t/60);
-        float s = (int)(t - m*60);
-        timeText.text  = m.ToString("00") + ":" + s.ToString("00");
+        if(!isEnd)
+        {
+            float t = maxTime - time;
+            float m = (int)(t/60);
+            float s = (int)(t - m*60);
+            timeText.text  = m.ToString("00") + ":" + s.ToString("00");
+        }
     }
 
     public override void EndGame(){

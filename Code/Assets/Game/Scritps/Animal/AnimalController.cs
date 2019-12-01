@@ -20,6 +20,7 @@ public class AnimalController : MonoBehaviour
     protected Direction direction = Direction.L;
 
     protected PolyNavAgent agent;
+    public List<GizmoPoint> fleePoints = new List<GizmoPoint>();
 
    void Awake()
     {
@@ -55,7 +56,8 @@ public class AnimalController : MonoBehaviour
         }
 
         CalculateDirection();
-        this.transform.position = agent.transform.position;
+        if(state != AnimalState.Hold)
+            this.transform.position = agent.transform.position;
     }
 
     protected virtual void CalculateDirection(){
@@ -137,8 +139,13 @@ public class AnimalController : MonoBehaviour
             }
             anim.speed = 1 + speed/maxSpeed;
 
+
             while (!isArrived && !isAbort)
             {
+                if(state == AnimalState.Flee)
+                    anim.Play("Flee_" + direction.ToString(),0);
+                else 
+                    anim.Play("Run_" + direction.ToString(),0);
                 yield return new WaitForEndOfFrame();
             }
             anim.speed = 1;

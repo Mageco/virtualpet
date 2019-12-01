@@ -57,6 +57,12 @@ public class AnimalSpawner : MonoBehaviour
             spawnPoints.RemoveAt(id1);
             AnimalController a = go.GetComponent<AnimalController>();
             a.maxSpeed = this.speed;
+            GizmoPoint[] temp = this.transform.GetComponentsInChildren<GizmoPoint>();
+            for(int i=0;i<temp.Length;i++){
+                a.fleePoints.Add(temp[i]);
+                Debug.Log(a.name);
+            }
+            
     }
 
     // Update is called once per frame

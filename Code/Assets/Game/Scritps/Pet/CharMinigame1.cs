@@ -14,20 +14,16 @@ public class CharMinigame1 : CharController
         data.actionEnergyConsume = 0;
         if (actionType == ActionType.Patrol)
             data.actionEnergyConsume = 1f;
-        else if (actionType == ActionType.Rest)
-            data.actionEnergyConsume = 0.1f;
 
-
-        data.Energy -= data.basicEnergyConsume + data.actionEnergyConsume;
-        if(data.Food > 0){
-            data.Food -= 0.2f;
-            data.Energy += 0.2f;
+        data.Energy -= data.actionEnergyConsume;
+        if(data.Food > 0 && actionType == ActionType.Tired){
+            data.Food -= 1f;
+            data.Energy += 2f;
         }
 
     }
 
     public AnimalController[] animals;
-    List<AnimalController> animalTargets = new List<AnimalController>();
     AnimalController animalTarget;
 
     #region Thinking
@@ -39,9 +35,8 @@ public class CharMinigame1 : CharController
         }
 
         CheckAnimal();
-        if(animalTargets.Count > 0)
+        if(animalTarget != null)
         {
-            isStart = true;
             actionType = ActionType.Patrol;
         }else 
             actionType = ActionType.Rest;
@@ -105,27 +100,27 @@ public class CharMinigame1 : CharController
     {
         isArrived = false;
         float time = 1;
-        while (!isArrived && !isAbort)
+        while (!isArrived && !isAbort && animalTarget != null)
         {
-            if(time > 0.1f)
-            {
+            //if(time > 0.1f)
+            //{
                 agent.SetDestination(animalTarget.transform.position);
-                time = 0;
-            }else
-            {
-                time += Time.deltaTime;
-            }
+            //    time = 0;
+            //}else
+            //{
+            //    time += Time.deltaTime;
+            //}
             
             anim.Play("Run_Angry_" + this.direction.ToString(), 0);
 
             if(Vector2.Distance(this.transform.position,animalTarget.transform.position) < 5f){
                 isArrived = true;
                 agent.Stop();
-                anim.Play("Bark_Angry_" +direction.ToString(),0);
                 animalTarget.OnFlee();
                 GameManager.instance.AddCoin(1);
                 GameManager.instance.AddExp(5);
-                yield return StartCoroutine(Wait(0.5f)); 
+                yield return StartCoroutine(DoAnim("Bark_Angry_" +direction.ToString())); 
+                animalTarget = null;
             }
             yield return new WaitForEndOfFrame();
         }
@@ -165,10 +160,15 @@ public class CharMinigame1 : CharController
 
     void CheckAnimal(){
         LoadAnimal();
+        if(animalTarget != null && Minigame.instance.IsInBound(animalTarget.transform.position))
+        {
+            isStart = true;
+            return;
+        }
         animalTarget = null;
-        float l = 1000;
         for(int i=0;i<animals.Length;i++){
             if(Minigame.instance.IsInBound(animals[i].transform.position) && (animals[i].tag == "Animal") && animals[i].state != AnimalState.Flee){
+                
                 animalTarget = animals[i];
                 break;
             }
@@ -198,7 +198,7 @@ public class CharMinigame1 : CharController
         if(UIManager.instance != null)
             UIManager.instance.OnQuestNotificationPopup("Chó của bạn cần nghỉ ngơi để lấy lại sức");
         anim.Play("Idle_Tired_D",0);
-        while (data.energy > data.maxEnergy * 0.4f && !isAbort)
+        while (data.energy < data.maxEnergy * 0.2f && !isAbort)
         {
             yield return new WaitForEndOfFrame();
         }

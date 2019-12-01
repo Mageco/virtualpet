@@ -8,6 +8,7 @@ public class FoxController : AnimalController
     public ChickenController target;
     public ChickenController[] targets;
 
+
     protected override void Load(){
         speed = maxSpeed/2f;
          targets = GameObject.FindObjectsOfType<ChickenController>();
@@ -51,7 +52,7 @@ public class FoxController : AnimalController
     void OnMouseUp(){
        
         if(state == AnimalState.Seek){
-             agent.Stop();
+            agent.Stop();
             Debug.Log("Hit");
             isAbort = true;
             state = AnimalState.Hit;
@@ -67,6 +68,7 @@ public class FoxController : AnimalController
         {
             Debug.Log("Flee");
             isAbort = true;
+            agent.Stop();
             if(state == AnimalState.Run || state == AnimalState.Hit_Grab)
             {
                 Debug.Log("Run");
@@ -94,6 +96,7 @@ public class FoxController : AnimalController
     IEnumerator Seek()
     {
         GetTarget();
+        agent.maxSpeed = this.speed;
         if(target == null){
             isAbort = true;
             state = AnimalState.Flee;
@@ -107,8 +110,8 @@ public class FoxController : AnimalController
 
                 anim.Play("Seek_" + direction.ToString(),0);   
                 agent.SetDestination(target.transform.position);
-                yield return StartCoroutine(Wait(0.1f)); 
-                if(!isAbort  && Vector2.Distance(this.transform.position,target.transform.position) < 1f && target.state != AnimalState.Cached && target.state != AnimalState.Hold){
+                yield return new WaitForEndOfFrame(); 
+                if(!isAbort  && Vector2.Distance(this.transform.position,target.transform.position) < 3f && target.state != AnimalState.Cached && target.state != AnimalState.Hold){
                     state = AnimalState.Run;
                     agent.Stop();
                     target.OnCached();
@@ -132,7 +135,6 @@ public class FoxController : AnimalController
 
     IEnumerator Hit_Grab()
     {
-        Debug.Log("Hit_Grab");
         anim.Play("Hit_Grab_" + direction.ToString(),0);
         yield return StartCoroutine(Wait(Random.Range(2,3))); 
         state = AnimalState.Run;
@@ -143,14 +145,10 @@ public class FoxController : AnimalController
     IEnumerator Flee()
     {    
         speed = Random.Range(maxSpeed,maxSpeed*1.3f);
-        agent.maxSpeed = this.speed;
-        if(originalPosition.x > this.transform.position.x){
-            SetDirection(Direction.R);
-        }else
-            SetDirection(Direction.L);
+        agent.maxSpeed = this.speed * 3;
         anim.Play("Flee_" + direction.ToString(),0);
-
-        yield return StartCoroutine(MoveToPoint(originalPosition));
+        yield return StartCoroutine(DoAnim("Start_Flee_" + direction.ToString()));
+        yield return StartCoroutine(MoveToPoint(GetFleePoint()));
         if(!isAbort)
             state = AnimalState.Idle;
        CheckAbort();
@@ -159,13 +157,9 @@ public class FoxController : AnimalController
     IEnumerator Run()
     {
         speed = Random.Range(maxSpeed/1.5f,maxSpeed);
-        if(originalPosition.x > this.transform.position.x){
-            SetDirection(Direction.R);
-        }else
-            SetDirection(Direction.L);
         anim.Play("Run_" + direction.ToString(),0);
-
-        yield return StartCoroutine(MoveToPoint(originalPosition));
+        yield return StartCoroutine(DoAnim("Start_Run_" + direction.ToString()));
+        yield return StartCoroutine(MoveToPoint(GetFleePoint()));
         if(!isAbort)
             state = AnimalState.Idle;
         CheckAbort();
@@ -181,5 +175,9 @@ public class FoxController : AnimalController
                 }
             }
         }
+    }
+
+    Vector3 GetFleePoint(){
+        return fleePoints[Random.Range(0,fleePoints.Count)].transform.position;
     }
 }

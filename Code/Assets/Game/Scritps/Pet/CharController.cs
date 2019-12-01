@@ -247,9 +247,12 @@ public class CharController : MonoBehaviour
     }
 
     void LateUpdate(){
-        Vector3 pos = this.transform.position;
-        pos.z = this.transform.position.y;
-        this.transform.position = pos;
+        if(charInteract == null || (charInteract.interactType != InteractType.Drag && charInteract.interactType != InteractType.Drop)){
+            Vector3 pos = this.transform.position;
+            pos.z = this.transform.position.y;
+            this.transform.position = pos;
+        }
+
     }
     #endregion
 
