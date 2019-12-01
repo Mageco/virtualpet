@@ -89,15 +89,14 @@ public class CharSmall : CharController
         GameManager.instance.SetCameraTarget(this.gameObject);
         charInteract.interactType = InteractType.Drag;
         enviromentType = EnviromentType.Room;
-        Vector3 dropPosition = Vector3.zero;
 
         anim.Play("Hold_D", 0);
         while (charInteract.interactType == InteractType.Drag)
         {
             Vector3 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition) - charInteract.dragOffset;
             pos.z = 0;
-            if (pos.y > dragOffset-4)
-                pos.y = dragOffset-4;
+            if (pos.y > charScale.maxHeight)
+                pos.y = charScale.maxHeight;
             else if (pos.y < -20)
                 pos.y = -20;
 
@@ -114,40 +113,7 @@ public class CharSmall : CharController
         }
 
         //Start Drop
-        RaycastHit2D[] hit = Physics2D.RaycastAll(transform.position + new Vector3(0, -2, 0), -Vector2.up, 100);
-        Vector3 pos2 = this.transform.position;
-        pos2.y = pos2.y - dragOffset - 2;
-        if (pos2.y < -20)
-            pos2.y = -20;
-        dropPosition = pos2;
-        enviromentType = EnviromentType.Room;
-
-        for (int i = 0; i < hit.Length; i++)
-        {
-            if (hit[i].collider.tag == "Table")
-            {
-                pos2.y = hit[i].collider.transform.position.y;
-                dropPosition = pos2;
-                enviromentType = EnviromentType.Table;
-                break;
-            }
-            else if (hit[i].collider.tag == "Bath")
-            {
-                pos2.y = hit[i].collider.transform.position.y;
-                pos2.z = hit[i].collider.transform.position.z;
-                dropPosition = pos2;
-                enviromentType = EnviromentType.Bath;
-                break;
-            }
-            else if (hit[i].collider.tag == "Bed")
-            {
-                pos2.y = hit[i].collider.transform.position.y;
-                pos2.z = hit[i].collider.transform.position.z;
-                dropPosition = pos2;
-                enviromentType = EnviromentType.Bed;
-                break;
-            }
-        }
+        CheckDrop();
 
         float fallSpeed = 0;
         float maxTime = 1;
@@ -160,7 +126,6 @@ public class CharSmall : CharController
             pos1.y -= fallSpeed * Time.deltaTime;
             pos1.z = dropPosition.z;
             agent.transform.position = pos1;
-
 
             if (Vector2.Distance(agent.transform.position, dropPosition) < fallSpeed * Time.deltaTime * 2)
             {

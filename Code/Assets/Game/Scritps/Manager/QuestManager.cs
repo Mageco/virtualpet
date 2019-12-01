@@ -20,7 +20,7 @@ public class QuestManager : MonoBehaviour
     bool isActive = true;
 
     float replayTime = 0;
-    float maxReplayTime = 15;
+    float maxReplayTime = 30;
 
     float fadeDuration = 1f;
 
@@ -66,6 +66,7 @@ public class QuestManager : MonoBehaviour
         }
 
         //isReplay = DataHolder.GetQuest(GameManager.instance.questId).isReplay;
+        isReplay = true;
     }
 
     void PlayTip()
@@ -140,11 +141,11 @@ public class QuestManager : MonoBehaviour
         }
         else
         {
-            yield return new WaitForSeconds(3);
+            //yield return new WaitForSeconds(3);
         }
 
-        if (tipUI != null)
-            tipUI.Close();
+        //if (tipUI != null)
+        //    tipUI.Close();
 
         isTimeline = false;
     }

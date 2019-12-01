@@ -191,7 +191,7 @@ public class ItemManager : MonoBehaviour
     public GameObject GetItemChildObject(ItemType type){
         foreach(ItemObject item in items){
             if(DataHolder.GetItem(item.itemID).itemType == type){
-                Debug.Log(item.name);
+                //Debug.Log(item.name);
                 return item.transform.GetChild(0).gameObject;
             }
         }
@@ -220,7 +220,6 @@ public class ItemManager : MonoBehaviour
         List<ItemSkill> itemSkills = new List<ItemSkill>();
         ItemSkill[] skills = GameObject.FindObjectsOfType<ItemSkill>();
         for(int i=0;i<skills.Length;i++){
-            Debug.Log(skills[i].skillType);
             if(skills[i].skillType == type){
                 itemSkills.Add(skills[i]);
             }

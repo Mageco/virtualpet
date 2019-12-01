@@ -408,8 +408,8 @@ public class CharBig : CharController
         {
             Vector3 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition) - charInteract.dragOffset;
             pos.z = 0;
-            if (pos.y > dragOffset)
-                pos.y = dragOffset;
+            if (pos.y > charScale.maxHeight)
+                pos.y = charScale.maxHeight;
             else if (pos.y < -20)
                 pos.y = -20;
 
@@ -426,7 +426,7 @@ public class CharBig : CharController
         }
 
         //Start Drop
-        CheckDrop(-2);
+        CheckDrop();
 
         float fallSpeed = 0;
         float maxTime = 1;

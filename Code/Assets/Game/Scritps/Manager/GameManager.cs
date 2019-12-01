@@ -43,8 +43,8 @@ public class GameManager : MonoBehaviour
         ApiManager.GetInstance().AddItem(17);
         //ApiManager.GetInstance().AddItem(56);
         ApiManager.GetInstance().AddItem(57);
-        ApiManager.GetInstance().AddDiamond(5);
-        ApiManager.GetInstance().AddCoin(0);
+        //ApiManager.GetInstance().AddDiamond(5);
+        //ApiManager.GetInstance().AddCoin(0);
         ApiManager.GetInstance().AddPet(0);
         ApiManager.GetInstance().EquipPet(0);
         ApiManager.GetInstance().EquipItem(17);        

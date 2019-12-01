@@ -21,15 +21,21 @@ public class MilkItem : BaseDragItem
 
     protected override void OnActive()
     {
-        anim.Play("Active");
-        if (pet != null && !eated)
-        {
-            pet.OnEat();
-            eated = true;
-            GameManager.instance.ResetCameraTarget();
-            this.transform.position = new Vector3(1000,1000,0);
-            Invoke("OnReturn",5);
+        if(pet!= null && !eated){
+            if(pet.data.Food > 0.8f * pet.data.maxFood){
+                OnReturn();
+                UIManager.instance.OnQuestNotificationPopup("Thú cưng cửa bạn không đói");
+            }else{
+                anim.Play("Active");
+                pet.OnEat();
+                eated = true;
+                GameManager.instance.ResetCameraTarget();
+                this.transform.position = new Vector3(1000,1000,0);
+                Invoke("OnReturn",5);
+                
+            }
         }
+
     }
 
     void OnReturn(){

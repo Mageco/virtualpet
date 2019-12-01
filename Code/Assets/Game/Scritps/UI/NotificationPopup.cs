@@ -7,6 +7,8 @@ public class NotificationPopup : MonoBehaviour {
 
 	public Text title;
 	public Text description;
+	public float delay = 10f;
+	float time = 0;
 
 	// Use this for initialization
 	void Start () {
@@ -15,7 +17,12 @@ public class NotificationPopup : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		
+		if(time > delay){
+			Close();
+		}else
+		{
+			time += Time.deltaTime;
+		}
 	}
 
 	public void Load(string t,string d)
@@ -27,6 +34,6 @@ public class NotificationPopup : MonoBehaviour {
 	}
 
 	public void Close(){
-		this.GetComponent<Popup>().Close();
+		GameObject.Destroy(this.gameObject);
 	}
 }

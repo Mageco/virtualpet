@@ -39,6 +39,7 @@ public class CharController : MonoBehaviour
 
     //Interact
     public CharInteract charInteract;
+    public CharScale charScale;
     public bool isTouch = false;
     //Pee,Sheet
     public Transform peePosition;
@@ -80,6 +81,7 @@ public class CharController : MonoBehaviour
 
         anim = go.transform.GetComponent<Animator>();
         charInteract = this.GetComponent<CharInteract>();
+        charScale = this.GetComponent<CharScale>();
 
         GameObject go1 = Instantiate(Resources.Load("Prefabs/Pets/Agent")) as GameObject;
         go1.transform.parent = GameManager.instance.transform;
@@ -199,7 +201,7 @@ public class CharController : MonoBehaviour
         //Debug.Log(actionType.ToString() + "  " + charInteract.interactType.ToString());
         if (actionType == ActionType.None && charInteract.interactType == InteractType.None)
         {
-            Debug.Log("Think");
+            //Debug.Log("Think");
             if (enviromentType == EnviromentType.Bath)
             {
                 OnBath();
@@ -246,14 +248,6 @@ public class CharController : MonoBehaviour
         
     }
 
-    void LateUpdate(){
-        if(charInteract == null || (charInteract.interactType != InteractType.Drag && charInteract.interactType != InteractType.Drop)){
-            Vector3 pos = this.transform.position;
-            pos.z = this.transform.position.y;
-            this.transform.position = pos;
-        }
-
-    }
     #endregion
 
     #region Data
@@ -633,7 +627,7 @@ public class CharController : MonoBehaviour
         if(!isAbort){
             anim.Play("Jump_U", 0);
             float speed = upSpeed;
-            CheckDrop(5);
+            CheckDrop();
             charInteract.interactType = InteractType.Drop;
             while (charInteract.interactType == InteractType.Drop && !isAbort)
             {
@@ -661,46 +655,33 @@ public class CharController : MonoBehaviour
         }
     }
 
-    protected void CheckDrop(float y){
-        RaycastHit2D[] hit = Physics2D.RaycastAll(transform.position + new Vector3(0, y, 0), -Vector2.up, 100);
-        Vector3 pos2 = this.transform.position;
-        pos2.y = pos2.y - dragOffset - 2;
-        if (pos2.y < -20)
-            pos2.y = -20;
-        dropPosition = pos2;
+    protected void CheckDrop(){
+        RaycastHit2D[] hit = Physics2D.RaycastAll(transform.position + new Vector3(0, charScale.maxHeight, 0), -Vector2.up, 100);
+        dropPosition = charScale.dropPosition;
         enviromentType = EnviromentType.Room;
 
         for (int i = 0; i < hit.Length; i++)
         {
             if (hit[i].collider.tag == "Table")
             {
-                pos2.y = hit[i].collider.transform.position.y;
-                pos2.z = hit[i].collider.transform.position.z;
-                dropPosition = pos2;
+                dropPosition.y = hit[i].collider.transform.position.y;
                 enviromentType = EnviromentType.Table;
                 break;
             }
             else if (hit[i].collider.tag == "Bath")
             {
-                pos2.y = hit[i].collider.transform.position.y;
-                pos2.z = hit[i].collider.transform.position.z;
-                dropPosition = pos2;
+                dropPosition.y = hit[i].collider.transform.position.y;
                 enviromentType = EnviromentType.Bath;
                 break;
             }
             else if (hit[i].collider.tag == "Bed")
             {
-                pos2.y = hit[i].collider.transform.position.y;
-                pos2.z = hit[i].collider.transform.position.z;
-                dropPosition = pos2;
+                dropPosition.y = hit[i].collider.transform.position.y;
                 enviromentType = EnviromentType.Bed;
                 break;
-            }
-            else if (hit[i].collider.tag == "Toilet")
+            }else if (hit[i].collider.tag == "Toilet")
             {
-                pos2.y = hit[i].collider.transform.position.y;
-                pos2.z = hit[i].collider.transform.position.z;
-                dropPosition = pos2;
+                dropPosition.y = hit[i].collider.transform.position.y;
                 enviromentType = EnviromentType.Toilet;
                 break;
             }
@@ -769,7 +750,7 @@ public class CharController : MonoBehaviour
         //    UIManager.instance.OnSkillCompletePanel(currentSkill);
         OffLearnSkill();
         Abort();
-        actionType = ActionType.SkillUp;
+        //actionType = ActionType.SkillUp;
     }
 
     protected IEnumerator SkillUp(){

@@ -7,11 +7,11 @@ using Lean.Touch;
 public class CharInteract : MonoBehaviour
 {
     public InteractType interactType = InteractType.None;
-    float doubleClickTime;
-    float maxDoubleClickTime = 0.4f;
-    public bool isClick = false;
+    //float doubleClickTime;
+    //float maxDoubleClickTime = 0.4f;
+    //public bool isClick = false;
     //public bool isTouch = false;
-    public Direction touchDirection = Direction.D;
+    //public Direction touchDirection = Direction.D;
 
     public Vector3 dragOffset;
     CharController character;
@@ -42,8 +42,11 @@ public class CharInteract : MonoBehaviour
         }
         dragOffset = Camera.main.ScreenToWorldPoint (Input.mousePosition) - this.transform.position ;
         //isTouch = true;
-        interactType = InteractType.Drag;
-        character.OnHold ();
+        if(interactType == InteractType.None){
+            interactType = InteractType.Drag;
+            character.OnHold ();
+        }
+
     }
 
     void OnMouseUp()
@@ -52,11 +55,13 @@ public class CharInteract : MonoBehaviour
         //isTouch = false;
         if (interactType == InteractType.Drag) {
             interactType = InteractType.Drop;
-        }else if(interactType == InteractType.Drop){
+        }else {
             interactType = InteractType.None;
+            character.isAbort = true;
+            character.actionType = ActionType.None;
         }
 
-        if (isClick) {
+ /*        if (isClick) {
             if (doubleClickTime > maxDoubleClickTime) {
                 doubleClickTime = 0;
             } else {
@@ -68,7 +73,7 @@ public class CharInteract : MonoBehaviour
         } else {
             doubleClickTime = 0;
             isClick = true;
-        }
+        } */
     }
 
     

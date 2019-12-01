@@ -29,9 +29,9 @@ public class CameraController : MonoBehaviour
 	public void SetTarget(GameObject t)
 	{
 		this.target = t.transform;
-		if(target.GetComponent<CharController>() != null){
-			orthographicsize = target.GetComponent<CharController>().cameraSize;
-		}
+		//if(target.GetComponent<CharController>() != null){
+		//	orthographicsize = target.GetComponent<CharController>().cameraSize;
+		//}
 	}
 
 	public void SetPosition(Vector3 t)

@@ -118,8 +118,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7bb2bec2c1a824c41989665ca1b0ee8a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initZ: -6
-  scaleFactor: 0.1
+  initZ: 0
+  scaleFactor: 0.05
 --- !u!114 &8264768739620265649
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -133,8 +133,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   interactType: 0
-  isClick: 0
-  touchDirection: 1
   dragOffset: {x: 0, y: 0, z: 0}
 --- !u!114 &494781705592010213
 MonoBehaviour:
@@ -151,7 +149,6 @@ MonoBehaviour:
   data:
     iD: 0
     iconUrl: 
-    iconLockUrl: 
     languageItem: []
     buyPrice: 0
     priceType: 1
@@ -160,6 +157,8 @@ MonoBehaviour:
     petMiddle: 
     petBig: 
     petMiniGame1: 
+    levelRequire: 0
+    isAvailable: 1
     level: 0
     exp: 0
     skills: 
@@ -173,6 +172,7 @@ MonoBehaviour:
     sleep: 50
     energy: 50
     health: 50
+    damage: 0
     shit: 0
     pee: 0
     happy: 50
@@ -194,6 +194,7 @@ MonoBehaviour:
     maxSleep: 100
     maxEnergy: 100
     maxHealth: 100
+    maxDamage: 100
     maxHappy: 100
     maxStamina: 100
     maxDirty: 100

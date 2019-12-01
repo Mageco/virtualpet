@@ -82,9 +82,9 @@ public class UIManager : MonoBehaviour
 		if (questNotification == null) {
 			var popup = Instantiate (questUIPrefab) as GameObject;
 			popup.SetActive (true);
-			popup.transform.localScale = Vector3.zero;
 			popup.transform.SetParent (GameObject.Find ("Canvas").transform, false);
-			popup.GetComponent<Popup> ().Open ();
+            popup.transform.localScale = Vector3.one;
+			//popup.GetComponent<Popup> ().Open ();
 			questNotification = popup.GetComponent<NotificationPopup> ();
 			questNotification.Load("",description);
 		}

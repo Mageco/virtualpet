@@ -11,6 +11,8 @@ public class FloorItem : MonoBehaviour
 	float maxDoubleClickTime = 0.4f;
 	bool isClick = false;
 
+	GameObject doubleClick;
+
 	void Awake()
 	{
 
@@ -57,16 +59,16 @@ public class FloorItem : MonoBehaviour
 
 	void OnDoubleClick()
 	{
-        Debug.Log("Double Click");
-		Vector3 pos = Camera.main.ScreenToWorldPoint (Input.mousePosition);
-		pos.z = 0;
-        if(doubleClickEffect != null){
-            GameObject go = GameObject.Instantiate(doubleClickEffect,pos,Quaternion.identity);
-            go.transform.parent = ItemManager.instance.transform;
-        }
-		GameManager.instance.GetPetObject(0).OnCall(pos);
+		if(doubleClick == null){
+			Vector3 pos = Camera.main.ScreenToWorldPoint (Input.mousePosition);
+			pos.z = 0;
+			if(doubleClickEffect != null){
+				GameObject go = GameObject.Instantiate(doubleClickEffect,pos,Quaternion.identity);
+				go.transform.parent = ItemManager.instance.transform;
+			}
+			GameManager.instance.GetPetObject(0).OnCall(pos);
+		}
 
-		    
 	}
 
 	private bool IsPointerOverUIObject() {
