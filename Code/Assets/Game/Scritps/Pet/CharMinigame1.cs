@@ -99,7 +99,7 @@ public class CharMinigame1 : CharController
     IEnumerator Patrol()
     {
         isArrived = false;
-        float time = 1;
+        //float time = 1;
         while (!isArrived && !isAbort && animalTarget != null)
         {
             //if(time > 0.1f)
@@ -113,7 +113,7 @@ public class CharMinigame1 : CharController
             
             anim.Play("Run_Angry_" + this.direction.ToString(), 0);
 
-            if(Vector2.Distance(this.transform.position,animalTarget.transform.position) < 5f){
+            if(Vector2.Distance(this.transform.position,animalTarget.transform.position) < 10f){
                 isArrived = true;
                 agent.Stop();
                 animalTarget.OnFlee();
@@ -167,7 +167,7 @@ public class CharMinigame1 : CharController
         }
         animalTarget = null;
         for(int i=0;i<animals.Length;i++){
-            if(Minigame.instance.IsInBound(animals[i].transform.position) && (animals[i].tag == "Animal") && animals[i].state != AnimalState.Flee){
+            if(Minigame.instance.IsInBound(animals[i].transform.position) && (animals[i].tag == "Animal")){
                 
                 animalTarget = animals[i];
                 break;

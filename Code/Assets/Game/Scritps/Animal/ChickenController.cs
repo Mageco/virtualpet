@@ -122,7 +122,7 @@ public class ChickenController : AnimalController
 
     IEnumerator Hold()
     {
-interactType = InteractType.Drag;
+        interactType = InteractType.Drag;
         Vector3 dropPosition = Vector3.zero;
 
 
@@ -141,6 +141,7 @@ interactType = InteractType.Drag;
                 pos.x = -50;
 
             pos.z = -50;
+            agent.transform.position = pos;
             this.transform.position = pos;
             yield return new WaitForEndOfFrame();
         }
