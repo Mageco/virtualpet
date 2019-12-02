@@ -305,6 +305,7 @@ public class CharBig : CharController
         CheckAbort();
     }
 
+/*
      IEnumerator Bath()
     {
         int ran = Random.Range(0,100);
@@ -322,11 +323,10 @@ public class CharBig : CharController
         }
 
         CheckAbort();
-    }
+    }*/
 
     IEnumerator Table()
-    {
-        
+    {   
         int rand = Random.Range(0,100);    
         if(rand < data.GetSkillProgress(SkillType.Table)){
             SetDirection(Direction.D);
@@ -339,22 +339,25 @@ public class CharBig : CharController
         else{
             anim.Play("Jump_L",0);
             //bool isDone = false;
-            Vector2 speed = new Vector2(-30,0);
-            Vector3 dropPosition = new Vector3(this.transform.position.x - 10,this.transform.position.y-15,0);
-            charInteract.interactType = InteractType.Drop;
+            Vector3 speed = new Vector3(-30,5,-3);
+            //Vector3 dropPosition = new Vector3(this.transform.position.x - 10,this.transform.position.y-15,0);
+            charInteract.interactType = InteractType.Jump;
 
-            while (charInteract.interactType == InteractType.Drop && !isAbort)
+            while (charInteract.interactType == InteractType.Jump && !isAbort)
             {
-                speed += new Vector2(0,-100*Time.deltaTime);
+                speed += new Vector3(0,-100*Time.deltaTime,0);
                 if (speed.y < -50)
                     speed = new Vector2(speed.x,-50);
                 Vector3 pos1 = agent.transform.position;
                 pos1.y += speed.y * Time.deltaTime;
                 pos1.x += speed.x * Time.deltaTime;
-                pos1.z = dropPosition.y;
+                charScale.height += speed.y * Time.deltaTime;
+                charScale.scalePosition.x += speed.x * Time.deltaTime;
+                charScale.scalePosition.y += speed.z * Time.deltaTime;
+                //pos1.z = dropPosition.y;
                 agent.transform.position = pos1;
 
-                if (Mathf.Abs(agent.transform.position.y - dropPosition.y) < 2f)
+                if (agent.transform.position.y < charScale.scalePosition.y)
                 {
                     this.transform.rotation = Quaternion.identity;
                     charInteract.interactType = InteractType.None;   
@@ -390,6 +393,7 @@ public class CharBig : CharController
         CheckAbort();
     }
 
+/*
     IEnumerator Hold()
     {
         charInteract.interactType = InteractType.Drag;
@@ -426,7 +430,7 @@ public class CharBig : CharController
         }
 
         //Start Drop
-        CheckDrop();
+        CheckDrop(0);
 
         float fallSpeed = 0;
         float maxTime = 1;
@@ -489,7 +493,7 @@ public class CharBig : CharController
         
 
         CheckAbort();
-    }
+    }*/
 
     IEnumerator Mouse()
     {
@@ -657,6 +661,7 @@ public class CharBig : CharController
         CheckAbort();
     }
 
+    /*
     IEnumerator Toilet()
     {
         if(data.shit > 0.7*data.maxShit){
@@ -667,7 +672,7 @@ public class CharBig : CharController
             isAbort = true;
         }
         else{
-            yield return StartCoroutine(JumpDown(5,5,30));           
+            yield return StartCoroutine(JumpDown(-7,5,30));           
         }
 
         CheckAbort();
@@ -861,7 +866,7 @@ public class CharBig : CharController
 
         CheckAbort();
     }
-
+*/
     IEnumerator Rest()
     {
         float maxTime = Random.Range(2, 5);

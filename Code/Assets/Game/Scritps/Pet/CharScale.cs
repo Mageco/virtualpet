@@ -47,12 +47,28 @@ public class CharScale : MonoBehaviour
 				if(delta >= 0 && height > maxHeight){
 					scalePosition.y += height - maxHeight;	
 					height = maxHeight;
+					if(scalePosition.y > -1){
+						scalePosition.y = -1;
+						Vector3 p = this.transform.position;
+						p.y = lastPosition.y;
+						character.agent.transform.position = p;
+						this.transform.position = p;
+					}
 				}else if(delta < 0 && height > 0){
 					if(scalePosition.y > -20){
 						scalePosition.y += delta;
 						height -= delta;
 					}
 				}		
+			}
+		}else if(interact.interactType == InteractType.Drop){
+			height = this.transform.position.y - scalePosition.y;
+			if(height <= 0 && this.transform.position.y <= scalePosition.y ){
+				Vector3 p = this.transform.position;
+				p.y = scalePosition.y;
+				character.agent.transform.position = p;
+				this.transform.position = p;
+				height = 0;
 			}
 		}
 

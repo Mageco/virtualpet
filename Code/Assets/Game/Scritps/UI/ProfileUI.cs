@@ -7,9 +7,9 @@ public class ProfileUI : MonoBehaviour
 {
     int id = 0;
     public Text level;
-    public Text exp;
-    public Text energy;
-    public Image expProgress;
+    //public Text exp;
+    //public Text energy;
+    //public Image expProgress;
     public Image energyProgress;
  
     Pet data;
@@ -31,10 +31,10 @@ public class ProfileUI : MonoBehaviour
         }
         data = GameManager.instance.GetPet(id);
         level.text = data.level.ToString();
-        float e = 10 * (data.level) + 10 * (data.level) * (data.level);
-        exp.text = data.Exp.ToString("F0") + "/" + e.ToString("F0");
-        energy.text = data.energy.ToString("F0") + "/" + data.maxEnergy.ToString("F0");
-        expProgress.fillAmount = data.Exp/e;
+        //float e = 10 * (data.level) + 10 * (data.level) * (data.level);
+        //exp.text = data.Exp.ToString("F0") + "/" + e.ToString("F0");
+        //energy.text = data.energy.ToString("F0") + "/" + data.maxEnergy.ToString("F0");
+        //expProgress.fillAmount = data.Exp/e;
         energyProgress.fillAmount = data.energy/data.maxEnergy;
     }
 }

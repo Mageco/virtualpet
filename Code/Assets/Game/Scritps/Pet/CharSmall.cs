@@ -84,6 +84,7 @@ public class CharSmall : CharController
         CheckAbort();
     }
 
+/*
     IEnumerator Hold()
     {
         GameManager.instance.SetCameraTarget(this.gameObject);
@@ -113,7 +114,7 @@ public class CharSmall : CharController
         }
 
         //Start Drop
-        CheckDrop();
+        CheckDrop(0);
 
         float fallSpeed = 0;
         float maxTime = 1;
@@ -160,9 +161,9 @@ public class CharSmall : CharController
         }        
 
         CheckAbort();
-    }
+    }*/
 
-    IEnumerator Eat()
+    protected override IEnumerator Eat()
     {
         anim.Play("Eat_LD", 0);
         while (!isAbort && data.Food < 0.95f * data.maxFood)
@@ -176,7 +177,7 @@ public class CharSmall : CharController
     }
 
    
-    IEnumerator Sleep()
+   protected override IEnumerator Sleep()
     {
         anim.Play("Sleep_LD" , 0);
         
@@ -210,7 +211,7 @@ public class CharSmall : CharController
         CheckAbort();
     }
 
-    IEnumerator Bed()
+    protected override IEnumerator Bed()
     {
         if(data.Food > data.maxFood * 0.9f || data.Sleep < data.maxSleep * 0.5f)
         {

@@ -10,7 +10,6 @@ public class ItemSkill : MonoBehaviour
     public EnviromentType enviromentType;
     bool isEnter = false;
     bool isActive = false;
-    public Animator animator;
     CharController character;
 
     float time = 0;
@@ -19,7 +18,7 @@ public class ItemSkill : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        animator = this.GetComponent<Animator>();
+        
     }
 
     // Update is called once per frame
@@ -71,8 +70,6 @@ public class ItemSkill : MonoBehaviour
     public void OnActive(float t){
         maxTime = t;
         isActive = true;
-        //if(animator != null)
-        //    animator.Play("Skill",0);
     }
 
     public void DeActive(){
@@ -82,12 +79,7 @@ public class ItemSkill : MonoBehaviour
         if(skillType == SkillType.Call)
         {
             GameObject.Destroy(this.gameObject);
-        }else
-        {
-            if(animator != null)
-                animator.Play("Idle",0);
         }
-
     }
 
     void CompleteSkill(){

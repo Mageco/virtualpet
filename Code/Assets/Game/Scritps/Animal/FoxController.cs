@@ -8,18 +8,17 @@ public class FoxController : AnimalController
     public ChickenController target;
     public ChickenController[] targets;
 
+    public Vector3 fleePoint;
 
     protected override void Load(){
         speed = maxSpeed/2f;
-         targets = GameObject.FindObjectsOfType<ChickenController>();
+        targets = GameObject.FindObjectsOfType<ChickenController>();
+        fleePoint = agent.transform.position;
     }
 
     protected override void Think()
     {
-        if(Minigame.instance.IsInBound(this.transform.position))
-            state = AnimalState.Seek;
-        else
-            state = AnimalState.Idle;
+        state = AnimalState.Idle;
     }
 
     protected override void DoAction()
@@ -84,6 +83,9 @@ public class FoxController : AnimalController
     IEnumerator Idle()
     {
         anim.Play("Idle_" + direction.ToString());
+        agent.transform.position = GetFleePoint();
+        this.transform.position = agent.transform.position;
+        fleePoint = this.transform.position;
         yield return StartCoroutine(Wait(maxTimeWait));
         GetTarget();
         if(target != null){
@@ -148,10 +150,10 @@ public class FoxController : AnimalController
         agent.maxSpeed = this.speed * 3;
         anim.Play("Flee_" + direction.ToString(),0);
         yield return StartCoroutine(DoAnim("Start_Flee_" + direction.ToString()));
-        yield return StartCoroutine(MoveToPoint(GetFleePoint()));
+        yield return StartCoroutine(MoveToPoint(fleePoint));
         if(!isAbort)
             state = AnimalState.Idle;
-       CheckAbort();
+        CheckAbort();
     }
 
     IEnumerator Run()
@@ -159,7 +161,7 @@ public class FoxController : AnimalController
         speed = Random.Range(maxSpeed/1.5f,maxSpeed);
         anim.Play("Run_" + direction.ToString(),0);
         yield return StartCoroutine(DoAnim("Start_Run_" + direction.ToString()));
-        yield return StartCoroutine(MoveToPoint(GetFleePoint()));
+        yield return StartCoroutine(MoveToPoint(fleePoint));
         if(!isAbort)
             state = AnimalState.Idle;
         CheckAbort();

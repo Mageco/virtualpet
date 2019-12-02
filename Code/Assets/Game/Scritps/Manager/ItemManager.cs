@@ -8,6 +8,7 @@ public class ItemManager : MonoBehaviour
     public static ItemManager instance;
 
     public List<ItemObject> items = new List<ItemObject>();
+    public ItemCollider[] itemColliders;
     public float expireTime = 10;
 
 
@@ -40,6 +41,7 @@ public class ItemManager : MonoBehaviour
     public void EquipItem()
     {
         StartCoroutine(EquipItemCoroutine());
+        UpdateItemColliders();
     }
 
     IEnumerator EquipItemCoroutine()
@@ -155,6 +157,8 @@ public class ItemManager : MonoBehaviour
         {
             AddItem(adds[i]);
         }
+
+        UpdateItemColliders();
     }
 
 
@@ -196,6 +200,45 @@ public class ItemManager : MonoBehaviour
             }
         }
         return null;
+    }
+
+    void UpdateItemColliders(){
+        itemColliders = this.GetComponentsInChildren<ItemCollider>();
+    }
+
+    public ItemCollider GetItemCollider(ItemType type){
+        foreach(ItemObject item in items){
+            if(DataHolder.GetItem(item.itemID).itemType == type){
+                if(item.GetComponentInChildren<ItemCollider>() != null)
+                return item.GetComponentInChildren<ItemCollider>();
+            }
+        }
+        return null;
+    }
+
+    public ItemCollider GetItemCollider(Vector3 dropPosition){
+        if(itemColliders != null){
+            for(int i=0;i<itemColliders.Length;i++){
+                if(IsInCollider(dropPosition,itemColliders[i])){
+                    return itemColliders[i];
+                }
+            }
+            return null;
+        }
+        else 
+            return null;
+
+    }
+
+    bool IsInCollider(Vector3 pos,ItemCollider col){
+        if(pos.x > col.transform.position.x - col.width/2 && pos.x < col.transform.position.x + col.width/2 &&
+        pos.y > col.transform.position.y - col.depth/2 && pos.y < col.transform.position.y + col.depth/2)
+        {
+            return true;
+        }else
+        {
+            return false;
+        }
     }
 
     #region Skill
