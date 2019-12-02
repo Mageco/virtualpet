@@ -42,9 +42,7 @@ public class CameraController : MonoBehaviour
 	public void FindTarget(){
 		if(GameObject.FindObjectOfType<CharController>() != null){
 			target = GameObject.FindObjectOfType<CharController>().transform;
-			orthographicsize = target.GetComponent<CharController>().cameraSize;
-		}
-			
+		}			
 	}
 
 	void Awake()

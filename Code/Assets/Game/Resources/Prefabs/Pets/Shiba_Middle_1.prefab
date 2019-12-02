@@ -311,8 +311,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7bb2bec2c1a824c41989665ca1b0ee8a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initZ: 0
+  maxHeight: 15
   scaleFactor: 0.05
+  height: 0
+  scalePosition: {x: 0, y: 0, z: 0}
 --- !u!114 &1422507183494939297
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -406,6 +408,7 @@ MonoBehaviour:
   actionType: 0
   body: {fileID: 0}
   charInteract: {fileID: 0}
+  charScale: {fileID: 0}
   isTouch: 0
   peePosition: {fileID: 5844443038394761090}
   shitPosition: {fileID: 3435329573724837491}
@@ -417,10 +420,9 @@ MonoBehaviour:
   touchObject: {fileID: 0}
   currentSkill: 0
   skillLearnEffect: {fileID: 99716053274896878}
-  dragOffset: 15
-  cameraSize: 20
   growUpTimeline: {fileID: 4926926474910647215, guid: 0a9a360bdec2043189aed1eecbe13c77,
     type: 3}
+  dropPosition: {x: 0, y: 0, z: 0}
 --- !u!114 &3990936362384477127
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -12,7 +12,7 @@ public class CharScale : MonoBehaviour
 	Vector3 originalScale;
 	Vector3 dragScale;
 	public float height = 0;
-	public Vector3 dropPosition = Vector3.zero;
+	public Vector3 scalePosition = Vector3.zero;
 	Vector3 lastPosition = Vector3.zero;
 
 	void Awake()
@@ -26,16 +26,18 @@ public class CharScale : MonoBehaviour
     void Start()
     {
         lastPosition = this.transform.position;
+		scalePosition = this.transform.position;
+		height = 0;
     }
 
     // Update is called once per frame
     void LateUpdate()
     {
-		dropPosition.x = this.transform.position.x;
+		scalePosition.x = this.transform.position.x;
 		if(interact.interactType == InteractType.Drag){
 			float delta = this.transform.position.y - lastPosition.y;
 			height += delta;
-			if(height <= 0 && this.transform.position.y <= dropPosition.y ){
+			if(height <= 0 && this.transform.position.y <= scalePosition.y ){
 				Vector3 p = this.transform.position;
 				p.y = lastPosition.y;
 				character.agent.transform.position = p;
@@ -43,25 +45,28 @@ public class CharScale : MonoBehaviour
 				height = 0;
 			}else{
 				if(delta >= 0 && height > maxHeight){
-					dropPosition.y += height - maxHeight;	
+					scalePosition.y += height - maxHeight;	
 					height = maxHeight;
 				}else if(delta < 0 && height > 0){
-					if(dropPosition.y > -20){
-						dropPosition.y += delta;
+					if(scalePosition.y > -20){
+						scalePosition.y += delta;
 						height -= delta;
 					}
 				}		
 			}
-		}else if(interact.interactType == InteractType.None){
-			dropPosition = this.transform.position;
+		}
+
+		if(interact.interactType ==InteractType.None && character.enviromentType == EnviromentType.Room)
+		{
+			scalePosition = this.transform.position;
 			height = 0;
 		}
 
-		dragScale = originalScale * (1 - dropPosition.y * scaleFactor);
+		dragScale = originalScale * (1 - scalePosition.y * scaleFactor);
 		character.transform.localScale = Vector3.Lerp(dragScale,character.transform.localScale,Time.deltaTime *  3f);
 
 		Vector3 pos = this.transform.position;
-		pos.z = dropPosition.y;
+		pos.z = scalePosition.y;
 		this.transform.position = pos;
 
 		lastPosition = this.transform.position;

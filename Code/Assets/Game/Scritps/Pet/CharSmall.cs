@@ -124,14 +124,14 @@ public class CharSmall : CharController
                 fallSpeed = 50;
             Vector3 pos1 = agent.transform.position;
             pos1.y -= fallSpeed * Time.deltaTime;
-            pos1.z = dropPosition.z;
+            pos1.z = charScale.scalePosition.z;
             agent.transform.position = pos1;
 
-            if (Vector2.Distance(agent.transform.position, dropPosition) < fallSpeed * Time.deltaTime * 2)
+            if (Vector2.Distance(agent.transform.position, charScale.scalePosition) < fallSpeed * Time.deltaTime * 2)
             {
                 this.transform.rotation = Quaternion.identity;
                 Vector3 pos3 = agent.transform.position;
-                pos3.y = dropPosition.y;
+                pos3.y = charScale.scalePosition.y;
                 agent.transform.position = pos3;
 
                 if (fallSpeed < 40)

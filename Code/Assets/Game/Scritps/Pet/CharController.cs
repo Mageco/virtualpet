@@ -54,18 +54,13 @@ public class CharController : MonoBehaviour
     //Skill
     public SkillType currentSkill = SkillType.NONE;
     public GameObject skillLearnEffect;
-
-    public float dragOffset = 20f;
-
-    protected Vector3 dropPosition;
-    public float cameraSize = 24;
-
     FoodBowlItem foodItem;
     DrinkBowlItem drinkItem;
     MouseController mouse;
-
     public GameObject growUpTimeline;
     System.DateTime playTime = System.DateTime.Now;
+
+    public Vector3 dropPosition = Vector3.zero;
 
     #region Load
 
@@ -595,7 +590,7 @@ public class CharController : MonoBehaviour
         if(!isAbort){
             anim.Play("Jump_D", 0);
             float speed = upSpeed;
-            dropPosition = new Vector3(this.transform.position.x, this.transform.position.y - height, 0);
+            charScale.scalePosition = new Vector3(this.transform.position.x, this.transform.position.y - height, 0);
             charInteract.interactType = InteractType.Drop;
             while (charInteract.interactType == InteractType.Drop && !isAbort)
             {
@@ -607,12 +602,12 @@ public class CharController : MonoBehaviour
                 pos1.x = agent.transform.position.x;
                 
                 if(speed < 0)
-                    pos1.z = dropPosition.y;
+                    pos1.z = charScale.scalePosition.y;
                 else 
                     pos1.z = agent.transform.position.y;
                 agent.transform.position = pos1;
 
-                if (Mathf.Abs(agent.transform.position.y - dropPosition.y) < 2f)
+                if (Mathf.Abs(agent.transform.position.y - charScale.scalePosition.y) < 2f)
                 {
                     this.transform.rotation = Quaternion.identity;
                     charInteract.interactType = InteractType.None;
@@ -637,16 +632,16 @@ public class CharController : MonoBehaviour
                 Vector3 pos1 = agent.transform.position;
                 pos1.y += speed * Time.deltaTime;
                 pos1.x = agent.transform.position.x;
-                pos1.z = dropPosition.y;
+                pos1.z = charScale.scalePosition.y;
                 agent.transform.position = pos1;
 
-                if (speed < 0 && Mathf.Abs(agent.transform.position.y - dropPosition.y) < 1f)
+                if (speed < 0 && Mathf.Abs(agent.transform.position.y - charScale.scalePosition.y) < 1f)
                 {
                     this.transform.rotation = Quaternion.identity;
                     charInteract.interactType = InteractType.None;
-                    pos1.y = dropPosition.y;
+                    pos1.y = charScale.scalePosition.y;
                     pos1.x = agent.transform.position.x;
-                    pos1.z = dropPosition.y;
+                    pos1.z = charScale.scalePosition.y;
                     agent.transform.position = pos1;
                 }
                 yield return new WaitForEndOfFrame();
@@ -657,8 +652,8 @@ public class CharController : MonoBehaviour
 
     protected void CheckDrop(){
         RaycastHit2D[] hit = Physics2D.RaycastAll(transform.position + new Vector3(0, charScale.maxHeight, 0), -Vector2.up, 100);
-        dropPosition = charScale.dropPosition;
         enviromentType = EnviromentType.Room;
+        dropPosition = charScale.scalePosition;
 
         for (int i = 0; i < hit.Length; i++)
         {

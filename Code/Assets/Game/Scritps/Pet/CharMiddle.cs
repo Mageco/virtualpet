@@ -338,7 +338,7 @@ public class CharMiddle : CharController
                 fallSpeed = 50;
             Vector3 pos1 = agent.transform.position;
             pos1.y -= fallSpeed * Time.deltaTime;
-            pos1.z = dropPosition.z;
+            pos1.z = charScale.scalePosition.z;
             agent.transform.position = pos1;
 
 
