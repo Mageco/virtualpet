@@ -62,11 +62,11 @@ public class ItemUI : MonoBehaviour
         icon.sprite = Resources.Load<Sprite>(url) as Sprite;
         price.text = d.buyPrice.ToString();
 
-        if (ApiManager.GetInstance().IsEquipItem(d.iD))
+        if (GameManager.instance.IsEquipItem(d.iD))
         {
             state = ItemState.Equiped;
         }
-        else if (ApiManager.GetInstance().IsHaveItem(d.iD))
+        else if (GameManager.instance.IsHaveItem(d.iD))
         {
             state = ItemState.Have;
         }
@@ -148,11 +148,11 @@ public class ItemUI : MonoBehaviour
                 locked.SetActive(false);
         }
 
-        if (ApiManager.GetInstance().IsEquipPet(d.iD))
+        if (GameManager.instance.IsEquipPet(d.iD))
         {
             state = ItemState.Equiped;
         }
-        else if (ApiManager.GetInstance().IsHavePet(d.iD))
+        else if (GameManager.instance.IsHavePet(d.iD))
         {
             state = ItemState.Have;
         }
@@ -256,10 +256,10 @@ public class ItemUI : MonoBehaviour
             if(DataHolder.GetItem(itemId).itemType == ItemType.Diamond){
                 MageManager.instance.OnNotificationPopup("Tính năng mua kim cương chưa mở");
             }else if(DataHolder.GetItem(itemId).itemType == ItemType.Coin){
-                if(ApiManager.GetInstance().GetDiamond() > (DataHolder.GetItem(itemId).buyPrice)){
+                if(GameManager.instance.GetDiamond() > (DataHolder.GetItem(itemId).buyPrice)){
                     animator.Play("Use", 0);
                     yield return new WaitForSeconds(0.5f);
-                    ApiManager.GetInstance().AddDiamond(-DataHolder.GetItem(itemId).buyPrice);
+                    GameManager.instance.AddDiamond(-DataHolder.GetItem(itemId).buyPrice);
                     GameManager.instance.AddCoin(DataHolder.GetItem(itemId).sellPrice);
                     animator.Play("Idle", 0);
                     MageManager.instance.OnNotificationPopup("bạn đã mua thành công");

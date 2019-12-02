@@ -60,7 +60,7 @@ public class SkillCompletePanel : MonoBehaviour
         if (DataHolder.GetSkill(skillId).diamondValue != 0)
         {
             diamond.text = DataHolder.GetSkill(skillId).diamondValue.ToString();
-            GameManager.instance.AddDiamon(DataHolder.GetSkill(skillId).diamondValue);
+            GameManager.instance.AddDiamond(DataHolder.GetSkill(skillId).diamondValue);
         }
         else
         {

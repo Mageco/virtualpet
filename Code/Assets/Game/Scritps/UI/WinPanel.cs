@@ -46,7 +46,7 @@ public class WinPanel : MonoBehaviour
 
         if(d > 0){
             diamon.text = d.ToString();
-            GameManager.instance.AddDiamon(d);
+            GameManager.instance.AddDiamond(d);
         }
         else
             diamon.transform.parent.gameObject.SetActive(false);        

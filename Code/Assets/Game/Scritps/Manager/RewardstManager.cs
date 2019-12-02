@@ -33,13 +33,13 @@ public class RewardstManager : MonoBehaviour
     {
         if (DataHolder.Quest(GameManager.instance.GetPet(0).level).haveItem)
         {
-            ApiManager.GetInstance().AddItem(DataHolder.Quest(GameManager.instance.GetPet(0).level).itemId);
-            ApiManager.GetInstance().EquipItem(DataHolder.Quest(GameManager.instance.GetPet(0).level).itemId);
+            GameManager.instance.AddItem(DataHolder.Quest(GameManager.instance.GetPet(0).level).itemId);
+            GameManager.instance.EquipItem(DataHolder.Quest(GameManager.instance.GetPet(0).level).itemId);
             ItemManager.instance.LoadItems();
         }
 
-       ApiManager.GetInstance().AddCoin(DataHolder.Quest(GameManager.instance.GetPet(0).level).coinValue);
-       ApiManager.GetInstance().AddDiamond(DataHolder.Quest(GameManager.instance.GetPet(0).level).diamondValue);
+       GameManager.instance.AddCoin(DataHolder.Quest(GameManager.instance.GetPet(0).level).coinValue);
+       GameManager.instance.AddDiamond(DataHolder.Quest(GameManager.instance.GetPet(0).level).diamondValue);
        GameManager.instance.GetPet(0).Exp += DataHolder.Quest(GameManager.instance.GetPet(0).level).expValue;
     }
 

@@ -10,6 +10,7 @@ public class PlayerData : BaseModel
     public int diamond;
     public List<PlayerItem> items = new List<PlayerItem>();
     public List<Pet> pets = new List<Pet>();
+	public int[] gameLevels = new int[1];
 
 	public int Coin
 	{

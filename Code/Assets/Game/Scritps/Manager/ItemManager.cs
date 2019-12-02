@@ -46,7 +46,7 @@ public class ItemManager : MonoBehaviour
 
     IEnumerator EquipItemCoroutine()
     {
-        List<int> data =ApiManager.GetInstance().GetEquipedItems();
+        List<int> data = GameManager.instance.GetEquipedItems();
         
         List<ItemObject> removes = new List<ItemObject>();
 
@@ -110,9 +110,7 @@ public class ItemManager : MonoBehaviour
 
     public void LoadItems()
     {
-        //Debug.Log(RuntimeParameters.GetInstance().GetParam<User>(MageEngineSettigns);
-        Debug.Log(ApiManager.GetInstance().GetUser().ToJson());
-        List<int> data = ApiManager.GetInstance().GetEquipedItems();
+        List<int> data = GameManager.instance.GetEquipedItems();
         Debug.Log("Data " + data.Count);
         List<ItemObject> removes = new List<ItemObject>();
 
@@ -174,6 +172,15 @@ public class ItemManager : MonoBehaviour
         items.Add(item);
         go.transform.parent = this.transform;
         return item;
+    }
+
+    public void RemoveItem(int id){
+        foreach(ItemObject item in items){
+            if(item.itemID == id){
+                RemoveItem(item);
+                return;
+            }
+        }
     }
 
     void RemoveItem(ItemObject item)

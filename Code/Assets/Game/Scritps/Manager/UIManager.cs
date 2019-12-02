@@ -59,26 +59,26 @@ public class UIManager : MonoBehaviour
 	}
 
 	public void BuyItem(int itemID){
-	  ApiManager.GetInstance().BuyItem(itemID);
+	  GameManager.instance.BuyItem(itemID);
         if (shopPanel != null)
             shopPanel.ReLoad();
     }
 
 	public void UseItem(int itemID){
        shopPanel.Close();
-	  ApiManager.GetInstance().EquipItem(itemID);
+	  GameManager.instance.EquipItem(itemID);
        ItemManager.instance.EquipItem();
 	}
 
 	public void BuyPet(int itemID){
-	  ApiManager.GetInstance().BuyPet(itemID);
+	  GameManager.instance.BuyPet(itemID);
         if (shopPanel != null)
             shopPanel.ReLoad();
 	}
 
 	public void UsePet(int itemID){
        shopPanel.Close();
-      ApiManager.GetInstance().EquipPet(itemID);
+      GameManager.instance.EquipPet(itemID);
        GameManager.instance.EquipPet(itemID);
 	}
 

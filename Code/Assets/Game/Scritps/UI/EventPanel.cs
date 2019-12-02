@@ -25,7 +25,7 @@ public class EventPanel : MonoBehaviour
         }else{
             if(GameManager.instance.GetPet(0).level > 5){
                 this.Close();
-                GameManager.instance.OnEvent();
+                GameManager.instance.OnMinigame(1);
             }else
             {
                 MageManager.instance.OnNotificationPopup ("Bạn cần tiến hoá lên chó trưởng thành");
