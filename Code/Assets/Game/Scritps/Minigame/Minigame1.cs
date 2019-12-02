@@ -37,19 +37,19 @@ public class Minigame1 : Minigame
             addSpeed = 10;
 
         foxSpawner.maxNumber = 2 + gameLevel/5;
-        foxSpawner.speed = 12 + addSpeed/3f;
+        foxSpawner.speed = 14 + addSpeed/3f;
 
         if(gameLevel > 5){
             int n = gameLevel - 5;
             snakeSpawner.maxNumber = 2 + n/7;
-            snakeSpawner.speed = 12 + addSpeed/2f;
+            snakeSpawner.speed = 14 + addSpeed/2f;
         }else
             snakeSpawner.maxNumber = 0;
 
         if(gameLevel > 10){
             int n = gameLevel - 10;
             eagleSpawner.maxNumber = 2 + n/10;
-            eagleSpawner.speed = 15 + addSpeed;
+            eagleSpawner.speed = 16 + addSpeed;
         }else
             eagleSpawner.maxNumber = 0;
 
@@ -93,10 +93,11 @@ public class Minigame1 : Minigame
 
     public override void EndGame(){
         isEnd = true;
-        AnimalController[] animals = GameObject.FindObjectsOfType<FoxController>();
+        AnimalSpawner[] animals = GameObject.FindObjectsOfType<AnimalSpawner>();
         for(int i=0;i<animals.Length;i++){
-            animals[i].InActive();
+            animals[i].gameObject.SetActive(false);
         }
+        GameManager.instance.GetPetObject(0).OnHold();
     }
     
 }

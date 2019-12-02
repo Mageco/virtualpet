@@ -641,7 +641,7 @@ public class CharController : MonoBehaviour
         }
     }
 
-    protected IEnumerator Hold()
+    protected virtual IEnumerator Hold()
     {
         charInteract.interactType = InteractType.Drag;
         enviromentType = EnviromentType.Room;

@@ -38,8 +38,9 @@ public class CharMinigame1 : CharController
         if(animalTarget != null)
         {
             actionType = ActionType.Patrol;
-        }else 
+        }else {
             actionType = ActionType.Rest;
+        }
     }
 
      protected override void CalculateDirection(){
@@ -70,7 +71,9 @@ public class CharMinigame1 : CharController
     }
 
     public override void OnHold(){
-
+        agent.Stop();
+        actionType = ActionType.Hold;
+        isAbort = true;
     }
 
     protected override void DoAction()
@@ -90,6 +93,9 @@ public class CharMinigame1 : CharController
         }else if (actionType == ActionType.Tired)
         {
             StartCoroutine(Tired());
+        }else if (actionType == ActionType.Hold)
+        {
+            StartCoroutine(Hold());
         }
 
     }
@@ -102,15 +108,7 @@ public class CharMinigame1 : CharController
         //float time = 1;
         while (!isArrived && !isAbort && animalTarget != null)
         {
-            //if(time > 0.1f)
-            //{
-                agent.SetDestination(animalTarget.transform.position);
-            //    time = 0;
-            //}else
-            //{
-            //    time += Time.deltaTime;
-            //}
-            
+            agent.SetDestination(animalTarget.transform.position);           
             anim.Play("Run_Angry_" + this.direction.ToString(), 0);
 
             if(Vector2.Distance(this.transform.position,animalTarget.transform.position) < 10f){
@@ -131,11 +129,13 @@ public class CharMinigame1 : CharController
     {
         if(isStart)
         {
-            target = GetChiken().transform.position;  
-            anim.Play("Run_Angry_" + this.direction.ToString(), 0);
-            yield return StartCoroutine(MoveToPoint());    
-            anim.Play("Idle_Angry_" + direction.ToString());
-            yield return StartCoroutine(Wait(Random.Range(0.5f,1f)));
+            if(GetChiken() != null){
+                target = GetChiken().transform.position;  
+                anim.Play("Run_Angry_" + this.direction.ToString(), 0);
+                yield return StartCoroutine(MoveToPoint());    
+                anim.Play("Idle_Angry_" + direction.ToString());
+                yield return StartCoroutine(Wait(Random.Range(0.5f,1f)));
+            }
         }else
         {
             int ran = Random.Range(0,100);
@@ -203,5 +203,12 @@ public class CharMinigame1 : CharController
             yield return new WaitForEndOfFrame();
         }
         CheckAbort();
+    }
+
+    protected override IEnumerator Hold(){
+        anim.Play("Idle_D",0);
+        while(!isAbort){
+            yield return new WaitForEndOfFrame();
+        }
     }
 }

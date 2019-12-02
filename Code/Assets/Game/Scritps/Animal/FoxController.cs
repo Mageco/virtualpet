@@ -147,7 +147,7 @@ public class FoxController : AnimalController
     IEnumerator Flee()
     {    
         speed = Random.Range(maxSpeed,maxSpeed*1.3f);
-        agent.maxSpeed = this.speed * 3;
+        agent.maxSpeed = this.speed * 2;
         anim.Play("Flee_" + direction.ToString(),0);
         yield return StartCoroutine(DoAnim("Start_Flee_" + direction.ToString()));
         yield return StartCoroutine(MoveToPoint(fleePoint));
