@@ -112,7 +112,7 @@ public class ItemManager : MonoBehaviour
     {
         //Debug.Log(RuntimeParameters.GetInstance().GetParam<User>(MageEngineSettigns);
         Debug.Log(ApiManager.GetInstance().GetUser().ToJson());
-        List<int> data =ApiManager.GetInstance().GetEquipedItems();
+        List<int> data = ApiManager.GetInstance().GetEquipedItems();
         Debug.Log("Data " + data.Count);
         List<ItemObject> removes = new List<ItemObject>();
 

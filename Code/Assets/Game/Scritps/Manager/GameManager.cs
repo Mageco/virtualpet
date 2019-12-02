@@ -24,6 +24,8 @@ public class GameManager : MonoBehaviour
 
     public bool isTest = false;
 
+    public PlayerData myPlayer = new PlayerData();
+
     void Awake()
     {
         if (instance == null)
@@ -38,47 +40,11 @@ public class GameManager : MonoBehaviour
         camera = Camera.main.GetComponent<CameraController>();
     }
 
-    public void LoadNewUserData()
-    {
-        ApiManager.GetInstance().AddItem(17);
-        //ApiManager.GetInstance().AddItem(56);
-        ApiManager.GetInstance().AddItem(57);
-        //ApiManager.GetInstance().AddDiamond(5);
-        //ApiManager.GetInstance().AddCoin(0);
-        ApiManager.GetInstance().AddPet(0);
-        ApiManager.GetInstance().EquipPet(0);
-        ApiManager.GetInstance().EquipItem(17);        
-        //ApiManager.GetInstance().EquipItem(56);
-        ApiManager.GetInstance().EquipItem(57);
-
-        #if UNITY_EDITOR
-        if(isTest){
-            ApiManager.GetInstance().AddItem(2);
-            ApiManager.GetInstance().AddItem(11);                
-            ApiManager.GetInstance().AddItem(8);
-            ApiManager.GetInstance().AddItem(41);
-            ApiManager.GetInstance().AddItem(58);
-            ApiManager.GetInstance().EquipItem(2);
-            ApiManager.GetInstance().EquipItem(11);                
-            ApiManager.GetInstance().EquipItem(8);
-            ApiManager.GetInstance().AddItem(4);
-            ApiManager.GetInstance().EquipItem(4); 
-            ApiManager.GetInstance().EquipItem(41);
-            ApiManager.GetInstance().EquipItem(58);
-        }
-        #endif
-
-    }
 
     private void Start() {
-        LoadNewUserData();
+        LoadUser();
         isLoad = true;
-
         LoadPets();
-        
-        if(camera != null){
-            //camera.SetTarget(petObjects[0].gameObject);
-        }   
     }
 
     public void Start_UsingCallback()
@@ -108,6 +74,7 @@ public class GameManager : MonoBehaviour
     {
         Pet p = new Pet(itemId);
         p.Exp +=addExp;
+        myPlayer.pets.Add(p);
         CharController c = p.Load();
         pets.Add(p);
         petObjects.Add(c);
@@ -171,11 +138,30 @@ public class GameManager : MonoBehaviour
     }
 
     public void AddCoin(int c){
-        ApiManager.GetInstance().AddCoin(c);
+        myPlayer.Coin += c;
+        SaveUser();
+    }
+
+    public void AddItem(int id){
+        PlayerItem item = new PlayerItem();
+        item.itemId = id;
+        item.state = ItemState.OnShop;
+        myPlayer.items.Add(item);
+        SaveUser();
+    }
+
+    public void EquipItem(int id){
+        foreach(PlayerItem item in myPlayer.items){
+            if(item.itemId == id){
+                item.state = ItemState.Equiped;
+            }
+        }
+        ItemManager.instance.EquipItem();
     }
 
     public void AddDiamon(int d){
-        ApiManager.GetInstance().AddDiamond(d);
+        myPlayer.Diamond += d;
+        SaveUser();
     }
 
     public void AddExp(int e){
@@ -186,6 +172,7 @@ public class GameManager : MonoBehaviour
          }
     }
 
+ 
 	
     public void Pause(){
         isPause = true;
@@ -193,6 +180,48 @@ public class GameManager : MonoBehaviour
 
     public void UnPause(){
         isPause = false;
+    }
+
+    public void SaveUser(){
+         ApiManager.GetInstance().UpdateUserData<PlayerData>(myPlayer); 
+    }
+
+    public void LoadUser(){
+        if(ApiManager.GetInstance().GetUserData<PlayerData>() != null){
+            Debug.Log("Load data from local");
+            Debug.Log(ApiManager.GetInstance().GetUser().ToJson());
+            myPlayer = ApiManager.GetInstance().GetUserData<PlayerData>();
+        }else{
+            LoadNewUser();
+        }
+    }
+
+    void LoadNewUser(){
+        AddItem(17);
+        AddItem(57);
+        AddPet(0);
+        
+        EquipItem(17);        
+        EquipItem(57);
+
+        /*
+        #if UNITY_EDITOR
+        if(isTest){
+            ApiManager.GetInstance().AddItem(2);
+            ApiManager.GetInstance().AddItem(11);                
+            ApiManager.GetInstance().AddItem(8);
+            ApiManager.GetInstance().AddItem(41);
+            ApiManager.GetInstance().AddItem(58);
+            ApiManager.GetInstance().EquipItem(2);
+            ApiManager.GetInstance().EquipItem(11);                
+            ApiManager.GetInstance().EquipItem(8);
+            ApiManager.GetInstance().AddItem(4);
+            ApiManager.GetInstance().EquipItem(4); 
+            ApiManager.GetInstance().EquipItem(41);
+            ApiManager.GetInstance().EquipItem(58);
+        }
+        #endif
+        */
     }
 
 }

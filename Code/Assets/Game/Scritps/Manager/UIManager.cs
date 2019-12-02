@@ -54,8 +54,8 @@ public class UIManager : MonoBehaviour
 
 	public void UpdateUI()
 	{
-		coinText.text =ApiManager.GetInstance().GetCoin().ToString();
-		diamonText.text =ApiManager.GetInstance().GetDiamond().ToString();
+		coinText.text = GameManager.instance.myPlayer.Coin.ToString();
+		diamonText.text = GameManager.instance.myPlayer.Diamond.ToString();
 	}
 
 	public void BuyItem(int itemID){

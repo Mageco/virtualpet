@@ -1063,7 +1063,7 @@ public class CharController : MonoBehaviour
         //if(data.SkillLearned(currentSkill))
         //    UIManager.instance.OnSkillCompletePanel(currentSkill);
         OffLearnSkill();
-        Abort();
+        //Abort();
         //actionType = ActionType.SkillUp;
     }
 
