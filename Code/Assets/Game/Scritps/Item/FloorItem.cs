@@ -63,8 +63,8 @@ public class FloorItem : MonoBehaviour
 			Vector3 pos = Camera.main.ScreenToWorldPoint (Input.mousePosition);
 			pos.z = 0;
 			if(doubleClickEffect != null){
-				GameObject go = GameObject.Instantiate(doubleClickEffect,pos,Quaternion.identity);
-				go.transform.parent = ItemManager.instance.transform;
+				doubleClick = GameObject.Instantiate(doubleClickEffect,pos,Quaternion.identity);
+				doubleClick.transform.parent = ItemManager.instance.transform;
 			}
 			GameManager.instance.GetPetObject(0).OnCall(pos);
 		}

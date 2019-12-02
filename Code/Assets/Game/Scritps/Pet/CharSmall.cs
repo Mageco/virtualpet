@@ -68,6 +68,16 @@ public class CharSmall : CharController
         
     }
 
+    public override void OnListening(float sound)
+    {
+
+    }
+
+    public override void OnCall(Vector3 pos)
+    {
+
+    }
+
 
     #region Main Action
 
@@ -84,84 +94,7 @@ public class CharSmall : CharController
         CheckAbort();
     }
 
-/*
-    IEnumerator Hold()
-    {
-        GameManager.instance.SetCameraTarget(this.gameObject);
-        charInteract.interactType = InteractType.Drag;
-        enviromentType = EnviromentType.Room;
 
-        anim.Play("Hold_D", 0);
-        while (charInteract.interactType == InteractType.Drag)
-        {
-            Vector3 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition) - charInteract.dragOffset;
-            pos.z = 0;
-            if (pos.y > charScale.maxHeight)
-                pos.y = charScale.maxHeight;
-            else if (pos.y < -20)
-                pos.y = -20;
-
-            if (pos.x > 52)
-                pos.x = 52;
-            else if (pos.x < -49)
-                pos.x = -49;
-
-            pos.z = -50;
-            agent.transform.position = pos;
-
-            this.transform.rotation = Quaternion.Lerp(this.transform.rotation, Quaternion.identity, Time.deltaTime * 2);
-            yield return new WaitForEndOfFrame();
-        }
-
-        //Start Drop
-        CheckDrop(0);
-
-        float fallSpeed = 0;
-        float maxTime = 1;
-        while (charInteract.interactType == InteractType.Drop && !isAbort)
-        {
-            fallSpeed += 100f * Time.deltaTime;
-            if (fallSpeed > 50)
-                fallSpeed = 50;
-            Vector3 pos1 = agent.transform.position;
-            pos1.y -= fallSpeed * Time.deltaTime;
-            pos1.z = charScale.scalePosition.z;
-            agent.transform.position = pos1;
-
-            if (Vector2.Distance(agent.transform.position, charScale.scalePosition) < fallSpeed * Time.deltaTime * 2)
-            {
-                this.transform.rotation = Quaternion.identity;
-                Vector3 pos3 = agent.transform.position;
-                pos3.y = charScale.scalePosition.y;
-                agent.transform.position = pos3;
-
-                if (fallSpeed < 40)
-                {
-                    SetDirection(Direction.D);
-                    anim.Play("Drop_Light_LD", 0);
-                    maxTime = 2;
-                }
-                else
-                {
-                    SetDirection(Direction.D);
-                    anim.Play("Drop_Hard_LD", 0);
-                    maxTime = 2;
-                }                
-
-                charInteract.interactType = InteractType.None;
-            }
-            yield return new WaitForEndOfFrame();
-        }
-        GameManager.instance.ResetCameraTarget();
-        yield return StartCoroutine(Wait(maxTime));
-
-        
-        if(!isAbort){
-            CheckEnviroment();
-        }        
-
-        CheckAbort();
-    }*/
 
     protected override IEnumerator Eat()
     {

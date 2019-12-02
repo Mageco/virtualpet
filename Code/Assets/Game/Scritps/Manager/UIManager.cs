@@ -24,6 +24,8 @@ public class UIManager : MonoBehaviour
 
     ProfilePanel profilePanel;
 
+    List<string> notificationText = new List<string>();
+
 	void Awake()
 	{
 		if (instance == null)
@@ -44,6 +46,9 @@ public class UIManager : MonoBehaviour
     void Update()
     {
         UpdateUI();
+        if(notificationText.Count > 0){
+            OnQuestNotificationPopup(notificationText[0]);
+        }
     }
 
 
@@ -79,6 +84,8 @@ public class UIManager : MonoBehaviour
 
 	public NotificationPopup OnQuestNotificationPopup(string description)
 	{
+        if(!notificationText.Contains(description))
+            notificationText.Add(description);
 		if (questNotification == null) {
 			var popup = Instantiate (questUIPrefab) as GameObject;
 			popup.SetActive (true);
@@ -87,6 +94,7 @@ public class UIManager : MonoBehaviour
 			//popup.GetComponent<Popup> ().Open ();
 			questNotification = popup.GetComponent<NotificationPopup> ();
 			questNotification.Load("",description);
+            notificationText.Remove(description);
 		}
 		return questNotification;
 	}

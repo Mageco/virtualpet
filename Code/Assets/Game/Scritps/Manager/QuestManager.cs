@@ -65,7 +65,7 @@ public class QuestManager : MonoBehaviour
             delayTime = 3;
         }
 
-        //isReplay = DataHolder.GetQuest(GameManager.instance.questId).isReplay;
+        isReplay = DataHolder.GetQuest(GameManager.instance.questId).isReplay;
         isReplay = true;
     }
 
