@@ -66,7 +66,6 @@ public class QuestManager : MonoBehaviour
         }
 
         isReplay = DataHolder.GetQuest(GameManager.instance.questId).isReplay;
-        isReplay = true;
     }
 
     void PlayTip()

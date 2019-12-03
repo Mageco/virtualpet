@@ -19,7 +19,7 @@ public class ItemDirty : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-		this.transform.localScale = dirty / maxDirty * originalScale;
+		this.transform.localScale = (0.5f + dirty * 0.5f / maxDirty) * originalScale;
 		if(isClearning){
 			OnClean(0.2f);
 		}
