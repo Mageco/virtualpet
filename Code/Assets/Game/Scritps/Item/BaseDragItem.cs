@@ -16,13 +16,14 @@ public class BaseDragItem : MonoBehaviour
     protected bool isHighlight = false;
 	
     protected float fallSpeed = 0;
-    Vector3 dropPosition;
-
-	public float initZ = -6;
-	public float scaleFactor = 0.1f;
+	public float maxHeight = 10;
+    public float depth = -1;
+	public float scaleFactor = 0.05f;
 	Vector3 dragScale;
-	Vector3 targetScale = Vector3.one;
-	float offset = 0;
+	public float height = 0;
+    protected float originalHeight = 0;
+	public Vector3 scalePosition = Vector3.zero;
+	Vector3 lastPosition = Vector3.zero;
 
     // Start is called before the first frame update
     protected virtual void Start()
@@ -31,6 +32,8 @@ public class BaseDragItem : MonoBehaviour
 		originalPosition = this.transform.position;
 		originalRotation = this.transform.rotation;
 		originalScale = this.transform.localScale;
+        scalePosition = this.transform.position + new Vector3(0,-height,0);
+        originalHeight = height;
     }
 
     // Update is called once per frame
@@ -53,12 +56,57 @@ public class BaseDragItem : MonoBehaviour
         {
             OnActive();
         }
-
-
     }
 
 	void LateUpdate()
     {
+
+        scalePosition.x = this.transform.position.x;
+		if(state == ItemDragState.Drag || state == ItemDragState.Highlight){
+			float delta = this.transform.position.y - lastPosition.y;
+			height += delta;
+			if(height <= 0 && this.transform.position.y <= scalePosition.y ){
+				Vector3 p = this.transform.position;
+				p.y = lastPosition.y;
+				this.transform.position = p;
+				height = 0;
+			}else{
+				if(delta >= 0 && height > maxHeight){
+					scalePosition.y += height - maxHeight;	
+					height = maxHeight;
+					if(scalePosition.y > depth){
+						scalePosition.y = depth;
+						Vector3 p = this.transform.position;
+						p.y = lastPosition.y;
+						this.transform.position = p;
+					}
+				}else if(delta < 0 && height > 0){
+					if(scalePosition.y > -20){
+						scalePosition.y += delta;
+						height -= delta;
+					}
+				}		
+			}
+		}else if(state == ItemDragState.Drop || state == ItemDragState.Fall || state == ItemDragState.Hit){
+			height = this.transform.position.y - scalePosition.y;
+			if(height <= 0 && this.transform.position.y <= scalePosition.y ){
+				Vector3 p = this.transform.position;
+				p.y = scalePosition.y;
+				this.transform.position = p;
+				height = 0;
+			}
+		}
+
+		dragScale = originalScale * (1 - scalePosition.y * scaleFactor);
+		this.transform.localScale = Vector3.Lerp(dragScale,this.transform.localScale,Time.deltaTime *  3f);
+
+		Vector3 pos = this.transform.position;
+		pos.z = scalePosition.y;
+		this.transform.position = pos;
+
+		lastPosition = this.transform.position;
+
+        /*
 		offset = initZ;
 		if (state == ItemDragState.Drop || state == ItemDragState.Fall || state == ItemDragState.Hit)
 		{
@@ -86,6 +134,7 @@ public class BaseDragItem : MonoBehaviour
 
 		//Debug.Log(gameObject.name + " "+ originalScale + "  " + targetScale);
 		this.transform.localScale = Vector3.Lerp(targetScale,this.transform.localScale,Time.deltaTime *  3f);
+        */
 
     }
 
@@ -97,8 +146,8 @@ public class BaseDragItem : MonoBehaviour
             Vector3 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition) - dragOffset;
             pos.z = this.transform.position.z;
             pos.z = -50;
-            if (pos.y > 20)
-                pos.y = 20;
+            if (pos.y > maxHeight)
+                pos.y = maxHeight;
             else if (pos.y < -20)
                 pos.y = -20;
 
@@ -144,12 +193,6 @@ public class BaseDragItem : MonoBehaviour
 
     protected virtual void OnDrop()
 	{
-		RaycastHit2D[] hit = Physics2D.RaycastAll(transform.position + new Vector3(0, -2, 0), -Vector2.up, 100);
-		Vector3 pos2 = this.transform.position;
-		pos2.y = pos2.y - 22;
-		if (pos2.y < -20)
-			pos2.y = -20;
-		dropPosition = pos2;
         state = ItemDragState.Fall;
     }
 
@@ -165,9 +208,9 @@ public class BaseDragItem : MonoBehaviour
 			fallSpeed = 50;
 		Vector3 pos = this.transform.position;
 		pos.y -= fallSpeed * Time.deltaTime;
-		pos.z = dropPosition.y;
+		pos.z = scalePosition.y;
 		this.transform.position = pos;
-		if (Vector2.Distance(this.transform.position, dropPosition) < 1f)
+		if (this.transform.position.y < scalePosition.y)
 		{
 			state = ItemDragState.Hit;
 		}
@@ -221,7 +264,7 @@ public class BaseDragItem : MonoBehaviour
 
     public virtual void EndDrag()
     {
-        
+        GameManager.instance.ResetCameraTarget();
     }
 
 
@@ -235,9 +278,12 @@ public class BaseDragItem : MonoBehaviour
 
 	void OnMouseUp()
 	{
+        EndDrag();
 		dragOffset = Vector3.zero;
-		if(state == ItemDragState.Drag)
-			state = ItemDragState.Drop;
+		if(state == ItemDragState.Drag){
+            state = ItemDragState.Drop;
+        }
+			
         else if(state == ItemDragState.Highlight)
         {
             state = ItemDragState.Active;

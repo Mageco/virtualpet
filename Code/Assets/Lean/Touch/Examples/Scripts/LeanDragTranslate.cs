@@ -115,9 +115,9 @@ namespace Lean.Touch
 		private void Translate(Vector2 screenDelta)
 		{
 			// Make sure the camera exists
-			var camera = LeanTouch.GetCamera(Camera, gameObject);
+			var camera = Camera.main;
 
-			if (camera != null)
+			if (camera != null && camera.GetComponent<CameraController>().target == null)
 			{
 				// Screen position of the transform
 				var screenPoint = camera.WorldToScreenPoint(transform.position);
@@ -127,10 +127,6 @@ namespace Lean.Touch
 
 				// Convert back to world space
 				transform.position = camera.ScreenToWorldPoint(screenPoint);
-			}
-			else
-			{
-				Debug.LogError("Failed to find camera. Either tag your camera as MainCamera, or set one in this component.", this);
 			}
 		}
 	}

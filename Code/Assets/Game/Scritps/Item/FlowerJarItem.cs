@@ -10,6 +10,7 @@ public class FlowerJarItem : BaseDragItem
         StartCoroutine(OnHitCoroutine());
     }
 
+
 	IEnumerator OnHitCoroutine(){
 		state = ItemDragState.Hited;
 		
@@ -26,6 +27,9 @@ public class FlowerJarItem : BaseDragItem
 			//CharController char = ;
 		
 		this.transform.rotation = originalRotation;
+		height = originalHeight;
+		this.scalePosition = this.transform.position + new Vector3(0,-height,0);
+		
 		fallSpeed = 0;
 		anim.Play("Idle",0);
 		state = ItemDragState.None;

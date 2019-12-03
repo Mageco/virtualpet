@@ -231,7 +231,8 @@ public class GameManager : MonoBehaviour
             }
         }
         
-        ItemManager.instance.EquipItem();
+        if(ItemManager.instance != null)
+            ItemManager.instance.EquipItem();
     }
 
     public bool IsHaveItem(int itemId)
