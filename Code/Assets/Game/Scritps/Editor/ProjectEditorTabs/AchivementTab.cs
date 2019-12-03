@@ -6,7 +6,8 @@ public class AchivementTab : BaseTab
 {
 
 	private GameObject tmpPrefab;
-	private string[] sections = new string[] {"1"};
+ 	private int tempId = 0;
+    int lastSellection = -1;
 	
 	public AchivementTab(ProjectWindow pw) : base(pw)
 	{
@@ -91,7 +92,49 @@ public class AchivementTab : BaseTab
 			DataHolder.Achivement(selection).achivementType = (AchivementType)EditorGUILayout.EnumPopup("Achivement Type", DataHolder.Achivement(selection).achivementType, GUILayout.Width (pw.mWidth));
 			if(DataHolder.Achivement(selection).achivementType == AchivementType.Do_Action){
 				DataHolder.Achivement(selection).actionType = (ActionType)EditorGUILayout.EnumPopup("Action Type", DataHolder.Achivement(selection).actionType, GUILayout.Width (pw.mWidth));
+			}else if(DataHolder.Achivement(selection).achivementType == AchivementType.Buy_Item || DataHolder.Achivement(selection).achivementType == AchivementType.Use_Item){
+				 if(lastSellection != selection)
+                    tempId = DataHolder.Items().GetItemPosition(DataHolder.Achivement(selection).itemId);
+
+                    if(tempId == -1)
+                        tempId = 0;
+                 
+                   tempId = EditorGUILayout.Popup("Item",tempId, DataHolder.Items().GetNameList(true), GUILayout.Width(pw.mWidth));
+
+                   if(DataHolder.Item(tempId) != null)
+                        DataHolder.Achivement(selection).itemId = DataHolder.Item(tempId).iD;
+                   lastSellection = selection;
+			}else if(DataHolder.Achivement(selection).achivementType == AchivementType.Eat){
+				if(lastSellection != selection)
+                    tempId = DataHolder.Items().GetItemPosition(DataHolder.Achivement(selection).itemId,(int)ItemType.Food);
+
+                    if(tempId == -1)
+                        tempId = 0;
+                 
+                   tempId = EditorGUILayout.Popup("Item",tempId, DataHolder.Items().GetNameListFilter((int)ItemType.Food), GUILayout.Width(pw.mWidth));
+
+                   if(DataHolder.Items().GetItem(tempId,(int)ItemType.Food) != null)
+                        DataHolder.Achivement(selection).itemId = DataHolder.Items().GetItem(tempId,(int)ItemType.Food).iD;
+                   lastSellection = selection;
+			}else if(DataHolder.Achivement(selection).achivementType == AchivementType.Drink){
+				if(lastSellection != selection)
+                    tempId = DataHolder.Items().GetItemPosition(DataHolder.Achivement(selection).itemId,(int)ItemType.Drink);
+
+                    if(tempId == -1)
+                        tempId = 0;
+                 
+                   tempId = EditorGUILayout.Popup("Item",tempId, DataHolder.Items().GetNameListFilter((int)ItemType.Drink), GUILayout.Width(pw.mWidth));
+
+                   if(DataHolder.Items().GetItem(tempId,(int)ItemType.Drink) != null)
+                        DataHolder.Achivement(selection).itemId = DataHolder.Items().GetItem(tempId,(int)ItemType.Drink).iD;
+                   lastSellection = selection;
 			}
+			
+			else if(DataHolder.Achivement(selection).achivementType == AchivementType.Tap_Animal || DataHolder.Achivement(selection).achivementType == AchivementType.Dissmiss_Animal){
+				DataHolder.Achivement(selection).animalType = (AnimalType)EditorGUILayout.EnumPopup("Animal", DataHolder.Achivement(selection).animalType, GUILayout.Width (pw.mWidth));
+			}
+
+			 
 
 
 			EditorGUILayout.Separator();

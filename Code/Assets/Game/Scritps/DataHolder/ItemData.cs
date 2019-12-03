@@ -220,7 +220,23 @@ public class ItemData : BaseData
         return -1;
     }
 
+  	public int GetItemPosition(int id,int category)
+    {
+		List<Item> temp = new List<Item>();
+		for(int i=0; i<items.Length; i++)
+		{
+			if (category == -1 || (int)items [i].itemType == category) {
+				temp.Add (items[i]);
+			}
+		}
 
+		for(int i=0;i<temp.Count;i++){
+			if(temp[i].iD == id)
+				return i;
+		}
+
+        return -1;
+    }
 
     public int GetItemOrder(int id,int category)
 	{
