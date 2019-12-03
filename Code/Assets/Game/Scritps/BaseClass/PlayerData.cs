@@ -73,3 +73,5 @@ public class PlayerAchivement : BaseModel{
 	public int order = 0;
     public RewardState rewardState = RewardState.None;
 }
+
+

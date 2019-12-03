@@ -1,6 +1,7 @@
 ﻿using Mage.Models;
 using UnityEngine;
 using PolyNav;
+using System.Collections.Generic;
 
 [System.Serializable]
 public class Pet : BaseModel
@@ -20,7 +21,7 @@ public class Pet : BaseModel
 	//Common Data
 	public int level = 1;
 	public int exp = 0;
-	public int[] skills;
+	public List<PetSkill> skills = new List<PetSkill>();
 	public string petName = "";
 
 	//Main Data
@@ -133,8 +134,17 @@ public class Pet : BaseModel
 		strength = p.strength;
 		maxEnergy = p.maxEnergy;
 		intelligent = p.intelligent;
-        skills = new int[DataHolder.Skills().GetDataCount()];
+        LoadSkill();
     }
+
+	void LoadSkill(){
+		for(int i=0;i<DataHolder.Skills().GetDataCount();i++){
+			PetSkill s = new PetSkill();
+			s.skillId = DataHolder.Skill(i).iD;
+			s.rewardState = RewardState.None;
+			skills.Add(s);
+		}
+	}
 
     public CharController Load(){
 
@@ -460,8 +470,8 @@ public class Pet : BaseModel
 		get
 		{
 			float s = intelligent;
-			for(int i=0;i<skills.Length;i++){
-				s += skills[i];
+			for(int i=0;i<skills.Count;i++){
+				s += skills[i].level;
 			}
 			return s + level/2;
 		}
@@ -484,30 +494,32 @@ public class Pet : BaseModel
 	}
 
 	public int GetSkillProgress(SkillType type){
-		for(int i=0;i<skills.Length;i++){
-			if(DataHolder.Skill(i).skillType == type){
-				return skills[i];
+		for(int i=0;i<skills.Count;i++){
+			if(DataHolder.Skills().GetSkill(skills[i].skillId).skillType == type){
+				return skills[i].level;
 			}
 		}
 		return 0;
 	}
 
 	public void LevelUpSkill(SkillType type){
-		for(int i=0;i<skills.Length;i++){
-			if(DataHolder.Skill(i).skillType == type){
-				skills[i] ++;
-				if(skills[i] > DataHolder.Skill(i).maxProgress)
-					skills[i] = DataHolder.Skill(i).maxProgress;
-				Debug.Log("Skill Progress " + type.ToString() + " " + skills[i]);				
+		for(int i=0;i<skills.Count;i++){
+			if(DataHolder.Skills().GetSkill(skills[i].skillId).skillType == type){
+				skills[i].level ++;
+				if(skills[i].level >= DataHolder.Skills().GetSkill(skills[i].skillId).maxProgress){
+					skills[i].rewardState = RewardState.Ready;
+					skills[i].level = DataHolder.Skills().GetSkill(skills[i].skillId).maxProgress;
+				}
+					
 				return;
 			}
 		}
 	}
 
 	public bool SkillLearned(SkillType type){
-		for(int i=0;i<skills.Length;i++){
-			if(DataHolder.Skill(i).skillType == type){
-				if(skills[i] >= DataHolder.Skill(i).maxProgress)
+		for(int i=0;i<skills.Count;i++){
+			if(DataHolder.Skills().GetSkill(skills[i].skillId).skillType == type){
+				if(skills[i].level >= DataHolder.Skills().GetSkill(skills[i].skillId).maxProgress)
 					return true;
 				else 
 					return false;
@@ -515,9 +527,12 @@ public class Pet : BaseModel
 		}
 		return false;
 	}
+}
 
-
-
-
-
+[System.Serializable]
+public class PetSkill : BaseModel{
+    public int skillId = 0;
+	public int level = 0;
+	public int order = 0;
+    public RewardState rewardState = RewardState.None;
 }

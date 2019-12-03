@@ -305,7 +305,22 @@ public class GameManager : MonoBehaviour
          }
     }
 
+    public void CollectSkillRewards(int skillId){
+        foreach(PetSkill s in GetActivePet().skills){
+            if(s.skillId == skillId){
+                AddCoin(DataHolder.Skills().GetSkill(skillId).coinValue);
+                AddDiamond(DataHolder.Skills().GetSkill(skillId).diamondValue);
+                AddExp(DataHolder.Skills().GetSkill(skillId).expValue);
+                s.rewardState = RewardState.Received;
+                SavePlayer();
+                return;
+            }
+        }
+    }
 
+    public void CollectAchivementRewards(int achivementId){
+
+    }
 
 
     public void SavePlayer(){

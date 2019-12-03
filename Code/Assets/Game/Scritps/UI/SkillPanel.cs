@@ -15,14 +15,15 @@ public class SkillPanel : MonoBehaviour
     }
 
     public void Load(){
-        List<Skill> items = new List<Skill>();
+        List<PetSkill> items = new List<PetSkill>();
 
         ClearItems();
-        for(int i=0;i<DataHolder.Skills().GetDataCount();i++){
-            items.Add(DataHolder.Skill(i));
-        }   
+        foreach(PetSkill a in GameManager.instance.GetActivePet().skills){
+            Debug.Log(a.skillId);
+            items.Add(a);
+        }  
 
-        items.Sort((p1,p2)=>(p1.skillOrder).CompareTo(p2.skillOrder));
+        items.Sort((p1,p2)=>(p1.order).CompareTo(p2.order));
 
         for(int i=0;i<items.Count;i++){
             LoadItem(items[i]);
@@ -37,7 +38,7 @@ public class SkillPanel : MonoBehaviour
 
     
 
-    void LoadItem(Skill data){
+    void LoadItem(PetSkill data){
         GameObject go = Instantiate(skillUIPrefab);
        
         go.transform.SetParent(this.anchor);
