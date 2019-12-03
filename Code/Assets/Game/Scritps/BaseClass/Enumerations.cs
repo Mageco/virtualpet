@@ -20,5 +20,6 @@ public enum WeatherType{None,Sunny,Rain,Snow,Storm}
 public enum AnimalState {None,Idle,Seek,Eat,Run,Flee,Hit,Hit_Grab,Hold,Cached,InActive }
 public enum SickType{Sick,Injured};
 public enum AnimalType{Mouse,Fox,Eagle,Snake};
+public enum RewardState{None,Ready,Received};
 
 

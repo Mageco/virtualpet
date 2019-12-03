@@ -326,6 +326,7 @@ public class GameManager : MonoBehaviour
     void LoadNewUser(){
 
         myPlayer = new PlayerData();
+        myPlayer.LoadData();
 
         AddItem(17);
         AddItem(57);

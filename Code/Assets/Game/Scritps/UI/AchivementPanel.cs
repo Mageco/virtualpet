@@ -15,14 +15,14 @@ public Transform anchor;
     }
 
     public void Load(){
-        List<Skill> items = new List<Skill>();
+        List<PlayerAchivement> items = new List<PlayerAchivement>();
 
         ClearItems();
-        for(int i=0;i<DataHolder.Skills().GetDataCount();i++){
-            items.Add(DataHolder.Skill(i));
+        foreach(PlayerAchivement a in GameManager.instance.myPlayer.achivements){
+            items.Add(a);
         }   
 
-        items.Sort((p1,p2)=>(p1.skillOrder).CompareTo(p2.skillOrder));
+        items.Sort((p1,p2)=>(p1.order).CompareTo(p2.order));
 
         for(int i=0;i<items.Count;i++){
             LoadItem(items[i]);
@@ -37,7 +37,7 @@ public Transform anchor;
 
     
 
-    void LoadItem(Skill data){
+    void LoadItem(PlayerAchivement data){
         GameObject go = Instantiate(achivementUIPrefab);      
         go.transform.SetParent(this.anchor);
         go.transform.localScale = Vector3.one;

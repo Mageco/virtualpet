@@ -16,6 +16,7 @@ public class Achivement
     public int itemId = 0;    
     public int collectPointNumber = 3;
 	public int[] maxProgress = new int[0];
+    public string[] levelDescription = new string[0];
 
 	//Rewards
     public int[] coinValue = new int[0];

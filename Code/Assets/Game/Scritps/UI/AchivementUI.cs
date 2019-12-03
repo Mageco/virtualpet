@@ -21,23 +21,27 @@ public class AchivementUI : MonoBehaviour
     }
 
     // Start is called before the first frame update
-    public void Load(Skill d)
+    public void Load(PlayerAchivement a)
     {
+        Achivement d = DataHolder.Achivements().GetAchivement(a.achivementId);
+        int level = a.level;
         iD = d.iD;
         string url = d.iconUrl.Replace("Assets/Game/Resources/","");
         url = url.Replace(".png","");
         icon.sprite = Resources.Load<Sprite>(url) as Sprite;
         achivementlName.text = d.GetName(0);
-        achivementDescription.text = d.GetDescription(0);
-        progress.text = GameManager.instance.GetPetObject(0).data.GetSkillProgress(d.skillType).ToString() + "/" + d.maxProgress.ToString();
-        slider.fillAmount = GameManager.instance.GetPetObject(0).data.GetSkillProgress(d.skillType) * 1f/d.maxProgress;
-        if(d.coinValue != 0){
+        achivementDescription.text = d.levelDescription[level];
+        progress.text = a.amount.ToString() + "/" + d.maxProgress[level].ToString();
+        slider.fillAmount = a.amount * 1f/d.maxProgress[level];
+        if(d.coinValue[level] != 0){
             rewardIcon.sprite = coinIcon;
-            rewardValue.text = d.coinValue.ToString();
-        }else if(d.diamondValue != 0){
+            rewardValue.text = d.coinValue[level].ToString();
+        }else if(d.diamondValue[level] != 0){
             rewardIcon.sprite = diamonIcon;
-            rewardValue.text = d.diamondValue.ToString();           
+            rewardValue.text = d.diamondValue[level].ToString();           
         }
+
+        collect.interactable = false;
     }
 
     // Update is called once per frame

@@ -35,7 +35,7 @@ public class Minigame : MonoBehaviour
         float d = Camera.main.orthographicSize * (float)Screen.width / (float)Screen.height;
         boundX.x = -d;
         boundX.y = d;
-        gameLevel = GameManager.instance.myPlayer.gameLevels[0];
+        gameLevel = GameManager.instance.myPlayer.minigameLevels[0];
     }
         
     // Start is called before the first frame update
@@ -52,7 +52,7 @@ public class Minigame : MonoBehaviour
             EndGame();
             if(live == maxLive){
                 OnWin(3);
-                GameManager.instance.myPlayer.gameLevels[0] ++;
+                GameManager.instance.myPlayer.minigameLevels[0] ++;
             }else if(live == maxLive - 1)
             {
                 OnWin(2);
