@@ -39,13 +39,15 @@ namespace MageSDK.Client {
 		public bool isWorkingOnline = false;
 		public ClientLoginMethod loginMethod;
 
-		public List<ActionData> actions = new List<ActionData>();
-
 		#region private variables
 		private bool _isLogin = false;
 		private static bool _isLoaded = false;
 
 		private Hashtable variables;
+
+		private Hashtable apiCounter = new Hashtable();
+
+		private List<MageEvent> cachedEvent = new List<MageEvent>();
 		#endregion
 
 		void Awake() {
@@ -58,6 +60,9 @@ namespace MageSDK.Client {
 
 				// at start initiate Default user
 				InitDefaultUser();
+
+				// init api cache
+				InitApiCache();
 				
 				#if PLATFORM_TEST
 					if (this.resetUserDataOnStart || !this.isWorkingOnline) {
@@ -127,14 +132,18 @@ namespace MageSDK.Client {
 			#if PLATFORM_TEST
 				if (resetUserDataOnStart) {
 					// in unity and test mode don't reuse user saved previously, always initate new user
+					Debug.Log("Load default user");
 					SetUser(defaultUser);
 				} else {
 					// if not in test mode, check the user saved in local and use the saved one
 					// if there is no user saved locally, then initate a default user
 					if (ES2.Exists (MageEngineSettings.GAME_ENGINE_USER)) {
+						Debug.Log("Load user from ES2");
 						SetUser(ES2.Load<User> (MageEngineSettings.GAME_ENGINE_USER));
+						Debug.Log("User store in ES2" + GetUser().ToJson());
 					} else {
 						SetUser(defaultUser);
+						Debug.Log("Load default user");
 					}
 				}
 			#else
@@ -184,8 +193,9 @@ namespace MageSDK.Client {
 		private void CreateNewUser(User u) {
 			//Debug.Log("Create new user");
 			//this.SetCharacter(this.GetApplicationDataItem<Character>(MageEngineSettings.GAME_ENGINE_DEFAULT_CHARACTER_DATA));
-			this.UpdateUserData(this.GetApplicationDataItem<User>(MageEngineSettings.GAME_ENGINE_DEFAULT_USER_DATA).user_datas);
-			SetUser(u);
+			//this.UpdateUserData(this.GetApplicationDataItem<User>(MageEngineSettings.GAME_ENGINE_DEFAULT_USER_DATA).user_datas);
+			//Need to update local data to server
+			//SetUser(u);
 		}
 
 		void CreateExistingUser(User u) {
@@ -194,7 +204,7 @@ namespace MageSDK.Client {
 				this.SetCharacter(this.GetApplicationDataItem<Character>(MageEngineSettings.GAME_ENGINE_DEFAULT_CHARACTER_DATA));
 			}*/
 
-			List<UserData> defaultUserData = GetApplicationDataItem<User>(MageEngineSettings.GAME_ENGINE_DEFAULT_USER_DATA).user_datas;
+			/* List<UserData> defaultUserData = GetApplicationDataItem<User>(MageEngineSettings.GAME_ENGINE_DEFAULT_USER_DATA).user_datas;
 
 			if (defaultUserData != null && defaultUserData.Count > 0) {
 				foreach (UserData d in defaultUserData) {
@@ -205,7 +215,10 @@ namespace MageSDK.Client {
 				}
 				// update data to store
 				UpdateUserData(u.user_datas);
-			}
+			} */
+
+			//Need to update local data to server
+			//SetUser(u);
 		}
 
 
@@ -288,6 +301,14 @@ namespace MageSDK.Client {
 					return;	
 				}
 			#endif
+
+			if (!this.IsSendable("UpdateGameCharacterDataRequest")) {
+				Debug.Log("Keep api in cache: UpdateGameCharacterDataRequest");
+				u.SetCharacter(character);
+				this.SaveCacheData<User>(u, MageEngineSettings.GAME_ENGINE_USER);
+				return;	
+				
+			}
 
 			UpdateGameCharacterDataRequest r = new UpdateGameCharacterDataRequest (character.id);
 			r.CharacterDatas = character.character_datas;
@@ -411,6 +432,14 @@ namespace MageSDK.Client {
 					return;	
 				}
 			#endif
+
+			if (!this.IsSendable("UpdateUserDataRequest")) {
+				Debug.Log("Keep api in cache: UpdateUserDataRequest");
+				if (this.resetUserDataOnStart || !this.isWorkingOnline) {
+					this.SaveCacheData<User>(u, MageEngineSettings.GAME_ENGINE_USER);
+					return;	
+				}
+			}
 
 			// save data to server
 			UpdateUserDataRequest r = new UpdateUserDataRequest ();
@@ -543,7 +572,8 @@ namespace MageSDK.Client {
 		}
 
 		private void SetUser(User u) {
-			RuntimeParameters.GetInstance().SetParam(MageEngineSettings.GAME_ENGINE_USER, u);
+			//RuntimeParameters.GetInstance().SetParam(MageEngineSettings.GAME_ENGINE_USER, u);
+			SaveCacheData<User>(u, MageEngineSettings.GAME_ENGINE_USER);
 		}
 
 		#endregion
@@ -575,7 +605,7 @@ namespace MageSDK.Client {
 				try {
 					
 					var jsonTextFile = Resources.Load<TextAsset>("Data/" + data);
-					Debug.Log("Load data: " + data + jsonTextFile.text);
+					//Debug.Log("Load data: " + data + jsonTextFile.text);
 					if(jsonTextFile != null) {
 
 						localResources.Add (new ApplicationData() {
@@ -672,7 +702,7 @@ namespace MageSDK.Client {
 		}
 
 		///<summary>Use this function to save data to both Engine / Local file</summary>
-		public void SaveCacheData<T>(T data, string cacheName) {
+		private void SaveCacheData<T>(T data, string cacheName) {
 			#if PLATFORM_TEST
 				if (!this.resetUserDataOnStart) {
 					ES2.Save<T>(data, cacheName);
@@ -683,10 +713,25 @@ namespace MageSDK.Client {
 
 			RuntimeParameters.GetInstance().SetParam(cacheName, data);
 		}
+
+		private T GetCacheData<T>(string cacheName) {
+			T t = RuntimeParameters.GetInstance().GetParam<T>(cacheName);
+
+			if (t == null) {
+				if (ES2.Exists(cacheName)) {
+					return ES2.Load<T>(cacheName);
+				} else {
+					return default(T);
+				}
+			} else {
+				return t;
+			}
+
+		}
 		#endregion
 
 		#region Event 
-		public void SendAppEvent(string eventName) {
+		private void SendAppEvent(string eventName) {
 
 			#if PLATFORM_TEST
 				if (this.resetUserDataOnStart || !this.isWorkingOnline) {
@@ -712,38 +757,41 @@ namespace MageSDK.Client {
 				}
 			);
 		}
+
+		public void OnEvent(MageEventType type) {
+			this.cachedEvent.Add(new MageEvent(type, ""));
+			SaveEvents();
+		}
+
+		public void OnEvent<T>(MageEventType type, T obj) where T:BaseModel {
+			this.cachedEvent.Add(new MageEvent(type, obj.ToJson()));
+		}
+
+		private void SaveEvents(){
+			ES2.Save(this.cachedEvent, MageEngineSettings.GAME_ENGINE_EVENT_CACHE);
+		}
+
+		private void LoadEvents(){
+			if(ES2.Exists(MageEngineSettings.GAME_ENGINE_EVENT_CACHE)){
+				this.cachedEvent = ES2.LoadList<MageEvent>(MageEngineSettings.GAME_ENGINE_EVENT_CACHE);
+			} else  {
+				this.cachedEvent = new List<MageEvent>();
+			}
+		}
 		#endregion
 
 		#region Actions
-		public void LogAction(ActionType t){
-			ActionData a = new ActionData();
-			a.actionType = t;
-			a.startTime = System.DateTime.Now;
-			actions.Add(a);
-	//		Debug.Log(a.actionType + "  " + a.startTime.ToShortTimeString());
-			SaveAction();
+		public void SaveAction(List<ActionData> actions){
+			ES2.Save(actions, MageEngineSettings.GAME_ENGINE_ACTION_LOGS);
 		}
 
-		public List<ActionData> GetActionLogs(System.DateTime t){
-			List<ActionData> temp = new List<ActionData>();
-			for(int i=0;i<actions.Count;i++){
-				if(actions[i].startTime > t){
-					temp.Add(actions[i]);
-				}
-			}
-			return temp;
-		}
-
-		void SaveAction(){
-			ES2.Save(actions,"ActionLog");
-		}
-
-		void LoadAction(){
-			if(ES2.Exists("ActionLog")){
-				ES2.LoadList<ActionData>("ActionLog");
+		public List<ActionData> LoadAction(){
+			if(ES2.Exists(MageEngineSettings.GAME_ENGINE_ACTION_LOGS)){
+				return ES2.LoadList<ActionData>(MageEngineSettings.GAME_ENGINE_ACTION_LOGS);
+			} else  {
+				return new List<ActionData>();
 			}
 		}
-
 		#endregion
 
 		#region  Variable
@@ -778,6 +826,25 @@ namespace MageSDK.Client {
 			}
 		}
 
+
+		#endregion
+
+		#region ApiCache
+		private void InitApiCache() {
+			this.apiCounter.Add("UpdateUserDataRequest", new OnlineCacheCounter(0, 10));
+			this.apiCounter.Add("UpdateGameCharacterDataRequest", new OnlineCacheCounter(0, 10));
+		}
+
+		private bool IsSendable(string apiName) {
+			if (this.apiCounter.Contains(apiName)) {
+				OnlineCacheCounter tmp = (OnlineCacheCounter) this.apiCounter[apiName];
+				bool check = tmp.IsMax();
+				this.apiCounter[apiName] = tmp;
+				return check;
+			} else {
+				return true;
+			}
+		}
 
 		#endregion
 	}
