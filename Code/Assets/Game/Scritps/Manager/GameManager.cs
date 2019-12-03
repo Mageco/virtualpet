@@ -13,7 +13,7 @@ public class GameManager : MonoBehaviour
     public int questId = 0;
     public GameType gameType = GameType.House;
 
-
+    List<ActionData> actions = new List<ActionData>();
     //Testing
     public int addExp = 0;
     public bool isLoad = false;
@@ -369,6 +369,38 @@ public class GameManager : MonoBehaviour
         }
         #endif
         
+    }
+
+    public void LogAction(AchivementType logType = AchivementType.Do_Action, ActionType t = ActionType.None,int itemId = -1,AnimalType animalType = AnimalType.Mouse){
+        ActionData a = new ActionData();
+        a.achivementType = logType;
+        a.actionType = t;
+        a.itemId = itemId;
+        a.animalType = animalType;
+        a.startTime = System.DateTime.Now;
+        actions.Add(a);
+//		Debug.Log(a.actionType + "  " + a.startTime.ToShortTimeString());
+        SaveAction();
+    }
+
+    public List<ActionData> GetActionLogs(System.DateTime t){
+        List<ActionData> temp = new List<ActionData>();
+        for(int i=0;i<actions.Count;i++){
+            if(actions[i].startTime > t){
+                temp.Add(actions[i]);
+            }
+        }
+        return temp;
+    }
+
+    void SaveAction(){
+        ES2.Save(actions,"ActionLog");
+    }
+
+    void LoadAction(){
+        if(ES2.Exists("ActionLog")){
+            actions =  ES2.LoadList<ActionData>("ActionLog");
+        }
     }
 
     #region  Camera
