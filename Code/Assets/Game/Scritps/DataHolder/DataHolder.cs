@@ -13,6 +13,8 @@ public class DataHolder
 	private QuestData quests;
 	private PetData pets;
 
+	private AchivementData achivements;
+
 
 	private DataHolder()
 	{
@@ -34,6 +36,7 @@ public class DataHolder
 		dialogs = new DialogData();
 		quests = new QuestData();
 		pets = new PetData();
+		achivements = new AchivementData();
 	}
 
 
@@ -199,6 +202,36 @@ public class DataHolder
 			return DataHolder.Instance().pets.pets[DataHolder.Instance().pets.pets.Length - 1].iD;
 		else 
 			return -1;
+	}
+
+	public static AchivementData Achivements()
+	{
+		return DataHolder.Instance().achivements;
+	}
+
+	public static Achivement Achivement(int index)
+	{
+		return DataHolder.Instance().achivements.achivements[index];
+	}
+
+	public static Achivement GetAchivement(int id)
+	{
+		return DataHolder.Instance().achivements.GetAchivement(id);
+	}
+
+	public static int GetAchivementIndex(int id){
+		for(int i=0;i<DataHolder.Achivements().GetDataCount();i++){
+			if(DataHolder.Achivement(i).iD == id)
+				return i;
+		}
+		return 0;
+	}
+
+	public static int LastAchivementID(){
+		if(DataHolder.Instance().achivements != null && DataHolder.Instance().achivements.GetDataCount() > 0)
+			return DataHolder.Instance().achivements.achivements[DataHolder.Instance().achivements.achivements.Length - 1].iD;
+		else 
+			return 0;
 	}
 
 	public static LanguageData Languages()

@@ -10,7 +10,7 @@ public class ProjectWindow : EditorWindow
 	public int mWidth = 300;
 	// section handling
 	private int currentSection = 0;
-	private string[] sections = new string[] {"Language","Skill","Item","Dialog","Quest","Pet"};
+	private string[] sections = new string[] {"Language","Skill","Item","Dialog","Quest","Pet","Achivement"};
 	
 	private int LANGUAGES = 0;
 	private int SKILL = 1;
@@ -18,6 +18,7 @@ public class ProjectWindow : EditorWindow
 	private int DIALOGS = 3;
 	private int QUESTS = 4;
 	private int PETS = 5;
+	private int ACHIVEMENTS = 6;
 
 	// tabs
 	private LanguageTab langTab = null;
@@ -26,6 +27,8 @@ public class ProjectWindow : EditorWindow
 	private DialogTab dialogTab = null;
 	private QuestTab questTab = null;
 	private PetTab petTab = null;
+	private AchivementTab achivementTab = null;
+
 
 
 	[MenuItem("Mage Kit/Item Editor")]
@@ -58,6 +61,9 @@ public class ProjectWindow : EditorWindow
 
 		if(petTab == null) petTab = new PetTab(this);
 		else petTab.Reload();
+		
+		if(achivementTab == null) achivementTab = new AchivementTab(this);
+		else achivementTab.Reload();
 	}
 	
 	public void Save()
@@ -68,6 +74,7 @@ public class ProjectWindow : EditorWindow
 		DataHolder.Dialogs().SaveData();
 		DataHolder.Quests().SaveData();
 		DataHolder.Pets().SaveData();
+		DataHolder.Achivements().SaveData();
 	}
 
 	void OnGUI()
@@ -96,6 +103,8 @@ public class ProjectWindow : EditorWindow
 			this.questTab.ShowTab ();
 		} else if (currentSection == this.PETS) {
 			this.petTab.ShowTab ();
+		} else if (currentSection == this.ACHIVEMENTS) {
+			this.achivementTab.ShowTab ();
 		} 
 
 
@@ -125,6 +134,7 @@ public class ProjectWindow : EditorWindow
 		DataHolder.Dialogs ().AddLanguage ();
 		DataHolder.Quests ().AddLanguage ();
 		DataHolder.Pets ().AddLanguage ();
+		DataHolder.Achivements ().AddLanguage ();
 	}
 	
 	public void RemoveLanguage(int lang)
@@ -134,6 +144,7 @@ public class ProjectWindow : EditorWindow
 		DataHolder.Dialogs ().RemoveLanguage (lang);
 		DataHolder.Quests ().RemoveLanguage (lang);
 		DataHolder.Pets ().RemoveLanguage (lang);
+		DataHolder.Achivements ().RemoveLanguage (lang);
 	}
 
 
