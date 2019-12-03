@@ -10,6 +10,8 @@ public class Minigame1 : Minigame
     public Text chickenNumber;
     public Text timeText;
     public Text levelText;
+    public Text energyText;
+    public Image energyProgress;
 
     public AnimalSpawner chickenSpawner;
     public AnimalSpawner foxSpawner;
@@ -20,7 +22,7 @@ public class Minigame1 : Minigame
         chickens = GameObject.FindObjectsOfType<ChickenController>();
         this.maxLive = chickens.Length;
         this.live = this.maxLive;
-        levelText.text = "Level " + (gameLevel + 1).ToString();
+        levelText.text = "Stage " + (gameLevel + 1).ToString();
         UpdateLive();
 //        Debug.Log(live);
  
@@ -88,6 +90,7 @@ public class Minigame1 : Minigame
             float m = (int)(t/60);
             float s = (int)(t - m*60);
             timeText.text  = m.ToString("00") + ":" + s.ToString("00");
+            energyProgress.fillAmount = GameManager.instance.GetActivePet().Energy/GameManager.instance.GetActivePet().maxEnergy;
         }
     }
 
