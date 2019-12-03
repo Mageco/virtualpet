@@ -18,7 +18,7 @@ namespace Mage.Models.Application{
 		public MageEvent() : base () {
 		}
 
-		public MageEvent(MageEventType type, string eventDetail = "") {
+		public MageEvent(MageEventType type, string eventDetail = ) {
 			this.eventName = type;
 			this.eventDetail = eventDetail;
 			eventDate = DateTime.Now;
@@ -29,93 +29,182 @@ namespace Mage.Models.Application{
 
 	public enum MageEventType {
 
-		///<summary>Activation.OpenActivationWindow
+		///<summary>
+		///Activation.OpenActivationWindow
+		///</summary>
 		OpenActivationWindow,
-		///<summary>Activation.ActivateFailed
+		///<summary>
+		///Activation.ActivateFailed
+		///</summary>
 		ActivateFailed,
-		///<summary>Activation.ActivateSuccessful
+		///<summary>
+		///Activation.ActivateSuccessful
+		///</summary>
 		ActivateSuccessful,
-		///<summary>Activation.DiscardActivationWindow
+		///<summary>
+		///Activation.DiscardActivationWindow
+		///</summary>
 		DiscardActivationWindow,
-		///<summary>Activation.OpenExternalLink
+		///<summary>
+		///Activation.OpenExternalLink
+		///</summary>
 		OpenExternalLink,
-		///<summary>Admob.VideoAdLoaded
+		///<summary>
+		///Admob.VideoAdLoaded
+		///</summary>
 		VideoAdLoaded,
-		///<summary>Admob.VideoAdStarted
+		///<summary>
+		///Admob.VideoAdStarted
+		///</summary>
 		VideoAdStarted,
-		///<summary>Admob.VideoAdOpened
+		///<summary>
+		///Admob.VideoAdOpened
+		///</summary>
 		VideoAdOpened,
-		///<summary>Admob.VideoAdClosed
+		///<summary>
+		///Admob.VideoAdClosed
+		///</summary>
 		VideoAdClosed,
-		///<summary>Admob.VideoAdRewarded
+		///<summary>
+		///Admob.VideoAdRewarded
+		///</summary>
 		VideoAdRewarded,
-		///<summary>Admob.VideoAdFailtoLoaded
+		///<summary>
+		///Admob.VideoAdFailtoLoaded
+		///</summary>
 		VideoAdFailtoLoaded,
-		///<summary>Admob.InterstitialAdLoaded
+		///<summary>
+		///Admob.InterstitialAdLoaded
+		///</summary>
 		InterstitialAdLoaded,
-		///<summary>Admob.InterstitialAdShow
+		///<summary>
+		///Admob.InterstitialAdShow
+		///</summary>
 		InterstitialAdShow,
-		///<summary>Admob.InterstitialAdOpened
+		///<summary>
+		///Admob.InterstitialAdOpened
+		///</summary>
 		InterstitialAdOpened,
-		///<summary>Admob.InterstitialAdClosed
+		///<summary>
+		///Admob.InterstitialAdClosed
+		///</summary>
 		InterstitialAdClosed,
-		///<summary>Admob.InterstitialAdFailtoLoaded
+		///<summary>
+		///Admob.InterstitialAdFailtoLoaded
+		///</summary>
 		InterstitialAdFailtoLoaded,
-		///<summary>Admob.BannerAdLoaded
+		///<summary>
+		///Admob.BannerAdLoaded
+		///</summary>
 		BannerAdLoaded,
-		///<summary>Admob.BannerAdShow
+		///<summary>
+		///Admob.BannerAdShow
+		///</summary>
 		BannerAdShow,
-		///<summary>Admob.BannerAdClosed
+		///<summary>
+		///Admob.BannerAdClosed
+		///</summary>
 		BannerAdClosed,
-		///<summary>Admob.BannerAdOpened
+		///<summary>
+		///Admob.BannerAdOpened
+		///</summary>
 		BannerAdOpened,
-		///<summary>UserAction.OpenApplication
+		///<summary>
+		///UserAction.OpenApplication
+		///</summary>
 		OpenApplication,
-		///<summary>UserAction.QuitApplication
+		///<summary>
+		///UserAction.QuitApplication
+		///</summary>
 		QuitApplication,
-		///<summary>UserAction.OpenCreateUserProfile
+		///<summary>
+		///UserAction.OpenCreateUserProfile
+		///</summary>
 		OpenCreateUserProfile,
-		///<summary>UserAction.CancelCreateUserProfile
+		///<summary>
+		///UserAction.CancelCreateUserProfile
+		///</summary>
 		CancelCreateUserProfile,
-		///<summary>UserAction.CreateUserProfileFailed
+		///<summary>
+		///UserAction.CreateUserProfileFailed
+		///</summary>
 		CreateUserProfileFailed,
-		///<summary>UserAction.CreateUserProfileSuccesful
+		///<summary>
+		///UserAction.CreateUserProfileSuccesful
+		///</summary>
 		CreateUserProfileSuccesful,
-		///<summary>UserAction.OpenLogin
+		///<summary>
+		///UserAction.OpenLogin
+		///</summary>
 		OpenLogin,
-		///<summary>UserAction.LoginFailed
+		///<summary>
+		///UserAction.LoginFailed
+		///</summary>
 		LoginFailed,
-		///<summary>UserAction.LoginSuccessful
+		///<summary>
+		///UserAction.LoginSuccessful
+		///</summary>
 		LoginSuccessful,
-		///<summary>UserAction.AddCharacter
+		///<summary>
+		///UserAction.AddCharacter
+		///</summary>
 		AddCharacter,
-		///<summary>UserAction.EquipItem
+		///<summary>
+		///UserAction.EquipItem
+		///</summary>
 		EquipItem,
-		///<summary>UserAction.UseItem
+		///<summary>
+		///UserAction.UseItem
+		///</summary>
 		UseItem,
-		///<summary>UserAction.OpenScreen
+		///<summary>
+		///UserAction.OpenScreen
+		///</summary>
 		OpenScreen,
-		///<summary>UserAction.ClickObject
+		///<summary>
+		///UserAction.ClickObject
+		///</summary>
 		ClickObject,
-		///<summary>Store.OpenStore
+		///<summary>
+		///Store.OpenStore
+		///</summary>
 		OpenStore,
-		///<summary>Store.OpenStoreCategory
+		///<summary>
+		///Store.OpenStoreCategory
+		///</summary>
 		OpenStoreCategory,
-		///<summary>Store.SearchItem
+		///<summary>
+		///Store.SearchItem
+		///</summary>
 		SearchItem,
-		///<summary>Store.OpenItem
+		///<summary>
+		///Store.OpenItem
+		///</summary>
 		OpenItem,
-		///<summary>Store.CheckOutItem
+		///<summary>
+		///Store.CheckOutItem
+		///</summary>
 		CheckOutItem,
-		///<summary>Store.ConfirmPaymentItem
+		///<summary>
+		///Store.ConfirmPaymentItem
+		///</summary>
 		ConfirmPaymentItem,
-		///<summary>Store.CancelPaymentItem
+		///<summary>
+		///Store.CancelPaymentItem
+		///</summary>
 		CancelPaymentItem,
-		///<summary>InAppPurchase.OpenIAPWindow
+		///<summary>
+		///InAppPurchase.OpenIAPWindow
+		///</summary>
 		OpenIAPWindow,
-		///<summary>InAppPurchase.CloseIAPWindow
+		///<summary>
+		///InAppPurchase.CloseIAPWindow
+		///</summary>
 		CloseIAPWindow,
-		///<summary>InAppPurchase.CheckoutIAPWindow
+		///<summary>
+		///InAppPurchase.CheckoutIAPWindow
+		///</summary>
 		CheckoutIAPWindow
+
 	}
 }

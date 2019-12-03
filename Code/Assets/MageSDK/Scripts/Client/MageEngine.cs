@@ -63,6 +63,8 @@ namespace MageSDK.Client {
 
 				// init api cache
 				InitApiCache();
+
+				LoadEvents();
 				
 				#if PLATFORM_TEST
 					if (this.resetUserDataOnStart || !this.isWorkingOnline) {
@@ -776,20 +778,6 @@ namespace MageSDK.Client {
 				this.cachedEvent = ES2.LoadList<MageEvent>(MageEngineSettings.GAME_ENGINE_EVENT_CACHE);
 			} else  {
 				this.cachedEvent = new List<MageEvent>();
-			}
-		}
-		#endregion
-
-		#region Actions
-		public void SaveAction(List<ActionData> actions){
-			ES2.Save(actions, MageEngineSettings.GAME_ENGINE_ACTION_LOGS);
-		}
-
-		public List<ActionData> LoadAction(){
-			if(ES2.Exists(MageEngineSettings.GAME_ENGINE_ACTION_LOGS)){
-				return ES2.LoadList<ActionData>(MageEngineSettings.GAME_ENGINE_ACTION_LOGS);
-			} else  {
-				return new List<ActionData>();
 			}
 		}
 		#endregion
