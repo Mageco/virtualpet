@@ -491,7 +491,7 @@ public class CharController : MonoBehaviour
     }
 
     void LogAction(){
-        //ApiManager.GetInstance().LogAction(actionType);
+        ApiManager.GetInstance().LogAction(actionType);
     }
 
 
@@ -870,6 +870,7 @@ public class CharController : MonoBehaviour
                         canEat = false;
                     yield return new WaitForEndOfFrame();
                 }
+                GameManager.instance.LogAchivement(AchivementType.Do_Action,ActionType.Eat);
                 GameManager.instance.AddExp(5);
             }else{
                 yield return DoAnim("Bark_" + direction.ToString());
@@ -908,6 +909,7 @@ public class CharController : MonoBehaviour
                         canDrink = false;
                     yield return new WaitForEndOfFrame();
                 }
+                GameManager.instance.LogAchivement(AchivementType.Do_Action,ActionType.Drink);
                 GameManager.instance.AddExp(5);
             }else{
                 yield return DoAnim("Bark_" + direction.ToString());

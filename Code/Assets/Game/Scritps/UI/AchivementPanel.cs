@@ -11,7 +11,7 @@ public Transform anchor;
     // Start is called before the first frame update
     void Start()
     {
-        Load();
+        
     }
 
     public void Load(){

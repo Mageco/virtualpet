@@ -72,6 +72,24 @@ public class PlayerAchivement : BaseModel{
 
 	public int order = 0;
     public RewardState rewardState = RewardState.None;
+
+	public int Amount
+	{
+		get
+		{
+			return this.amount;
+		}
+		set
+		{
+			this.amount = value;
+			if (this.amount >= DataHolder.GetAchivement(achivementId).maxProgress[level]){
+				if(rewardState != RewardState.Ready)
+					rewardState = RewardState.Ready;
+			}
+				
+			
+		}
+	}
 }
 
 

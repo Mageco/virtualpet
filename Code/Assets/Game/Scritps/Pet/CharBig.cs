@@ -693,12 +693,11 @@ public class CharBig : CharController
         CheckAbort();
     }
 
-    IEnumerator LevelUp()
+    protected override IEnumerator LevelUp()
     {
         Debug.Log("Level Up" + data.level);
         yield return StartCoroutine(DoAnim("LevelUp_LD"));
         CheckAbort();
-
     }
 
     

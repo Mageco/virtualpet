@@ -41,12 +41,21 @@ public class AchivementUI : MonoBehaviour
             rewardValue.text = d.diamondValue[level].ToString();           
         }
 
-        collect.interactable = false;
+        if(a.rewardState == RewardState.Ready){
+            collect.interactable = true;
+        }else
+            collect.interactable = false;
     }
 
     // Update is called once per frame
     void Update()
     {
 
+    }
+
+    public void Collect(){
+        GameManager.instance.CollectAchivementRewards(iD);
+        collect.interactable = false;
+        UIManager.instance.achivementPanel.Load();
     }
 }

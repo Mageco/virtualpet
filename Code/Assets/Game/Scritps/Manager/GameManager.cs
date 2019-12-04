@@ -13,7 +13,6 @@ public class GameManager : MonoBehaviour
     public int questId = 0;
     public GameType gameType = GameType.House;
 
-    List<ActionData> actions = new List<ActionData>();
     //Testing
     public int addExp = 0;
     public bool isLoad = false;
@@ -319,7 +318,16 @@ public class GameManager : MonoBehaviour
     }
 
     public void CollectAchivementRewards(int achivementId){
-
+        foreach(PlayerAchivement a in myPlayer.achivements){
+            if(a.achivementId == achivementId){
+                AddCoin(DataHolder.GetAchivement(achivementId).coinValue[a.level]);
+                AddDiamond(DataHolder.GetAchivement(achivementId).diamondValue[a.level]);
+                a.rewardState = RewardState.Received;
+                a.level ++;
+                SavePlayer();
+                return;
+            }
+        }
     }
 
 
@@ -371,35 +379,27 @@ public class GameManager : MonoBehaviour
         
     }
 
-    public void LogAction(AchivementType logType = AchivementType.Do_Action, ActionType t = ActionType.None,int itemId = -1,AnimalType animalType = AnimalType.Mouse){
-        ActionData a = new ActionData();
-        a.achivementType = logType;
-        a.actionType = t;
-        a.itemId = itemId;
-        a.animalType = animalType;
-        a.startTime = System.DateTime.Now;
-        actions.Add(a);
-//		Debug.Log(a.actionType + "  " + a.startTime.ToShortTimeString());
-        SaveAction();
-    }
-
-    public List<ActionData> GetActionLogs(System.DateTime t){
-        List<ActionData> temp = new List<ActionData>();
-        for(int i=0;i<actions.Count;i++){
-            if(actions[i].startTime > t){
-                temp.Add(actions[i]);
+    public void LogAchivement(AchivementType achivementType = AchivementType.Do_Action, ActionType actionType = ActionType.None,int itemId = -1,AnimalType animalType = AnimalType.Mouse){
+        foreach(PlayerAchivement a in myPlayer.achivements){
+            Achivement achivement = DataHolder.GetAchivement(a.achivementId);
+            if(achivement.achivementType == achivementType){
+                if(achivement.achivementType == AchivementType.Do_Action){
+                    if(achivement.actionType == actionType){
+                        a.Amount ++;
+                    }
+                }else if(achivement.achivementType == AchivementType.Buy_Item || achivement.achivementType == AchivementType.Use_Item || achivement.achivementType == AchivementType.Drink
+                || achivement.achivementType == AchivementType.Eat){
+                    if(achivement.itemId == itemId){
+                            a.Amount ++;
+                    }
+                }else if(achivement.achivementType == AchivementType.Tap_Animal || achivement.achivementType == AchivementType.Dissmiss_Animal){
+                    if(achivement.animalType == animalType){
+                            a.Amount ++;
+                    }
+                }else if(achivement.achivementType == AchivementType.LevelUp || achivement.achivementType == AchivementType.Minigame_Level){
+                    a.Amount ++;
+                }
             }
-        }
-        return temp;
-    }
-
-    void SaveAction(){
-        ES2.Save(actions,"ActionLog");
-    }
-
-    void LoadAction(){
-        if(ES2.Exists("ActionLog")){
-            actions =  ES2.LoadList<ActionData>("ActionLog");
         }
     }
 
@@ -420,12 +420,6 @@ public class GameManager : MonoBehaviour
             camera.target = null;
     }
 
-
-    public void OnMinigame(int id){
-        MageManager.instance.LoadSceneWithLoading("Minigame" + id.ToString());
-        gameType = GameType.Minigame1;
-        GetActivePet().Load();
-    }
 
     #endregion
 

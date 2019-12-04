@@ -13,6 +13,7 @@ public class UIManager : MonoBehaviour
 
     public GameObject profileUIPrefab;
     public GameObject skillCompletePrefab;
+    public GameObject achivementPrefab;
     public static UIManager instance;
 	public Text coinText;
 	public Text diamonText;
@@ -22,7 +23,11 @@ public class UIManager : MonoBehaviour
     EventPanel eventPanel;
     SkillCompletePanel skillCompletePanel;
 
+    public AchivementPanel achivementPanel;
+
     ProfilePanel profilePanel;
+
+    public GameObject homeUI;
 
     List<string> notificationText = new List<string>();
 
@@ -50,6 +55,7 @@ public class UIManager : MonoBehaviour
             OnQuestNotificationPopup(notificationText[0]);
         }
     }
+
 
 
 	public void UpdateUI()
@@ -181,9 +187,36 @@ public class UIManager : MonoBehaviour
         }
      }
 
-     public void OnHome(){
-         MageManager.instance.LoadSceneWithLoading("House");
+    public void OnAchivementPanel()
+    {
+        if (achivementPanel == null)
+        {
+            var popup = Instantiate(achivementPrefab) as GameObject;
+            popup.SetActive(true);
+            popup.transform.localScale = Vector3.zero;
+            popup.transform.SetParent(GameObject.Find("Canvas").transform, false);
+            popup.GetComponent<Popup>().Open();
+            achivementPanel = popup.GetComponent<AchivementPanel>();
+            achivementPanel.Load();
+        }
      }
+
+     public void OnHome(){
+        GameManager.instance.gameType = GameType.House;
+        GameManager.instance.GetPet(0).Load();
+        MageManager.instance.LoadSceneWithLoading("House");
+        homeUI.SetActive(true);
+     }
+
+
+
+
+    public void OnMinigame(int id){
+        MageManager.instance.LoadSceneWithLoading("Minigame" + id.ToString());
+        GameManager.instance.gameType = GameType.Minigame1;
+        GameManager.instance.GetActivePet().Load();
+        homeUI.SetActive(false);
+    }
 
 
 }

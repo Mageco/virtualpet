@@ -107,9 +107,7 @@ public class Minigame : MonoBehaviour
     }
 
     public void OnHome(){
-        GameManager.instance.gameType = GameType.House;
-        GameManager.instance.GetPet(0).Load();
-        MageManager.instance.LoadSceneWithLoading("House");
+        UIManager.instance.OnHome();
     }
 
     public virtual void EndGame(){
