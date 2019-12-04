@@ -23,7 +23,7 @@ public class EventPanel : MonoBehaviour
         {
              MageManager.instance.OnNotificationPopup ("Trò chơi này chưa ra mắt");
         }else{
-            if(GameManager.instance.GetPet(0).level > 1){
+            if(GameManager.instance.GetPet(0).level > 0){
                 this.Close();
                 UIManager.instance.OnMinigame(1);
             }else
