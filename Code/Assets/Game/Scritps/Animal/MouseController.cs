@@ -47,9 +47,11 @@ public class MouseController : MonoBehaviour
 
 	public void Spawn()
 	{
-		state = MouseState.Seek;
-		time = 0;
-		Seek();
+		if(GameManager.instance.GetActivePet().level > 5){
+			state = MouseState.Seek;
+			time = 0;
+			Seek();
+		}
 	}
 
 	void Seek(){
@@ -167,6 +169,7 @@ public class MouseController : MonoBehaviour
 		else {
 			if (time > maxTimeSpawn) {
 				Spawn ();
+				time = 0;
 			} else
 				time += Time.deltaTime;
 		}

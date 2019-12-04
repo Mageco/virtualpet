@@ -72,6 +72,8 @@ public class HealthItem : BaseDragItem
         yield return new WaitForSeconds(1);
         this.transform.position = originalPosition;
         this.transform.rotation = originalRotation;
+		height = originalHeight;
+		this.scalePosition = this.transform.position + new Vector3(0,-height,0);
         fallSpeed = 0;
         anim.Play("Idle", 0);
         state = ItemDragState.None;

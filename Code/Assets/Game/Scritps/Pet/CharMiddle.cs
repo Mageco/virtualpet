@@ -266,6 +266,7 @@ public class CharMiddle : CharController
 
         float t = 0;
         float maxTime = 6f;
+        GameManager.instance.LogAchivement(AchivementType.Do_Action,ActionType.Call);
 
         while (!isAbort && t < maxTime)
         {

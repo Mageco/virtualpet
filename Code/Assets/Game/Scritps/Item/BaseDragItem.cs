@@ -145,7 +145,7 @@ public class BaseDragItem : MonoBehaviour
             anim.Play("Drag");
             Vector3 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition) - dragOffset;
             pos.z = this.transform.position.z;
-            pos.z = -50;
+            pos.z = -100;
             if (pos.y > maxHeight)
                 pos.y = maxHeight;
             else if (pos.y < -20)

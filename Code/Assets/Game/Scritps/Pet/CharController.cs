@@ -491,7 +491,7 @@ public class CharController : MonoBehaviour
     }
 
     void LogAction(){
-        ApiManager.GetInstance().LogAction(actionType);
+        //ApiManager.GetInstance().LogAc(actionType);
     }
 
 
@@ -805,6 +805,7 @@ public class CharController : MonoBehaviour
 
         if(enviromentType == EnviromentType.Toilet && !isAbort){
             GameManager.instance.AddExp(5);
+            GameManager.instance.LogAchivement(AchivementType.Do_Action,ActionType.OnToilet);
             yield return StartCoroutine(JumpDown(-7,10,30));     
         }
         
@@ -838,6 +839,7 @@ public class CharController : MonoBehaviour
 
         if(enviromentType == EnviromentType.Toilet && !isAbort){
             GameManager.instance.AddExp(5);
+            GameManager.instance.LogAchivement(AchivementType.Do_Action,ActionType.OnToilet);
             yield return StartCoroutine(JumpDown(-7,10,30));     
         }
         CheckAbort();
@@ -967,6 +969,7 @@ public class CharController : MonoBehaviour
 
         if(enviromentType == EnviromentType.Bed && !isAbort){
             GameManager.instance.AddExp(5);
+            GameManager.instance.LogAchivement(AchivementType.Do_Action,ActionType.Sleep);
             yield return StartCoroutine(JumpDown(-7,10,30));
         }
 

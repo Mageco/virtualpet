@@ -398,7 +398,7 @@ public class CharBig : CharController
 
 
         touchObject.SetActive(true);
-
+        GameManager.instance.LogAchivement(AchivementType.Do_Action,ActionType.Call);
         float t = 0;
         float maxTime = 6f;
         bool isWait = true;

@@ -18,7 +18,7 @@ namespace Mage.Models.Application{
 		public MageEvent() : base () {
 		}
 
-		public MageEvent(MageEventType type, string eventDetail = ) {
+		public MageEvent(MageEventType type, string eventDetail = "") {
 			this.eventName = type;
 			this.eventDetail = eventDetail;
 			eventDate = DateTime.Now;

@@ -387,12 +387,15 @@ public class GameManager : MonoBehaviour
                     if(achivement.actionType == actionType){
                         a.Amount ++;
                     }
-                }else if(achivement.achivementType == AchivementType.Buy_Item || achivement.achivementType == AchivementType.Use_Item || achivement.achivementType == AchivementType.Drink
+                }else if(achivement.achivementType == AchivementType.Buy_Item){                   
+                    a.Amount ++;
+                }else if(achivement.achivementType == AchivementType.Use_Item || achivement.achivementType == AchivementType.Drink
                 || achivement.achivementType == AchivementType.Eat){
                     if(achivement.itemId == itemId){
                             a.Amount ++;
                     }
-                }else if(achivement.achivementType == AchivementType.Tap_Animal || achivement.achivementType == AchivementType.Dissmiss_Animal){
+                }
+                else if(achivement.achivementType == AchivementType.Tap_Animal || achivement.achivementType == AchivementType.Dissmiss_Animal){
                     if(achivement.animalType == animalType){
                             a.Amount ++;
                     }

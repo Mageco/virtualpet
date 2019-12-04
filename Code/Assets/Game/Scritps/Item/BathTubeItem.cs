@@ -42,6 +42,7 @@ public class BathTubeItem : MonoBehaviour
 			{
 				GameManager.instance.GetPetObject(0).data.dirty -= 50;
 				GameManager.instance.AddExp(5);
+				GameManager.instance.LogAchivement(AchivementType.Do_Action,ActionType.Bath);
 			}
 			
 

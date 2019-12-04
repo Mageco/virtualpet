@@ -231,7 +231,7 @@ public class ItemUI : MonoBehaviour
     IEnumerator BuyCoroutine()
     {
         isBusy = true;
-
+        
         if (isCharacter)
         {
             if (state == ItemState.Equiped)
@@ -281,6 +281,7 @@ public class ItemUI : MonoBehaviour
                     animator.Play("Buy", 0);
                     yield return new WaitForSeconds(1f);
                     UIManager.instance.BuyItem(itemId);
+                    GameManager.instance.LogAchivement(AchivementType.Buy_Item);
                     MageManager.instance.OnNotificationPopup("bạn đã mua thành công");
                 }
             }
