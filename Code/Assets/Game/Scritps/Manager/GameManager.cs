@@ -399,7 +399,8 @@ public class GameManager : MonoBehaviour
                     if(achivement.animalType == animalType){
                             a.Amount ++;
                     }
-                }else if(achivement.achivementType == AchivementType.LevelUp || achivement.achivementType == AchivementType.Minigame_Level){
+                }else if(achivement.achivementType == AchivementType.LevelUp 
+                || achivement.achivementType == AchivementType.Minigame_Level || achivement.achivementType == AchivementType.Play_MiniGame){
                     a.Amount ++;
                 }
             }
