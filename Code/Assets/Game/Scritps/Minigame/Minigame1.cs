@@ -17,6 +17,8 @@ public class Minigame1 : Minigame
     public AnimalSpawner foxSpawner;
     public AnimalSpawner snakeSpawner;
     public AnimalSpawner eagleSpawner;
+
+    public AudioClip music;
     
     void Start(){
         chickens = GameObject.FindObjectsOfType<ChickenController>();
@@ -24,8 +26,12 @@ public class Minigame1 : Minigame
         this.live = this.maxLive;
         levelText.text = "Stage " + (gameLevel + 1).ToString();
         UpdateLive();
+        if(UIManager.instance != null)
+            UIManager.instance.OnQuestNotificationPopup("Bạn hay giúp thú cưng bảo vệ đàn gà nhé");
+
+        MageManager.instance.PlayMusic(music,0,true);
 //        Debug.Log(live);
- 
+        
     }
 
     protected override void Load(){
@@ -101,6 +107,7 @@ public class Minigame1 : Minigame
             animals[i].gameObject.SetActive(false);
         }
         GameManager.instance.GetPetObject(0).OnHold();
+        MageManager.instance.StopMusic();
     }
     
 }

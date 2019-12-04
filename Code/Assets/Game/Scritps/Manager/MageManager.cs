@@ -194,6 +194,8 @@ public class MageManager : MonoBehaviour {
 
 	public int PlayAnimationSound(AudioClip clip,float volume,Transform anim)
 	{
+		if(clip == null)
+			return -1;
 		GameObject go = GameObject.Instantiate (soundPrefab);
 		go.transform.parent = anim;
 		go.transform.localPosition = Vector3.zero;
@@ -202,6 +204,7 @@ public class MageManager : MonoBehaviour {
 		currentID++;
 		s.Play (currentID, clip, false,0,volume*soundVolume);
 		audioSounds.Add (s);
+		Debug.Log(clip.name);
 		StartCoroutine (StopSoundCouroutine (s, clip.length));
 		return currentID;
 	}

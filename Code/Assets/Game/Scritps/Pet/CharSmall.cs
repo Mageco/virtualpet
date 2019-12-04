@@ -7,8 +7,8 @@ public class CharSmall : CharController
     protected override void CalculateData()
     {
         data.Sleep -= data.sleepConsume;
-        data.Food -= 0.05f;
-        data.energy += 0.05f;
+        data.Food -= 0.1f;
+        data.energy += 0.1f;
     }
 
     #region Thinking
