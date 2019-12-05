@@ -7,7 +7,6 @@ public class CharMinigame1 : CharController
 {
     float timeCheck = 0;
     float maxTimeCheck = 0.1f;
-    bool isStart = false;
     protected override void CalculateData()
     {
         data.Sleep -= data.sleepConsume;
@@ -17,10 +16,8 @@ public class CharMinigame1 : CharController
 
         data.Energy -= data.actionEnergyConsume;
         if(data.Food > 0 && actionType == ActionType.Tired){
-            data.Food -= 1f;
-            data.Energy += 2f;
+            data.Energy += 3f;
         }
-
     }
 
     public AnimalController[] animals;
@@ -35,12 +32,6 @@ public class CharMinigame1 : CharController
         }
 
         CheckAnimal();
-        if(animalTarget != null)
-        {
-            actionType = ActionType.Patrol;
-        }else {
-            actionType = ActionType.Rest;
-        }
     }
 
      protected override void CalculateDirection(){
@@ -56,48 +47,41 @@ public class CharMinigame1 : CharController
             direction = Direction.RD;
         else
             direction = Direction.D;
-
-        if(timeCheck > maxTimeCheck){
-            CheckAnimal();
-            timeCheck = 0;
-        }else
-            timeCheck += Time.deltaTime;
     }
 
     protected override void Load(){
-        LoadAnimal();
-        //this.data.speed = 20;
         this.agent.maxSpeed = data.speed;
     }
 
+
     public override void OnHold(){
-        agent.Stop();
-        actionType = ActionType.Hold;
-        isAbort = true;
+
+    }
+
+    public override void OnCall(Vector3 pos){
+
     }
 
     protected override void DoAction()
     {
-        //Debug.Log("DoAction " + actionType);
-        isAbort = false;
-        if (agent == null)
-            return;
-        //agent.Stop();
-        if (actionType == ActionType.Rest)
-        {
-            StartCoroutine(Rest());
+        if(Minigame.instance.state == GameState.Run){
+            //Debug.Log("DoAction " + actionType);
+            isAbort = false;
+            if (agent == null)
+                return;
+            //agent.Stop();
+            if (actionType == ActionType.Rest)
+            {
+                StartCoroutine(Rest());
+            }
+            else if (actionType == ActionType.Patrol)
+            {
+                StartCoroutine(Patrol());
+            }else if (actionType == ActionType.Tired)
+            {
+                StartCoroutine(Tired());
+            }
         }
-        else if (actionType == ActionType.Patrol)
-        {
-            StartCoroutine(Patrol());
-        }else if (actionType == ActionType.Tired)
-        {
-            StartCoroutine(Tired());
-        }else if (actionType == ActionType.Hold)
-        {
-            StartCoroutine(Hold());
-        }
-
     }
     #endregion
 
@@ -111,7 +95,7 @@ public class CharMinigame1 : CharController
             agent.SetDestination(animalTarget.transform.position);           
             anim.Play("Run_Angry_" + this.direction.ToString(), 0);
 
-            if(Vector2.Distance(this.transform.position,animalTarget.transform.position) < 10f){
+            if(Vector2.Distance(this.transform.position,animalTarget.transform.position) < 10f * this.transform.localScale.x){
                 isArrived = true;
                 agent.Stop();
                 animalTarget.OnFlee();
@@ -127,63 +111,41 @@ public class CharMinigame1 : CharController
 
     IEnumerator Rest()
     {
-        if(isStart)
-        {
-            if(GetChiken() != null){
-                target = GetChiken().transform.position;  
-                anim.Play("Run_Angry_" + this.direction.ToString(), 0);
-                yield return StartCoroutine(MoveToPoint());    
-                anim.Play("Idle_Angry_" + direction.ToString());
-                yield return StartCoroutine(Wait(Random.Range(0.5f,1f)));
-            }
+        if(GetChiken() != null){
+            target = GetChiken().transform.position;  
+            anim.Play("Run_Angry_" + this.direction.ToString(), 0);
+            yield return StartCoroutine(MoveToPoint());    
+            anim.Play("Idle_Angry_" + direction.ToString());
+            yield return StartCoroutine(Wait(Random.Range(0.5f,1f)));
         }else
         {
-            int ran = Random.Range(0,100);
+            //anim.Play("BathStart_D", 0);
+            yield return StartCoroutine(DoAnim("BathStart_D"));
+        }
 
-            if(ran < 30){
-                anim.Play("Idle_"+direction.ToString(), 0);
-                 yield return StartCoroutine(Wait(Random.Range(0.4f,0.6f)));
-            }
-            else if(ran < 60){
-                anim.Play("BathStart_D", 0);
-                 yield return StartCoroutine(Wait(Random.Range(0.4f,0.6f)));
-            }else
-            {
-                target = GetChiken().transform.position;
-                yield return StartCoroutine(MoveToPoint());
-            }
-           
-        } 
         CheckAbort();
     }    
 
 
     void CheckAnimal(){
-        LoadAnimal();
-        if(animalTarget != null && Minigame.instance.IsInBound(animalTarget.transform.position))
-        {
-            isStart = true;
-            return;
-        }
+       
+        animals = GameObject.FindObjectsOfType<AnimalController>();
         animalTarget = null;
         for(int i=0;i<animals.Length;i++){
             if(Minigame.instance.IsInBound(animals[i].transform.position) && (animals[i].tag == "Animal")){
                 
                 animalTarget = animals[i];
+                //Debug.Log("Check Animal " + animals[i].name);
                 break;
             }
         }
-        if(animalTarget != null && actionType == ActionType.Rest){
-            isAbort = true;
+        if(animalTarget != null){
+            //isAbort = true;
             actionType = ActionType.Patrol;
-        }else if(animalTarget == null && actionType == ActionType.Patrol){
-            isAbort = true;
+        }else if(animalTarget == null){
+            //isAbort = true;
             actionType = ActionType.Rest;
         }
-    }
-
-    void LoadAnimal(){
-        animals = GameObject.FindObjectsOfType<AnimalController>();
     }
 
     GameObject GetChiken(){
@@ -198,17 +160,10 @@ public class CharMinigame1 : CharController
         if(UIManager.instance != null)
             UIManager.instance.OnQuestNotificationPopup("Chó của bạn cần nghỉ ngơi để lấy lại sức");
         anim.Play("Idle_Tired_D",0);
-        while (data.energy < data.maxEnergy * 0.2f && !isAbort)
+        while (data.energy < data.maxEnergy * 0.5f && !isAbort)
         {
             yield return new WaitForEndOfFrame();
         }
         CheckAbort();
-    }
-
-    protected override IEnumerator Hold(){
-        anim.Play("Idle_D",0);
-        while(!isAbort){
-            yield return new WaitForEndOfFrame();
-        }
     }
 }

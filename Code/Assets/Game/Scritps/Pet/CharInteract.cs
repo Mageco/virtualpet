@@ -43,7 +43,6 @@ public class CharInteract : MonoBehaviour
         dragOffset = Camera.main.ScreenToWorldPoint (Input.mousePosition) - this.transform.position ;
         //isTouch = true;
         if(interactType == InteractType.None){
-            interactType = InteractType.Drag;
             character.OnHold ();
         }
 

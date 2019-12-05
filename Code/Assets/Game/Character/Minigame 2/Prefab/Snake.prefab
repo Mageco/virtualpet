@@ -975,9 +975,11 @@ MonoBehaviour:
   initZ: -15
   scaleFactor: 0.03
   state: 0
-  maxTimeWait: 5
+  fleePoints: []
+  maxTimeWait: 2
   target: {fileID: 0}
   targets: []
+  fleePoint: {x: 0, y: 0, z: 0}
 --- !u!114 &6191154797244217484
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1600,9 +1602,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc4f7f33d8fc7c0419b2308165807ce0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  invertPolygon: 0
   shapeType: 1
   extraOffset: 0
+  invertPolygon: 0
 --- !u!61 &3563639999267084303
 BoxCollider2D:
   m_ObjectHideFlags: 0

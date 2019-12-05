@@ -204,7 +204,7 @@ public class MageManager : MonoBehaviour {
 		currentID++;
 		s.Play (currentID, clip, false,0,volume*soundVolume);
 		audioSounds.Add (s);
-		Debug.Log(clip.name);
+		//Debug.Log(clip.name);
 		StartCoroutine (StopSoundCouroutine (s, clip.length));
 		return currentID;
 	}

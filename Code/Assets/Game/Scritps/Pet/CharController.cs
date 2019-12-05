@@ -191,7 +191,7 @@ public class CharController : MonoBehaviour
             return;
 
         //Debug.Log(actionType.ToString() + "  " + charInteract.interactType.ToString());
-        if (actionType == ActionType.None && charInteract.interactType == InteractType.None)
+        if (actionType == ActionType.None)
         {
             //Debug.Log("Think");
             if (enviromentType == EnviromentType.Bath)
@@ -315,6 +315,7 @@ public class CharController : MonoBehaviour
     public virtual void OnHold()
     {
         Abort();
+        charInteract.interactType = InteractType.Drag;
         actionType = ActionType.Hold;
     }
 

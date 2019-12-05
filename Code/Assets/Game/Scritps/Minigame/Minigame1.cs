@@ -18,24 +18,43 @@ public class Minigame1 : Minigame
     public AnimalSpawner snakeSpawner;
     public AnimalSpawner eagleSpawner;
 
+    public GameObject guideUIPrefab;
+    GuideUI guildUI;
+
     public AudioClip music;
     
     void Start(){
-        chickens = GameObject.FindObjectsOfType<ChickenController>();
-        this.maxLive = chickens.Length;
-        this.live = this.maxLive;
+        chickenNumber.text = "";
         levelText.text = "Stage " + (gameLevel + 1).ToString();
-        UpdateLive();
-        if(UIManager.instance != null)
-            UIManager.instance.OnQuestNotificationPopup("Bạn hay giúp thú cưng bảo vệ đàn gà nhé");
-
+        
         MageManager.instance.PlayMusic(music,0,true);
 //        Debug.Log(live);
-        
+
+        energyProgress.fillAmount = 1;
+        if (gameLevel == 0)
+            OnGuildPanel();
+        else 
+            StartGame();
     }
 
-    protected override void Load(){
-        base.Load();
+    public override void StartGame(){
+        if(state == GameState.Ready){
+            //GameManager.instance.GetPetObject(0).isAbort = true;
+            state = GameState.Run;
+            Load();
+            GameManager.instance.GetActivePet().energy = GameManager.instance.GetActivePet().maxEnergy;
+            GameManager.instance.GetActivePet().Food = 0;
+            GameManager.instance.GetActivePet().Water = 0;
+            GameManager.instance.GetPetObject(0).actionType = ActionType.None;
+            chickens = GameObject.FindObjectsOfType<ChickenController>();
+            this.maxLive = chickens.Length;
+            this.live = this.maxLive;
+            UpdateLive();
+        }
+
+    }
+
+    void Load(){
         maxTime = 55 + gameLevel * 5;
         chickenSpawner.maxNumber = 5 + gameLevel/5;
         chickenSpawner.speed = 5;
@@ -61,15 +80,11 @@ public class Minigame1 : Minigame
         }else
             eagleSpawner.maxNumber = 0;
 
-        //foxSpawner.maxNumber = 0;
-        //eagleSpawner.maxNumber = 0;
-        //snakeSpawner.maxNumber = 0;
-
         chickenSpawner.Spawn();
         foxSpawner.Spawn();
         snakeSpawner.Spawn();
         eagleSpawner.Spawn();
-
+       
     } 
 
     public override void UpdateLive(){
@@ -81,7 +96,7 @@ public class Minigame1 : Minigame
         }
 
         chickenNumber.text = live.ToString() + "/" + maxLive.ToString();
-        Debug.Log("Update Live " + live.ToString());
+       // Debug.Log("Update Live " + live.ToString());
         if(live <= 0){
             OnLose();
             EndGame();
@@ -90,7 +105,7 @@ public class Minigame1 : Minigame
 
     protected override void Update(){
         base.Update();
-        if(!isEnd)
+        if(state == GameState.Run)
         {
             float t = maxTime - time;
             float m = (int)(t/60);
@@ -101,14 +116,26 @@ public class Minigame1 : Minigame
     }
 
     public override void EndGame(){
-        isEnd = true;
+        state = GameState.End;
         AnimalSpawner[] animals = GameObject.FindObjectsOfType<AnimalSpawner>();
         for(int i=0;i<animals.Length;i++){
             animals[i].gameObject.SetActive(false);
         }
-        GameManager.instance.GetPetObject(0).OnHold();
         MageManager.instance.StopMusic();
     }
+
+    public void OnGuildPanel()
+    {
+        if (guildUI == null)
+        {
+            var popup = Instantiate(guideUIPrefab) as GameObject;
+            popup.SetActive(true);
+            //popup.transform.localScale = Vector3.zero;
+            popup.transform.SetParent(GameObject.Find("Canvas").transform, false);
+            popup.GetComponent<Popup>().Open();
+            guildUI = popup.GetComponent<GuideUI>();
+        }
+     }
     
 }
 

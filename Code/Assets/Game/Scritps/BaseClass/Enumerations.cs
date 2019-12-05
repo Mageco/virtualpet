@@ -14,6 +14,7 @@ public enum Direction {R =0, D = 1, L = 2, U = 3, RU = 4,RD = 5,LU = 6,LD = 7};
 public enum CharAge{Small,Middle,Big};
 public enum EnviromentType { Room, Table, Bath,Bed, Toilet};
 public enum GameType{House,Garden,Minigame1};
+public enum GameState{Prepare,Ready,Run,End};
 public enum ActionType { None, Mouse, Rest, Sleep, Eat, Drink, Patrol, Discover, Pee, Shit, Itchi, Sick, Sad, Fear, Happy, Tired, Call, Hold, OnTable, Bath, Listening,Fall,SkillUp,LevelUp,OnBed,OnToilet,Injured}
 
 public enum WeatherType{None,Sunny,Rain,Snow,Storm}

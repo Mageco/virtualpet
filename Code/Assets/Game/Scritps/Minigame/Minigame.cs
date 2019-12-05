@@ -19,7 +19,7 @@ public class Minigame : MonoBehaviour
     public int coin = 10;
     public int diamon = 0;
 
-    protected bool isEnd = false;
+    public GameState state = GameState.Ready;
 
     WinPanel winPanel;
     LosePanel losePanel;
@@ -28,15 +28,12 @@ public class Minigame : MonoBehaviour
         if(instance == null){
             instance = this;
         }
-        Load();
-    }
-
-    protected virtual void Load(){
         float d = Camera.main.orthographicSize * (float)Screen.width / (float)Screen.height;
         boundX.x = -d;
         boundX.y = d;
         gameLevel = GameManager.instance.myPlayer.minigameLevels[0];
     }
+
         
     // Start is called before the first frame update
     void Start()
@@ -48,7 +45,7 @@ public class Minigame : MonoBehaviour
     protected virtual void Update()
     {
         time += Time.deltaTime;
-        if(time >= maxTime && !isEnd){
+        if(time >= maxTime && state == GameState.Run){
             EndGame();
             if(live == maxLive){
                 OnWin(3);
@@ -104,6 +101,10 @@ public class Minigame : MonoBehaviour
         float x = Random.Range(Minigame.instance.boundX.x, Minigame.instance.boundX.y);
         float y = Random.Range(Minigame.instance.boundY.x, Minigame.instance.boundY.y);
         return new Vector3(x, y, 0);
+    }
+
+    public virtual void StartGame(){
+
     }
 
     public void OnHome(){

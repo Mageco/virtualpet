@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class FoxController : AnimalController
 {
-    public float maxTimeWait = 5;
+    public float maxTimeWait = 2;
     public ChickenController target;
     public ChickenController[] targets;
 
@@ -23,27 +23,30 @@ public class FoxController : AnimalController
 
     protected override void DoAction()
     {
-        anim.speed = 1;
-        isAbort = false;
-        isArrived = false;
-        if (state == AnimalState.Idle)
-        {
-            StartCoroutine(Idle());
-        }else if (state == AnimalState.Hit)
-        {
-            StartCoroutine(Hit());
-        }else if (state == AnimalState.Seek)
-        {
-            StartCoroutine(Seek());
-        }else if (state == AnimalState.Run)
-        {
-            StartCoroutine(Run());
-        }else if (state == AnimalState.Flee)
-        {
-            StartCoroutine(Flee());
-        }else if (state == AnimalState.Hit_Grab)
-        {
-            StartCoroutine(Hit_Grab());
+        if(Minigame.instance.state == GameState.Run)
+        { 
+            anim.speed = 1;
+            isAbort = false;
+            isArrived = false;
+            if (state == AnimalState.Idle)
+            {
+                StartCoroutine(Idle());
+            }else if (state == AnimalState.Hit)
+            {
+                StartCoroutine(Hit());
+            }else if (state == AnimalState.Seek)
+            {
+                StartCoroutine(Seek());
+            }else if (state == AnimalState.Run)
+            {
+                StartCoroutine(Run());
+            }else if (state == AnimalState.Flee)
+            {
+                StartCoroutine(Flee());
+            }else if (state == AnimalState.Hit_Grab)
+            {
+                StartCoroutine(Hit_Grab());
+            }
         }
     }
 
@@ -86,7 +89,7 @@ public class FoxController : AnimalController
         agent.transform.position = GetFleePoint();
         this.transform.position = agent.transform.position;
         fleePoint = this.transform.position;
-        yield return StartCoroutine(Wait(maxTimeWait));
+        yield return StartCoroutine(Wait(Random.Range(0,maxTimeWait)));
         GetTarget();
         if(target != null){
             isAbort = true;
