@@ -94,7 +94,7 @@ public class CharBig : CharController
             return;
         }
 
-        if (data.Food < data.maxFood * 0.2f)
+        if (data.Food < data.maxFood * 0.1f)
         {
             int ran = Random.Range(0, 100);
             if (ran > 30)
@@ -104,7 +104,7 @@ public class CharBig : CharController
             }
         }
 
-        if (data.Water < data.maxWater * 0.2f)
+        if (data.Water < data.maxWater * 0.1f)
         {
             int ran = Random.Range(0, 100);
             if (ran > 30)
@@ -138,9 +138,9 @@ public class CharBig : CharController
             actionType = ActionType.Tired;
             return;
         }
-        else if (data.Energy < data.maxEnergy * 0.3f)
+        else if (data.Energy < data.maxEnergy * 0.1f)
         {
-            actionType = ActionType.Rest;
+            actionType = ActionType.Tired;
             return;
         }
 

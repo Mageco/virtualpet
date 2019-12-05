@@ -62,6 +62,10 @@ public class CharController : MonoBehaviour
 
     public Vector3 dropPosition = Vector3.zero;
 
+    public SpriteRenderer iconStatusObject;
+    public IconStatus iconStatus = IconStatus.None;
+    IconStatus lastIconStatus = IconStatus.None;
+
     #region Load
 
     void Awake()
@@ -91,6 +95,8 @@ public class CharController : MonoBehaviour
         if(ES2.Exists("PlayTime")){
             playTime = ES2.Load<System.DateTime>("PlayTime");
         }
+
+        iconStatusObject.gameObject.SetActive(false);
 
         Load();
     }
@@ -225,6 +231,7 @@ public class CharController : MonoBehaviour
         if (dataTime > maxDataTime)
         {
             CalculateData();
+            CalculateStatus();
             dataTime = 0;
 //            Debug.Log((System.DateTime.Now - playTime).Seconds);
             if((System.DateTime.Now - playTime).Seconds > 10){
@@ -246,6 +253,44 @@ public class CharController : MonoBehaviour
     protected virtual void CalculateData()
     {
 
+    }
+
+    protected virtual void CalculateStatus(){
+       
+        lastIconStatus = iconStatus;
+
+        if(data.Health < 0.1f*data.maxHealth){
+            iconStatus = IconStatus.Sick_2; 
+        }else if(data.Health < 0.3f*data.maxHealth){
+            iconStatus = IconStatus.Sick_1;
+        }else if(data.Pee > 0.9f*data.maxPee || data.Shit > 0.9f*data.maxShit){
+            iconStatus = IconStatus.Toilet_2; 
+        }else if(data.Pee > 0.7f*data.maxPee || data.Shit > 0.7f*data.maxShit){
+            iconStatus = IconStatus.Toilet_1;
+        }else if(data.Water < 0.1f*data.maxWater || data.Food < 0.1f*data.maxFood){
+            iconStatus = IconStatus.Hungry_2; 
+        }else if(data.Water < 0.3f*data.maxWater || data.Food < 0.3f*data.maxFood){
+            iconStatus = IconStatus.Hungry_1;
+        }else if(data.dirty > 0.9f*data.maxDirty){
+            iconStatus = IconStatus.Dirty_2; 
+        }else if(data.dirty > 0.7f*data.maxDirty){
+            iconStatus = IconStatus.Dirty_1;
+        }
+
+
+        if(iconStatus != lastIconStatus){
+            LoadIconStatus();
+        }
+
+    }
+
+    void LoadIconStatus(){
+        if(iconStatus != IconStatus.None && lastIconStatus != iconStatus){
+            iconStatusObject.gameObject.SetActive(true);
+            iconStatusObject.sprite = Resources.Load<Sprite>("Icons/Status/" + iconStatus.ToString()) as Sprite;
+        }else{
+            iconStatusObject.gameObject.SetActive(false);
+        }
     }
 
     protected virtual void CalculateDirection(){

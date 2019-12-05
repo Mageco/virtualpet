@@ -340,6 +340,7 @@ public class GameManager : MonoBehaviour
             Debug.Log("Load data from local");
             Debug.Log(ApiManager.GetInstance().GetUser().ToJson());
             myPlayer = ApiManager.GetInstance().GetUserData<PlayerData>();
+            //LoadNewUser();
         }else{
             Debug.Log("Create New Data");
             LoadNewUser();
@@ -376,7 +377,7 @@ public class GameManager : MonoBehaviour
             EquipItem(58);
         }
         #endif
-        
+        SavePlayer();
     }
 
     public void LogAchivement(AchivementType achivementType = AchivementType.Do_Action, ActionType actionType = ActionType.None,int itemId = -1,AnimalType animalType = AnimalType.Mouse){

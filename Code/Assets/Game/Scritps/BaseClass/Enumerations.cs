@@ -22,5 +22,6 @@ public enum AnimalState {None,Idle,Seek,Eat,Run,Flee,Hit,Hit_Grab,Hold,Cached,In
 public enum SickType{Sick,Injured};
 public enum AnimalType{Mouse,Fox,Eagle,Snake};
 public enum RewardState{None,Ready,Received};
+public enum IconStatus{None,Hungry_1,Hungry_2,Sick_1,Sick_2,Dirty_1,Dirty_2,Toilet_1,Toilet_2};
 
 
