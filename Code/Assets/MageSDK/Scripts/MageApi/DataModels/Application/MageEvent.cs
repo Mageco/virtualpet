@@ -13,7 +13,7 @@ namespace Mage.Models.Application{
 		public MageEventType eventName = MageEventType.OpenScreen;
 		public string eventDetail = "";
 
-		public DateTime eventDate = DateTime.Now;
+		public string eventDate = String.Format("{0:s}", DateTime.Now);
 
 		public MageEvent() : base () {
 		}
@@ -21,7 +21,7 @@ namespace Mage.Models.Application{
 		public MageEvent(MageEventType type, string eventDetail = "") {
 			this.eventName = type;
 			this.eventDetail = eventDetail;
-			eventDate = DateTime.Now;
+			eventDate = String.Format("{0:s}", DateTime.Now);
 
 		}
 

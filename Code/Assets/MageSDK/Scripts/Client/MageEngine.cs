@@ -230,7 +230,7 @@ namespace MageSDK.Client {
 				UpdateUserData(new List<UserData>() {data});
 			}
 
-			this.OnEvent<UserData>(MageEventType.UpdateUserData, data);
+			this.OnEvent(MageEventType.UpdateUserData, "Update user data");
 			
 		}
 
@@ -574,7 +574,7 @@ namespace MageSDK.Client {
 
 			//call to login api
 			ApiHandler.instance.SendApi<SendUserEventListResponse>(
-				ApiSettings.API_SEND_USER_EVENT,
+				ApiSettings.API_SEND_USER_EVENT_LIST,
 				r, 
 				(result) => {
 					//Debug.Log("Success: send event successfully");
@@ -655,7 +655,7 @@ namespace MageSDK.Client {
 		private void InitApiCache() {
 			this.apiCounter.Add("UpdateUserDataRequest", new OnlineCacheCounter(0, 10));
 			this.apiCounter.Add("UpdateGameCharacterDataRequest", new OnlineCacheCounter(0, 10));
-			this.apiCounter.Add("SendUserEventListRequest", new OnlineCacheCounter(0, 3));
+			this.apiCounter.Add("SendUserEventListRequest", new OnlineCacheCounter(0, 10));
 		}
 
 		private bool IsSendable(string apiName) {
