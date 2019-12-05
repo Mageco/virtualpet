@@ -35,6 +35,10 @@ public class ProfileUI : MonoBehaviour
         //exp.text = data.Exp.ToString("F0") + "/" + e.ToString("F0");
         //energy.text = data.energy.ToString("F0") + "/" + data.maxEnergy.ToString("F0");
         //expProgress.fillAmount = data.Exp/e;
-        energyProgress.fillAmount = data.energy/data.maxEnergy;
+
+        float e = 10 * (data.level) + 10 * (data.level) * (data.level);
+        energyProgress.fillAmount = data.Exp/e;
+
+        //energyProgress.fillAmount = data.energy/data.maxEnergy;
     }
 }
