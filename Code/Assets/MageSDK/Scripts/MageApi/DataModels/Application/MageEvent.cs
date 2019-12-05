@@ -134,6 +134,10 @@ namespace Mage.Models.Application{
 		///</summary>
 		CreateUserProfileSuccesful,
 		///<summary>
+		///UserAction.UpdateUserData
+		///</summary>
+		UpdateUserData,
+		///<summary>
 		///UserAction.OpenLogin
 		///</summary>
 		OpenLogin,

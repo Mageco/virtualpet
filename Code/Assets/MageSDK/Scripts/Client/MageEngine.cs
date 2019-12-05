@@ -125,10 +125,9 @@ namespace MageSDK.Client {
 
 		///<summary>Init default user, based on input data from Unity</summary>
 		private void InitDefaultUser() {
-			string randomId = DateTime.Now.Ticks.ToString();
 			// initiate default user
 			User defaultUser = GetApplicationDataItem<User>(MageEngineSettings.GAME_ENGINE_DEFAULT_USER_DATA);
-			defaultUser.id = randomId;
+			defaultUser.id = "0";
 
 			// update user to game engine
 			#if PLATFORM_TEST
@@ -187,215 +186,52 @@ namespace MageSDK.Client {
 				}
 			#endif
 
+			Debug.Log("User after login: " + GetUser().ToJson());
 			//test callback
 			OnLoginCompleteCallback();
 		}
 
 		///<summary>If this is new user then it will need to create a default profile</summary>
 		private void CreateNewUser(User u) {
-			//Debug.Log("Create new user");
-			//this.SetCharacter(this.GetApplicationDataItem<Character>(MageEngineSettings.GAME_ENGINE_DEFAULT_CHARACTER_DATA));
-			//this.UpdateUserData(this.GetApplicationDataItem<User>(MageEngineSettings.GAME_ENGINE_DEFAULT_USER_DATA).user_datas);
-			//Need to update local data to server
-			//SetUser(u);
+			User tmp = GetUser();
+			//in case new user, then update with server information
+			tmp.id = u.id;
+			if ("" != u.notification_token && tmp.notification_token != u.notification_token) {
+				tmp.notification_token = u.notification_token;
+			}
+
+			SetUser(tmp);
 		}
 
 		void CreateExistingUser(User u) {
-			/*if (u.characters.Count == 0 || u.characters[0] == null) {
-				//update character to store
-				this.SetCharacter(this.GetApplicationDataItem<Character>(MageEngineSettings.GAME_ENGINE_DEFAULT_CHARACTER_DATA));
-			}*/
+			User tmp = GetUser();
 
-			/* List<UserData> defaultUserData = GetApplicationDataItem<User>(MageEngineSettings.GAME_ENGINE_DEFAULT_USER_DATA).user_datas;
+			//if (tmp.id == "0") {
+				tmp.id = u.id;
+			//}
 
-			if (defaultUserData != null && defaultUserData.Count > 0) {
-				foreach (UserData d in defaultUserData) {
-					string val = u.GetUserData(d.attr_name);
-					if ("" == val || val != d.attr_value ) {
-						u.SetUserData(d);
-					}
-				}
-				// update data to store
-				UpdateUserData(u.user_datas);
-			} */
-
-			//Need to update local data to server
-			//SetUser(u);
-		}
-
-
-		///<summary>Add new character to current user. Once complete, save data to cache</summary>
-		public Character SetCharacter(Character newCharacter) {
-			// if newCharacter is null then exist
-			if (null == newCharacter) {
-				return null;
-			}
-			// Update user data in game engine first
-			User u = GetUser();
-			// Assign random id first
-			if (newCharacter.id == "") {
-				newCharacter.id = DateTime.Now.Ticks.ToString();
-			}
-			
-			// user must logged in
-			if (!this.IsLogin()) {
-				return null;
-			}
-
-			// update user to game engine
-			#if PLATFORM_TEST
-				if (this.resetUserDataOnStart || !this.isWorkingOnline) {
-					u.SetCharacter(newCharacter);
-					this.SaveCacheData<User>(u, MageEngineSettings.GAME_ENGINE_USER);
-					return newCharacter;	
-				}
-			#endif
-
-
-			//Update user online and save cache data
-			AddGameCharacterRequest r = new AddGameCharacterRequest (newCharacter.character_name, newCharacter.character_type);
-			//call to login api
-			ApiHandler.instance.SendApi<AddGameCharacterResponse>(
-				ApiSettings.API_ADD_GAME_CHARACTER,
-				r, 
-				(result) => {
-					newCharacter.id = result.Character.id;
-					newCharacter.status = result.Character.status;
-					u.SetCharacter(newCharacter);
-
-					//save to cache
-					this.SaveCacheData<User>(u, MageEngineSettings.GAME_ENGINE_USER);
-				},
-				(errorStatus) => {
-					Debug.Log("Error: " + errorStatus);
-					//do some other processing here
-				},
-				() => {
-					TimeoutHandler();
-				}
-			);
-
-			return newCharacter;
-
-		}
-
-		public Character GetCharacter(string id) {
-			return GetUser().GetCharacter(id);
-		}
-
-		///<summary>Update character data to a character. Once complete, save data to cache</summary>
-		public void UpdateGameCharacterData(Character character, List<CharacterData> characterDatas) {
-			User u = GetUser();
-			foreach (CharacterData d in characterDatas) {
-				character.SetCharacterData(d);
-			}
-
-			// user must logged in
-			if (!this.IsLogin()) {
-				return;
-			}
-
-			// update user to game engine
-			#if PLATFORM_TEST
-				if (this.resetUserDataOnStart || !this.isWorkingOnline) {
-					u.SetCharacter(character);
-					this.SaveCacheData<User>(u, MageEngineSettings.GAME_ENGINE_USER);
-					return;	
-				}
-			#endif
-
-			if (!this.IsSendable("UpdateGameCharacterDataRequest")) {
-				Debug.Log("Keep api in cache: UpdateGameCharacterDataRequest");
-				u.SetCharacter(character);
-				this.SaveCacheData<User>(u, MageEngineSettings.GAME_ENGINE_USER);
-				return;	
-				
-			}
-
-			UpdateGameCharacterDataRequest r = new UpdateGameCharacterDataRequest (character.id);
-			r.CharacterDatas = character.character_datas;
-
-			//call to update game character data
-			ApiHandler.instance.SendApi<UpdateGameCharacterDataResponse>(
-				ApiSettings.API_UPDATE_GAME_CHARACTER_DATAS,
-				r, 
-				(result) => {
-					// once update Character data completed, update local data
-					u.SetCharacter(character);
-					//save to cache
-					this.SaveCacheData<User>(u, MageEngineSettings.GAME_ENGINE_USER);
-				},
-				(errorStatus) => {
-					Debug.Log("[UpdateGameCharacterData]: " + errorStatus);
-					//do some other processing here
-				},
-				() => {
-					TimeoutHandler();
-				}
-			);
-		}
-
-		///<summary>Update character data to a character. Once complete, save data to cache</summary>
-		public void UpdateGameCharacterData(Character character, CharacterData characterData) {
-			UpdateGameCharacterData(character, new List<CharacterData>() {characterData});
-		}
-
-		///<summary>Update character data to a character. Once complete, save data to cache</summary>
-		public void UpdateGameCharacterData(string characterId, CharacterData characterData) {
-			Character c = GetCharacter(characterId);
-			UpdateGameCharacterData(c, characterData);
-		}
-
-		///<summary>Update character data to a character. Once complete, save data to cache</summary>
-		public void UpdateGameCharacterData<T>(string characterId, T obj) where T:BaseModel{
-			Character c = GetCharacter(characterId);
-			string className = typeof(T).Name;
-			CharacterData d = new CharacterData() {
-				attr_name = ApiHandler.GetInstance().ApplicationKey + "_" + className,
-				attr_value = obj.ToJson(),
-				attr_type = className
-			};
-			UpdateGameCharacterData(c, d);
-		}
-
-		///<summary>Get character data of a character</summary>
-		public T GetGameCharacterData<T>(string characterId) where T:BaseModel{
-			Character c = GetCharacter(characterId);
-			if (null == c) {
-				return default(T);
-			}
-			return BaseModel.CreateFromJSON<T>(c.GetCharacterData(ApiHandler.GetInstance().ApplicationKey + "_" +  typeof(T).Name));
-		}
-
-		///<summary>Get character data of a character</summary>
-		public string GetGameCharacterData(string characterId, string key) {
-			Character c = GetCharacter(characterId);
-			if (null == c) {
-				return "";
-			}
-			return c.GetCharacterData(key);
-		}
-
-		
-		///<summary>Get character data of a character</summary>
-		public int GetGameCharacterDataInteger(string characterId, string key) {
-			Character c = GetCharacter(characterId);
-			if (null == c) {
-				return 0;
-			}
-
-			if ("" != c.GetCharacterData(key)) {
-				return int.Parse(c.GetCharacterData(key));
+			// check and swap version
+			if (tmp.GetUserDataInt(UserBasicData.Version) >= u.GetUserDataInt(UserBasicData.Version)) {
+				SetUser(tmp);
 			} else {
-				return 0;
+				SetUser(u);
 			}
-
-
 		}
 
 		///<summary>Update user data to current user. Once complete, save data to cache</summary>
 		public void UpdateUserData(UserData data) {
-			UpdateUserData(new List<UserData>() {data});
+			// check to increase version
+			int currentVersion = GetUser().GetUserDataInt(UserBasicData.Version);
+			if (data.attr_name != UserBasicData.Version.ToString()) {
+				UserData newVersion = new UserData(UserBasicData.Version.ToString(), "" + (currentVersion+1), "MageEngine");
+				UpdateUserData(new List<UserData>() {data, newVersion});
+
+			} else {
+				UpdateUserData(new List<UserData>() {data});
+			}
+
+			this.OnEvent<UserData>(MageEventType.UpdateUserData, data);
+			
 		}
 
 		///<summary>Update user data to current user. Once complete, save data to cache</summary>
@@ -408,10 +244,11 @@ namespace MageSDK.Client {
 			};
 
 			UpdateUserData(d);
+
 		}
 
 		///<summary>Update user data to current user. Once complete, save data to cache</summary>
-		public void UpdateUserData(List<UserData> userDatas) {
+		private void UpdateUserData(List<UserData> userDatas) {
 			// check if userDatas is valid
 			if (null == userDatas || userDatas.Count == 0) {
 				return;
@@ -464,18 +301,6 @@ namespace MageSDK.Client {
 			);
 		}
 
-		///<summary>Update user data to current user. Once complete, save data to cache</summary>
-		public string GetUserData(string key) {
-			return GetUser().GetUserData(key);
-		}
-
-		///<summary>Update user data to current user. Once complete, save data to cache</summary>
-		public int GetUserDataInteger(string key) {
-			if (GetUserData (key) != null)
-				return int.Parse (GetUserData (key));
-			else
-				return 0;
-		}
 
 		///<summary>Update user data to current user. Once complete, save data to cache</summary>
 		public T GetUserData<T>() where T:BaseModel {
@@ -733,7 +558,7 @@ namespace MageSDK.Client {
 		#endregion
 
 		#region Event 
-		private void SendAppEvent(string eventName) {
+		private void SendAppEvents() {
 
 			#if PLATFORM_TEST
 				if (this.resetUserDataOnStart || !this.isWorkingOnline) {
@@ -741,14 +566,20 @@ namespace MageSDK.Client {
 				}
 			#endif
 
-			SendUserEventRequest r = new SendUserEventRequest (eventName);
+			if (!this.IsSendable("SendUserEventListRequest")) {
+				return;
+			}
+
+			SendUserEventListRequest r = new SendUserEventListRequest (this.cachedEvent);
 
 			//call to login api
-			ApiHandler.instance.SendApi<SendUserEventResponse>(
+			ApiHandler.instance.SendApi<SendUserEventListResponse>(
 				ApiSettings.API_SEND_USER_EVENT,
 				r, 
 				(result) => {
 					//Debug.Log("Success: send event successfully");
+					this.cachedEvent = new List<MageEvent>();
+					SaveEvents();
 				},
 				(errorStatus) => {
 					//Debug.Log("Error: " + errorStatus);
@@ -760,13 +591,16 @@ namespace MageSDK.Client {
 			);
 		}
 
-		public void OnEvent(MageEventType type) {
-			this.cachedEvent.Add(new MageEvent(type, ""));
+		public void OnEvent(MageEventType type, string eventDetail = "") {
+			this.cachedEvent.Add(new MageEvent(type, eventDetail));
 			SaveEvents();
+			SendAppEvents();
 		}
 
 		public void OnEvent<T>(MageEventType type, T obj) where T:BaseModel {
 			this.cachedEvent.Add(new MageEvent(type, obj.ToJson()));
+			SaveEvents();
+			SendAppEvents();
 		}
 
 		private void SaveEvents(){
@@ -821,6 +655,7 @@ namespace MageSDK.Client {
 		private void InitApiCache() {
 			this.apiCounter.Add("UpdateUserDataRequest", new OnlineCacheCounter(0, 10));
 			this.apiCounter.Add("UpdateGameCharacterDataRequest", new OnlineCacheCounter(0, 10));
+			this.apiCounter.Add("SendUserEventListRequest", new OnlineCacheCounter(0, 3));
 		}
 
 		private bool IsSendable(string apiName) {

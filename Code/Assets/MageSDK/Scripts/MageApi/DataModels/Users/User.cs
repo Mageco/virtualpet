@@ -41,7 +41,26 @@ namespace Mage.Models.Users{
 				if (u.attr_name == key)
 					return u.attr_value;
 			}
-			return null;
+			SetUserData(new UserData(key, "", "MageEngine"));
+			return "";
+		}
+
+		public string GetUserData(UserBasicData key)
+		{
+			return GetUserData(key.ToString());
+		}
+
+		public int GetUserDataInt(string key) {
+			foreach (UserData u in user_datas) {
+				if (u.attr_name == key.ToString())
+					return int.Parse(u.attr_value);
+			}
+			SetUserData(new UserData(key, "0", "MageEngine"));
+			return 0;
+		}
+
+		public int GetUserDataInt(UserBasicData key) {
+			return GetUserDataInt(key.ToString());
 		}
 
 		public void SetUserData(UserData data) {
@@ -117,6 +136,10 @@ namespace Mage.Models.Users{
 		CHANGE_PASSWORD_REQUIRED = 4,
 		FIRST_LOGIN = 5,
 		INACTIVE = 100
+	}
+
+	public enum UserBasicData {
+		Version
 	}
 }
 

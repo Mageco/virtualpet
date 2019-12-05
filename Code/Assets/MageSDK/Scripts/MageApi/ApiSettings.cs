@@ -50,6 +50,7 @@ namespace MageApi {
 		public const string API_LOGIN = "Login";
 		public const string API_SEND_MESSAGE = "SendMessage";
 		public const string API_SEND_USER_EVENT = "SendUserEvent";
+		public const string API_SEND_USER_EVENT_LIST = "SendUserEventList";
 		public const string API_UPDATE_PROFILE = "UpdateProfile";
 		public const string API_UPDATE_USER_DATA = "UpdateUserData";
 		public const string API_UPLOAD_FILE = "UploadFile";
