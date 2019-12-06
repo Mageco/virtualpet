@@ -50,6 +50,7 @@ public class Minigame : MonoBehaviour
             if(live == maxLive){
                 OnWin(3);
                 GameManager.instance.myPlayer.minigameLevels[0] ++;
+                GameManager.instance.LogAchivement(AchivementType.Minigame_Level);
             }else if(live == maxLive - 1)
             {
                 OnWin(2);

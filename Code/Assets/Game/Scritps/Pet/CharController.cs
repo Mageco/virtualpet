@@ -906,6 +906,9 @@ public class CharController : MonoBehaviour
                 }
                 GameManager.instance.LogAchivement(AchivementType.Do_Action,ActionType.Eat);
                 GameManager.instance.AddExp(5);
+                if(GetFoodItem() != null && GetFoodItem().GetComponent<ItemObject>() != null)
+ 			        GameManager.instance.LogAchivement(AchivementType.Eat,ActionType.None,GetFoodItem().GetComponent<ItemObject>().itemID);
+
             }else{
                 int ran = Random.Range(0,100);
                 if(ran > 50)
@@ -914,6 +917,7 @@ public class CharController : MonoBehaviour
                     yield return DoAnim("Bark_Sit_D");
             }
         }
+
         yield return new WaitForEndOfFrame();
         CheckAbort();
     }
@@ -949,6 +953,8 @@ public class CharController : MonoBehaviour
                 }
                 GameManager.instance.LogAchivement(AchivementType.Do_Action,ActionType.Drink);
                 GameManager.instance.AddExp(5);
+                if(GetDrinkItem() != null && GetDrinkItem().GetComponent<ItemObject>() != null)
+ 			        GameManager.instance.LogAchivement(AchivementType.Drink,ActionType.None,GetDrinkItem().GetComponent<ItemObject>().itemID);
             }else{
                 int ran = Random.Range(0,100);
                 if(ran > 50)

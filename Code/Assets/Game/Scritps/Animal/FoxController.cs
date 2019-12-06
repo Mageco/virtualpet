@@ -58,10 +58,12 @@ public class FoxController : AnimalController
             Debug.Log("Hit");
             isAbort = true;
             state = AnimalState.Hit;
+            GameManager.instance.LogAchivement(AchivementType.Dissmiss_Animal,ActionType.None,-1,animalType);
         }else if(state == AnimalState.Run){
              agent.Stop();
             state = AnimalState.Hit_Grab;
             isAbort = true;
+            GameManager.instance.LogAchivement(AchivementType.Dissmiss_Animal,ActionType.None,-1,animalType);
         }
     }
 
