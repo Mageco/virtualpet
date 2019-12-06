@@ -22,14 +22,7 @@ public class CharBig : CharController
             data.actionEnergyConsume = 0.1f;
         else if (actionType == ActionType.Fear)
             data.actionEnergyConsume = 0.3f;
-        else if(actionType == ActionType.Rest || actionType == ActionType.OnBed 
-        || actionType == ActionType.Sleep || actionType == ActionType.OnTable){
-            if(data.Food > 2 && data.Water > 2){
-                data.Energy += 2;
-                data.Food -= 2;
-                data.Water -=2;
-            }
-        }
+        
 
         
 
@@ -151,6 +144,7 @@ public class CharBig : CharController
             actionType = ActionType.Tired;
             return;
         }
+
         else if (data.Energy < data.maxEnergy * 0.3f)
         {
             actionType = ActionType.Rest;
@@ -622,7 +616,14 @@ public class CharBig : CharController
         
 
         Debug.Log("Rest");
-        yield return StartCoroutine(Wait(maxTime));
+        while(data.Food > 0 && data.Water > 0 && data.Sleep > 0 && data.Energy < 0.5f * data.maxEnergy && !isAbort){
+            data.Energy += 0.05f;
+            data.Food -= 0.03f;
+            data.Water -= 0.03f;
+            data.Sleep -= 0.01f;
+            yield return new WaitForEndOfFrame();
+        }        
+
         CheckAbort();
     }
 
@@ -671,6 +672,7 @@ public class CharBig : CharController
         {
             yield return new WaitForEndOfFrame();
         }
+        GameManager.instance.LogAchivement(AchivementType.Do_Action,ActionType.Sick);
         CheckEnviroment();
         CheckAbort();
     }
@@ -713,13 +715,13 @@ public class CharBig : CharController
 
     IEnumerator Tired()
     {
-        yield return StartCoroutine(DoAnim("Idle_Tired_D"));
-        if (this.direction == Direction.RD || this.direction == Direction.RU)
-             anim.Play("Tired_RD", 0);
-        else
-             anim.Play("Tired_LD", 0);
-        while (data.energy > data.maxEnergy * 0.4f && !isAbort)
+        anim.Play("Idle_Tired_D", 0);
+        while (data.Food > 0 && data.Water > 0 && data.Sleep > 0 && data.energy < data.maxEnergy * 0.1f && !isAbort)
         {
+            data.Energy += 0.1f;
+            data.Food -= 0.05f;
+            data.Water -= 0.05f;
+            data.Sleep += 0.01f;
             yield return new WaitForEndOfFrame();
         }
         CheckAbort();

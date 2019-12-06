@@ -22,6 +22,8 @@ public class AnimalController : MonoBehaviour
     public PolyNavAgent agent;
     public List<GizmoPoint> fleePoints = new List<GizmoPoint>();
 
+    public AnimalType animalType = AnimalType.Mouse;
+
    void Awake()
     {
         LoadPrefab();

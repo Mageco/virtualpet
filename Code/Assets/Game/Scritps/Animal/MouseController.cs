@@ -182,6 +182,7 @@ public class MouseController : MonoBehaviour
 	void OnMouseUp(){
 		anim.Play("Hit",0);
 		GameManager.instance.AddCoin(5);
+		GameManager.instance.LogAchivement(AchivementType.Tap_Animal,ActionType.None,-1,AnimalType.Mouse);
 		if(state == MouseState.Eat || state == MouseState.Seek)
 			Run();
 	}

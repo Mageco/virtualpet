@@ -25,6 +25,8 @@ public class EatItem : MonoBehaviour
 	float maxDoubleClickTime = 0.4f;
 	bool isClick = false;
 
+	ItemObject item;
+
 	void Awake(){
 		originalPosition = this.transform.position;
 		originalScale = this.transform.localScale;
@@ -32,7 +34,7 @@ public class EatItem : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-		  
+		  item = this.GetComponent<ItemObject>();
     }
 
     // Update is called once per frame
@@ -65,8 +67,10 @@ public class EatItem : MonoBehaviour
 	public void Eat(float f)
 	{
 		foodAmount -= f;
-		if (foodAmount < 0)
+		if (foodAmount < 0){
 			foodAmount = 0;
+		}
+			
 	}
 
 	public bool CanEat()
