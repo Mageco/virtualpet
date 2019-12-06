@@ -43,7 +43,7 @@ public class Pet : BaseModel
 	public float dirty = 50;
 	public float itchi = 50;
 	public float fear = 0;
-	public float curious = 0;
+	public float curious = 70;
 
 	[HideInInspector]
 	public float basicEnergyConsume = 0.05f;

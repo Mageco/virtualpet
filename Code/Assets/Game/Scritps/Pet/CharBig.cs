@@ -10,18 +10,28 @@ public class CharBig : CharController
         if (actionType == ActionType.Call)
             data.actionEnergyConsume = 0.2f;
         else if (actionType == ActionType.Mouse)
-            data.actionEnergyConsume = 0.7f;
+            data.actionEnergyConsume = 1.5f;
         else if (actionType == ActionType.Discover)
         {
-            data.actionEnergyConsume = 0.5f;
+            data.actionEnergyConsume = 1f;
         }
         else if (actionType == ActionType.Patrol)
         {
-            data.actionEnergyConsume = 0.3f;
+            data.actionEnergyConsume = 0.6f;
         }else if (actionType == ActionType.Bath)
-            data.actionEnergyConsume = 0.05f;
+            data.actionEnergyConsume = 0.1f;
         else if (actionType == ActionType.Fear)
             data.actionEnergyConsume = 0.3f;
+        else if(actionType == ActionType.Rest || actionType == ActionType.OnBed 
+        || actionType == ActionType.Sleep || actionType == ActionType.OnTable){
+            if(data.Food > 2 && data.Water > 2){
+                data.Energy += 2;
+                data.Food -= 2;
+                data.Water -=2;
+            }
+        }
+
+        
 
         data.Energy -= data.basicEnergyConsume + data.actionEnergyConsume;
 
@@ -76,6 +86,9 @@ public class CharBig : CharController
     #region Thinking
     protected override void Think()
     {
+        if(charInteract.interactType != InteractType.None)
+            return;
+
         if (data.Shit > data.maxShit * 0.9f)
         {
             actionType = ActionType.Shit;
@@ -97,7 +110,7 @@ public class CharBig : CharController
         if (data.Food < data.maxFood * 0.1f)
         {
             int ran = Random.Range(0, 100);
-            if (ran > 30)
+            if (ran > 20)
             {
                 actionType = ActionType.Eat;
                 return;
@@ -107,7 +120,7 @@ public class CharBig : CharController
         if (data.Water < data.maxWater * 0.1f)
         {
             int ran = Random.Range(0, 100);
-            if (ran > 30)
+            if (ran > 20)
             {
                 actionType = ActionType.Drink;
                 return;
@@ -117,7 +130,7 @@ public class CharBig : CharController
         if (data.Sleep < data.maxSleep * 0.1f)
         {
             int ran = Random.Range(0, 100);
-            if (ran > 30)
+            if (ran > 20)
             {
                 actionType = ActionType.Sleep;
                 return;
@@ -138,9 +151,9 @@ public class CharBig : CharController
             actionType = ActionType.Tired;
             return;
         }
-        else if (data.Energy < data.maxEnergy * 0.1f)
+        else if (data.Energy < data.maxEnergy * 0.3f)
         {
-            actionType = ActionType.Tired;
+            actionType = ActionType.Rest;
             return;
         }
 
@@ -159,11 +172,7 @@ public class CharBig : CharController
 
         //Other Action
         int id = Random.Range(0, 100);
-        if (id < 10)
-        {
-            actionType = ActionType.Rest;
-        }
-        else if (id < 60)
+        if (id < 80)
         {
             actionType = ActionType.Patrol;
         }
@@ -179,9 +188,16 @@ public class CharBig : CharController
 
     protected override void DoAction()
     {
+        if(isAction){
+            Debug.Log("Action is doing " + actionType);
+            StopAllCoroutines();
+            isAction = false;
+        }
         //Debug.Log("DoAction " + actionType);
         isAbort = false;
         agent.Stop();
+        isAction = true;
+
         if (actionType == ActionType.Rest)
         {
             StartCoroutine(Rest());
@@ -252,7 +268,7 @@ public class CharBig : CharController
         }
         else if (actionType == ActionType.Happy)
         {
-            StartCoroutine(Happy());
+           StartCoroutine(Happy());
         }
         else if (actionType == ActionType.Call)
         {
@@ -271,9 +287,11 @@ public class CharBig : CharController
         }else if (actionType == ActionType.OnToilet)
         {
             StartCoroutine(Toilet());
-        }
+        }   
     }
+
     #endregion
+
 
 
 
@@ -343,8 +361,7 @@ public class CharBig : CharController
                     this.transform.rotation = Quaternion.identity;
                     charInteract.interactType = InteractType.None;   
                     enviromentType = EnviromentType.Room;             
-                }
-                yield return new WaitForEndOfFrame();            
+                }        
             }
             yield return DoAnim("Fall_L");
             OnLearnSkill(SkillType.Table);
@@ -354,47 +371,90 @@ public class CharBig : CharController
 
     IEnumerator Discover()
     {
-        if (!isAbort && data.curious > data.maxCurious * 0.4f)
+        if (data.curious > data.maxCurious * 0.4f)
         {
-            SetTarget(PointType.MouseGate);
-            yield return StartCoroutine(MoveToPoint());
-             if (this.direction == Direction.RD || this.direction == Direction.RU)
-                 yield return StartCoroutine(DoAnim("Smell_RD")) ;
-            else if(this.direction == Direction.LD || this.direction == Direction.LU)
-                yield return StartCoroutine(DoAnim("Smell_LD")) ;
-            else
-                 yield return StartCoroutine(DoAnim("Smell_" + direction.ToString()));
+            int ran = Random.Range(0,100);
+            if(ran < 30){
+                SetTarget(PointType.MouseGate);
+                yield return StartCoroutine(MoveToPoint());
+                if (this.direction == Direction.RD || this.direction == Direction.RU)
+                    yield return StartCoroutine(DoAnim("Smell_RD")) ;
+                else if(this.direction == Direction.LD || this.direction == Direction.LU)
+                    yield return StartCoroutine(DoAnim("Smell_LD")) ;
+                else
+                    yield return StartCoroutine(DoAnim("Smell_" + direction.ToString()));
 
-            yield return StartCoroutine(DoAnim("Smell_Bark_LD"));
-            data.curious -= 10;
-            
+                yield return StartCoroutine(DoAnim("Smell_Bark_LD"));
+                data.curious -= 10;
+            }else if(ran < 50)
+            {
+                SetTarget(PointType.Door);
+                yield return StartCoroutine(MoveToPoint());
+                if (this.direction == Direction.RD || this.direction == Direction.RU)
+                    yield return StartCoroutine(DoAnim("Dig_RD")) ;
+                else
+                    yield return StartCoroutine(DoAnim("Dig_LD")) ;
+                data.curious -= 10;                
+            }else
+            {
+                int ran1 = Random.Range(0,100);
+                Vector3 t = GetRandomPoint(PointType.Patrol).position;
+                if(ran1 < 5 && GetRandomPoint(PointType.Eat) != null){
+                    t = GetRandomPoint(PointType.Eat).position;
+                }else if(ran1 < 10 && GetRandomPoint(PointType.Drink) != null){
+                    t = GetRandomPoint(PointType.Drink).position;                    
+                }else if(ran1 < 15 && GetRandomPoint(PointType.Toilet) != null){
+                    t = GetRandomPoint(PointType.Toilet).position;                    
+                }else if(ran1 < 20 && GetRandomPoint(PointType.Sleep) != null){
+                    t = GetRandomPoint(PointType.Sleep).position;                    
+                }else if(ran1 < 25 && GetRandomPoint(PointType.Bath) != null){
+                    t = GetRandomPoint(PointType.Bath).position;                    
+                }else if(ran1 < 30 && GetRandomPoint(PointType.Table) != null){
+                    t = GetRandomPoint(PointType.Table).position;                    
+                }else if(ran1 < 35 && GetRandomPoint(PointType.Cleaner) != null){
+                    t = GetRandomPoint(PointType.Cleaner).position;                    
+                }else if(ran1 < 40 && GetRandomPoint(PointType.Caress) != null){
+                    t = GetRandomPoint(PointType.Caress).position;                    
+                }else if(ran1 < 45 && GetRandomPoint(PointType.Window) != null){
+                    t = GetRandomPoint(PointType.Window).position;                    
+                }
+
+                target = t;
+                yield return StartCoroutine(MoveToPoint());
+                if (this.direction == Direction.RD || this.direction == Direction.RU)
+                    yield return StartCoroutine(DoAnim("Smell_RD")) ;
+                else if(this.direction == Direction.LD || this.direction == Direction.LU)
+                    yield return StartCoroutine(DoAnim("Smell_LD")) ;
+                else
+                    yield return StartCoroutine(DoAnim("Smell_" + direction.ToString()));
+
+                yield return StartCoroutine(DoAnim("Smell_Bark_LD"));
+              
+            }
+
         }
-        
-       
         CheckAbort();
     }
 
 
     IEnumerator Mouse()
     {
-        while(GetMouse().state != MouseState.Idle && !isAbort){
+        agent.maxSpeed = data.speed * 1.5f;
+        anim.speed = 1.5f;
+        while(GetMouse() != null && GetMouse().state != MouseState.Idle && !isAbort){
             agent.SetDestination(GetMouse().transform.position);
-            //agent.maxSpeed = data.speed * 1.5f;
-            anim.Play("Run_" + this.direction.ToString(), 0);
-            //anim.speed = 1.5f;
-            yield return StartCoroutine(Wait(0.2f));
+            anim.Play("Run_Angry_" + this.direction.ToString(), 0);
+            yield return StartCoroutine(Wait(0.1f));
         }
+        agent.maxSpeed = data.speed;
         CheckAbort();
     }
 
     IEnumerator Call()
     {
         yield return StartCoroutine(DoAnim("Listen_"+direction.ToString()));
-
-        if (!isAbort)
-        {
-            yield return StartCoroutine(MoveToPoint());
-        }
+        yield return StartCoroutine(MoveToPoint());
+        
 
 
         touchObject.SetActive(true);
@@ -545,24 +605,21 @@ public class CharBig : CharController
     IEnumerator Rest()
     {
         float maxTime = Random.Range(2, 5);
-        if (!isAbort)
-        {
-            int ran = Random.Range(0, 100);
-            if (ran < 20)
-            {
-                SetDirection(Direction.D);
-                anim.Play("Idle_Sit_D", 0);
-            }
-            else if (ran < 40)
-            {
-                if (this.direction == Direction.RD || this.direction == Direction.RU)
-                    anim.Play("Lay_RD", 0);
-                else
-                    anim.Play("Lay_LD", 0);
-            }else if(ran < 60){
 
-            }
+        int ran = Random.Range(0, 100);
+        if (ran < 50)
+        {
+            SetDirection(Direction.D);
+            anim.Play("Idle_Sit_D", 0);
         }
+        else
+        {
+            if (this.direction == Direction.RD || this.direction == Direction.RU)
+                anim.Play("Lay_RD", 0);
+            else
+                anim.Play("Lay_LD", 0);
+        }
+        
 
         Debug.Log("Rest");
         yield return StartCoroutine(Wait(maxTime));
@@ -600,7 +657,6 @@ public class CharBig : CharController
             data.itchi -= 0.1f;
             yield return new WaitForEndOfFrame();
         }
-        yield return new WaitForEndOfFrame();
         CheckAbort();
     }
 
@@ -615,7 +671,6 @@ public class CharBig : CharController
         {
             yield return new WaitForEndOfFrame();
         }
-        yield return new WaitForEndOfFrame();
         CheckEnviroment();
         CheckAbort();
     }

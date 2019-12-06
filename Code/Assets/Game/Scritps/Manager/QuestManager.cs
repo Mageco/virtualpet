@@ -220,17 +220,17 @@ public class QuestManager : MonoBehaviour
             }
         }else if(GameManager.instance.questId == 3){
             if(ItemManager.instance.GetItem(ItemType.Food) != null && ItemManager.instance.GetItem(ItemType.Food).GetComponentInChildren<FoodBowlItem>().foodAmount > 90){
-                GameManager.instance.ResetCameraTarget();
+                //GameManager.instance.ResetCameraTarget();
                 isComplete = true;
             }
         } else if(GameManager.instance.questId == 4){
             if(ItemManager.instance.GetItem(ItemType.Drink) != null && ItemManager.instance.GetItem(ItemType.Drink).GetComponentInChildren<DrinkBowlItem>().foodAmount > 90){
-                GameManager.instance.ResetCameraTarget();
+                //GameManager.instance.ResetCameraTarget();
                 isComplete = true;
             }
         }else if(GameManager.instance.questId == 5){
             if(GameManager.instance.GetPet(0).Dirty <= 50){
-                GameManager.instance.ResetCameraTarget();
+                //GameManager.instance.ResetCameraTarget();
                 isComplete = true;
             }
         }else if(GameManager.instance.questId == 6){

@@ -19,7 +19,7 @@ public class AnimalController : MonoBehaviour
     protected bool isArrived = false;
     protected Direction direction = Direction.L;
 
-    protected PolyNavAgent agent;
+    public PolyNavAgent agent;
     public List<GizmoPoint> fleePoints = new List<GizmoPoint>();
 
    void Awake()

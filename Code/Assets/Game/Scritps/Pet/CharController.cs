@@ -28,6 +28,7 @@ public class CharController : MonoBehaviour
     public PolyNavAgent agent;
     public bool isArrived = true;
     public bool isAbort = false;
+    public bool isAction = false;
 
     //Action
     public ActionType actionType = ActionType.None;
@@ -66,6 +67,7 @@ public class CharController : MonoBehaviour
     public IconStatus iconStatus = IconStatus.None;
     IconStatus lastIconStatus = IconStatus.None;
 
+
     #region Load
 
     void Awake()
@@ -96,7 +98,8 @@ public class CharController : MonoBehaviour
             playTime = ES2.Load<System.DateTime>("PlayTime");
         }
 
-        iconStatusObject.gameObject.SetActive(false);
+        if(iconStatusObject != null)
+            iconStatusObject.gameObject.SetActive(false);
 
         Load();
     }
@@ -267,18 +270,32 @@ public class CharController : MonoBehaviour
             iconStatus = IconStatus.Toilet_2; 
         }else if(data.Pee > 0.7f*data.maxPee || data.Shit > 0.7f*data.maxShit){
             iconStatus = IconStatus.Toilet_1;
-        }else if(data.Water < 0.1f*data.maxWater || data.Food < 0.1f*data.maxFood){
+        }else if(data.Food < 0.1f*data.maxFood){
             iconStatus = IconStatus.Hungry_2; 
-        }else if(data.Water < 0.3f*data.maxWater || data.Food < 0.3f*data.maxFood){
+        }else if(data.Food < 0.3f*data.maxFood){
             iconStatus = IconStatus.Hungry_1;
+        }else if(data.Water < 0.1f*data.maxWater){
+            iconStatus = IconStatus.Thirsty_2; 
+        }else if(data.Water < 0.3f*data.maxWater){
+            iconStatus = IconStatus.Thirsty_1;
+        }else if(data.energy < 0.1f*data.maxEnergy){
+            iconStatus = IconStatus.Tired_2;
+        }else if(data.energy < 0.3f*data.maxEnergy){
+            iconStatus = IconStatus.Tired_1;
+        }else if(data.sleep < 0.1f*data.maxSleep){
+            iconStatus = IconStatus.Sleeyp_2;
+        }else if(data.sleep < 0.3f*data.maxSleep){
+            iconStatus = IconStatus.Sleepy_1;
         }else if(data.dirty > 0.9f*data.maxDirty){
             iconStatus = IconStatus.Dirty_2; 
         }else if(data.dirty > 0.7f*data.maxDirty){
             iconStatus = IconStatus.Dirty_1;
+        }else{
+            iconStatus = IconStatus.None;
         }
 
 
-        if(iconStatus != lastIconStatus){
+        if(iconStatusObject != null){
             LoadIconStatus();
         }
 
@@ -288,7 +305,9 @@ public class CharController : MonoBehaviour
         if(iconStatus != IconStatus.None && lastIconStatus != iconStatus){
             iconStatusObject.gameObject.SetActive(true);
             iconStatusObject.sprite = Resources.Load<Sprite>("Icons/Status/" + iconStatus.ToString()) as Sprite;
-        }else{
+        }
+        
+        if(iconStatus == IconStatus.None){
             iconStatusObject.gameObject.SetActive(false);
         }
     }
@@ -365,15 +384,15 @@ public class CharController : MonoBehaviour
     }
 
     public virtual void OnEat(){
-        if(actionType == ActionType.Patrol || actionType == ActionType.Rest){
-            actionType = ActionType.Eat;
-            isAbort = true;
+        if(actionType == ActionType.Tired || actionType == ActionType.Discover || actionType == ActionType.Patrol || actionType == ActionType.Rest){
+            if(data.Food < 0.3f * data.maxFood){
+                actionType = ActionType.Eat;
+                isAbort = true;
+            }else if(data.Water < 0.3f * data.maxWater){
+                actionType = ActionType.Drink;
+                isAbort = true;                
+            }
         }
-    }
-
-    public virtual void OnDrink(){
-        actionType = ActionType.Drink;
-        isAbort = true;
     }
 
     protected void OnBath()
@@ -460,34 +479,16 @@ public class CharController : MonoBehaviour
 
     public virtual void OnMouse()
     {
-        if (actionType == ActionType.Mouse || actionType == ActionType.Hold || actionType == ActionType.OnTable || actionType == ActionType.Bath || actionType == ActionType.Sick
-        || actionType == ActionType.Sleep || actionType == ActionType.Call || actionType == ActionType.Listening || actionType == ActionType.Fear)
-            return;
-
-        if (actionType == ActionType.Pee || actionType == ActionType.Shit || actionType == ActionType.SkillUp)
-        {
-            return;
-        }
-
-        int n = 0;
-
-        if (actionType == ActionType.Drink || actionType == ActionType.Eat)
-        {
-            n = Random.Range(25, 100);
-        }
-
-        if (n < 75)
-        {
+        if(actionType == ActionType.Patrol || actionType == ActionType.Rest || actionType == ActionType.Discover || actionType == ActionType.Drink || actionType == ActionType.Eat){
             Abort();
             actionType = ActionType.Mouse;
         }
-
     }
 
     public virtual void OffMouse()
     {
-        if (actionType == ActionType.Mouse)
-            actionType = ActionType.None;
+        //if (actionType == ActionType.Mouse)
+        //    actionType = ActionType.None;
     }
 
     public virtual void OnArrived()
@@ -504,16 +505,6 @@ public class CharController : MonoBehaviour
         isArrived = true;
     }
 
-    public virtual void OnEvent(ItemEventType e){
-        if(e == ItemEventType.Eat){
-            if(data.food < 50)
-                OnEat();    
-        }else if(e == ItemEventType.Drink){
-            if(data.water < 50){
-                OnDrink();
-            }
-        }
-    }
 
     public virtual void OnLevelUp()
     {
@@ -533,8 +524,10 @@ public class CharController : MonoBehaviour
     }
 
     protected virtual void DoAction(){
-
+        
     }
+
+  
 
     void LogAction(){
         //ApiManager.GetInstance().LogAc(actionType);
@@ -590,11 +583,11 @@ public class CharController : MonoBehaviour
     protected IEnumerator MoveToPoint()
     {
         isArrived = false;
-        if (Vector2.Distance(target, agent.transform.position) > 0.5f)
-        {
-            if(!isAbort){
-                agent.SetDestination(target);
-            }
+        //if (Vector2.Distance(target, agent.transform.position) > 0.5f)
+        //{
+
+            agent.SetDestination(target);
+            
 
             while (!isArrived && !isAbort)
             {
@@ -606,13 +599,13 @@ public class CharController : MonoBehaviour
                     anim.Play("Run_" + this.direction.ToString(), 0);
                 yield return new WaitForEndOfFrame();
             }
-        }
-        else
-        {
-            agent.transform.position = target;
-            isArrived = true;
-            agent.Stop();
-        }
+        //}
+        //else
+        //{
+        //    agent.transform.position = target;
+        //    isArrived = true;
+        //    agent.Stop();
+        //}
     }
 
     protected IEnumerator Wait(float maxT)
@@ -627,32 +620,32 @@ public class CharController : MonoBehaviour
     }
 
     protected IEnumerator JumpDown(float downSpeed,float upSpeed,float accelerator){
-        if(!isAbort){
-            anim.Play("Jump_D", 0);
-            float speed = upSpeed;
-            //charScale.scalePosition = new Vector3(this.transform.position.x, this.transform.position.y - height, 0);
-            charInteract.interactType = InteractType.Jump;
-            while (charInteract.interactType == InteractType.Jump && !isAbort)
-            {
-                speed -= accelerator * Time.deltaTime;
-                if (speed < -50)
-                    speed = -50;
-                Vector3 pos1 = agent.transform.position;
-                pos1.y += speed * Time.deltaTime + downSpeed * Time.deltaTime;                
-                charScale.scalePosition.y += downSpeed * Time.deltaTime;
-                charScale.height += speed * Time.deltaTime;
-                agent.transform.position = pos1;
 
-                if (charScale.height <= 0)
-                {
-                    this.transform.rotation = Quaternion.identity;
-                    charInteract.interactType = InteractType.None;
-                }
-                yield return new WaitForEndOfFrame();
+        anim.Play("Jump_D", 0);
+        float speed = upSpeed;
+        //charScale.scalePosition = new Vector3(this.transform.position.x, this.transform.position.y - height, 0);
+        charInteract.interactType = InteractType.Jump;
+        while (charInteract.interactType == InteractType.Jump && !isAbort)
+        {
+            speed -= accelerator * Time.deltaTime;
+            if (speed < -50)
+                speed = -50;
+            Vector3 pos1 = agent.transform.position;
+            pos1.y += speed * Time.deltaTime + downSpeed * Time.deltaTime;                
+            charScale.scalePosition.y += downSpeed * Time.deltaTime;
+            charScale.height += speed * Time.deltaTime;
+            agent.transform.position = pos1;
+
+            if (charScale.height <= 0)
+            {
+                this.transform.rotation = Quaternion.identity;
+                charInteract.interactType = InteractType.None;
             }
-            charInteract.interactType = InteractType.None;
-            enviromentType = EnviromentType.Room;
+            yield return new WaitForEndOfFrame();
         }
+        charInteract.interactType = InteractType.None;
+        enviromentType = EnviromentType.Room;
+        
     }
 
     protected IEnumerator JumpUp(float ySpeed,float zSpeed, Vector3 dropPosition,float height){
@@ -780,9 +773,7 @@ public class CharController : MonoBehaviour
         }
         else
         {
-            if(!isAbort){
-                CheckEnviroment();
-            }
+            CheckEnviroment();            
         }
        
         CheckAbort();
@@ -791,17 +782,15 @@ public class CharController : MonoBehaviour
     protected virtual IEnumerator Bath()
     {
         int ran = Random.Range(0,100);
-        if(ran < 50 + data.GetSkillProgress(SkillType.Bath) * 5){
+        if(ran < 70 + data.GetSkillProgress(SkillType.Bath) * 3){
             anim.Play("Idle_" + direction.ToString(),0);
             while(!isAbort){   
                 yield return new WaitForEndOfFrame();
             }
         }
         else{
-            if(!isAbort){
-                yield return StartCoroutine(JumpDown(-5,25,35));
-                OnLearnSkill(SkillType.Bath);
-            }
+            yield return StartCoroutine(JumpDown(-5,25,35));
+            OnLearnSkill(SkillType.Bath);            
         }
 
         CheckAbort();
@@ -849,7 +838,7 @@ public class CharController : MonoBehaviour
             yield return new WaitForEndOfFrame();
         }
 
-        if(enviromentType == EnviromentType.Toilet && !isAbort){
+        if(enviromentType == EnviromentType.Toilet){
             GameManager.instance.AddExp(5);
             GameManager.instance.LogAchivement(AchivementType.Do_Action,ActionType.OnToilet);
             yield return StartCoroutine(JumpDown(-7,10,30));     
@@ -883,7 +872,7 @@ public class CharController : MonoBehaviour
             yield return new WaitForEndOfFrame();
         }
 
-        if(enviromentType == EnviromentType.Toilet && !isAbort){
+        if(enviromentType == EnviromentType.Toilet){
             GameManager.instance.AddExp(5);
             GameManager.instance.LogAchivement(AchivementType.Do_Action,ActionType.OnToilet);
             yield return StartCoroutine(JumpDown(-7,10,30));     
@@ -895,13 +884,10 @@ public class CharController : MonoBehaviour
     {
         if (GetFoodItem() != null)
         {
-            if (!isAbort)
-            {
-                SetTarget(PointType.Eat);
-                yield return StartCoroutine(MoveToPoint());
-            }
+            SetTarget(PointType.Eat);
+            yield return StartCoroutine(MoveToPoint());
             bool canEat = true;
-            if (GetFoodItem().CanEat() && !isAbort)
+            if (GetFoodItem().CanEat())
             {
                 direction = Direction.LD;
                 anim.Play("Eat_LD", 0);
@@ -921,9 +907,14 @@ public class CharController : MonoBehaviour
                 GameManager.instance.LogAchivement(AchivementType.Do_Action,ActionType.Eat);
                 GameManager.instance.AddExp(5);
             }else{
-                yield return DoAnim("Bark_" + direction.ToString());
+                int ran = Random.Range(0,100);
+                if(ran > 50)
+                    yield return DoAnim("Bark_D");
+                else
+                    yield return DoAnim("Bark_Sit_D");
             }
         }
+        yield return new WaitForEndOfFrame();
         CheckAbort();
     }
 
@@ -932,15 +923,14 @@ public class CharController : MonoBehaviour
         if (GetDrinkItem() != null)
         {
             //Debug.Log("Drink");
-            if (!isAbort)
-            {
-                SetTarget(PointType.Drink);
-                yield return StartCoroutine(MoveToPoint());
-            }
+
+            SetTarget(PointType.Drink);
+            yield return StartCoroutine(MoveToPoint());
+            
 
             bool canDrink = true;
 
-            if (GetDrinkItem().CanEat() && !isAbort)
+            if (GetDrinkItem().CanEat())
             {
                 direction = Direction.LD;
                 anim.Play("Drink_LD", 0);
@@ -960,7 +950,11 @@ public class CharController : MonoBehaviour
                 GameManager.instance.LogAchivement(AchivementType.Do_Action,ActionType.Drink);
                 GameManager.instance.AddExp(5);
             }else{
-                yield return DoAnim("Bark_" + direction.ToString());
+                int ran = Random.Range(0,100);
+                if(ran > 50)
+                    yield return DoAnim("Bark_D");
+                else
+                    yield return DoAnim("Bark_Sit_D");
             }
         }
         CheckAbort();
@@ -1012,8 +1006,9 @@ public class CharController : MonoBehaviour
             yield return new WaitForEndOfFrame();
         }
         
+        yield return StartCoroutine(DoAnim("Stretch_L"));  
 
-        if(enviromentType == EnviromentType.Bed && !isAbort){
+        if(enviromentType == EnviromentType.Bed){
             GameManager.instance.AddExp(5);
             GameManager.instance.LogAchivement(AchivementType.Do_Action,ActionType.Sleep);
             yield return StartCoroutine(JumpDown(-7,10,30));
@@ -1052,6 +1047,7 @@ public class CharController : MonoBehaviour
 
     protected void CheckAbort()
     {
+        isAction = false;
         if (!isAbort)
             actionType = ActionType.None;
         else

@@ -352,12 +352,16 @@ public class GameManager : MonoBehaviour
         myPlayer = new PlayerData();
         myPlayer.LoadData();
 
+        AddCoin(10000);
+        AddDiamond(10000);
         AddItem(17);
-        AddItem(57);
+        AddItem(41);
+        //AddItem(57);
         AddPet(0);
         
-        EquipItem(17);        
-        EquipItem(57);
+        EquipItem(17);    
+        EquipItem(41);    
+        //EquipItem(57);
         EquipPet(0);
 
         

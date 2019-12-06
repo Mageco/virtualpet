@@ -142,15 +142,23 @@ public class EatItem : MonoBehaviour
 	void OnTriggerEnter2D(Collider2D other) {
 		if(isBusy)
 			return;
+		
 		if (other.tag == "Floor") {
 		 	isDragable = true;
 		}
 		 if (other.GetComponent<PolyNavObstacle>() != null) {
 		 	isDragable = false;
 		 }
-
 	}
 
+	void OnTriggerStay2D(Collider2D other) {
+		if(isBusy)
+			return;
+
+		if(other.tag == "Player"){
+			other.GetComponent<CharController>().OnEat();
+		}
+	}
 	void OnTriggerExit2D(Collider2D other) {
 		if(isBusy)
 			return;

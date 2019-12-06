@@ -76,6 +76,7 @@ public class FoxController : AnimalController
                 Debug.Log("Run");
                 target.OffCached();
                 target.transform.position = this.transform.position;
+                target.agent.transform.position = this.transform.position;
                 Minigame.instance.UpdateLive();
             }
             state = AnimalState.Flee;

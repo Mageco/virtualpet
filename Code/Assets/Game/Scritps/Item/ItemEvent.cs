@@ -9,8 +9,7 @@ public class ItemEvent : MonoBehaviour
     // Start is called before the first frame update
     void OnTriggerStay2D(Collider2D other) {
 		if (other.tag == "Player") {
-            character = other.GetComponent<CharController>();
-            character.OnEvent(itemEventType);
+
 		}
 	}
 

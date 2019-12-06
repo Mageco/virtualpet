@@ -64,8 +64,13 @@ public class CharMinigame1 : CharController
 
     protected override void DoAction()
     {
-        if(Minigame.instance.state == GameState.Run){
-            //Debug.Log("DoAction " + actionType);
+        if(Minigame.instance != null && Minigame.instance.state == GameState.Run){
+            if(isAction){
+                Debug.Log("Action is doing " + actionType);
+                StopAllCoroutines();
+                isAction = false;
+            }
+
             isAbort = false;
             if (agent == null)
                 return;
