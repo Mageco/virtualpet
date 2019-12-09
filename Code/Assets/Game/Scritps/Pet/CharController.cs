@@ -47,14 +47,11 @@ public class CharController : MonoBehaviour
     public Transform shitPosition;
     public GameObject peePrefab;
     public GameObject shitPrefab;
-    public GameObject dirtyEffect;
-
     public GameObject touchObject;
     #endregion
 
     //Skill
     public SkillType currentSkill = SkillType.NONE;
-    public GameObject skillLearnEffect;
     FoodBowlItem foodItem;
     DrinkBowlItem drinkItem;
     MouseController mouse;
@@ -92,8 +89,6 @@ public class CharController : MonoBehaviour
             touchObject = this.transform.GetComponentInChildren<TouchPoint>(true).gameObject;
         if(touchObject != null)
             touchObject.SetActive(false);
-        if(skillLearnEffect != null)
-            skillLearnEffect.SetActive(false);
 
         if(ES2.Exists("PlayTime")){
             playTime = ES2.Load<System.DateTime>("PlayTime");
@@ -1142,15 +1137,10 @@ public class CharController : MonoBehaviour
     public void OffLearnSkill(){
         ItemManager.instance.DeActivateSkillItems(currentSkill);
         currentSkill = SkillType.NONE;
-        skillLearnEffect.SetActive(false);
     }
     public void LevelUpSkill(SkillType type){
         data.LevelUpSkill(type);
-        //if(data.SkillLearned(currentSkill))
-        //    UIManager.instance.OnSkillCompletePanel(currentSkill);
         OffLearnSkill();
-        //Abort();
-        //actionType = ActionType.SkillUp;
     }
 
     protected IEnumerator SkillUp(){

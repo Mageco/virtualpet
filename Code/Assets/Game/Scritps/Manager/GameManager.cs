@@ -361,6 +361,8 @@ public class GameManager : MonoBehaviour
         AddPet(0);
         AddPet(1);
         AddPet(2);
+        AddPet(3);
+        AddPet(4);
         
         EquipItem(17);    
         EquipItem(41);    
@@ -368,6 +370,8 @@ public class GameManager : MonoBehaviour
         EquipPet(0);
         EquipPet(1);
         EquipPet(2);
+        EquipPet(3);
+        EquipPet(4);
 
         
         //#if UNITY_EDITOR
