@@ -154,9 +154,9 @@ public class Pet : BaseModel
 
         string url = "";
 
-		//if(GameManager.instance.gameType == GameType.Minigame1){
-		//	url = DataHolder.GetPet(iD).petMiniGame1.Replace("Assets/Game/Resources/", "");
-		//}
+		if(GameManager.instance.gameType == GameType.Minigame1){
+			url = DataHolder.GetPet(iD).petMiniGame1.Replace("Assets/Game/Resources/", "");
+		}else
         //else if (level >= 6)
         //{
             url = DataHolder.GetPet(iD).petBig.Replace("Assets/Game/Resources/", "");

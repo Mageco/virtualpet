@@ -280,7 +280,7 @@ Camera:
   far clip plane: 10000
   field of view: 60
   orthographic: 1
-  orthographic size: 24
+  orthographic size: 30
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -3483,6 +3483,11 @@ PrefabInstance:
       propertyPath: addExp
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7629980631625239534, guid: da4a7d975ac124a23850b2bb20c236a9,
+        type: 3}
+      propertyPath: myPlayer.minigameLevels.Array.data[0]
+      value: 15
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: da4a7d975ac124a23850b2bb20c236a9, type: 3}
 --- !u!1 &1568686991
@@ -4313,7 +4318,7 @@ PrefabInstance:
     - target: {fileID: 2846764735703140346, guid: 8c4ea41daec3943e1b1d666438e600b3,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 193803885500558729, guid: 8c4ea41daec3943e1b1d666438e600b3,
         type: 3}

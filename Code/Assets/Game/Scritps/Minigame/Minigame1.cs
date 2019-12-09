@@ -42,16 +42,22 @@ public class Minigame1 : Minigame
             //GameManager.instance.GetPetObject(0).isAbort = true;
             state = GameState.Run;
             Load();
-            GameManager.instance.GetActivePet().energy = GameManager.instance.GetActivePet().maxEnergy;
-            GameManager.instance.GetActivePet().Food = 0;
-            GameManager.instance.GetActivePet().Water = 0;
-            GameManager.instance.GetPetObject(0).actionType = ActionType.None;
+            for(int i=0;i<GameManager.instance.myPlayer.pets.Count;i++){
+                LoadPet(i);
+            }
             chickens = GameObject.FindObjectsOfType<ChickenController>();
             this.maxLive = chickens.Length;
             this.live = this.maxLive;
             UpdateLive();
         }
 
+    }
+
+    void LoadPet(int id){
+        GameManager.instance.GetPet(id).energy = GameManager.instance.GetActivePet().maxEnergy;
+        GameManager.instance.GetPet(id).Food = 0;
+        GameManager.instance.GetPet(id).Water = 0;
+        GameManager.instance.GetPetObject(id).actionType = ActionType.None;
     }
 
     void Load(){
