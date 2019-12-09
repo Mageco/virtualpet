@@ -360,15 +360,17 @@ public class GameManager : MonoBehaviour
         //AddItem(57);
         AddPet(0);
         AddPet(1);
+        AddPet(2);
         
         EquipItem(17);    
         EquipItem(41);    
         //EquipItem(57);
         EquipPet(0);
         EquipPet(1);
+        EquipPet(2);
 
         
-        #if UNITY_EDITOR
+        //#if UNITY_EDITOR
         if(isTest){
             AddItem(2);
             AddItem(11);                
@@ -383,7 +385,7 @@ public class GameManager : MonoBehaviour
             EquipItem(41);
             EquipItem(58);
         }
-        #endif
+        //#endif
         SavePlayer();
     }
 
