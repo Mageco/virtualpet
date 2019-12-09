@@ -88,7 +88,8 @@ public class CharController : MonoBehaviour
         go1.transform.parent = GameManager.instance.transform;
 		agent = go1.GetComponent<PolyNavAgent>();
         agent.OnDestinationReached += OnArrived;
-        touchObject = this.transform.GetComponentInChildren<TouchPoint>(true).gameObject;
+        if(this.transform.GetComponentInChildren<TouchPoint>(true) != null)
+            touchObject = this.transform.GetComponentInChildren<TouchPoint>(true).gameObject;
         if(touchObject != null)
             touchObject.SetActive(false);
         if(skillLearnEffect != null)
@@ -313,7 +314,7 @@ public class CharController : MonoBehaviour
     }
 
     protected virtual void CalculateDirection(){
-/*         if (agent.transform.eulerAngles.z < 30f && agent.transform.eulerAngles.z > -30f || (agent.transform.eulerAngles.z > 330f && agent.transform.eulerAngles.z < 390f) || (agent.transform.eulerAngles.z < -330f && agent.transform.eulerAngles.z > -390f))
+         if (agent.transform.eulerAngles.z < 30f && agent.transform.eulerAngles.z > -30f || (agent.transform.eulerAngles.z > 330f && agent.transform.eulerAngles.z < 390f) || (agent.transform.eulerAngles.z < -330f && agent.transform.eulerAngles.z > -390f))
             direction = Direction.U;
         else if ((agent.transform.eulerAngles.z > 30f && agent.transform.eulerAngles.z < 80f) || (agent.transform.eulerAngles.z > -330f && agent.transform.eulerAngles.z < -280f))
             direction = Direction.LU;
@@ -324,14 +325,14 @@ public class CharController : MonoBehaviour
         else if ((agent.transform.eulerAngles.z <= -80 && agent.transform.eulerAngles.z >= -150) || (agent.transform.eulerAngles.z >= 210f && agent.transform.eulerAngles.z <= 280f))
             direction = Direction.RD;
         else
-            direction = Direction.D; */
+            direction = Direction.D; 
 
 
 
-        if (agent.transform.eulerAngles.z < 180f && agent.transform.eulerAngles.z > 0f || (agent.transform.eulerAngles.z > -360f && agent.transform.eulerAngles.z < -180f))
-            direction = Direction.LD;
-        else 
-            direction = Direction.RD;
+        //if (agent.transform.eulerAngles.z < 180f && agent.transform.eulerAngles.z > 0f || (agent.transform.eulerAngles.z > -360f && agent.transform.eulerAngles.z < -180f))
+        //    direction = Direction.LD;
+        //else 
+        //    direction = Direction.RD;
     }
 
 
@@ -349,7 +350,7 @@ public class CharController : MonoBehaviour
         Abort();
         int ran = Random.Range(0,100);
 
-        if(ran < data.GetSkillProgress(SkillType.Call) * 10){
+        if(ran < 50 + data.GetSkillProgress(SkillType.Call) * 5){
             target = pos;
             actionType = ActionType.Call;
         }else{
@@ -391,15 +392,7 @@ public class CharController : MonoBehaviour
     }
 
     public virtual void OnEat(){
-        if(actionType == ActionType.Tired || actionType == ActionType.Discover || actionType == ActionType.Patrol || actionType == ActionType.Rest){
-            if(data.Food < 0.3f * data.maxFood){
-                actionType = ActionType.Eat;
-                isAbort = true;
-            }else if(data.Water < 0.3f * data.maxWater){
-                actionType = ActionType.Drink;
-                isAbort = true;                
-            }
-        }
+ 
     }
 
     protected void OnBath()
@@ -848,6 +841,7 @@ public class CharController : MonoBehaviour
         if(enviromentType == EnviromentType.Toilet){
             GameManager.instance.AddExp(5);
             GameManager.instance.LogAchivement(AchivementType.Do_Action,ActionType.OnToilet);
+            LevelUpSkill(SkillType.Toilet);
             yield return StartCoroutine(JumpDown(-7,10,30));     
         }
         
@@ -882,6 +876,7 @@ public class CharController : MonoBehaviour
         if(enviromentType == EnviromentType.Toilet){
             GameManager.instance.AddExp(5);
             GameManager.instance.LogAchivement(AchivementType.Do_Action,ActionType.OnToilet);
+            LevelUpSkill(SkillType.Toilet);
             yield return StartCoroutine(JumpDown(-7,10,30));     
         }
         CheckAbort();
@@ -918,10 +913,26 @@ public class CharController : MonoBehaviour
 
             }else{
                 int ran = Random.Range(0,100);
-                if(ran > 50)
+                if(ran < 20)
                     yield return DoAnim("Bark_D");
-                else
+                else if(ran < 40)
+                {
+                    SetTarget(PointType.Patrol);
+                    yield return StartCoroutine(MoveToPoint());
+                    yield return DoAnim("Bark_D");
+                    SetTarget(PointType.Eat);
+                    yield return StartCoroutine(MoveToPoint());
+                }else if(ran < 50)
                     yield return DoAnim("Bark_Sit_D");
+                else if(ran < 70) 
+                    yield return DoAnim("Idle_D");
+                else if(ran < 80){
+                    yield return DoAnim("Eat_LD");
+                }else if(ran < 90){
+                    yield return DoAnim("Smell_LD");
+                }else{
+                    yield return DoAnim("Smell_Bark_LD");
+                }
             }
         }
 
@@ -964,10 +975,27 @@ public class CharController : MonoBehaviour
  			        GameManager.instance.LogAchivement(AchivementType.Drink,ActionType.None,GetDrinkItem().GetComponent<ItemObject>().itemID);
             }else{
                 int ran = Random.Range(0,100);
-                if(ran > 50)
+                if(ran < 20)
                     yield return DoAnim("Bark_D");
-                else
+                else if(ran < 40)
+                {
+                    SetTarget(PointType.Patrol);
+                    yield return StartCoroutine(MoveToPoint());
+                    yield return DoAnim("Bark_D");
+                    SetTarget(PointType.Drink);
+                    yield return StartCoroutine(MoveToPoint());
+                }else if(ran < 50)
                     yield return DoAnim("Bark_Sit_D");
+                else if(ran < 70) 
+                    yield return DoAnim("Idle_D");
+                else if(ran < 80){
+                    yield return DoAnim("Drink_LD");
+                }else if(ran < 90){
+                    yield return DoAnim("Smell_LD");
+                }else{
+                    yield return DoAnim("Smell_Bark_LD");
+                }
+
             }
         }
         CheckAbort();
@@ -1024,6 +1052,7 @@ public class CharController : MonoBehaviour
         if(enviromentType == EnviromentType.Bed){
             GameManager.instance.AddExp(5);
             GameManager.instance.LogAchivement(AchivementType.Do_Action,ActionType.Sleep);
+            LevelUpSkill(SkillType.Sleep);
             yield return StartCoroutine(JumpDown(-7,10,30));
         }
 

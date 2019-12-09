@@ -21,6 +21,8 @@ public class MouseController : MonoBehaviour
     FoodBowlItem foodItem;
     DrinkBowlItem drinkItem;
 
+	public GameObject shitPrefab;
+
     public MouseState state = MouseState.Idle;
 
 	Animator anim;
@@ -117,12 +119,6 @@ public class MouseController : MonoBehaviour
 		col.enabled = false;
 		this.transform.position = originalPosition;
 	}
-
-
-
-
-
-
 
 	void Update()
 	{
@@ -244,6 +240,12 @@ public class MouseController : MonoBehaviour
 		}
 		return randomPoints;
 	}
+
+	
+    protected void SpawnShit(Vector3 pos)
+    {
+        GameObject go = Instantiate(shitPrefab, pos, Quaternion.identity);
+    }
 
     #endregion
 

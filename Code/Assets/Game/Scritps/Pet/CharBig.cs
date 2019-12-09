@@ -100,30 +100,43 @@ public class CharBig : CharController
             return;
         }
 
+        if(data.Food < data.maxFood * 0.3f && GetFoodItem() != null && Vector2.Distance(this.transform.position,GetFoodItem().transform.position) < 3){
+            actionType = ActionType.Eat;
+            return;
+        }
+
+        if(data.Water < data.maxWater * 0.3f && GetDrinkItem() != null && Vector2.Distance(this.transform.position,GetDrinkItem().transform.position) < 3){
+            actionType = ActionType.Drink;
+            return;
+        }
+
         if (data.Food < data.maxFood * 0.1f)
         {
             int ran = Random.Range(0, 100);
-            if (ran > 20)
+            if (ran > 30)
             {
                 actionType = ActionType.Eat;
                 return;
             }
         }
 
+
         if (data.Water < data.maxWater * 0.1f)
         {
             int ran = Random.Range(0, 100);
-            if (ran > 20)
+            if (ran > 30)
             {
                 actionType = ActionType.Drink;
                 return;
             }
         }
 
+
+
         if (data.Sleep < data.maxSleep * 0.1f)
         {
             int ran = Random.Range(0, 100);
-            if (ran > 20)
+            if (ran > 30)
             {
                 actionType = ActionType.Sleep;
                 return;
@@ -145,7 +158,7 @@ public class CharBig : CharController
             return;
         }
 
-        else if (data.Energy < data.maxEnergy * 0.3f)
+        if (data.Energy < data.maxEnergy * 0.3f)
         {
             actionType = ActionType.Rest;
             return;
@@ -164,17 +177,8 @@ public class CharBig : CharController
         }
 
 
+        actionType = ActionType.Patrol;
         //Other Action
-        int id = Random.Range(0, 100);
-        if (id < 80)
-        {
-            actionType = ActionType.Patrol;
-        }
-        else
-        {
-            actionType = ActionType.Discover;
-        }
-
     }
 
 
@@ -456,8 +460,7 @@ public class CharBig : CharController
         float t = 0;
         float maxTime = 6f;
         bool isWait = true;
-        int n=0;
-        n = Random.Range(0, 9);
+        int n = Random.Range(0,(int)data.Intelligent/10);
 
         while (!isAbort && isWait)
         {
@@ -465,7 +468,7 @@ public class CharBig : CharController
             {
                 if (t == 0)
                 {
-                    n = Random.Range(0, 9);
+                    n = Random.Range(0,(int)data.Intelligent/10);
                 }
                 if (n == 0)
                 {
@@ -616,14 +619,15 @@ public class CharBig : CharController
         
 
         Debug.Log("Rest");
-        while(data.Food > 0 && data.Water > 0 && data.Sleep > 0 && data.Energy < 0.5f * data.maxEnergy && !isAbort){
+        
+        while(data.Food > 0 && data.Water > 0 && data.Sleep > 0 &&data.Energy < 0.5f * data.maxEnergy && !isAbort){
             data.Energy += 0.05f;
             data.Food -= 0.03f;
             data.Water -= 0.03f;
             data.Sleep -= 0.01f;
             yield return new WaitForEndOfFrame();
-        }        
-
+        }  
+        yield return StartCoroutine(Wait(maxTime));
         CheckAbort();
     }
 
