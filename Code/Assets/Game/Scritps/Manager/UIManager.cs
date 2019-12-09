@@ -31,6 +31,9 @@ public class UIManager : MonoBehaviour
 
     List<string> notificationText = new List<string>();
 
+    public GameObject doubleClickEffect;
+	GameObject doubleClick;
+
 	void Awake()
 	{
 		if (instance == null)
@@ -84,7 +87,6 @@ public class UIManager : MonoBehaviour
 
 	public void UsePet(int itemID){
        shopPanel.Close();
-      GameManager.instance.EquipPet(itemID);
        GameManager.instance.EquipPet(itemID);
 	}
 
@@ -216,6 +218,17 @@ public class UIManager : MonoBehaviour
         GameManager.instance.gameType = GameType.Minigame1;
         GameManager.instance.GetActivePet().Load();
         homeUI.SetActive(false);
+    }
+
+    public void OnCall(){
+        if(doubleClick != null)
+            GameObject.Destroy(doubleClick);
+
+        Vector3 pos = Camera.main.transform.position + new Vector3(0,-Camera.main.orthographicSize + 5,0);
+        pos.z = pos.y;
+        doubleClick = GameObject.Instantiate(doubleClickEffect,pos,Quaternion.identity);
+        doubleClick.transform.parent = ItemManager.instance.transform;
+        GameManager.instance.GetPetObject(0).OnCall(pos);
     }
 
 

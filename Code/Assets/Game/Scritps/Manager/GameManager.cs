@@ -78,6 +78,7 @@ public class GameManager : MonoBehaviour
                 p.itemState = ItemState.Equiped;
             }
         }
+        LoadPetObjects();
     }
 
 
@@ -358,11 +359,13 @@ public class GameManager : MonoBehaviour
         AddItem(41);
         //AddItem(57);
         AddPet(0);
+        AddPet(1);
         
         EquipItem(17);    
         EquipItem(41);    
         //EquipItem(57);
         EquipPet(0);
+        EquipPet(1);
 
         
         #if UNITY_EDITOR
