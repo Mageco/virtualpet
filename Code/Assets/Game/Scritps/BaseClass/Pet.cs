@@ -154,21 +154,21 @@ public class Pet : BaseModel
 
         string url = "";
 
-		if(GameManager.instance.gameType == GameType.Minigame1){
-			url = DataHolder.GetPet(iD).petMiniGame1.Replace("Assets/Game/Resources/", "");
-		}
-        else if (level >= 6)
-        {
+		//if(GameManager.instance.gameType == GameType.Minigame1){
+		//	url = DataHolder.GetPet(iD).petMiniGame1.Replace("Assets/Game/Resources/", "");
+		//}
+        //else if (level >= 6)
+        //{
             url = DataHolder.GetPet(iD).petBig.Replace("Assets/Game/Resources/", "");
-        }
-        else if (level >= 3 )
-        {
-            url = DataHolder.GetPet(iD).petMiddle.Replace("Assets/Game/Resources/", "");
-        }
-        else
-        {
-            url = DataHolder.GetPet(iD).petSmall.Replace("Assets/Game/Resources/", "");
-        }
+        //}
+        //else if (level >= 3 )
+        //{
+        //    url = DataHolder.GetPet(iD).petMiddle.Replace("Assets/Game/Resources/", "");
+        //}
+        //else
+        //{
+        //    url = DataHolder.GetPet(iD).petSmall.Replace("Assets/Game/Resources/", "");
+        //}
 
         url = url.Replace(".prefab", "");
         url = DataHolder.Pets().GetPrefabPath() + url;
