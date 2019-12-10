@@ -253,7 +253,7 @@ Transform:
   m_GameObject: {fileID: 5093930896440434731}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.7, y: 0.7, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 331583831463415789}
   - {fileID: 6124915107150507913}
@@ -356,7 +356,7 @@ MonoBehaviour:
     isAvailable: 1
     level: 1
     exp: 0
-    skills: 
+    skills: []
     petName: 
     speed: 0
     weight: 0
@@ -405,6 +405,7 @@ MonoBehaviour:
   agent: {fileID: 0}
   isArrived: 1
   isAbort: 0
+  isAction: 0
   actionType: 0
   body: {fileID: 0}
   charInteract: {fileID: 0}
@@ -416,13 +417,13 @@ MonoBehaviour:
     type: 3}
   shitPrefab: {fileID: 4887335964014193537, guid: 6cd2b87a2c28c424ba4e4c5f8d1ddfd2,
     type: 3}
-  dirtyEffect: {fileID: 0}
   touchObject: {fileID: 0}
   currentSkill: 0
-  skillLearnEffect: {fileID: 99716053274896878}
   growUpTimeline: {fileID: 4926926474910647215, guid: 0a9a360bdec2043189aed1eecbe13c77,
     type: 3}
   dropPosition: {x: 0, y: 0, z: 0}
+  iconStatusObject: {fileID: 0}
+  iconStatus: 0
 --- !u!114 &3990936362384477127
 MonoBehaviour:
   m_ObjectHideFlags: 0

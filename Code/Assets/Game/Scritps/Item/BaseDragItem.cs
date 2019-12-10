@@ -101,7 +101,7 @@ public class BaseDragItem : MonoBehaviour
 		this.transform.localScale = Vector3.Lerp(dragScale,this.transform.localScale,Time.deltaTime *  3f);
 
 		Vector3 pos = this.transform.position;
-		pos.z = scalePosition.y;
+		pos.z = scalePosition.y * 10;
 		this.transform.position = pos;
 
 		lastPosition = this.transform.position;

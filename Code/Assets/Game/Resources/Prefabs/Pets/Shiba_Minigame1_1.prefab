@@ -61,7 +61,7 @@ Transform:
   m_GameObject: {fileID: 2846764735703140346}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.7, y: 0.7, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 3260102857673776288}
   - {fileID: 4213929617894132666}
@@ -118,8 +118,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7bb2bec2c1a824c41989665ca1b0ee8a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initZ: -15
+  maxHeight: 10
   scaleFactor: 0.03
+  height: 0
+  scalePosition: {x: 0, y: 0, z: 0}
 --- !u!114 &8264768739620265649
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -133,8 +135,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   interactType: 0
-  isClick: 0
-  touchDirection: 1
   dragOffset: {x: 0, y: 0, z: 0}
 --- !u!114 &8264768739376955380
 MonoBehaviour:
@@ -179,7 +179,7 @@ MonoBehaviour:
     isAvailable: 1
     level: 1
     exp: 0
-    skills: 
+    skills: []
     petName: 
     speed: 0
     weight: 0
@@ -228,21 +228,22 @@ MonoBehaviour:
   agent: {fileID: 0}
   isArrived: 1
   isAbort: 0
+  isAction: 0
   actionType: 0
   body: {fileID: 0}
   charInteract: {fileID: 0}
+  charScale: {fileID: 0}
   isTouch: 0
   peePosition: {fileID: 0}
   shitPosition: {fileID: 0}
   peePrefab: {fileID: 0}
   shitPrefab: {fileID: 0}
-  dirtyEffect: {fileID: 0}
   touchObject: {fileID: 0}
   currentSkill: 0
-  skillLearnEffect: {fileID: 0}
-  dragOffset: 20
-  cameraSize: 24
   growUpTimeline: {fileID: 0}
+  dropPosition: {x: 0, y: 0, z: 0}
+  iconStatusObject: {fileID: 0}
+  iconStatus: 0
   animals: []
 --- !u!1 &6310947520119038819
 GameObject:

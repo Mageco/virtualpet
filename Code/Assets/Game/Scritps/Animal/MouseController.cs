@@ -129,7 +129,7 @@ public class MouseController : MonoBehaviour
 	{
 		if (state == MouseState.Seek || state == MouseState.Run) {
 			Vector3 pos = this.transform.position;
-			pos.z = this.transform.position.y;
+			pos.z = this.transform.position.y * 10;
 			this.transform.position = pos;
 			if (pos.x > lastPosition.x) {
 				body.transform.rotation = Quaternion.Euler (new Vector3 (0, 180, 0));

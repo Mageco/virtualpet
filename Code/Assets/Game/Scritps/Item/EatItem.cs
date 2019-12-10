@@ -60,7 +60,7 @@ public class EatItem : MonoBehaviour
 			transform.localScale = originalScale;
 
 		Vector3 pos = this.transform.position;
-		pos.z = this.transform.position.y;
+		pos.z = this.transform.position.y * 10;
 		this.transform.position = pos;
 	}
 
