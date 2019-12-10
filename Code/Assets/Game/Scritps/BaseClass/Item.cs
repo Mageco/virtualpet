@@ -19,7 +19,6 @@ public class Item
 	public ItemSkillType itemSkill = ItemSkillType.NONE;
 	public int skillID = 0;
 
-	public int levelRequire = 0;
 	public bool isAvailable = true;
 	public int shopOrder = 0;
 

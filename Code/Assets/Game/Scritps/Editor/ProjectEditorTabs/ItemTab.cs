@@ -112,13 +112,6 @@ public class ItemTab : BaseTab
                     DataHolder.Items().GetItem(selection,temcategory).sellPrice = EditorGUILayout.IntField("Coin Amount", DataHolder.Items().GetItem(selection,temcategory).sellPrice, GUILayout.Width(pw.mWidth));
                 }
                 DataHolder.Items().GetItem(selection,temcategory).isAvailable = EditorGUILayout.Toggle("Available", DataHolder.Items().GetItem(selection,temcategory).isAvailable, GUILayout.Width(pw.mWidth));
-                if(DataHolder.Items().GetItem(selection,temcategory).isAvailable)                
-                    DataHolder.Items().GetItem(selection,temcategory).levelRequire = EditorGUILayout.IntField("RequireLevel", DataHolder.Items().GetItem(selection,temcategory).levelRequire, GUILayout.Width(pw.mWidth));
-
-
-				//EditorGUILayout.EndToggleGroup();
-				//this.Separate();
-
 
 
 			}

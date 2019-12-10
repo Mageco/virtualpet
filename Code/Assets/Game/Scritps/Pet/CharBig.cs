@@ -296,7 +296,7 @@ public class CharBig : CharController
 
     #region Main Action
 
-    IEnumerator Patrol()
+    protected override IEnumerator Patrol()
     {
         int n = 0;
         int maxCount = Random.Range(2, 5);

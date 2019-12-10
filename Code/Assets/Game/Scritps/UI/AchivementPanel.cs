@@ -18,7 +18,7 @@ public Transform anchor;
         List<PlayerAchivement> items = new List<PlayerAchivement>();
 
         ClearItems();
-        foreach(PlayerAchivement a in GameManager.instance.myPlayer.achivements){
+        foreach(PlayerAchivement a in GameManager.instance.GetPlayer().achivements){
             items.Add(a);
         }   
 

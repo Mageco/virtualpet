@@ -85,6 +85,8 @@ public class CharController : MonoBehaviour
         go1.transform.parent = GameManager.instance.transform;
 		agent = go1.GetComponent<PolyNavAgent>();
         agent.OnDestinationReached += OnArrived;
+        
+        agent.maxSpeed = data.speed;
         if(this.transform.GetComponentInChildren<TouchPoint>(true) != null)
             touchObject = this.transform.GetComponentInChildren<TouchPoint>(true).gameObject;
         if(touchObject != null)
@@ -486,6 +488,13 @@ public class CharController : MonoBehaviour
         //    actionType = ActionType.None;
     }
 
+    public virtual void OnToy(ToyType type){
+        if(actionType == ActionType.Patrol){
+            Abort();
+            //actionType = ActionType.OnToy;
+        }
+    }
+
     public virtual void OnArrived()
     {
         //Debug.Log("Arrived");
@@ -834,7 +843,7 @@ public class CharController : MonoBehaviour
         }
 
         if(enviromentType == EnviromentType.Toilet){
-            GameManager.instance.AddExp(5);
+            GameManager.instance.AddExp(5,data.iD);
             GameManager.instance.LogAchivement(AchivementType.Do_Action,ActionType.OnToilet);
             LevelUpSkill(SkillType.Toilet);
             yield return StartCoroutine(JumpDown(-7,10,30));     
@@ -869,7 +878,7 @@ public class CharController : MonoBehaviour
         }
 
         if(enviromentType == EnviromentType.Toilet){
-            GameManager.instance.AddExp(5);
+            GameManager.instance.AddExp(5,data.iD);
             GameManager.instance.LogAchivement(AchivementType.Do_Action,ActionType.OnToilet);
             LevelUpSkill(SkillType.Toilet);
             yield return StartCoroutine(JumpDown(-7,10,30));     
@@ -902,7 +911,7 @@ public class CharController : MonoBehaviour
                     yield return new WaitForEndOfFrame();
                 }
                 GameManager.instance.LogAchivement(AchivementType.Do_Action,ActionType.Eat);
-                GameManager.instance.AddExp(5);
+                GameManager.instance.AddExp(5,data.iD);
                 if(GetFoodItem() != null && GetFoodItem().GetComponent<ItemObject>() != null)
  			        GameManager.instance.LogAchivement(AchivementType.Eat,ActionType.None,GetFoodItem().GetComponent<ItemObject>().itemID);
 
@@ -965,7 +974,7 @@ public class CharController : MonoBehaviour
                     yield return new WaitForEndOfFrame();
                 }
                 GameManager.instance.LogAchivement(AchivementType.Do_Action,ActionType.Drink);
-                GameManager.instance.AddExp(5);
+                GameManager.instance.AddExp(5,data.iD);
                 if(GetDrinkItem() != null && GetDrinkItem().GetComponent<ItemObject>() != null)
  			        GameManager.instance.LogAchivement(AchivementType.Drink,ActionType.None,GetDrinkItem().GetComponent<ItemObject>().itemID);
             }else{
@@ -1045,12 +1054,35 @@ public class CharController : MonoBehaviour
         yield return StartCoroutine(DoAnim("Stretch_L"));  
 
         if(enviromentType == EnviromentType.Bed){
-            GameManager.instance.AddExp(5);
+            GameManager.instance.AddExp(5,data.iD);
             GameManager.instance.LogAchivement(AchivementType.Do_Action,ActionType.Sleep);
             LevelUpSkill(SkillType.Sleep);
             yield return StartCoroutine(JumpDown(-7,10,30));
         }
 
+        CheckAbort();
+    }
+
+    protected virtual IEnumerator Patrol()
+    {
+        int n = 0;
+        int maxCount = Random.Range(2, 5);
+        while (!isAbort && n < maxCount)
+        {
+
+            SetTarget(PointType.Patrol);
+            yield return StartCoroutine(MoveToPoint());
+            int ran = Random.Range(0, 100);
+            if (ran < 30)
+            {
+                SetDirection(Direction.D);
+                anim.Play("StandBy", 0);
+            }
+            else
+                anim.Play("Idle_" + this.direction.ToString(), 0);
+            yield return StartCoroutine(Wait(Random.Range(1, 3)));
+            n++;
+        }
         CheckAbort();
     }
 

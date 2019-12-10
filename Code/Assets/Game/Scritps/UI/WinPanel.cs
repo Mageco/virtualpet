@@ -32,7 +32,7 @@ public class WinPanel : MonoBehaviour
         animator.SetInteger("star",star);
         if(e > 0){
             exp.text = e.ToString();
-            GameManager.instance.AddExp(e);
+            GameManager.instance.AddExp(e,GameManager.instance.GetActivePet().iD);
         }
         else
             exp.transform.parent.gameObject.SetActive(false);

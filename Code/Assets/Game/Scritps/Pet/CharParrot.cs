@@ -270,25 +270,6 @@ public class CharParrot : CharController
 
     #region Main Action
 
-    IEnumerator Patrol()
-    {
-        int n = 0;
-        int maxCount = Random.Range(2, 5);
-        while (!isAbort && n < maxCount)
-        {
-
-            SetTarget(PointType.Patrol);
-            yield return StartCoroutine(MoveToPoint());
-            anim.Play("Idle_" + this.direction.ToString(), 0);
-            yield return StartCoroutine(Wait(Random.Range(1, 3)));
-            
-
-            n++;
-        }
-        CheckAbort();
-    }
-
-
     IEnumerator Table()
     {   
         anim.Play("Idle_" + this.direction.ToString(), 0);
@@ -552,7 +533,7 @@ public class CharParrot : CharController
         }
 
         if(enviromentType == EnviromentType.Toilet){
-            GameManager.instance.AddExp(5);
+            GameManager.instance.AddExp(5,data.iD);
             GameManager.instance.LogAchivement(AchivementType.Do_Action,ActionType.OnToilet);
             LevelUpSkill(SkillType.Toilet);
             yield return StartCoroutine(JumpDown(-7,10,30));     
@@ -587,7 +568,7 @@ public class CharParrot : CharController
         }
 
         if(enviromentType == EnviromentType.Toilet){
-            GameManager.instance.AddExp(5);
+            GameManager.instance.AddExp(5,data.iD);
             GameManager.instance.LogAchivement(AchivementType.Do_Action,ActionType.OnToilet);
             LevelUpSkill(SkillType.Toilet);
             yield return StartCoroutine(JumpDown(-7,10,30));     
@@ -620,7 +601,7 @@ public class CharParrot : CharController
                     yield return new WaitForEndOfFrame();
                 }
                 GameManager.instance.LogAchivement(AchivementType.Do_Action,ActionType.Eat);
-                GameManager.instance.AddExp(5);
+                GameManager.instance.AddExp(5,data.iD);
                 if(GetFoodItem() != null && GetFoodItem().GetComponent<ItemObject>() != null)
  			        GameManager.instance.LogAchivement(AchivementType.Eat,ActionType.None,GetFoodItem().GetComponent<ItemObject>().itemID);
 
@@ -683,7 +664,7 @@ public class CharParrot : CharController
                     yield return new WaitForEndOfFrame();
                 }
                 GameManager.instance.LogAchivement(AchivementType.Do_Action,ActionType.Drink);
-                GameManager.instance.AddExp(5);
+                GameManager.instance.AddExp(5,data.iD);
                 if(GetDrinkItem() != null && GetDrinkItem().GetComponent<ItemObject>() != null)
  			        GameManager.instance.LogAchivement(AchivementType.Drink,ActionType.None,GetDrinkItem().GetComponent<ItemObject>().itemID);
             }else{
@@ -741,7 +722,7 @@ public class CharParrot : CharController
         
  
         if(enviromentType == EnviromentType.Bed){
-            GameManager.instance.AddExp(5);
+            GameManager.instance.AddExp(5,data.iD);
             GameManager.instance.LogAchivement(AchivementType.Do_Action,ActionType.Sleep);
             LevelUpSkill(SkillType.Sleep);
             yield return StartCoroutine(JumpDown(-7,10,30));

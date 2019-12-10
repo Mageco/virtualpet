@@ -31,6 +31,9 @@ public class UIManager : MonoBehaviour
 
     public GameObject homeUI;
 
+    public GameObject profilePrefab;
+    public Transform profileAnchor;
+    List<ProfileUI> profiles = new List<ProfileUI>();
     List<string> notificationText = new List<string>();
 
     public GameObject doubleClickEffect;
@@ -49,7 +52,6 @@ public class UIManager : MonoBehaviour
     void Start()
     {
         UpdateUI();
-
     }
 
     // Update is called once per frame
@@ -65,8 +67,8 @@ public class UIManager : MonoBehaviour
 
 	public void UpdateUI()
 	{
-		coinText.text = GameManager.instance.myPlayer.Coin.ToString();
-		diamonText.text = GameManager.instance.myPlayer.Diamond.ToString();
+		coinText.text = GameManager.instance.GetCoin().ToString();
+		diamonText.text = GameManager.instance.GetDiamond().ToString();
 	}
 
 	public void BuyItem(int itemID){
@@ -91,9 +93,10 @@ public class UIManager : MonoBehaviour
 
 	public void BuyPet(int itemID){
 	  GameManager.instance.BuyPet(itemID);
+      GameManager.instance.EquipPet(itemID);
         if (shopPanel != null)
             shopPanel.Close();
-      GameManager.instance.EquipPet(itemID);
+      
 	}
 
     public void SellPet(int itemID){
@@ -265,6 +268,28 @@ public class UIManager : MonoBehaviour
         GameManager.instance.GetPetObject(0).OnCall(pos);
     }
 
+    public void LoadProfiles(){
+        ClearProfiles();
+        foreach(Pet p in GameManager.instance.GetPets()){
+            CreateProfile(p.iD);
+        }
+    }
+
+    void CreateProfile(int itemId){
+        GameObject go = Instantiate(profilePrefab);
+        go.transform.SetParent(this.profileAnchor);
+        go.transform.localScale = Vector3.one;
+        ProfileUI item = go.GetComponent<ProfileUI>();
+        profiles.Add(item);
+        item.Load(itemId);
+    }
+
+    void ClearProfiles(){
+        foreach(ProfileUI p in profiles){
+            GameObject.Destroy(p.gameObject);
+        }
+        profiles.Clear();
+    }
 
 }
 

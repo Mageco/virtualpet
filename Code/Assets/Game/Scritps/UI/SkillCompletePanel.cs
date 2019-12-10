@@ -50,7 +50,7 @@ public class SkillCompletePanel : MonoBehaviour
         if (DataHolder.GetSkill(skillId).expValue != 0)
         {
             exp.text = DataHolder.GetSkill(skillId).expValue.ToString();
-            GameManager.instance.AddExp(DataHolder.GetSkill(skillId).expValue);
+            //GameManager.instance.AddExp(DataHolder.GetSkill(skillId).expValue);
         }
         else
         {

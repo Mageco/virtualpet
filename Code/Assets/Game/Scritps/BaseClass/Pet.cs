@@ -12,11 +12,8 @@ public class Pet : BaseModel
 	public int buyPrice = 0;
 	public PriceType priceType = PriceType.Coin;
     public ItemState itemState = ItemState.OnShop;
-	public string petSmall = "";
-	public string petMiddle = "";
 	public string petBig = "";
 	public string petMiniGame1 = "";
-	public int levelRequire = 0;
 	public bool isAvailable = true;
 	//Common Data
 	public int level = 1;
@@ -126,8 +123,6 @@ public class Pet : BaseModel
         }
         buyPrice = p.buyPrice;
         priceType = p.priceType;
-        petSmall = p.petSmall;
-        petMiddle = p.petMiddle;
         petBig = p.petBig;
 		weight = p.weight;
 		speed = p.speed;
@@ -157,18 +152,8 @@ public class Pet : BaseModel
 		if(GameManager.instance.gameType == GameType.Minigame1){
 			url = DataHolder.GetPet(iD).petMiniGame1.Replace("Assets/Game/Resources/", "");
 		}else
-        //else if (level >= 6)
-        //{
             url = DataHolder.GetPet(iD).petBig.Replace("Assets/Game/Resources/", "");
-        //}
-        //else if (level >= 3 )
-        //{
-        //    url = DataHolder.GetPet(iD).petMiddle.Replace("Assets/Game/Resources/", "");
-        //}
-        //else
-        //{
-        //    url = DataHolder.GetPet(iD).petSmall.Replace("Assets/Game/Resources/", "");
-        //}
+
 
         url = url.Replace(".prefab", "");
         url = DataHolder.Pets().GetPrefabPath() + url;
@@ -182,8 +167,10 @@ public class Pet : BaseModel
     }
 
 	public void UnLoad(){
-		GameObject.Destroy(this.agent.gameObject);
-		GameObject.Destroy(this.character.gameObject);
+		if(agent != null)
+			GameObject.Destroy(this.agent.gameObject);
+		if(this.character != null)
+			GameObject.Destroy(this.character.gameObject);
 	}
 
 	public void AddLanguageItem()

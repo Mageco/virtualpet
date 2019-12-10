@@ -105,7 +105,7 @@ public class CharSmall : CharController
             data.Sleep -= 0.1f;
             yield return new WaitForEndOfFrame();
         }
-        GameManager.instance.AddExp(5);
+        GameManager.instance.AddExp(5,data.iD);
         CheckAbort();
     }
 
@@ -154,7 +154,7 @@ public class CharSmall : CharController
                 data.Food -= 0.2f;
                 yield return new WaitForEndOfFrame();
             }
-            GameManager.instance.AddExp(5);
+            GameManager.instance.AddExp(5,data.iD);
         }else
         {
             anim.Play("Lay_LD", 0);

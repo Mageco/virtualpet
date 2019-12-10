@@ -110,7 +110,7 @@ public class CharMinigame1 : CharController
                 agent.Stop();
                 animalTarget.OnFlee();
                 GameManager.instance.AddCoin(1);
-                GameManager.instance.AddExp(5);
+                GameManager.instance.AddExp(5,data.iD);
                 yield return StartCoroutine(DoAnim("Bark_Angry_" +direction.ToString())); 
                 animalTarget = null;
             }

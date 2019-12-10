@@ -39,10 +39,9 @@ public class Minigame1 : Minigame
 
     public override void StartGame(){
         if(state == GameState.Ready){
-            //GameManager.instance.GetPetObject(0).isAbort = true;
             state = GameState.Run;
             Load();
-            for(int i=0;i<GameManager.instance.myPlayer.pets.Count;i++){
+            for(int i=0;i<GameManager.instance.GetPets().Count;i++){
                 LoadPet(i);
             }
             chickens = GameObject.FindObjectsOfType<ChickenController>();

@@ -38,14 +38,13 @@ public class BathTubeItem : MonoBehaviour
 		if (isSoap) {
 			anim.Play ("Bath_End", 0);
 			isSoap = false;
-			if(GameManager.instance.GetPetObject(0).data.dirty >= 50)
-			{
-				GameManager.instance.GetPetObject(0).data.dirty -= 50;
-				GameManager.instance.AddExp(5);
-				GameManager.instance.LogAchivement(AchivementType.Do_Action,ActionType.Bath);
+			foreach(CharController pet in GameManager.instance.petObjects){
+				if (pet.data.dirty >= 50) {
+					pet.data.dirty -= 50;
+					GameManager.instance.AddExp(5,pet.data.iD);
+					GameManager.instance.LogAchivement(AchivementType.Do_Action,ActionType.Bath);
+				}
 			}
-			
-
 		}
 	}
 }

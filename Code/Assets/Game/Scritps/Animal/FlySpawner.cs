@@ -48,7 +48,7 @@ public class FlySpawner : MonoBehaviour
         int id = Random.Range(0,flyPrefabs.Length);
         GameObject go = GameObject.Instantiate(flyPrefabs[id],spawnPoints[n].position,Quaternion.identity);
         go.transform.parent = this.transform;
-        go.transform.localScale = Vector3.one;
+        //go.transform.localScale = Vector3.one;
         flies.Add(go);
     }
 

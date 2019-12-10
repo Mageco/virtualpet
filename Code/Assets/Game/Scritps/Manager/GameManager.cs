@@ -8,7 +8,7 @@ public class GameManager : MonoBehaviour
     
  	public static GameManager instance;
     public float gameTime = 0;
-    List<CharController> petObjects = new List<CharController>();
+    public List<CharController> petObjects = new List<CharController>();
     CameraController camera;
     public int questId = 0;
     public GameType gameType = GameType.House;
@@ -21,7 +21,7 @@ public class GameManager : MonoBehaviour
 
     public bool isTest = false;
 
-    public PlayerData myPlayer = new PlayerData();
+    PlayerData myPlayer = new PlayerData();
 
     void Awake()
     {
@@ -50,6 +50,9 @@ public class GameManager : MonoBehaviour
 		gameTime += Time.deltaTime;
 	}
 
+    public PlayerData GetPlayer(){
+        return myPlayer;
+    }
 
     public void LoadPetObjects()
     {
@@ -60,6 +63,7 @@ public class GameManager : MonoBehaviour
                 petObjects.Add(c);
             }
         }
+        UIManager.instance.LoadProfiles();
     }
 
     void AddPet(int itemId)
@@ -81,11 +85,16 @@ public class GameManager : MonoBehaviour
         LoadPetObjects();
     }
 
-
-
-    public CharController GetPetObject(int id){
-        return petObjects[id];
+    public void UnEquipPet(int itemId)
+    {
+        foreach(Pet p in myPlayer.pets){
+            if(p.iD == itemId){
+                p.itemState = ItemState.Have;
+            }
+        }
+        LoadPetObjects();
     }
+
 
     public void UpdatePetObjects(){
         petObjects.Clear();
@@ -96,17 +105,21 @@ public class GameManager : MonoBehaviour
 
     public bool BuyPet(int petId)
 	{
+        Debug.Log("Buy pet " + petId);
 		PriceType type = DataHolder.GetPet(petId).priceType;
 		int price = DataHolder.GetPet(petId).buyPrice;
 		if(type == PriceType.Coin){
 			if (price > GetCoin ()) {
+                MageManager.instance.OnNotificationPopup ("You have not enough Coin");
 				return false;
 			}
 			AddCoin (-price);
 			AddPet (petId);
+            Debug.Log("Buy pet " + petId);
 			return true;
 		}else if(type == PriceType.Diamond){
 			if (price > GetDiamond ()) {
+                MageManager.instance.OnNotificationPopup ("You have not enough Diamond");
 				return false;
 			}
 			AddDiamond (-price);
@@ -134,6 +147,22 @@ public class GameManager : MonoBehaviour
         foreach(Pet p in myPlayer.pets){
             if(p.iD == id)
                 return p;
+        }
+        return null;
+    }
+
+    public List<Pet> GetPets(){
+        return myPlayer.pets;
+    }
+
+    public List<CharController> GetPetObjects(){
+        return petObjects;
+    }
+
+    public CharController GetPetObject(int id){
+        foreach(Pet p in myPlayer.pets){
+            if(p.iD == id)
+                return p.character;
         }
         return null;
     }
@@ -326,7 +355,7 @@ public class GameManager : MonoBehaviour
     }
 
     public int GetExp(int id){
-        return myPlayer.pets[id].Exp;
+        return GetPet(id).Exp;
     }
 
     public void AddDiamond(int d){
@@ -339,16 +368,16 @@ public class GameManager : MonoBehaviour
         SavePlayer();
     }
 
-    public void AddExp(int e){
-         myPlayer.pets[0].Exp += e;
-         if(petObjects[0] != null){
+    public void AddExp(int e,int petId){
+        GetPet(petId).Exp += e;
+         if(GetPetObject(petId) != null){
             GameObject go = GameObject.Instantiate(expPrefab,petObjects[0].transform.position,Quaternion.identity);
             go.GetComponent<ExpItem>().Load(e);
          }
     }
 
     public void CollectSkillRewards(int skillId){
-        foreach(PetSkill s in GetActivePet().skills){
+/*         foreach(PetSkill s in GetActivePet().skills){
             if(s.skillId == skillId){
                 AddCoin(DataHolder.Skills().GetSkill(skillId).coinValue);
                 AddDiamond(DataHolder.Skills().GetSkill(skillId).diamondValue);
@@ -357,7 +386,7 @@ public class GameManager : MonoBehaviour
                 SavePlayer();
                 return;
             }
-        }
+        } */
     }
 
     public void CollectAchivementRewards(int achivementId){

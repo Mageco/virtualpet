@@ -57,7 +57,7 @@ public class ItemUI : MonoBehaviour
 
         if(isCommingSoon){
             buyButton.interactable = false;
-            buttonText.text = "Comming Soon";
+            buttonText.text = "Locked";
             price.text = d.buyPrice.ToString();
         }else{
             if (state == ItemState.OnShop)
@@ -125,7 +125,7 @@ public class ItemUI : MonoBehaviour
 
         if(isCommingSoon){
             buyButton.interactable = false;
-            buttonText.text = "Comming Soon";
+            buttonText.text = "Locked";
             price.text = d.buyPrice.ToString();
         }else{
             if (state == ItemState.OnShop)

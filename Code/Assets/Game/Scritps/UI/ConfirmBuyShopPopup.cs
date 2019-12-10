@@ -74,7 +74,8 @@ public class ConfirmBuyShopPopup : MonoBehaviour
 
 
     public void Load(Pet d,bool isBuy){
-
+        isCharacter = true;
+        this.isBuy = isBuy;
         itemId = d.iD;
         string url = d.iconUrl.Replace("Assets/Game/Resources/", "");
         url = url.Replace(".png", "");
@@ -82,7 +83,7 @@ public class ConfirmBuyShopPopup : MonoBehaviour
         replacePanel.SetActive(false);
         if(isBuy){
             question.text = "Buy this Item with";
-            priceText.text = (d.buyPrice/2).ToString();
+            priceText.text = (d.buyPrice).ToString();
         }else{
             question.text = "Sell this Item with";
             priceText.text = (d.buyPrice/2).ToString();

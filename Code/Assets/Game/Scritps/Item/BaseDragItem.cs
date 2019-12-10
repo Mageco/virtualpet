@@ -106,36 +106,6 @@ public class BaseDragItem : MonoBehaviour
 
 		lastPosition = this.transform.position;
 
-        /*
-		offset = initZ;
-		if (state == ItemDragState.Drop || state == ItemDragState.Fall || state == ItemDragState.Hit)
-		{
-			//return;
-			targetScale = dragScale;
-		}
-		else if (state == ItemDragState.Drag || state == ItemDragState.Highlight) {
-			offset = initZ + 20;
-			if (this.transform.position.y > 2)
-			{
-				if (this.transform.position.y < offset)
-					targetScale = originalScale * (1 + (-this.transform.position.y + offset) * scaleFactor);
-				else
-					targetScale = originalScale;
-			}else{
-				targetScale = originalScale * (1 + (-2 + offset) * scaleFactor);
-			}
-			dragScale = targetScale;
-		}else{
-			if (this.transform.position.y < offset)
-				targetScale = originalScale * (1 + (-this.transform.position.y + offset) * scaleFactor);
-			else
-				targetScale = originalScale;
-		}
-
-		//Debug.Log(gameObject.name + " "+ originalScale + "  " + targetScale);
-		this.transform.localScale = Vector3.Lerp(targetScale,this.transform.localScale,Time.deltaTime *  3f);
-        */
-
     }
 
     protected virtual void OnDrag()

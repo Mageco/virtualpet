@@ -89,24 +89,6 @@ public class PetTab : BaseTab
 			fold2 = EditorGUILayout.Foldout(fold2, "Pet Settings");
 			if(fold2)
 			{
-				if(selection != tmpSelection) this.tmp1Prefab = null;
-				if(this.tmp1Prefab == null && "" != DataHolder.Pet(selection).petSmall)
-				{
-					this.tmp1Prefab = (GameObject)Resources.Load(DataHolder.Pets().GetPrefabPath()+DataHolder.Pet(selection).petSmall, typeof(GameObject));
-				}
-				this.tmp1Prefab = (GameObject)EditorGUILayout.ObjectField("Pet Small Prefab", this.tmp1Prefab, typeof(GameObject), false, GUILayout.Width(pw.mWidth*2));
-				if(this.tmp1Prefab) DataHolder.Pet(selection).petSmall = this.tmp1Prefab.name;
-				else DataHolder.Pet(selection).petSmall = "";
-
-                if(selection != tmpSelection) this.tmp2Prefab = null;
-				if(this.tmp2Prefab == null && "" != DataHolder.Pet(selection).petMiddle)
-				{
-					this.tmp2Prefab = (GameObject)Resources.Load(DataHolder.Pets().GetPrefabPath()+DataHolder.Pet(selection).petMiddle, typeof(GameObject));
-				}
-				this.tmp2Prefab = (GameObject)EditorGUILayout.ObjectField("Pet Middle Prefab", this.tmp2Prefab, typeof(GameObject), false, GUILayout.Width(pw.mWidth*2));
-				if(this.tmp2Prefab) DataHolder.Pet(selection).petMiddle = this.tmp2Prefab.name;
-				else DataHolder.Pet(selection).petMiddle = "";
-
                 if(selection != tmpSelection) this.tmp3Prefab = null;
 				if(this.tmp3Prefab == null && "" != DataHolder.Pet(selection).petBig)
 				{
@@ -121,7 +103,7 @@ public class PetTab : BaseTab
 				{
 					this.tmp4Prefab = (GameObject)Resources.Load(DataHolder.Pets().GetPrefabPath()+DataHolder.Pet(selection).petMiniGame1, typeof(GameObject));
 				}
-				this.tmp4Prefab = (GameObject)EditorGUILayout.ObjectField("Pet Big Prefab", this.tmp4Prefab, typeof(GameObject), false, GUILayout.Width(pw.mWidth*2));
+				this.tmp4Prefab = (GameObject)EditorGUILayout.ObjectField("Pet Minigame Prefab", this.tmp4Prefab, typeof(GameObject), false, GUILayout.Width(pw.mWidth*2));
 				if(this.tmp4Prefab) DataHolder.Pet(selection).petMiniGame1 = this.tmp4Prefab.name;
 				else DataHolder.Pet(selection).petBig = "";
 
@@ -131,8 +113,6 @@ public class PetTab : BaseTab
                 DataHolder.Pet(selection).priceType = (PriceType)EditorTab.EnumToolbar("Price Type", (int)DataHolder.Pet(selection).priceType, typeof(PriceType));    
 				DataHolder.Pet(selection).buyPrice = EditorGUILayout.IntField("Buy price", DataHolder.Pet(selection).buyPrice, GUILayout.Width(pw.mWidth));
                 DataHolder.Pet(selection).isAvailable = EditorGUILayout.Toggle("Available", DataHolder.Pet(selection).isAvailable, GUILayout.Width(pw.mWidth));
-                if(DataHolder.Pet(selection).isAvailable)                
-                        DataHolder.Pet(selection).levelRequire = EditorGUILayout.IntField("RequireLevel", DataHolder.Pet(selection).levelRequire, GUILayout.Width(pw.mWidth));
 
 			}
 			EditorGUILayout.EndVertical();
