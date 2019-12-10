@@ -181,6 +181,11 @@ public class Pet : BaseModel
         return character;
     }
 
+	public void UnLoad(){
+		GameObject.Destroy(this.agent.gameObject);
+		GameObject.Destroy(this.character.gameObject);
+	}
+
 	public void AddLanguageItem()
 	{
 		this.languageItem = ArrayHelper.Add(new LanguageItem(), this.languageItem);

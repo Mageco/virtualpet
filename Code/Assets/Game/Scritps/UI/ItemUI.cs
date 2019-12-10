@@ -7,20 +7,16 @@ public class ItemUI : MonoBehaviour
 {
     int itemId = 0;
     public Image icon;
+    public Image iconType;
     public Text price;
-    public GameObject buyButton;
-    public GameObject useButton;
-    public GameObject usedButton;
+    public Button buyButton;
     public GameObject coinIcon;
     public GameObject diamonIcon;
     public GameObject moneyIcon;
 
-    public GameObject commingSoon;
-    public GameObject locked;
-    public Text levelRequired;
+    public Text buttonText;
     Animator animator;
     bool isBusy = false;
-    bool isLevelRequired = false;
     bool isCommingSoon = false;
     bool isCharacter = false;
 
@@ -37,30 +33,14 @@ public class ItemUI : MonoBehaviour
         itemId = d.iD;
         //Debug.Log(d.iconUrl);
         string url = d.iconUrl.Replace("Assets/Game/Resources/", "");
+
         if(!d.isAvailable){
             isCommingSoon = true;
         }
 
-        if(d.levelRequire > GameManager.instance.GetPet(0).level){
-            isLevelRequired = true;
-        }
-
-        if(isCommingSoon){
-            commingSoon.SetActive(true);
-            locked.SetActive(false);
-        }else{
-            commingSoon.SetActive(false);
-            if(isLevelRequired){
-                locked.SetActive(true);
-                levelRequired.text = "Level " + d.levelRequire.ToString();
-            }else
-                locked.SetActive(false);
-        }
-            
         url = url.Replace(".png", "");
-        //Debug.Log(url);
         icon.sprite = Resources.Load<Sprite>(url) as Sprite;
-        price.text = d.buyPrice.ToString();
+        iconType.sprite = Resources.Load<Sprite>("Icons/ItemType/"+d.itemType.ToString());
 
         if (GameManager.instance.IsEquipItem(d.iD))
         {
@@ -75,27 +55,24 @@ public class ItemUI : MonoBehaviour
             state = ItemState.OnShop;
         }
 
-        if (state == ItemState.OnShop)
-        {
-            buyButton.SetActive(true);
-            useButton.SetActive(false);
-            usedButton.SetActive(false);
+        if(isCommingSoon){
+            buyButton.interactable = false;
+            buttonText.text = "Comming Soon";
+            price.text = d.buyPrice.ToString();
+        }else{
+            if (state == ItemState.OnShop)
+            {
+               buyButton.interactable = true;
+               buttonText.text = "Buy";
+               price.text = d.buyPrice.ToString();
+            }else if (state == ItemState.Equiped)
+            {
+                buyButton.interactable = true;
+                buttonText.text = "Sell";
+                price.text = (d.buyPrice/2).ToString();
+            }
         }
-        else if (state == ItemState.Have)
-        {
-            buyButton.SetActive(false);
-            useButton.SetActive(true);
-            usedButton.SetActive(false);
-            animator.Play("Bought", 0);
-        }
-        else if (state == ItemState.Equiped)
-        {
-            buyButton.SetActive(false);
-            useButton.SetActive(false);
-            usedButton.SetActive(true);
-            animator.Play("Equiped", 0);
-        }
-
+        
 
         if (d.priceType == PriceType.Coin)
         {
@@ -132,21 +109,6 @@ public class ItemUI : MonoBehaviour
             isCommingSoon = true;
         }
 
-        if(d.levelRequire > GameManager.instance.GetPet(0).level){
-            isLevelRequired = true;
-        }
-
-        if(isCommingSoon){
-            commingSoon.SetActive(true);
-            locked.SetActive(false);
-        }else{
-            commingSoon.SetActive(false);
-            if(isLevelRequired){
-                locked.SetActive(true);
-                levelRequired.text = "Level " + d.levelRequire.ToString();
-            }else
-                locked.SetActive(false);
-        }
 
         if (GameManager.instance.IsEquipPet(d.iD))
         {
@@ -161,25 +123,22 @@ public class ItemUI : MonoBehaviour
             state = ItemState.OnShop;
         }
 
-        if (state == ItemState.OnShop)
-        {
-            buyButton.SetActive(true);
-            useButton.SetActive(false);
-            usedButton.SetActive(false);
-        }
-        else if (state == ItemState.Have)
-        {
-            buyButton.SetActive(false);
-            useButton.SetActive(true);
-            usedButton.SetActive(false);
-            animator.Play("Bought", 0);
-        }
-        else if (state == ItemState.Equiped)
-        {
-            buyButton.SetActive(false);
-            useButton.SetActive(false);
-            usedButton.SetActive(true);
-            animator.Play("Equiped", 0);
+        if(isCommingSoon){
+            buyButton.interactable = false;
+            buttonText.text = "Comming Soon";
+            price.text = d.buyPrice.ToString();
+        }else{
+            if (state == ItemState.OnShop)
+            {
+               buyButton.interactable = true;
+               buttonText.text = "Buy";
+               price.text = d.buyPrice.ToString();
+            }else if (state == ItemState.Equiped)
+            {
+                buyButton.interactable = true;
+                buttonText.text = "Sell";
+                price.text = (d.buyPrice/2).ToString();
+            }
         }
 
 
@@ -220,11 +179,6 @@ public class ItemUI : MonoBehaviour
             return;
         }
 
-        if(isLevelRequired){
-            MageManager.instance.OnNotificationPopup("Your pet level is not meet requirement!");
-            return;
-        }
-
         StartCoroutine(BuyCoroutine());
     }
 
@@ -235,19 +189,16 @@ public class ItemUI : MonoBehaviour
         if (isCharacter)
         {
             if (state == ItemState.Equiped)
-                yield return null;
+                UIManager.instance.OnConfirmationShopPanel(itemId,true,false);
             else if (state == ItemState.Have)
             {
-                animator.Play("Use", 0);
-                yield return new WaitForSeconds(0.5f);
-                UIManager.instance.UsePet(itemId);
-
+                //animator.Play("Use", 0);
+                //yield return new WaitForSeconds(0.5f);
+                //UIManager.instance.OnConfirmationShopPanel(itemId,true,false);
             }
             else
             {
-                animator.Play("Buy", 0);
-                yield return new WaitForSeconds(1f);
-                UIManager.instance.BuyPet(itemId);
+                UIManager.instance.OnConfirmationShopPanel(itemId,true,true);
             }
 
         }
@@ -269,20 +220,14 @@ public class ItemUI : MonoBehaviour
             }else
             {
                 if (state == ItemState.Equiped)
-                    yield return null;
+                    UIManager.instance.OnConfirmationShopPanel(itemId,false,false);
                 else if (state == ItemState.Have)
                 {
-                    animator.Play("Use", 0);
-                    yield return new WaitForSeconds(0.5f);
-                    UIManager.instance.UseItem(itemId);
+
                 }
                 else
                 {
-                    animator.Play("Buy", 0);
-                    yield return new WaitForSeconds(1f);
-                    UIManager.instance.BuyItem(itemId);
-                    GameManager.instance.LogAchivement(AchivementType.Buy_Item);
-                    MageManager.instance.OnNotificationPopup("bạn đã mua thành công");
+                    UIManager.instance.OnConfirmationShopPanel(itemId,false,true);
                 }
             }
 
@@ -293,8 +238,5 @@ public class ItemUI : MonoBehaviour
         isBusy = false;
     }
 
-    public void OnUse()
-    {
 
-    }
 }

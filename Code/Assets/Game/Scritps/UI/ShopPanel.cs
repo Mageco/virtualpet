@@ -19,6 +19,7 @@ public class ShopPanel : MonoBehaviour
         if(ES2.Exists("ShopToggle")){
             currentTab = ES2.Load<int>("ShopToggle");
         }
+       
 
     }
     void Start()
@@ -29,6 +30,9 @@ public class ShopPanel : MonoBehaviour
             toggles.Add(t);
             t.onValueChanged.AddListener (delegate {OnTab(id);});
         }
+
+        if(currentTab > toggles.Count)
+            currentTab = 0;
         
         if(toggles[currentTab].isOn){
             OnTab(currentTab);
@@ -73,9 +77,25 @@ public class ShopPanel : MonoBehaviour
                 }   
             }               
         }
-        else{
+        else if(currentTab == 2){
             for(int i=0;i<DataHolder.Items().GetDataCount();i++){
-                if((int)DataHolder.Item(i).itemType == currentTab){
+                if((int)DataHolder.Item(i).itemType == (int)ItemType.Food || (int)DataHolder.Item(i).itemType == (int)ItemType.Drink){
+                    items.Add(DataHolder.Item(i));
+                }   
+            }   
+        }else if(currentTab == 3){
+            for(int i=0;i<DataHolder.Items().GetDataCount();i++){
+                if((int)DataHolder.Item(i).itemType == (int)ItemType.Bath || (int)DataHolder.Item(i).itemType == (int)ItemType.Bed
+                || (int)DataHolder.Item(i).itemType == (int)ItemType.Clean || (int)DataHolder.Item(i).itemType == (int)ItemType.Clock
+                || (int)DataHolder.Item(i).itemType == (int)ItemType.MedicineBox || (int)DataHolder.Item(i).itemType == (int)ItemType.Picture
+                || (int)DataHolder.Item(i).itemType == (int)ItemType.Table || (int)DataHolder.Item(i).itemType == (int)ItemType.Toilet
+                || (int)DataHolder.Item(i).itemType == (int)ItemType.Room){
+                    items.Add(DataHolder.Item(i));
+                }   
+            }  
+        }else if(currentTab == 4){
+            for(int i=0;i<DataHolder.Items().GetDataCount();i++){
+                if((int)DataHolder.Item(i).itemType == (int)ItemType.Toy){
                     items.Add(DataHolder.Item(i));
                 }   
             }   

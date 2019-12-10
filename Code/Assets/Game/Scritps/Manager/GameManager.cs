@@ -118,6 +118,18 @@ public class GameManager : MonoBehaviour
 		}
 	}
 
+    public void SellPet(int petId)
+	{
+		PriceType type = DataHolder.GetPet(petId).priceType;
+		int price = DataHolder.GetPet(petId).buyPrice/2;
+		if(type == PriceType.Coin){
+			AddCoin (price);
+		}else if(type == PriceType.Diamond){
+			AddDiamond (price);
+		}
+		RemovePet (petId);
+	}
+
     public Pet GetPet(int id){
         foreach(Pet p in myPlayer.pets){
             if(p.iD == id)
@@ -126,7 +138,16 @@ public class GameManager : MonoBehaviour
         return null;
     }
  
-
+    void RemovePet(int id){
+        foreach(Pet p in myPlayer.pets){
+            if(p.iD == id){
+                myPlayer.pets.Remove(p);
+                UpdatePetObjects();
+                p.UnLoad();
+                return;
+            }
+        }     
+    }
 
     public Pet GetActivePet(){
         return myPlayer.pets[0];
@@ -199,6 +220,17 @@ public class GameManager : MonoBehaviour
 		}
 	}
 
+    public void SellItem(int itemId){
+        PriceType type = DataHolder.GetItem(itemId).priceType;
+		int price = DataHolder.GetItem(itemId).buyPrice;
+		if(type == PriceType.Coin){
+			AddCoin (price);
+		}else if(type == PriceType.Diamond){
+			AddDiamond (price);
+		}
+        RemoveItem(itemId);
+    }
+
     public void AddItem(int id){
         PlayerItem item = new PlayerItem();
         item.itemId = id;
@@ -215,6 +247,7 @@ public class GameManager : MonoBehaviour
                 if(item.state == ItemState.Equiped){
                     ItemManager.instance.RemoveItem(item.itemId);
                 }
+                return;
             }
         }
 	}
@@ -244,6 +277,15 @@ public class GameManager : MonoBehaviour
         }
         return false;
 	}
+
+    public Item GetEquipedItem(ItemType type){
+        foreach(PlayerItem item in myPlayer.items){   
+            if(item.state == ItemState.Equiped && DataHolder.GetItem(item.itemId).itemType == type){
+                return DataHolder.GetItem(item.itemId);
+            }
+        }    
+        return  null;    
+    }
 
 	public bool IsEquipItem(int itemId)
 	{

@@ -14,6 +14,7 @@ public class UIManager : MonoBehaviour
     public GameObject profileUIPrefab;
     public GameObject skillCompletePrefab;
     public GameObject achivementPrefab;
+    public GameObject confirmBuyShopPrefab;
     public static UIManager instance;
 	public Text coinText;
 	public Text diamonText;
@@ -22,6 +23,7 @@ public class UIManager : MonoBehaviour
     ShopPanel shopPanel;
     EventPanel eventPanel;
     SkillCompletePanel skillCompletePanel;
+    ConfirmBuyShopPopup confirmBuyShopPopup;
 
     public AchivementPanel achivementPanel;
 
@@ -69,9 +71,17 @@ public class UIManager : MonoBehaviour
 
 	public void BuyItem(int itemID){
 	  GameManager.instance.BuyItem(itemID);
+      GameManager.instance.EquipItem(itemID);
+      ItemManager.instance.EquipItem();
+        if (shopPanel != null)
+            shopPanel.Close();
+    }
+
+    public void SellItem(int itemID){
+	  GameManager.instance.SellItem(itemID);
         if (shopPanel != null)
             shopPanel.ReLoad();
-    }
+	}
 
 	public void UseItem(int itemID){
        shopPanel.Close();
@@ -81,6 +91,13 @@ public class UIManager : MonoBehaviour
 
 	public void BuyPet(int itemID){
 	  GameManager.instance.BuyPet(itemID);
+        if (shopPanel != null)
+            shopPanel.Close();
+      GameManager.instance.EquipPet(itemID);
+	}
+
+    public void SellPet(int itemID){
+	  GameManager.instance.SellPet(itemID);
         if (shopPanel != null)
             shopPanel.ReLoad();
 	}
@@ -200,6 +217,23 @@ public class UIManager : MonoBehaviour
             popup.GetComponent<Popup>().Open();
             achivementPanel = popup.GetComponent<AchivementPanel>();
             achivementPanel.Load();
+        }
+     }
+
+    public void OnConfirmationShopPanel(int itemid,bool isCharacter,bool isBuy)
+    {
+        if (confirmBuyShopPopup == null)
+        {
+            var popup = Instantiate(confirmBuyShopPrefab) as GameObject;
+            popup.SetActive(true);
+            popup.transform.localScale = Vector3.zero;
+            popup.transform.SetParent(GameObject.Find("Canvas").transform, false);
+            popup.GetComponent<Popup>().Open();
+            confirmBuyShopPopup = popup.GetComponent<ConfirmBuyShopPopup>();
+            if(isCharacter)
+                confirmBuyShopPopup.Load(DataHolder.GetPet(itemid),isBuy);
+            else
+                confirmBuyShopPopup.Load(DataHolder.GetItem(itemid),isBuy);
         }
      }
 
