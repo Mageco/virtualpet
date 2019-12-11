@@ -7,61 +7,51 @@ using Lean.Touch;
 public class CleanItem : MonoBehaviour
 {
 	public float clean = 1f;
-	bool isTouch = false;
-	ItemDirty dirtyItem;
-	float targetAngle = 0;
+	//bool isTouch = false;
+	protected ItemDirty dirtyItem;
+	//float targetAngle = 0;
 
-	Animator anim;
+	protected Animator anim;
 
-	void Awake(){
+	protected ItemObject item;
+
+	protected virtual void Awake(){
 		anim = this.GetComponent<Animator>();
 	}
 
-	void Update()
-	{
-		if (isTouch) {
+	protected virtual void Start(){
+		item = this.GetComponent<ItemObject>();
+	}
 
-			targetAngle = Mathf.Lerp (targetAngle, 0, Time.deltaTime * 4);
-			this.transform.rotation = Quaternion.Lerp (this.transform.rotation, Quaternion.Euler (new Vector3 (0, 0,-targetAngle)), Time.deltaTime * 2);
-			if(dirtyItem != null){
-				dirtyItem.OnClean(clean);
-			}
+	protected virtual void Update()
+	{
+		if(dirtyItem != null){
+			dirtyItem.OnClean(clean);
 		}
 	}
 
-	void OnMouseDown()
-	{
-		if (IsPointerOverUIObject ()) {
-			return;
-		}
-		isTouch = true;
+	public virtual void OnActive(){
+		anim.Play("Active",0);
 	}
 
-	void OnMouseUp()
-	{
-		isTouch = false;
+	public virtual void Deactive(){
+		anim.Play("Idle",0);
 	}
 
 
 	void OnTriggerEnter2D(Collider2D other) {
 		if (other.GetComponent <ItemDirty>() != null) {
 			dirtyItem = other.GetComponent <ItemDirty>();
-			anim.Play("Active",0);
+			OnActive();
 		}
 	}
+
 
 	void OnTriggerExit2D(Collider2D other) {
 		if (other.GetComponent <ItemDirty>() == dirtyItem) {
 			dirtyItem = null;
-			anim.Play("Idle",0);
+			Deactive();
 		}
 	}
 
-	private bool IsPointerOverUIObject() {
-		PointerEventData eventDataCurrentPosition = new PointerEventData(EventSystem.current);
-		eventDataCurrentPosition.position = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
-		List<RaycastResult> results = new List<RaycastResult>();
-		EventSystem.current.RaycastAll(eventDataCurrentPosition, results);
-		return results.Count > 0;
-	}
 }

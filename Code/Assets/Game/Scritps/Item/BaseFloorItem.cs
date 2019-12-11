@@ -6,7 +6,7 @@ using PolyNav;
 
 public class BaseFloorItem : MonoBehaviour
 {
-public float initZ = -6;
+	public float initZ = -6;
 	public float scaleFactor = 0.05f;
 	Vector3 originalScale;
 	Vector3 dragOffset;

@@ -688,12 +688,10 @@ public class CharController : MonoBehaviour
     }
 
     public virtual void OnFall(){
-        if(direction ==  Direction.LD || direction == Direction.RD || direction == Direction.LU || direction == Direction.RU){
-            if(!isArrived){
-                Abort();
-                isArrived = true;
-                actionType = ActionType.Fall;
-            }
+        if(!isArrived){
+            Abort();
+            isArrived = true;
+            actionType = ActionType.Fall;
         }
     }
 
@@ -966,25 +964,25 @@ public class CharController : MonoBehaviour
         if (data.curious > data.maxCurious * 0.4f)
         {
             int ran1 = Random.Range(0,100);
-            Vector3 t = GetRandomPoint(PointType.Patrol).position;
-            if(ran1 < 5 && GetRandomPoint(PointType.Eat) != null){
-                t = GetRandomPoint(PointType.Eat).position;
-            }else if(ran1 < 10 && GetRandomPoint(PointType.Drink) != null){
-                t = GetRandomPoint(PointType.Drink).position;                    
-            }else if(ran1 < 15 && GetRandomPoint(PointType.Toilet) != null){
-                t = GetRandomPoint(PointType.Toilet).position;                    
-            }else if(ran1 < 20 && GetRandomPoint(PointType.Sleep) != null){
-                t = GetRandomPoint(PointType.Sleep).position;                    
-            }else if(ran1 < 25 && GetRandomPoint(PointType.Bath) != null){
-                t = GetRandomPoint(PointType.Bath).position;                    
-            }else if(ran1 < 30 && GetRandomPoint(PointType.Table) != null){
-                t = GetRandomPoint(PointType.Table).position;                    
-            }else if(ran1 < 35 && GetRandomPoint(PointType.Cleaner) != null){
-                t = GetRandomPoint(PointType.Cleaner).position;                    
-            }else if(ran1 < 40 && GetRandomPoint(PointType.Caress) != null){
-                t = GetRandomPoint(PointType.Caress).position;                    
-            }else if(ran1 < 45 && GetRandomPoint(PointType.Window) != null){
-                t = GetRandomPoint(PointType.Window).position;                    
+            Vector3 t = ItemManager.instance.GetRandomPoint(PointType.Patrol).position;
+            if(ran1 < 5 && ItemManager.instance.GetRandomPoint(PointType.Eat) != null){
+                t = ItemManager.instance.GetRandomPoint(PointType.Eat).position;
+            }else if(ran1 < 10 && ItemManager.instance.GetRandomPoint(PointType.Drink) != null){
+                t = ItemManager.instance.GetRandomPoint(PointType.Drink).position;                    
+            }else if(ran1 < 15 && ItemManager.instance.GetRandomPoint(PointType.Toilet) != null){
+                t = ItemManager.instance.GetRandomPoint(PointType.Toilet).position;                    
+            }else if(ran1 < 20 && ItemManager.instance.GetRandomPoint(PointType.Sleep) != null){
+                t = ItemManager.instance.GetRandomPoint(PointType.Sleep).position;                    
+            }else if(ran1 < 25 && ItemManager.instance.GetRandomPoint(PointType.Bath) != null){
+                t = ItemManager.instance.GetRandomPoint(PointType.Bath).position;                    
+            }else if(ran1 < 30 && ItemManager.instance.GetRandomPoint(PointType.Table) != null){
+                t = ItemManager.instance.GetRandomPoint(PointType.Table).position;                    
+            }else if(ran1 < 35 && ItemManager.instance.GetRandomPoint(PointType.Cleaner) != null){
+                t = ItemManager.instance.GetRandomPoint(PointType.Cleaner).position;                    
+            }else if(ran1 < 40 && ItemManager.instance.GetRandomPoint(PointType.Caress) != null){
+                t = ItemManager.instance.GetRandomPoint(PointType.Caress).position;                    
+            }else if(ran1 < 45 && ItemManager.instance.GetRandomPoint(PointType.Window) != null){
+                t = ItemManager.instance.GetRandomPoint(PointType.Window).position;                    
             }
 
             target = t;
@@ -1529,59 +1527,20 @@ public class CharController : MonoBehaviour
     }
 
     #region  getpoint
-    List<GizmoPoint> GetPoints(PointType type)
-	{
-		List<GizmoPoint> temp = new List<GizmoPoint>();
-		GizmoPoint[] points = GameObject.FindObjectsOfType <GizmoPoint> ();
-		for(int i=0;i<points.Length;i++)
-		{
-			if(points[i].type == type)
-				temp.Add(points[i]);
-		}
-		return temp;
-	}
 
-	public Transform GetRandomPoint(PointType type)
-	{
-		List<GizmoPoint> points = GetPoints (type);
-		if(points != null && points.Count > 0){
-			int id = Random.Range (0, points.Count);
-			return points [id].transform;
-		}else
-			return null;
-
-	}
 
 	public void SetTarget(PointType type)
 	{
         int n = 0;
-        Vector3 pos = this.GetRandomPoint (type).position;
+        Vector3 pos = ItemManager.instance.GetRandomPoint (type).position;
         while(pos == target && n<10)
         {
-            pos = this.GetRandomPoint (type).position;
+            pos = ItemManager.instance.GetRandomPoint (type).position;
             n++;
         }
         target = pos;
 	}
 
-	public List<Transform> GetRandomPoints(PointType type)
-	{
-		List<GizmoPoint> points = GetPoints (type);
-		List<Transform> randomPoints = new List<Transform> ();
-		for (int i = 0; i < points.Count; i++) {
-			randomPoints.Add (points [i].transform);
-		}
-
-		for (int i = 0; i < randomPoints.Count; i++) {
-			if (i < randomPoints.Count - 1) {
-				int j = Random.Range (i, randomPoints.Count);
-				Transform temp = randomPoints [i];
-				randomPoints [i] = randomPoints [j];
-				randomPoints [j] = temp;
-			}
-		}
-		return randomPoints;
-	}
 
     #endregion
 

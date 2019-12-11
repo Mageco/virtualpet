@@ -36,7 +36,7 @@ public class ItemDrag : MonoBehaviour
 				Vector3 pos = Camera.main.ScreenToWorldPoint (Input.mousePosition) - dragOffset;
 				pos.z = this.transform.position.z;
 				if (!isObstruct)
-					pos.z = -50;
+					pos.z = -500;
 				this.transform.position = pos;
 			} 
 		}

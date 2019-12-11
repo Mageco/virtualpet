@@ -178,25 +178,25 @@ public class CharShiba : CharController
             }else
             {
                 int ran1 = Random.Range(0,100);
-                Vector3 t = GetRandomPoint(PointType.Patrol).position;
-                if(ran1 < 5 && GetRandomPoint(PointType.Eat) != null){
-                    t = GetRandomPoint(PointType.Eat).position;
-                }else if(ran1 < 10 && GetRandomPoint(PointType.Drink) != null){
-                    t = GetRandomPoint(PointType.Drink).position;                    
-                }else if(ran1 < 15 && GetRandomPoint(PointType.Toilet) != null){
-                    t = GetRandomPoint(PointType.Toilet).position;                    
-                }else if(ran1 < 20 && GetRandomPoint(PointType.Sleep) != null){
-                    t = GetRandomPoint(PointType.Sleep).position;                    
-                }else if(ran1 < 25 && GetRandomPoint(PointType.Bath) != null){
-                    t = GetRandomPoint(PointType.Bath).position;                    
-                }else if(ran1 < 30 && GetRandomPoint(PointType.Table) != null){
-                    t = GetRandomPoint(PointType.Table).position;                    
-                }else if(ran1 < 35 && GetRandomPoint(PointType.Cleaner) != null){
-                    t = GetRandomPoint(PointType.Cleaner).position;                    
-                }else if(ran1 < 40 && GetRandomPoint(PointType.Caress) != null){
-                    t = GetRandomPoint(PointType.Caress).position;                    
-                }else if(ran1 < 45 && GetRandomPoint(PointType.Window) != null){
-                    t = GetRandomPoint(PointType.Window).position;                    
+                Vector3 t = ItemManager.instance.GetRandomPoint(PointType.Patrol).position;
+                if(ran1 < 5 && ItemManager.instance.GetRandomPoint(PointType.Eat) != null){
+                    t = ItemManager.instance.GetRandomPoint(PointType.Eat).position;
+                }else if(ran1 < 10 && ItemManager.instance.GetRandomPoint(PointType.Drink) != null){
+                    t = ItemManager.instance.GetRandomPoint(PointType.Drink).position;                    
+                }else if(ran1 < 15 && ItemManager.instance.GetRandomPoint(PointType.Toilet) != null){
+                    t = ItemManager.instance.GetRandomPoint(PointType.Toilet).position;                    
+                }else if(ran1 < 20 && ItemManager.instance.GetRandomPoint(PointType.Sleep) != null){
+                    t = ItemManager.instance.GetRandomPoint(PointType.Sleep).position;                    
+                }else if(ran1 < 25 && ItemManager.instance.GetRandomPoint(PointType.Bath) != null){
+                    t = ItemManager.instance.GetRandomPoint(PointType.Bath).position;                    
+                }else if(ran1 < 30 && ItemManager.instance.GetRandomPoint(PointType.Table) != null){
+                    t = ItemManager.instance.GetRandomPoint(PointType.Table).position;                    
+                }else if(ran1 < 35 && ItemManager.instance.GetRandomPoint(PointType.Cleaner) != null){
+                    t = ItemManager.instance.GetRandomPoint(PointType.Cleaner).position;                    
+                }else if(ran1 < 40 && ItemManager.instance.GetRandomPoint(PointType.Caress) != null){
+                    t = ItemManager.instance.GetRandomPoint(PointType.Caress).position;                    
+                }else if(ran1 < 45 && ItemManager.instance.GetRandomPoint(PointType.Window) != null){
+                    t = ItemManager.instance.GetRandomPoint(PointType.Window).position;                    
                 }
 
                 target = t;
