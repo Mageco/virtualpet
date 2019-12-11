@@ -9,15 +9,7 @@ public class CharMinigame1 : CharController
     float maxTimeCheck = 0.1f;
     protected override void CalculateData()
     {
-        data.Sleep -= data.sleepConsume;
-        data.actionEnergyConsume = 0;
-        if (actionType == ActionType.Patrol)
-            data.actionEnergyConsume = 1f;
 
-        data.Energy -= data.actionEnergyConsume;
-        if(data.Food > 0 && actionType == ActionType.Tired){
-            data.Energy += 3f;
-        }
     }
 
     public AnimalController[] animals;

@@ -16,46 +16,49 @@ public class Pet : BaseModel
 	public string petMiniGame1 = "";
 	public bool isAvailable = true;
 	//Common Data
-	public int level = 1;
-	public int exp = 0;
 	public List<PetSkill> skills = new List<PetSkill>();
 	public string petName = "";
 
 	//Main Data
 	public float speed = 20;
-	public float weight;
-	public float strength;
-	public float intelligent = 10;
-
+	public int level = 0;
+	public int exp = 0;
+	public float intelligent = 0;
 	//Attribute Data
 	public float food = 50;
 	public float water = 50;
 	public float sleep = 60;
 	public float energy = 50;
-	public float health = 50;
+	public float health = 100;
 	public float damage = 0;
 	public float shit = 0;
 	public float pee = 0;
 	public float happy = 50;
-	public float dirty = 50;
-	public float itchi = 50;
+	public float dirty = 10;
+	public float itchi = 10;
 	public float fear = 0;
 	public float curious = 70;
 
 	[HideInInspector]
-	public float basicEnergyConsume = 0.05f;
+	public float rateFood = 10f;
 	[HideInInspector]
-	public float actionEnergyConsume = 0;
+	public float rateWater = 10f;
 	[HideInInspector]
-	public float healthConsume = 0.01f;
+	public float rateSleep = 0.5f;
 	[HideInInspector]
-	public float staminaConsume = 0.001f;
+	public float recoverSleep = 0.1f;
 	[HideInInspector]
-	public float dirtyFactor = 0.01f;
+	public float ratePee = 10f;
 	[HideInInspector]
-	public float happyConsume = 0.01f;
+	public float rateShit = 10f;
 	[HideInInspector]
-	public float sleepConsume = 0.05f;
+	public float recoverDirty = 0.1f;
+	[HideInInspector]
+	public float recoverHealth = 0;
+	[HideInInspector]
+	public float recoverEnergy = 0;
+	[HideInInspector]
+	public float recoverHappy = 0;
 
 
 	[HideInInspector]
@@ -124,11 +127,26 @@ public class Pet : BaseModel
         buyPrice = p.buyPrice;
         priceType = p.priceType;
         petBig = p.petBig;
-		weight = p.weight;
 		speed = p.speed;
-		strength = p.strength;
-		maxEnergy = p.maxEnergy;
-		intelligent = p.intelligent;
+		maxEnergy = p.maxHealth;
+		maxHealth = p.maxHealth;
+		maxFood = p.maxFood;
+		maxWater = p.maxWater;
+		maxPee = p.maxPee;
+		maxShit = p.maxShit;
+		maxSleep = p.maxSleep;
+		maxDirty = p.maxDirty;
+		rateFood = p.rateFood;
+		rateWater = p.rateWater;
+		rateSleep = p.rateSleep;
+		ratePee = p.ratePee;
+		rateShit = p.rateShit;
+		
+		recoverEnergy = p.recoverEnergy;
+		recoverSleep = p.recoverSleep;
+		recoverHealth = p.recoverHealth;
+		recoverHappy = p.recoverHappy;
+	
         LoadSkill();
     }
 
@@ -428,6 +446,22 @@ public class Pet : BaseModel
 		}
 	}
 
+	public float Intelligent
+	{
+		get
+		{
+			float s = intelligent;
+			for(int i=0;i<skills.Count;i++){
+				s += skills[i].level;
+			}
+			return s + level/2;
+		}
+		set
+		{
+			this.intelligent = value;
+		}
+	}
+
 	public int Exp
 	{
 		get
@@ -446,38 +480,19 @@ public class Pet : BaseModel
 				e = 10 * level + 10 * level * level;
 			}
 			maxEnergy = 100 + level;
-			strength = 100 + level;
 			if(level > temp){
 				if(character != null){
 					character.OnLevelUp();
 				}
-				//if(temp < 5)
-				//	Load();	
 			}
 		}	
-	}
-
-	public float Intelligent
-	{
-		get
-		{
-			float s = intelligent;
-			for(int i=0;i<skills.Count;i++){
-				s += skills[i].level;
-			}
-			return s + level/2;
-		}
-		set
-		{
-			this.intelligent = value;
-		}
 	}
 
 	public float Speed
 	{
 		get
 		{
-			return Mathf.Clamp(this.speed + level/2,0,40);
+			return speed;
 		}
 		set
 		{

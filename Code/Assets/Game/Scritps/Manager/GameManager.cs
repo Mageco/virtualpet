@@ -21,7 +21,7 @@ public class GameManager : MonoBehaviour
 
     public bool isTest = false;
 
-    PlayerData myPlayer = new PlayerData();
+    public PlayerData myPlayer = new PlayerData();
 
     void Awake()
     {
@@ -85,15 +85,32 @@ public class GameManager : MonoBehaviour
         LoadPetObjects();
     }
 
+    public void EquipPets()
+    {
+        foreach(Pet p in myPlayer.pets){
+            p.itemState = ItemState.Equiped;
+        }
+        LoadPetObjects();
+    }
+
     public void UnEquipPet(int itemId)
     {
         foreach(Pet p in myPlayer.pets){
             if(p.iD == itemId){
                 p.itemState = ItemState.Have;
+                p.UnLoad();
             }
         }
-        LoadPetObjects();
     }
+
+    public void UnEquipPets()
+    {
+        foreach(Pet p in myPlayer.pets){
+            p.itemState = ItemState.Have;
+            p.UnLoad();
+        }
+    }
+
 
 
     public void UpdatePetObjects(){
@@ -434,17 +451,12 @@ public class GameManager : MonoBehaviour
         AddPet(2);
         AddPet(3);
         AddPet(4);
-         AddPet(5);
+        AddPet(5);
         
         EquipItem(17);    
         EquipItem(41);    
         //EquipItem(57);
-        EquipPet(0);
-        EquipPet(1);
-        EquipPet(2);
-        EquipPet(3);
-        EquipPet(4);
-        EquipPet(5);
+        EquipPets();
 
         
         //#if UNITY_EDITOR

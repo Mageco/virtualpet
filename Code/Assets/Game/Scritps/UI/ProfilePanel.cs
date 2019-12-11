@@ -32,12 +32,10 @@ public class ProfilePanel : MonoBehaviour
         energy.text = data.Energy.ToString("F0") + "/" + data.maxEnergy.ToString("F0");
         expProgress.fillAmount = data.Exp/e;
         energyProgress.fillAmount = data.energy/data.maxEnergy;
-        weight.text = data.weight.ToString("F1") + " Kg";
         dogType.text = data.languageItem[0].Name;
         health.text = data.Health.ToString("F0");
         happy.text = data.Happy.ToString("F0");
         stamina.text = data.maxEnergy.ToString("F0");
-        strength.text = data.strength.ToString("F0");
         speed.text = data.Speed.ToString("F0");
         intelligent.text = data.Intelligent.ToString("F0");
         

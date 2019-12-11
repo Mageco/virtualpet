@@ -15,12 +15,9 @@ public class CleanRobotItem : CleanItem
     public PolyNavAgent agent;
     public bool isArrived = true;
 	public bool isAbort = false;
-	public bool isActive = false;
 	public float speed = 10;
 
-	int count = 0;
-	int maxCount = 3;
-	AnimalState state = AnimalState.Idle;
+	AnimalState state = AnimalState.None;
 
 	Direction direction = Direction.L;
 
@@ -36,7 +33,6 @@ public class CleanRobotItem : CleanItem
     {
 		base.Start();
 		LoadPrefab();
-		DoAction();
     }
 
 	public void LoadPrefab(){
@@ -69,9 +65,7 @@ public class CleanRobotItem : CleanItem
     }
 
 	void Think(){
-		if(GetDirtyItem() == null){
-			state = AnimalState.Flee;
-		}
+		state = AnimalState.Idle;
 	}
 
 	void DoAction(){

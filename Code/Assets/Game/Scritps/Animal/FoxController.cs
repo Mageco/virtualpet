@@ -61,8 +61,12 @@ public class FoxController : AnimalController
             GameManager.instance.LogAchivement(AchivementType.Dissmiss_Animal,ActionType.None,-1,animalType);
         }else if(state == AnimalState.Run){
              agent.Stop();
-            state = AnimalState.Hit_Grab;
+            state = AnimalState.Hit;
             isAbort = true;
+            target.OffCached();
+            target.transform.position = this.transform.position;
+            target.agent.transform.position = this.transform.position;
+            Minigame.instance.UpdateLive();
             GameManager.instance.LogAchivement(AchivementType.Dissmiss_Animal,ActionType.None,-1,animalType);
         }
     }
@@ -104,7 +108,7 @@ public class FoxController : AnimalController
     IEnumerator Seek()
     {
         GetTarget();
-        agent.maxSpeed = this.speed;
+        agent.maxSpeed = this.maxSpeed;
         if(target == null){
             isAbort = true;
             state = AnimalState.Flee;
@@ -136,7 +140,7 @@ public class FoxController : AnimalController
         Debug.Log("Hit");
         anim.Play("Hit_" + direction.ToString(),0);
         yield return StartCoroutine(Wait(Random.Range(2,3))); 
-        state = AnimalState.Seek;
+        state = AnimalState.Flee;
         isAbort = true;
         CheckAbort(); 
     }
@@ -145,7 +149,7 @@ public class FoxController : AnimalController
     {
         anim.Play("Hit_Grab_" + direction.ToString(),0);
         yield return StartCoroutine(Wait(Random.Range(2,3))); 
-        state = AnimalState.Run;
+        state = AnimalState.Flee;
         isAbort = true;
         CheckAbort(); 
     }
@@ -153,9 +157,9 @@ public class FoxController : AnimalController
     IEnumerator Flee()
     {    
         speed = Random.Range(maxSpeed,maxSpeed*1.3f);
-        agent.maxSpeed = this.speed * 2;
+        agent.maxSpeed = this.maxSpeed * 2;
         anim.Play("Flee_" + direction.ToString(),0);
-        yield return StartCoroutine(DoAnim("Start_Flee_" + direction.ToString()));
+        //yield return StartCoroutine(DoAnim("Start_Flee_" + direction.ToString()));
         yield return StartCoroutine(MoveToPoint(fleePoint));
         if(!isAbort)
             state = AnimalState.Idle;

@@ -107,75 +107,6 @@ public class CharController : MonoBehaviour
         Debug.Log("Load Time " + t);
         int n = (int)(t/10);
         data.Sleep = data.maxSleep - (t%28800)*0.005f; 
-        
-        for(int i=0;i<n;i++){
-            data.actionEnergyConsume = 3;
-            data.Energy -= data.basicEnergyConsume * 10 + data.actionEnergyConsume;
-            data.Happy -= data.happyConsume * 10;
- 
-            if (data.Food > 0)
-            {
-                data.Food -= 1;
-                data.Energy += 1;
-                data.Shit += 1;
-            }else{
-                if(GetFoodItem() != null){
-                    if(GetFoodItem().foodAmount >= data.maxFood){
-                        data.Food = data.maxFood;
-                        GetFoodItem().foodAmount -= data.maxFood;
-                    }else{
-                        data.Food += GetFoodItem().foodAmount;
-                        GetFoodItem().foodAmount = 0;
-                    }
-                }
-            }
-
-            if (data.Water > 0)
-            {
-                data.Water -= 1;
-                data.Energy += 1;
-                data.Pee += 1;
-            }else{
-                if(GetDrinkItem() != null){
-                    if(GetDrinkItem().foodAmount >= data.maxWater){
-                        data.Water = data.maxWater;
-                        GetDrinkItem().foodAmount -= data.maxWater;
-                    }else{
-                        data.Water += GetFoodItem().foodAmount;
-                        GetDrinkItem().foodAmount = 0;
-                    }
-                }
-            }
-
-            if(data.Shit > data.maxShit){
-                float y = Random.Range(-20,20);
-                SpawnShit( new Vector3(Random.Range(-40,40),y,y));
-                data.Shit = 0;
-            }
-
-            if(data.Pee > data.maxPee){
-                SpawnPee( new Vector3(Random.Range(-40,40),Random.Range(-20,20),50));
-                data.Pee = 0;
-            }
-
-            data.Dirty += data.dirtyFactor * 10;
-            data.Itchi += data.Dirty * 0.01f;
-            
-            float deltaHealth = data.healthConsume;
-
-            deltaHealth += (data.Happy - data.maxHappy * 0.3f) * 0.01f;
-
-            if (data.Dirty > data.maxDirty * 0.8f)
-                deltaHealth -= (data.Dirty - data.maxDirty * 0.8f) * 0.03f;
-
-            if (data.Food < data.maxFood * 0.1f)
-                deltaHealth -= (data.maxFood * 0.1f - data.Food) * 0.01f;
-
-            if (data.Water < data.maxWater * 0.1f)
-                deltaHealth -= (data.maxWater * 0.1f - data.Water) * 0.01f;
-
-            data.Health += deltaHealth;
-        }
 
     }
 
@@ -253,29 +184,25 @@ public class CharController : MonoBehaviour
     #region Data
     protected virtual void CalculateData()
     {
-        data.actionEnergyConsume = 0;
+        float actionEnergyConsume = data.recoverEnergy;
         if (actionType == ActionType.Call)
-            data.actionEnergyConsume = 0.2f;
+            actionEnergyConsume = 0.2f;
         else if (actionType == ActionType.Mouse)
-            data.actionEnergyConsume = 1.5f;
+            actionEnergyConsume = 1.5f;
         else if (actionType == ActionType.Discover)
         {
-            data.actionEnergyConsume = 1f;
+            actionEnergyConsume = 1f;
         }
         else if (actionType == ActionType.Patrol)
         {
-            data.actionEnergyConsume = 0.6f;
+            actionEnergyConsume = 0.6f;
         }else if (actionType == ActionType.OnBath)
-            data.actionEnergyConsume = 0.1f;
+            actionEnergyConsume = 0.1f;
         else if (actionType == ActionType.Fear)
-            data.actionEnergyConsume = 0.3f;
+            actionEnergyConsume = 0.3f;
         
-
-        
-
-        data.Energy -= data.basicEnergyConsume + data.actionEnergyConsume;
-
-        data.Happy -= data.happyConsume;
+        data.Energy -= actionEnergyConsume;
+        data.Happy -= data.recoverEnergy;
         if (actionType == ActionType.Call)
             data.Happy += 0.01f;
 
@@ -289,12 +216,12 @@ public class CharController : MonoBehaviour
             data.Pee += delta * 2;
         }
 
-        data.Dirty += data.dirtyFactor;
+        data.Dirty += data.recoverDirty;
         data.Itchi += data.Dirty * 0.001f;
 
-        data.Sleep -= data.sleepConsume;
+        data.Sleep -= data.recoverSleep;
 
-        float deltaHealth = data.healthConsume;
+        float deltaHealth = data.recoverHealth;
 
         deltaHealth += (data.Happy - data.maxHappy * 0.3f) * 0.001f;
 

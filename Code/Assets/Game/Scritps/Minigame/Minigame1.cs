@@ -26,7 +26,7 @@ public class Minigame1 : Minigame
     void Start(){
         chickenNumber.text = "";
         levelText.text = "Stage " + (gameLevel + 1).ToString();
-        
+        GameManager.instance.UnEquipPets();
         MageManager.instance.PlayMusic(music,0,true);
 //        Debug.Log(live);
 
@@ -41,9 +41,6 @@ public class Minigame1 : Minigame
         if(state == GameState.Ready){
             state = GameState.Run;
             Load();
-            for(int i=0;i<GameManager.instance.GetPets().Count;i++){
-                LoadPet(i);
-            }
             chickens = GameObject.FindObjectsOfType<ChickenController>();
             this.maxLive = chickens.Length;
             this.live = this.maxLive;
@@ -53,35 +50,38 @@ public class Minigame1 : Minigame
     }
 
     void LoadPet(int id){
+        /*
         GameManager.instance.GetPet(id).energy = GameManager.instance.GetActivePet().maxEnergy;
         GameManager.instance.GetPet(id).Food = 0;
         GameManager.instance.GetPet(id).Water = 0;
-        GameManager.instance.GetPetObject(id).actionType = ActionType.None;
+        GameManager.instance.GetPetObject(id).actionType = ActionType.None;*/
     }
 
     void Load(){
+        int initNumber = 5;
+        float initSpeed = 20;
         maxTime = 55 + gameLevel * 5;
         chickenSpawner.maxNumber = 5 + gameLevel/5;
         chickenSpawner.speed = 5;
 
         float addSpeed = gameLevel/2f;
-        if(addSpeed > 10)
-            addSpeed = 10;
+        if(addSpeed > 20)
+            addSpeed = 20;
 
-        foxSpawner.maxNumber = 2 + gameLevel/5;
-        foxSpawner.speed = 14 + addSpeed/3f;
+        foxSpawner.maxNumber = initNumber + gameLevel/5;
+        foxSpawner.speed = initSpeed + addSpeed/3f;
 
         if(gameLevel > 5){
             int n = gameLevel - 5;
-            snakeSpawner.maxNumber = 2 + n/7;
-            snakeSpawner.speed = 14 + addSpeed/2f;
+            snakeSpawner.maxNumber = initNumber + n/7;
+            snakeSpawner.speed = initSpeed + addSpeed/2f;
         }else
             snakeSpawner.maxNumber = 0;
 
         if(gameLevel > 10){
             int n = gameLevel - 10;
-            eagleSpawner.maxNumber = 2 + n/10;
-            eagleSpawner.speed = 16 + addSpeed;
+            eagleSpawner.maxNumber = initNumber + n/10;
+            eagleSpawner.speed = initSpeed + addSpeed;
         }else
             eagleSpawner.maxNumber = 0;
 

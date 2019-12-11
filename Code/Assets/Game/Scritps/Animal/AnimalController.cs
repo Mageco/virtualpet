@@ -39,13 +39,14 @@ public class AnimalController : MonoBehaviour
     }
 
 
-    void Start(){
+    protected virtual void Start(){
         originalPosition = this.transform.position;
         lastPosition = this.transform.position;
         originalScale = this.transform.localScale;
         anim = this.GetComponent<Animator>();
         agent.transform.position = this.transform.position;
         agent.maxSpeed = this.maxSpeed;
+        Debug.Log(agent.maxSpeed);
         Load();
     }
 
@@ -56,6 +57,8 @@ public class AnimalController : MonoBehaviour
             Think();
             DoAction();
         }
+
+        Debug.Log(agent.maxSpeed);
 
         CalculateDirection();
         if(state != AnimalState.Hold)
