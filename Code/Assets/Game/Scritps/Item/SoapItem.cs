@@ -40,7 +40,7 @@ public class SoapItem : MonoBehaviour
 	void OnTriggerEnter2D(Collider2D other) {
 		if (other.GetComponent <CharController>() != null) {
 			character = other.GetComponent <CharController>();
-			if(character.actionType == ActionType.Bath && isTouch){
+			if(character.actionType == ActionType.OnBath && isTouch){
 				bubbleEffect.SetActive(true);
 				character.OnSoap();
                 GetBathTube().OnSoap ();
