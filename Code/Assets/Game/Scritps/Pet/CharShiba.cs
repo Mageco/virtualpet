@@ -54,7 +54,7 @@ public class CharShiba : CharController
                 }else if(ran < 90){
                     yield return DoAnim("Smell_" + direction.ToString());
                 }else{
-                    yield return DoAnim("Smell_Bark_" + direction.ToString());
+                    yield return DoAnim("Smell_Bark");
                 }
             }
         }
@@ -116,7 +116,7 @@ public class CharShiba : CharController
                 }else if(ran < 90){
                     yield return DoAnim("Smell_" + direction.ToString());
                 }else{
-                    yield return DoAnim("Smell_Bark_" + direction.ToString());
+                    yield return DoAnim("Smell_Bark");
                 }
 
             }
@@ -167,7 +167,7 @@ public class CharShiba : CharController
                 SetTarget(PointType.MouseGate);
                 yield return StartCoroutine(MoveToPoint());
                 yield return StartCoroutine(DoAnim("Smell_" + direction.ToString())) ;
-                yield return StartCoroutine(DoAnim("Smell_Bark_" + direction.ToString()));
+                yield return StartCoroutine(DoAnim("Smell_Bark"));
                 data.curious -= 10;
             }else if(ran < 50)
             {
@@ -202,7 +202,7 @@ public class CharShiba : CharController
                 target = t;
                 yield return StartCoroutine(MoveToPoint());
                 yield return StartCoroutine(DoAnim("Smell_" + direction.ToString()));
-                yield return StartCoroutine(DoAnim("Smell_Bark_" + direction.ToString()));
+                yield return StartCoroutine(DoAnim("Smell_Bark"));
             }
 
         }
