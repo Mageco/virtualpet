@@ -42,7 +42,7 @@ public class BathTubeItem : MonoBehaviour
 				if (pet.data.dirty >= 50) {
 					pet.data.dirty -= 50;
 					GameManager.instance.AddExp(5,pet.data.iD);
-					GameManager.instance.LogAchivement(AchivementType.Do_Action,ActionType.Bath);
+					GameManager.instance.LogAchivement(AchivementType.Do_Action,ActionType.OnBath);
 				}
 			}
 		}

@@ -55,7 +55,7 @@ public class BathShowerItem : MonoBehaviour
 		showerEffect.SetActive (true);
 		Debug.Log ("Shower");
 		foreach(CharController pet in GameManager.instance.petObjects){
-			if (pet.actionType == ActionType.Bath) {
+			if (pet.actionType == ActionType.OnBath) {
 				GameManager.instance.GetPetObject(0).OnShower ();
 				GetBathTube().OnShower ();
 			}
@@ -67,8 +67,8 @@ public class BathShowerItem : MonoBehaviour
 		showerEffect.SetActive (false);
 		Debug.Log ("OffShower");
 		foreach(CharController pet in GameManager.instance.petObjects){
-			if (pet.actionType == ActionType.Bath) {
-				GameManager.instance.GetPetObject(0).OffShower ();
+			if (pet.actionType == ActionType.OnBath) {
+				pet.OffShower ();
 			}
 		}
 	}
