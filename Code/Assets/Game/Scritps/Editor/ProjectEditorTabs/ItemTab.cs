@@ -8,6 +8,7 @@ public class ItemTab : BaseTab
 {
 	private GameObject tmpPrefab;
 
+
     public ItemTab(ProjectWindow pw) : base(pw)
     {
         this.Reload();
@@ -16,6 +17,7 @@ public class ItemTab : BaseTab
     public void ShowTab()
     {
 		int tmpSelection = selection;
+        int lastCategory = temcategory;
         EditorGUILayout.BeginVertical();
 
         // buttons
@@ -91,7 +93,11 @@ public class ItemTab : BaseTab
 			fold2 = EditorGUILayout.Foldout(fold2, "Item Settings");
 			if(fold2)
 			{
-				if(selection != tmpSelection) this.tmpPrefab = null;
+				if(selection != tmpSelection || lastCategory != temcategory){
+                    this.tmpPrefab = null;
+                    //tmpSelection = selection;
+                    //lastCategory = temcategory;
+                } 
 				if(this.tmpPrefab == null && "" != DataHolder.Items().GetItem(selection,temcategory).prefabName)
 				{
 					this.tmpPrefab = (GameObject)Resources.Load(DataHolder.Items().GetPrefabPath()+DataHolder.Items().GetItem(selection,temcategory).prefabName, typeof(GameObject));
