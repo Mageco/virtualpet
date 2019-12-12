@@ -98,6 +98,7 @@ public class GameManager : MonoBehaviour
         foreach(Pet p in myPlayer.pets){
             if(p.iD == itemId){
                 p.itemState = ItemState.Have;
+                petObjects.Remove(p.character);
                 p.UnLoad();
             }
         }
@@ -109,6 +110,7 @@ public class GameManager : MonoBehaviour
             p.itemState = ItemState.Have;
             p.UnLoad();
         }
+        UpdatePetObjects();
     }
 
 
@@ -116,7 +118,8 @@ public class GameManager : MonoBehaviour
     public void UpdatePetObjects(){
         petObjects.Clear();
         for(int i=0;i<myPlayer.pets.Count;i++){
-            petObjects.Add(myPlayer.pets[i].character);
+            if(myPlayer.pets[i].itemState == ItemState.Equiped && myPlayer.pets[i].character != null)
+                petObjects.Add(myPlayer.pets[i].character);
         }
     }
 
@@ -413,6 +416,7 @@ public class GameManager : MonoBehaviour
                 AddDiamond(DataHolder.GetAchivement(achivementId).diamondValue[a.level]);
                 a.rewardState = RewardState.Received;
                 a.level ++;
+                a.Check();
                 SavePlayer();
                 return;
             }

@@ -242,9 +242,9 @@ public class UIManager : MonoBehaviour
 
      public void OnHome(){
         GameManager.instance.gameType = GameType.House;
-        GameManager.instance.GetPet(0).Load();
         MageManager.instance.LoadSceneWithLoading("House");
         homeUI.SetActive(true);
+        //GameManager.instance.EquipPets();
      }
 
 
@@ -253,7 +253,7 @@ public class UIManager : MonoBehaviour
     public void OnMinigame(int id){
         MageManager.instance.LoadSceneWithLoading("Minigame" + id.ToString());
         GameManager.instance.gameType = GameType.Minigame1;
-        GameManager.instance.GetActivePet().Load();
+        //GameManager.instance.GetActivePet().Load();
         homeUI.SetActive(false);
     }
 

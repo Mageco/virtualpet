@@ -167,17 +167,19 @@ public class Pet : BaseModel
 
         string url = "";
 
-		if(GameManager.instance.gameType == GameType.Minigame1){
-			url = DataHolder.GetPet(iD).petMiniGame1.Replace("Assets/Game/Resources/", "");
-		}else
-            url = DataHolder.GetPet(iD).petBig.Replace("Assets/Game/Resources/", "");
+		//if(GameManager.instance.gameType == GameType.Minigame1){
+		//	url = DataHolder.GetPet(iD).petMiniGame1.Replace("Assets/Game/Resources/", "");
+		//}else
+        url = DataHolder.GetPet(iD).petBig.Replace("Assets/Game/Resources/", "");
 
 
         url = url.Replace(".prefab", "");
         url = DataHolder.Pets().GetPrefabPath() + url;
         GameObject go = GameObject.Instantiate((Resources.Load(url) as GameObject), Vector3.zero, Quaternion.identity) as GameObject;
         character = go.GetComponent<CharController>();
-		go.transform.parent = GameManager.instance.transform;      
+		go.transform.parent = GameManager.instance.transform;  
+		if(ItemManager.instance != null)
+			go.transform.position = ItemManager.instance.GetRandomPoint(PointType.Spawn).position;    
         character.data = this;
 		character.LoadPrefab();
 		GameManager.instance.UpdatePetObjects();

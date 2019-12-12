@@ -34,7 +34,7 @@ public class FlySpawner : MonoBehaviour
             }    
 
             if(character != null){
-                maxCount = (int)Mathf.Clamp((character.data.dirty - 50f)/6f,0f,10f);
+                maxCount = (int)Mathf.Clamp((character.data.dirty - 70f)/6f,0f,5f);
             }  
             time = 0;
       

@@ -85,8 +85,11 @@ public class CharInteract : MonoBehaviour
         } else if (other.tag == "Food") {
 
         }else if (other.tag == "Water") {
-            if(Mathf.Abs(other.transform.position.y - this.transform.position.y) < 1f)
+            if(Mathf.Abs(other.transform.position.y - this.transform.position.y) < 1f && (character.actionType == ActionType.Patrol || 
+            character.actionType == ActionType.Discover)){
                 character.OnFall();
+            }
+                
         }
     }
 

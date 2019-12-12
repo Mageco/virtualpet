@@ -76,6 +76,7 @@ public class CharController : MonoBehaviour
     public void LoadPrefab(){
         GameObject go = Instantiate(petPrefab) as GameObject;
         go.transform.parent = this.transform;
+		go.transform.localPosition = Vector3.zero;    
 
         anim = go.transform.GetComponent<Animator>();
         charInteract = this.GetComponent<CharInteract>();
@@ -85,6 +86,7 @@ public class CharController : MonoBehaviour
         go1.transform.parent = GameManager.instance.transform;
 		agent = go1.GetComponent<PolyNavAgent>();
         agent.OnDestinationReached += OnArrived;
+        agent.transform.position = this.transform.position;
         
         agent.maxSpeed = data.speed;
         if(this.transform.GetComponentInChildren<TouchPoint>(true) != null)
@@ -785,19 +787,64 @@ public class CharController : MonoBehaviour
         }
     }
 
-    protected void JumpDown(float y){
-        Vector3 pos = this.charScale.scalePosition;
-        pos.y -= y;
-        agent.transform.position = pos;
-        charScale.height = 0;
+
+    protected IEnumerator JumpDown(float zSpeed,float ySpeed,float accelerator){
+
+        anim.Play("Hold", 0);
+        float speed = ySpeed;
+        //charScale.scalePosition = new Vector3(this.transform.position.x, this.transform.position.y - height, 0);
+        charInteract.interactType = InteractType.Jump;
+        while (charInteract.interactType == InteractType.Jump && !isAbort)
+        {
+            speed -= accelerator * Time.deltaTime;
+            if (speed < -50)
+                speed = -50;
+            Vector3 pos1 = agent.transform.position;
+            pos1.y += speed * Time.deltaTime + zSpeed * Time.deltaTime;                
+            charScale.scalePosition.y += zSpeed * Time.deltaTime;
+            charScale.height += speed * Time.deltaTime;
+            agent.transform.position = pos1;
+
+            if (charScale.height <= 0)
+            {
+                this.transform.rotation = Quaternion.identity;
+                charInteract.interactType = InteractType.None;
+            }
+            yield return new WaitForEndOfFrame();
+        }
+        charInteract.interactType = InteractType.None;
         enviromentType = EnviromentType.Room;
+        yield return StartCoroutine(DoAnim("Drop"));
+        
     }
 
-    protected void JumpUp(Vector3 dropPosition,float height){
-        agent.transform.position = dropPosition;
-        charScale.height +=height;
-        charScale.scalePosition.y += dropPosition.y - height;
-        enviromentType = EnviromentType.Room;        
+    protected IEnumerator JumpUp(float ySpeed,float zSpeed, Vector3 dropPosition,float height){
+        if(!isAbort){
+            anim.Play("Hold", 0);      
+            charInteract.interactType = InteractType.Jump;
+            while (charInteract.interactType == InteractType.Jump && !isAbort)
+            {
+                ySpeed -= 30 * Time.deltaTime;
+                if (ySpeed < -50)
+                    ySpeed = -50;
+                Vector3 pos1 = agent.transform.position;
+                pos1.y += ySpeed * Time.deltaTime + zSpeed * Time.deltaTime;
+                agent.transform.position = pos1;
+                charScale.height += ySpeed * Time.deltaTime;
+                charScale.scalePosition.y += zSpeed * Time.deltaTime;
+
+                if (ySpeed < 0 && charScale.height < height)
+                {
+                    this.transform.rotation = Quaternion.identity;
+                    charInteract.interactType = InteractType.None;
+                    agent.transform.position = dropPosition;
+                    charScale.scalePosition.y = dropPosition.y - height;
+                    charScale.height = height;
+                }
+                yield return new WaitForEndOfFrame();
+            }
+            yield return StartCoroutine(DoAnim("Drop"));
+        }
     }
 
     protected virtual IEnumerator Mouse()
@@ -891,25 +938,25 @@ public class CharController : MonoBehaviour
         if (data.curious > data.maxCurious * 0.4f)
         {
             int ran1 = Random.Range(0,100);
-            Vector3 t = ItemManager.instance.GetRandomPoint(PointType.Patrol).position;
-            if(ran1 < 5 && ItemManager.instance.GetRandomPoint(PointType.Eat) != null){
-                t = ItemManager.instance.GetRandomPoint(PointType.Eat).position;
-            }else if(ran1 < 10 && ItemManager.instance.GetRandomPoint(PointType.Drink) != null){
-                t = ItemManager.instance.GetRandomPoint(PointType.Drink).position;                    
-            }else if(ran1 < 15 && ItemManager.instance.GetRandomPoint(PointType.Toilet) != null){
-                t = ItemManager.instance.GetRandomPoint(PointType.Toilet).position;                    
-            }else if(ran1 < 20 && ItemManager.instance.GetRandomPoint(PointType.Sleep) != null){
-                t = ItemManager.instance.GetRandomPoint(PointType.Sleep).position;                    
-            }else if(ran1 < 25 && ItemManager.instance.GetRandomPoint(PointType.Bath) != null){
-                t = ItemManager.instance.GetRandomPoint(PointType.Bath).position;                    
-            }else if(ran1 < 30 && ItemManager.instance.GetRandomPoint(PointType.Table) != null){
-                t = ItemManager.instance.GetRandomPoint(PointType.Table).position;                    
-            }else if(ran1 < 35 && ItemManager.instance.GetRandomPoint(PointType.Cleaner) != null){
-                t = ItemManager.instance.GetRandomPoint(PointType.Cleaner).position;                    
-            }else if(ran1 < 40 && ItemManager.instance.GetRandomPoint(PointType.Caress) != null){
-                t = ItemManager.instance.GetRandomPoint(PointType.Caress).position;                    
-            }else if(ran1 < 45 && ItemManager.instance.GetRandomPoint(PointType.Window) != null){
-                t = ItemManager.instance.GetRandomPoint(PointType.Window).position;                    
+            Vector3 t = GetRandomPoint(PointType.Patrol).position;
+            if(ran1 < 5 && GetRandomPoint(PointType.Eat) != null){
+                t = GetRandomPoint(PointType.Eat).position;
+            }else if(ran1 < 10 && GetRandomPoint(PointType.Drink) != null){
+                t = GetRandomPoint(PointType.Drink).position;                    
+            }else if(ran1 < 15 && GetRandomPoint(PointType.Toilet) != null){
+                t = GetRandomPoint(PointType.Toilet).position;                    
+            }else if(ran1 < 20 && GetRandomPoint(PointType.Sleep) != null){
+                t = GetRandomPoint(PointType.Sleep).position;                    
+            }else if(ran1 < 25 && GetRandomPoint(PointType.Bath) != null){
+                t = GetRandomPoint(PointType.Bath).position;                    
+            }else if(ran1 < 30 && GetRandomPoint(PointType.Table) != null){
+                t = GetRandomPoint(PointType.Table).position;                    
+            }else if(ran1 < 35 && GetRandomPoint(PointType.Cleaner) != null){
+                t = GetRandomPoint(PointType.Cleaner).position;                    
+            }else if(ran1 < 40 && GetRandomPoint(PointType.Caress) != null){
+                t = GetRandomPoint(PointType.Caress).position;                    
+            }else if(ran1 < 45 && GetRandomPoint(PointType.Window) != null){
+                t = GetRandomPoint(PointType.Window).position;                    
             }
 
             target = t;
@@ -925,7 +972,7 @@ public class CharController : MonoBehaviour
         int ran = Random.Range(0,100);
         if(ran < 70 + data.GetSkillProgress(SkillType.Bath)*3){
             yield return StartCoroutine(Wait(Random.Range(1f,2f)));
-            JumpDown(5);
+            yield return StartCoroutine(JumpDown(-5,15,35));
             OnLearnSkill(SkillType.Bath);  
         }
         else{
@@ -947,7 +994,7 @@ public class CharController : MonoBehaviour
         }
         else{
             yield return StartCoroutine(Wait(Random.Range(1f,2f)));
-            JumpDown(5);           
+            yield return StartCoroutine(JumpDown(-7,10,30));           
         }
 
         CheckAbort();
@@ -962,7 +1009,7 @@ public class CharController : MonoBehaviour
                 SetTarget(PointType.Toilet);
                 yield return StartCoroutine(MoveToPoint());
                 ItemCollider col = ItemManager.instance.GetItemCollider(ItemType.Toilet);
-                JumpUp(col.transform.position + new Vector3(0,col.height,0),col.height);
+                yield return StartCoroutine(JumpUp(10,5,col.transform.position + new Vector3(0,col.height,0),col.height));
                 enviromentType = EnviromentType.Toilet;
             }else{
                 OnLearnSkill(SkillType.Toilet);
@@ -983,7 +1030,7 @@ public class CharController : MonoBehaviour
             GameManager.instance.AddExp(5,data.iD);
             GameManager.instance.LogAchivement(AchivementType.Do_Action,ActionType.OnToilet);
             LevelUpSkill(SkillType.Toilet);
-            JumpDown(5);     
+            yield return StartCoroutine(JumpDown(-7,10,30));     
         }
         
         CheckAbort();
@@ -998,7 +1045,7 @@ public class CharController : MonoBehaviour
                 SetTarget(PointType.Toilet);
                 yield return StartCoroutine(MoveToPoint());
                 ItemCollider col = ItemManager.instance.GetItemCollider(ItemType.Toilet);
-                JumpUp(col.transform.position + new Vector3(0,col.height,0),col.height);
+                yield return StartCoroutine(JumpUp(10,5,col.transform.position + new Vector3(0,col.height,0),col.height));
                 enviromentType = EnviromentType.Toilet;
             }else{
                 OnLearnSkill(SkillType.Toilet);
@@ -1018,7 +1065,7 @@ public class CharController : MonoBehaviour
             GameManager.instance.AddExp(5,data.iD);
             GameManager.instance.LogAchivement(AchivementType.Do_Action,ActionType.OnToilet);
             LevelUpSkill(SkillType.Toilet);
-            JumpDown(5);     
+            yield return StartCoroutine(JumpDown(-7,10,30));     
         }
         CheckAbort();
     }
@@ -1128,12 +1175,12 @@ public class CharController : MonoBehaviour
             }else{                    
                 anim.Play("Idle_" + direction.ToString(),0);
                 yield return StartCoroutine(Wait(Random.Range(2,4)));
-                JumpDown(5);
+                yield return StartCoroutine(JumpDown(-7,10,30)); 
             }
         }
         else{
             yield return StartCoroutine(Wait(Random.Range(1,2)));
-            JumpDown(5);
+            yield return StartCoroutine(JumpDown(-7,10,30)); 
         }
         
         CheckAbort();
@@ -1148,7 +1195,7 @@ public class CharController : MonoBehaviour
                 SetTarget(PointType.Sleep);
                 yield return StartCoroutine(MoveToPoint());
                 ItemCollider col = ItemManager.instance.GetItemCollider(ItemType.Bed);
-                JumpUp(col.transform.position,col.height);
+                 yield return StartCoroutine(JumpUp(10,5,col.transform.position,col.height));
                 enviromentType = EnviromentType.Bed;
             }else{
                 OnLearnSkill(SkillType.Sleep);
@@ -1169,7 +1216,7 @@ public class CharController : MonoBehaviour
             GameManager.instance.AddExp(5,data.iD);
             GameManager.instance.LogAchivement(AchivementType.Do_Action,ActionType.Sleep);
             LevelUpSkill(SkillType.Sleep);
-            JumpDown(5);
+            yield return StartCoroutine(JumpDown(-7,10,30)); 
         }
 
         CheckAbort();
@@ -1459,16 +1506,57 @@ public class CharController : MonoBehaviour
 	public void SetTarget(PointType type)
 	{
         int n = 0;
-        Vector3 pos = ItemManager.instance.GetRandomPoint (type).position;
+        Vector3 pos = GetRandomPoint (type).position;
         while(pos == target && n<10)
         {
-            pos = ItemManager.instance.GetRandomPoint (type).position;
+            pos = GetRandomPoint (type).position;
             n++;
         }
         target = pos;
+
 	}
 
+ List<GizmoPoint> GetPoints(PointType type)
+	{
+		List<GizmoPoint> temp = new List<GizmoPoint>();
+		GizmoPoint[] points = GameObject.FindObjectsOfType <GizmoPoint> ();
+		for(int i=0;i<points.Length;i++)
+		{
+			if(points[i].type == type)
+				temp.Add(points[i]);
+		}
+		return temp;
+	}
 
+	public Transform GetRandomPoint(PointType type)
+	{
+		List<GizmoPoint> points = GetPoints (type);
+		if(points != null && points.Count > 0){
+			int id = Random.Range (0, points.Count);
+			return points [id].transform;
+		}else
+			return null;
+
+	}
+
+	public List<Transform> GetRandomPoints(PointType type)
+	{
+		List<GizmoPoint> points = GetPoints (type);
+		List<Transform> randomPoints = new List<Transform> ();
+		for (int i = 0; i < points.Count; i++) {
+			randomPoints.Add (points [i].transform);
+		}
+
+		for (int i = 0; i < randomPoints.Count; i++) {
+			if (i < randomPoints.Count - 1) {
+				int j = Random.Range (i, randomPoints.Count);
+				Transform temp = randomPoints [i];
+				randomPoints [i] = randomPoints [j];
+				randomPoints [j] = temp;
+			}
+		}
+		return randomPoints;
+	}
     #endregion
 
     void OnDestroy(){

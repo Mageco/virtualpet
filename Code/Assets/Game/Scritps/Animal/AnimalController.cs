@@ -57,9 +57,6 @@ public class AnimalController : MonoBehaviour
             Think();
             DoAction();
         }
-
-        Debug.Log(agent.maxSpeed);
-
         CalculateDirection();
         if(state != AnimalState.Hold)
             this.transform.position = agent.transform.position;

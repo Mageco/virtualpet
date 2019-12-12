@@ -90,6 +90,13 @@ public class PlayerAchivement : BaseModel{
 			
 		}
 	}
+
+	public void Check(){
+		if (this.amount >= DataHolder.GetAchivement(achivementId).maxProgress[level]){
+			if(rewardState != RewardState.Ready)
+				rewardState = RewardState.Ready;
+		}
+	}
 }
 
 

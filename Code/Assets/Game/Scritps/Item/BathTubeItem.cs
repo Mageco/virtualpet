@@ -39,7 +39,7 @@ public class BathTubeItem : MonoBehaviour
 			anim.Play ("Bath_End", 0);
 			isSoap = false;
 			foreach(CharController pet in GameManager.instance.petObjects){
-				if (pet.data.dirty >= 50) {
+				if (pet.actionType == ActionType.OnBath && pet.data.dirty >= 50) {
 					pet.data.dirty -= 50;
 					GameManager.instance.AddExp(5,pet.data.iD);
 					GameManager.instance.LogAchivement(AchivementType.Do_Action,ActionType.OnBath);

@@ -30,6 +30,9 @@ public class ItemManager : MonoBehaviour
             }
             yield return new WaitForEndOfFrame();
         }
+        if(GameManager.instance.GetPetObjects().Count == 0){
+            GameManager.instance.EquipPets();
+        }
     }
 
     // Update is called once per frame
