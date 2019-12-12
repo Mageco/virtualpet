@@ -56,10 +56,10 @@ public class BathShowerItem : MonoBehaviour
 		Debug.Log ("Shower");
 		foreach(CharController pet in GameManager.instance.petObjects){
 			if (pet.actionType == ActionType.OnBath) {
-				GameManager.instance.GetPetObject(0).OnShower ();
-				GetBathTube().OnShower ();
+				pet.OnShower ();
 			}
 		}
+		GetBathTube().OnShower ();
 	}
 
 	void OffShower(){

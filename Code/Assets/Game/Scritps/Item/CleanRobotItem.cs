@@ -19,9 +19,11 @@ public class CleanRobotItem : CleanItem
 
 	AnimalState state = AnimalState.None;
 
-	Direction direction = Direction.L;
+	Direction direction = Direction.R;
 
 	ItemDirty dirtyTarget;
+	int count = 0;
+	
 
 	protected override void Awake(){
 		base.Awake();
@@ -111,37 +113,48 @@ public class CleanRobotItem : CleanItem
 	}
 
 	IEnumerator Idle(){
+		agent.Stop();
+		count = 0;
 		anim.Play("Idle_" + direction.ToString(),0);
 		while(!isAbort){
 			yield return new WaitForEndOfFrame();
 		}
 		CheckAbort();
+		
 	}
 
 	IEnumerator Run(){
 		target = GetDirtyItem().transform.position;
 		yield return StartCoroutine(MoveToPoint());
-		state = AnimalState.Hold;
-		isAbort = true;
+		if(!isAbort){
+			state = AnimalState.Hold;
+			isAbort = true;
+		}
 		CheckAbort();
 	}
 
 	IEnumerator Hold(){
 		anim.Play("Clean_" + direction.ToString(),0);
-		while(dirtyItem != null){
+		float time = 0;
+		while(dirtyItem != null && time < 10 && !isAbort){
+			time += Time.deltaTime;
 			dirtyItem.OnClean(clean);
 			yield return new WaitForEndOfFrame();
 		}
-		state = AnimalState.Seek;
-		isAbort = true;
+		if(!isAbort){
+			state = AnimalState.Seek;
+			isAbort = true;
+		}
 		CheckAbort();
 	}
 
 	IEnumerator Flee(){
 		target = originalPosition;
 		yield return StartCoroutine(MoveToPoint());
-		state = AnimalState.Idle;
-		isAbort = true;
+		if(!isAbort){
+			state = AnimalState.Idle;
+			isAbort = true;
+		}
 		CheckAbort();
 	}
 
@@ -151,14 +164,21 @@ public class CleanRobotItem : CleanItem
 			isAbort = true;
 		}else{
 			int ran  = Random.Range(0,100);
-			if(ran > 50){
+			if(ran > 50 || count == 0){
 				SetTarget(PointType.Patrol);
+				count = 1;
 				yield return StartCoroutine(MoveToPoint());
-				state = AnimalState.Seek;
-				isAbort = true;
+				if(!isAbort){
+					state = AnimalState.Seek;
+					isAbort = true;
+				}
+
 			}else{
-				state = AnimalState.Flee;
-				isAbort = true;
+				if(!isAbort){
+					state = AnimalState.Flee;
+					isAbort = true;
+				}
+
 			}
 		}
 		CheckAbort();
@@ -177,7 +197,6 @@ public class CleanRobotItem : CleanItem
 			state = AnimalState.Idle;
 			isAbort = true;
 		}
-
 	}
 
 	protected void SetDirection(Direction d)

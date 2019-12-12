@@ -11,7 +11,7 @@ public class CharShiba : CharController
         if (GetFoodItem() != null)
         {
             SetTarget(PointType.Eat);
-            yield return StartCoroutine(MoveToPoint());
+            yield return StartCoroutine(RunToPoint());
             bool canEat = true;
             if (GetFoodItem().CanEat())
             {
@@ -41,10 +41,10 @@ public class CharShiba : CharController
                 else if(ran < 40)
                 {
                     SetTarget(PointType.Patrol);
-                    yield return StartCoroutine(MoveToPoint());
+                    yield return StartCoroutine(RunToPoint());
                     yield return DoAnim("Bark");
                     SetTarget(PointType.Eat);
-                    yield return StartCoroutine(MoveToPoint());
+                    yield return StartCoroutine(RunToPoint());
                 }else if(ran < 50)
                     yield return DoAnim("Bark_Sit");
                 else if(ran < 70) 
@@ -70,7 +70,7 @@ public class CharShiba : CharController
             //Debug.Log("Drink");
 
             SetTarget(PointType.Drink);
-            yield return StartCoroutine(MoveToPoint());
+            yield return StartCoroutine(RunToPoint());
             
 
             bool canDrink = true;
@@ -103,10 +103,10 @@ public class CharShiba : CharController
                 else if(ran < 40)
                 {
                     SetTarget(PointType.Patrol);
-                    yield return StartCoroutine(MoveToPoint());
+                    yield return StartCoroutine(RunToPoint());
                     yield return DoAnim("Bark");
                     SetTarget(PointType.Eat);
-                    yield return StartCoroutine(MoveToPoint());
+                    yield return StartCoroutine(RunToPoint());
                 }else if(ran < 50)
                     yield return DoAnim("Bark_Sit");
                 else if(ran < 70) 
@@ -128,11 +128,22 @@ public class CharShiba : CharController
     {
         int n = 0;
         int maxCount = Random.Range(2, 5);
+        int ran1 = Random.Range(0,100);
+        
+
+
         while (!isAbort && n < maxCount)
         {
 
             SetTarget(PointType.Patrol);
-            yield return StartCoroutine(MoveToPoint());
+            if(ran1 < 30){
+                yield return StartCoroutine(WalkToPoint());
+                charScale.speedFactor = 0.4f;
+            }else{
+                yield return StartCoroutine(RunToPoint());
+                charScale.speedFactor = 1f;
+            }
+                
             int ran = Random.Range(0, 100);
             if (ran < 30)
             {
@@ -165,14 +176,14 @@ public class CharShiba : CharController
             int ran = Random.Range(0,100);
             if(ran < 30){
                 SetTarget(PointType.MouseGate);
-                yield return StartCoroutine(MoveToPoint());
+                yield return StartCoroutine(RunToPoint());
                 yield return StartCoroutine(DoAnim("Smell_" + direction.ToString())) ;
                 yield return StartCoroutine(DoAnim("Smell_Bark"));
                 data.curious -= 10;
             }else if(ran < 50)
             {
                 SetTarget(PointType.Door);
-                yield return StartCoroutine(MoveToPoint());
+                yield return StartCoroutine(RunToPoint());
                 yield return StartCoroutine(DoAnim("Dig_" + direction.ToString())) ;
                 data.curious -= 10;                
             }else
@@ -200,7 +211,7 @@ public class CharShiba : CharController
                 }
 
                 target = t;
-                yield return StartCoroutine(MoveToPoint());
+                yield return StartCoroutine(RunToPoint());
                 yield return StartCoroutine(DoAnim("Smell_" + direction.ToString()));
                 yield return StartCoroutine(DoAnim("Smell_Bark"));
             }
@@ -215,7 +226,7 @@ public class CharShiba : CharController
     protected override IEnumerator Call()
     {
         yield return StartCoroutine(DoAnim("Listen_"+direction.ToString()));
-        yield return StartCoroutine(MoveToPoint());
+        yield return StartCoroutine(RunToPoint());
         touchObject.SetActive(true);
         GameManager.instance.LogAchivement(AchivementType.Do_Action,ActionType.Call);
         float t = 0;

@@ -65,6 +65,7 @@ public class CharController : MonoBehaviour
     IconStatus lastIconStatus = IconStatus.None;
 
 
+
     #region Load
 
     void Awake()
@@ -89,6 +90,7 @@ public class CharController : MonoBehaviour
         agent.transform.position = this.transform.position;
         
         agent.maxSpeed = data.speed;
+        
         if(this.transform.GetComponentInChildren<TouchPoint>(true) != null)
             touchObject = this.transform.GetComponentInChildren<TouchPoint>(true).gameObject;
         if(touchObject != null)
@@ -100,6 +102,7 @@ public class CharController : MonoBehaviour
 
         if(iconStatusObject != null)
             iconStatusObject.gameObject.SetActive(false);
+
 
         Load();
     }
@@ -181,6 +184,8 @@ public class CharController : MonoBehaviour
         
     }
 
+
+
     #endregion
 
     #region Data
@@ -204,49 +209,36 @@ public class CharController : MonoBehaviour
             actionEnergyConsume = 0.3f;
         
         data.Energy -= actionEnergyConsume;
-        data.Happy -= data.recoverEnergy;
-        if (actionType == ActionType.Call)
-            data.Happy += 0.01f;
-
-        if (data.Food > 0 && data.Water > 0)
-        {
-            float delta = 0.1f + data.Health * 0.001f + data.Happy * 0.001f;
-            data.Food -= delta;
-            data.Water -= delta;
-            data.Energy += delta;
-            data.Shit += delta;
-            data.Pee += delta * 2;
-        }
+        data.Food -= actionEnergyConsume/2;    
+        data.Water -= actionEnergyConsume/2;
+        data.Shit += actionEnergyConsume/2;
+        data.Pee += actionEnergyConsume;
 
         data.Dirty += data.recoverDirty;
-        data.Itchi += data.Dirty * 0.001f;
-
+        data.Itchi += data.Dirty * 0.005f;
         data.Sleep -= data.recoverSleep;
 
         float deltaHealth = data.recoverHealth;
 
-        deltaHealth += (data.Happy - data.maxHappy * 0.3f) * 0.001f;
+        if (data.Dirty > data.maxDirty * 0.95f)
+            deltaHealth -= (data.Dirty - data.maxDirty * 0.9f) * 0.005f;
 
-        if (data.Dirty > data.maxDirty * 0.8f)
-            deltaHealth -= (data.Dirty - data.maxDirty * 0.8f) * 0.003f;
+        if (data.Pee > data.maxPee * 0.95f)
+            deltaHealth -= (data.Pee - data.maxPee * 0.9f) * 0.005f;
 
-        if (data.Pee > data.maxPee * 0.9f)
-            deltaHealth -= (data.Pee - data.maxPee * 0.9f) * 0.001f;
+        if (data.Shit > data.maxShit * 0.95f)
+            deltaHealth -= (data.Shit - data.maxShit * 0.9f) * 0.005f;
 
-        if (data.Shit > data.maxShit * 0.9f)
-            deltaHealth -= (data.Shit - data.maxShit * 0.9f) * 0.002f;
+        if (data.Food < data.maxFood * 0.05f)
+            deltaHealth -= (data.maxFood * 0.1f - data.Food) * 0.005f;
 
-        if (data.Food < data.maxFood * 0.1f)
-            deltaHealth -= (data.maxFood * 0.1f - data.Food) * 0.001f;
-
-        if (data.Water < data.maxWater * 0.1f)
-            deltaHealth -= (data.maxWater * 0.1f - data.Water) * 0.001f;
+        if (data.Water < data.maxWater * 0.05f)
+            deltaHealth -= (data.maxWater * 0.1f - data.Water) * 0.005f;
 
         if (data.Sleep < data.maxSleep * 0.05f)
-            deltaHealth -= (data.maxSleep * 0.05f - data.Sleep) * 0.004f;
+            deltaHealth -= (data.maxSleep * 0.05f - data.Sleep) * 0.01f;
 
         data.Health += deltaHealth;
-
         data.curious += 0.1f;
     }
 
@@ -571,6 +563,11 @@ public class CharController : MonoBehaviour
 
     public virtual void OnHold()
     {
+        if(actionType == ActionType.Sick){
+            UIManager.instance.OnQuestNotificationPopup("Bạn cần cho thú cưng uống thuốc");
+            return;
+        }
+            
         Abort();
         charInteract.interactType = InteractType.Drag;
         actionType = ActionType.Hold;
@@ -629,6 +626,13 @@ public class CharController : MonoBehaviour
         if (actionType == ActionType.OnBath)
         {
             anim.Play("Soap", 0);
+        }
+    }
+
+    public virtual void OffSoap(){
+        if (actionType == ActionType.OnBath)
+        {
+            anim.Play("Standby", 0);
         }
     }
 
@@ -759,7 +763,7 @@ public class CharController : MonoBehaviour
         }
     }
 
-    protected IEnumerator MoveToPoint()
+    protected IEnumerator RunToPoint()
     {
         isArrived = false;
 
@@ -768,10 +772,21 @@ public class CharController : MonoBehaviour
 
         while (!isArrived && !isAbort)
         {
-            if(GameManager.instance.gameType == GameType.Minigame1){
-                anim.Play("Run_Angry_" + this.direction.ToString(), 0);
-            }
-                anim.Play("Run_" + this.direction.ToString(), 0);
+            anim.Play("Run_" + this.direction.ToString(), 0);
+            yield return new WaitForEndOfFrame();
+        }
+    }
+
+    protected IEnumerator WalkToPoint()
+    {
+        isArrived = false;
+
+        agent.SetDestination(target);
+        
+
+        while (!isArrived && !isAbort)
+        {
+            anim.Play("Walk_" + this.direction.ToString(), 0);
             yield return new WaitForEndOfFrame();
         }
     }
@@ -960,7 +975,7 @@ public class CharController : MonoBehaviour
             }
 
             target = t;
-            yield return StartCoroutine(MoveToPoint());
+            yield return StartCoroutine(RunToPoint());
             yield return StartCoroutine(DoAnim("Idle_" + direction.ToString())) ;
             data.curious -= 10;                
         }
@@ -1007,7 +1022,7 @@ public class CharController : MonoBehaviour
             if (data.SkillLearned(SkillType.Toilet) )
             {
                 SetTarget(PointType.Toilet);
-                yield return StartCoroutine(MoveToPoint());
+                yield return StartCoroutine(RunToPoint());
                 ItemCollider col = ItemManager.instance.GetItemCollider(ItemType.Toilet);
                 yield return StartCoroutine(JumpUp(10,5,col.transform.position + new Vector3(0,col.height,0),col.height));
                 enviromentType = EnviromentType.Toilet;
@@ -1043,7 +1058,7 @@ public class CharController : MonoBehaviour
             if (data.SkillLearned(SkillType.Toilet) )
             {
                 SetTarget(PointType.Toilet);
-                yield return StartCoroutine(MoveToPoint());
+                yield return StartCoroutine(RunToPoint());
                 ItemCollider col = ItemManager.instance.GetItemCollider(ItemType.Toilet);
                 yield return StartCoroutine(JumpUp(10,5,col.transform.position + new Vector3(0,col.height,0),col.height));
                 enviromentType = EnviromentType.Toilet;
@@ -1075,7 +1090,7 @@ public class CharController : MonoBehaviour
         if (GetFoodItem() != null)
         {
             SetTarget(PointType.Eat);
-            yield return StartCoroutine(MoveToPoint());
+            yield return StartCoroutine(RunToPoint());
             bool canEat = true;
             if (GetFoodItem().CanEat())
             {
@@ -1106,7 +1121,7 @@ public class CharController : MonoBehaviour
                     yield return DoAnim("Standby");
                 else{
                     SetTarget(PointType.Patrol);
-                    yield return StartCoroutine(MoveToPoint());
+                    yield return StartCoroutine(RunToPoint());
                     yield return DoAnim("Standby");
                 }
             }
@@ -1123,7 +1138,7 @@ public class CharController : MonoBehaviour
             //Debug.Log("Drink");
 
             SetTarget(PointType.Drink);
-            yield return StartCoroutine(MoveToPoint());
+            yield return StartCoroutine(RunToPoint());
             
 
             bool canDrink = true;
@@ -1157,7 +1172,7 @@ public class CharController : MonoBehaviour
                     yield return DoAnim("Standby");
                 else{
                     SetTarget(PointType.Patrol);
-                    yield return StartCoroutine(MoveToPoint());
+                    yield return StartCoroutine(RunToPoint());
                     yield return DoAnim("Standby");
                 }
             }
@@ -1193,7 +1208,7 @@ public class CharController : MonoBehaviour
             if (data.SkillLearned(SkillType.Sleep) )
             {
                 SetTarget(PointType.Sleep);
-                yield return StartCoroutine(MoveToPoint());
+                yield return StartCoroutine(RunToPoint());
                 ItemCollider col = ItemManager.instance.GetItemCollider(ItemType.Bed);
                  yield return StartCoroutine(JumpUp(10,5,col.transform.position,col.height));
                 enviromentType = EnviromentType.Bed;
@@ -1228,9 +1243,8 @@ public class CharController : MonoBehaviour
         int maxCount = Random.Range(2, 5);
         while (!isAbort && n < maxCount)
         {
-
             SetTarget(PointType.Patrol);
-            yield return StartCoroutine(MoveToPoint());
+            yield return StartCoroutine(RunToPoint());
             int ran = Random.Range(0, 100);
             if (ran < 30)
             {
@@ -1248,7 +1262,7 @@ public class CharController : MonoBehaviour
     protected virtual IEnumerator Call()
     {
         yield return StartCoroutine(DoAnim("Idle_"+direction.ToString()));
-        yield return StartCoroutine(MoveToPoint());
+        yield return StartCoroutine(RunToPoint());
         touchObject.SetActive(true);
         GameManager.instance.LogAchivement(AchivementType.Do_Action,ActionType.Call);
         anim.Play("Idle_" + direction.ToString(),0);
@@ -1375,6 +1389,7 @@ public class CharController : MonoBehaviour
 
     protected void CheckAbort()
     {
+        agent.maxSpeed = data.speed;
         isAction = false;
         if (!isAbort)
             actionType = ActionType.None;
