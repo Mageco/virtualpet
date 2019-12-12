@@ -38,25 +38,36 @@ public class HealthItem : BaseDragItem
 
     protected override void OnActive()
     {
-        anim.Play("Active");
-        if (pet != null)
-        {
-            pet.OnHealth(sickType,amounnt);
-            if(effect == null){
-                effect = GameObject.Instantiate(effectPrefab,pet.transform.position,Quaternion.identity);
-                effect.transform.parent = pet.transform;
+        if(!eated){
+            eated = true;
+            anim.Play("Active");
+            if (pet != null)
+            {
+                pet.OnHealth(sickType,amounnt);
+                if(effect == null){
+                    effect = GameObject.Instantiate(effectPrefab,pet.transform.position,Quaternion.identity);
+                    effect.transform.parent = pet.transform;
+                    effect.GetComponent<AutoDestroy>().liveTime = timeDelay;
+                }
+                    
             }
-                
+            GameManager.instance.ResetCameraTarget();
+            StartCoroutine(Deactive());
         }
-        GameManager.instance.ResetCameraTarget();
-        
-        StartCoroutine(Deactive());
+
     }
 
     IEnumerator Deactive(){
         this.transform.position = new Vector3(1000,1000,0);
         yield return new WaitForSeconds(timeDelay);
-        StartCoroutine(OnHitCouroutine()); 
+        this.transform.position = originalPosition;
+        this.transform.rotation = originalRotation;
+		height = originalHeight;
+		this.scalePosition = this.transform.position + new Vector3(0,-height,0);
+        fallSpeed = 0;
+        anim.Play("Idle", 0);
+        eated = false;
+        state = ItemDragState.None;
     }
 
 
@@ -64,7 +75,6 @@ public class HealthItem : BaseDragItem
     protected override void OnHit()
     {
         StartCoroutine(OnHitCouroutine());
-
     }
 
     IEnumerator OnHitCouroutine()

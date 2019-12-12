@@ -96,7 +96,7 @@ public class CharMinigame1 : CharController
         if(GetChiken() != null){
             target = GetChiken().transform.position;  
             anim.Play("Run_Angry_" + this.direction.ToString(), 0);
-            yield return StartCoroutine(MoveToPoint());    
+            yield return StartCoroutine(RunToPoint());    
             anim.Play("Idle_Angry_" + direction.ToString());
             yield return StartCoroutine(Wait(Random.Range(0.5f,1f)));
         }else

@@ -50,6 +50,8 @@ public class SoapItem : MonoBehaviour
 
 	void OnTriggerExit2D(Collider2D other) {
 		if (other.GetComponent <CharController>() == character) {
+			if(character != null)
+				character.OffSoap();
 			character = null;
 			bubbleEffect.SetActive(false);
 		}
