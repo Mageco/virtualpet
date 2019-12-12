@@ -13,7 +13,6 @@ public class Pet : BaseModel
 	public PriceType priceType = PriceType.Coin;
     public ItemState itemState = ItemState.OnShop;
 	public string petBig = "";
-	public string petMiniGame1 = "";
 	public bool isAvailable = true;
 	//Common Data
 	public List<PetSkill> skills = new List<PetSkill>();

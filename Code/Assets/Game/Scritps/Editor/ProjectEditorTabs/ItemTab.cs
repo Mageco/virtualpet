@@ -112,7 +112,7 @@ public class ItemTab : BaseTab
                     DataHolder.Items().GetItem(selection,temcategory).sellPrice = EditorGUILayout.IntField("Coin Amount", DataHolder.Items().GetItem(selection,temcategory).sellPrice, GUILayout.Width(pw.mWidth));
                 }
                 DataHolder.Items().GetItem(selection,temcategory).isAvailable = EditorGUILayout.Toggle("Available", DataHolder.Items().GetItem(selection,temcategory).isAvailable, GUILayout.Width(pw.mWidth));
-
+                DataHolder.Items().GetItem(selection,temcategory).consume = EditorGUILayout.Toggle("Consume", DataHolder.Items().GetItem(selection,temcategory).consume, GUILayout.Width(pw.mWidth));
 
 			}
 			EditorGUILayout.EndVertical();
@@ -121,14 +121,29 @@ public class ItemTab : BaseTab
 			fold3 = EditorGUILayout.Foldout(fold3, "Usage Settings");
 			if(fold3)
 			{
-				DataHolder.Items().GetItem(selection,temcategory).consume = EditorGUILayout.Toggle("Consume", DataHolder.Items().GetItem(selection,temcategory).consume, GUILayout.Width(pw.mWidth));
+				
 				EditorGUILayout.Separator();
-				DataHolder.Items().GetItem(selection,temcategory).itemSkill = (ItemSkillType)EditorTab.EnumToolbar("Item skill", (int)DataHolder.Items().GetItem(selection,temcategory).itemSkill, typeof(ItemSkillType));
-				if(!ItemSkillType.NONE.Equals(DataHolder.Items().GetItem(selection,temcategory).itemSkill))
-				{
-					DataHolder.Items().GetItem(selection,temcategory).skillID = EditorGUILayout.Popup("Skill", 
-						DataHolder.Items().GetItem(selection,temcategory).skillID, pw.GetSkills(), GUILayout.Width(pw.mWidth));
-				}
+                if(DataHolder.Item(selection).itemType == ItemType.Food){
+                    DataHolder.Item(selection).value = EditorGUILayout.FloatField("Food Amount", DataHolder.Item(selection).value, GUILayout.Width(pw.mWidth));
+                }else if(DataHolder.Item(selection).itemType == ItemType.Drink){
+                    DataHolder.Item(selection).value = EditorGUILayout.FloatField("Water Amount", DataHolder.Item(selection).value, GUILayout.Width(pw.mWidth));
+                }else if(DataHolder.Item(selection).itemType == ItemType.Toilet){
+                    DataHolder.Item(selection).value = EditorGUILayout.FloatField("Clean per 1 second", DataHolder.Item(selection).value, GUILayout.Width(pw.mWidth));
+                }else if(DataHolder.Item(selection).itemType == ItemType.Bath){
+                    DataHolder.Item(selection).value = EditorGUILayout.FloatField("Clean after take bath", DataHolder.Item(selection).value, GUILayout.Width(pw.mWidth));
+                }
+                EditorGUILayout.Separator();
+                DataHolder.Item(selection).happy = EditorGUILayout.FloatField("+Happy", DataHolder.Item(selection).happy, GUILayout.Width(pw.mWidth));
+                DataHolder.Item(selection).health = EditorGUILayout.FloatField("+Health", DataHolder.Item(selection).health, GUILayout.Width(pw.mWidth));
+                DataHolder.Item(selection).energy = EditorGUILayout.FloatField("+Energy", DataHolder.Item(selection).energy, GUILayout.Width(pw.mWidth));
+                DataHolder.Item(selection).sleep = EditorGUILayout.FloatField("+Sleep", DataHolder.Item(selection).sleep, GUILayout.Width(pw.mWidth));
+                DataHolder.Item(selection).dirty = EditorGUILayout.FloatField("+Dirty", DataHolder.Item(selection).dirty, GUILayout.Width(pw.mWidth));
+                DataHolder.Item(selection).itchi = EditorGUILayout.FloatField("+Itchi", DataHolder.Item(selection).itchi, GUILayout.Width(pw.mWidth));
+                DataHolder.Item(selection).rateSleep = EditorGUILayout.FloatField("+RateSleep", DataHolder.Item(selection).rateSleep, GUILayout.Width(pw.mWidth));
+                DataHolder.Item(selection).rateEat = EditorGUILayout.FloatField("+RateEat", DataHolder.Item(selection).rateEat, GUILayout.Width(pw.mWidth));
+                DataHolder.Item(selection).rateDrink = EditorGUILayout.FloatField("+RateDrink", DataHolder.Item(selection).rateDrink, GUILayout.Width(pw.mWidth));
+                DataHolder.Item(selection).rateShit = EditorGUILayout.FloatField("+RateShit", DataHolder.Item(selection).rateShit, GUILayout.Width(pw.mWidth));
+                DataHolder.Item(selection).ratePee = EditorGUILayout.FloatField("+RatePee", DataHolder.Item(selection).ratePee, GUILayout.Width(pw.mWidth));
 
 			}
 			EditorGUILayout.EndVertical(); 

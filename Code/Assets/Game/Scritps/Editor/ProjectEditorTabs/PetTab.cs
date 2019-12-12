@@ -94,18 +94,10 @@ public class PetTab : BaseTab
 				{
 					this.tmp3Prefab = (GameObject)Resources.Load(DataHolder.Pets().GetPrefabPath()+DataHolder.Pet(selection).petBig, typeof(GameObject));
 				}
-				this.tmp3Prefab = (GameObject)EditorGUILayout.ObjectField("Pet Big Prefab", this.tmp3Prefab, typeof(GameObject), false, GUILayout.Width(pw.mWidth*2));
+				this.tmp3Prefab = (GameObject)EditorGUILayout.ObjectField("Pet Prefab", this.tmp3Prefab, typeof(GameObject), false, GUILayout.Width(pw.mWidth*2));
 				if(this.tmp3Prefab) DataHolder.Pet(selection).petBig = this.tmp3Prefab.name;
 				else DataHolder.Pet(selection).petBig = "";
 
-                if(selection != tmpSelection) this.tmp4Prefab = null;
-				if(this.tmp4Prefab == null && "" != DataHolder.Pet(selection).petMiniGame1)
-				{
-					this.tmp4Prefab = (GameObject)Resources.Load(DataHolder.Pets().GetPrefabPath()+DataHolder.Pet(selection).petMiniGame1, typeof(GameObject));
-				}
-				this.tmp4Prefab = (GameObject)EditorGUILayout.ObjectField("Pet Minigame Prefab", this.tmp4Prefab, typeof(GameObject), false, GUILayout.Width(pw.mWidth*2));
-				if(this.tmp4Prefab) DataHolder.Pet(selection).petMiniGame1 = this.tmp4Prefab.name;
-				else DataHolder.Pet(selection).petBig = "";
 
 				EditorGUILayout.Separator();
 				EditorGUILayout.Separator();
@@ -122,8 +114,23 @@ public class PetTab : BaseTab
 			if(fold3)
 			{
                 DataHolder.Pet(selection).speed = EditorGUILayout.FloatField("Speed", DataHolder.Pet(selection).speed, GUILayout.Width(pw.mWidth));
-                DataHolder.Pet(selection).maxEnergy = EditorGUILayout.FloatField("Stamina", DataHolder.Pet(selection).maxEnergy, GUILayout.Width(pw.mWidth));
-                DataHolder.Pet(selection).intelligent = EditorGUILayout.FloatField("Intelligent", DataHolder.Pet(selection).intelligent, GUILayout.Width(pw.mWidth));
+                DataHolder.Pet(selection).maxFood = EditorGUILayout.FloatField("MaxFood", DataHolder.Pet(selection).maxFood, GUILayout.Width(pw.mWidth));
+                DataHolder.Pet(selection).rateFood = EditorGUILayout.FloatField("RateFood", DataHolder.Pet(selection).rateFood, GUILayout.Width(pw.mWidth));
+                DataHolder.Pet(selection).maxWater = EditorGUILayout.FloatField("MaxWater", DataHolder.Pet(selection).maxWater, GUILayout.Width(pw.mWidth));
+                DataHolder.Pet(selection).rateWater = EditorGUILayout.FloatField("RateWater", DataHolder.Pet(selection).rateWater, GUILayout.Width(pw.mWidth));
+                DataHolder.Pet(selection).maxSleep = EditorGUILayout.FloatField("MaxSleep", DataHolder.Pet(selection).maxSleep, GUILayout.Width(pw.mWidth));
+                DataHolder.Pet(selection).rateSleep = EditorGUILayout.FloatField("RateSleep", DataHolder.Pet(selection).rateSleep, GUILayout.Width(pw.mWidth));
+                DataHolder.Pet(selection).recoverSleep = EditorGUILayout.FloatField("RecSleep", DataHolder.Pet(selection).recoverSleep, GUILayout.Width(pw.mWidth));
+                DataHolder.Pet(selection).maxPee = EditorGUILayout.FloatField("MaxPee", DataHolder.Pet(selection).maxPee, GUILayout.Width(pw.mWidth));
+                DataHolder.Pet(selection).ratePee = EditorGUILayout.FloatField("RatePee", DataHolder.Pet(selection).ratePee, GUILayout.Width(pw.mWidth));
+                DataHolder.Pet(selection).maxShit = EditorGUILayout.FloatField("MaxShit", DataHolder.Pet(selection).maxShit, GUILayout.Width(pw.mWidth));
+                DataHolder.Pet(selection).rateShit = EditorGUILayout.FloatField("RateShit", DataHolder.Pet(selection).rateShit, GUILayout.Width(pw.mWidth));
+                DataHolder.Pet(selection).maxDirty = EditorGUILayout.FloatField("MaxDirty", DataHolder.Pet(selection).maxDirty, GUILayout.Width(pw.mWidth));
+                DataHolder.Pet(selection).recoverDirty = EditorGUILayout.FloatField("RecDirty", DataHolder.Pet(selection).recoverDirty, GUILayout.Width(pw.mWidth));
+                DataHolder.Pet(selection).maxHealth = EditorGUILayout.FloatField("MaxHealth", DataHolder.Pet(selection).maxHealth, GUILayout.Width(pw.mWidth));
+                DataHolder.Pet(selection).recoverHealth = EditorGUILayout.FloatField("RecHealth", DataHolder.Pet(selection).recoverHealth, GUILayout.Width(pw.mWidth));
+                DataHolder.Pet(selection).recoverEnergy = EditorGUILayout.FloatField("RecEnergy", DataHolder.Pet(selection).recoverEnergy, GUILayout.Width(pw.mWidth));
+                DataHolder.Pet(selection).recoverHappy = EditorGUILayout.FloatField("RecHappy", DataHolder.Pet(selection).recoverHappy, GUILayout.Width(pw.mWidth));
 			}
 			EditorGUILayout.EndVertical(); 
 
