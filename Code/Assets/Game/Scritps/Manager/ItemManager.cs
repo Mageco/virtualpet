@@ -70,7 +70,7 @@ public class ItemManager : MonoBehaviour
 
         foreach (ItemObject item in removes)
         {
-            GameManager.instance.SetCameraTarget(item.transform.GetChild(0).gameObject);
+            //GameManager.instance.SetCameraTarget(item.transform.GetChild(0).gameObject);
             for(int i=0;i<item.transform.childCount;i++){
                 Animator anim = item.transform.GetChild(i).GetComponent<Animator>();
                 if (anim != null)
@@ -103,11 +103,11 @@ public class ItemManager : MonoBehaviour
         for (int i = 0; i < adds.Count; i++)
         {
             ItemObject item = AddItem(adds[i]);
-            GameManager.instance.SetCameraTarget(item.transform.GetChild(0).gameObject);
+            //GameManager.instance.SetCameraTarget(item.transform.GetChild(0).gameObject);
         }
         
         yield return new WaitForSeconds(2);
-        GameManager.instance.ResetCameraTarget();
+        //GameManager.instance.ResetCameraTarget();
         
     }
 
@@ -227,6 +227,7 @@ public class ItemManager : MonoBehaviour
     }
 
     public ItemCollider GetItemCollider(Vector3 dropPosition){
+        UpdateItemColliders();
         if(itemColliders != null){
             for(int i=0;i<itemColliders.Length;i++){
                 if(IsInCollider(dropPosition,itemColliders[i])){

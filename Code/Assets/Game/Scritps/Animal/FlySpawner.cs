@@ -5,7 +5,7 @@ using UnityEngine;
 public class FlySpawner : MonoBehaviour
 {
     public GameObject[] flyPrefabs;
-    public int maxCount = 3;
+    int maxCount = 0;
     public Transform[] spawnPoints;
     float time = 0;
     float maxTimeSpawn = 1;
@@ -30,11 +30,11 @@ public class FlySpawner : MonoBehaviour
                 CleanLast();
             }else if(maxCount > flies.Count){
                 SpawnFly();
-                maxTimeSpawn = Random.Range(1,3);
+                maxTimeSpawn = Random.Range(0.1f,1f);
             }    
 
             if(character != null){
-                maxCount = (int)Mathf.Clamp((character.data.dirty - 70f)/6f,0f,5f);
+                maxCount = (int)Mathf.Clamp((character.data.dirty - character.data.maxDirty*0.7f)/6f,0f,5f);
             }  
             time = 0;
       
