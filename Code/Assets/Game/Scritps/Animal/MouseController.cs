@@ -7,7 +7,7 @@ public class MouseController : MonoBehaviour
 {
 	Vector3[] paths;
 	float time = 0;
-	public float maxTimeSpawn = 3;
+	public float maxTimeSpawn = 30;
 	public float speed;
 	public GameObject body;
 	Vector3 originalPosition;
@@ -49,11 +49,9 @@ public class MouseController : MonoBehaviour
 
 	public void Spawn()
 	{
-		if(GameManager.instance.GetActivePet().level > 5){
-			state = MouseState.Seek;
-			time = 0;
-			Seek();
-		}
+		state = MouseState.Seek;
+		time = 0;
+		Seek();
 	}
 
 	void Seek(){

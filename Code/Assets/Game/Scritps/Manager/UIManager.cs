@@ -15,6 +15,7 @@ public class UIManager : MonoBehaviour
     public GameObject skillCompletePrefab;
     public GameObject achivementPrefab;
     public GameObject confirmBuyShopPrefab;
+    public GameObject itemInfoPrefab;
     public static UIManager instance;
 	public Text coinText;
 	public Text diamonText;
@@ -28,13 +29,14 @@ public class UIManager : MonoBehaviour
     public AchivementPanel achivementPanel;
 
     ProfilePanel profilePanel;
+    ItemInfoUI itemInfoUI;
 
     public GameObject homeUI;
 
     public GameObject profilePrefab;
     public Transform profileAnchor;
     List<ProfileUI> profiles = new List<ProfileUI>();
-    List<string> notificationText = new List<string>();
+    public List<string> notificationText = new List<string>();
 
     public GameObject doubleClickEffect;
 	GameObject doubleClick;
@@ -122,7 +124,6 @@ public class UIManager : MonoBehaviour
 			//popup.GetComponent<Popup> ().Open ();
 			questNotification = popup.GetComponent<NotificationPopup> ();
 			questNotification.Load("",description);
-            notificationText.Remove(description);
 		}
 		return questNotification;
 	}
@@ -220,6 +221,23 @@ public class UIManager : MonoBehaviour
             popup.GetComponent<Popup>().Open();
             achivementPanel = popup.GetComponent<AchivementPanel>();
             achivementPanel.Load();
+        }
+     }
+
+    public void OnItemInfoPanel(int itemId,bool isPet)
+    {
+        if (itemInfoUI == null)
+        {
+            var popup = Instantiate(itemInfoPrefab) as GameObject;
+            popup.SetActive(true);
+            popup.transform.localScale = Vector3.zero;
+            popup.transform.SetParent(GameObject.Find("Canvas").transform, false);
+            popup.GetComponent<Popup>().Open();
+            itemInfoUI = popup.GetComponent<ItemInfoUI>();
+            if(isPet)
+                itemInfoUI.Load(DataHolder.GetPet(itemId));
+            else
+                itemInfoUI.Load(DataHolder.GetItem(itemId));
         }
      }
 

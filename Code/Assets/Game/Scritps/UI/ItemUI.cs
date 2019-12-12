@@ -220,7 +220,10 @@ public class ItemUI : MonoBehaviour
             }else
             {
                 if (state == ItemState.Equiped)
-                    UIManager.instance.OnConfirmationShopPanel(itemId,false,false);
+                    if(DataHolder.GetItem(itemId).itemType == ItemType.Room && GameManager.instance.GetBuyItems(ItemType.Room).Count == 1){
+                        MageManager.instance.OnNotificationPopup ("You can not sell this room");
+                    }else
+                        UIManager.instance.OnConfirmationShopPanel(itemId,false,false);
                 else if (state == ItemState.Have)
                 {
 
@@ -238,5 +241,8 @@ public class ItemUI : MonoBehaviour
         isBusy = false;
     }
 
+    public void OnItemInfo(){
+        UIManager.instance.OnItemInfoPanel(itemId,isCharacter);
+    }
 
 }

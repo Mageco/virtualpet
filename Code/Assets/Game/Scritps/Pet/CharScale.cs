@@ -82,9 +82,9 @@ public class CharScale : MonoBehaviour
 		dragScale = originalScale * (1 - scalePosition.y * scaleFactor);
 		character.transform.localScale = Vector3.Lerp(dragScale,character.transform.localScale,Time.deltaTime *  3f);
 		character.agent.maxSpeed = character.data.speed * speedFactor *(1 - scalePosition.y * scaleFactor);
-		Vector3 pos = this.transform.position;
-		pos.z = scalePosition.y * 10;
-		this.transform.position = pos;
+		//Vector3 pos = this.transform.position;
+		//pos.z = scalePosition.y * 10;
+		//this.transform.position = pos;
 
 		lastPosition = this.transform.position;
     }

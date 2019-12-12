@@ -34,6 +34,8 @@ public class NotificationPopup : MonoBehaviour {
 	}
 
 	public void Close(){
+		if(UIManager.instance != null && UIManager.instance.notificationText.Contains(this.description.text))
+			UIManager.instance.notificationText.Remove(this.description.text);
 		GameObject.Destroy(this.gameObject);
 	}
 }

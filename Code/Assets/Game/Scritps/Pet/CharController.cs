@@ -1392,8 +1392,8 @@ public class CharController : MonoBehaviour
             }else if(col.tag == "Toilet"){
                 enviromentType = EnviromentType.Toilet;
             }
-            if(enviromentType != EnviromentType.Room)
-                GameManager.instance.CheckEnviroment(this,enviromentType);
+            //if(enviromentType != EnviromentType.Room)
+            //    GameManager.instance.CheckEnviroment(this,enviromentType);
             dropPosition.y = charScale.scalePosition.y + col.height;
             if(this.transform.position.x > col.transform.position.x + col.width/2 - col.edge)
             {

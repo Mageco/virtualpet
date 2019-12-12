@@ -27,7 +27,7 @@ public class CleanItem : MonoBehaviour
 	protected virtual void Update()
 	{
 		if(dirtyItem != null){
-			dirtyItem.OnClean(clean);
+			dirtyItem.OnClean(clean*Time.deltaTime);
 		}
 	}
 

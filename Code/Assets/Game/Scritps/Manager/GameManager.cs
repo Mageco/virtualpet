@@ -48,7 +48,34 @@ public class GameManager : MonoBehaviour
 
     void Update(){
 		gameTime += Time.deltaTime;
+
+
+
 	}
+
+    void LateUpdate(){
+        foreach(CharController c in petObjects){
+            Vector3 pos = c.transform.position;
+            pos.z = (int)(c.charScale.scalePosition.y * 10);
+            c.transform.position = pos;
+        }
+
+        bool isDone = false;
+        while(!isDone){
+            isDone = true;
+
+            foreach(CharController c in petObjects){
+                foreach(CharController c1 in petObjects){
+                    if(c != c1 && c.transform.position.z == c1.transform.position.z){
+                        Vector3 pos = c.transform.position;
+                        pos.z -= 1;
+                        c.transform.position = pos;
+                        isDone = false;
+                    }
+                }
+            }
+        }
+    }
 
     public PlayerData GetPlayer(){
         return myPlayer;
@@ -350,6 +377,16 @@ public class GameManager : MonoBehaviour
 		List<int> items = new List<int>();
 		for(int i=0;i<DataHolder.Items().GetDataCount();i++){
 			if(IsHaveItem(DataHolder.Item(i).iD)){
+				items.Add(DataHolder.Item(i).iD);
+			}
+		}
+		return items;
+	}
+
+    public List<int> GetBuyItems(ItemType type){
+		List<int> items = new List<int>();
+		for(int i=0;i<DataHolder.Items().GetDataCount();i++){
+			if(IsHaveItem(DataHolder.Item(i).iD) && DataHolder.Item(i).itemType == type){
 				items.Add(DataHolder.Item(i).iD);
 			}
 		}

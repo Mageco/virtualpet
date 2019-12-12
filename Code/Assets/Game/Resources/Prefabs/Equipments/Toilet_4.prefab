@@ -9502,13 +9502,12 @@ GameObject:
   - component: {fileID: 245765203}
   - component: {fileID: 245765205}
   - component: {fileID: 8668261432034065958}
-  - component: {fileID: 5070955873405959679}
   - component: {fileID: 7236931988392657553}
   - component: {fileID: 6198276138242514}
   - component: {fileID: 9161130333007293333}
   m_Layer: 0
   m_Name: Toilet
-  m_TagString: Untagged
+  m_TagString: Toilet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -9594,23 +9593,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &5070955873405959679
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1393902436952508220}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f6a733d7c833d435b9d5859e7e52a1a3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  skillType: 1
-  actionType: 0
-  interactType: 0
-  enviromentType: 4
-  maxTime: 10
 --- !u!114 &7236931988392657553
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14489,7 +14471,7 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0.6475735, y: 2}
