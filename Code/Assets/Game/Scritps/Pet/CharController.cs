@@ -449,6 +449,9 @@ public class CharController : MonoBehaviour
         }else if (actionType == ActionType.OnToilet)
         {
             StartCoroutine(Toilet());
+        }else if (actionType == ActionType.JumpOut)
+        {
+            StartCoroutine(JumpOut());
         }   
     }
 
@@ -585,6 +588,15 @@ public class CharController : MonoBehaviour
         Abort();
         
         actionType = ActionType.OnBath;
+    }
+
+    public void OnJumpOut()
+    {  
+        if(enviromentType == EnviromentType.Room)
+            return;
+
+        Abort();   
+        actionType = ActionType.JumpOut;
     }
 
     public void OnHealth(SickType type,float value){
@@ -1291,6 +1303,16 @@ public class CharController : MonoBehaviour
         CheckAbort();
     }
 
+    protected virtual IEnumerator JumpOut()
+    {
+        if(enviromentType == EnviromentType.Bath){
+            yield return StartCoroutine(JumpDown(-5,15,35));
+        }else if(enviromentType == EnviromentType.Bed || enviromentType == EnviromentType.Toilet){
+            yield return StartCoroutine(JumpDown(-7,10,30)); 
+        }
+        CheckAbort();
+    }
+
     
 
     protected virtual IEnumerator Sick()
@@ -1375,6 +1397,7 @@ public class CharController : MonoBehaviour
             }else if(col.tag == "Toilet"){
                 enviromentType = EnviromentType.Toilet;
             }
+            GameManager.instance.CheckEnviroment(this,enviromentType);
             dropPosition.y = charScale.scalePosition.y + col.height;
             if(this.transform.position.x > col.transform.position.x + col.width/2 - col.edge)
             {

@@ -396,6 +396,14 @@ public class GameManager : MonoBehaviour
          }
     }
 
+    public void CheckEnviroment(CharController charController, EnviromentType type){
+        foreach(CharController p in petObjects){
+            if(p != charController && p.enviromentType == type){
+                p.OnJumpOut();
+            }
+        }
+    }
+
     public void CollectSkillRewards(int skillId){
 /*         foreach(PetSkill s in GetActivePet().skills){
             if(s.skillId == skillId){

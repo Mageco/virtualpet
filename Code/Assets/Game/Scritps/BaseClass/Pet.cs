@@ -145,6 +145,12 @@ public class Pet : BaseModel
 		recoverSleep = p.recoverSleep;
 		recoverHealth = p.recoverHealth;
 		recoverHappy = p.recoverHappy;
+
+		food = Random.Range(maxFood/2,maxFood);
+		water = Random.Range(maxWater/2,maxWater);
+		sleep = Random.Range(maxSleep/2,maxSleep);
+		energy = Random.Range(maxEnergy/2,maxEnergy);
+		health = maxHealth;
 	
         LoadSkill();
     }
