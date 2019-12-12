@@ -15,16 +15,16 @@ public class BaseFloorItem : MonoBehaviour
 	Vector3 originalPosition;
 	Vector3 lastPosition;
 	public bool isBusy = false;
-	ItemObject item;
+	protected ItemObject item;
 
 	void Awake(){
 		originalPosition = this.transform.position;
 		originalScale = this.transform.localScale;
 	}
     // Start is called before the first frame update
-    void Start()
+    protected virtual void Start()
     {
-		  item = this.GetComponent<ItemObject>();
+		item = this.transform.parent.GetComponent<ItemObject>();
     }
 
     // Update is called once per frame

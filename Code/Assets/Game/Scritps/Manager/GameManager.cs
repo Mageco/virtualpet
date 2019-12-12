@@ -398,7 +398,8 @@ public class GameManager : MonoBehaviour
 
     public void CheckEnviroment(CharController charController, EnviromentType type){
         foreach(CharController p in petObjects){
-            if(p != charController && p.enviromentType == type){
+            if(p.data.iD != charController.data.iD && p.enviromentType == type){
+                Debug.Log(p.gameObject.name);
                 p.OnJumpOut();
             }
         }

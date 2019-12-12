@@ -20,7 +20,8 @@ public class CleanItem : MonoBehaviour
 	}
 
 	protected virtual void Start(){
-		item = this.GetComponent<ItemObject>();
+		item = this.transform.parent.GetComponent<ItemObject>();
+		this.clean = DataHolder.GetItem(item.itemID).value;
 	}
 
 	protected virtual void Update()

@@ -533,7 +533,7 @@ public class CharController : MonoBehaviour
         Abort();
         int ran = Random.Range(0,100);
 
-        if(ran < 50 + data.GetSkillProgress(SkillType.Call) * 5){
+        if(ran < 70 + data.GetSkillProgress(SkillType.Call) * 3){
             target = pos;
             actionType = ActionType.Call;
         }else{
@@ -767,7 +767,7 @@ public class CharController : MonoBehaviour
     {
         float time = 0;
         anim.Play(a, 0);
-        yield return new WaitForEndOfFrame();
+        //yield return new WaitForEndOfFrame();
         while (time < anim.GetCurrentAnimatorStateInfo(0).length && !isAbort)
         {
             time += Time.deltaTime;
@@ -816,7 +816,7 @@ public class CharController : MonoBehaviour
 
 
     protected IEnumerator JumpDown(float zSpeed,float ySpeed,float accelerator){
-
+        enviromentType = EnviromentType.Room;
         anim.Play("Hold", 0);
         float speed = ySpeed;
         //charScale.scalePosition = new Vector3(this.transform.position.x, this.transform.position.y - height, 0);
@@ -840,7 +840,7 @@ public class CharController : MonoBehaviour
             yield return new WaitForEndOfFrame();
         }
         charInteract.interactType = InteractType.None;
-        enviromentType = EnviromentType.Room;
+        
         yield return StartCoroutine(DoAnim("Drop"));
         
     }
@@ -916,7 +916,7 @@ public class CharController : MonoBehaviour
         }
 
         //Start Drop
-        CheckDrop(0);
+        CheckDrop();
 
         float fallSpeed = 0;
         while (charInteract.interactType == InteractType.Drop && !isAbort)
@@ -945,8 +945,10 @@ public class CharController : MonoBehaviour
             yield return new WaitForEndOfFrame();
         }
         GameManager.instance.ResetCameraTarget();
+        charInteract.interactType = InteractType.None; 
+        CheckEnviroment();  
         yield return StartCoroutine(DoAnim("Drop"));
-        CheckEnviroment();            
+                  
         CheckAbort();
     }
 
@@ -996,17 +998,11 @@ public class CharController : MonoBehaviour
 
     protected virtual IEnumerator Bath()
     {
-        int ran = Random.Range(0,100);
-        if(ran < 70 + data.GetSkillProgress(SkillType.Bath)*3){
-            yield return StartCoroutine(Wait(Random.Range(1f,2f)));
-            yield return StartCoroutine(JumpDown(-5,15,35));
-            OnLearnSkill(SkillType.Bath);  
-        }
-        else{
-            while(!isAbort){
-                yield return new WaitForEndOfFrame();
-            }   
-        }
+
+        while(!isAbort){
+            yield return new WaitForEndOfFrame();
+        }   
+        
         CheckAbort();
     }
 
@@ -1049,7 +1045,7 @@ public class CharController : MonoBehaviour
         SpawnPee(peePosition.position + new Vector3(0, 0, 50));
         while (data.Pee > 1 && !isAbort)
         {
-            data.Pee -= 0.5f;
+            data.Pee -= data.ratePee * Time.deltaTime;
             yield return new WaitForEndOfFrame();
         }
 
@@ -1084,7 +1080,7 @@ public class CharController : MonoBehaviour
         SpawnShit(shitPosition.position);
         while (data.Shit > 1 && !isAbort)
         {
-            data.Shit -= 0.5f;
+            data.Shit -= data.rateShit * Time.deltaTime;
             yield return new WaitForEndOfFrame();
         }
 
@@ -1110,8 +1106,8 @@ public class CharController : MonoBehaviour
                 yield return StartCoroutine(Wait(0.1f));
                 while (data.Food < data.maxFood && !isAbort && canEat)
                 {
-                    data.Food += 0.3f;
-                    GetFoodItem().Eat(0.3f);
+                    data.Food += data.rateFood*0.1f;
+                    GetFoodItem().Eat(data.rateFood*0.1f);
                     if (!GetFoodItem().CanEat())
                     {
                         canEat = false;
@@ -1162,8 +1158,8 @@ public class CharController : MonoBehaviour
                 yield return StartCoroutine(Wait(0.1f));
                 while (data.Water < data.maxWater && !isAbort && canDrink)
                 {
-                    data.Water += 0.5f;
-                    GetDrinkItem().Eat(0.5f);
+                    data.Water += data.rateWater*0.1f;
+                    GetDrinkItem().Eat(data.rateWater*0.1f);
                     if (!GetDrinkItem().CanEat())
                     {
                         canDrink = false;
@@ -1195,7 +1191,7 @@ public class CharController : MonoBehaviour
     protected virtual IEnumerator Bed()
     {
         int ran = Random.Range(0,100);
-        if(ran < 50 + data.GetSkillProgress(SkillType.Sleep) * 5){
+        if(ran < 70 + data.GetSkillProgress(SkillType.Sleep) * 3){
             if(data.sleep < 0.3f*data.maxSleep){
                 actionType = ActionType.Sleep;
                 Abort();
@@ -1235,7 +1231,7 @@ public class CharController : MonoBehaviour
 
         while (data.Sleep < data.maxSleep && !isAbort)
         {
-            data.Sleep += 0.01f;
+            data.Sleep += data.rateSleep;
             yield return new WaitForEndOfFrame();
         }
         
@@ -1381,8 +1377,7 @@ public class CharController : MonoBehaviour
         CheckAbort();
     }
 
-    protected void CheckDrop(float y){
-       // RaycastHit2D[] hit = Physics2D.RaycastAll(transform.position + new Vector3(0, y, 0), -Vector2.up, charScale.maxHeight);
+    protected void CheckDrop(){
         enviromentType = EnviromentType.Room;
         dropPosition = charScale.scalePosition;
         ItemCollider col = ItemManager.instance.GetItemCollider(dropPosition);
@@ -1397,7 +1392,8 @@ public class CharController : MonoBehaviour
             }else if(col.tag == "Toilet"){
                 enviromentType = EnviromentType.Toilet;
             }
-            GameManager.instance.CheckEnviroment(this,enviromentType);
+            if(enviromentType != EnviromentType.Room)
+                GameManager.instance.CheckEnviroment(this,enviromentType);
             dropPosition.y = charScale.scalePosition.y + col.height;
             if(this.transform.position.x > col.transform.position.x + col.width/2 - col.edge)
             {
@@ -1424,6 +1420,8 @@ public class CharController : MonoBehaviour
     }
 
     protected void CheckEnviroment(){
+        if(!isAbort)
+            return;
         if (enviromentType == EnviromentType.Bath)
         {
             OnBath();
@@ -1440,6 +1438,7 @@ public class CharController : MonoBehaviour
         {
             OnToilet();
         }
+
     }
 
     #endregion

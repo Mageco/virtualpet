@@ -8,6 +8,9 @@ public class BathTubeItem : MonoBehaviour
 	Animator anim;
 	bool isSoap = false;
 
+	public int itemId = 0;
+	public float clean = 10;
+
 	void Awake()
 	{
 		anim = this.GetComponent <Animator> ();
@@ -16,7 +19,8 @@ public class BathTubeItem : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        itemId = this.transform.parent.GetComponentInParent<ItemObject>().itemID;
+		clean = DataHolder.GetItem(itemId).value;
     }
 
     // Update is called once per frame
@@ -39,10 +43,11 @@ public class BathTubeItem : MonoBehaviour
 			anim.Play ("Bath_End", 0);
 			isSoap = false;
 			foreach(CharController pet in GameManager.instance.petObjects){
-				if (pet.actionType == ActionType.OnBath && pet.data.dirty >= 50) {
-					pet.data.dirty -= 50;
+				if (pet.actionType == ActionType.OnBath && pet.data.dirty >= pet.data.maxDirty * 0.3f) {
+					pet.data.dirty -= clean;
 					GameManager.instance.AddExp(5,pet.data.iD);
 					GameManager.instance.LogAchivement(AchivementType.Do_Action,ActionType.OnBath);
+					pet.OnLearnSkill(SkillType.Bath); 
 				}
 			}
 		}

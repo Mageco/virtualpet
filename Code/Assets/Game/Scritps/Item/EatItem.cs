@@ -17,6 +17,12 @@ public class EatItem : BaseFloorItem
 
 	public Transform anchor;
 
+	protected override void Start(){
+		base.Start();
+		maxfoodAmount = DataHolder.GetItem(item.itemID).value;
+	}
+
+
     // Update is called once per frame
     protected override void Update()
     {

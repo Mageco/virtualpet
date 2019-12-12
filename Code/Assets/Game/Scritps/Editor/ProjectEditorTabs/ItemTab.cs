@@ -53,7 +53,6 @@ public class ItemTab : BaseTab
             EditorGUILayout.BeginVertical();
 
             EditorGUILayout.LabelField("Item ID: " + DataHolder.Items().GetItem(selection,temcategory).iD.ToString(), GUILayout.Width(pw.mWidth * 2));
-            Debug.Log(temcategory + "  " + selection);
             DataHolder.Items().GetItem(selection,temcategory).shopOrder = EditorGUILayout.IntField("Shop Order", DataHolder.Items().GetItem(selection,temcategory).shopOrder, GUILayout.Width(pw.mWidth));
             
             for (int i = 0; i < DataHolder.Languages().GetDataCount(); i++)
@@ -137,7 +136,10 @@ public class ItemTab : BaseTab
                     DataHolder.Items().GetItem(selection,temcategory).value = EditorGUILayout.FloatField("Clean per 1 second", DataHolder.Items().GetItem(selection,temcategory).value, GUILayout.Width(pw.mWidth));
                 }else if(DataHolder.Items().GetItem(selection,temcategory).itemType == ItemType.Bath){
                     DataHolder.Items().GetItem(selection,temcategory).value = EditorGUILayout.FloatField("Clean after take bath", DataHolder.Items().GetItem(selection,temcategory).value, GUILayout.Width(pw.mWidth));
+                }else if(DataHolder.Items().GetItem(selection,temcategory).itemType == ItemType.Clean){
+                    DataHolder.Items().GetItem(selection,temcategory).value = EditorGUILayout.FloatField("Clean per second", DataHolder.Items().GetItem(selection,temcategory).value, GUILayout.Width(pw.mWidth));
                 }
+                
                 EditorGUILayout.Separator();
                 DataHolder.Items().GetItem(selection,temcategory).happy = EditorGUILayout.FloatField("+Happy", DataHolder.Items().GetItem(selection,temcategory).happy, GUILayout.Width(pw.mWidth));
                 DataHolder.Items().GetItem(selection,temcategory).health = EditorGUILayout.FloatField("+Health", DataHolder.Items().GetItem(selection,temcategory).health, GUILayout.Width(pw.mWidth));
