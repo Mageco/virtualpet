@@ -105,17 +105,20 @@ public class CameraController : MonoBehaviour
 
 
 			if (this.target) {
+				float x = this.transform.position.x;
+				float y = this.transform.position.y;
+				if(this.target.position.x < this.transform.position.x - width * 0.7f || this.target.position.x > this.transform.position.x + width * 0.7f)
+					x = Mathf.Lerp (this.transform.position.x, target.position.x + offset.x, damping * Time.deltaTime);
 
-				if (isBound) {
-					float x = Mathf.Lerp (this.transform.position.x, target.position.x + offset.x, damping * Time.deltaTime);
-					float y = Mathf.Lerp (this.transform.position.y, target.position.y + offset.y, damping * Time.deltaTime);
+				if (this.target.position.y < this.transform.position.y - height * 0.7f || this.target.position.y > this.transform.position.y + height * 0.7f) 
+					y = Mathf.Lerp (this.transform.position.y, target.position.y + offset.y, damping * Time.deltaTime);
 
-					x = Mathf.Clamp (x, boundX.x + width,boundX.y - width);
-					y = Mathf.Clamp (y, boundY.x + height, boundY.y - height);
+				x = Mathf.Clamp (x, boundX.x + width,boundX.y - width);
+				y = Mathf.Clamp (y, boundY.x + height, boundY.y - height);
 
-					this.transform.position = new Vector3 (x, y, this.transform.position.z);
+				this.transform.position = new Vector3 (x, y, this.transform.position.z);
 
-				}
+				
 			}
 		
 			else {

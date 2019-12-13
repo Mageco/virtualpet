@@ -14,10 +14,10 @@ public class GameManager : MonoBehaviour
     public GameType gameType = GameType.House;
 
     //Testing
-    public int addExp = 0;
     public bool isLoad = false;
     
     public GameObject expPrefab;
+    public GameObject coinPrefab;
 
     public bool isTest = false;
 
@@ -104,7 +104,6 @@ public class GameManager : MonoBehaviour
     {
         Pet p = new Pet(itemId);
         p.itemState = ItemState.Have;
-        p.Exp +=addExp;
         myPlayer.pets.Add(p);
         SavePlayer();
     }
@@ -438,6 +437,16 @@ public class GameManager : MonoBehaviour
             GameObject go = GameObject.Instantiate(expPrefab,petObjects[0].transform.position,Quaternion.identity);
             go.GetComponent<ExpItem>().Load(e);
          }
+         
+    }
+
+    public void AddHappy(int e,int petId){
+        Pet p = GetPet(petId);
+        p.Happy += e;
+        if(p.Happy >= p.maxHappy){
+            GetPet(petId).Happy -= 50;
+            GameObject go = GameObject.Instantiate(coinPrefab,GetPetObject(petId).transform.position,Quaternion.identity);
+        }
     }
 
     public void CheckEnviroment(CharController charController, EnviromentType type){
@@ -498,38 +507,42 @@ public class GameManager : MonoBehaviour
         myPlayer = new PlayerData();
         myPlayer.LoadData();
 
-        AddCoin(10000);
-        AddDiamond(10000);
+        AddCoin(10);
+        AddDiamond(1);
         AddItem(17);
         AddItem(41);
         //AddItem(57);
         AddPet(0);
-        AddPet(1);
-        AddPet(2);
-        AddPet(3);
-        AddPet(4);
-        AddPet(5);
+
         
         EquipItem(17);    
         EquipItem(41);    
         //EquipItem(57);
         EquipPets();
 
+        AddItem(2);
+        AddItem(11);                
+        AddItem(8);
+        AddItem(41);
+        AddItem(58);
+        EquipItem(2);
+        EquipItem(11);                
+        EquipItem(8);
+        AddItem(4);
+        EquipItem(4); 
+        EquipItem(41);
+        EquipItem(58);
+
         
         //#if UNITY_EDITOR
         if(isTest){
-            AddItem(2);
-            AddItem(11);                
-            AddItem(8);
-            AddItem(41);
-            AddItem(58);
-            EquipItem(2);
-            EquipItem(11);                
-            EquipItem(8);
-            AddItem(4);
-            EquipItem(4); 
-            EquipItem(41);
-            EquipItem(58);
+            AddCoin(10000);
+            AddDiamond(10000);
+            AddPet(1);
+            AddPet(2);
+            AddPet(3);
+            AddPet(4);
+            AddPet(5);
         }
         //#endif
         SavePlayer();

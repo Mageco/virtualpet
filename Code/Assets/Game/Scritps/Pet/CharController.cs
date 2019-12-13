@@ -215,30 +215,36 @@ public class CharController : MonoBehaviour
         data.Pee += actionEnergyConsume;
 
         data.Dirty += data.recoverDirty;
-        data.Itchi += data.Dirty * 0.005f;
+        if (data.Dirty > data.maxDirty * 0.7f)
+            data.Itchi += (data.Dirty - data.maxDirty * 0.7f) * 0.005f;
+        
         data.Sleep -= data.recoverSleep;
 
         float deltaHealth = data.recoverHealth;
 
         if (data.Dirty > data.maxDirty * 0.95f)
-            deltaHealth -= (data.Dirty - data.maxDirty * 0.9f) * 0.005f;
+            deltaHealth -= (data.Dirty - data.maxDirty * 0.95f) * 0.005f;
 
         if (data.Pee > data.maxPee * 0.95f)
-            deltaHealth -= (data.Pee - data.maxPee * 0.9f) * 0.005f;
+            deltaHealth -= (data.Pee - data.maxPee * 0.95f) * 0.005f;
 
         if (data.Shit > data.maxShit * 0.95f)
-            deltaHealth -= (data.Shit - data.maxShit * 0.9f) * 0.005f;
+            deltaHealth -= (data.Shit - data.maxShit * 0.95f) * 0.005f;
 
         if (data.Food < data.maxFood * 0.05f)
-            deltaHealth -= (data.maxFood * 0.1f - data.Food) * 0.005f;
+            deltaHealth -= (data.maxFood * 0.05f - data.Food) * 0.005f;
 
         if (data.Water < data.maxWater * 0.05f)
-            deltaHealth -= (data.maxWater * 0.1f - data.Water) * 0.005f;
+            deltaHealth -= (data.maxWater * 0.05f - data.Water) * 0.005f;
 
         if (data.Sleep < data.maxSleep * 0.05f)
             deltaHealth -= (data.maxSleep * 0.05f - data.Sleep) * 0.01f;
 
         data.Health += deltaHealth;
+
+        if(data.Health < 0.3f * data.maxHealth){
+            data.Health -= (data.maxHealth * 0.3f - data.Health) * 0.001f;
+        }
         data.curious += 0.1f;
     }
 
@@ -1063,6 +1069,7 @@ public class CharController : MonoBehaviour
 
         if(enviromentType == EnviromentType.Toilet){
             GameManager.instance.AddExp(5,data.iD);
+            GameManager.instance.AddHappy(10,data.iD);
             GameManager.instance.LogAchivement(AchivementType.Do_Action,ActionType.OnToilet);
             LevelUpSkill(SkillType.Toilet);
             yield return StartCoroutine(JumpDown(-7,10,30));     
@@ -1098,6 +1105,7 @@ public class CharController : MonoBehaviour
 
         if(enviromentType == EnviromentType.Toilet){
             GameManager.instance.AddExp(5,data.iD);
+            GameManager.instance.AddHappy(10,data.iD);
             GameManager.instance.LogAchivement(AchivementType.Do_Action,ActionType.OnToilet);
             LevelUpSkill(SkillType.Toilet);
             yield return StartCoroutine(JumpDown(-7,10,30));     
@@ -1130,6 +1138,7 @@ public class CharController : MonoBehaviour
                 }
                 GameManager.instance.LogAchivement(AchivementType.Do_Action,ActionType.Eat);
                 GameManager.instance.AddExp(5,data.iD);
+                GameManager.instance.AddHappy(5,data.iD);
                 if(GetFoodItem() != null && GetFoodItem().GetComponent<ItemObject>() != null)
  			        GameManager.instance.LogAchivement(AchivementType.Eat,ActionType.None,GetFoodItem().GetComponent<ItemObject>().itemID);
 
@@ -1182,6 +1191,7 @@ public class CharController : MonoBehaviour
                 }
                 GameManager.instance.LogAchivement(AchivementType.Do_Action,ActionType.Drink);
                 GameManager.instance.AddExp(5,data.iD);
+                GameManager.instance.AddHappy(5,data.iD);
                 if(GetDrinkItem() != null && GetDrinkItem().GetComponent<ItemObject>() != null)
  			        GameManager.instance.LogAchivement(AchivementType.Drink,ActionType.None,GetDrinkItem().GetComponent<ItemObject>().itemID);
             }else{
@@ -1248,7 +1258,8 @@ public class CharController : MonoBehaviour
         }
         
         if(enviromentType == EnviromentType.Bed){
-            GameManager.instance.AddExp(5,data.iD);
+            GameManager.instance.AddExp(20,data.iD);
+            GameManager.instance.AddHappy(20,data.iD);
             GameManager.instance.LogAchivement(AchivementType.Do_Action,ActionType.Sleep);
             LevelUpSkill(SkillType.Sleep);
             yield return StartCoroutine(JumpDown(-7,10,30)); 
@@ -1377,7 +1388,7 @@ public class CharController : MonoBehaviour
         Debug.Log("Itchi");
         while (data.itchi > 0.5 * data.maxItchi && !isAbort)
         {
-            data.itchi -= 0.1f;
+            data.itchi -= 1f;
             yield return new WaitForEndOfFrame();
         }
         CheckAbort();

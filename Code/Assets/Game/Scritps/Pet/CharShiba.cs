@@ -31,6 +31,7 @@ public class CharShiba : CharController
                 }
                 GameManager.instance.LogAchivement(AchivementType.Do_Action,ActionType.Eat);
                 GameManager.instance.AddExp(5,data.iD);
+                GameManager.instance.AddHappy(5,data.iD);
                 if(GetFoodItem() != null && GetFoodItem().GetComponent<ItemObject>() != null)
  			        GameManager.instance.LogAchivement(AchivementType.Eat,ActionType.None,GetFoodItem().GetComponent<ItemObject>().itemID);
 
@@ -94,6 +95,7 @@ public class CharShiba : CharController
                 }
                 GameManager.instance.LogAchivement(AchivementType.Do_Action,ActionType.Drink);
                 GameManager.instance.AddExp(5,data.iD);
+                GameManager.instance.AddHappy(5,data.iD);
                 if(GetDrinkItem() != null && GetDrinkItem().GetComponent<ItemObject>() != null)
  			        GameManager.instance.LogAchivement(AchivementType.Drink,ActionType.None,GetDrinkItem().GetComponent<ItemObject>().itemID);
             }else{

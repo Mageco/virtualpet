@@ -74,7 +74,7 @@ namespace Lean.Touch
 
 			// Shift this transform by the change in delta
 			//transform.localPosition = oldScale + remainingScale - newRemainingScale;
-			Camera.orthographicSize = Mathf.Clamp(oldScale + remainingScale - newRemainingScale,minSize,maxSize);
+			Camera.orthographicSize = Mathf.Clamp(oldScale - remainingScale + newRemainingScale,minSize,maxSize);
 
 			// Update remainingDelta with the dampened value
 			remainingScale = newRemainingScale;

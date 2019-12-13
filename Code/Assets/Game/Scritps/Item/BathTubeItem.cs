@@ -46,6 +46,7 @@ public class BathTubeItem : MonoBehaviour
 				if (pet.actionType == ActionType.OnBath && pet.data.dirty >= pet.data.maxDirty * 0.3f) {
 					pet.data.dirty -= clean;
 					GameManager.instance.AddExp(5,pet.data.iD);
+					GameManager.instance.AddHappy(15,pet.data.iD);
 					GameManager.instance.LogAchivement(AchivementType.Do_Action,ActionType.OnBath);
 					pet.OnLearnSkill(SkillType.Bath); 
 				}

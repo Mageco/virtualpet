@@ -10,11 +10,13 @@ public class ClockItem : MonoBehaviour
     public GameObject minutes;
     public GameObject second;
     float time = 0;
+    Animator animator;
 
 
     // Start is called before the first frame update
     void Start()
     {
+        animator = this.GetComponent<Animator>();
         LoadTime();
     }
 
@@ -32,11 +34,22 @@ public class ClockItem : MonoBehaviour
 
     void LoadTime(){        
         DateTime time = DateTime.Now;
-        float h = -time.Hour * 30f;
-        float m = -time.Minute * 6f;
         float s = -time.Second * 6f;
+        float m = -time.Minute * 6f - time.Second/60;
+        float h = -time.Hour * 30f - time.Minute/2;
+        
+        
         hour.transform.rotation = Quaternion.Euler(new Vector3(0,0,h));
         minutes.transform.rotation = Quaternion.Euler(new Vector3(0,0,m));
         second.transform.rotation = Quaternion.Euler(new Vector3(0,0,s));
+        if(m == 0 && s == 0){
+            Active();
+        }
+    }
+
+    void Active(){
+        if(animator != null){
+            animator.Play("Active",0);
+        }
     }
 }

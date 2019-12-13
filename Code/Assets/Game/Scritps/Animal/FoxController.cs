@@ -8,12 +8,15 @@ public class FoxController : AnimalController
     public ChickenController target;
     public ChickenController[] targets;
 
+    CircleCollider2D collider2D;
+
     public Vector3 fleePoint;
 
     protected override void Load(){
         speed = maxSpeed/2f;
         targets = GameObject.FindObjectsOfType<ChickenController>();
         fleePoint = agent.transform.position;
+        collider2D = this.GetComponent<CircleCollider2D>();
     }
 
     protected override void Think()
@@ -68,6 +71,7 @@ public class FoxController : AnimalController
             Minigame.instance.UpdateLive();
             GameManager.instance.LogAchivement(AchivementType.Dissmiss_Animal,ActionType.None,-1,animalType);
         }
+        collider2D.enabled = false;
         //Camera.main.GetComponent<CameraShake>().Shake();
         
     }
@@ -108,6 +112,7 @@ public class FoxController : AnimalController
 
     IEnumerator Seek()
     {
+        collider2D.enabled = true;
         GetTarget();
         agent.maxSpeed = this.maxSpeed;
         if(target == null){
