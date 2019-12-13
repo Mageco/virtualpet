@@ -568,7 +568,7 @@ public class CharController : MonoBehaviour
     {
         if(actionType == ActionType.Sick){
             UIManager.instance.OnQuestNotificationPopup("Bạn cần cho thú cưng uống thuốc");
-            return;
+            //return;
         }
             
         Abort();
@@ -601,9 +601,9 @@ public class CharController : MonoBehaviour
 
     public void OnHealth(SickType type,float value){
         if(type == SickType.Injured){
-            data.Damage += value * Time.deltaTime;
+            data.Damage += value;
         }else if(type ==SickType.Sick){
-            data.Health += value * Time.deltaTime;
+            data.Health += value;
         }
     }
 
@@ -892,7 +892,10 @@ public class CharController : MonoBehaviour
         charInteract.interactType = InteractType.Drag;
         enviromentType = EnviromentType.Room;
         GameManager.instance.SetCameraTarget(this.gameObject);
-        anim.Play("Hold", 0);
+        if(data.Health < 0.1f * data.maxHealth)
+            anim.Play("Sick",0);
+        else
+            anim.Play("Hold", 0);
         
         while (charInteract.interactType == InteractType.Drag)
         {
@@ -946,9 +949,18 @@ public class CharController : MonoBehaviour
         }
         GameManager.instance.ResetCameraTarget();
         charInteract.interactType = InteractType.None; 
-        CheckEnviroment();  
-        yield return StartCoroutine(DoAnim("Drop"));
-                  
+        
+
+        if(data.Health < 0.1f * data.maxHealth)
+        {
+            actionType = ActionType.Sick;
+            isAbort = true;
+        }else{
+            CheckEnviroment();
+            yield return StartCoroutine(DoAnim("Drop"));
+        }
+            
+    
         CheckAbort();
     }
 
@@ -1315,7 +1327,7 @@ public class CharController : MonoBehaviour
     {
         anim.Play("Sick", 0);
         Debug.Log("Sick");
-        while (data.health < 0.1f * data.maxHealth && !isAbort)
+        while (data.health < 0.5f * data.maxHealth && !isAbort)
         {
             yield return new WaitForEndOfFrame();
         }

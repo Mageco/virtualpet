@@ -175,6 +175,7 @@ GameObject:
   - component: {fileID: 23748783}
   - component: {fileID: 23748782}
   - component: {fileID: 23748781}
+  - component: {fileID: 23748784}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -247,6 +248,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &23748784
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 23748780}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 866636aee3edb4a278d5ce5d85d001d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shakeForce: 0.01
 --- !u!1 &48250433
 GameObject:
   m_ObjectHideFlags: 0
@@ -3809,6 +3823,7 @@ MonoBehaviour:
     type: 3}
   confirmBuyShopPrefab: {fileID: 4039681933990909816, guid: 9aa96c88e7374984db2401080f21ec1b,
     type: 3}
+  itemInfoPrefab: {fileID: 0}
   coinText: {fileID: 65223674}
   diamonText: {fileID: 949322702}
   achivementPanel: {fileID: 0}
@@ -3816,6 +3831,7 @@ MonoBehaviour:
   profilePrefab: {fileID: 1691884810931847932, guid: 669836cfa303042bf80089923bfe454d,
     type: 3}
   profileAnchor: {fileID: 148552542}
+  notificationText: []
   doubleClickEffect: {fileID: 4894337678173227654, guid: 77b0a101719694ca8a48aa65aa6c84ce,
     type: 3}
 --- !u!4 &1311712182 stripped
@@ -3963,7 +3979,7 @@ PrefabInstance:
     - target: {fileID: 6049789912385570691, guid: 4a4403127d6de794d9bbd4b8a6e78d77,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4566914726329281536, guid: 4a4403127d6de794d9bbd4b8a6e78d77,
         type: 3}
