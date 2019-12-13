@@ -4,8 +4,9 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using PolyNav;
 
-public class CleanRobotItem : CleanItem
+public class CleanRobotItem : MonoBehaviour
 {
+	public float clean = 1f;
     public float initZ = -6;
 	public float scaleFactor = 0.05f;
 	Vector3 originalScale;
@@ -17,23 +18,29 @@ public class CleanRobotItem : CleanItem
 	public bool isAbort = false;
 	public float speed = 10;
 
-	AnimalState state = AnimalState.None;
+	public AnimalState state = AnimalState.None;
 
 	Direction direction = Direction.R;
 
 	ItemDirty dirtyTarget;
+
+
+	protected Animator anim;
+
+	protected ItemObject item;
 	int count = 0;
 	
 
-	protected override void Awake(){
-		base.Awake();
+	protected void Awake(){
+		anim = this.GetComponent<Animator>();
 		originalPosition = this.transform.position;
 		originalScale = this.transform.localScale;
 	}
     // Start is called before the first frame update
-    protected override void Start()
+    protected void Start()
     {
-		base.Start();
+		item = this.transform.parent.GetComponent<ItemObject>();
+		this.clean = DataHolder.GetItem(item.itemID).value;
 		LoadPrefab();
     }
 
@@ -54,9 +61,8 @@ public class CleanRobotItem : CleanItem
 
 
     // Update is called once per frame
-    protected override void Update()
+    protected void Update()
     {
-		base.Update();
         if(state == AnimalState.None)
         {
             Think();
@@ -137,9 +143,9 @@ public class CleanRobotItem : CleanItem
 	IEnumerator Hold(){
 		anim.Play("Clean_" + direction.ToString(),0);
 		float time = 0;
-		while(dirtyItem != null && time < 10 && !isAbort){
+		while(dirtyTarget != null && time < 10 && !isAbort){
 			time += Time.deltaTime;
-			dirtyItem.OnClean(clean);
+			dirtyTarget.OnClean(clean * Time.deltaTime);
 			yield return new WaitForEndOfFrame();
 		}
 		if(!isAbort){
@@ -267,12 +273,6 @@ public class CleanRobotItem : CleanItem
             n++;
         }
         target = pos;
-	}
-
-	public override void OnActive(){
-	}
-
-	public override void Deactive(){
 	}
 
 	private bool IsPointerOverUIObject() {

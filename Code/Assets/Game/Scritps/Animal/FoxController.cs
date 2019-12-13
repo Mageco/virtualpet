@@ -51,27 +51,25 @@ public class FoxController : AnimalController
     }
 
 
-    public void OnTap(Vector3 pos){
-        if(pos.x > this.transform.position.x - 6 && pos.x < this.transform.position.x + 6 && 
-        pos.y > this.transform.position.y - 6 && pos.y < this.transform.position.y + 6 ){
-            if(state == AnimalState.Seek){
-                agent.Stop();
-                Debug.Log("Hit");
-                isAbort = true;
-                state = AnimalState.Hit;
-                GameManager.instance.LogAchivement(AchivementType.Dissmiss_Animal,ActionType.None,-1,animalType);
-            }else if(state == AnimalState.Run){
-                agent.Stop();
-                state = AnimalState.Hit;
-                isAbort = true;
-                target.OffCached();
-                target.transform.position = this.transform.position;
-                target.agent.transform.position = this.transform.position;
-                Minigame.instance.UpdateLive();
-                GameManager.instance.LogAchivement(AchivementType.Dissmiss_Animal,ActionType.None,-1,animalType);
-            }
-            Camera.main.GetComponent<CameraShake>().Shake();
+    void OnMouseUp(){
+        if(state == AnimalState.Seek){
+            agent.Stop();
+            Debug.Log("Hit");
+            isAbort = true;
+            state = AnimalState.Hit;
+            GameManager.instance.LogAchivement(AchivementType.Dissmiss_Animal,ActionType.None,-1,animalType);
+        }else if(state == AnimalState.Run){
+            agent.Stop();
+            state = AnimalState.Hit;
+            isAbort = true;
+            target.OffCached();
+            target.transform.position = this.transform.position;
+            target.agent.transform.position = this.transform.position;
+            Minigame.instance.UpdateLive();
+            GameManager.instance.LogAchivement(AchivementType.Dissmiss_Animal,ActionType.None,-1,animalType);
         }
+        //Camera.main.GetComponent<CameraShake>().Shake();
+        
     }
 
     public override void OnFlee(){

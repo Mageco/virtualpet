@@ -69,12 +69,12 @@ public class GameManager : MonoBehaviour
                     if(c != c1 && c.transform.position.z == c1.transform.position.z){
                         if(c.transform.position.y >= c1.transform.position.y){
                             Vector3 pos = c.transform.position;
-                            pos.z -= 2;
+                            pos.z -= 1;
                             c.transform.position = pos;
                             isDone = false;
                         }else{
                             Vector3 pos = c1.transform.position;
-                            pos.z -=2;
+                            pos.z -=1;
                             c1.transform.position =pos;
                             isDone = false;
                         }
