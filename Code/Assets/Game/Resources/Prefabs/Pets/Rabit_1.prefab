@@ -154,6 +154,7 @@ MonoBehaviour:
   scaleFactor: 0.05
   height: 0
   scalePosition: {x: 0, y: 0, z: 0}
+  speedFactor: 1
 --- !u!114 &5352923388240651476
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -203,19 +204,13 @@ MonoBehaviour:
     buyPrice: 0
     priceType: 1
     itemState: 0
-    petSmall: 
-    petMiddle: 
     petBig: 
-    petMiniGame1: 
-    levelRequire: 0
     isAvailable: 1
-    level: 1
-    exp: 0
     skills: []
     petName: 
     speed: 20
-    weight: 0
-    strength: 0
+    level: 1
+    exp: 0
     intelligent: 10
     food: 50
     water: 50
@@ -230,13 +225,16 @@ MonoBehaviour:
     itchi: 50
     fear: 0
     curious: 70
-    basicEnergyConsume: 0.05
-    actionEnergyConsume: 0
-    healthConsume: 0.01
-    staminaConsume: 0.001
-    dirtyFactor: 0.01
-    happyConsume: 0.01
-    sleepConsume: 0.05
+    rateFood: 10
+    rateWater: 10
+    rateSleep: 0.5
+    recoverSleep: 0.1
+    ratePee: 10
+    rateShit: 10
+    recoverDirty: 0.1
+    recoverHealth: 0
+    recoverEnergy: 0
+    recoverHappy: 0
     maxFood: 100
     maxWater: 100
     maxShit: 100
@@ -459,7 +457,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 5, y: 2}
+  m_Size: {x: 3, y: 2}
   m_EdgeRadius: 0
 --- !u!1 &4587506918459263772
 GameObject:
@@ -664,7 +662,6 @@ MonoBehaviour:
   - {fileID: 3528762019308074240, guid: 6c16ec995c6dc45c98d3da93ac8b19be, type: 3}
   - {fileID: 3528762019308074240, guid: 32ce56ecb854c4c53a0c34ba3289f1f9, type: 3}
   - {fileID: 3528762019308074240, guid: 0a2916cb820c64cf59238dd20487b6e2, type: 3}
-  maxCount: 0
   spawnPoints:
   - {fileID: 1031480627119977810}
   - {fileID: 8058343549059659607}

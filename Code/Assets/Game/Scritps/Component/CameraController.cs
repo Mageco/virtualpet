@@ -101,7 +101,7 @@ public class CameraController : MonoBehaviour
 		height = Camera.main.orthographicSize;
 		width = height * Screen.width / Screen.height;
 
-		Camera.main.orthographicSize = Mathf.Lerp (Camera.main.orthographicSize, orthographicsize, damping * Time.deltaTime);
+		//Camera.main.orthographicSize = Mathf.Lerp (Camera.main.orthographicSize, orthographicsize, damping * Time.deltaTime);
 
 
 			if (this.target) {

@@ -67,10 +67,17 @@ public class GameManager : MonoBehaviour
             foreach(CharController c in petObjects){
                 foreach(CharController c1 in petObjects){
                     if(c != c1 && c.transform.position.z == c1.transform.position.z){
-                        Vector3 pos = c.transform.position;
-                        pos.z -= 1;
-                        c.transform.position = pos;
-                        isDone = false;
+                        if(c.transform.position.y >= c1.transform.position.y){
+                            Vector3 pos = c.transform.position;
+                            pos.z -= 1;
+                            c.transform.position = pos;
+                            isDone = false;
+                        }else{
+                            Vector3 pos = c1.transform.position;
+                            pos.z -=1;
+                            c1.transform.position =pos;
+                            isDone = false;
+                        }
                     }
                 }
             }

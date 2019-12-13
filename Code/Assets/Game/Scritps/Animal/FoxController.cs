@@ -52,7 +52,6 @@ public class FoxController : AnimalController
 
 
     void OnMouseUp(){
-       
         if(state == AnimalState.Seek){
             agent.Stop();
             Debug.Log("Hit");
@@ -60,7 +59,7 @@ public class FoxController : AnimalController
             state = AnimalState.Hit;
             GameManager.instance.LogAchivement(AchivementType.Dissmiss_Animal,ActionType.None,-1,animalType);
         }else if(state == AnimalState.Run){
-             agent.Stop();
+            agent.Stop();
             state = AnimalState.Hit;
             isAbort = true;
             target.OffCached();
@@ -69,6 +68,8 @@ public class FoxController : AnimalController
             Minigame.instance.UpdateLive();
             GameManager.instance.LogAchivement(AchivementType.Dissmiss_Animal,ActionType.None,-1,animalType);
         }
+        //Camera.main.GetComponent<CameraShake>().Shake();
+        
     }
 
     public override void OnFlee(){
