@@ -72,6 +72,8 @@ namespace MageApi {
 		public const string API_BUY_GAME_CHARACTER_ITEM = "BuyGameCharacterItem";
 		public const string API_GET_AVAILABLE_GAME_CHARACTER_ITEMS = "GetAvailableGameCharacterItems";
 
+		public const string API_SEND_GAME_USER_ACTION_LOG = "SendGameUserActionLog";
+
 		//defines Login method
 		public const string LOGIN_DEVICE_UUID = "0";
 		public const string LOGIN_FACEBOOK = "1";

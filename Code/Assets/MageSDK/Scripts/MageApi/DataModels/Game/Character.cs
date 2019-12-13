@@ -43,7 +43,7 @@ namespace Mage.Models.Game{
 			}
 
 			if (!found) {
-				character_datas.Add (data);
+				character_datas.Add (data); 
 			}
 		}
 	}

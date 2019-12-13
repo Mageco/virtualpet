@@ -68,13 +68,15 @@ public class ES2Init : MonoBehaviour
 		ES2TypeManager.types[typeof(UnityEngine.AudioClip)] = new ES2_AudioClip();
 		ES2TypeManager.types[typeof(UnityEngine.GameObject)] = new ES2_GameObject();
 		ES2TypeManager.types[typeof(ActionData)] = new ES2UserType_ActionData();
+		ES2TypeManager.types[typeof(Mage.Models.Application.MageEvent)] = new ES2UserType_MageModelsApplicationMageEvent();
 		ES2TypeManager.types[typeof(Mage.Models.Game.Character)] = new ES2UserType_MageModelsGameCharacter();
 		ES2TypeManager.types[typeof(Mage.Models.Game.CharacterData)] = new ES2UserType_MageModelsGameCharacterData();
 		ES2TypeManager.types[typeof(Mage.Models.Game.CharacterItem)] = new ES2UserType_MageModelsGameCharacterItem();
+		ES2TypeManager.types[typeof(Mage.Models.Game.PetLog)] = new ES2UserType_MageModelsGamePetLog();
 		ES2TypeManager.types[typeof(Mage.Models.Users.User)] = new ES2UserType_MageModelsUsersUser();
 		ES2TypeManager.types[typeof(Mage.Models.Users.UserData)] = new ES2UserType_MageModelsUsersUserData();
 		ES2TypeManager.types[typeof(UnityEngine.Store.UserInfo)] = new ES2UserType_UnityEngineStoreUserInfo();
-		ES2TypeManager.types[typeof(Mage.Models.Application.MageEvent)] = new ES2UserType_MageModelsApplicationMageEvent();
+		ES2TypeManager.types[typeof(Mage.Models.Game.ActionLog)] = new ES2UserType_MageModelsGameActionLog();
 
 		ES2.initialised = true;
 	}

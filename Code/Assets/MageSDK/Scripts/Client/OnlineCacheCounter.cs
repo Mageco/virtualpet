@@ -29,6 +29,10 @@ namespace MageSDK.Client {
                 return false;
             }
         }
+
+        public void ResetCounter () {
+            counter = 0;
+        }
 	}
 
 }

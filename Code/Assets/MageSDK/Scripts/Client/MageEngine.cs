@@ -47,7 +47,12 @@ namespace MageSDK.Client {
 
 		private Hashtable apiCounter = new Hashtable();
 
+		private List<string> actionLogsKeyLookup = new List<string>();
+
 		private List<MageEvent> cachedEvent = new List<MageEvent>();
+
+		//private List<ActionLog> cachedActionLog = new List<ActionLog>();
+		private Hashtable cachedActionLog = new Hashtable();
 		#endregion
 
 		void Awake() {
@@ -64,7 +69,7 @@ namespace MageSDK.Client {
 				// init api cache
 				InitApiCache();
 
-				LoadEvents();
+				LoadEngineCache();
 				
 				#if PLATFORM_TEST
 					if (this.resetUserDataOnStart || !this.isWorkingOnline) {
@@ -133,18 +138,14 @@ namespace MageSDK.Client {
 			#if PLATFORM_TEST
 				if (resetUserDataOnStart) {
 					// in unity and test mode don't reuse user saved previously, always initate new user
-					Debug.Log("Load default user");
 					SetUser(defaultUser);
 				} else {
 					// if not in test mode, check the user saved in local and use the saved one
 					// if there is no user saved locally, then initate a default user
 					if (ES2.Exists (MageEngineSettings.GAME_ENGINE_USER)) {
-						Debug.Log("Load user from ES2");
 						SetUser(ES2.Load<User> (MageEngineSettings.GAME_ENGINE_USER));
-						Debug.Log("User store in ES2" + GetUser().ToJson());
 					} else {
 						SetUser(defaultUser);
-						Debug.Log("Load default user");
 					}
 				}
 			#else
@@ -186,7 +187,6 @@ namespace MageSDK.Client {
 				}
 			#endif
 
-			Debug.Log("User after login: " + GetUser().ToJson());
 			//test callback
 			OnLoginCompleteCallback();
 		}
@@ -212,8 +212,12 @@ namespace MageSDK.Client {
 
 			// check and swap version
 			if (tmp.GetUserDataInt(UserBasicData.Version) >= u.GetUserDataInt(UserBasicData.Version)) {
+				// in case local is newer, then it requires to update server with local
 				SetUser(tmp);
+				// save user datas to server
+				SaveUserDataToServer(tmp);
 			} else {
+				// in case data from server is newer, then replace local by copy from server
 				SetUser(u);
 			}
 		}
@@ -230,8 +234,7 @@ namespace MageSDK.Client {
 				UpdateUserData(new List<UserData>() {data});
 			}
 
-			this.OnEvent(MageEventType.UpdateUserData, "Update user data");
-			
+			//this.OnEvent(MageEventType.UpdateUserData, "Update user data");
 		}
 
 		///<summary>Update user data to current user. Once complete, save data to cache</summary>
@@ -260,26 +263,29 @@ namespace MageSDK.Client {
 			}
 
 			// user must logged in
-			if (!this.IsLogin()) {
-				return;
-			}
+			if (this.IsLogin()) {
+				// update user to game engine
+				#if PLATFORM_TEST
+					if (this.resetUserDataOnStart || !this.isWorkingOnline) {
+						this.SaveCacheData<User>(u, MageEngineSettings.GAME_ENGINE_USER);
+						return;	
+					}
+				#endif
 
-			// update user to game engine
-			#if PLATFORM_TEST
-				if (this.resetUserDataOnStart || !this.isWorkingOnline) {
-					this.SaveCacheData<User>(u, MageEngineSettings.GAME_ENGINE_USER);
-					return;	
+				if (!this.IsSendable("UpdateUserDataRequest")) {
+					Debug.Log("Keep api in cache: UpdateUserDataRequest");
+					if (this.resetUserDataOnStart || !this.isWorkingOnline) {
+						this.SaveCacheData<User>(u, MageEngineSettings.GAME_ENGINE_USER);
+						return;	
+					}
+				} else {
+					SaveUserDataToServer(u);
 				}
-			#endif
-
-			if (!this.IsSendable("UpdateUserDataRequest")) {
-				Debug.Log("Keep api in cache: UpdateUserDataRequest");
-				if (this.resetUserDataOnStart || !this.isWorkingOnline) {
-					this.SaveCacheData<User>(u, MageEngineSettings.GAME_ENGINE_USER);
-					return;	
-				}
 			}
+		}
 
+		private void SaveUserDataToServer(User u) {
+			
 			// save data to server
 			UpdateUserDataRequest r = new UpdateUserDataRequest ();
 			r.UserDatas = u.user_datas;
@@ -290,6 +296,9 @@ namespace MageSDK.Client {
 				(result) => {
 					Debug.Log("Success: Update user data");
 					this.SaveCacheData<User>(u, MageEngineSettings.GAME_ENGINE_USER);
+					//clear counter cache
+					ResetSendable("UpdateUserDataRequest");
+
 				},
 				(errorStatus) => {
 					Debug.Log("Error: " + errorStatus);
@@ -339,37 +348,37 @@ namespace MageSDK.Client {
 			}
 
 			// user must logged in
-			if (!this.IsLogin()) {
-				return;
+			if (IsLogin()) {
+				// update user to game engine
+				#if PLATFORM_TEST
+					if (this.resetUserDataOnStart || !this.isWorkingOnline) {
+						this.SaveCacheData<User>(u, MageEngineSettings.GAME_ENGINE_USER);
+						return;	
+					}
+				#endif
+
+				// save data to server
+				UpdateProfileRequest r = new UpdateProfileRequest (u.fullname, u.phone, u.email, u.avatar, u.notification_token);
+				
+				//call to update user data api
+				ApiHandler.instance.SendApi<UpdateProfileResponse>(
+					ApiSettings.API_UPDATE_USER_DATA, 
+					r, 
+					(result) => {
+						Debug.Log("Success: Update user profile");
+						this.SaveCacheData<User>(u, MageEngineSettings.GAME_ENGINE_USER);
+					},
+					(errorStatus) => {
+						Debug.Log("Error: " + errorStatus);
+						//do some other processing here
+					},
+					() => {
+						TimeoutHandler();
+					}
+				);
+
 			}
 
-			// update user to game engine
-			#if PLATFORM_TEST
-				if (this.resetUserDataOnStart || !this.isWorkingOnline) {
-					this.SaveCacheData<User>(u, MageEngineSettings.GAME_ENGINE_USER);
-					return;	
-				}
-			#endif
-
-			// save data to server
-			UpdateProfileRequest r = new UpdateProfileRequest (u.fullname, u.phone, u.email, u.avatar, u.notification_token);
-			
-			//call to update user data api
-			ApiHandler.instance.SendApi<UpdateProfileResponse>(
-				ApiSettings.API_UPDATE_USER_DATA, 
-				r, 
-				(result) => {
-					Debug.Log("Success: Update user profile");
-					this.SaveCacheData<User>(u, MageEngineSettings.GAME_ENGINE_USER);
-				},
-				(errorStatus) => {
-					Debug.Log("Error: " + errorStatus);
-					//do some other processing here
-				},
-				() => {
-					TimeoutHandler();
-				}
-			);
 		}
 
 		#endregion 
@@ -607,45 +616,131 @@ namespace MageSDK.Client {
 			ES2.Save(this.cachedEvent, MageEngineSettings.GAME_ENGINE_EVENT_CACHE);
 		}
 
-		private void LoadEvents(){
+		private void LoadEngineCache(){
 			if(ES2.Exists(MageEngineSettings.GAME_ENGINE_EVENT_CACHE)){
 				this.cachedEvent = ES2.LoadList<MageEvent>(MageEngineSettings.GAME_ENGINE_EVENT_CACHE);
 			} else  {
 				this.cachedEvent = new List<MageEvent>();
 			}
+
+			//testing only
+			//AddLogger<ActionLog>();
+			//AddLogger<PetLog>();
+			//load key lookup
+			if(ES2.Exists(MageEngineSettings.GAME_ENGINE_ACTION_LOGS_KEY_LOOKUP)){
+				this.actionLogsKeyLookup = ES2.LoadList<string>(MageEngineSettings.GAME_ENGINE_ACTION_LOGS_KEY_LOOKUP);
+			} else  {
+				this.actionLogsKeyLookup = new List<string>();
+			}
+
+			foreach(string key in this.actionLogsKeyLookup) {
+				if(ES2.Exists(key)){
+					List<ActionLog> tmp = ES2.LoadList<ActionLog>(key);
+					this.cachedActionLog.Add(key, tmp);
+				} else  {
+					List<ActionLog> tmp =new List<ActionLog>();
+					this.cachedActionLog.Add(key, tmp);
+				}
+			}
+
+
 		}
+
+
 		#endregion
 
-		#region  Variable
-		public void SaveVariables()
-		{
-			List <string> keys = new List<string> ();
-			List <string> values = new List<string> ();
-			foreach (DictionaryEntry entry in variables) {
-				keys.Add ((string)entry.Key);
-				values.Add ((string)entry.Value);
-			}
-			ES2.Save(keys, "variablesKey");
-			ES2.Save(values, "variablesValue");
+		#region  Action Logs
 
+		private void AddLogger<T>() where T:BaseModel {
+			if (!this.cachedActionLog.Contains(LoggerID<T>())) {
+				List<ActionLog> tmp = new List<ActionLog>();
+				this.cachedActionLog.Add(LoggerID<T>(), tmp);
+				this.apiCounter.Add("SendGameUserActionLogRequest"+LoggerID<T>(), new OnlineCacheCounter(0, 3));
+			}
 		}
 
-		public void LoadVariables()
-		{
-			List <string> keys = new List<string> ();
-			List <string> values = new List<string> ();
+		public void LogAction<T>(T actionData) where T: BaseModel {
+			if (!this.cachedActionLog.Contains(LoggerID<T>())) {
+				// add action
+				List<ActionLog> tmp = new List<ActionLog>();
+				tmp.Add(new ActionLog() {
+					action_date = DateTime.Now.ToString("dd-MM-yyyy"),
+					sequence = 1,
+					action_detail = actionData.ToJson()
+				});
+				this.cachedActionLog.Add(LoggerID<T>(), tmp);
 
-			if(ES2.Exists("variablesKey"))
-				keys = ES2.LoadList<string>("variablesKey");
-			if(ES2.Exists("variablesValue"))
-				values = ES2.LoadList<string>("variablesValue");
-
-			for (int i = 0; i < keys.Count;i++) {
-				if(i < values.Count)
-					variables.Add (keys [i], values [i]);
-
-				Debug.Log ("Load Variables " + keys [i] + " " + values [i]);
+				//init api cache counter
+				this.apiCounter.Add("SendGameUserActionLogRequest"+LoggerID<T>(), new OnlineCacheCounter(0, 3));
+				//save action
+				SaveActionsLogs<T>(tmp);
+			} else {
+				List<ActionLog> tmp = (List<ActionLog>)this.cachedActionLog[LoggerID<T>()];
+				tmp.Add(new ActionLog() {
+					action_date = DateTime.Now.ToString("dd-MM-yyyy"),
+					sequence = 1,
+					action_detail = actionData.ToJson()
+				});
+				this.cachedActionLog[LoggerID<T>()] = tmp;
+				SaveActionsLogs<T>(tmp);
 			}
+
+			SendActionLogs<T>();
+		}
+
+		private void ClearLogger<T>() where T:BaseModel {
+			List<ActionLog> tmp = new List<ActionLog>();
+			this.cachedActionLog[LoggerID<T>()] = tmp;
+			SaveActionsLogs<T>(tmp);
+		}
+
+		private string LoggerID<T>() {
+			string className = typeof(T).Name;
+			return MageEngineSettings.GAME_ENGINE_ACTION_LOGS + "_" + className;
+		}
+		
+		private List<ActionLog> GetLogger<T>() where T: BaseModel{
+			if (!this.cachedActionLog.Contains(LoggerID<T>())) {
+				AddLogger<T>();
+				return (List<ActionLog>)this.cachedActionLog[LoggerID<T>()];
+			} else {
+				return (List<ActionLog>)this.cachedActionLog[LoggerID<T>()];
+			}
+		}
+
+		private void SaveActionsLogs<T>(List<ActionLog> actionLogs) where T: BaseModel {
+			ES2.Save(actionLogs, LoggerID<T>());
+		}
+
+		private void SendActionLogs<T>() where T: BaseModel {
+
+			#if PLATFORM_TEST
+				if (this.resetUserDataOnStart || !this.isWorkingOnline) {
+					return;
+				}
+			#endif
+
+			if (!this.IsSendable("SendGameUserActionLogRequest" + LoggerID<T>())) {
+				return;
+			}
+
+			SendGameUserActionLogRequest r = new SendGameUserActionLogRequest (GetLogger<T>());
+			
+			//call to send action log api
+			ApiHandler.instance.SendApi<SendGameActionLogResponse>(
+				ApiSettings.API_SEND_GAME_USER_ACTION_LOG,
+				r, 
+				(result) => {
+					ClearLogger<T>();
+				},
+				(errorStatus) => {
+					//Debug.Log("Error: " + errorStatus);
+					//do some other processing here
+				},
+				() => {
+					TimeoutHandler();
+				}
+			);
 		}
 
 
@@ -656,6 +751,7 @@ namespace MageSDK.Client {
 			this.apiCounter.Add("UpdateUserDataRequest", new OnlineCacheCounter(0, 10));
 			this.apiCounter.Add("UpdateGameCharacterDataRequest", new OnlineCacheCounter(0, 10));
 			this.apiCounter.Add("SendUserEventListRequest", new OnlineCacheCounter(0, 10));
+			
 		}
 
 		private bool IsSendable(string apiName) {
@@ -667,6 +763,14 @@ namespace MageSDK.Client {
 			} else {
 				return true;
 			}
+		}
+
+		private void ResetSendable(string apiName) {
+			if (this.apiCounter.Contains(apiName)) {
+				OnlineCacheCounter tmp = (OnlineCacheCounter) this.apiCounter[apiName];
+				tmp.ResetCounter();
+				this.apiCounter[apiName] = tmp;
+			} 
 		}
 
 		#endregion

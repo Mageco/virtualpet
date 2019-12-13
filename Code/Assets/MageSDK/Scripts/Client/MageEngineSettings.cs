@@ -18,7 +18,9 @@ namespace MageSDK.Client {
 		public const string GAME_ENGINE_DEFAULT_CHARACTER_DATA = "DefaultCharacterData";
 		public const string GAME_ENGINE_DEFAULT_USER_DATA = "DefaultUserData";
 
-		public const string GAME_ENGINE_ACTION_LOGS = "ActionLogs";
+		public const string GAME_ENGINE_ACTION_LOGS = "MageActionLogs";
+		public const string GAME_ENGINE_ACTION_LOGS_KEY_LOOKUP = "MageActionLogsKeyLookup";
+		public const string GAME_ENGINE_ACTION_LOGS_COUNTER = "MageActionLogsCounter";
 		public const string GAME_ENGINE_VARIABLES = "Variables";
 
 		public const string GAME_ENGINE_EVENT_CACHE= "MageEventCache";
