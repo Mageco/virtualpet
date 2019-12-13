@@ -49,7 +49,7 @@ public class ConfirmBuyShopPopup : MonoBehaviour
         }else{
             question.text = "Sell this Item with";
             replacePanel.SetActive(false);
-            priceText.text = (d.buyPrice/2).ToString();
+            priceText.text = d.buyPrice.ToString();
         }        
 
         if (d.priceType == PriceType.Coin)
@@ -86,7 +86,7 @@ public class ConfirmBuyShopPopup : MonoBehaviour
             priceText.text = (d.buyPrice).ToString();
         }else{
             question.text = "Sell this Item with";
-            priceText.text = (d.buyPrice/2).ToString();
+            priceText.text = d.buyPrice.ToString();
         }        
 
         if (d.priceType == PriceType.Coin)
