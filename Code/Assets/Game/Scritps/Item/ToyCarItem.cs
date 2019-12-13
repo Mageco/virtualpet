@@ -5,6 +5,7 @@ using UnityEngine.EventSystems;
 
 public class ToyCarItem : BaseDragItem
 {
+	float time = 0;
 	protected override void OnHit(){
 		state = ItemDragState.Hited;
 		StartCoroutine(OnHitCoroutine());	
@@ -20,6 +21,7 @@ public class ToyCarItem : BaseDragItem
 		state = ItemDragState.None;	
 	}
 
+	
 	
 }
 

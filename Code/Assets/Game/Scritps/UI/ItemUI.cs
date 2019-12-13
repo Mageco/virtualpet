@@ -69,7 +69,7 @@ public class ItemUI : MonoBehaviour
             {
                 buyButton.interactable = true;
                 buttonText.text = "Sell";
-                price.text = (d.buyPrice/2).ToString();
+                price.text = (d.buyPrice).ToString();
             }
         }
         
@@ -137,7 +137,7 @@ public class ItemUI : MonoBehaviour
             {
                 buyButton.interactable = true;
                 buttonText.text = "Sell";
-                price.text = (d.buyPrice/2).ToString();
+                price.text = d.buyPrice.ToString();
             }
         }
 

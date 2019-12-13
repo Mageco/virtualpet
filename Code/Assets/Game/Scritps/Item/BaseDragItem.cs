@@ -25,6 +25,8 @@ public class BaseDragItem : MonoBehaviour
 	public Vector3 scalePosition = Vector3.zero;
 	Vector3 lastPosition = Vector3.zero;
 
+    float touchTime = 0;
+
     // Start is called before the first frame update
     protected virtual void Start()
     {

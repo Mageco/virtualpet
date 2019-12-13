@@ -458,7 +458,10 @@ public class CharController : MonoBehaviour
         }else if (actionType == ActionType.JumpOut)
         {
             StartCoroutine(JumpOut());
-        }   
+        }else if (actionType == ActionType.Supprised)
+        {
+            StartCoroutine(Supprised());
+        }      
     }
 
     #endregion
@@ -580,6 +583,14 @@ public class CharController : MonoBehaviour
         Abort();
         charInteract.interactType = InteractType.Drag;
         actionType = ActionType.Hold;
+    }
+
+    public virtual void OnSupprised(){
+        if(actionType == ActionType.Hold || actionType == ActionType.Sick)
+            return;
+
+        Abort();
+        actionType  = ActionType.Supprised;
     }
 
     public virtual void OnEat(){
@@ -882,14 +893,11 @@ public class CharController : MonoBehaviour
 
     protected virtual IEnumerator Mouse()
     {
-        agent.maxSpeed = data.speed * 1.5f;
-        anim.speed = 1.5f;
         while(GetMouse() != null && GetMouse().state != MouseState.Idle && !isAbort){
             agent.SetDestination(GetMouse().transform.position);
             anim.Play("Run_Angry_" + this.direction.ToString(), 0);
             yield return StartCoroutine(Wait(0.1f));
         }
-        agent.maxSpeed = data.speed;
         CheckAbort();
     }
 
@@ -982,8 +990,10 @@ public class CharController : MonoBehaviour
 
     protected virtual IEnumerator Discover()
     {
+        /*
         if (data.curious > data.maxCurious * 0.4f)
         {
+            
             int ran1 = Random.Range(0,100);
             Vector3 t = GetRandomPoint(PointType.Patrol).position;
             if(ran1 < 5 && GetRandomPoint(PointType.Eat) != null){
@@ -1010,7 +1020,28 @@ public class CharController : MonoBehaviour
             yield return StartCoroutine(RunToPoint());
             yield return StartCoroutine(DoAnim("Idle_" + direction.ToString())) ;
             data.curious -= 10;                
+        }*/
+        CharController t = null;
+        foreach(CharController p in GameManager.instance.petObjects){
+            if(p != this && p.enviromentType == EnviromentType.Room){
+                t = p;
+            }
         }
+        if(t != null){
+            while(t != null && Vector2.Distance(this.transform.position,t.transform.position) > 3 && !isAbort){
+                agent.SetDestination(t.transform.position + new Vector3(6,0,0));
+                anim.Play("Run_" + this.direction.ToString(), 0);
+                //charScale.speedFactor = 0.5f;
+                yield return new WaitForEndOfFrame();
+            }
+            if(t != null)
+                t.OnSupprised();
+            yield return StartCoroutine(DoAnim("Tease"));
+            data.curious -=40;        
+            target = GetRandomPoint(PointType.Patrol).position;
+            yield return StartCoroutine(RunToPoint());
+        }
+        
         CheckAbort();
     }
 
@@ -1389,6 +1420,14 @@ public class CharController : MonoBehaviour
         while (data.itchi > 0.5 * data.maxItchi && !isAbort)
         {
             data.itchi -= 1f;
+            yield return new WaitForEndOfFrame();
+        }
+        CheckAbort();
+    }
+
+    protected virtual IEnumerator Supprised(){
+        anim.Play("Teased",0);
+        while(!isAbort){
             yield return new WaitForEndOfFrame();
         }
         CheckAbort();
