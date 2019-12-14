@@ -18,7 +18,9 @@ public class CoinItem : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        Vector3 pos = this.transform.position;
+        pos.z = (this.transform.position.y - 2) * 10;
+        this.transform.position = pos;
     }
 
     // Update is called once per frame

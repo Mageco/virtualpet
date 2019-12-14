@@ -8,10 +8,10 @@ public class BathShowerItem : MonoBehaviour
 	public float maxDistance = 10;
 	Vector3 dragOffset;
 	Animator anim;
-	bool isDrag = false;
+	public bool isDrag = false;
 	Vector3 originalPosition;
-	bool isBusy = false;
-	bool isShower = false;
+	public bool isBusy = false;
+	public bool isShower = false;
 	public GameObject showerEffect;
     BathTubeItem bathTube;
 	CharController character;
@@ -81,6 +81,7 @@ public class BathShowerItem : MonoBehaviour
 
 		if (isBusy)
 			return;
+		GameManager.instance.SetCameraTarget(this.gameObject);
 		dragOffset = Camera.main.ScreenToWorldPoint (Input.mousePosition) - this.transform.position ;
 		isDrag = true;
 
@@ -92,6 +93,7 @@ public class BathShowerItem : MonoBehaviour
 		if(isDrag)
 			StartCoroutine (Return ());
 		isDrag = false;
+		GameManager.instance.ResetCameraTarget();
 	}
 
 	IEnumerator Return()
@@ -101,6 +103,7 @@ public class BathShowerItem : MonoBehaviour
 			this.transform.position = Vector3.Lerp (this.transform.position, originalPosition, Time.deltaTime * 5);
 			yield return new WaitForEndOfFrame ();
 		}
+		this.transform.position = originalPosition;
 		isBusy = false;
 	}
 		

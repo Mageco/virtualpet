@@ -32,7 +32,8 @@ public class ConfirmBuyShopPopup : MonoBehaviour
         
         if(isBuy){
             Item replaceItem = GameManager.instance.GetEquipedItem(d.itemType);
-            question.text = "Buy this Item with";
+            question.text = "Buy this Item with ";
+            priceText.text = d.buyPrice.ToString();
             if(replaceItem == null)
             {
                 replacePanel.SetActive(false);
@@ -49,7 +50,7 @@ public class ConfirmBuyShopPopup : MonoBehaviour
         }else{
             question.text = "Sell this Item with";
             replacePanel.SetActive(false);
-            priceText.text = (d.buyPrice/2).ToString();
+            priceText.text = d.buyPrice.ToString();
         }        
 
         if (d.priceType == PriceType.Coin)
@@ -82,11 +83,11 @@ public class ConfirmBuyShopPopup : MonoBehaviour
         icon.sprite = Resources.Load<Sprite>(url) as Sprite;
         replacePanel.SetActive(false);
         if(isBuy){
-            question.text = "Buy this Item with";
+            question.text = "Buy this Item with ";
             priceText.text = (d.buyPrice).ToString();
         }else{
-            question.text = "Sell this Item with";
-            priceText.text = (d.buyPrice/2).ToString();
+            question.text = "Sell this Item with ";
+            priceText.text = d.buyPrice.ToString();
         }        
 
         if (d.priceType == PriceType.Coin)

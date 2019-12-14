@@ -69,22 +69,33 @@ public class ItemUI : MonoBehaviour
             {
                 buyButton.interactable = true;
                 buttonText.text = "Sell";
-                price.text = (d.buyPrice/2).ToString();
+                price.text = (d.buyPrice).ToString();
+                
+                if(DataHolder.GetItem(itemId).itemType == ItemType.Room && GameManager.instance.GetBuyItems(ItemType.Room).Count == 1){
+                    buyButton.interactable = false;
+                }
             }
         }
         
+
 
         if (d.priceType == PriceType.Coin)
         {
             coinIcon.SetActive(true);
             diamonIcon.SetActive(false);
             moneyIcon.SetActive(false);
+           if(state == ItemState.OnShop && GameManager.instance.GetCoin() < (DataHolder.GetItem(itemId).buyPrice)){
+               buyButton.interactable = false;
+           }
         }
         else if (d.priceType == PriceType.Diamond)
         {
             coinIcon.SetActive(false);
             diamonIcon.SetActive(true);
             moneyIcon.SetActive(false);
+            if(state == ItemState.OnShop && GameManager.instance.GetDiamond() < (DataHolder.GetItem(itemId).buyPrice)){
+               buyButton.interactable = false;
+           }
         }
         else if (d.priceType == PriceType.Money)
         {
@@ -137,7 +148,10 @@ public class ItemUI : MonoBehaviour
             {
                 buyButton.interactable = true;
                 buttonText.text = "Sell";
-                price.text = (d.buyPrice/2).ToString();
+                price.text = d.buyPrice.ToString();
+                if(GameManager.instance.GetBuyPets().Count == 1){
+                    buyButton.interactable = false;
+                }
             }
         }
 
@@ -147,12 +161,18 @@ public class ItemUI : MonoBehaviour
             coinIcon.SetActive(true);
             diamonIcon.SetActive(false);
             moneyIcon.SetActive(false);
+           if(state == ItemState.OnShop && GameManager.instance.GetCoin() < (DataHolder.GetItem(itemId).buyPrice)){
+               buyButton.interactable = false;
+           }
         }
         else if (d.priceType == PriceType.Diamond)
         {
             coinIcon.SetActive(false);
             diamonIcon.SetActive(true);
             moneyIcon.SetActive(false);
+            if(state == ItemState.OnShop && GameManager.instance.GetDiamond() < (DataHolder.GetItem(itemId).buyPrice)){
+               buyButton.interactable = false;
+           }
         }
         else if (d.priceType == PriceType.Money)
         {
@@ -207,23 +227,17 @@ public class ItemUI : MonoBehaviour
             if(DataHolder.GetItem(itemId).itemType == ItemType.Diamond){
                 MageManager.instance.OnNotificationPopup("Tính năng mua kim cương chưa mở");
             }else if(DataHolder.GetItem(itemId).itemType == ItemType.Coin){
-                if(GameManager.instance.GetDiamond() > (DataHolder.GetItem(itemId).buyPrice)){
-                    animator.Play("Use", 0);
-                    yield return new WaitForSeconds(0.5f);
-                    GameManager.instance.AddDiamond(-DataHolder.GetItem(itemId).buyPrice);
-                    GameManager.instance.AddCoin(DataHolder.GetItem(itemId).sellPrice);
-                    animator.Play("Idle", 0);
-                    MageManager.instance.OnNotificationPopup("bạn đã mua thành công");
-                }else{
-                    MageManager.instance.OnNotificationPopup ("You have not enough Coin");
-                }
+                animator.Play("Use", 0);
+                yield return new WaitForSeconds(0.5f);
+                GameManager.instance.AddDiamond(-DataHolder.GetItem(itemId).buyPrice);
+                GameManager.instance.AddCoin(DataHolder.GetItem(itemId).sellPrice);
+                animator.Play("Idle", 0);
+                MageManager.instance.OnNotificationPopup("bạn đã mua thành công");
             }else
             {
-                if (state == ItemState.Equiped)
-                    if(DataHolder.GetItem(itemId).itemType == ItemType.Room && GameManager.instance.GetBuyItems(ItemType.Room).Count == 1){
-                        MageManager.instance.OnNotificationPopup ("You can not sell this room");
-                    }else
-                        UIManager.instance.OnConfirmationShopPanel(itemId,false,false);
+                if (state == ItemState.Equiped){
+                    UIManager.instance.OnConfirmationShopPanel(itemId,false,false);
+                }
                 else if (state == ItemState.Have)
                 {
 

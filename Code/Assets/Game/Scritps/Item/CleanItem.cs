@@ -32,11 +32,13 @@ public class CleanItem : MonoBehaviour
 	}
 
 	public virtual void OnActive(){
-		anim.Play("Active",0);
+		if(anim != null)
+			anim.Play("Active",0);
 	}
 
 	public virtual void Deactive(){
-		anim.Play("Idle",0);
+		if(anim != null)
+			anim.Play("Idle",0);
 	}
 
 

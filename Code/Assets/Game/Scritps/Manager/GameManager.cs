@@ -518,7 +518,7 @@ public class GameManager : MonoBehaviour
         EquipItem(17);    
         EquipItem(41);    
         //EquipItem(57);
-        EquipPets();
+        
 
         AddItem(2);
         AddItem(11);                
@@ -545,6 +545,8 @@ public class GameManager : MonoBehaviour
             AddPet(5);
         }
         //#endif
+
+        EquipPets();
         SavePlayer();
     }
 
