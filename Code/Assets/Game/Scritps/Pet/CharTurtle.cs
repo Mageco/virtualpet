@@ -5,5 +5,8 @@ using UnityEngine;
 public class CharTurtle : CharController
 {
     
+    public override void OnMouse()
+    {
 
+    }
 }

@@ -16,7 +16,7 @@ public class CharController : MonoBehaviour
     //[HideInInspector]
     public EnviromentType enviromentType = EnviromentType.Room;
     //[HideInInspector]
-    public Direction direction = Direction.D;
+    public Direction direction = Direction.L;
 
     //Think
     protected float dataTime = 0;
@@ -32,22 +32,17 @@ public class CharController : MonoBehaviour
 
     //Action
     public ActionType actionType = ActionType.None;
-    //public bool isEndAction = false;
-    //Anim
-    //CharAnim charAnim;
     protected Animator anim;
-    public GameObject body;
 
     //Interact
     public CharInteract charInteract;
     public CharScale charScale;
-    public bool isTouch = false;
     //Pee,Sheet
     public Transform peePosition;
     public Transform shitPosition;
     public GameObject peePrefab;
     public GameObject shitPrefab;
-    public GameObject touchObject;
+
     #endregion
 
     //Skill
@@ -90,11 +85,6 @@ public class CharController : MonoBehaviour
         agent.transform.position = this.transform.position;
         
         agent.maxSpeed = data.speed;
-        
-        if(this.transform.GetComponentInChildren<TouchPoint>(true) != null)
-            touchObject = this.transform.GetComponentInChildren<TouchPoint>(true).gameObject;
-        if(touchObject != null)
-            touchObject.SetActive(false);
 
         if(ES2.Exists("PlayTime")){
             playTime = ES2.Load<System.DateTime>("PlayTime");
@@ -203,9 +193,8 @@ public class CharController : MonoBehaviour
     protected virtual void CalculateData()
     {
         float actionEnergyConsume = data.recoverEnergy;
-        if (actionType == ActionType.Call)
-            actionEnergyConsume = 0.2f;
-        else if (actionType == ActionType.Mouse)
+
+        if (actionType == ActionType.Mouse)
             actionEnergyConsume = 1.5f;
         else if (actionType == ActionType.Discover)
         {
@@ -471,22 +460,14 @@ public class CharController : MonoBehaviour
         {
            StartCoroutine(Happy());
         }
-        else if (actionType == ActionType.Call)
-        {
-            StartCoroutine(Call());
-        } else if (actionType == ActionType.Fall)
+        else if (actionType == ActionType.Fall)
         {
             StartCoroutine(Fall());
-        }else if(actionType == ActionType.Listening){
-            StartCoroutine(Listening());
         }else if(actionType == ActionType.OnBed){
             StartCoroutine(Bed());
         }else if (actionType == ActionType.OnToilet)
         {
             StartCoroutine(Toilet());
-        }else if (actionType == ActionType.JumpOut)
-        {
-            StartCoroutine(JumpOut());
         }else if (actionType == ActionType.Supprised)
         {
             StartCoroutine(Supprised());
@@ -562,40 +543,7 @@ public class CharController : MonoBehaviour
 
 
     #region Interact
-    public virtual void OnCall(Vector3 pos)
-    {
-        if (actionType == ActionType.Hold || actionType == ActionType.Call || actionType == ActionType.Sick || actionType == ActionType.Sleep)
-        {
-            return;
-        }
-        Abort();
-        int ran = Random.Range(0,100);
-
-        if(ran < 70 + data.GetSkillProgress(SkillType.Call) * 3){
-            target = pos;
-            actionType = ActionType.Call;
-        }else{
-            actionType = ActionType.Listening;
-            OnLearnSkill(SkillType.Call);
-        }
-    }
-
-    public virtual void OnListening(float sound)
-    {
-        if (actionType == ActionType.OnBath || actionType == ActionType.Fear || actionType == ActionType.Listening || actionType == ActionType.Hold || actionType == ActionType.Sick || actionType == ActionType.Sleep)
-        {
-            return;
-        }
-
-        Abort();
-        
-        if(sound < 10){
-            actionType = ActionType.Listening;
-        }else {
-            data.Fear += sound * 5;
-            actionType = ActionType.Fear;
-        } 
-    }
+   
 
     public void SetActionType(ActionType action){
         Abort();
@@ -606,7 +554,7 @@ public class CharController : MonoBehaviour
     {
         if(actionType == ActionType.Sick){
             UIManager.instance.OnQuestNotificationPopup("Bạn cần cho thú cưng uống thuốc");
-            //return;
+            return;
         }
             
         Abort();
@@ -636,14 +584,6 @@ public class CharController : MonoBehaviour
         actionType = ActionType.OnBath;
     }
 
-    public void OnJumpOut()
-    {  
-        if(enviromentType == EnviromentType.Room)
-            return;
-
-        Abort();   
-        actionType = ActionType.JumpOut;
-    }
 
     public void OnHealth(SickType type,float value){
         if(type == SickType.Injured){
@@ -706,28 +646,10 @@ public class CharController : MonoBehaviour
             anim.Play("Shake", 0);
     }
 
-    public virtual void OnTouch()
-    {
-        if (actionType == ActionType.Call)
-        {
-            isTouch = true;
-        }
-    }
-
-    public virtual void OffTouch()
-    {
-        //if(actionType == ActionType.Call){
-        isTouch = false;
-        //}
-    }
 
 
     public virtual void OnMouse()
     {
-        int ran = Random.Range(0,100);
-        if(ran < 50)
-            return;
-
         if(actionType == ActionType.Patrol || actionType == ActionType.Rest || actionType == ActionType.Discover || actionType == ActionType.Drink || actionType == ActionType.Eat){
             Abort();
             actionType = ActionType.Mouse;
@@ -785,8 +707,6 @@ public class CharController : MonoBehaviour
         if(anim != null)
             anim.speed = 1;
         isAbort = true;
-        if(touchObject != null)
-            touchObject.SetActive(false);
     }
 
 
@@ -939,10 +859,7 @@ public class CharController : MonoBehaviour
         charInteract.interactType = InteractType.Drag;
         enviromentType = EnviromentType.Room;
         GameManager.instance.SetCameraTarget(this.gameObject);
-        if(data.Health < 0.1f * data.maxHealth)
-            anim.Play("Sick",0);
-        else
-            anim.Play("Hold", 0);
+        anim.Play("Hold", 0);
         
         while (charInteract.interactType == InteractType.Drag)
         {
@@ -996,16 +913,8 @@ public class CharController : MonoBehaviour
         }
         GameManager.instance.ResetCameraTarget();
         charInteract.interactType = InteractType.None; 
-        
-
-        if(data.Health < 0.1f * data.maxHealth)
-        {
-            actionType = ActionType.Sick;
-            isAbort = true;
-        }else{
-            CheckEnviroment();
-            yield return StartCoroutine(DoAnim("Drop"));
-        }
+        CheckEnviroment();
+        yield return StartCoroutine(DoAnim("Drop"));
             
     
         CheckAbort();
@@ -1210,9 +1119,7 @@ public class CharController : MonoBehaviour
 
             }else{
                 int ran = Random.Range(0,100);
-                if(ran < 20)
-                    yield return DoAnim("Eat");
-                else if(ran < 40)
+                if(ran < 40)
                     yield return DoAnim("Standby");
                 else{
                     SetTarget(PointType.Patrol);
@@ -1262,9 +1169,7 @@ public class CharController : MonoBehaviour
  			        GameManager.instance.LogAchivement(AchivementType.Drink,ActionType.None,GetDrinkItem().GetComponent<ItemObject>().itemID);
             }else{
                 int ran = Random.Range(0,100);
-                if(ran < 20)
-                    yield return DoAnim("Eat");
-                else if(ran < 40)
+                if(ran < 40)
                     yield return DoAnim("Standby");
                 else{
                     SetTarget(PointType.Patrol);
@@ -1319,7 +1224,7 @@ public class CharController : MonoBehaviour
 
         while (data.Sleep < data.maxSleep && !isAbort)
         {
-            data.Sleep += data.rateSleep;
+            data.Sleep += data.rateSleep * Time.deltaTime;
             yield return new WaitForEndOfFrame();
         }
         
@@ -1356,17 +1261,7 @@ public class CharController : MonoBehaviour
         CheckAbort();
     }
 
-    protected virtual IEnumerator Call()
-    {
-        yield return StartCoroutine(DoAnim("Idle_"+direction.ToString()));
-        yield return StartCoroutine(RunToPoint());
-        touchObject.SetActive(true);
-        GameManager.instance.LogAchivement(AchivementType.Do_Action,ActionType.Call);
-        anim.Play("Idle_" + direction.ToString(),0);
-        yield return StartCoroutine(Wait(Random.Range(2f,5f)));
-        CheckAbort();
-    }
-
+ 
     protected virtual IEnumerator Listening(){
         yield return StartCoroutine(DoAnim("Idle_" + direction.ToString()));
         CheckAbort();

@@ -4,5 +4,8 @@ using UnityEngine;
 
 public class CharParrot : CharController
 {
-    
+    public override void OnMouse()
+    {
+
+    }
 }

@@ -35,9 +35,6 @@ public class CharMinigame1 : CharController
 
     }
 
-    public override void OnCall(Vector3 pos){
-
-    }
 
     protected override void DoAction()
     {

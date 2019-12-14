@@ -142,11 +142,7 @@ public class MouseController : MonoBehaviour
 			if (this.transform.position.y < offset)
 				this.transform.localScale = originalScale * (1 + (-this.transform.position.y + offset) * scaleFactor);
 			else
-				this.transform.localScale = originalScale;
-
-			//if(state == MouseState.Seek && Vector2.Distance(this.body.transform.position,GameManager.instance.GetPetObject(0).transform.position) < 3){
-			//	Run();
-			//}		
+				this.transform.localScale = originalScale;	
 
 		}
 		else if(state == MouseState.Eat){
@@ -155,10 +151,6 @@ public class MouseController : MonoBehaviour
                 GetFoodItem().Eat(0.3f);
 			else 
 				Run();
-
-			//if(Vector2.Distance(this.body.transform.position,GameManager.instance.GetPetObject(0).transform.position) < 3){
-			//	Run();
-			//}	
 		}
 		else {
 			if (time > maxTimeSpawn) {
@@ -247,7 +239,13 @@ public class MouseController : MonoBehaviour
 
     #endregion
 
-
+    void OnTriggerEnter2D(Collider2D other) {
+        if (other.tag == "Player") {
+		
+			if(state == MouseState.Eat || state == MouseState.Seek)
+				Run();
+		}
+    }
 }
 
-public enum MouseState{Idle,Seek,Eat,Run}
+public enum MouseState{Idle,Seek,Eat,Run};

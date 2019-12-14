@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class CharBunny : CharController
 {
-    
+    public override void OnMouse()
+    {
+
+    }
 
 }

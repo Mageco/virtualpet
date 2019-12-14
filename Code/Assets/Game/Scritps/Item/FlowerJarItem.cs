@@ -19,7 +19,6 @@ public class FlowerJarItem : BaseDragItem
 		this.transform.position = pos;
 
 		float l = Vector2.Distance(GameManager.instance.GetPetObject(0).transform.position,this.transform.position);
-		GameManager.instance.GetPetObject(0).OnListening(9 + 30f/l);
 		yield return StartCoroutine(DoAnim("Break"));
 		GameManager.instance.ResetCameraTarget();
 		yield return new WaitForSeconds(2);
