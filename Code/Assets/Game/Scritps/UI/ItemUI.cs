@@ -161,7 +161,7 @@ public class ItemUI : MonoBehaviour
             coinIcon.SetActive(true);
             diamonIcon.SetActive(false);
             moneyIcon.SetActive(false);
-           if(state == ItemState.OnShop && GameManager.instance.GetCoin() < (DataHolder.GetItem(itemId).buyPrice)){
+           if(state == ItemState.OnShop && GameManager.instance.GetCoin() < (DataHolder.GetPet(itemId).buyPrice)){
                buyButton.interactable = false;
            }
         }
