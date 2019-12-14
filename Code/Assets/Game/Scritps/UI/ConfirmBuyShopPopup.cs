@@ -32,7 +32,8 @@ public class ConfirmBuyShopPopup : MonoBehaviour
         
         if(isBuy){
             Item replaceItem = GameManager.instance.GetEquipedItem(d.itemType);
-            question.text = "Buy this Item with";
+            question.text = "Buy this Item with ";
+            priceText.text = d.buyPrice.ToString();
             if(replaceItem == null)
             {
                 replacePanel.SetActive(false);
@@ -82,10 +83,10 @@ public class ConfirmBuyShopPopup : MonoBehaviour
         icon.sprite = Resources.Load<Sprite>(url) as Sprite;
         replacePanel.SetActive(false);
         if(isBuy){
-            question.text = "Buy this Item with";
+            question.text = "Buy this Item with ";
             priceText.text = (d.buyPrice).ToString();
         }else{
-            question.text = "Sell this Item with";
+            question.text = "Sell this Item with ";
             priceText.text = d.buyPrice.ToString();
         }        
 

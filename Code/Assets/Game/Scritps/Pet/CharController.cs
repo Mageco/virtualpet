@@ -486,10 +486,10 @@ public class CharController : MonoBehaviour
             iconStatus = IconStatus.Thirsty_2; 
         }else if(data.Water < 0.3f*data.maxWater){
             iconStatus = IconStatus.Thirsty_1;
-        }else if(data.energy < 0.1f*data.maxEnergy){
-            iconStatus = IconStatus.Tired_2;
-        }else if(data.energy < 0.3f*data.maxEnergy){
-            iconStatus = IconStatus.Tired_1;
+        //}else if(data.energy < 0.1f*data.maxEnergy){
+        //    iconStatus = IconStatus.Tired_2;
+        //}else if(data.energy < 0.3f*data.maxEnergy){
+        //    iconStatus = IconStatus.Tired_1;
         }else if(data.sleep < 0.1f*data.maxSleep){
             iconStatus = IconStatus.Sleeyp_2;
         }else if(data.sleep < 0.3f*data.maxSleep){

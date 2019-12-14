@@ -138,7 +138,7 @@ public class BaseDragItem : MonoBehaviour
         if (isDragable)
         {
 
-            anim.Play("Highlight");
+            //anim.Play("Highlight");
             Vector3 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition) - dragOffset;
             pos.z = this.transform.position.z;
             pos.z = -50;
