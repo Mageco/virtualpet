@@ -64,7 +64,7 @@ public class CharController : MonoBehaviour
     public IconStatus iconStatus = IconStatus.None;
     IconStatus lastIconStatus = IconStatus.None;
 
-
+    public List<GameObject> dirties = new List<GameObject>();
 
     #region Load
 
@@ -103,6 +103,17 @@ public class CharController : MonoBehaviour
         if(iconStatusObject != null)
             iconStatusObject.gameObject.SetActive(false);
 
+
+        //Load Dirty Effect
+        //grab all the kids and only keep the ones with dirty tags
+     
+         Transform[] allChildren = gameObject.GetComponentsInChildren<Transform>();
+     
+         foreach (Transform child in allChildren) {
+             if (child.gameObject.tag == "Dirty") {
+                 dirties.Add(child.gameObject);
+             }
+         }
 
         Load();
     }
@@ -246,6 +257,24 @@ public class CharController : MonoBehaviour
             data.Health -= (data.maxHealth * 0.3f - data.Health) * 0.001f;
         }
         data.curious += 0.1f;
+
+        //CheckDirty
+        if(data.dirty > data.maxDirty * 0.7f){
+            int n = (int)((data.dirty - data.maxDirty * 0.7f)/(data.maxDirty * 0.3f) * dirties.Count);
+            for(int i=0;i<dirties.Count;i++){
+                if(i < n)
+                    dirties[i].SetActive(true);
+                else
+                    dirties[i].SetActive(false);
+            }
+        }else
+        {
+            for(int i=0;i<dirties.Count;i++){
+                dirties[i].SetActive(false);
+            }
+        }
+
+
     }
 
 
