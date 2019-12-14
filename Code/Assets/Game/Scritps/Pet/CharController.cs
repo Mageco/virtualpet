@@ -332,7 +332,7 @@ public class CharController : MonoBehaviour
             return;
         }
 
-        if (data.Energy < data.maxEnergy * 0.3f)
+        if (data.Energy < data.maxEnergy * 0.5f)
         {
             actionType = ActionType.Rest;
             return;
@@ -695,6 +695,10 @@ public class CharController : MonoBehaviour
 
     public virtual void OnMouse()
     {
+        int ran = Random.Range(0,100);
+        if(ran < 50)
+            return;
+
         if(actionType == ActionType.Patrol || actionType == ActionType.Rest || actionType == ActionType.Discover || actionType == ActionType.Drink || actionType == ActionType.Eat){
             Abort();
             actionType = ActionType.Mouse;
@@ -990,7 +994,7 @@ public class CharController : MonoBehaviour
 
     protected virtual IEnumerator Discover()
     {
-        /*
+        
         if (data.curious > data.maxCurious * 0.4f)
         {
             
@@ -1020,7 +1024,9 @@ public class CharController : MonoBehaviour
             yield return StartCoroutine(RunToPoint());
             yield return StartCoroutine(DoAnim("Idle_" + direction.ToString())) ;
             data.curious -= 10;                
-        }*/
+        }
+
+        /*
         CharController t = null;
         foreach(CharController p in GameManager.instance.petObjects){
             if(p != this && p.enviromentType == EnviromentType.Room){
@@ -1040,7 +1046,7 @@ public class CharController : MonoBehaviour
             data.curious -=40;        
             target = GetRandomPoint(PointType.Patrol).position;
             yield return StartCoroutine(RunToPoint());
-        }
+        }*/
         
         CheckAbort();
     }
@@ -1315,7 +1321,7 @@ public class CharController : MonoBehaviour
             }
             else
                 anim.Play("Idle_" + this.direction.ToString(), 0);
-            yield return StartCoroutine(Wait(Random.Range(1, 3)));
+            yield return StartCoroutine(Wait(Random.Range(1, 10)));
             n++;
         }
         CheckAbort();
@@ -1342,7 +1348,7 @@ public class CharController : MonoBehaviour
     {
         anim.Play("Idle_" + direction.ToString(),0);
         
-        while(data.Food > 0 && data.Water > 0 && data.Sleep > 0 &&data.Energy < 0.5f * data.maxEnergy && !isAbort){
+        while(data.Food > 0 && data.Water > 0 && data.Sleep > 0 &&data.Energy < 0.9f * data.maxEnergy && !isAbort){
             data.Energy += 0.05f;
             data.Food -= 0.03f;
             data.Water -= 0.03f;
