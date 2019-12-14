@@ -9,6 +9,9 @@ public class WinPanel : MonoBehaviour
     public Text exp;
     public Text coin;
     public Text diamon;
+    public Sprite nextButton;
+    public Sprite replayButton;
+    public Sprite homeButton;
     // Start is called before the first frame update
     void Start()
     {
