@@ -139,11 +139,11 @@ public class CharShiba : CharController
 
             SetTarget(PointType.Patrol);
             if(ran1 < 30){
-                yield return StartCoroutine(WalkToPoint());
                 charScale.speedFactor = 0.4f;
+                yield return StartCoroutine(WalkToPoint());
             }else{
-                yield return StartCoroutine(RunToPoint());
                 charScale.speedFactor = 1f;
+                yield return StartCoroutine(RunToPoint());
             }
                 
             int ran = Random.Range(0, 100);
@@ -231,14 +231,13 @@ public class CharShiba : CharController
         float maxTime = Random.Range(2, 5);
 
         int ran = Random.Range(0, 100);
-        if (ran < 50)
+        if (ran < 70)
         {
-            
             anim.Play("Sit", 0);
         }
         else
         {
-            anim.Play("Lay_"+ direction.ToString(), 0);
+            anim.Play("standby"+ direction.ToString(), 0);
         }
         
 

@@ -218,6 +218,7 @@ MonoBehaviour:
     character: {fileID: 0}
   petPrefab: {fileID: 3085834020186192874, guid: f80ce286d6ee24367ac9ca792c6e06bf,
     type: 3}
+  agentRadius: 2
   enviromentType: 0
   direction: 1
   target: {x: 0, y: 0, z: 0}
@@ -226,22 +227,20 @@ MonoBehaviour:
   isAbort: 0
   isAction: 0
   actionType: 0
-  body: {fileID: 0}
   charInteract: {fileID: 0}
   charScale: {fileID: 0}
-  isTouch: 0
   peePosition: {fileID: 2182121128206862108}
   shitPosition: {fileID: 652080168262127622}
   peePrefab: {fileID: 7166089402494124037, guid: ccefdc6a159554ad68c454188f52587b,
     type: 3}
   shitPrefab: {fileID: 4887335964014193537, guid: 6cd2b87a2c28c424ba4e4c5f8d1ddfd2,
     type: 3}
-  touchObject: {fileID: 0}
   currentSkill: 0
   growUpTimeline: {fileID: 0}
   dropPosition: {x: 0, y: 0, z: 0}
   iconStatusObject: {fileID: 2608306785690330072}
   iconStatus: 0
+  dirties: []
 --- !u!1 &2097812701843304429
 GameObject:
   m_ObjectHideFlags: 0
@@ -319,7 +318,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2608306784881340585
 Transform:
   m_ObjectHideFlags: 0
@@ -348,7 +347,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shapeType: 1
   extraOffset: 0
-  invertPolygon: 0
+  invertPolygon: 1
 --- !u!61 &2608306784881340598
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -373,7 +372,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 3, y: 2}
+  m_Size: {x: 2, y: 1}
   m_EdgeRadius: 0
 --- !u!1 &2608306785690330074
 GameObject:

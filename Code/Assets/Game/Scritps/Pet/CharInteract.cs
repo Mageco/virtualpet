@@ -90,7 +90,13 @@ public class CharInteract : MonoBehaviour
                 character.OnFall();
             }
                 
-        }
+        }else if(other.tag == "Player"){
+            if(character.enviromentType == EnviromentType.Room && character.actionType != ActionType.Sick && character.actionType != ActionType.Hold && 
+            other.GetComponent<CharController>().actionType != ActionType.Hold && other.GetComponent<CharController>().enviromentType == EnviromentType.Room){
+                character.OnStop();
+            }
+
+        }
     }
 
     void OnTriggerExit2D(Collider2D other) {

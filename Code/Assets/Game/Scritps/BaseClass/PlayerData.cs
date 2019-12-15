@@ -82,7 +82,7 @@ public class PlayerAchivement : BaseModel{
 		set
 		{
 			this.amount = value;
-			if (this.amount >= DataHolder.GetAchivement(achivementId).maxProgress[level]){
+			if (DataHolder.GetAchivement(achivementId).maxProgress.Length > level && this.amount >= DataHolder.GetAchivement(achivementId).maxProgress[level]){
 				if(rewardState != RewardState.Ready)
 					rewardState = RewardState.Ready;
 			}
@@ -92,7 +92,7 @@ public class PlayerAchivement : BaseModel{
 	}
 
 	public void Check(){
-		if (this.amount >= DataHolder.GetAchivement(achivementId).maxProgress[level]){
+		if (DataHolder.GetAchivement(achivementId).maxProgress.Length > level && this.amount >= DataHolder.GetAchivement(achivementId).maxProgress[level]){
 			if(rewardState != RewardState.Ready)
 				rewardState = RewardState.Ready;
 		}

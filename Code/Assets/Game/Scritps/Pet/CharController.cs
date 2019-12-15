@@ -471,7 +471,10 @@ public class CharController : MonoBehaviour
         }else if (actionType == ActionType.Supprised)
         {
             StartCoroutine(Supprised());
-        }      
+        }else if (actionType == ActionType.Stop)
+        {
+            StartCoroutine(Stop());
+        }        
     }
 
     #endregion
@@ -646,7 +649,10 @@ public class CharController : MonoBehaviour
             anim.Play("Shake", 0);
     }
 
-
+    public virtual void OnStop(){
+        actionType = ActionType.Stop;
+        isAbort = true;
+    }
 
     public virtual void OnMouse()
     {
@@ -733,6 +739,17 @@ public class CharController : MonoBehaviour
             agent.transform.rotation = Quaternion.Euler(new Vector3(0, 0, -90));
     }
 
+    protected void LookToTarget(Vector3 target)
+    {
+        if(target.x >= this.transform.position.x){
+            direction = Direction.R;
+            SetDirection(Direction.R);
+        }else{
+            direction = Direction.L;
+            SetDirection(Direction.L);
+        }
+    }
+
     protected IEnumerator DoAnim(string a)
     {
         float time = 0;
@@ -748,7 +765,6 @@ public class CharController : MonoBehaviour
     protected IEnumerator RunToPoint()
     {
         isArrived = false;
-
         agent.SetDestination(target);
         
 
@@ -762,9 +778,7 @@ public class CharController : MonoBehaviour
     protected IEnumerator WalkToPoint()
     {
         isArrived = false;
-
         agent.SetDestination(target);
-        
 
         while (!isArrived && !isAbort)
         {
@@ -986,6 +1000,12 @@ public class CharController : MonoBehaviour
             yield return StartCoroutine(RunToPoint());
         }*/
         
+        CheckAbort();
+    }
+
+    protected virtual IEnumerator Stop(){
+        anim.Play("Idle_" + direction.ToString());
+        yield return StartCoroutine(Wait(Random.Range(1f,2f)));
         CheckAbort();
     }
 
@@ -1245,17 +1265,20 @@ public class CharController : MonoBehaviour
         int maxCount = Random.Range(2, 5);
         while (!isAbort && n < maxCount)
         {
-            SetTarget(PointType.Patrol);
-            yield return StartCoroutine(RunToPoint());
             int ran = Random.Range(0, 100);
-            if (ran < 30)
+            if(ran < 40){
+                SetTarget(PointType.Patrol);
+                yield return StartCoroutine(RunToPoint());
+            }else if (ran < 60)
             {
-                
                 anim.Play("Standby", 0);
+                yield return StartCoroutine(Wait(Random.Range(1, 10)));
             }
-            else
+            else{
                 anim.Play("Idle_" + this.direction.ToString(), 0);
-            yield return StartCoroutine(Wait(Random.Range(1, 10)));
+                yield return StartCoroutine(Wait(Random.Range(1, 10)));
+            }
+            
             n++;
         }
         CheckAbort();
@@ -1541,7 +1564,10 @@ public class CharController : MonoBehaviour
             pos = GetRandomPoint (type).position;
             n++;
         }
-        target = pos;
+        if(type == PointType.Patrol){
+            target = pos + new Vector3(Random.Range(-2f,2f),Random.Range(-2f,2f),0);
+        }else
+            target = pos + new Vector3(Random.Range(-0.5f,0.5f),Random.Range(-0.5f,0.5f),0);
 
 	}
 

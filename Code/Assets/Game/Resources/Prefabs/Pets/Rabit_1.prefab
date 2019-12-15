@@ -252,6 +252,7 @@ MonoBehaviour:
     character: {fileID: 0}
   petPrefab: {fileID: 2254588694845013441, guid: 8995e5d594d0e4cb2ab4c8709305d2ee,
     type: 3}
+  agentRadius: 3
   enviromentType: 0
   direction: 1
   target: {x: 0, y: 0, z: 0}
@@ -260,22 +261,20 @@ MonoBehaviour:
   isAbort: 0
   isAction: 0
   actionType: 0
-  body: {fileID: 0}
   charInteract: {fileID: 0}
   charScale: {fileID: 0}
-  isTouch: 0
   peePosition: {fileID: 180670366039192031}
   shitPosition: {fileID: 1568671392927770309}
   peePrefab: {fileID: 7166089402494124037, guid: ccefdc6a159554ad68c454188f52587b,
     type: 3}
   shitPrefab: {fileID: 4887335964014193537, guid: 6cd2b87a2c28c424ba4e4c5f8d1ddfd2,
     type: 3}
-  touchObject: {fileID: 0}
   currentSkill: 0
   growUpTimeline: {fileID: 0}
   dropPosition: {x: 0, y: 0, z: 0}
   iconStatusObject: {fileID: 4105941544303957275}
   iconStatus: 0
+  dirties: []
 --- !u!1 &2319549814806519279
 GameObject:
   m_ObjectHideFlags: 0
@@ -397,13 +396,13 @@ GameObject:
   - component: {fileID: 4105941545105376874}
   - component: {fileID: 4105941545105376884}
   - component: {fileID: 4105941545105376885}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Ostruct (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &4105941545105376874
 Transform:
   m_ObjectHideFlags: 0
@@ -432,7 +431,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shapeType: 1
   extraOffset: 0
-  invertPolygon: 0
+  invertPolygon: 1
 --- !u!61 &4105941545105376885
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -446,7 +445,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: -0.2}
+  m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -457,7 +456,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 3, y: 2}
+  m_Size: {x: 2, y: 1}
   m_EdgeRadius: 0
 --- !u!1 &4587506918459263772
 GameObject:

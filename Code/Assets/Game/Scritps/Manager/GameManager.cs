@@ -81,7 +81,7 @@ public class GameManager : MonoBehaviour
                     }
                 }
             }
-        }
+        } 
     }
 
     public PlayerData GetPlayer(){
