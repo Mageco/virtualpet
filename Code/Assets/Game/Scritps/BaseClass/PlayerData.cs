@@ -8,6 +8,7 @@ public class PlayerData : BaseModel
 {
     public int coin;
     public int diamond;
+	public int happy;
     public List<PlayerItem> items = new List<PlayerItem>();
     public List<Pet> pets = new List<Pet>();
 	public int[] minigameLevels = new int[1];
@@ -53,6 +54,21 @@ public class PlayerData : BaseModel
 			this.diamond = value;
 			if (this.diamond < 0)
 				this.diamond = 0;
+		}
+	}
+
+	
+    public int Happy
+	{
+		get
+		{
+			return this.happy;
+		}
+		set
+		{
+			this.happy = value;
+			if (this.happy < 0)
+				this.happy = 0;
 		}
 	}
 

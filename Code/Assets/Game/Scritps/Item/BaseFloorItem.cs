@@ -114,7 +114,7 @@ public class BaseFloorItem : MonoBehaviour
 		if(isBusy)
 			return;
 
-		if(other.tag == "Player"){
+		if(other.tag == "Pet"){
             OnCollidePet(other.GetComponent<CharController>());
 		}
 	}

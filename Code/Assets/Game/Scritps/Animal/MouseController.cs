@@ -11,7 +11,7 @@ public class MouseController : MonoBehaviour
 	public float speed;
 	public GameObject body;
 	Vector3 originalPosition;
-	public CircleCollider2D col;
+	BoxCollider2D col;
 	Vector3 lastPosition;
 
 	public float initZ = -6;
@@ -29,6 +29,7 @@ public class MouseController : MonoBehaviour
 
 	void Awake()
 	{
+		col = this.transform.GetComponentInChildren<BoxCollider2D>();
 		originalPosition = this.transform.position;
 		lastPosition = this.transform.position;
 		this.body.gameObject.SetActive (false);

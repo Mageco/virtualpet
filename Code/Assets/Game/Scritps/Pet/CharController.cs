@@ -29,6 +29,7 @@ public class CharController : MonoBehaviour
     public bool isArrived = true;
     public bool isAbort = false;
     public bool isAction = false;
+    public bool isMoving = false;
 
     //Action
     public ActionType actionType = ActionType.None;
@@ -42,6 +43,7 @@ public class CharController : MonoBehaviour
     public Transform shitPosition;
     public GameObject peePrefab;
     public GameObject shitPrefab;
+   
 
     #endregion
 
@@ -89,6 +91,8 @@ public class CharController : MonoBehaviour
         if(ES2.Exists("PlayTime")){
             playTime = ES2.Load<System.DateTime>("PlayTime");
         }
+
+        SetDirection(Direction.R);
 
         if(iconStatusObject != null)
             iconStatusObject.gameObject.SetActive(false);
@@ -356,11 +360,6 @@ public class CharController : MonoBehaviour
             return;
         }
 
-        if (data.happy < data.maxHappy * 0.1f)
-        {
-            actionType = ActionType.Sad;
-            return;
-        }
 
         if (data.curious > data.maxCurious * 0.9f)
         {
@@ -451,10 +450,6 @@ public class CharController : MonoBehaviour
         else if (actionType == ActionType.Tired)
         {
             StartCoroutine(Tired());
-        }
-        else if (actionType == ActionType.Sad)
-        {
-            StartCoroutine(Sad());
         }
         else if (actionType == ActionType.Happy)
         {
@@ -556,7 +551,17 @@ public class CharController : MonoBehaviour
     public virtual void OnHold()
     {
         if(actionType == ActionType.Sick){
-            UIManager.instance.OnQuestNotificationPopup("Bạn cần cho thú cưng uống thuốc");
+            UIManager.instance.OnQuestNotificationPopup("Thú cưng bị ốm, bạn cần cho thú cưng uống thuốc");
+            return;
+        }
+
+        if(actionType == ActionType.Injured){
+            UIManager.instance.OnQuestNotificationPopup("Thú cưng bị chấn thương, bạn cần băng bó nhé");
+            return;
+        }
+
+        if(actionType == ActionType.Shit || actionType == ActionType.Pee)
+        {
             return;
         }
             
@@ -574,7 +579,20 @@ public class CharController : MonoBehaviour
     }
 
     public virtual void OnEat(){
- 
+        if(enviromentType == EnviromentType.Room && data.Food < 0.3f * data.maxFood && 
+            (actionType == ActionType.Patrol || actionType == ActionType.Discover || actionType == ActionType.Rest)){
+            actionType = ActionType.Eat;
+            isAbort = true;
+        }
+    }
+
+    public virtual void OnDrink(){
+        if(enviromentType == EnviromentType.Room && data.Water < 0.3f * data.maxWater && 
+            (actionType == ActionType.Patrol || actionType == ActionType.Discover || actionType == ActionType.Rest)){
+            actionType = ActionType.Drink;
+            isAbort = true;
+        }
+
     }
 
     protected void OnBath()
@@ -650,8 +668,11 @@ public class CharController : MonoBehaviour
     }
 
     public virtual void OnStop(){
-        actionType = ActionType.Stop;
-        isAbort = true;
+        if(actionType != ActionType.Stop && !isArrived){
+            agent.Stop();
+            actionType = ActionType.Stop;
+            isAbort = true;
+        }
     }
 
     public virtual void OnMouse()
@@ -719,6 +740,7 @@ public class CharController : MonoBehaviour
 
     protected void SetDirection(Direction d)
     {
+        direction = d;
         if (d == Direction.D)
         {
             agent.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 180));
@@ -764,6 +786,7 @@ public class CharController : MonoBehaviour
 
     protected IEnumerator RunToPoint()
     {
+        isMoving = true;
         isArrived = false;
         agent.SetDestination(target);
         
@@ -773,10 +796,12 @@ public class CharController : MonoBehaviour
             anim.Play("Run_" + this.direction.ToString(), 0);
             yield return new WaitForEndOfFrame();
         }
+        isMoving = false;
     }
 
     protected IEnumerator WalkToPoint()
     {
+        isMoving = true;
         isArrived = false;
         agent.SetDestination(target);
 
@@ -785,6 +810,7 @@ public class CharController : MonoBehaviour
             anim.Play("Walk_" + this.direction.ToString(), 0);
             yield return new WaitForEndOfFrame();
         }
+        isMoving = false;
     }
 
     protected IEnumerator Wait(float maxT)
@@ -860,11 +886,13 @@ public class CharController : MonoBehaviour
 
     protected virtual IEnumerator Mouse()
     {
+        isMoving = true;
         while(GetMouse() != null && GetMouse().state != MouseState.Idle && !isAbort){
             agent.SetDestination(GetMouse().transform.position);
             anim.Play("Run_Angry_" + this.direction.ToString(), 0);
-            yield return StartCoroutine(Wait(0.1f));
+            yield return new WaitForEndOfFrame();
         }
+        isMoving = false;
         CheckAbort();
     }
 
@@ -1004,6 +1032,7 @@ public class CharController : MonoBehaviour
     }
 
     protected virtual IEnumerator Stop(){
+        yield return StartCoroutine(Wait(anim.GetCurrentAnimatorStateInfo(0).length));
         anim.Play("Idle_" + direction.ToString());
         yield return StartCoroutine(Wait(Random.Range(1f,2f)));
         CheckAbort();
@@ -1055,18 +1084,22 @@ public class CharController : MonoBehaviour
         
         anim.Play("Pee", 0);
         Debug.Log("Pee");
-        SpawnPee(peePosition.position + new Vector3(0, 0, 50));
+        float value = data.Pee;
+        SpawnPee(peePosition.position + new Vector3(0, 0, 50),value);
         while (data.Pee > 1 && !isAbort)
         {
             data.Pee -= data.ratePee * Time.deltaTime;
             yield return new WaitForEndOfFrame();
         }
+        
 
         if(enviromentType == EnviromentType.Toilet){
-            GameManager.instance.AddExp(5,data.iD);
-            GameManager.instance.AddHappy(10,data.iD);
-            GameManager.instance.LogAchivement(AchivementType.Do_Action,ActionType.OnToilet);
-            LevelUpSkill(SkillType.Toilet);
+            if(data.pee <= 1){
+                GameManager.instance.AddExp(10,data.iD);
+                GameManager.instance.LogAchivement(AchivementType.Do_Action,ActionType.OnToilet);
+                LevelUpSkill(SkillType.Toilet);
+            }
+
             yield return StartCoroutine(JumpDown(-7,10,30));     
         }
         
@@ -1091,18 +1124,21 @@ public class CharController : MonoBehaviour
 
         
         anim.Play("Shit", 0);
-        SpawnShit(shitPosition.position);
+        float value = data.Pee;
+        
         while (data.Shit > 1 && !isAbort)
         {
             data.Shit -= data.rateShit * Time.deltaTime;
             yield return new WaitForEndOfFrame();
         }
+        SpawnShit(shitPosition.position,value);
 
         if(enviromentType == EnviromentType.Toilet){
-            GameManager.instance.AddExp(5,data.iD);
-            GameManager.instance.AddHappy(10,data.iD);
-            GameManager.instance.LogAchivement(AchivementType.Do_Action,ActionType.OnToilet);
-            LevelUpSkill(SkillType.Toilet);
+            if(data.shit <= 1){
+                GameManager.instance.AddExp(10,data.iD);
+                GameManager.instance.LogAchivement(AchivementType.Do_Action,ActionType.OnToilet);
+                LevelUpSkill(SkillType.Toilet);
+            }
             yield return StartCoroutine(JumpDown(-7,10,30));     
         }
         CheckAbort();
@@ -1115,7 +1151,9 @@ public class CharController : MonoBehaviour
             SetTarget(PointType.Eat);
             yield return StartCoroutine(RunToPoint());
             bool canEat = true;
-            if (GetFoodItem().CanEat())
+            if (Vector2.Distance(this.transform.position, GetFoodItem().anchor.position) > 1f)
+                canEat = false;
+            if (GetFoodItem().CanEat() && canEat)
             {
                 anim.Play("Eat", 0);
                 yield return StartCoroutine(Wait(0.1f));
@@ -1131,12 +1169,12 @@ public class CharController : MonoBehaviour
                         canEat = false;
                     yield return new WaitForEndOfFrame();
                 }
-                GameManager.instance.LogAchivement(AchivementType.Do_Action,ActionType.Eat);
-                GameManager.instance.AddExp(5,data.iD);
-                GameManager.instance.AddHappy(5,data.iD);
-                if(GetFoodItem() != null && GetFoodItem().GetComponent<ItemObject>() != null)
- 			        GameManager.instance.LogAchivement(AchivementType.Eat,ActionType.None,GetFoodItem().GetComponent<ItemObject>().itemID);
-
+                if(data.Food >= data.maxFood - 1){
+                    GameManager.instance.LogAchivement(AchivementType.Do_Action,ActionType.Eat);
+                    GameManager.instance.AddExp(5,data.iD);
+                    if(GetFoodItem() != null && GetFoodItem().GetComponent<ItemObject>() != null)
+                        GameManager.instance.LogAchivement(AchivementType.Eat,ActionType.None,GetFoodItem().GetComponent<ItemObject>().itemID);
+                }
             }else{
                 int ran = Random.Range(0,100);
                 if(ran < 40)
@@ -1164,8 +1202,10 @@ public class CharController : MonoBehaviour
             
 
             bool canDrink = true;
+            if (Vector2.Distance(this.transform.position, GetDrinkItem().anchor.position) > 1f)
+                canDrink = false;
 
-            if (GetDrinkItem().CanEat())
+            if (GetDrinkItem().CanEat() && canDrink)
             {
                 
                 anim.Play("Drink", 0);
@@ -1182,11 +1222,12 @@ public class CharController : MonoBehaviour
                         canDrink = false;
                     yield return new WaitForEndOfFrame();
                 }
-                GameManager.instance.LogAchivement(AchivementType.Do_Action,ActionType.Drink);
-                GameManager.instance.AddExp(5,data.iD);
-                GameManager.instance.AddHappy(5,data.iD);
-                if(GetDrinkItem() != null && GetDrinkItem().GetComponent<ItemObject>() != null)
- 			        GameManager.instance.LogAchivement(AchivementType.Drink,ActionType.None,GetDrinkItem().GetComponent<ItemObject>().itemID);
+                if(data.Water >= data.maxWater - 1){
+                    GameManager.instance.LogAchivement(AchivementType.Do_Action,ActionType.Drink);
+                    GameManager.instance.AddExp(5,data.iD);
+                    if(GetDrinkItem() != null && GetDrinkItem().GetComponent<ItemObject>() != null)
+                        GameManager.instance.LogAchivement(AchivementType.Drink,ActionType.None,GetDrinkItem().GetComponent<ItemObject>().itemID);
+                }
             }else{
                 int ran = Random.Range(0,100);
                 if(ran < 40)
@@ -1249,10 +1290,11 @@ public class CharController : MonoBehaviour
         }
         
         if(enviromentType == EnviromentType.Bed){
-            GameManager.instance.AddExp(20,data.iD);
-            GameManager.instance.AddHappy(20,data.iD);
-            GameManager.instance.LogAchivement(AchivementType.Do_Action,ActionType.Sleep);
-            LevelUpSkill(SkillType.Sleep);
+            if(data.Sleep > data.maxSleep - 1){
+                GameManager.instance.AddExp(20,data.iD);
+                GameManager.instance.LogAchivement(AchivementType.Do_Action,ActionType.Sleep);
+                LevelUpSkill(SkillType.Sleep);
+            }
             yield return StartCoroutine(JumpDown(-7,10,30)); 
         }
 
@@ -1511,14 +1553,16 @@ public class CharController : MonoBehaviour
     #endregion
 
     #region Effect
-    protected void SpawnPee(Vector3 pos)
+    protected void SpawnPee(Vector3 pos,float value)
     {
         GameObject go = Instantiate(peePrefab, pos, Quaternion.identity);
+        go.GetComponent<ItemDirty>().maxDirty = value;
     }
 
-    protected void SpawnShit(Vector3 pos)
+    protected void SpawnShit(Vector3 pos,float value)
     {
         GameObject go = Instantiate(shitPrefab, pos, Quaternion.identity);
+        go.GetComponent<ItemDirty>().maxDirty = value;
     }
 
     protected void SpawnFly(){

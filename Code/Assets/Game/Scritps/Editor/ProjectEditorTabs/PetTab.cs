@@ -130,7 +130,6 @@ public class PetTab : BaseTab
                 DataHolder.Pet(selection).maxHealth = EditorGUILayout.FloatField("MaxHealth", DataHolder.Pet(selection).maxHealth, GUILayout.Width(pw.mWidth));
                 DataHolder.Pet(selection).recoverHealth = EditorGUILayout.FloatField("RecHealth", DataHolder.Pet(selection).recoverHealth, GUILayout.Width(pw.mWidth));
                 DataHolder.Pet(selection).recoverEnergy = EditorGUILayout.FloatField("RecEnergy", DataHolder.Pet(selection).recoverEnergy, GUILayout.Width(pw.mWidth));
-                DataHolder.Pet(selection).recoverHappy = EditorGUILayout.FloatField("RecHappy", DataHolder.Pet(selection).recoverHappy, GUILayout.Width(pw.mWidth));
 			}
 			EditorGUILayout.EndVertical(); 
 

@@ -171,7 +171,6 @@ MonoBehaviour:
   - {fileID: 3528762019308074240, guid: 6c16ec995c6dc45c98d3da93ac8b19be, type: 3}
   - {fileID: 3528762019308074240, guid: 32ce56ecb854c4c53a0c34ba3289f1f9, type: 3}
   - {fileID: 3528762019308074240, guid: 0a2916cb820c64cf59238dd20487b6e2, type: 3}
-  maxCount: 0
   spawnPoints:
   - {fileID: 683808363}
   - {fileID: 202412343}
@@ -332,7 +331,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d94555a53f07e4a959c99d3a6d31f06a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxDirty: 100
+  maxDirty: 200
+  heartPrefab: {fileID: 1052099055937570257, guid: 81d9e6058b88e4c4d8297b01f85eacb3,
+    type: 3}
 --- !u!114 &3022840183976340046
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -444,11 +445,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalScale.y
       value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 7103474854188204636, guid: 9b40af4294d4f47ba908b232a0ae57d8,
-        type: 3}
-      propertyPath: m_WasSpriteAssigned
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9b40af4294d4f47ba908b232a0ae57d8, type: 3}

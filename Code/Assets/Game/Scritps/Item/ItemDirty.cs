@@ -9,9 +9,11 @@ public class ItemDirty : MonoBehaviour
 	float dirty = 0;
 	bool isClearning = false;
 	Vector3 originalScale;
+	public GameObject heartPrefab; 
     // Start is called before the first frame update
     void Start()
     {
+		this.transform.localScale = maxDirty/100f * Vector3.one;
 		originalScale = this.transform.localScale;
 		dirty = maxDirty;
     }
@@ -19,7 +21,7 @@ public class ItemDirty : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-		this.transform.localScale = (0.5f + dirty * 0.5f / maxDirty) * originalScale;
+		this.transform.localScale = (0.5f + dirty * 0.5f / maxDirty) * Vector3.one;
 		if(isClearning){
 			OnClean(0.2f);
 		}
@@ -29,7 +31,10 @@ public class ItemDirty : MonoBehaviour
 	{
 		dirty -= clean;
 		if (dirty < 0){
-			GameManager.instance.AddCoin(5);
+			if(heartPrefab != null){
+				GameObject go = GameObject.Instantiate(heartPrefab,this.transform.position,Quaternion.identity);
+				go.GetComponent<HappyItem>().Load(5);
+			}
 			GameObject.Destroy (this.gameObject);
 		}
 			

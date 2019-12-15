@@ -6,6 +6,7 @@ public class CharShiba : CharController
 {
     #region Main Action
 
+    /*
     protected override IEnumerator Eat()
     {
         if (GetFoodItem() != null)
@@ -29,12 +30,13 @@ public class CharShiba : CharController
                         canEat = false;
                     yield return new WaitForEndOfFrame();
                 }
-                GameManager.instance.LogAchivement(AchivementType.Do_Action,ActionType.Eat);
-                GameManager.instance.AddExp(5,data.iD);
-                GameManager.instance.AddHappy(5,data.iD);
-                if(GetFoodItem() != null && GetFoodItem().GetComponent<ItemObject>() != null)
- 			        GameManager.instance.LogAchivement(AchivementType.Eat,ActionType.None,GetFoodItem().GetComponent<ItemObject>().itemID);
-
+                if(data.Food > data.maxFood - 1){
+                    GameManager.instance.LogAchivement(AchivementType.Do_Action,ActionType.Eat);
+                    GameManager.instance.AddExp(5,data.iD);
+                    if(GetFoodItem() != null && GetFoodItem().GetComponent<ItemObject>() != null)
+ 			            GameManager.instance.LogAchivement(AchivementType.Eat,ActionType.None,GetFoodItem().GetComponent<ItemObject>().itemID);
+                }
+ 
             }else{
                 int ran = Random.Range(0,100);
                 if(ran < 20)
@@ -62,8 +64,9 @@ public class CharShiba : CharController
 
         yield return new WaitForEndOfFrame();
         CheckAbort();
-    }
+    }*/
 
+    /*
     protected override IEnumerator Drink()
     {
         if (GetDrinkItem() != null)
@@ -93,11 +96,12 @@ public class CharShiba : CharController
                         canDrink = false;
                     yield return new WaitForEndOfFrame();
                 }
-                GameManager.instance.LogAchivement(AchivementType.Do_Action,ActionType.Drink);
-                GameManager.instance.AddExp(5,data.iD);
-                GameManager.instance.AddHappy(5,data.iD);
-                if(GetDrinkItem() != null && GetDrinkItem().GetComponent<ItemObject>() != null)
- 			        GameManager.instance.LogAchivement(AchivementType.Drink,ActionType.None,GetDrinkItem().GetComponent<ItemObject>().itemID);
+                if(data.Water > data.maxWater - 1){
+                    GameManager.instance.LogAchivement(AchivementType.Do_Action,ActionType.Drink);
+                    GameManager.instance.AddExp(5,data.iD);
+                    if(GetDrinkItem() != null && GetDrinkItem().GetComponent<ItemObject>() != null)
+                        GameManager.instance.LogAchivement(AchivementType.Drink,ActionType.None,GetDrinkItem().GetComponent<ItemObject>().itemID);
+                }
             }else{
                 int ran = Random.Range(0,100);
                 if(ran < 20)
@@ -124,7 +128,7 @@ public class CharShiba : CharController
             }
         }
         CheckAbort();
-    }
+    }*/
 
     protected override IEnumerator Patrol()
     {
@@ -237,7 +241,7 @@ public class CharShiba : CharController
         }
         else
         {
-            anim.Play("standby"+ direction.ToString(), 0);
+            anim.Play("Standby", 0);
         }
         
 

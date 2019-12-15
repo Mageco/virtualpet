@@ -19,6 +19,7 @@ public class UIManager : MonoBehaviour
     public static UIManager instance;
 	public Text coinText;
 	public Text diamonText;
+    public Text heartText;
 	NotificationPopup questNotification;
     QuestPanel questComplete;
     ShopPanel shopPanel;
@@ -71,6 +72,7 @@ public class UIManager : MonoBehaviour
 	{
 		coinText.text = GameManager.instance.GetCoin().ToString();
 		diamonText.text = GameManager.instance.GetDiamond().ToString();
+        heartText.text = GameManager.instance.GetHappy().ToString();
 	}
 
 	public void BuyItem(int itemID){

@@ -69,7 +69,7 @@ public class EatItem : BaseFloorItem
 	}
 
 	protected override void OnCollidePet(CharController pet){
-		pet.OnEat();
+
 	}
 
 	void Fill()

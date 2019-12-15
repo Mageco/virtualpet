@@ -16,8 +16,8 @@ public class GameManager : MonoBehaviour
     //Testing
     public bool isLoad = false;
     
-    public GameObject expPrefab;
-    public GameObject coinPrefab;
+    public GameObject heartPrefab;
+    public GameObject happyPrefab;
 
     public bool isTest = false;
 
@@ -417,6 +417,11 @@ public class GameManager : MonoBehaviour
         return myPlayer.Coin;
     }
 
+    public int GetHappy(){
+        return myPlayer.Happy;
+    }
+
+
     public int GetExp(int id){
         return GetPet(id).Exp;
     }
@@ -431,21 +436,19 @@ public class GameManager : MonoBehaviour
         SavePlayer();
     }
 
-    public void AddExp(int e,int petId){
-        GetPet(petId).Exp += e;
-         if(GetPetObject(petId) != null){
-            GameObject go = GameObject.Instantiate(expPrefab,petObjects[0].transform.position,Quaternion.identity);
-            go.GetComponent<ExpItem>().Load(e);
-         }
-         
+    public void AddHappy(int c){
+        myPlayer.Happy += c;
+        SavePlayer();
     }
 
-    public void AddHappy(int e,int petId){
-        Pet p = GetPet(petId);
-        p.Happy += e;
-        if(p.Happy >= p.maxHappy){
-            GetPet(petId).Happy -= 50;
-            GameObject go = GameObject.Instantiate(coinPrefab,GetPetObject(petId).transform.position,Quaternion.identity);
+    public void AddExp(int e,int petId){
+        GetPet(petId).Exp += e;
+        if(GetPetObject(petId) != null){
+            //GameObject go = GameObject.Instantiate(expPrefab,petObjects[0].transform.position,Quaternion.identity);
+            //go.GetComponent<ExpItem>().Load(e);
+            GameObject happy = GameObject.Instantiate(happyPrefab,GetPetObject(petId).charScale.scalePosition,Quaternion.identity);
+            GameObject go = GameObject.Instantiate(heartPrefab,GetPetObject(petId).transform.position,Quaternion.identity);
+            happy.GetComponent<HappyItem>().Load(e + GetPet(petId).level);
         }
     }
 

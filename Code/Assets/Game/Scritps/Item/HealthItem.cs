@@ -36,20 +36,26 @@ public class HealthItem : BaseDragItem
         item = this.transform.parent.GetComponent<ItemObject>();
     }
 
+    protected override void OnFall()
+	{
+        StartCoroutine(OnFallCoroutine());
+	}
+
+    IEnumerator OnFallCoroutine(){
+        yield return StartCoroutine(ReturnPosition(originalPosition));
+        Reset();
+    }
+
     protected override void OnActive()
     {
-        if(!eated){
+        if(!eated && pet != null){
             eated = true;
             anim.Play("Active");
-            if (pet != null)
-            {
-                pet.OnHealth(sickType,amounnt);
-                if(effect == null){
-                    effect = GameObject.Instantiate(effectPrefab,pet.transform.position,Quaternion.identity);
-                    effect.transform.parent = pet.transform;
-                    effect.GetComponent<AutoDestroy>().liveTime = timeDelay;
-                }
-                    
+            pet.OnHealth(sickType,amounnt);
+            if(effect == null){
+                effect = GameObject.Instantiate(effectPrefab,pet.transform.position,Quaternion.identity);
+                effect.transform.parent = pet.transform;
+                effect.GetComponent<AutoDestroy>().liveTime = timeDelay;
             }
             GameManager.instance.ResetCameraTarget();
             StartCoroutine(Deactive());
@@ -60,6 +66,10 @@ public class HealthItem : BaseDragItem
     IEnumerator Deactive(){
         this.transform.position = new Vector3(1000,1000,0);
         yield return new WaitForSeconds(timeDelay);
+        Reset();
+    }
+
+    void Reset(){
         this.transform.position = originalPosition;
         this.transform.rotation = originalRotation;
 		height = originalHeight;

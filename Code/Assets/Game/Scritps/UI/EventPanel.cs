@@ -6,10 +6,13 @@ using UnityEngine.UI;
 public class EventPanel : MonoBehaviour
 {
      public ScrollRect scroll;
+     int price = 99;
+     public Text priceText;
     // Start is called before the first frame update
     void Start()
     {
-        
+        price = 99 + GameManager.instance.myPlayer.minigameLevels[0]; 
+        priceText.text = price.ToString();
     }
 
     // Update is called once per frame
@@ -23,12 +26,13 @@ public class EventPanel : MonoBehaviour
         {
              MageManager.instance.OnNotificationPopup ("Trò chơi này chưa ra mắt");
         }else{
-            if(GameManager.instance.GetPet(0).level > 0){
+            if(GameManager.instance.GetHappy() >= price){
                 this.Close();
+                GameManager.instance.AddHappy(-price);
                 UIManager.instance.OnMinigame(1);
             }else
             {
-                MageManager.instance.OnNotificationPopup ("Bạn cần tiến hoá lên chó trưởng thành");
+                MageManager.instance.OnNotificationPopup ("Bạn không đủ tim để chơi trò chơi này hãy chăm sóc thú cưng để thu thập thêm tim nhé.");
             }
         }
        

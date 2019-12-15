@@ -32,7 +32,6 @@ public class Pet : BaseModel
 	public float damage = 0;
 	public float shit = 0;
 	public float pee = 0;
-	public float happy = 50;
 	public float dirty = 10;
 	public float itchi = 10;
 	public float fear = 0;
@@ -56,8 +55,7 @@ public class Pet : BaseModel
 	public float recoverHealth = 0;
 	[HideInInspector]
 	public float recoverEnergy = 0;
-	[HideInInspector]
-	public float recoverHappy = 0;
+
 
 
 	[HideInInspector]
@@ -144,7 +142,6 @@ public class Pet : BaseModel
 		recoverEnergy = p.recoverEnergy;
 		recoverSleep = p.recoverSleep;
 		recoverHealth = p.recoverHealth;
-		recoverHappy = p.recoverHappy;
 
 		food = Random.Range(maxFood/2,maxFood);
 		water = Random.Range(maxWater/2,maxWater);
@@ -373,21 +370,7 @@ public class Pet : BaseModel
 		}
 	}
 
-	public float Happy
-	{
-		get
-		{
-			return this.happy;
-		}
-		set
-		{
-			this.happy = value;
-			if (this.happy < 0)
-				this.happy = 0;
-			else if (this.happy > maxHappy)
-				this.happy = maxHappy;
-		}
-	}
+
 
 	public float Dirty
 	{
