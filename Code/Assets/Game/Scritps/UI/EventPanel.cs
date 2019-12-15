@@ -6,12 +6,12 @@ using UnityEngine.UI;
 public class EventPanel : MonoBehaviour
 {
      public ScrollRect scroll;
-     int price = 99;
+     int price = 10;
      public Text priceText;
     // Start is called before the first frame update
     void Start()
     {
-        price = 99 + GameManager.instance.myPlayer.minigameLevels[0]; 
+        price = 10 + GameManager.instance.myPlayer.minigameLevels[0]; 
         priceText.text = price.ToString();
     }
 

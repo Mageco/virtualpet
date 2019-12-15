@@ -789,8 +789,8 @@ public class CharController : MonoBehaviour
         isMoving = true;
         isArrived = false;
         agent.SetDestination(target);
-        
-
+        charScale.speedFactor = 1;
+    
         while (!isArrived && !isAbort)
         {
             anim.Play("Run_" + this.direction.ToString(), 0);
@@ -804,6 +804,7 @@ public class CharController : MonoBehaviour
         isMoving = true;
         isArrived = false;
         agent.SetDestination(target);
+        charScale.speedFactor = 0.4f;
 
         while (!isArrived && !isAbort)
         {
@@ -811,6 +812,7 @@ public class CharController : MonoBehaviour
             yield return new WaitForEndOfFrame();
         }
         isMoving = false;
+        charScale.speedFactor = 1;
     }
 
     protected IEnumerator Wait(float maxT)
@@ -866,15 +868,17 @@ public class CharController : MonoBehaviour
                     ySpeed = -50;
                 Vector3 pos1 = agent.transform.position;
                 pos1.y += ySpeed * Time.deltaTime + zSpeed * Time.deltaTime;
+                pos1.x = Mathf.Lerp(pos1.x,dropPosition.x,Time.deltaTime * 5);
                 agent.transform.position = pos1;
                 charScale.height += ySpeed * Time.deltaTime;
-                charScale.scalePosition.y += zSpeed * Time.deltaTime;
+                charScale.scalePosition.y = Mathf.Lerp(charScale.scalePosition.y,dropPosition.y - height,Time.deltaTime * 5);
 
-                if (ySpeed < 0 && charScale.height < height)
+                if (ySpeed < 0 && this.transform.position.y < dropPosition.y)
                 {
                     this.transform.rotation = Quaternion.identity;
                     charInteract.interactType = InteractType.None;
                     agent.transform.position = dropPosition;
+                    this.transform.position = dropPosition;
                     charScale.scalePosition.y = dropPosition.y - height;
                     charScale.height = height;
                 }
@@ -887,12 +891,14 @@ public class CharController : MonoBehaviour
     protected virtual IEnumerator Mouse()
     {
         isMoving = true;
+        charScale.speedFactor = 1.2f;
         while(GetMouse() != null && GetMouse().state != MouseState.Idle && !isAbort){
             agent.SetDestination(GetMouse().transform.position);
             anim.Play("Run_Angry_" + this.direction.ToString(), 0);
             yield return new WaitForEndOfFrame();
         }
         isMoving = false;
+        charScale.speedFactor = 1;
         CheckAbort();
     }
 
@@ -909,8 +915,8 @@ public class CharController : MonoBehaviour
             pos.z = 0;
             if (pos.y > charScale.maxHeight)
                 pos.y = charScale.maxHeight;
-            else if (pos.y < -20)
-                pos.y = -20;
+            else if (pos.y < -24)
+                pos.y = -24;
 
             if (pos.x > 52)
                 pos.x = 52;
@@ -1507,14 +1513,10 @@ public class CharController : MonoBehaviour
         //skillLearnEffect.SetActive(true);
         ItemManager.instance.ActivateSkillItems(type);
         if(data.GetSkillProgress(type) == 0){
-            if(type == SkillType.Bath){
-                UIManager.instance.OnQuestNotificationPopup("Thú cưng cửa bạn không phải lúc nào cũng muốn tắm, hãy kiên trì nhé, bạn thú cưng sẽ quen dần!");
-            }else if(type == SkillType.Sleep){
+            if(type == SkillType.Sleep){
                 UIManager.instance.OnQuestNotificationPopup("Ngủ đúng chỗ sẽ có giấc ngủ ngon hơn và được nhiều điểm kinh nghiệm hơn, hãy huấn luyện thú cưng của bạn nhé!");
             }else if(type == SkillType.Toilet){
                 UIManager.instance.OnQuestNotificationPopup("Đi ị và tè không đúng chỗ sẽ rất bẩn đấy, hãy huấn luyện chó của bạn dần nhé!");
-            }else if(type == SkillType.Table){
-                UIManager.instance.OnQuestNotificationPopup("Nhảy trên cao xuống có thể sẽ bị chấn thương đấy bạn cần huấn luyện nhé!");
             }
         }   
     }

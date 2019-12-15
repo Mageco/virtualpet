@@ -446,9 +446,17 @@ public class GameManager : MonoBehaviour
         if(GetPetObject(petId) != null){
             //GameObject go = GameObject.Instantiate(expPrefab,petObjects[0].transform.position,Quaternion.identity);
             //go.GetComponent<ExpItem>().Load(e);
-            GameObject happy = GameObject.Instantiate(happyPrefab,GetPetObject(petId).charScale.scalePosition,Quaternion.identity);
             GameObject go = GameObject.Instantiate(heartPrefab,GetPetObject(petId).transform.position,Quaternion.identity);
-            happy.GetComponent<HappyItem>().Load(e + GetPet(petId).level);
+            int n = (e + GetPet(petId).level)/5;
+            for(int i=0;i<n;i++){
+                int ran = Random.Range(0,100);
+                Quaternion rot = Quaternion.identity;
+                if(ran > 50)
+                    rot = Quaternion.Euler(new Vector3(0,180,-1));
+                Vector3 pos = GetPetObject(petId).charScale.scalePosition + new Vector3(Random.Range(-1,1),Random.Range(-1,1),0);
+                GameObject happy = GameObject.Instantiate(happyPrefab,pos,rot);
+                happy.GetComponent<HappyItem>().Load(1);
+            }
         }
     }
 

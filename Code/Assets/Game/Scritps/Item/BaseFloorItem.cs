@@ -72,11 +72,12 @@ public class BaseFloorItem : MonoBehaviour
 
 		if (isBusy)
         {
-            StopAllCoroutines();
-            isBusy = false;
+			return;
+            //StopAllCoroutines();
+            //isBusy = false;
         }
 		if (!isDragable)
-			StartCoroutine (ReturnPosition (originalPosition));
+			StartCoroutine (ReturnPosition (lastPosition));
 
 
 
@@ -96,6 +97,9 @@ public class BaseFloorItem : MonoBehaviour
 		}
 		isBusy = false;
 		isDragable = true;
+		isDrag = false;
+		dragOffset = Vector3.zero;
+
 	}
 
 	void OnTriggerEnter2D(Collider2D other) {
@@ -113,10 +117,6 @@ public class BaseFloorItem : MonoBehaviour
 	void OnTriggerStay2D(Collider2D other) {
 		if(isBusy)
 			return;
-
-		if(other.tag == "Pet"){
-            OnCollidePet(other.GetComponent<CharController>());
-		}
 	}
 	void OnTriggerExit2D(Collider2D other) {
 		if(isBusy)
@@ -125,14 +125,11 @@ public class BaseFloorItem : MonoBehaviour
 		if (other.GetComponent<PolyNavObstacle>() != null) {
 		 	isDragable = true;
 		}
+
 		if (other.tag == "Floor") {
 			isDragable = false;
 		}
 	}
-
-    protected virtual void OnCollidePet(CharController pet){
-
-    }
 
 
 	private bool IsPointerOverUIObject() {

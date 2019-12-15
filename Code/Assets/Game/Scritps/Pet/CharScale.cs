@@ -39,10 +39,11 @@ public class CharScale : MonoBehaviour
 			float delta = this.transform.position.y - lastPosition.y;
 			height += delta;
 			if(height <= 0 && this.transform.position.y <= scalePosition.y ){
-				Vector3 p = this.transform.position;
-				p.y = lastPosition.y;
-				character.agent.transform.position = p;
-				this.transform.position = p;
+				//Vector3 p = this.transform.position;
+				//p.y = lastPosition.y;
+				//character.agent.transform.position = p;
+				//this.transform.position = p;
+				scalePosition.y = this.transform.position.y;
 				height = 0;
 			}else{
 				if(delta >= 0 && height > maxHeight){
@@ -56,7 +57,7 @@ public class CharScale : MonoBehaviour
 						this.transform.position = p;
 					}
 				}else if(delta < 0 && height > 0){
-					if(scalePosition.y > -20){
+					if(scalePosition.y > -24){
 						scalePosition.y += delta;
 						height -= delta;
 					}
