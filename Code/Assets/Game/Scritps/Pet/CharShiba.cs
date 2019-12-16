@@ -143,10 +143,8 @@ public class CharShiba : CharController
 
             SetTarget(PointType.Patrol);
             if(ran1 < 30){
-                charScale.speedFactor = 0.4f;
                 yield return StartCoroutine(WalkToPoint());
             }else{
-                charScale.speedFactor = 1f;
                 yield return StartCoroutine(RunToPoint());
             }
                 
