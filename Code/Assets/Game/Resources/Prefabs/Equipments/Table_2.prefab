@@ -4749,6 +4749,8 @@ GameObject:
   - component: {fileID: 8157156877955870519}
   - component: {fileID: 822572892188405022}
   - component: {fileID: 6856035232552032587}
+  - component: {fileID: 4019572210551480217}
+  - component: {fileID: 472960077767880254}
   m_Layer: 0
   m_Name: Doll
   m_TagString: Untagged
@@ -4817,8 +4819,47 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1.5, y: 2}
+  m_Size: {x: 2, y: 2.5}
   m_EdgeRadius: 0
+--- !u!50 &4019572210551480217
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1422000053426952493}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
+--- !u!114 &472960077767880254
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1422000053426952493}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 31cb68447e9014f7190d6beddfb0bdc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  state: 0
+  maxHeight: 9
+  depth: -3
+  scaleFactor: 0.03
+  height: 9
+  scalePosition: {x: 0, y: 0, z: 0}
 --- !u!1 &1480572667654562062
 GameObject:
   m_ObjectHideFlags: 0

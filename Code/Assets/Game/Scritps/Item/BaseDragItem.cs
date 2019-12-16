@@ -130,6 +130,8 @@ public class BaseDragItem : MonoBehaviour
             this.transform.position = pos;
             if (isHighlight)
                 state = ItemDragState.Highlight;
+
+            touchTime += Time.deltaTime;
         }
     }
 
@@ -251,10 +253,17 @@ public class BaseDragItem : MonoBehaviour
 	void OnMouseUp()
 	{
         EndDrag();
+
+        if(touchTime < 0.3f && Vector2.Distance(this.transform.position,lastPosition) < 0.3f){
+            OnClick();
+        }
+        touchTime = 0;
 		dragOffset = Vector3.zero;
 		if(state == ItemDragState.Drag){
             state = ItemDragState.Drop;
         }
+
+
 			
         else if(state == ItemDragState.Highlight)
         {
@@ -262,6 +271,10 @@ public class BaseDragItem : MonoBehaviour
         }
 		
 	}
+
+    protected virtual void OnClick(){
+        
+    }
 
 
 	private bool IsPointerOverUIObject() {
