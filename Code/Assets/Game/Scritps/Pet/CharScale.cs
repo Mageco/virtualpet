@@ -15,6 +15,7 @@ public class CharScale : MonoBehaviour
 	public Vector3 scalePosition = Vector3.zero;
 	Vector3 lastPosition = Vector3.zero;
     public float speedFactor = 1;
+	
 
 	void Awake()
 	{
@@ -28,6 +29,7 @@ public class CharScale : MonoBehaviour
     {
         lastPosition = this.transform.position;
 		scalePosition = this.transform.position;
+		
 		height = 0;
     }
 
@@ -65,6 +67,7 @@ public class CharScale : MonoBehaviour
 			}
 			if(character.shadow != null){
                 character.shadow.transform.position = scalePosition + new Vector3(0,0,1000);
+				character.shadow.transform.localScale = character.originalShadowScale * (1f - 0.5f*height/maxHeight); 
                 Debug.Log(character.shadow.transform.position);
             }
 		}else if(interact.interactType == InteractType.Drop){
@@ -78,6 +81,7 @@ public class CharScale : MonoBehaviour
 			}
 			if(character.shadow != null){
                 character.shadow.transform.position = scalePosition + new Vector3(0,0,1000);
+				character.shadow.transform.localScale = character.originalShadowScale * (1f - 0.5f*height/maxHeight); 
                 Debug.Log(character.shadow.transform.position);
             }
 		}

@@ -45,7 +45,7 @@ public class CharController : MonoBehaviour
     public GameObject shitPrefab;
 
     public GameObject shadow;
-   
+    public Vector3 originalShadowScale;
 
     #endregion
 
@@ -111,6 +111,7 @@ public class CharController : MonoBehaviour
                  child.gameObject.SetActive(false);
              }else if(child.gameObject.tag == "Shadow"){
                  shadow = child.gameObject;
+                 originalShadowScale = shadow.transform.localScale;
              }
          }
 
