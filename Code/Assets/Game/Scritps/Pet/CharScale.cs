@@ -39,10 +39,11 @@ public class CharScale : MonoBehaviour
 			float delta = this.transform.position.y - lastPosition.y;
 			height += delta;
 			if(height <= 0 && this.transform.position.y <= scalePosition.y ){
-				Vector3 p = this.transform.position;
-				p.y = lastPosition.y;
-				character.agent.transform.position = p;
-				this.transform.position = p;
+				//Vector3 p = this.transform.position;
+				//p.y = lastPosition.y;
+				//character.agent.transform.position = p;
+				//this.transform.position = p;
+				scalePosition.y = this.transform.position.y;
 				height = 0;
 			}else{
 				if(delta >= 0 && height > maxHeight){
@@ -56,7 +57,7 @@ public class CharScale : MonoBehaviour
 						this.transform.position = p;
 					}
 				}else if(delta < 0 && height > 0){
-					if(scalePosition.y > -20){
+					if(scalePosition.y > -24){
 						scalePosition.y += delta;
 						height -= delta;
 					}
@@ -81,7 +82,7 @@ public class CharScale : MonoBehaviour
 
 		dragScale = originalScale * (1 - scalePosition.y * scaleFactor);
 		character.transform.localScale = Vector3.Lerp(dragScale,character.transform.localScale,Time.deltaTime *  3f);
-		character.agent.maxSpeed = character.data.speed * speedFactor *(1 - scalePosition.y * scaleFactor);
+		character.agent.maxSpeed = 0.3f * character.data.speed * speedFactor *(1 - scalePosition.y * scaleFactor);
 		//Vector3 pos = this.transform.position;
 		//pos.z = scalePosition.y * 10;
 		//this.transform.position = pos;

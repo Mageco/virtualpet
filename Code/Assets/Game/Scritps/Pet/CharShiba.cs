@@ -6,6 +6,7 @@ public class CharShiba : CharController
 {
     #region Main Action
 
+    /*
     protected override IEnumerator Eat()
     {
         if (GetFoodItem() != null)
@@ -29,12 +30,13 @@ public class CharShiba : CharController
                         canEat = false;
                     yield return new WaitForEndOfFrame();
                 }
-                GameManager.instance.LogAchivement(AchivementType.Do_Action,ActionType.Eat);
-                GameManager.instance.AddExp(5,data.iD);
-                GameManager.instance.AddHappy(5,data.iD);
-                if(GetFoodItem() != null && GetFoodItem().GetComponent<ItemObject>() != null)
- 			        GameManager.instance.LogAchivement(AchivementType.Eat,ActionType.None,GetFoodItem().GetComponent<ItemObject>().itemID);
-
+                if(data.Food > data.maxFood - 1){
+                    GameManager.instance.LogAchivement(AchivementType.Do_Action,ActionType.Eat);
+                    GameManager.instance.AddExp(5,data.iD);
+                    if(GetFoodItem() != null && GetFoodItem().GetComponent<ItemObject>() != null)
+ 			            GameManager.instance.LogAchivement(AchivementType.Eat,ActionType.None,GetFoodItem().GetComponent<ItemObject>().itemID);
+                }
+ 
             }else{
                 int ran = Random.Range(0,100);
                 if(ran < 20)
@@ -62,8 +64,9 @@ public class CharShiba : CharController
 
         yield return new WaitForEndOfFrame();
         CheckAbort();
-    }
+    }*/
 
+    /*
     protected override IEnumerator Drink()
     {
         if (GetDrinkItem() != null)
@@ -93,11 +96,12 @@ public class CharShiba : CharController
                         canDrink = false;
                     yield return new WaitForEndOfFrame();
                 }
-                GameManager.instance.LogAchivement(AchivementType.Do_Action,ActionType.Drink);
-                GameManager.instance.AddExp(5,data.iD);
-                GameManager.instance.AddHappy(5,data.iD);
-                if(GetDrinkItem() != null && GetDrinkItem().GetComponent<ItemObject>() != null)
- 			        GameManager.instance.LogAchivement(AchivementType.Drink,ActionType.None,GetDrinkItem().GetComponent<ItemObject>().itemID);
+                if(data.Water > data.maxWater - 1){
+                    GameManager.instance.LogAchivement(AchivementType.Do_Action,ActionType.Drink);
+                    GameManager.instance.AddExp(5,data.iD);
+                    if(GetDrinkItem() != null && GetDrinkItem().GetComponent<ItemObject>() != null)
+                        GameManager.instance.LogAchivement(AchivementType.Drink,ActionType.None,GetDrinkItem().GetComponent<ItemObject>().itemID);
+                }
             }else{
                 int ran = Random.Range(0,100);
                 if(ran < 20)
@@ -124,7 +128,7 @@ public class CharShiba : CharController
             }
         }
         CheckAbort();
-    }
+    }*/
 
     protected override IEnumerator Patrol()
     {
@@ -139,11 +143,11 @@ public class CharShiba : CharController
 
             SetTarget(PointType.Patrol);
             if(ran1 < 30){
-                yield return StartCoroutine(WalkToPoint());
                 charScale.speedFactor = 0.4f;
+                yield return StartCoroutine(WalkToPoint());
             }else{
-                yield return StartCoroutine(RunToPoint());
                 charScale.speedFactor = 1f;
+                yield return StartCoroutine(RunToPoint());
             }
                 
             int ran = Random.Range(0, 100);
@@ -225,136 +229,19 @@ public class CharShiba : CharController
 
     
 
-    protected override IEnumerator Call()
-    {
-        yield return StartCoroutine(DoAnim("Listen_"+direction.ToString()));
-        yield return StartCoroutine(RunToPoint());
-        touchObject.SetActive(true);
-        GameManager.instance.LogAchivement(AchivementType.Do_Action,ActionType.Call);
-        float t = 0;
-        float maxTime = 6f;
-        bool isWait = true;
-        int n = Random.Range(0,(int)data.Intelligent/10);
-
-        while (!isAbort && isWait)
-        {
-            if (!isTouch)
-            {
-                if (t == 0)
-                {
-                    n = Random.Range(0,(int)data.Intelligent/10);
-                }
-                if (n == 0)
-                {
-                     anim.Play("Lay_WaitPetBack_" + direction.ToString(), 0);
-                }
-                else if (n == 1)
-                {
-                    anim.Play("Lay_WaitPetHead_"+ direction.ToString(), 0);
-                }
-                else if (n == 2)
-                {
-                    anim.Play("Lay_WaitPetStomatch_"+ direction.ToString(), 0);
-                }
-                else if (n == 3)
-                {  
-                    anim.Play("Sit_WaitPetUp" );
-                }
-                else if (n == 4)
-                {
-                    anim.Play("Sit_WaitPetDown" );
-                }
-                else if (n == 5)
-                {
-                     
-                    anim.Play("Sit_WaitPetLeft" );
-                }
-                else if (n == 6)
-                {
-                    anim.Play("Sit_WaitPetRight" );
-                }
-                else if (n == 7)
-                {
-                    anim.Play("WaitHandshake" );
-                }
-                else if (n == 8)
-                {
-                    anim.Play("WaitJumpRound" );
-                }
-                t += Time.deltaTime;
-                if (t > maxTime)
-                {
-                    isWait = false;
-                    n = Random.Range(0, 9);
-                    maxTime = Random.Range(2f, 5f);
-                }
-            }
-            else
-            {
-                if (n == 0)
-                {
-                    anim.Play("Lay_PetBack_"+ direction.ToString(), 0);
-                }
-                else if (n == 1)
-                {
-                    anim.Play("Lay_PetHead_"+ direction.ToString(), 0);
-                }
-                else if (n == 2)
-                {
-                    anim.Play("Lay_PetStomatch_"+ direction.ToString(), 0);
-                }
-                else if (n == 3)
-                {
-                    anim.Play("Sit_Pet_Up" , 0);
-                }
-                else if (n == 4)
-                {
-                    anim.Play("Sit_Pet_Down" , 0);
-                }
-                else if (n == 5)
-                {
-                    anim.Play("Sit_Pet_Right" , 0);
-                }
-                else if (n == 6)
-                {
-                    anim.Play("Sit_Pet_Left" , 0);
-                }
-                else if (n == 7)
-                {
-                    anim.Play("Handshake" , 0);
-                }
-                else if (n == 8)
-                {
-                    anim.Play("JumpRound" , 0);
-                }
-                t = 0;
-
-
-            }
-            yield return new WaitForEndOfFrame();
-        }
-        CheckAbort();
-    }
-
-    protected override IEnumerator Listening(){
-        yield return StartCoroutine(DoAnim("Listen_" + direction.ToString()));
-        CheckAbort();
-    }
-
     
     protected override IEnumerator Rest()
     {
         float maxTime = Random.Range(2, 5);
 
         int ran = Random.Range(0, 100);
-        if (ran < 50)
+        if (ran < 70)
         {
-            
             anim.Play("Sit", 0);
         }
         else
         {
-            anim.Play("Lay_"+ direction.ToString(), 0);
+            anim.Play("Standby", 0);
         }
         
 

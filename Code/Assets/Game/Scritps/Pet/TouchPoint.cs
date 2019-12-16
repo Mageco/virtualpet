@@ -16,14 +16,5 @@ public class TouchPoint : MonoBehaviour
         
     }
 
-    void OnMouseDown()
-    {
-        Debug.Log("Touch Down");
-        GameManager.instance.GetPetObject(0).OnTouch();
-    }
 
-    void OnMouseUp(){
-        Debug.Log("Touch Up");
-        GameManager.instance.GetPetObject(0).OffTouch();
-    }
 }

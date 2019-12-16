@@ -89,11 +89,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1654733839}
-  - component: {fileID: 1654733841}
-  - component: {fileID: 1654733840}
-  m_Layer: 0
+  - component: {fileID: 5408491840238364218}
+  - component: {fileID: 3285836570190789632}
+  - component: {fileID: 3634088386738629562}
+  m_Layer: 8
   m_Name: Ostruct (4)
-  m_TagString: Untagged
+  m_TagString: Pet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -107,27 +108,12 @@ Transform:
   m_GameObject: {fileID: 1654733838}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: -1}
-  m_LocalScale: {x: 0.6999999, y: 0.6999999, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 193803885500558729}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1654733841
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1654733838}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fc4f7f33d8fc7c0419b2308165807ce0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  shapeType: 1
-  extraOffset: 0
-  invertPolygon: 0
---- !u!61 &1654733840
+--- !u!61 &5408491840238364218
 BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -151,8 +137,42 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 3, y: 2}
+  m_Size: {x: 4, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &3285836570190789632
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1654733838}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 33a1afd66db174ea09328e22cc9051ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pets: []
+--- !u!50 &3634088386738629562
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1654733838}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1 &527243486002295161
 GameObject:
   m_ObjectHideFlags: 0
@@ -207,7 +227,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1786678155666974602}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.58, y: 1, z: 0}
+  m_LocalPosition: {x: 0.72, y: 0.66, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 193803885500558729}
@@ -387,7 +407,6 @@ MonoBehaviour:
     damage: 0
     shit: 0
     pee: 0
-    happy: 50
     dirty: 50
     itchi: 50
     fear: 0
@@ -401,7 +420,6 @@ MonoBehaviour:
     recoverDirty: 0.1
     recoverHealth: 0
     recoverEnergy: 0
-    recoverHappy: 0
     maxFood: 100
     maxWater: 100
     maxShit: 100
@@ -426,23 +444,22 @@ MonoBehaviour:
   isArrived: 1
   isAbort: 0
   isAction: 0
+  isMoving: 0
   actionType: 0
-  body: {fileID: 0}
   charInteract: {fileID: 0}
   charScale: {fileID: 0}
-  isTouch: 0
   peePosition: {fileID: 4213929617894132666}
   shitPosition: {fileID: 3260102857673776288}
   peePrefab: {fileID: 7166089402494124037, guid: ccefdc6a159554ad68c454188f52587b,
     type: 3}
   shitPrefab: {fileID: 4887335964014193537, guid: 6cd2b87a2c28c424ba4e4c5f8d1ddfd2,
     type: 3}
-  touchObject: {fileID: 0}
   currentSkill: 0
   growUpTimeline: {fileID: 0}
   dropPosition: {x: 0, y: 0, z: 0}
   iconStatusObject: {fileID: 853995390}
   iconStatus: 0
+  dirties: []
 --- !u!114 &8264768739376955380
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -660,7 +677,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9196184388795707476}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -4.68, y: 0.73, z: 0}
+  m_LocalPosition: {x: -2.36, y: 0.06, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 193803885500558729}

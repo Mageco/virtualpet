@@ -66,7 +66,6 @@ public class FloorItem : MonoBehaviour
 				doubleClick = GameObject.Instantiate(doubleClickEffect,pos,Quaternion.identity);
 				doubleClick.transform.parent = ItemManager.instance.transform;
 			}
-			GameManager.instance.GetPetObject(0).OnCall(pos);
 		}
 
 	}

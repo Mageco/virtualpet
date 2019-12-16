@@ -23,8 +23,11 @@ public class AchivementUI : MonoBehaviour
     // Start is called before the first frame update
     public void Load(PlayerAchivement a)
     {
-        Achivement d = DataHolder.Achivements().GetAchivement(a.achivementId);
+        Achivement d = DataHolder.GetAchivement(a.achivementId);
         int level = a.level;
+        if(a.level == DataHolder.GetAchivement(a.achivementId).maxProgress.Length){
+            level = a.level - 1;
+        }
         iD = d.iD;
         string url = d.iconUrl.Replace("Assets/Game/Resources/","");
         url = url.Replace(".png","");

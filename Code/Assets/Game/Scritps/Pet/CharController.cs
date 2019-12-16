@@ -16,7 +16,7 @@ public class CharController : MonoBehaviour
     //[HideInInspector]
     public EnviromentType enviromentType = EnviromentType.Room;
     //[HideInInspector]
-    public Direction direction = Direction.D;
+    public Direction direction = Direction.L;
 
     //Think
     protected float dataTime = 0;
@@ -29,25 +29,22 @@ public class CharController : MonoBehaviour
     public bool isArrived = true;
     public bool isAbort = false;
     public bool isAction = false;
+    public bool isMoving = false;
 
     //Action
     public ActionType actionType = ActionType.None;
-    //public bool isEndAction = false;
-    //Anim
-    //CharAnim charAnim;
     protected Animator anim;
-    public GameObject body;
 
     //Interact
     public CharInteract charInteract;
     public CharScale charScale;
-    public bool isTouch = false;
     //Pee,Sheet
     public Transform peePosition;
     public Transform shitPosition;
     public GameObject peePrefab;
     public GameObject shitPrefab;
-    public GameObject touchObject;
+   
+
     #endregion
 
     //Skill
@@ -64,7 +61,7 @@ public class CharController : MonoBehaviour
     public IconStatus iconStatus = IconStatus.None;
     IconStatus lastIconStatus = IconStatus.None;
 
-
+    public List<GameObject> dirties = new List<GameObject>();
 
     #region Load
 
@@ -90,19 +87,27 @@ public class CharController : MonoBehaviour
         agent.transform.position = this.transform.position;
         
         agent.maxSpeed = data.speed;
-        
-        if(this.transform.GetComponentInChildren<TouchPoint>(true) != null)
-            touchObject = this.transform.GetComponentInChildren<TouchPoint>(true).gameObject;
-        if(touchObject != null)
-            touchObject.SetActive(false);
 
         if(ES2.Exists("PlayTime")){
             playTime = ES2.Load<System.DateTime>("PlayTime");
         }
 
+        SetDirection(Direction.R);
+
         if(iconStatusObject != null)
             iconStatusObject.gameObject.SetActive(false);
 
+
+        //Load Dirty Effect
+        //grab all the kids and only keep the ones with dirty tags
+     
+         Transform[] allChildren = gameObject.GetComponentsInChildren<Transform>();
+     
+         foreach (Transform child in allChildren) {
+             if (child.gameObject.tag == "Dirty") {
+                 dirties.Add(child.gameObject);
+             }
+         }
 
         Load();
     }
@@ -192,9 +197,8 @@ public class CharController : MonoBehaviour
     protected virtual void CalculateData()
     {
         float actionEnergyConsume = data.recoverEnergy;
-        if (actionType == ActionType.Call)
-            actionEnergyConsume = 0.2f;
-        else if (actionType == ActionType.Mouse)
+
+        if (actionType == ActionType.Mouse)
             actionEnergyConsume = 1.5f;
         else if (actionType == ActionType.Discover)
         {
@@ -246,6 +250,24 @@ public class CharController : MonoBehaviour
             data.Health -= (data.maxHealth * 0.3f - data.Health) * 0.001f;
         }
         data.curious += 0.1f;
+
+        //CheckDirty
+        if(data.dirty > data.maxDirty * 0.7f){
+            int n = (int)((data.dirty - data.maxDirty * 0.7f)/(data.maxDirty * 0.3f) * dirties.Count);
+            for(int i=0;i<dirties.Count;i++){
+                if(i < n)
+                    dirties[i].SetActive(true);
+                else
+                    dirties[i].SetActive(false);
+            }
+        }else
+        {
+            for(int i=0;i<dirties.Count;i++){
+                dirties[i].SetActive(false);
+            }
+        }
+
+
     }
 
 
@@ -338,11 +360,6 @@ public class CharController : MonoBehaviour
             return;
         }
 
-        if (data.happy < data.maxHappy * 0.1f)
-        {
-            actionType = ActionType.Sad;
-            return;
-        }
 
         if (data.curious > data.maxCurious * 0.9f)
         {
@@ -434,34 +451,25 @@ public class CharController : MonoBehaviour
         {
             StartCoroutine(Tired());
         }
-        else if (actionType == ActionType.Sad)
-        {
-            StartCoroutine(Sad());
-        }
         else if (actionType == ActionType.Happy)
         {
            StartCoroutine(Happy());
         }
-        else if (actionType == ActionType.Call)
-        {
-            StartCoroutine(Call());
-        } else if (actionType == ActionType.Fall)
+        else if (actionType == ActionType.Fall)
         {
             StartCoroutine(Fall());
-        }else if(actionType == ActionType.Listening){
-            StartCoroutine(Listening());
         }else if(actionType == ActionType.OnBed){
             StartCoroutine(Bed());
         }else if (actionType == ActionType.OnToilet)
         {
             StartCoroutine(Toilet());
-        }else if (actionType == ActionType.JumpOut)
-        {
-            StartCoroutine(JumpOut());
         }else if (actionType == ActionType.Supprised)
         {
             StartCoroutine(Supprised());
-        }      
+        }else if (actionType == ActionType.Stop)
+        {
+            StartCoroutine(Stop());
+        }        
     }
 
     #endregion
@@ -533,40 +541,7 @@ public class CharController : MonoBehaviour
 
 
     #region Interact
-    public virtual void OnCall(Vector3 pos)
-    {
-        if (actionType == ActionType.Hold || actionType == ActionType.Call || actionType == ActionType.Sick || actionType == ActionType.Sleep)
-        {
-            return;
-        }
-        Abort();
-        int ran = Random.Range(0,100);
-
-        if(ran < 70 + data.GetSkillProgress(SkillType.Call) * 3){
-            target = pos;
-            actionType = ActionType.Call;
-        }else{
-            actionType = ActionType.Listening;
-            OnLearnSkill(SkillType.Call);
-        }
-    }
-
-    public virtual void OnListening(float sound)
-    {
-        if (actionType == ActionType.OnBath || actionType == ActionType.Fear || actionType == ActionType.Listening || actionType == ActionType.Hold || actionType == ActionType.Sick || actionType == ActionType.Sleep)
-        {
-            return;
-        }
-
-        Abort();
-        
-        if(sound < 10){
-            actionType = ActionType.Listening;
-        }else {
-            data.Fear += sound * 5;
-            actionType = ActionType.Fear;
-        } 
-    }
+   
 
     public void SetActionType(ActionType action){
         Abort();
@@ -576,8 +551,18 @@ public class CharController : MonoBehaviour
     public virtual void OnHold()
     {
         if(actionType == ActionType.Sick){
-            UIManager.instance.OnQuestNotificationPopup("Bạn cần cho thú cưng uống thuốc");
-            //return;
+            UIManager.instance.OnQuestNotificationPopup("Thú cưng bị ốm, bạn cần cho thú cưng uống thuốc");
+            return;
+        }
+
+        if(actionType == ActionType.Injured){
+            UIManager.instance.OnQuestNotificationPopup("Thú cưng bị chấn thương, bạn cần băng bó nhé");
+            return;
+        }
+
+        if(actionType == ActionType.Shit || actionType == ActionType.Pee)
+        {
+            return;
         }
             
         Abort();
@@ -594,7 +579,20 @@ public class CharController : MonoBehaviour
     }
 
     public virtual void OnEat(){
- 
+        if(enviromentType == EnviromentType.Room && data.Food < 0.3f * data.maxFood && 
+            (actionType == ActionType.Patrol || actionType == ActionType.Discover || actionType == ActionType.Rest)){
+            actionType = ActionType.Eat;
+            isAbort = true;
+        }
+    }
+
+    public virtual void OnDrink(){
+        if(enviromentType == EnviromentType.Room && data.Water < 0.3f * data.maxWater && 
+            (actionType == ActionType.Patrol || actionType == ActionType.Discover || actionType == ActionType.Rest)){
+            actionType = ActionType.Drink;
+            isAbort = true;
+        }
+
     }
 
     protected void OnBath()
@@ -607,14 +605,6 @@ public class CharController : MonoBehaviour
         actionType = ActionType.OnBath;
     }
 
-    public void OnJumpOut()
-    {  
-        if(enviromentType == EnviromentType.Room)
-            return;
-
-        Abort();   
-        actionType = ActionType.JumpOut;
-    }
 
     public void OnHealth(SickType type,float value){
         if(type == SickType.Injured){
@@ -677,28 +667,16 @@ public class CharController : MonoBehaviour
             anim.Play("Shake", 0);
     }
 
-    public virtual void OnTouch()
-    {
-        if (actionType == ActionType.Call)
-        {
-            isTouch = true;
+    public virtual void OnStop(){
+        if(actionType != ActionType.Stop && !isArrived){
+            agent.Stop();
+            actionType = ActionType.Stop;
+            isAbort = true;
         }
     }
 
-    public virtual void OffTouch()
-    {
-        //if(actionType == ActionType.Call){
-        isTouch = false;
-        //}
-    }
-
-
     public virtual void OnMouse()
     {
-        int ran = Random.Range(0,100);
-        if(ran < 50)
-            return;
-
         if(actionType == ActionType.Patrol || actionType == ActionType.Rest || actionType == ActionType.Discover || actionType == ActionType.Drink || actionType == ActionType.Eat){
             Abort();
             actionType = ActionType.Mouse;
@@ -756,14 +734,13 @@ public class CharController : MonoBehaviour
         if(anim != null)
             anim.speed = 1;
         isAbort = true;
-        if(touchObject != null)
-            touchObject.SetActive(false);
     }
 
 
 
     protected void SetDirection(Direction d)
     {
+        direction = d;
         if (d == Direction.D)
         {
             agent.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 180));
@@ -784,6 +761,17 @@ public class CharController : MonoBehaviour
             agent.transform.rotation = Quaternion.Euler(new Vector3(0, 0, -90));
     }
 
+    protected void LookToTarget(Vector3 target)
+    {
+        if(target.x >= this.transform.position.x){
+            direction = Direction.R;
+            SetDirection(Direction.R);
+        }else{
+            direction = Direction.L;
+            SetDirection(Direction.L);
+        }
+    }
+
     protected IEnumerator DoAnim(string a)
     {
         float time = 0;
@@ -798,30 +786,33 @@ public class CharController : MonoBehaviour
 
     protected IEnumerator RunToPoint()
     {
+        isMoving = true;
         isArrived = false;
-
         agent.SetDestination(target);
-        
-
+        charScale.speedFactor = 1;
+    
         while (!isArrived && !isAbort)
         {
             anim.Play("Run_" + this.direction.ToString(), 0);
             yield return new WaitForEndOfFrame();
         }
+        isMoving = false;
     }
 
     protected IEnumerator WalkToPoint()
     {
+        isMoving = true;
         isArrived = false;
-
         agent.SetDestination(target);
-        
+        charScale.speedFactor = 0.4f;
 
         while (!isArrived && !isAbort)
         {
             anim.Play("Walk_" + this.direction.ToString(), 0);
             yield return new WaitForEndOfFrame();
         }
+        isMoving = false;
+        charScale.speedFactor = 1;
     }
 
     protected IEnumerator Wait(float maxT)
@@ -877,15 +868,17 @@ public class CharController : MonoBehaviour
                     ySpeed = -50;
                 Vector3 pos1 = agent.transform.position;
                 pos1.y += ySpeed * Time.deltaTime + zSpeed * Time.deltaTime;
+                pos1.x = Mathf.Lerp(pos1.x,dropPosition.x,Time.deltaTime * 5);
                 agent.transform.position = pos1;
                 charScale.height += ySpeed * Time.deltaTime;
-                charScale.scalePosition.y += zSpeed * Time.deltaTime;
+                charScale.scalePosition.y = Mathf.Lerp(charScale.scalePosition.y,dropPosition.y - height,Time.deltaTime * 5);
 
-                if (ySpeed < 0 && charScale.height < height)
+                if (ySpeed < 0 && this.transform.position.y < dropPosition.y)
                 {
                     this.transform.rotation = Quaternion.identity;
                     charInteract.interactType = InteractType.None;
                     agent.transform.position = dropPosition;
+                    this.transform.position = dropPosition;
                     charScale.scalePosition.y = dropPosition.y - height;
                     charScale.height = height;
                 }
@@ -897,11 +890,15 @@ public class CharController : MonoBehaviour
 
     protected virtual IEnumerator Mouse()
     {
+        isMoving = true;
+        charScale.speedFactor = 1.2f;
         while(GetMouse() != null && GetMouse().state != MouseState.Idle && !isAbort){
             agent.SetDestination(GetMouse().transform.position);
             anim.Play("Run_Angry_" + this.direction.ToString(), 0);
-            yield return StartCoroutine(Wait(0.1f));
+            yield return new WaitForEndOfFrame();
         }
+        isMoving = false;
+        charScale.speedFactor = 1;
         CheckAbort();
     }
 
@@ -910,10 +907,7 @@ public class CharController : MonoBehaviour
         charInteract.interactType = InteractType.Drag;
         enviromentType = EnviromentType.Room;
         GameManager.instance.SetCameraTarget(this.gameObject);
-        if(data.Health < 0.1f * data.maxHealth)
-            anim.Play("Sick",0);
-        else
-            anim.Play("Hold", 0);
+        anim.Play("Hold", 0);
         
         while (charInteract.interactType == InteractType.Drag)
         {
@@ -921,8 +915,8 @@ public class CharController : MonoBehaviour
             pos.z = 0;
             if (pos.y > charScale.maxHeight)
                 pos.y = charScale.maxHeight;
-            else if (pos.y < -20)
-                pos.y = -20;
+            else if (pos.y < -24)
+                pos.y = -24;
 
             if (pos.x > 52)
                 pos.x = 52;
@@ -967,16 +961,8 @@ public class CharController : MonoBehaviour
         }
         GameManager.instance.ResetCameraTarget();
         charInteract.interactType = InteractType.None; 
-        
-
-        if(data.Health < 0.1f * data.maxHealth)
-        {
-            actionType = ActionType.Sick;
-            isAbort = true;
-        }else{
-            CheckEnviroment();
-            yield return StartCoroutine(DoAnim("Drop"));
-        }
+        CheckEnviroment();
+        yield return StartCoroutine(DoAnim("Drop"));
             
     
         CheckAbort();
@@ -1051,6 +1037,13 @@ public class CharController : MonoBehaviour
         CheckAbort();
     }
 
+    protected virtual IEnumerator Stop(){
+        yield return StartCoroutine(Wait(anim.GetCurrentAnimatorStateInfo(0).length));
+        anim.Play("Idle_" + direction.ToString());
+        yield return StartCoroutine(Wait(Random.Range(1f,2f)));
+        CheckAbort();
+    }
+
     protected virtual IEnumerator Bath()
     {
 
@@ -1097,18 +1090,22 @@ public class CharController : MonoBehaviour
         
         anim.Play("Pee", 0);
         Debug.Log("Pee");
-        SpawnPee(peePosition.position + new Vector3(0, 0, 50));
+        float value = data.Pee;
+        SpawnPee(peePosition.position + new Vector3(0, 0, 50),value);
         while (data.Pee > 1 && !isAbort)
         {
             data.Pee -= data.ratePee * Time.deltaTime;
             yield return new WaitForEndOfFrame();
         }
+        
 
         if(enviromentType == EnviromentType.Toilet){
-            GameManager.instance.AddExp(5,data.iD);
-            GameManager.instance.AddHappy(10,data.iD);
-            GameManager.instance.LogAchivement(AchivementType.Do_Action,ActionType.OnToilet);
-            LevelUpSkill(SkillType.Toilet);
+            if(data.pee <= 1){
+                GameManager.instance.AddExp(10,data.iD);
+                GameManager.instance.LogAchivement(AchivementType.Do_Action,ActionType.OnToilet);
+                LevelUpSkill(SkillType.Toilet);
+            }
+
             yield return StartCoroutine(JumpDown(-7,10,30));     
         }
         
@@ -1133,18 +1130,21 @@ public class CharController : MonoBehaviour
 
         
         anim.Play("Shit", 0);
-        SpawnShit(shitPosition.position);
+        float value = data.Pee;
+        
         while (data.Shit > 1 && !isAbort)
         {
             data.Shit -= data.rateShit * Time.deltaTime;
             yield return new WaitForEndOfFrame();
         }
+        SpawnShit(shitPosition.position,value);
 
         if(enviromentType == EnviromentType.Toilet){
-            GameManager.instance.AddExp(5,data.iD);
-            GameManager.instance.AddHappy(10,data.iD);
-            GameManager.instance.LogAchivement(AchivementType.Do_Action,ActionType.OnToilet);
-            LevelUpSkill(SkillType.Toilet);
+            if(data.shit <= 1){
+                GameManager.instance.AddExp(10,data.iD);
+                GameManager.instance.LogAchivement(AchivementType.Do_Action,ActionType.OnToilet);
+                LevelUpSkill(SkillType.Toilet);
+            }
             yield return StartCoroutine(JumpDown(-7,10,30));     
         }
         CheckAbort();
@@ -1157,7 +1157,9 @@ public class CharController : MonoBehaviour
             SetTarget(PointType.Eat);
             yield return StartCoroutine(RunToPoint());
             bool canEat = true;
-            if (GetFoodItem().CanEat())
+            if (Vector2.Distance(this.transform.position, GetFoodItem().anchor.position) > 1f)
+                canEat = false;
+            if (GetFoodItem().CanEat() && canEat)
             {
                 anim.Play("Eat", 0);
                 yield return StartCoroutine(Wait(0.1f));
@@ -1173,17 +1175,15 @@ public class CharController : MonoBehaviour
                         canEat = false;
                     yield return new WaitForEndOfFrame();
                 }
-                GameManager.instance.LogAchivement(AchivementType.Do_Action,ActionType.Eat);
-                GameManager.instance.AddExp(5,data.iD);
-                GameManager.instance.AddHappy(5,data.iD);
-                if(GetFoodItem() != null && GetFoodItem().GetComponent<ItemObject>() != null)
- 			        GameManager.instance.LogAchivement(AchivementType.Eat,ActionType.None,GetFoodItem().GetComponent<ItemObject>().itemID);
-
+                if(data.Food >= data.maxFood - 1){
+                    GameManager.instance.LogAchivement(AchivementType.Do_Action,ActionType.Eat);
+                    GameManager.instance.AddExp(5,data.iD);
+                    if(GetFoodItem() != null && GetFoodItem().GetComponent<ItemObject>() != null)
+                        GameManager.instance.LogAchivement(AchivementType.Eat,ActionType.None,GetFoodItem().GetComponent<ItemObject>().itemID);
+                }
             }else{
                 int ran = Random.Range(0,100);
-                if(ran < 20)
-                    yield return DoAnim("Eat");
-                else if(ran < 40)
+                if(ran < 40)
                     yield return DoAnim("Standby");
                 else{
                     SetTarget(PointType.Patrol);
@@ -1208,8 +1208,10 @@ public class CharController : MonoBehaviour
             
 
             bool canDrink = true;
+            if (Vector2.Distance(this.transform.position, GetDrinkItem().anchor.position) > 1f)
+                canDrink = false;
 
-            if (GetDrinkItem().CanEat())
+            if (GetDrinkItem().CanEat() && canDrink)
             {
                 
                 anim.Play("Drink", 0);
@@ -1226,16 +1228,15 @@ public class CharController : MonoBehaviour
                         canDrink = false;
                     yield return new WaitForEndOfFrame();
                 }
-                GameManager.instance.LogAchivement(AchivementType.Do_Action,ActionType.Drink);
-                GameManager.instance.AddExp(5,data.iD);
-                GameManager.instance.AddHappy(5,data.iD);
-                if(GetDrinkItem() != null && GetDrinkItem().GetComponent<ItemObject>() != null)
- 			        GameManager.instance.LogAchivement(AchivementType.Drink,ActionType.None,GetDrinkItem().GetComponent<ItemObject>().itemID);
+                if(data.Water >= data.maxWater - 1){
+                    GameManager.instance.LogAchivement(AchivementType.Do_Action,ActionType.Drink);
+                    GameManager.instance.AddExp(5,data.iD);
+                    if(GetDrinkItem() != null && GetDrinkItem().GetComponent<ItemObject>() != null)
+                        GameManager.instance.LogAchivement(AchivementType.Drink,ActionType.None,GetDrinkItem().GetComponent<ItemObject>().itemID);
+                }
             }else{
                 int ran = Random.Range(0,100);
-                if(ran < 20)
-                    yield return DoAnim("Eat");
-                else if(ran < 40)
+                if(ran < 40)
                     yield return DoAnim("Standby");
                 else{
                     SetTarget(PointType.Patrol);
@@ -1290,15 +1291,16 @@ public class CharController : MonoBehaviour
 
         while (data.Sleep < data.maxSleep && !isAbort)
         {
-            data.Sleep += data.rateSleep;
+            data.Sleep += data.rateSleep * Time.deltaTime;
             yield return new WaitForEndOfFrame();
         }
         
         if(enviromentType == EnviromentType.Bed){
-            GameManager.instance.AddExp(20,data.iD);
-            GameManager.instance.AddHappy(20,data.iD);
-            GameManager.instance.LogAchivement(AchivementType.Do_Action,ActionType.Sleep);
-            LevelUpSkill(SkillType.Sleep);
+            if(data.Sleep > data.maxSleep - 1){
+                GameManager.instance.AddExp(20,data.iD);
+                GameManager.instance.LogAchivement(AchivementType.Do_Action,ActionType.Sleep);
+                LevelUpSkill(SkillType.Sleep);
+            }
             yield return StartCoroutine(JumpDown(-7,10,30)); 
         }
 
@@ -1311,33 +1313,26 @@ public class CharController : MonoBehaviour
         int maxCount = Random.Range(2, 5);
         while (!isAbort && n < maxCount)
         {
-            SetTarget(PointType.Patrol);
-            yield return StartCoroutine(RunToPoint());
             int ran = Random.Range(0, 100);
-            if (ran < 30)
+            if(ran < 40){
+                SetTarget(PointType.Patrol);
+                yield return StartCoroutine(RunToPoint());
+            }else if (ran < 60)
             {
-                
                 anim.Play("Standby", 0);
+                yield return StartCoroutine(Wait(Random.Range(1, 10)));
             }
-            else
+            else{
                 anim.Play("Idle_" + this.direction.ToString(), 0);
-            yield return StartCoroutine(Wait(Random.Range(1, 10)));
+                yield return StartCoroutine(Wait(Random.Range(1, 10)));
+            }
+            
             n++;
         }
         CheckAbort();
     }
 
-    protected virtual IEnumerator Call()
-    {
-        yield return StartCoroutine(DoAnim("Idle_"+direction.ToString()));
-        yield return StartCoroutine(RunToPoint());
-        touchObject.SetActive(true);
-        GameManager.instance.LogAchivement(AchivementType.Do_Action,ActionType.Call);
-        anim.Play("Idle_" + direction.ToString(),0);
-        yield return StartCoroutine(Wait(Random.Range(2f,5f)));
-        CheckAbort();
-    }
-
+ 
     protected virtual IEnumerator Listening(){
         yield return StartCoroutine(DoAnim("Idle_" + direction.ToString()));
         CheckAbort();
@@ -1518,14 +1513,10 @@ public class CharController : MonoBehaviour
         //skillLearnEffect.SetActive(true);
         ItemManager.instance.ActivateSkillItems(type);
         if(data.GetSkillProgress(type) == 0){
-            if(type == SkillType.Bath){
-                UIManager.instance.OnQuestNotificationPopup("Thú cưng cửa bạn không phải lúc nào cũng muốn tắm, hãy kiên trì nhé, bạn thú cưng sẽ quen dần!");
-            }else if(type == SkillType.Sleep){
+            if(type == SkillType.Sleep){
                 UIManager.instance.OnQuestNotificationPopup("Ngủ đúng chỗ sẽ có giấc ngủ ngon hơn và được nhiều điểm kinh nghiệm hơn, hãy huấn luyện thú cưng của bạn nhé!");
             }else if(type == SkillType.Toilet){
                 UIManager.instance.OnQuestNotificationPopup("Đi ị và tè không đúng chỗ sẽ rất bẩn đấy, hãy huấn luyện chó của bạn dần nhé!");
-            }else if(type == SkillType.Table){
-                UIManager.instance.OnQuestNotificationPopup("Nhảy trên cao xuống có thể sẽ bị chấn thương đấy bạn cần huấn luyện nhé!");
             }
         }   
     }
@@ -1564,14 +1555,16 @@ public class CharController : MonoBehaviour
     #endregion
 
     #region Effect
-    protected void SpawnPee(Vector3 pos)
+    protected void SpawnPee(Vector3 pos,float value)
     {
         GameObject go = Instantiate(peePrefab, pos, Quaternion.identity);
+        go.GetComponent<ItemDirty>().maxDirty = value;
     }
 
-    protected void SpawnShit(Vector3 pos)
+    protected void SpawnShit(Vector3 pos,float value)
     {
         GameObject go = Instantiate(shitPrefab, pos, Quaternion.identity);
+        go.GetComponent<ItemDirty>().maxDirty = value;
     }
 
     protected void SpawnFly(){
@@ -1617,7 +1610,10 @@ public class CharController : MonoBehaviour
             pos = GetRandomPoint (type).position;
             n++;
         }
-        target = pos;
+        if(type == PointType.Patrol){
+            target = pos + new Vector3(Random.Range(-2f,2f),Random.Range(-2f,2f),0);
+        }else
+            target = pos + new Vector3(Random.Range(-0.5f,0.5f),Random.Range(-0.5f,0.5f),0);
 
 	}
 

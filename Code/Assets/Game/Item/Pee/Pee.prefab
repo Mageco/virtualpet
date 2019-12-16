@@ -9,8 +9,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7334947403840338115}
-  - component: {fileID: 8897885911744619025}
-  m_Layer: 0
+  - component: {fileID: 720936594749814357}
+  m_Layer: 8
   m_Name: Collider
   m_TagString: Water
   m_Icon: {fileID: 0}
@@ -31,8 +31,8 @@ Transform:
   m_Father: {fileID: 7166089402494124036}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!58 &8897885911744619025
-CircleCollider2D:
+--- !u!61 &720936594749814357
+BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -45,8 +45,18 @@ CircleCollider2D:
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
   serializedVersion: 2
-  m_Radius: 0.2
+  m_Size: {x: 2, y: 0.5}
+  m_EdgeRadius: 0
 --- !u!1 &5651537371603179271
 GameObject:
   m_ObjectHideFlags: 0
@@ -202,6 +212,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxDirty: 100
+  heartPrefab: {fileID: 1052099055937570257, guid: 81d9e6058b88e4c4d8297b01f85eacb3,
+    type: 3}
 --- !u!95 &6688512042582927355
 Animator:
   serializedVersion: 3

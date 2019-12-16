@@ -8,6 +8,7 @@ public class PlayerData : BaseModel
 {
     public int coin;
     public int diamond;
+	public int happy;
     public List<PlayerItem> items = new List<PlayerItem>();
     public List<Pet> pets = new List<Pet>();
 	public int[] minigameLevels = new int[1];
@@ -56,6 +57,21 @@ public class PlayerData : BaseModel
 		}
 	}
 
+	
+    public int Happy
+	{
+		get
+		{
+			return this.happy;
+		}
+		set
+		{
+			this.happy = value;
+			if (this.happy < 0)
+				this.happy = 0;
+		}
+	}
+
 }
 
 [System.Serializable]
@@ -82,7 +98,7 @@ public class PlayerAchivement : BaseModel{
 		set
 		{
 			this.amount = value;
-			if (this.amount >= DataHolder.GetAchivement(achivementId).maxProgress[level]){
+			if (DataHolder.GetAchivement(achivementId).maxProgress.Length > level && this.amount >= DataHolder.GetAchivement(achivementId).maxProgress[level]){
 				if(rewardState != RewardState.Ready)
 					rewardState = RewardState.Ready;
 			}
@@ -92,7 +108,7 @@ public class PlayerAchivement : BaseModel{
 	}
 
 	public void Check(){
-		if (this.amount >= DataHolder.GetAchivement(achivementId).maxProgress[level]){
+		if (DataHolder.GetAchivement(achivementId).maxProgress.Length > level && this.amount >= DataHolder.GetAchivement(achivementId).maxProgress[level]){
 			if(rewardState != RewardState.Ready)
 				rewardState = RewardState.Ready;
 		}

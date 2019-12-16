@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CoinItem : MonoBehaviour
+public class HappyItem : MonoBehaviour
 {
     Animator animator;
-    int petId = 0;
+    int value = 5;
     bool isPick = false;
-    void Load(int id){
-        petId = id;
+    public void Load(int e){
+        value = e;
     }
 
     void Awake(){
@@ -41,7 +41,7 @@ public class CoinItem : MonoBehaviour
         animator.Play("Pick");
         yield return new WaitForEndOfFrame();
         yield return new WaitForSeconds(animator.GetCurrentAnimatorStateInfo(0).length);
-        GameManager.instance.AddCoin(Random.Range(5,10)*(GameManager.instance.GetPet(petId).level + 1) );
+        GameManager.instance.AddHappy(value);
         GameObject.Destroy(this.gameObject);
     }
 }

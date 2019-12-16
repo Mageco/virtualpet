@@ -2,16 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using Lean.Touch;
+
 
 public class CharInteract : MonoBehaviour
 {
     public InteractType interactType = InteractType.None;
-    //float doubleClickTime;
-    //float maxDoubleClickTime = 0.4f;
-    //public bool isClick = false;
-    //public bool isTouch = false;
-    //public Direction touchDirection = Direction.D;
 
     public Vector3 dragOffset;
     CharController character;
@@ -75,31 +70,7 @@ public class CharInteract : MonoBehaviour
         } */
     }
 
-    
 
-    void OnTriggerEnter2D(Collider2D other) {
-        if (other.tag == "Mouse") {
-           character.OnMouse();     
-           
-                  
-        } else if (other.tag == "Food") {
-
-        }else if (other.tag == "Water") {
-            if(Mathf.Abs(other.transform.position.y - this.transform.position.y) < 1f && (character.actionType == ActionType.Patrol || 
-            character.actionType == ActionType.Discover)){
-                character.OnFall();
-            }
-                
-        }
-    }
-
-    void OnTriggerExit2D(Collider2D other) {
-        if (other.tag == "Mouse" && character.actionType == ActionType.Mouse) {
-            //character.OffMouse();
-        }else if (other.tag == "Food") {
-
-        }
-    }
 
     private bool IsPointerOverUIObject() {
         PointerEventData eventDataCurrentPosition = new PointerEventData(EventSystem.current);

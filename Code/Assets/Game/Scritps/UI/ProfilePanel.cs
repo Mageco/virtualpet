@@ -34,7 +34,6 @@ public class ProfilePanel : MonoBehaviour
         energyProgress.fillAmount = data.energy/data.maxEnergy;
         dogType.text = data.languageItem[0].Name;
         health.text = data.Health.ToString("F0");
-        happy.text = data.Happy.ToString("F0");
         stamina.text = data.maxEnergy.ToString("F0");
         speed.text = data.Speed.ToString("F0");
         intelligent.text = data.Intelligent.ToString("F0");

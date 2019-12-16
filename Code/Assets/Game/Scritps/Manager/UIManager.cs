@@ -19,6 +19,7 @@ public class UIManager : MonoBehaviour
     public static UIManager instance;
 	public Text coinText;
 	public Text diamonText;
+    public Text heartText;
 	NotificationPopup questNotification;
     QuestPanel questComplete;
     ShopPanel shopPanel;
@@ -71,6 +72,7 @@ public class UIManager : MonoBehaviour
 	{
 		coinText.text = GameManager.instance.GetCoin().ToString();
 		diamonText.text = GameManager.instance.GetDiamond().ToString();
+        heartText.text = GameManager.instance.GetHappy().ToString();
 	}
 
 	public void BuyItem(int itemID){
@@ -275,16 +277,7 @@ public class UIManager : MonoBehaviour
         homeUI.SetActive(false);
     }
 
-    public void OnCall(){
-        if(doubleClick != null)
-            GameObject.Destroy(doubleClick);
 
-        Vector3 pos = Camera.main.transform.position + new Vector3(0,-Camera.main.orthographicSize + 5,0);
-        pos.z = pos.y;
-        doubleClick = GameObject.Instantiate(doubleClickEffect,pos,Quaternion.identity);
-        doubleClick.transform.parent = ItemManager.instance.transform;
-        GameManager.instance.GetPetObject(0).OnCall(pos);
-    }
 
     public void LoadProfiles(){
         ClearProfiles();
