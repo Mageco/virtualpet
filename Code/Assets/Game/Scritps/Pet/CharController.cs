@@ -1422,8 +1422,7 @@ public class CharController : MonoBehaviour
             if(toyItem != null){
             int n = Random.Range(3,10);
             int count = 0;
-            Vector3 startPosition = agent.transform.position;
-            dropPosition = toyItem.anchorPoint.position;
+            dropPosition = toyItem.anchorPoint.position + new Vector3(0,Random.Range(-2f,2f),0);
             agent.transform.position = dropPosition;
             
             yield return new WaitForEndOfFrame();
@@ -1432,30 +1431,47 @@ public class CharController : MonoBehaviour
                 anim.Play("Teased",0);  
                 shadow.SetActive(false);   
                 charInteract.interactType = InteractType.Jump;
-                float ySpeed = 30;
+                yield return new WaitForEndOfFrame();
+                float ySpeed = 30 * anim.GetCurrentAnimatorStateInfo(0).length / 2;
+                if(anim.GetCurrentAnimatorStateInfo(0).length < 2){
+                    anim.speed = 0.5f;
+                    ySpeed = 60 * anim.GetCurrentAnimatorStateInfo(0).length / 2;
+                }
+
                 while (charInteract.interactType == InteractType.Jump && !isAbort)
                 {
                     ySpeed -= 30 * Time.deltaTime;
-                    if (ySpeed < -50)
-                        ySpeed = -50;
                     Vector3 pos1 = agent.transform.position;
                     pos1.y += ySpeed * Time.deltaTime;
+                    Debug.Log(count + "  " + n);
+                    
+                    if(count == n-1){
+                        pos1.x += 15 * Time.deltaTime;
+                        Debug.Log(pos1.x);
+                    }
                     agent.transform.position = pos1;
                         
                     if (ySpeed < 0 && this.transform.position.y < dropPosition.y)
                     {
-                        this.transform.rotation = Quaternion.identity;
+                        if(count ==  n-1){
+                            yield return StartCoroutine(DoAnim("Drop"));
+                        }else
+                        {
+                            agent.transform.position = dropPosition;
+                        }
                         charInteract.interactType = InteractType.None;
-                        agent.transform.position = dropPosition;
+
                     }
                     yield return new WaitForEndOfFrame();
                 }
                 count ++;
             }
-            agent.transform.position = startPosition;
         }
-        target = GetRandomPoint(PointType.Patrol).position;
-        yield return StartCoroutine(RunToPoint());
+        anim.speed = 1f;
+        int ran = Random.Range(0,100);
+        if(ran < 20){
+            GameManager.instance.AddExp(5,data.iD);
+        }
         CheckAbort();
     }
 
