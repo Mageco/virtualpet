@@ -50,7 +50,7 @@ public class BaseFloorItem : MonoBehaviour
 		
     }
 
-	void LateUpdate()
+	protected virtual void LateUpdate()
 	{
 		float offset = initZ;
 

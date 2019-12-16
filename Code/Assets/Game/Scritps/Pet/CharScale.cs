@@ -63,6 +63,10 @@ public class CharScale : MonoBehaviour
 					}
 				}		
 			}
+			if(character.shadow != null){
+                character.shadow.transform.position = scalePosition + new Vector3(0,0,1000);
+                Debug.Log(character.shadow.transform.position);
+            }
 		}else if(interact.interactType == InteractType.Drop){
 			height = this.transform.position.y - scalePosition.y;
 			if(height <= 0 && this.transform.position.y <= scalePosition.y ){
@@ -72,6 +76,10 @@ public class CharScale : MonoBehaviour
 				this.transform.position = p;
 				height = 0;
 			}
+			if(character.shadow != null){
+                character.shadow.transform.position = scalePosition + new Vector3(0,0,1000);
+                Debug.Log(character.shadow.transform.position);
+            }
 		}
 
 		if(interact.interactType ==InteractType.None && character.enviromentType == EnviromentType.Room)

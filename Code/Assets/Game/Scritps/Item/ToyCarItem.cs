@@ -53,7 +53,7 @@ public class ToyCarItem : BaseFloorItem
 
 	protected override void OnMouseDown(){
 		base.OnMouseDown();
-		iTween.Stop();
+		iTween.StopByName("car");
 		isActive = false;
 		animator.Play("Idle_"+direction.ToString());
 	}
@@ -67,7 +67,7 @@ public class ToyCarItem : BaseFloorItem
 			if(round > 1){
 				Run();
 			}else{
-				iTween.Stop();
+				iTween.StopByName("car");
 				isActive = false;
 				animator.Play("Idle_"+direction.ToString());
 			}
@@ -89,7 +89,7 @@ public class ToyCarItem : BaseFloorItem
 			paths [i] = pointRandoms[Random.Range(0,pointRandoms.Count)].position;
 		}
 
-		iTween.MoveTo (this.gameObject, iTween.Hash ("path", paths, "speed", speed, "orienttopath", false,"oncomplete", "CompleteSeek"));
+		iTween.MoveTo (this.gameObject, iTween.Hash ("name","car","path", paths, "speed", speed, "orienttopath", false,"oncomplete", "CompleteSeek"));
 		
 		animator.Play("Run_" + direction.ToString(),0);
 	}

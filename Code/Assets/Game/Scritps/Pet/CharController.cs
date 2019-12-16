@@ -43,6 +43,8 @@ public class CharController : MonoBehaviour
     public Transform shitPosition;
     public GameObject peePrefab;
     public GameObject shitPrefab;
+
+    public GameObject shadow;
    
 
     #endregion
@@ -107,6 +109,8 @@ public class CharController : MonoBehaviour
              if (child.gameObject.tag == "Dirty") {
                  dirties.Add(child.gameObject);
                  child.gameObject.SetActive(false);
+             }else if(child.gameObject.tag == "Shadow"){
+                 shadow = child.gameObject;
              }
          }
 
@@ -909,7 +913,8 @@ public class CharController : MonoBehaviour
         enviromentType = EnviromentType.Room;
         GameManager.instance.SetCameraTarget(this.gameObject);
         anim.Play("Hold", 0);
-        
+        if(shadow != null)
+            shadow.SetActive(true);
         while (charInteract.interactType == InteractType.Drag)
         {
             Vector3 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition) - charInteract.dragOffset;
@@ -1428,7 +1433,13 @@ public class CharController : MonoBehaviour
     }
 
     protected virtual IEnumerator Supprised(){
-        yield return StartCoroutine(DoAnim("Teased"));
+        int ran = Random.Range(0,100);
+        if(ran > 20)
+            yield return StartCoroutine(DoAnim("Teased"));
+        else{
+             yield return StartCoroutine(DoAnim("Love"));
+             GameManager.instance.AddExp(5,data.iD);
+        }
         CheckAbort();
     }
 
