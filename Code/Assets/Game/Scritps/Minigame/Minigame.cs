@@ -8,7 +8,7 @@ public class Minigame : MonoBehaviour
     public static Minigame instance;
     public int maxLive;
     public int live;
-    protected float time = 0;
+    public float time = 0;
     public float maxTime;
 
     public GameObject winPrefab;

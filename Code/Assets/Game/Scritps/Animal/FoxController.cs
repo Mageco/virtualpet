@@ -103,7 +103,7 @@ public class FoxController : AnimalController
         fleePoint = this.transform.position;
         yield return StartCoroutine(Wait(Random.Range(0,maxTimeWait)));
         GetTarget();
-        if(target != null){
+        if(target != null && Minigame.instance.time < Minigame.instance.maxTime - 5){
             isAbort = true;
             state = AnimalState.Seek;
         }
