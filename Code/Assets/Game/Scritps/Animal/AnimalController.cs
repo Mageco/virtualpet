@@ -46,7 +46,6 @@ public class AnimalController : MonoBehaviour
         anim = this.GetComponent<Animator>();
         agent.transform.position = this.transform.position;
         agent.maxSpeed = this.maxSpeed;
-        Debug.Log(agent.maxSpeed);
         Load();
     }
 

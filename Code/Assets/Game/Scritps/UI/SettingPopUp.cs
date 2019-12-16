@@ -8,16 +8,23 @@ public class SettingPopUp : MonoBehaviour {
 	public Slider voice;
 	public Slider music;
 	public Dropdown language;
+	Animator animator;
+
+	void Awake(){
+		animator = this.GetComponent<Animator>();
+	}
 
 	// Use this for initialization
-	void Start () {
+	IEnumerator Start () {
 		Load ();
+		yield return new WaitForSeconds(animator.GetCurrentAnimatorStateInfo(0).length);
+		Time.timeScale = 0;
 	}
 
 	void Load()
 	{
-
-		language.value = MageManager.instance.GetLanguage ();
+		if(language != null)
+			language.value = MageManager.instance.GetLanguage ();
 
 		if (music != null)
 			music.value = MageManager.instance.GetMusicVolume ();
@@ -80,8 +87,14 @@ public class SettingPopUp : MonoBehaviour {
 
 	public void Close()
 	{
+		Time.timeScale = 1;
 		MageManager.instance.PlaySoundName ("BubbleButton", false);
 		this.GetComponent<Popup> ().Close ();
+	}
+
+	public void OnHome(){
+		Time.timeScale = 1;
+		UIManager.instance.OnHome();
 	}
 
 }

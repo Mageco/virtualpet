@@ -512,26 +512,21 @@ public class GameManager : MonoBehaviour
 
         AddCoin(10);
         AddDiamond(1);
+        
         AddItem(17);
         AddItem(41);
-        //AddItem(57);
-        AddPet(0);
-
-        
-        EquipItem(17);    
-        EquipItem(41);    
-        //EquipItem(57);
-        
-
         AddItem(2);
         AddItem(11);                
         AddItem(8);
-        AddItem(41);
         AddItem(58);
+        AddItem(4);
+        
+        AddPet(0);
+
+        EquipItem(17);  
         EquipItem(2);
         EquipItem(11);                
         EquipItem(8);
-        AddItem(4);
         EquipItem(4); 
         EquipItem(41);
         EquipItem(58);

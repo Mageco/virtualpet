@@ -10,8 +10,6 @@ public class Minigame1 : Minigame
     public Text chickenNumber;
     public Text timeText;
     public Text levelText;
-    public Text energyText;
-    public Image energyProgress;
 
     public AnimalSpawner chickenSpawner;
     public AnimalSpawner foxSpawner;
@@ -29,8 +27,6 @@ public class Minigame1 : Minigame
         GameManager.instance.UnEquipPets();
         MageManager.instance.PlayMusic(music,0,true);
 //        Debug.Log(live);
-
-        energyProgress.fillAmount = 1;
         if (gameLevel == 0)
             OnGuildPanel();
         else 
@@ -116,7 +112,6 @@ public class Minigame1 : Minigame
             float m = (int)(t/60);
             float s = (int)(t - m*60);
             timeText.text  = m.ToString("00") + ":" + s.ToString("00");
-            energyProgress.fillAmount = GameManager.instance.GetActivePet().Energy/GameManager.instance.GetActivePet().maxEnergy;
         }
     }
 

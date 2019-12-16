@@ -106,6 +106,7 @@ public class CharController : MonoBehaviour
          foreach (Transform child in allChildren) {
              if (child.gameObject.tag == "Dirty") {
                  dirties.Add(child.gameObject);
+                 child.gameObject.SetActive(false);
              }
          }
 
@@ -114,7 +115,7 @@ public class CharController : MonoBehaviour
 
     public void LoadTime(float t){
 
-        Debug.Log("Load Time " + t);
+        //Debug.Log("Load Time " + t);
         int n = (int)(t/10);
         data.Sleep = data.maxSleep - (t%28800)*0.005f; 
 

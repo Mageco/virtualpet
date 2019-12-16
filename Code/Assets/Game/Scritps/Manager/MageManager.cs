@@ -19,7 +19,7 @@ public class MageManager : MonoBehaviour {
 	public GameObject notificationPopupPrefab;
 	public GameObject confirmationPopUpPrefab;
 	public GameObject verificationPrefab;
-	NotificationPopup notificationPopup;
+	InformationPopup notificationPopup;
 	ConfirmationPopup confirmationPopup;
 
 	VerifyWindow verifyPopup;
@@ -464,7 +464,7 @@ public class MageManager : MonoBehaviour {
 
 
 	#region UI
-	public NotificationPopup OnNotificationPopup(string description)
+	public InformationPopup OnNotificationPopup(string description)
 	{
 		if (notificationPopup == null) {
 			var popup = Instantiate (notificationPopupPrefab) as GameObject;
@@ -472,7 +472,7 @@ public class MageManager : MonoBehaviour {
 			popup.transform.localScale = Vector3.zero;
 			popup.transform.SetParent (GameObject.Find ("Canvas").transform, false);
 			popup.GetComponent<Popup> ().Open ();
-			notificationPopup = popup.GetComponent<NotificationPopup>();
+			notificationPopup = popup.GetComponent<InformationPopup>();
 			notificationPopup.Load("",description);
 		}
 		return notificationPopup;

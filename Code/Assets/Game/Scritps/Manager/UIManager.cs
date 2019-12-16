@@ -70,9 +70,12 @@ public class UIManager : MonoBehaviour
 
 	public void UpdateUI()
 	{
-		coinText.text = GameManager.instance.GetCoin().ToString();
-		diamonText.text = GameManager.instance.GetDiamond().ToString();
-        heartText.text = GameManager.instance.GetHappy().ToString();
+        if(coinText != null)
+		    coinText.text = GameManager.instance.GetCoin().ToString();
+        if(diamonText != null)
+		    diamonText.text = GameManager.instance.GetDiamond().ToString();
+        if(heartText != null)
+            heartText.text = GameManager.instance.GetHappy().ToString();
 	}
 
 	public void BuyItem(int itemID){

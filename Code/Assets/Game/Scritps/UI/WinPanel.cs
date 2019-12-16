@@ -61,8 +61,15 @@ public class WinPanel : MonoBehaviour
     }
 
     public void Replay(){
-        MageManager.instance.LoadScene(SceneManager.GetActiveScene().name,0.5f);
-        this.GetComponent<Popup>().Close();
+        int price = 10 + GameManager.instance.myPlayer.minigameLevels[0]; 
+        if(GameManager.instance.GetHappy() >= price){
+            GameManager.instance.AddHappy(-price);
+            MageManager.instance.LoadScene(SceneManager.GetActiveScene().name,0.5f);
+            this.GetComponent<Popup>().Close();
+        }else
+        {
+            MageManager.instance.OnNotificationPopup ("Bạn không đủ tim để chơi trò chơi này hãy chăm sóc thú cưng để thu thập thêm tim nhé.");
+        }
     }
 
     public void Close(){
