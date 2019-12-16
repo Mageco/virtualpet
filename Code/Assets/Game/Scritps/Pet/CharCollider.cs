@@ -35,6 +35,11 @@ public class CharCollider : MonoBehaviour
             if(character.enviromentType == EnviromentType.Room && character.isMoving){
                 character.OnStop();
             }
+        }else if(other.tag == "Car"){
+            if(other.transform.parent.GetComponent<ToyCarItem>().IsSupprised())
+                character.OnSupprised();
+            else
+                character.OnStop();
         }
     }
 

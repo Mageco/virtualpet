@@ -22,6 +22,7 @@ public class DollItem : MonoBehaviour
 
     IEnumerator OnActive(){
         animator.Play("Active");
+        yield return new WaitForEndOfFrame();
         yield return new WaitForSeconds(animator.GetCurrentAnimatorStateInfo(0).length);
         isActive = false;
         animator.Play("Idle");
