@@ -9,4 +9,22 @@ public class CharTurtle : CharController
     {
 
     }
+
+     protected override IEnumerator Supprised(){
+        anim.Play("Teased",0);
+        while(!isAbort){
+            yield return new WaitForEndOfFrame();
+        }
+        CheckAbort();
+    }
+
+    protected override IEnumerator Fall()
+    {
+        anim.Play("Fall_" + direction.ToString(),0);
+        while(!isAbort){
+            yield return new WaitForEndOfFrame();
+        }
+        CheckAbort();
+    }
+
 }

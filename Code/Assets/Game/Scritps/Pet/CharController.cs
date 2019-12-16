@@ -572,7 +572,7 @@ public class CharController : MonoBehaviour
     }
 
     public virtual void OnSupprised(){
-        if(actionType == ActionType.Hold || actionType == ActionType.Sick)
+        if(actionType == ActionType.Hold || actionType == ActionType.Sick || actionType == ActionType.Injured)
             return;
 
         Abort();
@@ -1428,10 +1428,7 @@ public class CharController : MonoBehaviour
     }
 
     protected virtual IEnumerator Supprised(){
-        anim.Play("Teased",0);
-        while(!isAbort){
-            yield return new WaitForEndOfFrame();
-        }
+        yield return StartCoroutine(DoAnim("Teased"));
         CheckAbort();
     }
 

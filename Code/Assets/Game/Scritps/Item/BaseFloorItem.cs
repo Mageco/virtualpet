@@ -8,16 +8,18 @@ public class BaseFloorItem : MonoBehaviour
 {
 	public float initZ = -6;
 	public float scaleFactor = 0.05f;
-	Vector3 originalScale;
+	protected Vector3 originalScale;
 	Vector3 dragOffset;
 	public bool isDrag = false;
 	public bool isDragable = true;
-	Vector3 originalPosition;
-	Vector3 lastPosition;
+	protected Vector3 originalPosition;
+	protected Vector3 lastPosition;
 	public bool isBusy = false;
 	protected ItemObject item;
 
-	void Awake(){
+	protected float dragTime = 0;
+
+	protected virtual void Awake(){
 		originalPosition = this.transform.position;
 		originalScale = this.transform.localScale;
 	}
@@ -33,7 +35,17 @@ public class BaseFloorItem : MonoBehaviour
 		if (isDrag &&isDragable) {
 			Vector3 pos = Camera.main.ScreenToWorldPoint (Input.mousePosition) - dragOffset;
 			pos.z = this.transform.position.z;
-			this.transform.position = pos;			 
+			if(pos.y > -3)
+				pos.y = -3;
+			if(pos.y < -24)
+				pos.y = -24;
+			
+            if (pos.x > 52)
+                pos.x = 52;
+            else if (pos.x < -49)
+                pos.x = -49;
+			this.transform.position = pos;	
+			dragTime += Time.deltaTime;		 
 		}
 		
     }
@@ -61,10 +73,11 @@ public class BaseFloorItem : MonoBehaviour
 			StartCoroutine (ReturnPosition (lastPosition));
 		isDrag = false;
 		GameManager.instance.ResetCameraTarget();
+		dragTime = 0;
 	}
 
 
-	void OnMouseDown()
+	protected virtual void OnMouseDown()
 	{
 		if (IsPointerOverUIObject ()) {
 			return;
@@ -102,34 +115,7 @@ public class BaseFloorItem : MonoBehaviour
 
 	}
 
-	void OnTriggerEnter2D(Collider2D other) {
-		if(isBusy)
-			return;
-		
-		if (other.tag == "Floor") {
-		 	isDragable = true;
-		}
-		 if (other.GetComponent<PolyNavObstacle>() != null) {
-		 	isDragable = false;
-		 }
-	}
 
-	void OnTriggerStay2D(Collider2D other) {
-		if(isBusy)
-			return;
-	}
-	void OnTriggerExit2D(Collider2D other) {
-		if(isBusy)
-			return;
-
-		if (other.GetComponent<PolyNavObstacle>() != null) {
-		 	isDragable = true;
-		}
-
-		if (other.tag == "Floor") {
-			isDragable = false;
-		}
-	}
 
 
 	private bool IsPointerOverUIObject() {
