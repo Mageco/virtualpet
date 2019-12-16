@@ -40,6 +40,8 @@ public class CharCollider : MonoBehaviour
                 character.OnSupprised();
             else
                 character.OnStop();
+        }else if(other.tag == "Toy"){
+            character.OnToy(other.transform.parent.GetComponent<ToyItem>());
         }
     }
 

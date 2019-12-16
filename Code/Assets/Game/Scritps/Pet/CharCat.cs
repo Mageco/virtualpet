@@ -55,4 +55,58 @@ public class CharCat : CharController
         yield return StartCoroutine(JumpDown(-2,10,30)); 
         CheckAbort();
     }
+
+    public override void OnToy(ToyItem item){
+        if(actionType != ActionType.Sick && actionType != ActionType.Injured
+        && actionType != ActionType.Toy){
+            actionType = ActionType.Toy;
+            isAbort = true;
+            toyItem = item;
+            Debug.Log("Toy");
+        }
+        
+    }
+
+    protected override IEnumerator Toy()
+    {
+        if(toyItem != null){
+            int n = Random.Range(3,10);
+            int count = 0;
+            Vector3 startPosition = agent.transform.position;
+            dropPosition = toyItem.anchorPoint.position;
+            agent.transform.position = dropPosition;
+            
+            yield return new WaitForEndOfFrame();
+            while(!isAbort && count < n){
+                toyItem.OnActive();
+                anim.Play("Teased",0);  
+                shadow.SetActive(false);   
+                charInteract.interactType = InteractType.Jump;
+                float ySpeed = 30;
+                while (charInteract.interactType == InteractType.Jump && !isAbort)
+                {
+                    ySpeed -= 30 * Time.deltaTime;
+                    if (ySpeed < -50)
+                        ySpeed = -50;
+                    Vector3 pos1 = agent.transform.position;
+                    pos1.y += ySpeed * Time.deltaTime;
+                    agent.transform.position = pos1;
+                        
+                    if (ySpeed < 0 && this.transform.position.y < dropPosition.y)
+                    {
+                        this.transform.rotation = Quaternion.identity;
+                        charInteract.interactType = InteractType.None;
+                        agent.transform.position = dropPosition;
+                    }
+                    yield return new WaitForEndOfFrame();
+                }
+                count ++;
+            }
+            agent.transform.position = startPosition;
+        }
+        target = GetRandomPoint(PointType.Patrol).position;
+        yield return StartCoroutine(RunToPoint());
+        CheckAbort();
+    }
+
 }

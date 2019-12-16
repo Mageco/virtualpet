@@ -2,18 +2,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ToyWaterItem : MonoBehaviour
+public class ToyWaterItem : ToyItem
 {
-    public Transform jumpPoint;
-    ToyType toyType = ToyType.WaterJet;
-    Animator animator;
+   
 
-    void Awake(){
+    protected override void Awake(){
         animator = this.GetComponent<Animator>();
+        toyType = ToyType.WaterJet;
     }
 
 
-    public void OnActive(){
+    public override void OnActive(){
         animator.Play("Active");
     }
 }

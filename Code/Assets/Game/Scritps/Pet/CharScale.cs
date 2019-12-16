@@ -66,7 +66,7 @@ public class CharScale : MonoBehaviour
 				}		
 			}
 			if(character.shadow != null){
-                character.shadow.transform.position = scalePosition + new Vector3(0,0,1000);
+                character.shadow.transform.position = scalePosition + new Vector3(0,0,600);
 				character.shadow.transform.localScale = character.originalShadowScale * (1f - 0.5f*height/maxHeight); 
                 Debug.Log(character.shadow.transform.position);
             }
@@ -80,7 +80,7 @@ public class CharScale : MonoBehaviour
 				height = 0;
 			}
 			if(character.shadow != null){
-                character.shadow.transform.position = scalePosition + new Vector3(0,0,1000);
+                character.shadow.transform.position = scalePosition + new Vector3(0,0,600);
 				character.shadow.transform.localScale = character.originalShadowScale * (1f - 0.5f*height/maxHeight); 
                 Debug.Log(character.shadow.transform.position);
             }

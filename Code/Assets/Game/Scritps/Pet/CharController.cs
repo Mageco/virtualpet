@@ -63,6 +63,8 @@ public class CharController : MonoBehaviour
     public IconStatus iconStatus = IconStatus.None;
     IconStatus lastIconStatus = IconStatus.None;
 
+    protected ToyItem toyItem;
+
     public List<GameObject> dirties = new List<GameObject>();
 
     #region Load
@@ -475,6 +477,9 @@ public class CharController : MonoBehaviour
         }else if (actionType == ActionType.Stop)
         {
             StartCoroutine(Stop());
+        } else if (actionType == ActionType.Toy)
+        {
+            StartCoroutine(Toy());
         }        
     }
 
@@ -695,10 +700,13 @@ public class CharController : MonoBehaviour
         //    actionType = ActionType.None;
     }
 
-    public virtual void OnToy(ToyType type){
-        if(actionType == ActionType.Patrol){
-            Abort();
-            //actionType = ActionType.OnToy;
+    public virtual void OnToy(ToyItem item){
+        if(actionType != ActionType.Sick && actionType != ActionType.Injured
+        && actionType != ActionType.Toy){
+            actionType = ActionType.Toy;
+            isAbort = true;
+            toyItem = item;
+            Debug.Log("Toy");
         }
     }
 
@@ -941,7 +949,7 @@ public class CharController : MonoBehaviour
         CheckDrop();
 
         float fallSpeed = 0;
-        while (charInteract.interactType == InteractType.Drop && !isAbort)
+        while (charInteract.interactType == InteractType.Drop)
         {
             if (agent.transform.position.y > dropPosition.y)
             {
@@ -1409,9 +1417,45 @@ public class CharController : MonoBehaviour
         CheckAbort();
     }
 
-    protected virtual IEnumerator Sad()
+    protected virtual IEnumerator Toy()
     {
-        yield return StartCoroutine(DoAnim("Sad"));
+            if(toyItem != null){
+            int n = Random.Range(3,10);
+            int count = 0;
+            Vector3 startPosition = agent.transform.position;
+            dropPosition = toyItem.anchorPoint.position;
+            agent.transform.position = dropPosition;
+            
+            yield return new WaitForEndOfFrame();
+            while(!isAbort && count < n){
+                toyItem.OnActive();
+                anim.Play("Teased",0);  
+                shadow.SetActive(false);   
+                charInteract.interactType = InteractType.Jump;
+                float ySpeed = 30;
+                while (charInteract.interactType == InteractType.Jump && !isAbort)
+                {
+                    ySpeed -= 30 * Time.deltaTime;
+                    if (ySpeed < -50)
+                        ySpeed = -50;
+                    Vector3 pos1 = agent.transform.position;
+                    pos1.y += ySpeed * Time.deltaTime;
+                    agent.transform.position = pos1;
+                        
+                    if (ySpeed < 0 && this.transform.position.y < dropPosition.y)
+                    {
+                        this.transform.rotation = Quaternion.identity;
+                        charInteract.interactType = InteractType.None;
+                        agent.transform.position = dropPosition;
+                    }
+                    yield return new WaitForEndOfFrame();
+                }
+                count ++;
+            }
+            agent.transform.position = startPosition;
+        }
+        target = GetRandomPoint(PointType.Patrol).position;
+        yield return StartCoroutine(RunToPoint());
         CheckAbort();
     }
 
