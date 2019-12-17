@@ -314,10 +314,16 @@ public class GameManager : MonoBehaviour
     }
 
     public void AddItem(int id){
-        PlayerItem item = new PlayerItem();
-        item.itemId = id;
-        item.state = ItemState.OnShop;
-        myPlayer.items.Add(item);
+        if(DataHolder.GetItem(id).itemType == ItemType.Diamond){
+            AddDiamond(DataHolder.GetItem(id).sellPrice);
+        }else if(DataHolder.GetItem(id).itemType == ItemType.Coin){
+            AddCoin(DataHolder.GetItem(id).sellPrice);
+        }else{
+            PlayerItem item = new PlayerItem();
+            item.itemId = id;
+            item.state = ItemState.OnShop;
+            myPlayer.items.Add(item);
+        }
         SavePlayer();
     }
 
@@ -346,7 +352,7 @@ public class GameManager : MonoBehaviour
             }
         }
         
-        if(ItemManager.instance != null)
+        if(ItemManager.instance != null && DataHolder.GetItem(id).itemType != ItemType.Coin && DataHolder.GetItem(id).itemType != ItemType.Diamond)
             ItemManager.instance.EquipItem();
     }
 

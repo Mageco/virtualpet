@@ -199,10 +199,10 @@ public class ItemUI : MonoBehaviour
             return;
         }
 
-        StartCoroutine(BuyCoroutine());
+        BuyCoroutine();
     }
 
-    IEnumerator BuyCoroutine()
+    void BuyCoroutine()
     {
         isBusy = true;
         
@@ -227,12 +227,7 @@ public class ItemUI : MonoBehaviour
             if(DataHolder.GetItem(itemId).itemType == ItemType.Diamond){
                 MageManager.instance.OnNotificationPopup("Tính năng mua kim cương chưa mở");
             }else if(DataHolder.GetItem(itemId).itemType == ItemType.Coin){
-                animator.Play("Use", 0);
-                yield return new WaitForSeconds(0.5f);
-                GameManager.instance.AddDiamond(-DataHolder.GetItem(itemId).buyPrice);
-                GameManager.instance.AddCoin(DataHolder.GetItem(itemId).sellPrice);
-                animator.Play("Idle", 0);
-                MageManager.instance.OnNotificationPopup("bạn đã mua thành công");
+                UIManager.instance.OnConfirmationShopPanel(itemId,false,true);
             }else
             {
                 if (state == ItemState.Equiped){
