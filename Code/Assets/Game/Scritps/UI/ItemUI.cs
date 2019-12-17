@@ -69,7 +69,7 @@ public class ItemUI : MonoBehaviour
             {
                 buyButton.interactable = true;
                 buttonText.text = "Sell";
-                price.text = (d.buyPrice).ToString();
+                price.text = (d.buyPrice/2).ToString();
                 
                 if(DataHolder.GetItem(itemId).itemType == ItemType.Room && GameManager.instance.GetBuyItems(ItemType.Room).Count == 1){
                     buyButton.interactable = false;
@@ -148,7 +148,7 @@ public class ItemUI : MonoBehaviour
             {
                 buyButton.interactable = true;
                 buttonText.text = "Sell";
-                price.text = d.buyPrice.ToString();
+                price.text = (d.buyPrice/2).ToString();
                 if(GameManager.instance.GetBuyPets().Count == 1){
                     buyButton.interactable = false;
                 }
@@ -235,7 +235,7 @@ public class ItemUI : MonoBehaviour
                 }
                 else if (state == ItemState.Have)
                 {
-
+                    
                 }
                 else
                 {

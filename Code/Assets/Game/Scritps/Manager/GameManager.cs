@@ -42,7 +42,6 @@ public class GameManager : MonoBehaviour
     private void Start() {
         LoadPlayer();
         isLoad = true;
-        LoadPetObjects();
     }
 
     void Update(){
@@ -122,7 +121,6 @@ public class GameManager : MonoBehaviour
         foreach(Pet p in myPlayer.pets){
             p.itemState = ItemState.Equiped;
         }
-        LoadPetObjects();
     }
 
     public void UnEquipPet(int itemId)
@@ -299,11 +297,12 @@ public class GameManager : MonoBehaviour
 		{
 			return false;
 		}
-	}
+        
+    }
 
     public void SellItem(int itemId){
         PriceType type = DataHolder.GetItem(itemId).priceType;
-		int price = DataHolder.GetItem(itemId).buyPrice;
+		int price = DataHolder.GetItem(itemId).buyPrice/2;
 		if(type == PriceType.Coin){
 			AddCoin (price);
 		}else if(type == PriceType.Diamond){
@@ -334,6 +333,7 @@ public class GameManager : MonoBehaviour
                 if(item.state == ItemState.Equiped){
                     ItemManager.instance.RemoveItem(item.itemId);
                 }
+                SavePlayer();
                 return;
             }
         }
@@ -559,9 +559,10 @@ public class GameManager : MonoBehaviour
             AddPet(5);
         }
         //#endif
-        ItemManager.instance.LoadItems();
+
         EquipPets();
         SavePlayer();
+        isLoad = true;
     }
 
     public void LogAchivement(AchivementType achivementType = AchivementType.Do_Action, ActionType actionType = ActionType.None,int itemId = -1,AnimalType animalType = AnimalType.Mouse){

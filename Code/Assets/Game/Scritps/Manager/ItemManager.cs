@@ -40,9 +40,8 @@ public class ItemManager : MonoBehaviour
             }
             yield return new WaitForEndOfFrame();
         }
-        if(GameManager.instance.GetPetObjects().Count == 0){
-            GameManager.instance.EquipPets();
-        }
+        LoadItems();
+        GameManager.instance.LoadPetObjects();
 
         LoadItemData();
  
@@ -200,6 +199,7 @@ public class ItemManager : MonoBehaviour
         item.itemID = itemId;
         items.Add(item);
         go.transform.parent = this.transform;
+        Debug.Log(DataHolder.GetItem(itemId).GetName(0));
         return item;
     }
 
