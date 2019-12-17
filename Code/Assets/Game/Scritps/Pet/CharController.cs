@@ -41,8 +41,7 @@ public class CharController : MonoBehaviour
     //Pee,Sheet
     public Transform peePosition;
     public Transform shitPosition;
-    public GameObject peePrefab;
-    public GameObject shitPrefab;
+
 
     public GameObject shadow;
     public Vector3 originalShadowScale;
@@ -105,7 +104,7 @@ public class CharController : MonoBehaviour
         //Load Dirty Effect
         //grab all the kids and only keep the ones with dirty tags
      
-         Transform[] allChildren = gameObject.GetComponentsInChildren<Transform>();
+         Transform[] allChildren = gameObject.GetComponentsInChildren<Transform>(true);
      
          foreach (Transform child in allChildren) {
              if (child.gameObject.tag == "Dirty") {
@@ -260,8 +259,8 @@ public class CharController : MonoBehaviour
         data.curious += 0.1f;
 
         //CheckDirty
-        if(data.dirty > data.maxDirty * 0.7f){
-            int n = (int)((data.dirty - data.maxDirty * 0.7f)/(data.maxDirty * 0.3f) * dirties.Count);
+        if(data.dirty > data.maxDirty * 0.5f){
+            int n = (int)((data.dirty - data.maxDirty * 0.5f)/(data.maxDirty * 0.5f) * dirties.Count);
             for(int i=0;i<dirties.Count;i++){
                 if(i < n)
                     dirties[i].SetActive(true);
@@ -513,10 +512,10 @@ public class CharController : MonoBehaviour
             iconStatus = IconStatus.Sleeyp_2;
         }else if(data.sleep < 0.3f*data.maxSleep){
             iconStatus = IconStatus.Sleepy_1;
-        }else if(data.dirty > 0.9f*data.maxDirty){
-            iconStatus = IconStatus.Dirty_2; 
-        }else if(data.dirty > 0.7f*data.maxDirty){
-            iconStatus = IconStatus.Dirty_1;
+        //}else if(data.dirty > 0.9f*data.maxDirty){
+        //    iconStatus = IconStatus.Dirty_2; 
+        //}else if(data.dirty > 0.7f*data.maxDirty){
+        //    iconStatus = IconStatus.Dirty_1;
         }else{
             iconStatus = IconStatus.None;
         }
@@ -1106,7 +1105,7 @@ public class CharController : MonoBehaviour
         anim.Play("Pee", 0);
         Debug.Log("Pee");
         float value = data.Pee;
-        SpawnPee(peePosition.position + new Vector3(0, 0, 50),value);
+        ItemManager.instance.SpawnPee(peePosition.position + new Vector3(0, 0, 50),value);
         while (data.Pee > 1 && !isAbort)
         {
             data.Pee -= data.ratePee * Time.deltaTime;
@@ -1152,7 +1151,7 @@ public class CharController : MonoBehaviour
             data.Shit -= data.rateShit * Time.deltaTime;
             yield return new WaitForEndOfFrame();
         }
-        SpawnShit(shitPosition.position,value);
+        ItemManager.instance.SpawnShit(shitPosition.position,value);
 
         if(enviromentType == EnviromentType.Toilet){
             if(data.shit <= 1){
@@ -1625,17 +1624,6 @@ public class CharController : MonoBehaviour
     #endregion
 
     #region Effect
-    protected void SpawnPee(Vector3 pos,float value)
-    {
-        GameObject go = Instantiate(peePrefab, pos, Quaternion.identity);
-        go.GetComponent<ItemDirty>().maxDirty = value;
-    }
-
-    protected void SpawnShit(Vector3 pos,float value)
-    {
-        GameObject go = Instantiate(shitPrefab, pos, Quaternion.identity);
-        go.GetComponent<ItemDirty>().maxDirty = value;
-    }
 
     protected void SpawnFly(){
         //GameObject go = Instantiate(flyPrefab,Vector3.zero, Quaternion.identity); 

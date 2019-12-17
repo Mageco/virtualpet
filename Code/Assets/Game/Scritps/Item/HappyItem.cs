@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class HappyItem : MonoBehaviour
 {
+    public ItemSaveDataType itemSaveDataType = ItemSaveDataType.Happy;
     Animator animator;
-    int value = 5;
+    public int value = 5;
     bool isPick = false;
     public void Load(int e){
         value = e;

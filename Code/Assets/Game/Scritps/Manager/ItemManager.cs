@@ -8,8 +8,16 @@ public class ItemManager : MonoBehaviour
     public static ItemManager instance;
 
     public List<ItemObject> items = new List<ItemObject>();
+    public List<ItemSaveData> itemSaveDatas = new List<ItemSaveData>();
+
     public ItemCollider[] itemColliders;
     public float expireTime = 10;
+
+    public GameObject peePrefab;
+    public GameObject shitPrefab;
+    public GameObject heartPrefab; 
+    float time = 0;
+    float maxTimeCheck = 1;
 
 
     void Awake()
@@ -22,6 +30,8 @@ public class ItemManager : MonoBehaviour
     // Start is called before the first frame update
     IEnumerator Start()
     {
+
+        //ES3AutoSaveMgr.Instance.Load();
         bool isLoad = false;
         while(!isLoad){
             if(GameManager.instance.isLoad){
@@ -33,12 +43,20 @@ public class ItemManager : MonoBehaviour
         if(GameManager.instance.GetPetObjects().Count == 0){
             GameManager.instance.EquipPets();
         }
+
+        LoadItemData();
+ 
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        if(time > maxTimeCheck){
+            CheckItemData();
+            time = 0;
+        }else{
+            time += Time.deltaTime;
+        }
     }
 
     public void EquipItem()
@@ -162,6 +180,14 @@ public class ItemManager : MonoBehaviour
         UpdateItemColliders();
     }
 
+    public ItemObject GetItem(int itemId){
+        foreach(ItemObject item in items){
+            if(item.itemID == itemId)
+                return item;
+        }
+        return null;
+    }
+
 
     ItemObject AddItem(int itemId)
     {
@@ -252,6 +278,7 @@ public class ItemManager : MonoBehaviour
         }
     }
 
+
     #region Skill
 
     public void ActivateSkillItems(SkillType type){
@@ -332,4 +359,84 @@ public class ItemManager : MonoBehaviour
 		}
 		return randomPoints;
 	}
+
+    public void SpawnPee(Vector3 pos,float value)
+    {
+        GameObject go = Instantiate(peePrefab, pos, Quaternion.identity);
+        go.GetComponent<ItemDirty>().dirty = value;
+    }
+
+    public void SpawnShit(Vector3 pos,float value)
+    {
+        GameObject go = Instantiate(shitPrefab, pos, Quaternion.identity);
+        go.GetComponent<ItemDirty>().dirty = value;
+    }
+
+    public void SpawnHeart(Vector3 pos,Quaternion rot, int value){
+        GameObject go = GameObject.Instantiate(heartPrefab,pos,rot);
+        go.GetComponent<HappyItem>().Load(value);
+    }
+
+    void CheckItemData(){
+       itemSaveDatas.Clear();
+
+       //Find All dirty items
+       ItemDirty[] dirties = GameObject.FindObjectsOfType<ItemDirty>();
+       for(int i=0;i<dirties.Length;i++){
+           ItemSaveData data = new ItemSaveData();
+           data.itemType = dirties[i].itemType;
+           data.value = dirties[i].dirty;
+           data.position = dirties[i].transform.position;
+           itemSaveDatas.Add(data);
+       }
+
+        //Find All Food/Drink Item
+        EatItem[] eats = GameObject.FindObjectsOfType<EatItem>();
+        for(int i=0;i<eats.Length;i++){
+           ItemSaveData data = new ItemSaveData();
+           data.id = eats[i].item.itemID;
+           data.itemType = eats[i].itemSaveDataType;
+           data.value = eats[i].foodAmount;
+           data.position = eats[i].transform.position;
+           itemSaveDatas.Add(data);
+       }
+
+       HappyItem[] happies = GameObject.FindObjectsOfType<HappyItem>();
+       for(int i=0;i<happies.Length;i++){
+           ItemSaveData data = new ItemSaveData();
+           data.itemType = happies[i].itemSaveDataType;
+           data.value = happies[i].value;
+           data.position = happies[i].transform.position;
+           itemSaveDatas.Add(data);
+       }
+       
+       SaveItemData();
+    }
+
+
+    void SaveItemData(){
+        ES2.Save(itemSaveDatas,"ItemSaveData");
+    }
+
+    void LoadItemData(){
+       if(ES2.Exists("ItemSaveData")){
+            itemSaveDatas = ES2.LoadList<ItemSaveData>("ItemSaveData");
+        }
+
+        foreach(ItemSaveData item in itemSaveDatas){
+            if(item.itemType == ItemSaveDataType.Pee){
+                SpawnPee(item.position,item.value);
+            }else if(item.itemType == ItemSaveDataType.Shit){
+                SpawnShit(item.position,item.value);
+            }else if(item.itemType == ItemSaveDataType.Food || item.itemType == ItemSaveDataType.Drink){
+                GetItem(item.id).GetComponentInChildren<EatItem>().foodAmount = item.value;
+                GetItem(item.id).GetComponentInChildren<EatItem>().transform.position = item.position;
+            }else if(item.itemType == ItemSaveDataType.Happy){
+                SpawnHeart(item.position,item.rotation,(int)item.value);
+            }
+        }
+
+
+    }
+
 }

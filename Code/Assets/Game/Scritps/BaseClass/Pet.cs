@@ -164,7 +164,7 @@ public class Pet : BaseModel
     public CharController Load(){
 
         if (character != null)
-            GameObject.Destroy(character.gameObject);
+            return character;
 
 
         string url = "";

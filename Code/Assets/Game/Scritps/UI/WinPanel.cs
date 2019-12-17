@@ -35,7 +35,7 @@ public class WinPanel : MonoBehaviour
         animator.SetInteger("star",star);
         if(e > 0){
             exp.text = e.ToString();
-            GameManager.instance.AddExp(e,GameManager.instance.GetActivePet().iD);
+            //GameManager.instance.AddExp(e,GameManager.instance.GetActivePet().iD);
         }
         else
             exp.transform.parent.gameObject.SetActive(false);
@@ -61,7 +61,7 @@ public class WinPanel : MonoBehaviour
     }
 
     public void Replay(){
-        int price = 10 + GameManager.instance.myPlayer.minigameLevels[0]; 
+        int price = 5 + GameManager.instance.myPlayer.minigameLevels[0]; 
         if(GameManager.instance.GetHappy() >= price){
             GameManager.instance.AddHappy(-price);
             MageManager.instance.LoadScene(SceneManager.GetActiveScene().name,0.5f);
