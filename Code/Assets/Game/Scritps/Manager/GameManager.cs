@@ -348,6 +348,8 @@ public class GameManager : MonoBehaviour
         
         if(ItemManager.instance != null && DataHolder.GetItem(id).itemType != ItemType.Coin && DataHolder.GetItem(id).itemType != ItemType.Diamond)
             ItemManager.instance.EquipItem();
+
+        SavePlayer();
     }
 
     public bool IsHaveItem(int itemId)
