@@ -28,24 +28,15 @@ public class CleanItem : MonoBehaviour
 	{
 		if(dirtyItem != null){
 			dirtyItem.OnClean(clean*Time.deltaTime);
-		}
-	}
-
-	public virtual void OnActive(){
-		if(anim != null)
-			anim.Play("Active",0);
-	}
-
-	public virtual void Deactive(){
-		if(anim != null)
-			anim.Play("Idle",0);
+			anim.Play("Active");
+		}else
+			anim.Play("Idle");
 	}
 
 
-	void OnTriggerEnter2D(Collider2D other) {
+	void OnTriggerStay2D(Collider2D other) {
 		if (other.GetComponent <ItemDirty>() != null) {
 			dirtyItem = other.GetComponent <ItemDirty>();
-			OnActive();
 		}
 	}
 
@@ -53,7 +44,6 @@ public class CleanItem : MonoBehaviour
 	void OnTriggerExit2D(Collider2D other) {
 		if (other.GetComponent <ItemDirty>() == dirtyItem) {
 			dirtyItem = null;
-			Deactive();
 		}
 	}
 

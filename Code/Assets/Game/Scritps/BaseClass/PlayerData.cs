@@ -78,6 +78,8 @@ public class PlayerData : BaseModel
 public class PlayerItem : BaseModel{
     public int itemId = 0;
     public ItemState state = ItemState.OnShop;
+	public Vector3 position = Vector3.zero;
+	public float value = 0;
 }
 
 [System.Serializable]

@@ -6,6 +6,7 @@ using PolyNav;
 
 public class EatItem : BaseFloorItem
 {
+	public ItemSaveDataType itemSaveDataType = ItemSaveDataType.None;
 	public float foodAmount = 0;
 	public float maxfoodAmount = 100;
 	public SpriteRenderer image;

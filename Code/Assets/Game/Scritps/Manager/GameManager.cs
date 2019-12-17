@@ -17,7 +17,6 @@ public class GameManager : MonoBehaviour
     public bool isLoad = false;
     
     public GameObject heartPrefab;
-    public GameObject happyPrefab;
 
     public bool isTest = false;
 
@@ -415,6 +414,16 @@ public class GameManager : MonoBehaviour
         return temp;
     }
 
+    public List<PlayerItem> GetEquipedPLayerItems(){
+        List<PlayerItem> temp = new List<PlayerItem>();
+        foreach(PlayerItem item in myPlayer.items){   
+            if(item.state == ItemState.Equiped){
+                temp.Add(item);
+            }
+        }
+        return temp;
+    }
+
     public int GetDiamond(){
         return myPlayer.Diamond;
     }
@@ -460,8 +469,7 @@ public class GameManager : MonoBehaviour
                 if(ran > 50)
                     rot = Quaternion.Euler(new Vector3(0,180,-1));
                 Vector3 pos = GetPetObject(petId).charScale.scalePosition + new Vector3(Random.Range(-1,1),Random.Range(-1,1),0);
-                GameObject happy = GameObject.Instantiate(happyPrefab,pos,rot);
-                happy.GetComponent<HappyItem>().Load(1);
+                ItemManager.instance.SpawnHeart(pos,rot,1);
             }
         }
     }
@@ -496,7 +504,16 @@ public class GameManager : MonoBehaviour
 
 
     public void SavePlayer(){
-         ApiManager.GetInstance().UpdateUserData<PlayerData>(myPlayer); 
+/*         foreach(PlayerItem item in myPlayer.items){
+            ItemObject itemObject = ItemManager.instance.GetItem(item.itemId);
+            item.position = itemObject.transform.position;
+            if(DataHolder.GetItem(item.itemId).itemType == ItemType.Food){
+                item.value = itemObject.GetComponentInChildren<FoodBowlItem>().foodAmount;
+            }else if(DataHolder.GetItem(item.itemId).itemType == ItemType.Drink){
+                item.value = itemObject.GetComponentInChildren<DrinkBowlItem>().foodAmount;
+            }
+        } */
+        ApiManager.GetInstance().UpdateUserData<PlayerData>(myPlayer); 
     }
 
     public void LoadPlayer(){
@@ -516,7 +533,7 @@ public class GameManager : MonoBehaviour
         myPlayer = new PlayerData();
         myPlayer.LoadData();
 
-        AddCoin(10);
+        AddCoin(200);
         AddDiamond(1);
         
         AddItem(17);

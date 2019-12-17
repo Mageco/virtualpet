@@ -267,17 +267,18 @@ public class UIManager : MonoBehaviour
         GameManager.instance.gameType = GameType.House;
         MageManager.instance.LoadSceneWithLoading("House");
         homeUI.SetActive(true);
-        //GameManager.instance.EquipPets();
      }
 
 
 
 
     public void OnMinigame(int id){
+        //ES3AutoSaveMgr.Instance.Save();
         MageManager.instance.LoadSceneWithLoading("Minigame" + id.ToString());
         GameManager.instance.gameType = GameType.Minigame1;
         //GameManager.instance.GetActivePet().Load();
         homeUI.SetActive(false);
+        
     }
 
 

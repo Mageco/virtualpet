@@ -15,7 +15,7 @@ public class BaseFloorItem : MonoBehaviour
 	protected Vector3 originalPosition;
 	protected Vector3 lastPosition;
 	public bool isBusy = false;
-	protected ItemObject item;
+	public ItemObject item;
 
 	protected float dragTime = 0;
 
