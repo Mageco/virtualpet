@@ -285,6 +285,12 @@ public class CharController : MonoBehaviour
         if(charInteract.interactType != InteractType.None)
             return;
 
+        if (data.Damage > data.maxDamage * 0.8f)
+        {
+            actionType = ActionType.Injured;
+            return;
+        }
+
         if (data.Shit > data.maxShit * 0.9f)
         {
             actionType = ActionType.Shit;
@@ -361,12 +367,6 @@ public class CharController : MonoBehaviour
             return;
         }
 
-        if (data.Energy < data.maxEnergy * 0.5f)
-        {
-            actionType = ActionType.Rest;
-            return;
-        }
-
 
         if (data.curious > data.maxCurious * 0.9f)
         {
@@ -394,11 +394,7 @@ public class CharController : MonoBehaviour
         agent.Stop();
         isAction = true;
 
-        if (actionType == ActionType.Rest)
-        {
-            StartCoroutine(Rest());
-        }
-        else if (actionType == ActionType.Patrol)
+        if (actionType == ActionType.Patrol)
         {
             StartCoroutine(Patrol());
         }
@@ -479,7 +475,10 @@ public class CharController : MonoBehaviour
         } else if (actionType == ActionType.Toy)
         {
             StartCoroutine(Toy());
-        }        
+        }else if (actionType == ActionType.Injured)
+        {
+            StartCoroutine(Injured());
+        }            
     }
 
     #endregion
@@ -488,28 +487,28 @@ public class CharController : MonoBehaviour
        
         lastIconStatus = iconStatus;
 
-        if(data.Health < 0.1f*data.maxHealth){
+        if(data.Damage > 0.9f*data.maxDamage){
+            iconStatus = IconStatus.Injured_2;
+        }else if(data.Health < 0.1f*data.maxHealth){
             iconStatus = IconStatus.Sick_2; 
-        }else if(data.Health < 0.3f*data.maxHealth){
-            iconStatus = IconStatus.Sick_1;
         }else if(data.Pee > 0.9f*data.maxPee || data.Shit > 0.9f*data.maxShit){
             iconStatus = IconStatus.Toilet_2; 
-        }else if(data.Pee > 0.7f*data.maxPee || data.Shit > 0.7f*data.maxShit){
-            iconStatus = IconStatus.Toilet_1;
         }else if(data.Food < 0.1f*data.maxFood){
             iconStatus = IconStatus.Hungry_2; 
-        }else if(data.Food < 0.3f*data.maxFood){
-            iconStatus = IconStatus.Hungry_1;
         }else if(data.Water < 0.1f*data.maxWater){
             iconStatus = IconStatus.Thirsty_2; 
-        }else if(data.Water < 0.3f*data.maxWater){
-            iconStatus = IconStatus.Thirsty_1;
-        //}else if(data.energy < 0.1f*data.maxEnergy){
-        //    iconStatus = IconStatus.Tired_2;
-        //}else if(data.energy < 0.3f*data.maxEnergy){
-        //    iconStatus = IconStatus.Tired_1;
         }else if(data.sleep < 0.1f*data.maxSleep){
             iconStatus = IconStatus.Sleeyp_2;
+        }else if(data.Damage > 0.7f*data.maxDamage){
+            iconStatus = IconStatus.Injured_1;
+        }else if(data.Health < 0.3f*data.maxHealth){
+            iconStatus = IconStatus.Sick_1;
+        }else if(data.Pee > 0.7f*data.maxPee || data.Shit > 0.7f*data.maxShit){
+            iconStatus = IconStatus.Toilet_1;
+        }else if(data.Food < 0.3f*data.maxFood){
+            iconStatus = IconStatus.Hungry_1;
+        }else if(data.Water < 0.3f*data.maxWater){
+            iconStatus = IconStatus.Thirsty_1;
         }else if(data.sleep < 0.3f*data.maxSleep){
             iconStatus = IconStatus.Sleepy_1;
         //}else if(data.dirty > 0.9f*data.maxDirty){
@@ -590,7 +589,7 @@ public class CharController : MonoBehaviour
 
     public virtual void OnEat(){
         if(enviromentType == EnviromentType.Room && data.Food < 0.3f * data.maxFood && 
-            (actionType == ActionType.Patrol || actionType == ActionType.Discover || actionType == ActionType.Rest)){
+            (actionType == ActionType.Patrol || actionType == ActionType.Discover)){
             actionType = ActionType.Eat;
             isAbort = true;
         }
@@ -598,7 +597,7 @@ public class CharController : MonoBehaviour
 
     public virtual void OnDrink(){
         if(enviromentType == EnviromentType.Room && data.Water < 0.3f * data.maxWater && 
-            (actionType == ActionType.Patrol || actionType == ActionType.Discover || actionType == ActionType.Rest)){
+            (actionType == ActionType.Patrol || actionType == ActionType.Discover)){
             actionType = ActionType.Drink;
             isAbort = true;
         }
@@ -618,10 +617,15 @@ public class CharController : MonoBehaviour
 
     public void OnHealth(SickType type,float value){
         if(type == SickType.Injured){
-            data.Damage += value;
+            if(data.Damage > data.maxDamage * 0.6f)
+                GameManager.instance.AddExp(5,data.iD);
+            data.Damage -= value;
         }else if(type ==SickType.Sick){
+            if(data.Health < data.maxHealth * 0.5f)
+                GameManager.instance.AddExp(5,data.iD);
             data.Health += value;
         }
+       
     }
 
     protected void OnBed()
@@ -687,7 +691,7 @@ public class CharController : MonoBehaviour
 
     public virtual void OnMouse()
     {
-        if(actionType == ActionType.Patrol || actionType == ActionType.Rest || actionType == ActionType.Discover || actionType == ActionType.Drink || actionType == ActionType.Eat){
+        if(actionType == ActionType.Patrol || actionType == ActionType.Discover || actionType == ActionType.Drink || actionType == ActionType.Eat){
             Abort();
             actionType = ActionType.Mouse;
         }
@@ -1352,21 +1356,7 @@ public class CharController : MonoBehaviour
         CheckAbort();
     }
 
-    
-    protected virtual IEnumerator Rest()
-    {
-        anim.Play("Idle_" + direction.ToString(),0);
-        
-        while(data.Food > 0 && data.Water > 0 && data.Sleep > 0 &&data.Energy < 0.9f * data.maxEnergy && !isAbort){
-            data.Energy += 0.05f;
-            data.Food -= 0.03f;
-            data.Water -= 0.03f;
-            data.Sleep -= 0.01f;
-            yield return new WaitForEndOfFrame();
-        }  
-        yield return StartCoroutine(Wait(Random.Range(2f,5f)));
-        CheckAbort();
-    }
+
 
     protected virtual IEnumerator JumpOut()
     {
@@ -1393,6 +1383,19 @@ public class CharController : MonoBehaviour
         CheckAbort();
     }
 
+    protected virtual IEnumerator Injured()
+    {
+        anim.Play("Injured", 0);
+        Debug.Log("Injured");
+        while (data.Damage > 0.5f * data.maxDamage && !isAbort)
+        {
+            yield return new WaitForEndOfFrame();
+        }
+        GameManager.instance.LogAchivement(AchivementType.Do_Action,ActionType.Injured);
+        CheckEnviroment();
+        CheckAbort();
+    }
+
     protected virtual IEnumerator Fear()
     {
         
@@ -1405,12 +1408,13 @@ public class CharController : MonoBehaviour
     protected virtual IEnumerator Tired()
     {
         anim.Play("Tired", 0);
-        while (data.Food > 0 && data.Water > 0 && data.Sleep > 0 && data.energy < data.maxEnergy * 0.1f && !isAbort)
+        while (data.Food > 0 && data.Water > 0 && data.Sleep > 0 && data.energy < data.maxEnergy * 0.5f && !isAbort)
         {
-            data.Energy += 0.1f;
-            data.Food -= 0.05f;
-            data.Water -= 0.05f;
-            data.Sleep += 0.01f;
+            float delta = data.recoverEnergy * Time.deltaTime;
+            data.Energy += delta;
+            data.Food -= delta;
+            data.Water -= delta;
+            data.Sleep += delta;
             yield return new WaitForEndOfFrame();
         }
         CheckAbort();
@@ -1505,6 +1509,7 @@ public class CharController : MonoBehaviour
 
     protected virtual IEnumerator Fall()
     {
+        data.Damage += 20;
         yield return StartCoroutine(DoAnim("Fall_" + direction.ToString()));
         CheckAbort();
     }

@@ -34,7 +34,7 @@ public class ConfirmBuyShopPopup : MonoBehaviour
             Item replaceItem = GameManager.instance.GetEquipedItem(d.itemType);
             question.text = "Buy this Item with ";
             priceText.text = d.buyPrice.ToString();
-            if(replaceItem == null)
+            if(replaceItem == null || d.itemType == ItemType.Toy)
             {
                 replacePanel.SetActive(false);
             }else{

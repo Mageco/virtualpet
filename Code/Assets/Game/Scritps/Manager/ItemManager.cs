@@ -132,7 +132,7 @@ public class ItemManager : MonoBehaviour
     public void LoadItems()
     {
         List<int> data = GameManager.instance.GetEquipedItems();
-        //Debug.Log("Data " + data.Count);
+        Debug.Log("Data " + data.Count);
         List<ItemObject> removes = new List<ItemObject>();
 
         foreach (ItemObject item in items)

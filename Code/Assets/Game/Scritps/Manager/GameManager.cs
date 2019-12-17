@@ -320,7 +320,7 @@ public class GameManager : MonoBehaviour
         }else{
             PlayerItem item = new PlayerItem();
             item.itemId = id;
-            item.state = ItemState.OnShop;
+            item.state = ItemState.Have;
             myPlayer.items.Add(item);
         }
         SavePlayer();
@@ -343,11 +343,6 @@ public class GameManager : MonoBehaviour
         foreach(PlayerItem item in myPlayer.items){
             if(item.itemId == id){
                 item.state = ItemState.Equiped;
-                foreach(PlayerItem item1 in myPlayer.items){
-                    if(item1.itemId != item.itemId && DataHolder.GetItem(item1.itemId).itemType == DataHolder.GetItem(item.itemId).itemType && item1.state == ItemState.Equiped){
-                        item1.state = ItemState.Have;
-                    }
-                }
             }
         }
         
@@ -543,17 +538,15 @@ public class GameManager : MonoBehaviour
         AddItem(8);
         AddItem(58);
         AddItem(4);
+        EquipItem(17);
+        EquipItem(41);
+        EquipItem(2);
+        EquipItem(11);
+        EquipItem(8);
+        EquipItem(58);
+        EquipItem(4);
         
         AddPet(0);
-
-        EquipItem(17);  
-        EquipItem(2);
-        EquipItem(11);                
-        EquipItem(8);
-        EquipItem(4); 
-        EquipItem(41);
-        EquipItem(58);
-
         
         //#if UNITY_EDITOR
         if(isTest){
@@ -566,7 +559,7 @@ public class GameManager : MonoBehaviour
             AddPet(5);
         }
         //#endif
-
+        ItemManager.instance.LoadItems();
         EquipPets();
         SavePlayer();
     }
