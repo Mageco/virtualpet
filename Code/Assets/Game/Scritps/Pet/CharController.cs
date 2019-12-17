@@ -65,6 +65,8 @@ public class CharController : MonoBehaviour
     protected ToyItem toyItem;
 
     public List<GameObject> dirties = new List<GameObject>();
+    public List<GameObject> dirties_L = new List<GameObject>();
+    public List<GameObject> dirties_LD = new List<GameObject>();
 
     #region Load
 
@@ -113,6 +115,12 @@ public class CharController : MonoBehaviour
              }else if(child.gameObject.tag == "Shadow"){
                  shadow = child.gameObject;
                  originalShadowScale = shadow.transform.localScale;
+             }else if(child.gameObject.tag == "Dirty_L") {
+                 dirties_L.Add(child.gameObject);
+                 child.gameObject.SetActive(false);
+             }else if(child.gameObject.tag == "Dirty_LD") {
+                 dirties_LD.Add(child.gameObject);
+                 child.gameObject.SetActive(false);
              }
          }
 
@@ -267,10 +275,32 @@ public class CharController : MonoBehaviour
                 else
                     dirties[i].SetActive(false);
             }
+
+            int n1 = (int)((data.dirty - data.maxDirty * 0.5f)/(data.maxDirty * 0.5f) * dirties_L.Count);
+            for(int i=0;i<dirties_L.Count;i++){
+                if(i < n)
+                    dirties_L[i].SetActive(true);
+                else
+                    dirties_L[i].SetActive(false);
+            }
+
+            int n2 = (int)((data.dirty - data.maxDirty * 0.5f)/(data.maxDirty * 0.5f) * dirties_LD.Count);
+            for(int i=0;i<dirties_LD.Count;i++){
+                if(i < n)
+                    dirties_LD[i].SetActive(true);
+                else
+                    dirties_LD[i].SetActive(false);
+            }
         }else
         {
             for(int i=0;i<dirties.Count;i++){
                 dirties[i].SetActive(false);
+            }
+            for(int i=0;i<dirties_L.Count;i++){
+                dirties_L[i].SetActive(false);
+            }
+            for(int i=0;i<dirties_LD.Count;i++){
+                dirties_LD[i].SetActive(false);
             }
         }
 
@@ -1372,6 +1402,8 @@ public class CharController : MonoBehaviour
 
     protected virtual IEnumerator Sick()
     {
+        SetTarget(PointType.Favourite);
+        yield return StartCoroutine(WalkToPoint());
         anim.Play("Sick", 0);
         Debug.Log("Sick");
         while (data.health < 0.5f * data.maxHealth && !isAbort)
@@ -1385,6 +1417,8 @@ public class CharController : MonoBehaviour
 
     protected virtual IEnumerator Injured()
     {
+        SetTarget(PointType.Favourite);
+        yield return StartCoroutine(WalkToPoint());
         anim.Play("Injured", 0);
         Debug.Log("Injured");
         while (data.Damage > 0.5f * data.maxDamage && !isAbort)

@@ -43,6 +43,7 @@ public class HealthItem : BaseDragItem
 
     IEnumerator OnFallCoroutine(){
         yield return StartCoroutine(ReturnPosition(originalPosition));
+
         Reset();
     }
 
@@ -58,7 +59,8 @@ public class HealthItem : BaseDragItem
                 effect.GetComponent<AutoDestroy>().liveTime = timeDelay;
             }
             GameManager.instance.ResetCameraTarget();
-            StartCoroutine(Deactive());
+            Reset();
+            //StartCoroutine(Deactive());
         }
 
     }
@@ -66,7 +68,7 @@ public class HealthItem : BaseDragItem
     IEnumerator Deactive(){
         this.transform.position = new Vector3(1000,1000,0);
         yield return new WaitForSeconds(timeDelay);
-        Reset();
+        
     }
 
     void Reset(){
