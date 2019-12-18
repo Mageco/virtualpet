@@ -25,6 +25,8 @@ public class ToyCarItem : BaseFloorItem
 
 	protected override void Start(){
 		base.Start();
+		energyBar.SetActive(false);
+		energyProgress.transform.localScale = new Vector3(0,1.5f,1);
 	}
 	Animator animator;
 
@@ -38,15 +40,17 @@ public class ToyCarItem : BaseFloorItem
     {
 		lastPosition = this.transform.position;
 		base.Update();
-		if(isDrag){
-			
-		}
 		if(isActive){
+			energyBar.SetActive(false);
 			animator.speed = Mathf.Lerp(animator.speed,0,Time.deltaTime * 0.3f);
 		}else
 			animator.speed = 2;
 		if(isDrag){
 			animator.Play("Drag_" + direction.ToString());
+			energyBar.SetActive(true);
+			float t = Mathf.Clamp(dragTime/4,0,1.5f);
+			
+			energyProgress.transform.localScale = new Vector3(t,1.5f,1);
 		}
     }
 
@@ -66,7 +70,7 @@ public class ToyCarItem : BaseFloorItem
 
 	protected override void OnMouseUp()
 	{
-		round = Mathf.Clamp((int) dragTime + 1,1,10);
+		round = Mathf.Clamp((int) dragTime + 1,1,6);
 		base.OnMouseUp();
 		
 		if(!isActive){

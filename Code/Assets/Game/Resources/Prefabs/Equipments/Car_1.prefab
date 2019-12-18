@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1202140448}
   m_Layer: 8
   m_Name: Obstruct
-  m_TagString: Car
+  m_TagString: Toy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -183,7 +183,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &2673727295603646482
 Transform:
   m_ObjectHideFlags: 0
@@ -225,7 +225,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8887950231388334720}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -0.1}
   m_LocalScale: {x: 1.5, y: 1.5, z: 1}
   m_Children: []
   m_Father: {fileID: 2673727295603646482}
@@ -338,8 +338,11 @@ MonoBehaviour:
   isDrag: 0
   isDragable: 1
   isBusy: 0
+  item: {fileID: 0}
   speed: 40
   body: {fileID: 8983550800580757322}
+  energyBar: {fileID: 5896945697616073121}
+  energyProgress: {fileID: 8887950231388334720}
 --- !u!1001 &5517423947715653868
 PrefabInstance:
   m_ObjectHideFlags: 0

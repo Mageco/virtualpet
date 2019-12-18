@@ -95,7 +95,6 @@ public class GameManager : MonoBehaviour
                 petObjects.Add(c);
             }
         }
-        UIManager.instance.LoadProfiles();
     }
 
     void AddPet(int itemId)

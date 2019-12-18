@@ -66,12 +66,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 40e964d029bc34c07aaf085ec2b9cc13, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  state: 0
-  maxHeight: 22
-  depth: 0
-  scaleFactor: 0.01
-  height: 21
-  scalePosition: {x: 0, y: 0, z: 0}
+  isReturn: 1
+  isObstruct: 0
+  isDragOffset: 0
+  isCameraControl: 1
+  isIgnoreUI: 0
   pet: {fileID: 0}
   amounnt: 20
   timeDelay: 10
@@ -170,12 +169,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 40e964d029bc34c07aaf085ec2b9cc13, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  state: 0
-  maxHeight: 20
-  depth: 0
-  scaleFactor: 0.01
-  height: 19
-  scalePosition: {x: 0, y: 0, z: 0}
+  isReturn: 1
+  isObstruct: 0
+  isDragOffset: 0
+  isCameraControl: 1
+  isIgnoreUI: 0
   pet: {fileID: 0}
   amounnt: 20
   timeDelay: 10
@@ -9805,7 +9803,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &7517880831372214932
 Transform:
   m_ObjectHideFlags: 0
@@ -9915,7 +9913,7 @@ Animator:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6044625489392522756}
-  m_Enabled: 0
+  m_Enabled: 1
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: b088cacf1ba00684aa14e8068efc4ab7, type: 2}
   m_CullingMode: 0
@@ -9933,7 +9931,7 @@ BoxCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6044625489392522756}
-  m_Enabled: 0
+  m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 1
@@ -9959,7 +9957,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6044625489392522756}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a641c0677754241fc813dc255bbc3165, type: 3}
   m_Name: 
@@ -14849,7 +14847,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &783000115466565241
 Transform:
   m_ObjectHideFlags: 0

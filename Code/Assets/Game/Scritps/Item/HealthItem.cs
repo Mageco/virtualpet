@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class HealthItem : BaseDragItem
+public class HealthItem : ItemDrag
 {
     ItemObject item;
     public CharController pet;
@@ -36,20 +36,10 @@ public class HealthItem : BaseDragItem
         item = this.transform.parent.GetComponent<ItemObject>();
     }
 
-    protected override void OnFall()
-	{
-        StartCoroutine(OnFallCoroutine());
-	}
 
-    IEnumerator OnFallCoroutine(){
-        yield return StartCoroutine(ReturnPosition(originalPosition));
-
-        Reset();
-    }
-
-    protected override void OnActive()
+    protected override void OnActive(CharController pet)
     {
-        if(!isBusy && !eated && pet != null){
+        if(!isBusy && !eated){
             eated = true;
             anim.Play("Active");
             pet.OnHealth(sickType,amounnt);
@@ -75,51 +65,11 @@ public class HealthItem : BaseDragItem
         StopAllCoroutines();
         this.transform.position = originalPosition;
         this.transform.rotation = originalRotation;
-		height = originalHeight;
-		this.scalePosition = this.transform.position + new Vector3(0,-height,0);
-        fallSpeed = 0;
+		
         anim.Play("Idle", 0);
         eated = false;
-        state = ItemDragState.None;
+        isDrag = false;
         isBusy = false;
-    }
-
-
-
-    protected override void OnHit()
-    {
-        StartCoroutine(OnHitCouroutine());
-    }
-
-    IEnumerator OnHitCouroutine()
-    {
-        yield return new WaitForSeconds(1);
-        this.transform.position = originalPosition;
-        this.transform.rotation = originalRotation;
-		height = originalHeight;
-		this.scalePosition = this.transform.position + new Vector3(0,-height,0);
-        fallSpeed = 0;
-        anim.Play("Idle", 0);
-        state = ItemDragState.None;
-    }
-
-
-    void OnTriggerEnter2D(Collider2D other)
-    {
-        if (other.tag == "Player")
-        {
-            pet = other.GetComponent<CharController>();
-            isHighlight = true;
-        }
-    }
-
-    void OnTriggerExit2D(Collider2D other)
-    {
-        if (other.tag == "Player")
-        {
-            isHighlight = false;
-        }
-
     }
 }
 

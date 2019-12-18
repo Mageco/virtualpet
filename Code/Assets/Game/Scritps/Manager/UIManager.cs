@@ -27,9 +27,11 @@ public class UIManager : MonoBehaviour
     SkillCompletePanel skillCompletePanel;
     ConfirmBuyShopPopup confirmBuyShopPopup;
 
+    [HideInInspector]
     public AchivementPanel achivementPanel;
 
     ProfilePanel profilePanel;
+
     ItemInfoUI itemInfoUI;
 
     public GameObject homeUI;
@@ -197,7 +199,6 @@ public class UIManager : MonoBehaviour
             popup.transform.SetParent(GameObject.Find("Canvas").transform, false);
             popup.GetComponent<Popup>().Open();
             profilePanel = popup.GetComponent<ProfilePanel>();
-            profilePanel.Load(0);
         }
      }
 
@@ -279,31 +280,6 @@ public class UIManager : MonoBehaviour
         //GameManager.instance.GetActivePet().Load();
         homeUI.SetActive(false);
         
-    }
-
-
-
-    public void LoadProfiles(){
-        ClearProfiles();
-        foreach(Pet p in GameManager.instance.GetPets()){
-            CreateProfile(p.iD);
-        }
-    }
-
-    void CreateProfile(int itemId){
-        GameObject go = Instantiate(profilePrefab);
-        go.transform.SetParent(this.profileAnchor);
-        go.transform.localScale = Vector3.one;
-        ProfileUI item = go.GetComponent<ProfileUI>();
-        profiles.Add(item);
-        item.Load(itemId);
-    }
-
-    void ClearProfiles(){
-        foreach(ProfileUI p in profiles){
-            GameObject.Destroy(p.gameObject);
-        }
-        profiles.Clear();
     }
 
 }
