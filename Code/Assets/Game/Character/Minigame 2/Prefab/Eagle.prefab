@@ -1481,7 +1481,6 @@ GameObject:
   - component: {fileID: 4225356116504249894}
   - component: {fileID: 1287637432511666921}
   - component: {fileID: 1513381107136125737}
-  - component: {fileID: 7122448945242385218}
   m_Layer: 0
   m_Name: Eagle
   m_TagString: Animal
@@ -1561,7 +1560,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 7}
   serializedVersion: 2
-  m_Radius: 4
+  m_Radius: 5
 --- !u!114 &1513381107136125737
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1574,48 +1573,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61c58be95bc0b4154808fbf11c56427f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &7122448945242385218
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4891331510448675716}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f7c1c71d8ad5da9438de3b2e5990763f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  IgnoreStartedOverGui: 1
-  IgnoreIsOverGui: 0
-  RequiredSelectable: {fileID: 0}
-  RequiredTapCount: 0
-  RequiredTapInterval: 0
-  onFinger:
-    m_PersistentCalls:
-      m_Calls: []
-  ScreenDepth:
-    Conversion: 1
-    Camera: {fileID: 0}
-    Object: {fileID: 0}
-    Layers:
-      serializedVersion: 2
-      m_Bits: 4294967291
-    Distance: 0
-  onPosition:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 4225356116504249894}
-        m_MethodName: OnTap
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
 --- !u!1 &4939170916390349611
 GameObject:
   m_ObjectHideFlags: 0
@@ -2906,11 +2863,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Hit_Fox
-      objectReference: {fileID: 0}
-    - target: {fileID: 7604604056020314821, guid: 6e048370cac1bc64c9ab9f3467748018,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7604604056020088549, guid: 6e048370cac1bc64c9ab9f3467748018,
         type: 3}

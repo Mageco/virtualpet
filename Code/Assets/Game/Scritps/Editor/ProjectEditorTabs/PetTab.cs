@@ -85,6 +85,30 @@ public class PetTab : BaseTab
             }
 
 
+
+            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.LabelField("Profile Icon", GUILayout.MaxWidth(110));
+            if(DataHolder.Pet(selection).iconProfileUrl != null){
+                this.tmpLockSprites = AssetDatabase.LoadAssetAtPath<Texture2D>(DataHolder.Pet(selection).iconProfileUrl);
+            }
+            this.tmpLockSprites = (Texture2D)EditorGUILayout.ObjectField(GUIContent.none, this.tmpLockSprites, typeof(Texture2D), false, GUILayout.MaxWidth(100));
+            if (this.tmpLockSprites != null)
+            {
+                DataHolder.Pet(selection).iconProfileUrl = AssetDatabase.GetAssetPath(this.tmpLockSprites);
+
+            }
+            EditorGUILayout.LabelField(DataHolder.Pet(selection).iconProfileUrl);
+            EditorGUILayout.EndHorizontal();
+            
+			if (this.tmpLockSprites != null)
+            {
+                if (GUILayout.Button("Clear Image", GUILayout.Width(100)))
+                {
+                    DataHolder.Pet(selection).iconProfileUrl = "";
+                    tmpLockSprites = null;
+                }
+            }
+
 			EditorGUILayout.BeginVertical("box");
 			fold2 = EditorGUILayout.Foldout(fold2, "Pet Settings");
 			if(fold2)

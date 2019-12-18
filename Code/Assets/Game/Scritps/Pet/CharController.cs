@@ -212,27 +212,16 @@ public class CharController : MonoBehaviour
     #region Data
     protected virtual void CalculateData()
     {
-        float actionEnergyConsume = 0.1f;
 
-        if (actionType == ActionType.Mouse)
-            actionEnergyConsume = 1.5f;
-        else if (actionType == ActionType.Discover)
-        {
-            actionEnergyConsume = 1f;
+        if(data.Food > 0 && data.Water > 0){
+            float delta = data.recoverEnergy/5;
+            data.Energy += delta;
+            data.Food -= delta;    
+            data.Water -= delta;
+            data.Shit += delta;
+            data.Pee += delta;
         }
-        else if (actionType == ActionType.Patrol)
-        {
-            actionEnergyConsume = 0.3f;
-        }else if (actionType == ActionType.OnBath)
-            actionEnergyConsume = 0.1f;
-        else if (actionType == ActionType.Fear)
-            actionEnergyConsume = 0.3f;
-        
-        data.Energy -= actionEnergyConsume;
-        data.Food -= actionEnergyConsume;    
-        data.Water -= actionEnergyConsume;
-        data.Shit += actionEnergyConsume;
-        data.Pee += actionEnergyConsume;
+
 
         data.Dirty += data.recoverDirty;
         if (data.Dirty > data.maxDirty * 0.7f)
@@ -841,6 +830,7 @@ public class CharController : MonoBehaviour
         while (!isArrived && !isAbort)
         {
             anim.Play("Run_" + this.direction.ToString(), 0);
+            data.Energy -= 2 * Time.deltaTime;
             yield return new WaitForEndOfFrame();
         }
         isMoving = false;
@@ -856,6 +846,7 @@ public class CharController : MonoBehaviour
         while (!isArrived && !isAbort)
         {
             anim.Play("Walk_" + this.direction.ToString(), 0);
+            data.Energy -= Time.deltaTime;
             yield return new WaitForEndOfFrame();
         }
         isMoving = false;
@@ -942,6 +933,7 @@ public class CharController : MonoBehaviour
         while(GetMouse() != null && GetMouse().state != MouseState.Idle && !isAbort){
             agent.SetDestination(GetMouse().transform.position);
             anim.Play("Run_Angry_" + this.direction.ToString(), 0);
+            data.Energy -= 2.5f*Time.deltaTime;
             yield return new WaitForEndOfFrame();
         }
         isMoving = false;
@@ -1430,7 +1422,7 @@ public class CharController : MonoBehaviour
             data.Energy += delta;
             data.Food -= delta * 0.1f;
             data.Water -= delta * 0.1f;
-            data.Sleep += delta * 0.1f;
+            data.Sleep -= delta * 0.1f;
             yield return new WaitForEndOfFrame();
         }
         CheckAbort();
@@ -1481,6 +1473,7 @@ public class CharController : MonoBehaviour
                         charInteract.interactType = InteractType.None;
 
                     }
+                    data.Energy -= 2*Time.deltaTime;
                     yield return new WaitForEndOfFrame();
                 }
                 count ++;
@@ -1520,6 +1513,7 @@ public class CharController : MonoBehaviour
              yield return StartCoroutine(DoAnim("Love"));
              GameManager.instance.AddExp(5,data.iD);
         }
+        data.Energy -= 2;
         CheckAbort();
     }
 

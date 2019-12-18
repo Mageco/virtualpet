@@ -9,8 +9,11 @@ public class ChickenController : AnimalController
     public InteractType interactType;
     Vector3 dragOffset;
 
+    CircleCollider2D col2D;
+
     protected override void Load(){
         speed = maxSpeed/2f;
+        col2D = this.GetComponent<CircleCollider2D>();
         //this.originalScale = this.originalScale * Random.Range(0.9f,1.1f);
     }
 
@@ -23,6 +26,7 @@ public class ChickenController : AnimalController
         for(int i=0;i<bodies.Length;i++){
             bodies[i].SetActive(false);
         }
+        col2D.enabled = false;
         state = AnimalState.Cached;
         isAbort = true;
     }
@@ -31,6 +35,7 @@ public class ChickenController : AnimalController
         for(int i=0;i<bodies.Length;i++){
             bodies[i].SetActive(true);
         }
+        col2D.enabled = true;
         state = AnimalState.None;
         isAbort = true;
     }
@@ -108,7 +113,7 @@ public class ChickenController : AnimalController
 
     IEnumerator Run()
     {
-        Vector3 target = Minigame.instance.GetPointInBound()/1.5f;
+        Vector3 target = Minigame.instance.GetPointInBound()/3f;
         speed = Random.Range(maxSpeed/2,maxSpeed/1.5f);
         if(target.x > this.transform.position.x){
             SetDirection(Direction.R);

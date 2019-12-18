@@ -57,7 +57,7 @@ public class Minigame1 : Minigame
         int initNumber = 5;
         float initSpeed = 20;
         maxTime = 30 + gameLevel/5*5;
-        chickenSpawner.maxNumber = 5 + gameLevel/5;
+        chickenSpawner.maxNumber = 5;
         chickenSpawner.speed = 5;
 
         float addSpeed = gameLevel/2f;

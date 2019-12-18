@@ -8,6 +8,7 @@ public class Pet : BaseModel
 {
 	public int iD = 0;
 	public string iconUrl = "";
+	public string iconProfileUrl = "";
 	public LanguageItem[] languageItem = new LanguageItem[0];
 	public int buyPrice = 0;
 	public PriceType priceType = PriceType.Coin;

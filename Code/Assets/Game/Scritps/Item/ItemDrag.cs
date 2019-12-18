@@ -7,13 +7,13 @@ using PolyNav;
 public class ItemDrag : MonoBehaviour
 {
 	Vector3 dragOffset;
-	Animator anim;
-	bool isDrag = false;
-	Vector3 originalPosition;
-	Quaternion originalRotation;
+	protected Animator anim;
+	protected bool isDrag = false;
+	protected Vector3 originalPosition;
+	protected Quaternion originalRotation;
 	Vector3 lastPosition;
-	bool isDragable = true;
-	bool isBusy = false;
+	protected bool isDragable = true;
+	protected bool isBusy = false;
 	public bool isReturn = false;
 	public bool isObstruct = true;
 	public bool isDragOffset = true;
@@ -21,11 +21,15 @@ public class ItemDrag : MonoBehaviour
 
 	public bool isIgnoreUI = true;
 
-	void Awake()
+	protected virtual void Awake()
 	{
 		anim = this.GetComponent<Animator> ();
 		originalPosition = this.transform.position;
 		originalRotation = this.transform.rotation;
+	}
+
+	protected virtual void Start(){
+
 	}
 
 	// Update is called once per frame
@@ -90,7 +94,7 @@ public class ItemDrag : MonoBehaviour
 		}
 	}
 
-	IEnumerator ReturnPosition(Vector3 pos)
+	protected IEnumerator ReturnPosition(Vector3 pos)
 	{
 		isBusy = true;
 		while (Vector2.Distance (this.transform.position, pos) > 0.1f) {
@@ -101,7 +105,7 @@ public class ItemDrag : MonoBehaviour
 		
 	}
 
-	IEnumerator ReturnRotation(Quaternion rot)
+	protected IEnumerator ReturnRotation(Quaternion rot)
 	{
 		isBusy = true;
 		while (Quaternion.Angle (this.transform.rotation, rot) > 1f) {
@@ -122,6 +126,10 @@ public class ItemDrag : MonoBehaviour
 		 	isDragable = false;
 		 }
 
+		 if(other.tag == "Player"){
+			 OnActive(other.GetComponent<CharController>());
+		 }
+
 	}
 
 	void OnTriggerExit2D(Collider2D other) {
@@ -133,6 +141,10 @@ public class ItemDrag : MonoBehaviour
 		if (other.tag == "Floor" && isObstruct) {
 			isDragable = false;
 		}
+
+	}
+
+	protected virtual void OnActive(CharController pet){
 
 	}
 

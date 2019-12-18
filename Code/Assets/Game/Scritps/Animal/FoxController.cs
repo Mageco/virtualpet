@@ -8,7 +8,7 @@ public class FoxController : AnimalController
     public ChickenController target;
     public ChickenController[] targets;
 
-    CircleCollider2D collider2D;
+    CircleCollider2D col2D;
 
     public Vector3 fleePoint;
 
@@ -16,7 +16,7 @@ public class FoxController : AnimalController
         speed = maxSpeed/2f;
         targets = GameObject.FindObjectsOfType<ChickenController>();
         fleePoint = agent.transform.position;
-        collider2D = this.GetComponent<CircleCollider2D>();
+        col2D = this.GetComponent<CircleCollider2D>();
     }
 
     protected override void Think()
@@ -54,11 +54,12 @@ public class FoxController : AnimalController
     }
 
 
-    void OnMouseUp(){
+    void OnMouseDown(){
         if(state == AnimalState.Seek){
             agent.Stop();
             Debug.Log("Hit");
             isAbort = true;
+            //state = AnimalState.Flee;
             state = AnimalState.Hit;
             GameManager.instance.LogAchivement(AchivementType.Dissmiss_Animal,ActionType.None,-1,animalType);
         }else if(state == AnimalState.Run){
@@ -71,7 +72,7 @@ public class FoxController : AnimalController
             Minigame.instance.UpdateLive();
             GameManager.instance.LogAchivement(AchivementType.Dissmiss_Animal,ActionType.None,-1,animalType);
         }
-        collider2D.enabled = false;
+        col2D.enabled = false;
         //Camera.main.GetComponent<CameraShake>().Shake();
         
     }
@@ -97,6 +98,7 @@ public class FoxController : AnimalController
 
     IEnumerator Idle()
     {
+        col2D.enabled = true;
         anim.Play("Idle_" + direction.ToString());
         agent.transform.position = GetFleePoint();
         this.transform.position = agent.transform.position;
@@ -112,7 +114,7 @@ public class FoxController : AnimalController
 
     IEnumerator Seek()
     {
-        collider2D.enabled = true;
+        col2D.enabled = true;
         GetTarget();
         agent.maxSpeed = this.maxSpeed;
         if(target == null){
@@ -125,17 +127,22 @@ public class FoxController : AnimalController
                 if(target.state == AnimalState.Cached || target.state == AnimalState.Hold){
                     GetTarget();
                 }
-
-                anim.Play("Seek_" + direction.ToString(),0);   
-                agent.SetDestination(target.transform.position);
-                yield return new WaitForEndOfFrame(); 
-                if(!isAbort  && Vector2.Distance(this.transform.position,target.transform.position) < 3f && target.state != AnimalState.Cached && target.state != AnimalState.Hold){
-                    state = AnimalState.Run;
-                    agent.Stop();
-                    target.OnCached();
-                    Minigame.instance.UpdateLive();
+                if(target == null){
                     isAbort = true;
+                }else{
+                    anim.Play("Seek_" + direction.ToString(),0);   
+                    agent.SetDestination(target.transform.position);
+                    yield return new WaitForEndOfFrame(); 
+                    if(!isAbort  && Vector2.Distance(this.transform.position,target.transform.position) < 3f && target.state != AnimalState.Cached && target.state != AnimalState.Hold){
+                        state = AnimalState.Run;
+                        agent.Stop();
+                        target.OnCached();
+                        Minigame.instance.UpdateLive();
+                        isAbort = true;
+                    }
                 }
+
+
             }
         }
         CheckAbort();
