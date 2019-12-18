@@ -19,6 +19,9 @@ public class ToyCarItem : BaseFloorItem
 	Direction direction = Direction.R;
 	int round = 1;
 
+	public GameObject energyBar;
+	public GameObject energyProgress;
+
 
 	protected override void Start(){
 		base.Start();
@@ -35,6 +38,9 @@ public class ToyCarItem : BaseFloorItem
     {
 		lastPosition = this.transform.position;
 		base.Update();
+		if(isDrag){
+			
+		}
 		if(isActive){
 			animator.speed = Mathf.Lerp(animator.speed,0,Time.deltaTime * 0.3f);
 		}else

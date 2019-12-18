@@ -49,7 +49,7 @@ public class HealthItem : BaseDragItem
 
     protected override void OnActive()
     {
-        if(!eated && pet != null){
+        if(!isBusy && !eated && pet != null){
             eated = true;
             anim.Play("Active");
             pet.OnHealth(sickType,amounnt);
@@ -59,8 +59,8 @@ public class HealthItem : BaseDragItem
                 effect.GetComponent<AutoDestroy>().liveTime = timeDelay;
             }
             GameManager.instance.ResetCameraTarget();
-            Reset();
-            //StartCoroutine(Deactive());
+            //Reset();
+            StartCoroutine(Deactive());
         }
 
     }
@@ -68,10 +68,11 @@ public class HealthItem : BaseDragItem
     IEnumerator Deactive(){
         this.transform.position = new Vector3(1000,1000,0);
         yield return new WaitForSeconds(timeDelay);
-        
+        Reset();
     }
 
     void Reset(){
+        StopAllCoroutines();
         this.transform.position = originalPosition;
         this.transform.rotation = originalRotation;
 		height = originalHeight;
@@ -80,6 +81,7 @@ public class HealthItem : BaseDragItem
         anim.Play("Idle", 0);
         eated = false;
         state = ItemDragState.None;
+        isBusy = false;
     }
 
 

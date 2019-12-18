@@ -12,7 +12,7 @@ public class BaseDragItem : MonoBehaviour
     protected Quaternion originalRotation;
     protected Vector3 originalScale;
 	protected bool isDragable = true;
-	bool isBusy = false;
+	protected bool isBusy = false;
     protected bool isHighlight = false;
 	
     protected float fallSpeed = 0;

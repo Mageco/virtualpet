@@ -91,6 +91,10 @@ public class Pet : BaseModel
     public CharController character;
     PolyNavAgent agent;
 
+	public ActionType actionType = ActionType.None;
+	public Vector3 position = Vector3.zero;
+	public EnviromentType enviromentType = EnviromentType.Room;
+
     public Pet()
 	{
 		iD = DataHolder.LastPetID() + 1;
@@ -180,10 +184,15 @@ public class Pet : BaseModel
         GameObject go = GameObject.Instantiate((Resources.Load(url) as GameObject), Vector3.zero, Quaternion.identity) as GameObject;
         character = go.GetComponent<CharController>();
 		go.transform.parent = GameManager.instance.transform;  
-		if(ItemManager.instance != null)
+		if(this.position == Vector3.zero && ItemManager.instance != null)
 			go.transform.position = ItemManager.instance.GetRandomPoint(PointType.Spawn).position;    
+		else
+			go.transform.position = this.position;
+		character.actionType = this.actionType;
+		character.enviromentType = this.enviromentType;
         character.data = this;
 		character.LoadPrefab();
+		
 		GameManager.instance.UpdatePetObjects();
         return character;
     }

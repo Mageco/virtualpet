@@ -41,6 +41,7 @@ public class HappyItem : MonoBehaviour
 
     IEnumerator Pick(){
         animator.Play("Pick");
+        this.GetComponent<CircleCollider2D>().enabled = false;
         yield return new WaitForEndOfFrame();
         yield return new WaitForSeconds(animator.GetCurrentAnimatorStateInfo(0).length);
         GameManager.instance.AddHappy(value);

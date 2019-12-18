@@ -28,7 +28,8 @@ public class CleanItem : MonoBehaviour
 	{
 		if(dirtyItem != null){
 			dirtyItem.OnClean(clean*Time.deltaTime);
-			anim.Play("Active");
+			if(anim != null)
+				anim.Play("Active");
 		}else
 			anim.Play("Idle");
 	}

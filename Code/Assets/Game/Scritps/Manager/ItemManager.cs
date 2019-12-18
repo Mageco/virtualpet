@@ -36,13 +36,12 @@ public class ItemManager : MonoBehaviour
         while(!isLoad){
             if(GameManager.instance.isLoad){
                 LoadItems();
+                GameManager.instance.EquipPets();
+                GameManager.instance.LoadPetObjects();
                 isLoad = true;
             }
             yield return new WaitForEndOfFrame();
         }
-        LoadItems();
-        GameManager.instance.LoadPetObjects();
-
         LoadItemData();
  
     }
