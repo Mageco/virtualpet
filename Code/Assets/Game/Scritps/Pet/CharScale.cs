@@ -36,8 +36,9 @@ public class CharScale : MonoBehaviour
     // Update is called once per frame
     void LateUpdate()
     {
-		scalePosition.x = this.transform.position.x;
+		
 		if(interact.interactType == InteractType.Drag){
+			scalePosition.x = this.transform.position.x;
 			float delta = this.transform.position.y - lastPosition.y;
 			height += delta;
 			if(height <= 0 && this.transform.position.y <= scalePosition.y ){
@@ -70,6 +71,7 @@ public class CharScale : MonoBehaviour
 				character.shadow.transform.localScale = character.originalShadowScale * (1f - 0.5f*height/maxHeight); 
             }
 		}else if(interact.interactType == InteractType.Drop){
+			scalePosition.x = this.transform.position.x;
 			height = this.transform.position.y - scalePosition.y;
 			if(height <= 0 && this.transform.position.y <= scalePosition.y ){
 				Vector3 p = this.transform.position;
@@ -78,6 +80,11 @@ public class CharScale : MonoBehaviour
 				this.transform.position = p;
 				height = 0;
 			}
+			if(character.shadow != null){
+                character.shadow.transform.position = scalePosition + new Vector3(0,0,600);
+				character.shadow.transform.localScale = character.originalShadowScale * (1f - 0.5f*height/maxHeight); 
+            }
+		}else if(interact.interactType == InteractType.Fly){
 			if(character.shadow != null){
                 character.shadow.transform.position = scalePosition + new Vector3(0,0,600);
 				character.shadow.transform.localScale = character.originalShadowScale * (1f - 0.5f*height/maxHeight); 

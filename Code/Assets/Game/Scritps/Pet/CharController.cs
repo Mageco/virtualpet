@@ -219,7 +219,7 @@ public class CharController : MonoBehaviour
             data.Food -= delta;    
             data.Water -= delta;
             data.Shit += delta;
-            data.Pee += delta;
+            data.Pee += delta*2;
         }
 
 
@@ -710,7 +710,9 @@ public class CharController : MonoBehaviour
 
     public virtual void OnMouse()
     {
-        if(actionType == ActionType.Patrol || actionType == ActionType.Discover || actionType == ActionType.Drink || actionType == ActionType.Eat){
+        if(charInteract.interactType != InteractType.None)
+            return;
+        if( actionType == ActionType.Patrol || actionType == ActionType.Discover || actionType == ActionType.Drink || actionType == ActionType.Eat){
             Abort();
             actionType = ActionType.Mouse;
         }
@@ -808,7 +810,7 @@ public class CharController : MonoBehaviour
         }
     }
 
-    protected IEnumerator DoAnim(string a)
+    protected virtual IEnumerator DoAnim(string a)
     {
         float time = 0;
         anim.Play(a, 0);
@@ -820,7 +822,7 @@ public class CharController : MonoBehaviour
         }
     }
 
-    protected IEnumerator RunToPoint()
+    protected virtual IEnumerator RunToPoint()
     {
         isMoving = true;
         isArrived = false;
@@ -830,7 +832,7 @@ public class CharController : MonoBehaviour
         while (!isArrived && !isAbort)
         {
             anim.Play("Run_" + this.direction.ToString(), 0);
-            data.Energy -= 2 * Time.deltaTime;
+            data.Energy -= Time.deltaTime;
             yield return new WaitForEndOfFrame();
         }
         isMoving = false;
@@ -846,7 +848,7 @@ public class CharController : MonoBehaviour
         while (!isArrived && !isAbort)
         {
             anim.Play("Walk_" + this.direction.ToString(), 0);
-            data.Energy -= Time.deltaTime;
+            data.Energy -= 0.3f*Time.deltaTime;
             yield return new WaitForEndOfFrame();
         }
         isMoving = false;
@@ -933,7 +935,7 @@ public class CharController : MonoBehaviour
         while(GetMouse() != null && GetMouse().state != MouseState.Idle && !isAbort){
             agent.SetDestination(GetMouse().transform.position);
             anim.Play("Run_Angry_" + this.direction.ToString(), 0);
-            data.Energy -= 2.5f*Time.deltaTime;
+            data.Energy -= 1.5f*Time.deltaTime;
             yield return new WaitForEndOfFrame();
         }
         isMoving = false;
@@ -1204,7 +1206,7 @@ public class CharController : MonoBehaviour
             }else{
                 int ran = Random.Range(0,100);
                 if(ran < 40)
-                    yield return DoAnim("Standby");
+                    yield return DoAnim("Speak_" + direction.ToString());
                 else{
                     SetTarget(PointType.Patrol);
                     yield return StartCoroutine(RunToPoint());
@@ -1257,7 +1259,7 @@ public class CharController : MonoBehaviour
             }else{
                 int ran = Random.Range(0,100);
                 if(ran < 40)
-                    yield return DoAnim("Standby");
+                    yield return DoAnim("Speak_" + direction.ToString());
                 else{
                     SetTarget(PointType.Patrol);
                     yield return StartCoroutine(RunToPoint());
@@ -1473,7 +1475,7 @@ public class CharController : MonoBehaviour
                         charInteract.interactType = InteractType.None;
 
                     }
-                    data.Energy -= 2*Time.deltaTime;
+                    data.Energy -= Time.deltaTime;
                     yield return new WaitForEndOfFrame();
                 }
                 count ++;

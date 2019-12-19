@@ -6,6 +6,29 @@ public class CharCat : CharController
 {
   
 
+    protected override IEnumerator Mouse()
+    {
+        bool isLove = false;
+        isMoving = true;
+        charScale.speedFactor = 1.2f;
+        while(GetMouse() != null && GetMouse().state != MouseState.Idle && !isAbort){
+            agent.SetDestination(GetMouse().transform.position);
+            anim.Play("Run_Angry_" + this.direction.ToString(), 0);
+            data.Energy -= 1.5f*Time.deltaTime;
+            if(Vector2.Distance(GetMouse().transform.position,this.transform.position) < 2){
+                if(!isLove){
+                    GameManager.instance.AddExp(5,data.iD);
+                    isLove = true;
+                }
+                    
+            }
+            yield return new WaitForEndOfFrame();
+        }
+        isMoving = false;
+        charScale.speedFactor = 1;
+        CheckAbort();
+    }
+
     protected override IEnumerator Patrol()
     {
        int ran = Random.Range(0, 100);

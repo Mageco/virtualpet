@@ -11,7 +11,7 @@ public class EventPanel : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        price = 5 + GameManager.instance.myPlayer.minigameLevels[0]; 
+        price = 10; 
         priceText.text = price.ToString();
     }
 

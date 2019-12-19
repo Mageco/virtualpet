@@ -32,7 +32,7 @@ public class LosePanel : MonoBehaviour
     }
 
     public void Replay(){
-        int price = 5 + GameManager.instance.myPlayer.minigameLevels[0]; 
+        int price = 10; 
         if(GameManager.instance.GetHappy() >= price){
             GameManager.instance.AddHappy(-price);
             MageManager.instance.LoadScene(SceneManager.GetActiveScene().name,0.5f);
