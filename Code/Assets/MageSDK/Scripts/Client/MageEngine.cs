@@ -318,7 +318,7 @@ namespace MageSDK.Client {
 		}
 
 		///<summary>Update user profile</summary>
-		public void UpdateUserProfile(User user) {
+		private void UpdateUserProfile(User user) {
 			// check if userDatas is valid
 			if (null == user) {
 				return;
@@ -347,6 +347,46 @@ namespace MageSDK.Client {
 				u.notification_token = user.notification_token;
 			}
 
+			UpdateUserProfileToServer(u);
+
+		}
+
+
+		///<summary>Update user notification token</summary>
+		public void UpdateNotificationToken(string notificationToken) {
+
+			User u = GetUser();
+
+			if (notificationToken != "" && notificationToken != u.notification_token) {
+				u.notification_token = notificationToken;
+			} else {
+				return;
+			}
+
+			UpdateUserProfileToServer(u);
+
+		}
+
+		///<summary>Update user avatar</summary>
+		public void UpdateUserAvatar(string avatarImage) {
+
+			// upload image 
+			string avatarUrl = UploadFile(avatarImage);
+
+			User u = GetUser();
+
+			if (avatarUrl != "" && avatarUrl != u.avatar) {
+				u.avatar = avatarUrl;
+			} else {
+				return;
+			}
+
+			UpdateUserProfileToServer(u);
+
+		}
+
+		///<summary>Upload file to server and get back the url</summary>
+		private void UpdateUserProfileToServer(User u) {
 			// user must logged in
 			if (IsLogin()) {
 				// update user to game engine
@@ -362,7 +402,7 @@ namespace MageSDK.Client {
 				
 				//call to update user data api
 				ApiHandler.instance.SendApi<UpdateProfileResponse>(
-					ApiSettings.API_UPDATE_USER_DATA, 
+					ApiSettings.API_UPDATE_PROFILE, 
 					r, 
 					(result) => {
 						Debug.Log("Success: Update user profile");
@@ -378,7 +418,38 @@ namespace MageSDK.Client {
 				);
 
 			}
+		}
 
+
+		///<summary>Upload file to server and get back the url</summary>
+		public string UploadFile(string file) {
+			UploadFileRequest r = new UploadFileRequest ();
+
+			string imagePath = Application.dataPath + file;
+
+			r.SetUploadFile (File.ReadAllBytes(imagePath));
+
+			string output = "";
+
+			//call to login api
+			ApiHandler.instance.UploadFile<UploadFileResponse>(
+				r, 
+				(result) => {
+					Debug.Log("Success: Upload file successfully");
+					Debug.Log("Upload URL: " + result.UploadedURL);
+					output = result.UploadedURL;
+				},
+				(errorStatus) => {
+					Debug.Log("Error: " + errorStatus);
+					//do some other processing here
+				},
+				() => {
+					//timeout handler here
+					Debug.Log("Api call is timeout");
+				}
+			);
+
+			return output;
 		}
 
 		#endregion 
@@ -623,10 +694,6 @@ namespace MageSDK.Client {
 				this.cachedEvent = new List<MageEvent>();
 			}
 
-			//testing only
-			//AddLogger<ActionLog>();
-			//AddLogger<PetLog>();
-			//load key lookup
 			if(ES2.Exists(MageEngineSettings.GAME_ENGINE_ACTION_LOGS_KEY_LOOKUP)){
 				this.actionLogsKeyLookup = ES2.LoadList<string>(MageEngineSettings.GAME_ENGINE_ACTION_LOGS_KEY_LOOKUP);
 			} else  {
@@ -642,8 +709,6 @@ namespace MageSDK.Client {
 					this.cachedActionLog.Add(key, tmp);
 				}
 			}
-
-
 		}
 
 
@@ -665,7 +730,7 @@ namespace MageSDK.Client {
 				List<ActionLog> tmp = new List<ActionLog>();
 				tmp.Add(new ActionLog() {
 					action_date = DateTime.Now.ToString("dd-MM-yyyy"),
-					sequence = 1,
+					sequence = int.Parse(DateTime.Now.ToString("yyyyMMddHHmmss")),
 					action_detail = actionData.ToJson()
 				});
 				this.cachedActionLog.Add(LoggerID<T>(), tmp);
@@ -678,7 +743,7 @@ namespace MageSDK.Client {
 				List<ActionLog> tmp = (List<ActionLog>)this.cachedActionLog[LoggerID<T>()];
 				tmp.Add(new ActionLog() {
 					action_date = DateTime.Now.ToString("dd-MM-yyyy"),
-					sequence = 1,
+					sequence = int.Parse(DateTime.Now.ToString("yyyyMMddHHmmss")),
 					action_detail = actionData.ToJson()
 				});
 				this.cachedActionLog[LoggerID<T>()] = tmp;
@@ -772,6 +837,12 @@ namespace MageSDK.Client {
 				this.apiCounter[apiName] = tmp;
 			} 
 		}
+
+		#endregion
+
+
+		#region messages & notification 
+		////<summary>Send push notification</summary>
 
 		#endregion
 	}

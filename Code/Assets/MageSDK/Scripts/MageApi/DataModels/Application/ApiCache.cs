@@ -21,6 +21,9 @@ namespace Mage.Models.Application{
 
 		public int[] mage_core_users = {};
 
+		public IPAddress ip_cache = new IPAddress();
+
+		public int cache_timestamp;
 		public ApiCache() : base () {
 		}
 
