@@ -74,7 +74,7 @@ public class CharParrot : CharController
                     
                     this.transform.position = target + new Vector3(0,targetHeight,0);
                     agent.transform.position = target + new Vector3(0,targetHeight,0);
-                    charInteract.interactType = InteractType.None;
+                    
                     isArrived = true;
                 }
                 t+=Time.deltaTime;
@@ -82,7 +82,7 @@ public class CharParrot : CharController
             }
         }
 
-        //
+        charInteract.interactType = InteractType.None;
        
         
        
