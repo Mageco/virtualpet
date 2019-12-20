@@ -100,9 +100,16 @@ public class QuestManager : MonoBehaviour
             yield return new WaitForEndOfFrame();
             GameManager.instance.ResetCameraTarget();
         }else if(GameManager.instance.questId == 5){
+            ItemManager.instance.SpawnDirty();
             GameManager.instance.SetCameraTarget(ItemManager.instance.GetItemChildObject(ItemType.Clean));
-            yield return new WaitForEndOfFrame();
+            yield return new WaitForSeconds(1);
             GameManager.instance.ResetCameraTarget();
+            ItemDirty go = GameObject.FindObjectOfType<ItemDirty>();
+            if(go != null){
+                GameManager.instance.SetCameraTarget(go.gameObject);
+                yield return new WaitForSeconds(1);
+                GameManager.instance.ResetCameraTarget();
+            }
         }else if(GameManager.instance.questId == 6){
         }else if(GameManager.instance.questId == 8){
         }else if(GameManager.instance.questId == 9){

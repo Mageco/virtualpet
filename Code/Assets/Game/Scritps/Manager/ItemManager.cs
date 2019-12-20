@@ -16,6 +16,8 @@ public class ItemManager : MonoBehaviour
     public GameObject peePrefab;
     public GameObject shitPrefab;
     public GameObject heartPrefab; 
+
+    public GameObject dirtyPrefab;
     float time = 0;
     float maxTimeCheck = 1;
 
@@ -374,6 +376,13 @@ public class ItemManager : MonoBehaviour
     public void SpawnHeart(Vector3 pos,Quaternion rot, int value){
         GameObject go = GameObject.Instantiate(heartPrefab,pos,rot);
         go.GetComponent<HappyItem>().Load(value);
+    }
+
+    public void SpawnDirty()
+    {
+        Vector3 pos = GetRandomPoint(PointType.Patrol).position;
+        pos.z = 1000;
+        GameObject go = Instantiate(dirtyPrefab, pos, Quaternion.identity);
     }
 
     void CheckItemData(){
