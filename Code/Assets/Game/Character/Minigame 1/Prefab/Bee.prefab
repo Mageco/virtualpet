@@ -499,8 +499,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2564516577758694112}
   - component: {fileID: 2564516577758694111}
-  - component: {fileID: 8871916633073801496}
-  - component: {fileID: 6065117532453339552}
   m_Layer: 0
   m_Name: Bee
   m_TagString: Obstruct
@@ -543,48 +541,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!61 &8871916633073801496
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2564516577758694110}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0, y: 0}
-    oldSize: {x: 0, y: 0}
-    newSize: {x: 0, y: 0}
-    adaptiveTilingThreshold: 0
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 0.4, y: 0.3}
-  m_EdgeRadius: 0
---- !u!114 &6065117532453339552
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2564516577758694110}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4c4791ee5c5a048d5ab00732c6b31509, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  speed: 1
-  isMove: 1
-  isLoop: 0
-  maxLength: 40
 --- !u!1 &8487686882574676531
 GameObject:
   m_ObjectHideFlags: 0
@@ -748,6 +704,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2564516577758694112}
     m_Modifications:
+    - target: {fileID: 100000, guid: 9b865a6b5b940a04b988191d2762dc69, type: 3}
+      propertyPath: m_Name
+      value: Coin_Pop
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 9b865a6b5b940a04b988191d2762dc69, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 9b865a6b5b940a04b988191d2762dc69, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -791,10 +755,6 @@ PrefabInstance:
     - target: {fileID: 400000, guid: 9b865a6b5b940a04b988191d2762dc69, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 41.831
-      objectReference: {fileID: 0}
-    - target: {fileID: 100000, guid: 9b865a6b5b940a04b988191d2762dc69, type: 3}
-      propertyPath: m_Name
-      value: Coin_Pop
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9b865a6b5b940a04b988191d2762dc69, type: 3}
