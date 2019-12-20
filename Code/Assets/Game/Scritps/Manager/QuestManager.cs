@@ -82,6 +82,7 @@ public class QuestManager : MonoBehaviour
             yield return new WaitForEndOfFrame();
             GameManager.instance.ResetCameraTarget();
         }else if(GameManager.instance.questId == 2){
+            GameManager.instance.GetPet(0).Pee = 65;
             GameManager.instance.SetCameraTarget(ItemManager.instance.GetItemChildObject(ItemType.Toilet));
             yield return new WaitForEndOfFrame();
             GameManager.instance.ResetCameraTarget();
