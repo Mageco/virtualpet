@@ -86,12 +86,12 @@ public class QuestManager : MonoBehaviour
             yield return new WaitForEndOfFrame();
             GameManager.instance.ResetCameraTarget();
         }else if(GameManager.instance.questId == 3){
-            GameManager.instance.GetPet(0).Dirty = 690;
+            GameManager.instance.GetPet(0).Dirty = 65;
             GameManager.instance.SetCameraTarget(ItemManager.instance.GetItemChildObject(ItemType.Bath));
             yield return new WaitForEndOfFrame();
             GameManager.instance.ResetCameraTarget();
         }else if(GameManager.instance.questId == 4){
-            GameManager.instance.GetPet(0).Sleep = 32;
+            GameManager.instance.GetPet(0).Sleep = 35;
             GameManager.instance.SetCameraTarget(ItemManager.instance.GetItemChildObject(ItemType.Bed));
             yield return new WaitForEndOfFrame();
             GameManager.instance.ResetCameraTarget();
