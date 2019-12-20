@@ -21,6 +21,9 @@ public class ItemManager : MonoBehaviour
     float time = 0;
     float maxTimeCheck = 1;
 
+    float timeDirty = 0;
+    float maxTimeDirty = 200;
+
 
     void Awake()
     {
@@ -56,6 +59,14 @@ public class ItemManager : MonoBehaviour
             time = 0;
         }else{
             time += Time.deltaTime;
+        }
+
+        if(timeDirty > maxTimeDirty){
+            SpawnDirty();
+            timeDirty = 0;
+            maxTimeDirty = Random.Range(100,500);
+        }else{
+            timeDirty += Time.deltaTime;
         }
     }
 

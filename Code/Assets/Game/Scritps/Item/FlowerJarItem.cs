@@ -5,6 +5,12 @@ using UnityEngine.EventSystems;
 
 public class FlowerJarItem : BaseDragItem
 {
+	public GameObject breakObject;
+
+	protected override void Start(){
+		base.Start();
+		breakObject.SetActive(false);
+	}
 	protected override void OnHit()
     {
         StartCoroutine(OnHitCoroutine());
@@ -19,9 +25,11 @@ public class FlowerJarItem : BaseDragItem
 		this.transform.position = pos;
 
 		float l = Vector2.Distance(GameManager.instance.GetPetObject(0).transform.position,this.transform.position);
+		breakObject.SetActive(true);
 		yield return StartCoroutine(DoAnim("Break"));
 		GameManager.instance.ResetCameraTarget();
 		yield return new WaitForSeconds(2);
+		breakObject.SetActive(false);
 		this.transform.position = originalPosition;
 			//CharController char = ;
 		

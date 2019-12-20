@@ -43,6 +43,9 @@ public class CharCollider : MonoBehaviour
         }else if(other.tag == "Toy"){
             ToyItem toy = other.transform.parent.GetComponent<ToyItem>();
             character.OnToy(toy);
+        }else if(other.tag == "Break"){
+            Debug.Log("Break");
+            character.OnSupprised();
         }
     }
 
