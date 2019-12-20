@@ -218,8 +218,8 @@ public class CharController : MonoBehaviour
             data.Energy += delta;
             data.Food -= delta;    
             data.Water -= delta;
-            data.Shit += delta;
-            data.Pee += delta*2;
+            data.Shit += delta/4;
+            data.Pee += delta/2;
         }
 
 
