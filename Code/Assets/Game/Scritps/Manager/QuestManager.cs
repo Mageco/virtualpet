@@ -24,6 +24,7 @@ public class QuestManager : MonoBehaviour
     bool isReplay = true;
 
     QuestPanel questPanel;
+    float originalValue = 0;
 
     void Awake()
     {
@@ -93,6 +94,8 @@ public class QuestManager : MonoBehaviour
             GameManager.instance.ResetCameraTarget();
         }else if(GameManager.instance.questId == 4){
             GameManager.instance.GetPet(0).Sleep = 35;
+            originalValue = GameManager.instance.GetPet(0).rateSleep;
+            GameManager.instance.GetPet(0).rateSleep = 4;
             GameManager.instance.SetCameraTarget(ItemManager.instance.GetItemChildObject(ItemType.Bed));
             yield return new WaitForEndOfFrame();
             GameManager.instance.ResetCameraTarget();
@@ -191,6 +194,7 @@ public class QuestManager : MonoBehaviour
             if(GameManager.instance.GetAchivement(3) >= 1)
             {
                 isComplete = true;
+                GameManager.instance.GetPet(0).rateSleep = originalValue;
             }
         }else if(GameManager.instance.questId == 5){
             if(GameManager.instance.GetAchivement(19) >= 1)
