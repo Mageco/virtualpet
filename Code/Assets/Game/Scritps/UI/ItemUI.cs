@@ -194,11 +194,14 @@ public class ItemUI : MonoBehaviour
         if (isBusy)
             return;
 
+           
+
         if(isCommingSoon){
             MageManager.instance.OnNotificationPopup("Item will be available soon!");
             return;
         }
 
+        MageManager.instance.PlaySoundName("BubbleButton",false);
         BuyCoroutine();
     }
 
@@ -251,6 +254,7 @@ public class ItemUI : MonoBehaviour
     }
 
     public void OnItemInfo(){
+        MageManager.instance.PlaySoundName("BubbleButton",false);
         UIManager.instance.OnItemInfoPanel(itemId,isCharacter);
     }
 

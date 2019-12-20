@@ -959,6 +959,7 @@ public class CharController : MonoBehaviour
 
     protected virtual IEnumerator Hold()
     {
+        MageManager.instance.PlaySoundName("Drag",false);
         charInteract.interactType = InteractType.Drag;
         enviromentType = EnviromentType.Room;
         GameManager.instance.SetCameraTarget(this.gameObject);
@@ -990,6 +991,7 @@ public class CharController : MonoBehaviour
         CheckDrop();
 
         float fallSpeed = 0;
+        
         while (charInteract.interactType == InteractType.Drop && !isAbort)
         {
             if (agent.transform.position.y > dropPosition.y)
@@ -1019,6 +1021,7 @@ public class CharController : MonoBehaviour
         charInteract.interactType = InteractType.None; 
         
         CheckEnviroment();
+        MageManager.instance.PlaySoundName("Drop",false);
         yield return StartCoroutine(DoAnim("Drop"));
         
     

@@ -64,8 +64,10 @@ public class AnimatedButton : UIBehaviour, IPointerEnterHandler, IPointerExitHan
 
         m_pointerPressed = false;
         Unpress();
-        if (m_pointerInside)
+        if (m_pointerInside){
+            
             m_OnClick.Invoke();
+        }
     }
 
     public virtual void OnPointerDown(PointerEventData eventData)
@@ -82,6 +84,7 @@ public class AnimatedButton : UIBehaviour, IPointerEnterHandler, IPointerExitHan
         if (!IsActive())
             return;
 
+        MageManager.instance.PlaySoundName("BubbleButton",false);
         if (m_animator.GetCurrentAnimatorStateInfo(0).IsName("Normal"))
             m_animator.Play("Pressed");
     }
@@ -97,6 +100,7 @@ public class AnimatedButton : UIBehaviour, IPointerEnterHandler, IPointerExitHan
 
     public void OnPressedAnimationFinished()
     {
+        
         m_OnClick.Invoke();
     }
 

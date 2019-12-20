@@ -132,6 +132,7 @@ public class ItemManager : MonoBehaviour
         for (int i = 0; i < adds.Count; i++)
         {
             ItemObject item = AddItem(adds[i]);
+            MageManager.instance.PlaySoundName("Item_Appear",false);
             //GameManager.instance.SetCameraTarget(item.transform.GetChild(0).gameObject);
         }
         
@@ -202,6 +203,7 @@ public class ItemManager : MonoBehaviour
 
     ItemObject AddItem(int itemId)
     {
+       
         string url = DataHolder.GetItem(itemId).prefabName.Replace("Assets/Game/Resources/", "");
         url = url.Replace(".prefab", "");
         url = DataHolder.Items().GetPrefabPath() + url;

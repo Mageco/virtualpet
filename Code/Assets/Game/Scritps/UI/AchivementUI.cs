@@ -57,6 +57,7 @@ public class AchivementUI : MonoBehaviour
     }
 
     public void Collect(){
+        MageManager.instance.PlaySoundName("Collect_Achivement",false);
         GameManager.instance.CollectAchivementRewards(iD);
         collect.interactable = false;
         UIManager.instance.achivementPanel.Load();

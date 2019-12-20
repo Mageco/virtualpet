@@ -21,6 +21,7 @@ public class Popup : MonoBehaviour
 
     public void Close()
     {
+        //MageManager.instance.PlaySoundName("Close",false);
         var animator = GetComponent<Animator>();
         if (animator.GetCurrentAnimatorStateInfo(0).IsName("Open"))
             animator.Play("Close");
