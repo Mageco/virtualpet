@@ -58,28 +58,6 @@ public class QuestTab : BaseTab
             }
 
             EditorGUILayout.BeginVertical("box");
-			fold2 = EditorGUILayout.Foldout(fold2, "Quest Info");
-			if(fold2)
-			{
-                DataHolder.Quest(selection).isReplay = EditorGUILayout.Toggle("Replay Quest?", DataHolder.Quest(selection).isReplay, GUILayout.Width(pw.mWidth));
-				DataHolder.Quest(selection).charLevel = EditorGUILayout.IntField("Pet Level", DataHolder.Quest(selection).charLevel, GUILayout.Width(pw.mWidth));
-				EditorGUILayout.Separator();
-				DataHolder.Quest(selection).dialogId = EditorGUILayout.Popup("Dialog", 
-						DataHolder.Quest(selection).dialogId, pw.GetDialogs(), GUILayout.Width(pw.mWidth));				
-                EditorGUILayout.Separator();
-                if(selection != tmpSelection) this.tmpPrefab = null;
-				if(this.tmpPrefab == null && "" != DataHolder.Quest(selection).prefabName)
-				{
-					this.tmpPrefab = (GameObject)Resources.Load(DataHolder.Quests().GetPrefabPath()+DataHolder.Quest(selection).prefabName, typeof(GameObject));
-				}
-				this.tmpPrefab = (GameObject)EditorGUILayout.ObjectField("Prefab", this.tmpPrefab, typeof(GameObject), false, GUILayout.Width(pw.mWidth*2));
-				if(this.tmpPrefab) DataHolder.Quest(selection).prefabName = this.tmpPrefab.name;
-				else DataHolder.Quest(selection).prefabName = "";
-
-			}
-			EditorGUILayout.EndVertical();
-
-            EditorGUILayout.BeginVertical("box");
 			fold2 = EditorGUILayout.Foldout(fold2, "Quest Reward");
 			if(fold2)
 			{

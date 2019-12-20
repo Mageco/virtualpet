@@ -7509,7 +7509,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1307597351
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7524,7 +7524,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isStartQuest: 0
   isEndQuest: 0
-  haveTimeline: 0
 --- !u!4 &1307597352
 Transform:
   m_ObjectHideFlags: 0
@@ -13407,12 +13406,12 @@ PrefabInstance:
     - target: {fileID: 5453886026327393268, guid: 2690067ddedd64631953f52f26e327fb,
         type: 3}
       propertyPath: resetUserDataOnStart
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8084780117521707054, guid: 2690067ddedd64631953f52f26e327fb,
         type: 3}
       propertyPath: TestMode
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2690067ddedd64631953f52f26e327fb, type: 3}
@@ -15246,11 +15245,6 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7826085010543933634, guid: 7eeeaa71b12a017448463c87c4b16f6c,
-        type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 40
-      objectReference: {fileID: 0}
     - target: {fileID: 3264202448716271795, guid: 7eeeaa71b12a017448463c87c4b16f6c,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -15355,6 +15349,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7826085010543933634, guid: 7eeeaa71b12a017448463c87c4b16f6c,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 40
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7eeeaa71b12a017448463c87c4b16f6c, type: 3}
@@ -15670,7 +15669,7 @@ PrefabInstance:
     - target: {fileID: 7629980631625239534, guid: da4a7d975ac124a23850b2bb20c236a9,
         type: 3}
       propertyPath: questId
-      value: 3
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7629980631625239534, guid: da4a7d975ac124a23850b2bb20c236a9,
         type: 3}

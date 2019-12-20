@@ -428,8 +428,10 @@ public class ItemManager : MonoBehaviour
             }else if(item.itemType == ItemSaveDataType.Shit){
                 SpawnShit(item.position,item.value);
             }else if(item.itemType == ItemSaveDataType.Food || item.itemType == ItemSaveDataType.Drink){
-                GetItem(item.id).GetComponentInChildren<EatItem>().foodAmount = item.value;
-                GetItem(item.id).GetComponentInChildren<EatItem>().transform.position = item.position;
+                if(GetItem(item.id) != null){
+                    GetItem(item.id).GetComponentInChildren<EatItem>().foodAmount = item.value;
+                    GetItem(item.id).GetComponentInChildren<EatItem>().transform.position = item.position;
+                }
             }else if(item.itemType == ItemSaveDataType.Happy){
                 SpawnHeart(item.position,item.rotation,(int)item.value);
             }

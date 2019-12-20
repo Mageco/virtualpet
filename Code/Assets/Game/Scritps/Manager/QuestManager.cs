@@ -1,16 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Timeline;
-using UnityEngine.Playables;
+
 
 public class QuestManager : MonoBehaviour
 {
     public static QuestManager instance;
     public bool isStartQuest = false;
     public bool isEndQuest = false;
-    public bool haveTimeline = false;
-    PlayableDirector playTimeLine;
     bool isTimeline = true;
     System.DateTime startTime;
     float time;
@@ -24,7 +21,7 @@ public class QuestManager : MonoBehaviour
 
     float fadeDuration = 1f;
 
-    bool isReplay = false;
+    bool isReplay = true;
 
     QuestPanel questPanel;
 
@@ -61,8 +58,7 @@ public class QuestManager : MonoBehaviour
         }else if(GameManager.instance.questId == 6){
         }else if(GameManager.instance.questId == 7){
         }
-
-        isReplay = DataHolder.GetQuest(GameManager.instance.questId).isReplay;
+        delayTime = 5;
     }
 
     void PlayTip()
@@ -86,36 +82,33 @@ public class QuestManager : MonoBehaviour
             yield return new WaitForSeconds(0.5f);
             GameManager.instance.ResetCameraTarget();
         }else if(GameManager.instance.questId == 2){
-            GameManager.instance.GetPet(0).Pee = 70;
             GameManager.instance.SetCameraTarget(ItemManager.instance.GetItemChildObject(ItemType.Toilet));
             yield return new WaitForSeconds(0.5f);
             GameManager.instance.ResetCameraTarget();
         }else if(GameManager.instance.questId == 3){
-            GameManager.instance.SetCameraTarget(ItemManager.instance.GetItemChildObject(ItemType.Clean));
-            yield return new WaitForSeconds(0.5f);
-            GameManager.instance.ResetCameraTarget();
-        }else if(GameManager.instance.questId == 4){
-            GameManager.instance.GetPet(0).dirty = 70;
             GameManager.instance.SetCameraTarget(ItemManager.instance.GetItemChildObject(ItemType.Bath));
             yield return new WaitForSeconds(0.5f);
             GameManager.instance.ResetCameraTarget();
+        }else if(GameManager.instance.questId == 4){
+            GameManager.instance.SetCameraTarget(ItemManager.instance.GetItemChildObject(ItemType.Bed));
+            yield return new WaitForSeconds(0.5f);
+            GameManager.instance.ResetCameraTarget();
         }else if(GameManager.instance.questId == 5){
+            GameManager.instance.SetCameraTarget(ItemManager.instance.GetItemChildObject(ItemType.Clean));
+            yield return new WaitForSeconds(0.5f);
+            GameManager.instance.ResetCameraTarget();
         }else if(GameManager.instance.questId == 6){
         }else if(GameManager.instance.questId == 8){
         }else if(GameManager.instance.questId == 9){
         }else if(GameManager.instance.questId == 10){
         }else if(GameManager.instance.questId == 11){
-            GameManager.instance.GetPet(0).Health = 30;
-            GameManager.instance.SetCameraTarget(ItemManager.instance.GetItemChildObject(ItemType.MedicineBox));
-            yield return new WaitForSeconds(0.5f);
-            GameManager.instance.ResetCameraTarget();
         }else if(GameManager.instance.questId == 12){
-            GameManager.instance.GetPet(0).Damage = 70;
             GameManager.instance.SetCameraTarget(ItemManager.instance.GetItemChildObject(ItemType.MedicineBox));
             yield return new WaitForSeconds(0.5f);
             GameManager.instance.ResetCameraTarget();
         }else if(GameManager.instance.questId == 13){
-
+        }else if(GameManager.instance.questId == 14){
+        }else if(GameManager.instance.questId == 15){
         }
 
         isTimeline = false;
@@ -125,8 +118,6 @@ public class QuestManager : MonoBehaviour
     {
         replayTime = 0;
         isTimeline = true;
-        if(playTimeLine != null)
-            playTimeLine.time = 0;
         PlayTip();
     }
 
@@ -158,9 +149,6 @@ public class QuestManager : MonoBehaviour
         Debug.Log("Exp " + GameManager.instance.GetPet(0).Exp);
            
 
-        if (playTimeLine != null)
-            Destroy(playTimeLine.gameObject);
-
         GameManager.instance.questId++;
         isTimeline = false;
         isStartQuest = false;
@@ -187,39 +175,77 @@ public class QuestManager : MonoBehaviour
                 isComplete = true;
             }
         }else if(GameManager.instance.questId == 2){
-            if(GameManager.instance.GetPet(0).sleep >= 90){
+            if(GameManager.instance.GetAchivement(3) >= 1)
+            {
                 isComplete = true;
             }
         }else if(GameManager.instance.questId == 3){
-            if(ItemManager.instance.GetItem(ItemType.Food) != null && ItemManager.instance.GetItem(ItemType.Food).GetComponentInChildren<FoodBowlItem>().foodAmount > 90){
-                //GameManager.instance.ResetCameraTarget();
+            if(GameManager.instance.GetAchivement(4) >= 1)
+            {
                 isComplete = true;
             }
         } else if(GameManager.instance.questId == 4){
-            if(ItemManager.instance.GetItem(ItemType.Drink) != null && ItemManager.instance.GetItem(ItemType.Drink).GetComponentInChildren<DrinkBowlItem>().foodAmount > 90){
-                //GameManager.instance.ResetCameraTarget();
+            if(GameManager.instance.GetAchivement(2) >= 1)
+            {
                 isComplete = true;
             }
         }else if(GameManager.instance.questId == 5){
-            if(GameManager.instance.GetPet(0).Dirty <= 50){
-                //GameManager.instance.ResetCameraTarget();
+            if(GameManager.instance.GetAchivement(17) >= 1)
+            {
                 isComplete = true;
             }
         }else if(GameManager.instance.questId == 6){
-            if(GameManager.instance.GetPet(0).level >=  5){
+            if(GameManager.instance.GetAchivement(16) >= 3)
+            {
                 isComplete = true;
             }
         }
         else if(GameManager.instance.questId == 7){
-            if(GameObject.FindObjectOfType<ItemDirty>() == null){
-                GameManager.instance.ResetCameraTarget();
+            if(GameManager.instance.IsEquipItem(15))
+            {
                 isComplete = true;
             }
         }else if(GameManager.instance.questId == 8){
-            if(GameManager.instance.GetPet(0).level >=  6){
+            if(GameManager.instance.GetAchivement(15) >= 3)
+            {
                 isComplete = true;
             }
-        }             
+        }else if(GameManager.instance.questId == 9){
+            if(GameManager.instance.myPlayer.minigameLevels[0] >= 1)
+            {
+                isComplete = true;
+            }
+        }else if(GameManager.instance.questId == 10){
+            if(GameManager.instance.GetAchivement(21) >= 20)
+            {
+                isComplete = true;
+            }
+        }else if(GameManager.instance.questId == 11){
+            if(GameManager.instance.GetPet(0).level >= 3)
+            {
+                isComplete = true;
+            }
+        }else if(GameManager.instance.questId == 12){
+            if(GameManager.instance.GetAchivement(12) >= 1)
+            {
+                isComplete = true;
+            }
+        }else if(GameManager.instance.questId == 13){
+            if(GameManager.instance.GetAchivement(13) >= 1)
+            {
+                isComplete = true;
+            }
+        }else if(GameManager.instance.questId == 14){
+            if(GameManager.instance.GetAchivementCollectTime() >= 5)
+            {
+                isComplete = true;
+            }
+        }else if(GameManager.instance.questId == 15){
+            if(GameManager.instance.GetPets().Count >= 2)
+            {
+                isComplete = true;
+            }
+        }                  
         
         if (isComplete)
         {
@@ -267,6 +293,6 @@ public class QuestManager : MonoBehaviour
 
     public void OnQuestNotification()
     {
-        tipUI = UIManager.instance.OnQuestNotificationPopup(DataHolder.Dialog(DataHolder.Quest(GameManager.instance.questId).dialogId).GetDescription(0));
+        tipUI = UIManager.instance.OnQuestNotificationPopup(DataHolder.Quest(GameManager.instance.questId).GetDescription(0));
     }
 }

@@ -20,6 +20,7 @@ public class CleanItem : MonoBehaviour
 	}
 
 	protected virtual void Start(){
+
 		item = this.transform.parent.GetComponent<ItemObject>();
 		this.clean = DataHolder.GetItem(item.itemID).value;
 	}
@@ -27,6 +28,8 @@ public class CleanItem : MonoBehaviour
 	protected virtual void Update()
 	{
 		if(dirtyItem != null){
+			if(item.itemType == ItemType.Clean && dirtyItem.dirty <= clean*Time.deltaTime)
+				GameManager.instance.LogAchivement(AchivementType.Clean);
 			dirtyItem.OnClean(clean*Time.deltaTime);
 			if(anim != null)
 				anim.Play("Active");

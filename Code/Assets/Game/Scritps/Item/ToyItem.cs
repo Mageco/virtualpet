@@ -8,8 +8,11 @@ public class ToyItem : MonoBehaviour
     protected Animator animator;
     public Transform anchorPoint;
 
+    protected ItemObject item;
+
     protected virtual void Awake(){
         animator = this.GetComponent<Animator>();
+        item = this.transform.parent.GetComponent<ItemObject>();
     }
     // Start is called before the first frame update
     void Start()

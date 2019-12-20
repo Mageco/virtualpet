@@ -34,6 +34,7 @@ public class HappyItem : MonoBehaviour
     void OnMouseUp(){
         if(!isPick){
             isPick = true;
+            GameManager.instance.LogAchivement(AchivementType.CollectHeart);
             StartCoroutine(Pick());
         }
         

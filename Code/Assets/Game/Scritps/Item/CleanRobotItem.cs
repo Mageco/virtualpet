@@ -148,6 +148,8 @@ public class CleanRobotItem : MonoBehaviour
 			dirtyTarget.OnClean(clean * Time.deltaTime);
 			yield return new WaitForEndOfFrame();
 		}
+		if(dirtyTarget == null)
+			GameManager.instance.LogAchivement(AchivementType.Clean);
 		if(!isAbort){
 			state = AnimalState.Seek;
 			isAbort = true;

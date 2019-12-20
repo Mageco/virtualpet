@@ -636,12 +636,16 @@ public class CharController : MonoBehaviour
 
     public void OnHealth(SickType type,float value){
         if(type == SickType.Injured){
-            if(data.Damage > data.maxDamage * 0.6f)
+            if(data.Damage > data.maxDamage * 0.6f){
                 GameManager.instance.AddExp(5,data.iD);
+                GameManager.instance.LogAchivement(AchivementType.Sick);
+            }
             data.Damage -= value;
         }else if(type ==SickType.Sick){
-            if(data.Health < data.maxHealth * 0.5f)
+            if(data.Health < data.maxHealth * 0.5f){
                 GameManager.instance.AddExp(5,data.iD);
+                GameManager.instance.LogAchivement(AchivementType.Injured);
+            }
             data.Health += value;
         }
        

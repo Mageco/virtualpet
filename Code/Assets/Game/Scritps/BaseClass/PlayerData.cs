@@ -24,6 +24,7 @@ public class PlayerData : BaseModel
 			PlayerAchivement a = new PlayerAchivement();
 			a.achivementId = DataHolder.Achivement(i).iD;
 			a.rewardState = RewardState.None;
+			a.achivementType = DataHolder.Achivement(i).achivementType;
 			a.order = DataHolder.Achivement(i).order;
 			achivements.Add(a);
 		}
@@ -90,6 +91,7 @@ public class PlayerAchivement : BaseModel{
 
 	public int order = 0;
     public RewardState rewardState = RewardState.None;
+	public AchivementType achivementType;
 
 	public int Amount
 	{

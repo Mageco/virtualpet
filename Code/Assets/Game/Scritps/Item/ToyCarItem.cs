@@ -87,6 +87,7 @@ public class ToyCarItem : BaseFloorItem
 
 	void Run(){
 		isActive = true;
+		GameManager.instance.LogAchivement(AchivementType.Use_Item,ActionType.None,this.item.itemID);
 		List<Transform> points = ItemManager.instance.GetRandomPoints (PointType.MouseEat);
 		List<Transform> pointRandoms = ItemManager.instance.GetRandomPoints (PointType.Mouse);
 

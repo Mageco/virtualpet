@@ -529,28 +529,30 @@ public class GameManager : MonoBehaviour
         myPlayer = new PlayerData();
         myPlayer.LoadData();
 
-        AddCoin(200);
+        AddCoin(10);
         AddDiamond(1);
         
         AddItem(17);
         AddItem(41);
-        AddItem(2);
-        AddItem(11);                
-        AddItem(8);
-        AddItem(58);
-        AddItem(4);
         EquipItem(17);
         EquipItem(41);
-        EquipItem(2);
-        EquipItem(11);
-        EquipItem(8);
-        EquipItem(58);
-        EquipItem(4);
+
         
         AddPet(0);
         
         //#if UNITY_EDITOR
         if(isTest){
+            AddItem(2);
+            AddItem(11);                
+            AddItem(8);
+            AddItem(58);
+            AddItem(4);
+
+            EquipItem(2);
+            EquipItem(11);
+            EquipItem(8);
+            EquipItem(58);
+            EquipItem(4);
             AddCoin(10000);
             AddDiamond(10000);
             AddPet(1);
@@ -586,12 +588,38 @@ public class GameManager : MonoBehaviour
                     if(achivement.animalType == animalType){
                             a.Amount ++;
                     }
-                }else if(achivement.achivementType == AchivementType.LevelUp 
-                || achivement.achivementType == AchivementType.Minigame_Level || achivement.achivementType == AchivementType.Play_MiniGame){
+                }else{
                     a.Amount ++;
                 }
             }
         }
+    }
+
+    public int GetAchivement(AchivementType type){
+        foreach (var item in myPlayer.achivements)
+        {
+            if(item.achivementType == type)
+                return item.Amount;
+        }
+        return 0;
+    }
+
+    public int GetAchivement(int id){
+        foreach (var item in myPlayer.achivements)
+        {
+            if(item.achivementId == id)
+                return item.Amount;
+        }
+        return 0;
+    }
+
+    public int GetAchivementCollectTime(){
+        int count = 0;
+        foreach (var item in myPlayer.achivements)
+        {
+            count += item.level;
+        }
+        return count;
     }
 
     #region  Camera

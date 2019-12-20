@@ -14,5 +14,6 @@ public class ToyWaterItem : ToyItem
 
     public override void OnActive(){
         animator.Play("Active");
+        GameManager.instance.LogAchivement(AchivementType.Use_Item,ActionType.None,item.itemID);
     }
 }

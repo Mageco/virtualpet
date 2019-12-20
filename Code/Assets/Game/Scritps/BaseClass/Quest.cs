@@ -9,8 +9,6 @@ public class Quest
     public int category = 0;
     public LanguageItem[] languageItem = new LanguageItem[0];
     //Requirement
-    public int charLevel;
-	public string prefabName = "";
     //Rewards
     public bool haveItem = false;
     public int itemId = 0;
@@ -18,8 +16,6 @@ public class Quest
     public int diamondValue = 0;
     public int expValue = 0;
     //Dialog
-    public int dialogId = 0;
-	public bool isReplay = true;
 
     public Quest()
 	{
