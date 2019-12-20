@@ -56,13 +56,10 @@ public class QuestManager : MonoBehaviour
         }else if(GameManager.instance.questId == 1){
         }else if(GameManager.instance.questId == 2){
         }else if(GameManager.instance.questId == 3){
-            delayTime = 16;
         }else if(GameManager.instance.questId == 4){
         }else if(GameManager.instance.questId == 5){
         }else if(GameManager.instance.questId == 6){
         }else if(GameManager.instance.questId == 7){
-            GameManager.instance.GetPet(0).pee = 100; 
-            delayTime = 3;
         }
 
         isReplay = DataHolder.GetQuest(GameManager.instance.questId).isReplay;
@@ -79,72 +76,47 @@ public class QuestManager : MonoBehaviour
         
         OnQuestNotification();
         if(GameManager.instance.questId == 0){
+            GameManager.instance.GetPet(0).Food = 30;
             GameManager.instance.SetCameraTarget(ItemManager.instance.GetItemChildObject(ItemType.Food));
+            yield return new WaitForSeconds(0.5f);
+            GameManager.instance.ResetCameraTarget();
         }else if(GameManager.instance.questId == 1){
-            GameManager.instance.SetCameraTarget(ItemManager.instance.GetItemChildObject(ItemType.Bed));
-            GameManager.instance.GetPet(0).sleep = 40;
-            yield return new WaitForSeconds(2);
-            GameManager.instance.SetCameraTarget(GameManager.instance.GetPetObject(0).gameObject);
-            yield return new WaitForEndOfFrame();
+            GameManager.instance.GetPet(0).Water = 30;
+            GameManager.instance.SetCameraTarget(ItemManager.instance.GetItemChildObject(ItemType.Drink));
+            yield return new WaitForSeconds(0.5f);
             GameManager.instance.ResetCameraTarget();
         }else if(GameManager.instance.questId == 2){
-            
+            GameManager.instance.GetPet(0).Pee = 70;
+            GameManager.instance.SetCameraTarget(ItemManager.instance.GetItemChildObject(ItemType.Toilet));
+            yield return new WaitForSeconds(0.5f);
+            GameManager.instance.ResetCameraTarget();
         }else if(GameManager.instance.questId == 3){
-            GameManager.instance.GetPet(0).food = 10;  
-            GameManager.instance.SetCameraTarget(ItemManager.instance.GetItemChildObject(ItemType.Food));
+            GameManager.instance.SetCameraTarget(ItemManager.instance.GetItemChildObject(ItemType.Clean));
             yield return new WaitForSeconds(0.5f);
             GameManager.instance.ResetCameraTarget();
         }else if(GameManager.instance.questId == 4){
-            GameManager.instance.GetPet(0).water = 10;        
-            GameManager.instance.SetCameraTarget(ItemManager.instance.GetItemChildObject(ItemType.Drink));  
+            GameManager.instance.GetPet(0).dirty = 70;
+            GameManager.instance.SetCameraTarget(ItemManager.instance.GetItemChildObject(ItemType.Bath));
             yield return new WaitForSeconds(0.5f);
             GameManager.instance.ResetCameraTarget();
         }else if(GameManager.instance.questId == 5){
-            GameManager.instance.GetPet(0).dirty = 70;  
         }else if(GameManager.instance.questId == 6){
-        }else if(GameManager.instance.questId == 7){
-            GameManager.instance.SetCameraTarget(ItemManager.instance.GetItemChildObject(ItemType.Clean));   
+        }else if(GameManager.instance.questId == 8){
+        }else if(GameManager.instance.questId == 9){
+        }else if(GameManager.instance.questId == 10){
+        }else if(GameManager.instance.questId == 11){
+            GameManager.instance.GetPet(0).Health = 30;
+            GameManager.instance.SetCameraTarget(ItemManager.instance.GetItemChildObject(ItemType.MedicineBox));
             yield return new WaitForSeconds(0.5f);
-            GameManager.instance.ResetCameraTarget();  
+            GameManager.instance.ResetCameraTarget();
+        }else if(GameManager.instance.questId == 12){
+            GameManager.instance.GetPet(0).Damage = 70;
+            GameManager.instance.SetCameraTarget(ItemManager.instance.GetItemChildObject(ItemType.MedicineBox));
+            yield return new WaitForSeconds(0.5f);
+            GameManager.instance.ResetCameraTarget();
+        }else if(GameManager.instance.questId == 13){
+
         }
-
-
-
-        // if (playTimeLine == null && DataHolder.Quest(GameManager.instance.questId).prefabName != "")
-        // {
-        //     MageManager.instance.ScreenFadeOut(fadeDuration);
-        //     yield return new WaitForSeconds(fadeDuration);
-        //     MageManager.instance.ScreenFadeIn(fadeDuration);
-        //     OnQuestNotification();
-        //     string url = DataHolder.GetQuest(GameManager.instance.questId).prefabName.Replace("Assets/Game/Resources/", "");
-        //     url = url.Replace(".prefab", "");
-        //     url = DataHolder.Quests().GetPrefabPath() + url;
-        //     GameObject go = Instantiate((Resources.Load(url) as GameObject), new Vector3(0, 0, -200), Quaternion.identity) as GameObject;
-        //     playTimeLine = go.GetComponent<PlayableDirector>();
-        // }
-        // else
-        // {
-            
-        //}
-        if (playTimeLine != null)
-        {
-            // playTimeLine.gameObject.SetActive(true);
-            // playTimeLine.Play();
-            // Debug.Log(playTimeLine.duration);
-            // yield return new WaitForSeconds((float)playTimeLine.duration - fadeDuration);
-            // MageManager.instance.ScreenFadeOut(fadeDuration);
-            // yield return new WaitForSeconds(fadeDuration);
-            // MageManager.instance.ScreenFadeIn(fadeDuration);
-            // playTimeLine.Stop();
-            // playTimeLine.gameObject.SetActive(false);
-        }
-        else
-        {
-            //yield return new WaitForSeconds(3);
-        }
-
-        //if (tipUI != null)
-        //    tipUI.Close();
 
         isTimeline = false;
     }
@@ -211,11 +183,11 @@ public class QuestManager : MonoBehaviour
                 isComplete = true;
             }
         }else if(GameManager.instance.questId == 1){
-            if(GameManager.instance.GetPet(0).sleep >= 90){
+            if(GameManager.instance.GetPet(0).water >= 90){
                 isComplete = true;
             }
         }else if(GameManager.instance.questId == 2){
-            if(GameManager.instance.GetPet(0).level >= 2){
+            if(GameManager.instance.GetPet(0).sleep >= 90){
                 isComplete = true;
             }
         }else if(GameManager.instance.questId == 3){

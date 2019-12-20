@@ -9,7 +9,7 @@ public enum ItemDragState{None,Drag,Drop,Fall,Hit,Hited,Active,Highlight};
 public enum InteractType {None,Drag,Drop,Touch,Jump,DoubleClick,Fly};
 public enum QuestRequirementType{Action,Interact,Skill,Variable};
 public enum SkillType {NONE,Toilet,Sleep,Call,Bath,Table};
-public enum AchivementType {Do_Action,Buy_Item,Use_Item,Tap_Animal,Dissmiss_Animal,LevelUp,Minigame_Level,Eat,Drink,Play_MiniGame};
+public enum AchivementType {Do_Action,Buy_Item,Use_Item,Tap_Animal,Dissmiss_Animal,LevelUp,Minigame_Level,Eat,Drink,Play_MiniGame,Sick,Injured,Clean,CollectHeart};
 public enum Direction {R =0, D = 1, L = 2, U = 3, RU = 4,RD = 5,LU = 6,LD = 7};
 public enum CharAge{Small,Middle,Big};
 public enum EnviromentType { Room, Table, Bath,Bed, Toilet};
