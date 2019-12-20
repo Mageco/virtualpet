@@ -45,7 +45,7 @@ public class CharCollider : MonoBehaviour
             character.OnToy(toy);
         }else if(other.tag == "Break"){
             Debug.Log("Break");
-            character.OnSupprised();
+            character.OnFear();
         }
     }
 

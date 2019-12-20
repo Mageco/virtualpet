@@ -609,6 +609,14 @@ public class CharController : MonoBehaviour
         actionType  = ActionType.Supprised;
     }
 
+    public virtual void OnFear(){
+        if(actionType == ActionType.Hold || actionType == ActionType.Sick || actionType == ActionType.Injured)
+            return;
+
+        Abort();
+        actionType  = ActionType.Fear;
+    }
+
     public virtual void OnEat(){
         if(enviromentType == EnviromentType.Room && data.Food < 0.3f * data.maxFood && 
             (actionType == ActionType.Patrol || actionType == ActionType.Discover)){
@@ -1409,9 +1417,8 @@ public class CharController : MonoBehaviour
 
     protected virtual IEnumerator Fear()
     {
-        
-        yield return new WaitForEndOfFrame();
-        yield return StartCoroutine(DoAnim("Fear"));
+        yield return StartCoroutine(DoAnim("Teased"));
+        data.Energy -= 2;
         CheckAbort();
     }
 

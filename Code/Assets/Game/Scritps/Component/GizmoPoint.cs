@@ -28,4 +28,4 @@ public class GizmoPoint : MonoBehaviour
 	}
 }
 
-public enum PointType {Sleep,Eat,Drink,Favourite,Call,Mouse,Patrol,Caress,Bath,Table,Window,MouseGate,Door,Safe,Cleaner,Toilet,MouseEat,Spawn};
+public enum PointType {Sleep,Eat,Drink,Favourite,Call,Mouse,Patrol,Caress,Bath,Table,Window,MouseGate,Door,Safe,Cleaner,Toilet,MouseEat,Spawn,Bee};
