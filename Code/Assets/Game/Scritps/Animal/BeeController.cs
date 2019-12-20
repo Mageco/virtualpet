@@ -175,7 +175,7 @@ public class BeeController : MonoBehaviour
 		}
 		else if(state == BeeState.Fight){
 			CharController pet = GameManager.instance.GetRandomPetObject();
-			if(Vector2.Distance(this.transform.position,pet.transform.position) < 3){
+			if(Vector2.Distance(this.transform.position,pet.transform.position) < 5){
 				anim.Play("Attack");
 				pet.OnFear();
 				pet.data.Health -= 5;
