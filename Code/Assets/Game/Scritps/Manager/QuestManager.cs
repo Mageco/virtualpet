@@ -74,28 +74,30 @@ public class QuestManager : MonoBehaviour
         if(GameManager.instance.questId == 0){
             GameManager.instance.GetPet(0).Food = 30;
             GameManager.instance.SetCameraTarget(ItemManager.instance.GetItemChildObject(ItemType.Food));
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForEndOfFrame();
             GameManager.instance.ResetCameraTarget();
         }else if(GameManager.instance.questId == 1){
             GameManager.instance.GetPet(0).Water = 30;
             GameManager.instance.SetCameraTarget(ItemManager.instance.GetItemChildObject(ItemType.Drink));
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForEndOfFrame();
             GameManager.instance.ResetCameraTarget();
         }else if(GameManager.instance.questId == 2){
             GameManager.instance.SetCameraTarget(ItemManager.instance.GetItemChildObject(ItemType.Toilet));
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForEndOfFrame();
             GameManager.instance.ResetCameraTarget();
         }else if(GameManager.instance.questId == 3){
+            GameManager.instance.GetPet(0).Dirty = 690;
             GameManager.instance.SetCameraTarget(ItemManager.instance.GetItemChildObject(ItemType.Bath));
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForEndOfFrame();
             GameManager.instance.ResetCameraTarget();
         }else if(GameManager.instance.questId == 4){
+            GameManager.instance.GetPet(0).Sleep = 32;
             GameManager.instance.SetCameraTarget(ItemManager.instance.GetItemChildObject(ItemType.Bed));
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForEndOfFrame();
             GameManager.instance.ResetCameraTarget();
         }else if(GameManager.instance.questId == 5){
             GameManager.instance.SetCameraTarget(ItemManager.instance.GetItemChildObject(ItemType.Clean));
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForEndOfFrame();
             GameManager.instance.ResetCameraTarget();
         }else if(GameManager.instance.questId == 6){
         }else if(GameManager.instance.questId == 8){
@@ -104,7 +106,7 @@ public class QuestManager : MonoBehaviour
         }else if(GameManager.instance.questId == 11){
         }else if(GameManager.instance.questId == 12){
             GameManager.instance.SetCameraTarget(ItemManager.instance.GetItemChildObject(ItemType.MedicineBox));
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForEndOfFrame();
             GameManager.instance.ResetCameraTarget();
         }else if(GameManager.instance.questId == 13){
         }else if(GameManager.instance.questId == 14){
