@@ -22,8 +22,6 @@ public class AchivementData : BaseData
 		string text = LoadFile (fileName);
 		if (text != "") {
 			achivements = JsonHelper.getJsonArray<Achivement> (text);
-			Debug.Log(achivements.Length);
-			Debug.Log(achivements[0].actionType);
 		}
 
 	}

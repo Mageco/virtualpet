@@ -123,18 +123,13 @@ public class BeeController : MonoBehaviour
 
 	void Run()
 	{
-		speed = initSpeed * 3;
+		speed = initSpeed * 10;
 		state = BeeState.Run;
 		paths = new Vector3[3];
 		paths [0] = this.transform.position;
 		paths [1] = ItemManager.instance.GetRandomPoint(PointType.Bee).position;
 		paths [2] = originalPosition;
 		iTween.MoveTo (this.gameObject, iTween.Hash ("path", paths, "speed", speed, "orienttopath", false, "easetype", "linear","oncomplete", "CompleteRun"));
-
-		time = 0;
-		maxTimeSpawn = Random.Range (60, 120);
-		this.body.gameObject.SetActive (true);
-		col.enabled = true;
 	}
 
 	void CompleteRun()
@@ -203,7 +198,7 @@ public class BeeController : MonoBehaviour
 		if(state == BeeState.Fight || state == BeeState.Seek || state == BeeState.Enter || state == BeeState.Patrol) {
 			hitCount ++;
 		}
-		if(hitCount == 3)
+		if(hitCount >= 3)
 			Run();
 	}
 

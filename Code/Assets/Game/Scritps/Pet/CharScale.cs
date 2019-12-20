@@ -28,9 +28,6 @@ public class CharScale : MonoBehaviour
     void Start()
     {
         lastPosition = this.transform.position;
-		scalePosition = this.transform.position;
-		
-		height = 0;
     }
 
     // Update is called once per frame

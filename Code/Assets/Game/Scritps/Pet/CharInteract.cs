@@ -49,7 +49,7 @@ public class CharInteract : MonoBehaviour
         //isTouch = false;
         if (interactType == InteractType.Drag) {
             interactType = InteractType.Drop;
-        }else{
+        }else if(interactType == InteractType.Drop){
             interactType = InteractType.None;
             character.isAbort = true;
             character.actionType = ActionType.None;

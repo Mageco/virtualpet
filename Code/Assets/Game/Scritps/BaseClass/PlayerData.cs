@@ -12,6 +12,8 @@ public class PlayerData : BaseModel
     public List<PlayerItem> items = new List<PlayerItem>();
     public List<Pet> pets = new List<Pet>();
 	public int[] minigameLevels = new int[1];
+
+	public int questId = 0;
 	public List<PlayerAchivement> achivements = new List<PlayerAchivement>();
 	
 	public PlayerData(){
@@ -88,6 +90,8 @@ public class PlayerAchivement : BaseModel{
     public int achivementId = 0;
 	public int level = 0;
 	public int amount = 0;
+
+	
 
 	public int order = 0;
     public RewardState rewardState = RewardState.None;

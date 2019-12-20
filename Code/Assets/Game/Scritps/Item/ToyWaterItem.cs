@@ -6,8 +6,8 @@ public class ToyWaterItem : ToyItem
 {
    
 
-    protected override void Awake(){
-        animator = this.GetComponent<Animator>();
+    protected override void Start(){
+        base.Start();
         toyType = ToyType.WaterJet;
     }
 

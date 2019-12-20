@@ -11,13 +11,13 @@ public class ToyItem : MonoBehaviour
     protected ItemObject item;
 
     protected virtual void Awake(){
-        animator = this.GetComponent<Animator>();
-        item = this.transform.parent.GetComponent<ItemObject>();
+
     }
     // Start is called before the first frame update
-    void Start()
+    protected virtual void Start()
     {
-        
+        animator = this.GetComponent<Animator>();
+        item = this.transform.parent.GetComponent<ItemObject>();
     }
 
     // Update is called once per frame

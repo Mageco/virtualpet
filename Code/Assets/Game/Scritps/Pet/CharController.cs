@@ -296,6 +296,8 @@ public class CharController : MonoBehaviour
         data.actionType = this.actionType;
         data.position = this.transform.position;
         data.enviromentType = this.enviromentType;
+        data.scalePosition = charScale.scalePosition;
+        data.height = charScale.height;
 
     }
 
@@ -992,7 +994,7 @@ public class CharController : MonoBehaviour
 
         float fallSpeed = 0;
         
-        while (charInteract.interactType == InteractType.Drop && !isAbort)
+        while (charInteract.interactType == InteractType.Drop)
         {
             if (agent.transform.position.y > dropPosition.y)
             {
@@ -1132,7 +1134,7 @@ public class CharController : MonoBehaviour
         Debug.Log("Pee");
         float value = data.Pee;
         ItemManager.instance.SpawnPee(peePosition.position + new Vector3(0, 0, 50),value);
-        while (data.Pee > 1 && !isAbort)
+        while (data.Pee > 0 && !isAbort)
         {
             data.Pee -= data.ratePee * Time.deltaTime;
             yield return new WaitForEndOfFrame();
@@ -1172,7 +1174,7 @@ public class CharController : MonoBehaviour
         anim.Play("Shit", 0);
         float value = data.Pee;
         
-        while (data.Shit > 1 && !isAbort)
+        while (data.Shit > 0 && !isAbort)
         {
             data.Shit -= data.rateShit * Time.deltaTime;
             yield return new WaitForEndOfFrame();
@@ -1467,7 +1469,6 @@ public class CharController : MonoBehaviour
                     ySpeed -= 30 * Time.deltaTime;
                     Vector3 pos1 = agent.transform.position;
                     pos1.y += ySpeed * Time.deltaTime;
-                    Debug.Log(count + "  " + n);
                     
                     if(count == n-1){
                         pos1.x += 15 * Time.deltaTime;

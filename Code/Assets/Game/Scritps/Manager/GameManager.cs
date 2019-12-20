@@ -10,13 +10,13 @@ public class GameManager : MonoBehaviour
     public float gameTime = 0;
     public List<CharController> petObjects = new List<CharController>();
     CameraController camera;
-    public int questId = 0;
     public GameType gameType = GameType.House;
 
     //Testing
     public bool isLoad = false;
     
     public GameObject heartPrefab;
+    public GameObject expPrefab;
 
     public bool isTest = false;
 
@@ -457,21 +457,26 @@ public class GameManager : MonoBehaviour
         SavePlayer();
     }
 
-    public void AddExp(int e,int petId){
+    public void AddExp(int e,int petId,bool happy = true){
         GetPet(petId).Exp += e;
         if(GetPetObject(petId) != null){
-            //GameObject go = GameObject.Instantiate(expPrefab,petObjects[0].transform.position,Quaternion.identity);
-            //go.GetComponent<ExpItem>().Load(e);
-            GameObject go = GameObject.Instantiate(heartPrefab,GetPetObject(petId).transform.position,Quaternion.identity);
-            int n = (e + GetPet(petId).level)/5;
-            for(int i=0;i<n;i++){
-                int ran = Random.Range(0,100);
-                Quaternion rot = Quaternion.identity;
-                if(ran > 50)
-                    rot = Quaternion.Euler(new Vector3(0,180,-1));
-                Vector3 pos = GetPetObject(petId).charScale.scalePosition + new Vector3(Random.Range(-1,1),Random.Range(-1,1),0);
-                ItemManager.instance.SpawnHeart(pos,rot,1);
+
+            if(happy){
+                GameObject go = GameObject.Instantiate(heartPrefab,GetPetObject(petId).transform.position,Quaternion.identity);
+                int n = (e + GetPet(petId).level)/5;
+                for(int i=0;i<n;i++){
+                    int ran = Random.Range(0,100);
+                    Quaternion rot = Quaternion.identity;
+                    if(ran > 50)
+                        rot = Quaternion.Euler(new Vector3(0,180,-1));
+                    Vector3 pos = GetPetObject(petId).charScale.scalePosition + new Vector3(Random.Range(-1,1),Random.Range(-1,1),0);
+                    ItemManager.instance.SpawnHeart(pos,rot,1);
+                }
+            }else{
+                GameObject go = GameObject.Instantiate(expPrefab,petObjects[0].transform.position,Quaternion.identity);
+                go.GetComponent<ExpItem>().Load(e);
             }
+
         }
     }
 

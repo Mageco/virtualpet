@@ -96,6 +96,8 @@ public class Pet : BaseModel
 
 	public ActionType actionType = ActionType.None;
 	public Vector3 position = Vector3.zero;
+	public Vector3 scalePosition = Vector3.zero;
+	public float height = 0;
 	public EnviromentType enviromentType = EnviromentType.Room;
 
     public Pet()
@@ -155,6 +157,7 @@ public class Pet : BaseModel
 		sleep = Random.Range(maxSleep/2,maxSleep);
 		energy = Random.Range(maxEnergy/2,maxEnergy);
 		health = maxHealth;
+
 	
         LoadSkill();
     }
@@ -193,6 +196,8 @@ public class Pet : BaseModel
 			go.transform.position = this.position;
 		character.actionType = this.actionType;
 		character.enviromentType = this.enviromentType;
+		character.GetComponent<CharScale>().scalePosition = this.scalePosition;
+		character.GetComponent<CharScale>().height = this.height;
         character.data = this;
 		character.LoadPrefab();
 		
