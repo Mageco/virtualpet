@@ -381,7 +381,7 @@ public class ItemManager : MonoBehaviour
     public void SpawnDirty()
     {
         Vector3 pos = GetRandomPoint(PointType.Patrol).position;
-        pos.z = 1000;
+        pos.z = 990;
         GameObject go = Instantiate(dirtyPrefab, pos, Quaternion.identity);
     }
 

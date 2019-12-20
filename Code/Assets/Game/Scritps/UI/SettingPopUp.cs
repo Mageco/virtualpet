@@ -95,6 +95,7 @@ public class SettingPopUp : MonoBehaviour {
 	public void OnHome(){
 		Time.timeScale = 1;
 		UIManager.instance.OnHome();
+		Close();
 	}
 
 }

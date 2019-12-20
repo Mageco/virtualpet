@@ -120,6 +120,12 @@ public class UIManager : MonoBehaviour
        GameManager.instance.EquipPet(itemID);
 	}
 
+    public void OnQuestNotification()
+    {
+        if(QuestManager.instance != null)
+            OnQuestNotificationPopup(DataHolder.Quest(GameManager.instance.questId).GetDescription(0));
+    }
+
 	public NotificationPopup OnQuestNotificationPopup(string description)
 	{
         if(!notificationText.Contains(description))

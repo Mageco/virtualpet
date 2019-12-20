@@ -638,13 +638,13 @@ public class CharController : MonoBehaviour
         if(type == SickType.Injured){
             if(data.Damage > data.maxDamage * 0.6f){
                 GameManager.instance.AddExp(5,data.iD);
-                GameManager.instance.LogAchivement(AchivementType.Sick);
+                GameManager.instance.LogAchivement(AchivementType.Injured);
             }
             data.Damage -= value;
         }else if(type ==SickType.Sick){
-            if(data.Health < data.maxHealth * 0.5f){
+            if(data.Health < data.maxHealth * 0.4f){
                 GameManager.instance.AddExp(5,data.iD);
-                GameManager.instance.LogAchivement(AchivementType.Injured);
+                GameManager.instance.LogAchivement(AchivementType.Sick);
             }
             data.Health += value;
         }
