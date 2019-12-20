@@ -8,11 +8,13 @@ public class EventPanel : MonoBehaviour
      public ScrollRect scroll;
      int price = 10;
      public Text priceText;
+     public Text levelText;
     // Start is called before the first frame update
     void Start()
     {
         price = 10; 
         priceText.text = price.ToString();
+        levelText.text = "Level " + (GameManager.instance.myPlayer.minigameLevels[0] + 1).ToString();
     }
 
     // Update is called once per frame
@@ -30,6 +32,7 @@ public class EventPanel : MonoBehaviour
                 this.Close();
                 GameManager.instance.AddHappy(-price);
                 UIManager.instance.OnMinigame(1);
+                GameManager.instance.LogAchivement(AchivementType.Play_MiniGame);
             }else
             {
                 MageManager.instance.OnNotificationPopup ("Bạn không đủ tim để chơi trò chơi này hãy chăm sóc thú cưng để thu thập thêm tim nhé.");

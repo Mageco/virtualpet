@@ -175,27 +175,27 @@ public class QuestManager : MonoBehaviour
                 isComplete = true;
             }
         }else if(GameManager.instance.questId == 2){
-            if(GameManager.instance.GetAchivement(3) >= 1)
-            {
-                isComplete = true;
-            }
-        }else if(GameManager.instance.questId == 3){
             if(GameManager.instance.GetAchivement(4) >= 1)
             {
                 isComplete = true;
             }
+        }else if(GameManager.instance.questId == 3){
+            if(GameManager.instance.GetAchivement(5) >= 1)
+            {
+                isComplete = true;
+            }
         } else if(GameManager.instance.questId == 4){
-            if(GameManager.instance.GetAchivement(2) >= 1)
+            if(GameManager.instance.GetAchivement(3) >= 1)
             {
                 isComplete = true;
             }
         }else if(GameManager.instance.questId == 5){
-            if(GameManager.instance.GetAchivement(17) >= 1)
+            if(GameManager.instance.GetAchivement(19) >= 1)
             {
                 isComplete = true;
             }
         }else if(GameManager.instance.questId == 6){
-            if(GameManager.instance.GetAchivement(16) >= 3)
+            if(GameManager.instance.GetAchivement(18) >= 3)
             {
                 isComplete = true;
             }
@@ -206,7 +206,7 @@ public class QuestManager : MonoBehaviour
                 isComplete = true;
             }
         }else if(GameManager.instance.questId == 8){
-            if(GameManager.instance.GetAchivement(15) >= 3)
+            if(GameManager.instance.GetAchivement(17) >= 3)
             {
                 isComplete = true;
             }
@@ -216,7 +216,7 @@ public class QuestManager : MonoBehaviour
                 isComplete = true;
             }
         }else if(GameManager.instance.questId == 10){
-            if(GameManager.instance.GetAchivement(21) >= 20)
+            if(GameManager.instance.GetAchivement(23) >= 20)
             {
                 isComplete = true;
             }
@@ -226,12 +226,12 @@ public class QuestManager : MonoBehaviour
                 isComplete = true;
             }
         }else if(GameManager.instance.questId == 12){
-            if(GameManager.instance.GetAchivement(12) >= 1)
+            if(GameManager.instance.GetAchivement(8) >= 1)
             {
                 isComplete = true;
             }
         }else if(GameManager.instance.questId == 13){
-            if(GameManager.instance.GetAchivement(13) >= 1)
+            if(GameManager.instance.GetAchivement(21) >= 1)
             {
                 isComplete = true;
             }

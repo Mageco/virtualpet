@@ -51,6 +51,8 @@ public class AchivementTab : BaseTab
 			EditorGUILayout.BeginHorizontal();
 			EditorGUILayout.BeginVertical();
 
+			//EditorGUILayout.LabelField("Achivement ID: " + DataHolder.Achivements().GetAchivement(selection).iD.ToString(), GUILayout.Width(pw.mWidth * 2));
+
 			DataHolder.Achivement(selection).order = EditorGUILayout.IntField("Achivement Order", DataHolder.Achivement(selection).order, GUILayout.Width(pw.mWidth));
 
 			for (int i = 0; i < DataHolder.Languages().GetDataCount(); i++)
