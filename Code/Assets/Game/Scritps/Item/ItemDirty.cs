@@ -30,7 +30,6 @@ public class ItemDirty : MonoBehaviour
 	{
 		dirty -= clean;
 		if (dirty < 0){
-			ItemManager.instance.SpawnHeart(this.transform.position,Quaternion.identity,1);
 			GameObject.Destroy(this.gameObject);
 		}
 			

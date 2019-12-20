@@ -28,8 +28,11 @@ public class CleanItem : MonoBehaviour
 	protected virtual void Update()
 	{
 		if(dirtyItem != null){
-			if(item.itemType == ItemType.Clean && dirtyItem.dirty <= clean*Time.deltaTime)
+			if(item.itemType == ItemType.Clean && dirtyItem.dirty <= clean*Time.deltaTime){
+				ItemManager.instance.SpawnHeart(this.transform.position,Quaternion.identity,1);
 				GameManager.instance.LogAchivement(AchivementType.Clean);
+			}
+				
 			dirtyItem.OnClean(clean*Time.deltaTime);
 			if(anim != null)
 				anim.Play("Active");
