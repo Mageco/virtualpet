@@ -84,6 +84,7 @@ public class UIManager : MonoBehaviour
 	  GameManager.instance.BuyItem(itemID);
       GameManager.instance.EquipItem(itemID);
       ItemManager.instance.EquipItem();
+      GameManager.instance.LogAchivement(AchivementType.Buy_Item);
         if (shopPanel != null)
             shopPanel.Close();
     }

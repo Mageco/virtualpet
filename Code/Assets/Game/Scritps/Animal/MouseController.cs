@@ -71,7 +71,7 @@ public class MouseController : MonoBehaviour
 		paths [2] = points[0].position;
 
 		iTween.MoveTo (this.gameObject, iTween.Hash ("path", paths, "speed", speed, "orienttopath", false, "easetype", "linear","oncomplete", "CompleteSeek"));
-		maxTimeSpawn = Random.Range (60, 120);
+		maxTimeSpawn = Random.Range (200, 600);
 		this.body.gameObject.SetActive (true);
 		col.enabled = true;
 		anim.Play("Run",0);
