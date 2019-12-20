@@ -593,6 +593,9 @@ public class CharController : MonoBehaviour
             return;
         }
 
+        if(charInteract.interactType == InteractType.Drop || charInteract.interactType == InteractType.Jump)
+            return;
+
         Abort();
         charInteract.interactType = InteractType.Drag;
         actionType = ActionType.Hold;
@@ -629,7 +632,6 @@ public class CharController : MonoBehaviour
             UIManager.instance.OnQuestNotificationPopup("Bạn có thể dùng xà bông và vòi hoa sen để tắm cho thú cưng");
         }
         Abort();
-        
         actionType = ActionType.OnBath;
     }
 
@@ -980,7 +982,7 @@ public class CharController : MonoBehaviour
         CheckDrop();
 
         float fallSpeed = 0;
-        while (charInteract.interactType == InteractType.Drop)
+        while (charInteract.interactType == InteractType.Drop && !isAbort)
         {
             if (agent.transform.position.y > dropPosition.y)
             {
@@ -1007,9 +1009,10 @@ public class CharController : MonoBehaviour
         }
         GameManager.instance.ResetCameraTarget();
         charInteract.interactType = InteractType.None; 
+        
         CheckEnviroment();
         yield return StartCoroutine(DoAnim("Drop"));
-            
+        
     
         CheckAbort();
     }
