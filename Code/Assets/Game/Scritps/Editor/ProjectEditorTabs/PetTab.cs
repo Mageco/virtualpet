@@ -53,6 +53,8 @@ public class PetTab : BaseTab
             EditorGUILayout.BeginHorizontal();
             EditorGUILayout.BeginVertical();
 
+            DataHolder.Pet(selection).shopOrder = EditorGUILayout.IntField("Shop Order", DataHolder.Pet(selection).shopOrder, GUILayout.Width(pw.mWidth));
+
             for (int i = 0; i < DataHolder.Languages().GetDataCount(); i++)
             {
                 EditorGUILayout.LabelField(DataHolder.Language(i));

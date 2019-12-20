@@ -19,6 +19,8 @@ public class Pet : BaseModel
 	public List<PetSkill> skills = new List<PetSkill>();
 	public string petName = "";
 
+	public int shopOrder = 0;
+
 	//Main Data
 	public float speed = 20;
 	public int level = 0;

@@ -64,12 +64,12 @@ public class ShopPanel : MonoBehaviour
         ClearItems();
 
         List<Item> items = new List<Item>();
+        List<Pet> pets = new List<Pet>();
 
         if(currentTab == 1){
-            for (int i = 0; i < DataHolder.Pets().GetDataCount(); i++)
-            {
-                LoadItem(DataHolder.Pet(i));
-            }
+            for(int i=0;i<DataHolder.Pets().GetDataCount();i++){
+                pets.Add(DataHolder.Pet(i));
+            }   
         }else if(currentTab == 0){
             for(int i=0;i<DataHolder.Items().GetDataCount();i++){
                 if((int)DataHolder.Item(i).itemType == 0 || (int)DataHolder.Item(i).itemType == 1){
@@ -102,10 +102,24 @@ public class ShopPanel : MonoBehaviour
         }
 
 
-        items.Sort((p1,p2)=>(p1.shopOrder).CompareTo(p2.shopOrder));
-        foreach(Item item in items){
-            LoadItem(item);
+
+
+        
+ 
+        if(currentTab == 1){
+            pets.Sort((p1,p2)=>(p1.shopOrder).CompareTo(p2.shopOrder));
+            foreach (var item in pets)
+            {
+                LoadItem(item);
+            }            
+        }else{
+            items.Sort((p1,p2)=>(p1.shopOrder).CompareTo(p2.shopOrder));
+            foreach(Item item in items){
+                LoadItem(item);
+            }
         }
+        
+ 
 
         
     }
