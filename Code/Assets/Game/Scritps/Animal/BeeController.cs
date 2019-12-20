@@ -82,7 +82,6 @@ public class BeeController : MonoBehaviour
 		}
 
 		iTween.MoveTo (this.gameObject, iTween.Hash ("name","Bee_Patrol","path", paths, "speed", speed, "orienttopath", false, "easetype", "linear","oncomplete", "CompletePatrol"));
-		anim.Play("Fly",0);
 	}
 
 	void CompletePatrol(){
@@ -104,7 +103,6 @@ public class BeeController : MonoBehaviour
 			maxTimeSpawn = Random.Range (200, 600);
 			this.body.gameObject.SetActive (true);
 			col.enabled = true;
-			anim.Play("Fly",0);
 		}else{
 			Run();
 		}
@@ -126,7 +124,6 @@ public class BeeController : MonoBehaviour
 	void Run()
 	{
 		speed = initSpeed * 3;
-		anim.Play("Fly",0);
 		state = BeeState.Run;
 		paths = new Vector3[3];
 		paths [0] = this.transform.position;
@@ -158,7 +155,7 @@ public class BeeController : MonoBehaviour
 	{
 		if (state == BeeState.Seek || state == BeeState.Run || state == BeeState.Enter || state == BeeState.Patrol) {
 			Vector3 pos = this.transform.position;
-			pos.z = (this.transform.position.y - 20) * 10;
+			pos.z = -100;
 			this.transform.position = pos;
 			if (pos.x > lastPosition.x) {
 				body.transform.rotation = Quaternion.Euler (new Vector3 (0, 180, 0));
