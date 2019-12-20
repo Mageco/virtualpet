@@ -8,7 +8,8 @@ public class BeeController : MonoBehaviour
 	Vector3[] paths;
 	float time = 0;
 	public float maxTimeSpawn = 30;
-	public float speed = 30;
+	float speed = 30;
+	public float initSpeed = 30;
 	public GameObject body;
 	Vector3 originalPosition;
 	BoxCollider2D col;
@@ -31,6 +32,7 @@ public class BeeController : MonoBehaviour
 		col.enabled = false;
 		originalScale = this.transform.localScale;
 		anim = this.body.GetComponent<Animator>();
+		speed = initSpeed;
 	}
 
 	void Start()
@@ -68,25 +70,26 @@ public class BeeController : MonoBehaviour
 	}
 
 	void Patrol(){
+		speed = initSpeed;
 		state = BeeState.Patrol;
-		int n = Random.Range(5,10);
+		int n = Random.Range(3,4);
 		paths = new Vector3[n];
 		for(int i=0;i<n;i++){
 			paths [i] = ItemManager.instance.GetRandomPoint(PointType.Bee).position;
 		}
 
-		iTween.MoveTo (this.gameObject, iTween.Hash ("name","Bee_Patrol","path", paths, "speed", speed, "orienttopath", false, "easetype", "linear","oncomplete", "CompleteSeek"));
-		maxTimeSpawn = Random.Range (200, 600);
-		this.body.gameObject.SetActive (true);
-		col.enabled = true;
-		anim.Play("Run",0);
+		iTween.MoveTo (this.gameObject, iTween.Hash ("name","Bee_Patrol","path", paths, "speed", speed, "orienttopath", false, "easetype", "linear","oncomplete", "CompletePatrol"));
+		anim.Play("Fly",0);
 	}
 
 	void CompletePatrol(){
+		Debug.Log ("Complete Patrol");
 		Seek();
 	}
 
 	void Seek(){
+		state = BeeState.Seek;
+		speed = initSpeed * 5;
 		target = GameManager.instance.GetRandomPetObject();
 		if(target != null){
 			paths = new Vector3[3];
@@ -98,7 +101,7 @@ public class BeeController : MonoBehaviour
 			maxTimeSpawn = Random.Range (200, 600);
 			this.body.gameObject.SetActive (true);
 			col.enabled = true;
-			anim.Play("Run",0);
+			anim.Play("Fly",0);
 		}else{
 			Run();
 		}
@@ -108,7 +111,7 @@ public class BeeController : MonoBehaviour
 	{
 		body.transform.rotation = Quaternion.Euler (new Vector3 (0, 0, 0));
 		body.transform.localScale = new Vector3 (body.transform.localScale.x, body.transform.localScale.y, 1);
-		Debug.Log ("Complete Run");
+		Debug.Log ("Complete Seek");
 		Fight();
 	}
 
@@ -119,7 +122,8 @@ public class BeeController : MonoBehaviour
 
 	void Run()
 	{
-		anim.Play("Run",0);
+		speed = initSpeed * 2;
+		anim.Play("Fly",0);
 		state = BeeState.Run;
 		paths = new Vector3[3];
 		paths [0] = this.transform.position;
@@ -151,7 +155,7 @@ public class BeeController : MonoBehaviour
 	{
 		if (state == BeeState.Seek || state == BeeState.Run || state == BeeState.Enter || state == BeeState.Patrol) {
 			Vector3 pos = this.transform.position;
-			pos.z = this.transform.position.y * 10;
+			pos.z = (this.transform.position.y - 20) * 10;
 			this.transform.position = pos;
 			if (pos.x > lastPosition.x) {
 				body.transform.rotation = Quaternion.Euler (new Vector3 (0, 180, 0));
@@ -171,12 +175,13 @@ public class BeeController : MonoBehaviour
 		}
 		else if(state == BeeState.Fight){
 			CharController pet = GameManager.instance.GetRandomPetObject();
-			if(Vector2.Distance(this.transform.position,pet.transform.position) < 1){
-				anim.Play("Active");
+			if(Vector2.Distance(this.transform.position,pet.transform.position) < 3){
+				anim.Play("Attack");
+				pet.OnFear();
 				pet.data.Health -= 5;
 			}
-			else 
-				Patrol();
+
+			Patrol();
 		}
 		else {
 			if (time > maxTimeSpawn) {
