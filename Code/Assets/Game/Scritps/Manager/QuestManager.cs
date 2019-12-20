@@ -116,10 +116,12 @@ public class QuestManager : MonoBehaviour
         }else if(GameManager.instance.questId == 10){
         }else if(GameManager.instance.questId == 11){
         }else if(GameManager.instance.questId == 12){
+            GameManager.instance.GetPet(0).Health = 30;
             GameManager.instance.SetCameraTarget(ItemManager.instance.GetItemChildObject(ItemType.MedicineBox));
             yield return new WaitForEndOfFrame();
             GameManager.instance.ResetCameraTarget();
         }else if(GameManager.instance.questId == 13){
+            GameManager.instance.GetPet(0).Damage = 70;
         }else if(GameManager.instance.questId == 14){
         }else if(GameManager.instance.questId == 15){
         }
@@ -250,7 +252,7 @@ public class QuestManager : MonoBehaviour
                 isComplete = true;
             }
         }else if(GameManager.instance.questId == 14){
-            if(GameManager.instance.GetAchivementCollectTime() >= 5)
+            if(GameManager.instance.GetAchivementCollectTime() >= 10)
             {
                 isComplete = true;
             }
