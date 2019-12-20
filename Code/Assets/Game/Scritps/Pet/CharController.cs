@@ -1277,18 +1277,12 @@ public class CharController : MonoBehaviour
     protected virtual IEnumerator Bed()
     {
         int ran = Random.Range(0,100);
-        if(ran < 70 + data.GetSkillProgress(SkillType.Sleep) * 3){
-            if(data.sleep < 0.3f*data.maxSleep){
-                actionType = ActionType.Sleep;
-                Abort();
-            }else{                    
-                anim.Play("Idle_" + direction.ToString(),0);
-                yield return StartCoroutine(Wait(Random.Range(2,4)));
-                yield return StartCoroutine(JumpDown(-7,10,30)); 
-            }
-        }
-        else{
-            yield return StartCoroutine(Wait(Random.Range(1,2)));
+        if(data.sleep < 0.3f*data.maxSleep){
+            actionType = ActionType.Sleep;
+            Abort();
+        }else{                    
+            anim.Play("Idle_" + direction.ToString(),0);
+            yield return StartCoroutine(Wait(Random.Range(2,4)));
             yield return StartCoroutine(JumpDown(-7,10,30)); 
         }
         
