@@ -20,7 +20,7 @@ public enum ActionType { None, Mouse, Sleep, Eat, Drink, Patrol, Discover, Pee, 
 public enum WeatherType{None,Sunny,Rain,Snow,Storm}
 public enum AnimalState {None,Idle,Seek,Eat,Run,Flee,Hit,Hit_Grab,Hold,Cached,InActive }
 public enum SickType{Sick,Injured};
-public enum AnimalType{Mouse,Fox,Eagle,Snake,Chicken};
+public enum AnimalType{Mouse,Fox,Eagle,Snake,Chicken,Bee};
 public enum RewardState{None,Ready,Received};
 public enum IconStatus{None,Hungry_1,Hungry_2,Sick_1,Sick_2,Dirty_1,Dirty_2,Toilet_1,Toilet_2,Thirsty_1,Thirsty_2,Sleepy_1,Sleeyp_2,Tired_1,Tired_2,Injured_1,Injured_2};
 public enum ToyType{WaterJet,Ball,Car,SwimingPool};

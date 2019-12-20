@@ -215,6 +215,11 @@ public class GameManager : MonoBehaviour
         }
         return null;
     }
+
+    public CharController GetRandomPetObject(){
+        int n = Random.Range(0,petObjects.Count);
+        return petObjects[n];
+    }
  
     void RemovePet(int id){
         foreach(Pet p in myPlayer.pets){
