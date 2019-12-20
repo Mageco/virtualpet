@@ -278,7 +278,7 @@ public class QuestManager : MonoBehaviour
             {
                 if(!isTimeline && isReplay){
                     if(replayTime > maxReplayTime){
-                        ReplayQuest();
+                        OnQuestNotification();
                     }else
                         replayTime += Time.deltaTime;
                 }

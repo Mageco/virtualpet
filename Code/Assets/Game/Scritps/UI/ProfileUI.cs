@@ -32,7 +32,7 @@ public class ProfileUI : MonoBehaviour
         food.text = data.Food.ToString("F0");
         drink.text = data.Water.ToString("F0");
         dirty.text = data.Dirty.ToString("F0");
-        toilet.text = ((data.Shit + data.Pee)/2).ToString("F0");
+        toilet.text = (Mathf.Max(data.Shit,data.Pee)).ToString("F0");
         
         string url = DataHolder.GetPet(id).iconProfileUrl.Replace("Assets/Game/Resources/", "");
         url = url.Replace(".png", "");
@@ -51,6 +51,6 @@ public class ProfileUI : MonoBehaviour
         food.text = data.Food.ToString("F0");
         drink.text = data.Water.ToString("F0");
         dirty.text = data.Dirty.ToString("F0");
-        toilet.text = ((data.Shit + data.Pee)/2).ToString("F0");  
+        toilet.text = (Mathf.Max(data.Shit,data.Pee)).ToString("F0");
     }
 }
