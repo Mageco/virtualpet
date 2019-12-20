@@ -21,6 +21,8 @@ public class BeeController : MonoBehaviour
     public BeeState state = BeeState.Idle;
 	CharController target;
 
+	int hitCount = 0;
+
 	Animator anim;
 
 	void Awake()
@@ -52,6 +54,7 @@ public class BeeController : MonoBehaviour
 	}
 
 	void Enter(){
+		hitCount = 0;
 		state = BeeState.Enter;
 		paths = new Vector3[3];
 		paths [0] = originalPosition;
@@ -122,7 +125,7 @@ public class BeeController : MonoBehaviour
 
 	void Run()
 	{
-		speed = initSpeed * 2;
+		speed = initSpeed * 3;
 		anim.Play("Fly",0);
 		state = BeeState.Run;
 		paths = new Vector3[3];
@@ -200,7 +203,10 @@ public class BeeController : MonoBehaviour
 		anim.Play("Hit",0);
 		GameManager.instance.AddCoin(1);
 		GameManager.instance.LogAchivement(AchivementType.Tap_Animal,ActionType.None,-1,AnimalType.Bee);
-		if(state == BeeState.Fight || state == BeeState.Seek)
+		if(state == BeeState.Fight || state == BeeState.Seek || state == BeeState.Enter || state == BeeState.Patrol) {
+			hitCount ++;
+		}
+		if(hitCount == 3)
 			Run();
 	}
 
