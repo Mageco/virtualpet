@@ -14,6 +14,9 @@ public class CleanItem : MonoBehaviour
 	protected Animator anim;
 
 	protected ItemObject item;
+	int soundId = 0;
+	float time = 1;
+	float maxTime = 0.5f;
 
 	protected virtual void Awake(){
 		anim = this.GetComponent<Animator>();
@@ -32,13 +35,20 @@ public class CleanItem : MonoBehaviour
 				ItemManager.instance.SpawnHeart(this.transform.position,Quaternion.identity,1);
 				GameManager.instance.LogAchivement(AchivementType.Clean);
 			}
-				
+			
+			if(time > maxTime){
+				MageManager.instance.PlaySoundName("sweeping_broom_leaves_stones_07",false);
+				time  = 0;
+			}else{
+				time += Time.deltaTime;
+			}
 			dirtyItem.OnClean(clean*Time.deltaTime);
 			if(anim != null)
 				anim.Play("Active");
 		}else
 			anim.Play("Idle");
 	}
+
 
 
 	void OnTriggerStay2D(Collider2D other) {
@@ -51,6 +61,7 @@ public class CleanItem : MonoBehaviour
 	void OnTriggerExit2D(Collider2D other) {
 		if (other.GetComponent <ItemDirty>() == dirtyItem) {
 			dirtyItem = null;
+			time = maxTime;
 		}
 	}
 

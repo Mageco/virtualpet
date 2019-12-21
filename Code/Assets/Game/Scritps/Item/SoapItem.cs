@@ -11,6 +11,10 @@ public class SoapItem : MonoBehaviour
 	public GameObject bubbleEffect;
     BathTubeItem bathTube;
 
+	bool isSoap = false;
+
+	int soundId = 0;
+
     void Awake(){
 		bubbleEffect.SetActive(false);
 	}
@@ -40,10 +44,12 @@ public class SoapItem : MonoBehaviour
 	void OnTriggerStay2D(Collider2D other) {
 		if (other.GetComponent <CharController>() != null) {
 			character = other.GetComponent <CharController>();
-			if(character.actionType == ActionType.OnBath && isTouch){
+			if(character.actionType == ActionType.OnBath && isTouch && !isSoap){
 				bubbleEffect.SetActive(true);
 				character.OnSoap();
                 GetBathTube().OnSoap ();
+				soundId = MageManager.instance.PlaySoundName("Soap",true);
+				isSoap = true;
 			}
 		}
 	}
@@ -52,8 +58,11 @@ public class SoapItem : MonoBehaviour
 		if (other.GetComponent <CharController>() == character) {
 			if(character != null)
 				character.OffSoap();
+
+			MageManager.instance.StopSound(soundId);
 			character = null;
 			bubbleEffect.SetActive(false);
+			isSoap = false;
 		}
 	}
 

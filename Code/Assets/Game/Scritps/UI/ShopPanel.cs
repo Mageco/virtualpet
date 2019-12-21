@@ -58,6 +58,7 @@ public class ShopPanel : MonoBehaviour
     }
 
     public void OnTab(int id){
+        MageManager.instance.PlaySoundName("BubbleButton",false);
         currentTab = id;
 
         ES2.Save(id,"ShopToggle");

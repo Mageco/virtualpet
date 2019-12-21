@@ -55,6 +55,7 @@ public class FoxController : AnimalController
 
 
     void OnMouseDown(){
+        MageManager.instance.PlaySoundName("Punch1",false);
         if(state == AnimalState.Seek){
             agent.Stop();
             Debug.Log("Hit");

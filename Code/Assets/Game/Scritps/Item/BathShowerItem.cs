@@ -15,6 +15,7 @@ public class BathShowerItem : MonoBehaviour
 	public GameObject showerEffect;
     BathTubeItem bathTube;
 	CharController character;
+	int soundid = 0;
 
 	void Awake()
 	{
@@ -53,6 +54,7 @@ public class BathShowerItem : MonoBehaviour
 	void OnShower(){
 		isShower = true;
 		showerEffect.SetActive (true);
+		soundid =  MageManager.instance.PlaySoundName("Shower",true);
 		Debug.Log ("Shower");
 		foreach(CharController pet in GameManager.instance.petObjects){
 			if (pet.actionType == ActionType.OnBath) {
@@ -66,6 +68,7 @@ public class BathShowerItem : MonoBehaviour
 		isShower = false;
 		showerEffect.SetActive (false);
 		Debug.Log ("OffShower");
+		MageManager.instance.StopSound(soundid);
 		foreach(CharController pet in GameManager.instance.petObjects){
 			if (pet.actionType == ActionType.OnBath) {
 				pet.OffShower ();

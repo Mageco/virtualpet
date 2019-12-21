@@ -192,6 +192,7 @@ public class BeeController : MonoBehaviour
 
 
 	void OnMouseUp(){
+		MageManager.instance.PlaySoundName("Punch1",false);
 		anim.Play("Hit",0);
 		GameManager.instance.AddCoin(1);
 		GameManager.instance.LogAchivement(AchivementType.Tap_Animal,ActionType.None,-1,AnimalType.Bee);

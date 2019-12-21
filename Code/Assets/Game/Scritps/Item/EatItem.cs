@@ -72,6 +72,9 @@ public class EatItem : BaseFloorItem
 
 	void Fill()
 	{
+		if(foodAmount < maxfoodAmount-1)
+			MageManager.instance.PlaySoundName("collect_item_08",false);
+		
 		foodAmount = maxfoodAmount-1;
 	}
 }

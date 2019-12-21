@@ -19,6 +19,7 @@ public class HappyItem : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        MageManager.instance.PlaySoundName("Button",false);
         Vector3 pos = this.transform.position;
         pos.z = (this.transform.position.y - 2) * 10;
         this.transform.position = pos;
@@ -41,6 +42,7 @@ public class HappyItem : MonoBehaviour
     }
 
     IEnumerator Pick(){
+        MageManager.instance.PlaySoundName("happy_collect_item_01",false);
         animator.Play("Pick");
         this.GetComponent<CircleCollider2D>().enabled = false;
         yield return new WaitForEndOfFrame();

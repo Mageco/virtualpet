@@ -30,6 +30,7 @@ public class EventPanel : MonoBehaviour
         }else{
             if(GameManager.instance.GetHappy() >= price){
                 this.Close();
+                MageManager.instance.PlaySoundName("BubbleButton",false);
                 GameManager.instance.AddHappy(-price);
                 UIManager.instance.OnMinigame(1);
                 GameManager.instance.LogAchivement(AchivementType.Play_MiniGame);

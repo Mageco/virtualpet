@@ -215,7 +215,8 @@ public class MageManager : MonoBehaviour {
 			if (s.soundID == id) {
 				s.Stop ();
 				audioSounds.Remove (s);
-				GameObject.Destroy (s.gameObject);
+				if(s != null)
+					GameObject.Destroy (s.gameObject);
 				return;
 			}
 		}

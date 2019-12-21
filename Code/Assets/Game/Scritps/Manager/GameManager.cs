@@ -544,8 +544,6 @@ public class GameManager : MonoBehaviour
         
         AddItem(17);
         AddItem(41);
-        EquipItem(17);
-        EquipItem(41);
 
         
         AddPet(0);
@@ -557,12 +555,6 @@ public class GameManager : MonoBehaviour
             AddItem(8);
             AddItem(58);
             AddItem(4);
-
-            EquipItem(2);
-            EquipItem(11);
-            EquipItem(8);
-            EquipItem(58);
-            EquipItem(4);
             AddCoin(10000);
             AddDiamond(10000);
             AddPet(1);
@@ -572,6 +564,10 @@ public class GameManager : MonoBehaviour
             AddPet(5);
         }
         //#endif
+
+        foreach(PlayerItem item in myPlayer.items){
+                item.state = ItemState.Equiped;
+        }
 
         EquipPets();
         SavePlayer();

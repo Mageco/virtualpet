@@ -123,7 +123,7 @@ public class ItemManager : MonoBehaviour
                     isAdd = false;
                 }
             }
-            if (isAdd)
+            if (isAdd && !adds.Contains(data[i]))
             {
                 adds.Add(data[i]);
             }
@@ -178,7 +178,7 @@ public class ItemManager : MonoBehaviour
                     isAdd = false;
                 }
             }
-            if (isAdd)
+            if (isAdd && !adds.Contains(data[i]))
             {
                 adds.Add(data[i]);
             }
