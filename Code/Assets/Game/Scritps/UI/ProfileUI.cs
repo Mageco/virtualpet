@@ -10,13 +10,13 @@ public class ProfileUI : MonoBehaviour
     public Text level;
     public Text exp;
     public Image expProgress;
-    public Text sick;
-    public Text ịnjury;
-    public Text sleep;
-    public Text food;
-    public Text drink;
-    public Text toilet;
-    public Text dirty;
+    public Image sick;
+    public Image ịnjury;
+    public Image sleep;
+    public Image food;
+    public Image drink;
+    public Image toilet;
+    public Image dirty;
     Pet data;
 
     public void Load(int id){
@@ -26,13 +26,13 @@ public class ProfileUI : MonoBehaviour
         float e = 10 * (data.level) + 10 * (data.level) * (data.level);
         exp.text = data.Exp.ToString("F0") + "/" + e.ToString("F0");
         expProgress.fillAmount = data.Exp/e;
-        sick.text = (data.maxHealth - data.Health).ToString("F0");
-        ịnjury.text = data.Damage.ToString("F0");
-        sleep.text = data.Sleep.ToString("F0");
-        food.text = data.Food.ToString("F0");
-        drink.text = data.Water.ToString("F0");
-        dirty.text = data.Dirty.ToString("F0");
-        toilet.text = (Mathf.Max(data.Shit,data.Pee)).ToString("F0");
+        sick.fillAmount = (data.maxHealth - data.Health)/data.maxHealth;
+        ịnjury.fillAmount = data.Damage;
+        sleep.fillAmount = (data.maxSleep - data.Sleep)/data.maxSleep;
+        food.fillAmount = (data.maxFood - data.Food)/data.maxFood;
+        drink.fillAmount = (data.maxWater - data.Water)/data.maxWater;
+        dirty.fillAmount = data.Dirty/data.maxDirty;
+        toilet.fillAmount = (Mathf.Max(data.Shit/data.maxShit,data.Pee/data.maxPee));
         
         string url = DataHolder.GetPet(id).iconProfileUrl.Replace("Assets/Game/Resources/", "");
         url = url.Replace(".png", "");
@@ -45,12 +45,12 @@ public class ProfileUI : MonoBehaviour
         float e = 10 * (data.level) + 10 * (data.level) * (data.level);
         exp.text = data.Exp.ToString("F0") + "/" + e.ToString("F0");
         expProgress.fillAmount = data.Exp/e;
-        sick.text = (data.maxHealth - data.Health).ToString("F0");
-        ịnjury.text = data.Damage.ToString("F0");
-        sleep.text = data.Sleep.ToString("F0");
-        food.text = data.Food.ToString("F0");
-        drink.text = data.Water.ToString("F0");
-        dirty.text = data.Dirty.ToString("F0");
-        toilet.text = (Mathf.Max(data.Shit,data.Pee)).ToString("F0");
+        sick.fillAmount = (data.maxHealth - data.Health)/data.maxHealth;
+        ịnjury.fillAmount = data.Damage;
+        sleep.fillAmount = (data.maxSleep - data.Sleep)/data.maxSleep;
+        food.fillAmount = (data.maxFood - data.Food)/data.maxFood;
+        drink.fillAmount = (data.maxWater - data.Water)/data.maxWater;
+        dirty.fillAmount = data.Dirty/data.maxDirty;
+        toilet.fillAmount = (Mathf.Max(data.Shit/data.maxShit,data.Pee/data.maxPee));
     }
 }

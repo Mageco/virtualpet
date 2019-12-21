@@ -1376,9 +1376,12 @@ public class CharController : MonoBehaviour
                 anim.Play("Standby", 0);
                 yield return StartCoroutine(Wait(Random.Range(1, 10)));
             }
-            else{
+            else if(ran < 80){
                 anim.Play("Idle_" + this.direction.ToString(), 0);
                 yield return StartCoroutine(Wait(Random.Range(1, 10)));
+            }else{
+                MageManager.instance.PlaySoundName(charType.ToString() + "_Speak",false);
+                yield return DoAnim("Speak_" + direction.ToString());
             }
             
             n++;

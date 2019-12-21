@@ -19,15 +19,17 @@ public class QuestPanel : MonoBehaviour
         anim = this.GetComponent<Animator>();
     }
     // Start is called before the first frame update
-    void Start()
+    IEnumerator Start()
     {
-
+        yield return new WaitForSeconds(0.5f);
+        MageManager.instance.PlaySoundName("Win",false);
+        //MageManager.instance.PlaySoundName("Changing2",false);
     }
 
     public void Load(int id)
     {
         questId = id;
-
+        
         if (DataHolder.Quest(questId).haveItem)
         {
             string url = DataHolder.GetItem(DataHolder.Quest(questId).itemId).iconUrl.Replace("Assets/Game/Resources/", "");
@@ -87,6 +89,7 @@ public class QuestPanel : MonoBehaviour
         for(int i=0;i<itemEffects.Length;i++){
             if(itemEffects[i].transform.parent.gameObject.activeSelf){
                 itemEffects[i].SetActive(true);
+                MageManager.instance.PlaySoundName("Changing2",false);
                 yield return new WaitForSeconds(0.5f);
             }
         }

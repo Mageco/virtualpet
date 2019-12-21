@@ -63,6 +63,8 @@ public class CharCat : CharController
         if(ran < 30){
             anim.Play("Idle_" + this.direction.ToString(), 0);
             yield return StartCoroutine(Wait(Random.Range(5,15)));
+            MageManager.instance.PlaySoundName(charType.ToString() + "_Speak",false);
+            yield return DoAnim("Speak_" + direction.ToString());
         }else if(ran < 60){
             anim.Play("Idle_" + this.direction.ToString(), 0);
             yield return StartCoroutine(Wait(Random.Range(5,15)));
