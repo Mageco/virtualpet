@@ -160,7 +160,7 @@ public class MageManager : MonoBehaviour {
 
 
 	#region Sound
-	public int PlaySoundName(string clipName,bool loop)
+	public int PlaySoundName(string clipName,bool loop,ulong delay = 0)
 	{
 		AudioClip clip = Resources.Load<AudioClip> ("Sound/" + clipName);
 		if (clip != null) {
@@ -169,10 +169,10 @@ public class MageManager : MonoBehaviour {
 			go.name = "Sound";
 			Sound s = go.GetComponent<Sound> ();
 			currentID++;
-			s.Play (currentID, clip, loop, 0, soundVolume);
+			s.Play (currentID, clip, loop, delay, soundVolume);
 			audioSounds.Add (s);
 			if (!loop) {
-				StartCoroutine (StopSoundCouroutine (s, clip.length));
+				StartCoroutine (StopSoundCouroutine (s, clip.length,delay));
 			}
 			return currentID;
 		}
@@ -188,7 +188,7 @@ public class MageManager : MonoBehaviour {
 		currentID++;
 		s.Play (currentID, clip, false,0,soundVolume);
 		audioSounds.Add (s);
-		StartCoroutine (StopSoundCouroutine (s, clip.length));
+		StartCoroutine (StopSoundCouroutine (s, clip.length,0));
 		return clip.length;
 	}
 
@@ -261,9 +261,9 @@ public class MageManager : MonoBehaviour {
 		voice.Stop ();
 	}
 
-	IEnumerator StopSoundCouroutine(Sound s, float duration)
+	IEnumerator StopSoundCouroutine(Sound s, float duration,float delay)
 	{
-		yield return new WaitForSeconds (duration);
+		yield return new WaitForSeconds (duration + delay);
 		s.Stop ();
 		audioSounds.Remove (s);
 		if(s != null)

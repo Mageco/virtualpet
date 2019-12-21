@@ -11,6 +11,7 @@ public class CharController : MonoBehaviour
     //Data
     public Pet data;
     public GameObject petPrefab;
+    public CharType charType = CharType.Dog;
     //[HideInInspector]
 
     //[HideInInspector]
@@ -892,6 +893,7 @@ public class CharController : MonoBehaviour
         float speed = ySpeed;
         //charScale.scalePosition = new Vector3(this.transform.position.x, this.transform.position.y - height, 0);
         charInteract.interactType = InteractType.Jump;
+        MageManager.instance.PlaySoundName("Drag",false);
         while (charInteract.interactType == InteractType.Jump && !isAbort)
         {
             speed -= accelerator * Time.deltaTime;
@@ -920,6 +922,7 @@ public class CharController : MonoBehaviour
         if(!isAbort){
             anim.Play("Hold", 0);      
             charInteract.interactType = InteractType.Jump;
+            MageManager.instance.PlaySoundName("Drag",false);
             while (charInteract.interactType == InteractType.Jump && !isAbort)
             {
                 ySpeed -= 30 * Time.deltaTime;
@@ -1026,7 +1029,7 @@ public class CharController : MonoBehaviour
         charInteract.interactType = InteractType.None; 
         
         CheckEnviroment();
-        MageManager.instance.PlaySoundName("Drop",false);
+        MageManager.instance.PlaySoundName("whoosh_swish_med_03",false);
         yield return StartCoroutine(DoAnim("Drop"));
         
     
@@ -1134,6 +1137,8 @@ public class CharController : MonoBehaviour
 
         
         anim.Play("Pee", 0);
+        int soundid = MageManager.instance.PlaySoundName("water_bubbling_03_loop",true);
+        MageManager.instance.PlaySoundName("water_drops_drips_multiple_21",false);
         Debug.Log("Pee");
         float value = data.Pee;
         ItemManager.instance.SpawnPee(peePosition.position + new Vector3(0, 0, 50),value);
@@ -1142,6 +1147,7 @@ public class CharController : MonoBehaviour
             data.Pee -= data.ratePee * Time.deltaTime;
             yield return new WaitForEndOfFrame();
         }
+        MageManager.instance.StopSound(soundid);
         
 
         if(enviromentType == EnviromentType.Toilet){
@@ -1154,6 +1160,7 @@ public class CharController : MonoBehaviour
             yield return StartCoroutine(JumpDown(-7,10,30));     
         }
         
+
         CheckAbort();
     }
 
@@ -1175,6 +1182,7 @@ public class CharController : MonoBehaviour
 
         
         anim.Play("Shit", 0);
+        MageManager.instance.PlaySoundName("fart_squirt_07",false);
         float value = data.Pee;
         
         while (data.Shit > 0 && !isAbort)
@@ -1207,6 +1215,7 @@ public class CharController : MonoBehaviour
             if (GetFoodItem().CanEat() && canEat)
             {
                 anim.Play("Eat", 0);
+                int soundid =  MageManager.instance.PlaySoundName("Eat",false);
                 yield return StartCoroutine(Wait(0.1f));
                 while (data.Food < data.maxFood && !isAbort && canEat)
                 {
@@ -1220,6 +1229,7 @@ public class CharController : MonoBehaviour
                         canEat = false;
                     yield return new WaitForEndOfFrame();
                 }
+                MageManager.instance.StopSound(soundid);
                 if(data.Food >= data.maxFood - 2){
                     GameManager.instance.LogAchivement(AchivementType.Do_Action,ActionType.Eat);
                     GameManager.instance.AddExp(5,data.iD);
@@ -1228,8 +1238,10 @@ public class CharController : MonoBehaviour
                 }
             }else{
                 int ran = Random.Range(0,100);
-                if(ran < 40)
+                if(ran < 40){
+                    MageManager.instance.PlaySoundName(charType.ToString() + "_Speak",false);
                     yield return DoAnim("Speak_" + direction.ToString());
+                } 
                 else{
                     SetTarget(PointType.Patrol);
                     yield return StartCoroutine(RunToPoint());
@@ -1258,7 +1270,7 @@ public class CharController : MonoBehaviour
 
             if (GetDrinkItem().CanEat() && canDrink)
             {
-                
+                int soundid =  MageManager.instance.PlaySoundName("Drink",true);
                 anim.Play("Drink", 0);
                 yield return StartCoroutine(Wait(0.1f));
                 while (data.Water < data.maxWater && !isAbort && canDrink)
@@ -1273,6 +1285,7 @@ public class CharController : MonoBehaviour
                         canDrink = false;
                     yield return new WaitForEndOfFrame();
                 }
+                MageManager.instance.StopSound(soundid);
                 if(data.Water >= data.maxWater - 2){
                     GameManager.instance.LogAchivement(AchivementType.Do_Action,ActionType.Drink);
                     GameManager.instance.AddExp(5,data.iD);
@@ -1281,8 +1294,10 @@ public class CharController : MonoBehaviour
                 }
             }else{
                 int ran = Random.Range(0,100);
-                if(ran < 40)
+                if(ran < 40){
                     yield return DoAnim("Speak_" + direction.ToString());
+                    MageManager.instance.PlaySoundName(charType.ToString() + "_Speak",false);
+                }
                 else{
                     SetTarget(PointType.Patrol);
                     yield return StartCoroutine(RunToPoint());
@@ -1536,8 +1551,11 @@ public class CharController : MonoBehaviour
 
     protected virtual IEnumerator Fall()
     {
+        MageManager.instance.PlaySoundName("weapon_fun_pea_shooter_03",false);
+       
         data.Damage += Random.Range(2,10);
         yield return StartCoroutine(DoAnim("Fall_" + direction.ToString()));
+        
         CheckAbort();
     }
 

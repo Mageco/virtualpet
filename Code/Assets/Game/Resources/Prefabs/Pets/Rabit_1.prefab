@@ -196,6 +196,7 @@ MonoBehaviour:
   data:
     iD: 5
     iconUrl: 
+    iconProfileUrl: 
     languageItem:
     - Name: New Pet
       Description: 
@@ -208,6 +209,7 @@ MonoBehaviour:
     isAvailable: 1
     skills: []
     petName: 
+    shopOrder: 0
     speed: 20
     level: 1
     exp: 0
@@ -248,8 +250,14 @@ MonoBehaviour:
     maxFear: 100
     maxCurious: 100
     character: {fileID: 0}
+    actionType: 0
+    position: {x: 0, y: 0, z: 0}
+    scalePosition: {x: 0, y: 0, z: 0}
+    height: 0
+    enviromentType: 0
   petPrefab: {fileID: 2254588694845013441, guid: 8995e5d594d0e4cb2ab4c8709305d2ee,
     type: 3}
+  charType: 2
   enviromentType: 0
   direction: 1
   target: {x: 0, y: 0, z: 0}
@@ -263,10 +271,6 @@ MonoBehaviour:
   charScale: {fileID: 0}
   peePosition: {fileID: 180670366039192031}
   shitPosition: {fileID: 1568671392927770309}
-  peePrefab: {fileID: 7166089402494124037, guid: ccefdc6a159554ad68c454188f52587b,
-    type: 3}
-  shitPrefab: {fileID: 4887335964014193537, guid: 6cd2b87a2c28c424ba4e4c5f8d1ddfd2,
-    type: 3}
   shadow: {fileID: 0}
   originalShadowScale: {x: 0, y: 0, z: 0}
   currentSkill: 0
@@ -275,6 +279,8 @@ MonoBehaviour:
   iconStatusObject: {fileID: 4105941544303957275}
   iconStatus: 0
   dirties: []
+  dirties_L: []
+  dirties_LD: []
 --- !u!1 &2319549814806519279
 GameObject:
   m_ObjectHideFlags: 0

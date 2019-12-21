@@ -19,7 +19,7 @@ public class Sound : MonoBehaviour {
 		audioSource.clip = clip;
 		audioSource.loop = loop;
 		audioSource.volume = volume;
-		audioSource.Play (delay);
+		audioSource.PlayDelayed (delay);
 	}
 
 	public void Pause()

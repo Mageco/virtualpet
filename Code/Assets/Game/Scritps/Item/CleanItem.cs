@@ -36,7 +36,7 @@ public class CleanItem : MonoBehaviour
 				GameManager.instance.LogAchivement(AchivementType.Clean);
 			}
 			
-			if(time > maxTime){
+			if(item.itemType == ItemType.Clean && time > maxTime){
 				MageManager.instance.PlaySoundName("sweeping_broom_leaves_stones_07",false);
 				time  = 0;
 			}else{
