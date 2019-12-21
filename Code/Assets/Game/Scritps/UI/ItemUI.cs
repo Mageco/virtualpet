@@ -72,7 +72,8 @@ public class ItemUI : MonoBehaviour
                 price.text = (d.buyPrice/2).ToString();
                 
                 if((DataHolder.GetItem(itemId).itemType == ItemType.Room ||  DataHolder.GetItem(itemId).itemType == ItemType.Bed || DataHolder.GetItem(itemId).itemType == ItemType.Toilet || 
-                DataHolder.GetItem(itemId).itemType == ItemType.Bath || DataHolder.GetItem(itemId).itemType == ItemType.MedicineBox || DataHolder.GetItem(itemId).itemType == ItemType.Clean)
+                DataHolder.GetItem(itemId).itemType == ItemType.Bath || DataHolder.GetItem(itemId).itemType == ItemType.MedicineBox || DataHolder.GetItem(itemId).itemType == ItemType.Clean
+                || DataHolder.GetItem(itemId).itemType == ItemType.Food || DataHolder.GetItem(itemId).itemType == ItemType.Drink)
                 && GameManager.instance.GetBuyItems(ItemType.Room).Count == 1){
                     buyButton.interactable = false;
                 }

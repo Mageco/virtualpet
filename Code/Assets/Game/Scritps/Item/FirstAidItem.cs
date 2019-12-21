@@ -35,6 +35,7 @@ public class FirstAidItem : MonoBehaviour
     }
 
     void Open(){
+        MageManager.instance.PlaySoundName("Drag",false);
         Debug.Log("Open");
         isOpen = true;
         for(int i=0;i<healthItems.Length;i++){
@@ -44,10 +45,13 @@ public class FirstAidItem : MonoBehaviour
     }
 
     void Close(){
+        MageManager.instance.PlaySoundName("Drag",false);
         isOpen = false;
         for(int i=0;i<healthItems.Length;i++){
             healthItems[i].Close();
         }
+
         animator.Play("Idle",0);
+
     }
 }

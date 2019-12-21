@@ -96,6 +96,7 @@ public class ItemDrag : MonoBehaviour
 
 	protected IEnumerator ReturnPosition(Vector3 pos)
 	{
+		MageManager.instance.PlaySoundName("Drag",false);
 		isBusy = true;
 		while (Vector2.Distance (this.transform.position, pos) > 0.1f) {
 			this.transform.position = Vector3.Lerp (this.transform.position, pos, Time.deltaTime * 5);

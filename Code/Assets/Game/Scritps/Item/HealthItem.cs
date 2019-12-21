@@ -28,7 +28,9 @@ public class HealthItem : ItemDrag
     }
 
     public void Close(){
+        Reset();
         isDragable = false;
+
     }
 
     protected override void Start(){
@@ -43,6 +45,7 @@ public class HealthItem : ItemDrag
             eated = true;
             anim.Play("Active");
             pet.OnHealth(sickType,amounnt);
+            MageManager.instance.PlaySoundName("Heal",false);
             if(effect == null){
                 effect = GameObject.Instantiate(effectPrefab,pet.transform.position,Quaternion.identity);
                 effect.transform.parent = pet.transform;

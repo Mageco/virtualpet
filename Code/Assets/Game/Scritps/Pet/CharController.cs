@@ -712,8 +712,11 @@ public class CharController : MonoBehaviour
 
     public virtual void OffShower()
     {
-        if (actionType == ActionType.OnBath)
+        if (actionType == ActionType.OnBath){
             anim.Play("Shake", 0);
+            MageManager.instance.PlaySoundName("Shake",false);
+        }
+            
     }
 
     public virtual void OnStop(){
