@@ -605,7 +605,7 @@ public class CharController : MonoBehaviour
     }
 
     public virtual void OnSupprised(){
-        if(actionType == ActionType.Hold || actionType == ActionType.Sick || actionType == ActionType.Injured)
+        if(actionType == ActionType.Hold || actionType == ActionType.Sick || actionType == ActionType.Injured || enviromentType != EnviromentType.Room)
             return;
 
         Abort();
@@ -613,7 +613,7 @@ public class CharController : MonoBehaviour
     }
 
     public virtual void OnFear(){
-        if(actionType == ActionType.Hold || actionType == ActionType.Sick || actionType == ActionType.Injured)
+        if(actionType == ActionType.Hold || actionType == ActionType.Sick || actionType == ActionType.Injured || enviromentType != EnviromentType.Room)
             return;
 
         Abort();

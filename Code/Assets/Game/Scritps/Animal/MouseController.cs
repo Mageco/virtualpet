@@ -168,6 +168,8 @@ public class MouseController : MonoBehaviour
 
 	void OnMouseUp(){
 		MageManager.instance.PlaySoundName("Punch1",false);
+		MageManager.instance.PlaySoundName("collect_item_02",false);
+		
 		anim.Play("Hit",0);
 		GameManager.instance.AddCoin(1);
 		GameManager.instance.LogAchivement(AchivementType.Tap_Animal,ActionType.None,-1,AnimalType.Mouse);
