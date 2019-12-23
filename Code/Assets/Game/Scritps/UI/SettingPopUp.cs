@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class SettingPopUp : MonoBehaviour {
 
-	public Slider voice;
+	public Slider sound;
 	public Slider music;
 	public Dropdown language;
 	Animator animator;
@@ -29,14 +29,14 @@ public class SettingPopUp : MonoBehaviour {
 		if (music != null)
 			music.value = MageManager.instance.GetMusicVolume ();
 
-		if(voice != null)
-			voice.value = MageManager.instance.GetVoiceVolume ();
+		if(sound != null)
+			sound.value = MageManager.instance.GetSoundVolume ();
 
 	}
 
-	public void OnChangeVoice(Slider s)
+	public void OnChangeSound(Slider s)
 	{
-		if (MageManager.instance.GetVoiceVolume () != s.value) {
+		if (MageManager.instance.GetSoundVolume() != s.value) {
 			MageManager.instance.SetSoundVolume (s.value);
 			MageManager.instance.SetVoiceVolume(s.value);
 		}

@@ -19,13 +19,12 @@ public class Minigame1 : Minigame
     public GameObject guideUIPrefab;
     GuideUI guildUI;
 
-    public AudioClip music;
     
     void Start(){
         chickenNumber.text = "";
         levelText.text = "Stage " + (gameLevel + 1).ToString();
         GameManager.instance.UnEquipPets();
-        MageManager.instance.PlayMusic(music,0,true);
+        MageManager.instance.PlayMusicName("Minigame1",true);
 //        Debug.Log(live);
         if (gameLevel == 0)
             OnGuildPanel();
