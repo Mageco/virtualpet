@@ -37,7 +37,7 @@ public class CleanItem : MonoBehaviour
 			}
 			
 			if(item.itemType == ItemType.Clean && time > maxTime){
-				MageManager.instance.PlaySoundName("sweeping_broom_leaves_stones_07",false);
+				MageManager.instance.PlaySoundName("Item_Broom", false);
 				time  = 0;
 			}else{
 				time += Time.deltaTime;
@@ -45,8 +45,13 @@ public class CleanItem : MonoBehaviour
 			dirtyItem.OnClean(clean*Time.deltaTime);
 			if(anim != null)
 				anim.Play("Active");
-		}else
-			anim.Play("Idle");
+        }
+        else
+        {
+            if(item.itemType == ItemType.Clean)
+                anim.Play("Idle");
+        }
+			
 	}
 
 

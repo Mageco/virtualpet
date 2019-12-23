@@ -1134,8 +1134,8 @@ public class CharController : MonoBehaviour
 
         
         anim.Play("Pee", 0);
-        int soundid = MageManager.instance.PlaySoundName("water_bubbling_03_loop",true);
-        MageManager.instance.PlaySoundName("water_drops_drips_multiple_21",false);
+        int soundid = MageManager.instance.PlaySoundName("Pee", true);
+        MageManager.instance.PlaySoundName("PeeDrop", false);
         Debug.Log("Pee");
         float value = data.Pee;
         ItemManager.instance.SpawnPee(peePosition.position + new Vector3(0, 0, 50),value);
@@ -1179,7 +1179,7 @@ public class CharController : MonoBehaviour
 
         
         anim.Play("Shit", 0);
-        MageManager.instance.PlaySoundName("fart_squirt_07",false);
+        MageManager.instance.PlaySoundName("Shit",false);
         float value = data.Pee;
         
         while (data.Shit > 0 && !isAbort)
