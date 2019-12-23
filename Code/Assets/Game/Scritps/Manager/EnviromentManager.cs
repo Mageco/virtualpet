@@ -36,7 +36,7 @@ public class EnviromentManager : MonoBehaviour
 
         LoadWeather();
         CheckDayNight();
-        MageManager.instance.PlayMusicName("nightMusic", true);
+        LoadMusic();
     }
 
     void LoadWeather(){
@@ -67,5 +67,10 @@ public class EnviromentManager : MonoBehaviour
             dayBG.SetActive(true);
             nightBG.SetActive(false);            
         }
+    }
+
+    public void LoadMusic()
+    {
+        MageManager.instance.PlayMusicName("nightMusic", true);
     }
 }
