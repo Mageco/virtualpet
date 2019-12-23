@@ -16,13 +16,15 @@ public class Mprogress : MonoBehaviour {
 		progress = 0;
 		fill.fillAmount = 0;
         int id = Random.Range(0,DataHolder.Dialogs().GetDataCount());
-        tip.text = DataHolder.Dialog(id).GetDescription(MageManager.instance.GetLanguage());
+        //if(DataHolder.Instance() != null)
+            tip.text = DataHolder.Dialog(id).GetDescription(MageManager.instance.GetLanguage());
         int n = Random.Range(0, loadingImages.Length);
         loadingImage.sprite = loadingImages[n];
 
 	}
 
-	void Update()
+
+    void Update()
 	{
 		fill.fillAmount = Mathf.Lerp (fill.fillAmount, progress, Time.deltaTime);
 	}
