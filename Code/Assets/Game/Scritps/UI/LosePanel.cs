@@ -8,7 +8,7 @@ public class LosePanel : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        MageManager.instance.PlaySoundName("Lose", false);
     }
 
     // Update is called once per frame
@@ -32,6 +32,7 @@ public class LosePanel : MonoBehaviour
     }
 
     public void Replay(){
+        MageManager.instance.PlaySoundName("BubbleButton", false);
         int price = 10; 
         if(GameManager.instance.GetHappy() >= price){
             GameManager.instance.AddHappy(-price);

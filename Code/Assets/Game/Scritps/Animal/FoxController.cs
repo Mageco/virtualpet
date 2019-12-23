@@ -74,8 +74,19 @@ public class FoxController : AnimalController
             GameManager.instance.LogAchivement(AchivementType.Dissmiss_Animal,ActionType.None,-1,animalType);
         }
         col2D.enabled = false;
+        if(animalType == AnimalType.Fox)
+        {
+            MageManager.instance.PlaySoundName("Fox_Hurt", false);
+        }else if(animalType == AnimalType.Snake)
+        {
+            MageManager.instance.PlaySoundName("Snake_Hurt", false);
+        }
+        else if (animalType == AnimalType.Eagle)
+        {
+            MageManager.instance.PlaySoundName("Eagle_Hurt", false);
+        }
         //Camera.main.GetComponent<CameraShake>().Shake();
-        
+
     }
 
     public override void OnFlee(){

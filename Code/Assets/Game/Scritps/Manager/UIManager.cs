@@ -272,6 +272,7 @@ public class UIManager : MonoBehaviour
      }
 
      public void OnHome(){
+        MageManager.instance.PlaySoundName("BubbleButton", false);
         GameManager.instance.gameType = GameType.House;
         MageManager.instance.LoadSceneWithLoading("House");
         homeUI.SetActive(true);

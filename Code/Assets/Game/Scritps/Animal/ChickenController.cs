@@ -29,6 +29,7 @@ public class ChickenController : AnimalController
         col2D.enabled = false;
         state = AnimalState.Cached;
         isAbort = true;
+        MageManager.instance.PlaySoundName("Chicken_Catched", false);
     }
 
     public void OffCached(){
@@ -38,6 +39,7 @@ public class ChickenController : AnimalController
         col2D.enabled = true;
         state = AnimalState.None;
         isAbort = true;
+        MageManager.instance.PlaySoundName("Chicken_Idle", false);
     }
 
     protected override void Think()
@@ -92,6 +94,9 @@ public class ChickenController : AnimalController
             else
                 direction = Direction.R;
             anim.Play("Idle_"+direction.ToString(),0);
+
+            if(ran > 80)
+                MageManager.instance.PlaySoundName("Chicken_Idle", false);
             yield return StartCoroutine(Wait(Random.Range(1,2)));
         }
         CheckAbort();
@@ -164,6 +169,7 @@ public class ChickenController : AnimalController
         if(state != AnimalState.Hold){
             dragOffset = Camera.main.ScreenToWorldPoint (Input.mousePosition) - this.transform.position ;
             interactType = InteractType.Drag;
+            MageManager.instance.PlaySoundName("Drag", false);
             OnHold();
         }
 
@@ -174,7 +180,8 @@ public class ChickenController : AnimalController
         dragOffset = Vector3.zero;
         if (interactType == InteractType.Drag) {
             interactType = InteractType.Drop;
-        } 
+            MageManager.instance.PlaySoundName("whoosh_swish_med_03", false);
+        } 
     }
 
     private bool IsPointerOverUIObject() {

@@ -12,10 +12,17 @@ public class WinPanel : MonoBehaviour
     public Sprite nextButton;
     public Sprite replayButton;
     public Sprite homeButton;
+    int star = 0;
     // Start is called before the first frame update
-    void Start()
+    IEnumerator Start()
     {
-        
+        MageManager.instance.PlaySoundName("Win", false);
+        for(int i = 0; i < star; i++)
+        {
+            yield return new WaitForSeconds(0.3f);
+            MageManager.instance.PlaySoundName("collect_item_11", false);
+        }
+       
     }
 
     Animator animator;
@@ -33,6 +40,7 @@ public class WinPanel : MonoBehaviour
     public void Load(int star,int e, int d, int c){
         animator = this.GetComponent<Animator>();
         animator.SetInteger("star",star);
+        this.star = star;
         if(e > 0){
             exp.text = e.ToString();
             //GameManager.instance.AddExp(e,GameManager.instance.GetActivePet().iD);
@@ -61,6 +69,7 @@ public class WinPanel : MonoBehaviour
     }
 
     public void Replay(){
+        MageManager.instance.PlaySoundName("BubbleButton", false);
         int price = 10; 
         if(GameManager.instance.GetHappy() >= price){
             GameManager.instance.AddHappy(-price);
