@@ -1440,6 +1440,7 @@ public class CharController : MonoBehaviour
 
     protected virtual IEnumerator Fear()
     {
+        MageManager.instance.PlaySoundName(charType.ToString() + "_Supprised",false);
         yield return StartCoroutine(DoAnim("Teased"));
         data.Energy -= 2;
         CheckAbort();
@@ -1472,6 +1473,8 @@ public class CharController : MonoBehaviour
             yield return new WaitForEndOfFrame();
             while(!isAbort && count < n){
                 toyItem.OnActive();
+                MageManager.instance.PlaySoundName(charType.ToString() + "_Supprised", false);
+                MageManager.instance.PlaySoundName("Drag", false);
                 anim.Play("Teased",0);  
                 shadow.SetActive(false);   
                 charInteract.interactType = InteractType.Jump;
@@ -1497,8 +1500,11 @@ public class CharController : MonoBehaviour
                     if (ySpeed < 0 && this.transform.position.y < dropPosition.y)
                     {
                         if(count ==  n-1){
+                            MageManager.instance.PlaySoundName("whoosh_swish_med_03", false);
                             yield return StartCoroutine(DoAnim("Drop"));
-                        }else
+                            
+                        }
+                        else
                         {
                             agent.transform.position = dropPosition;
                         }
@@ -1539,11 +1545,15 @@ public class CharController : MonoBehaviour
 
     protected virtual IEnumerator Supprised(){
         int ran = Random.Range(0,100);
-        if(ran > 20)
+        if (ran > 20)
+        {
+            MageManager.instance.PlaySoundName(charType.ToString() + "_Supprised", false);
             yield return StartCoroutine(DoAnim("Teased"));
-        else{
-             yield return StartCoroutine(DoAnim("Love"));
-             GameManager.instance.AddExp(5,data.iD);
+        }
+        else
+        {
+            yield return StartCoroutine(DoAnim("Love"));
+            GameManager.instance.AddExp(5, data.iD);
         }
         data.Energy -= 2;
         CheckAbort();

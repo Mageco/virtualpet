@@ -49,6 +49,7 @@ public class ClockItem : MonoBehaviour
 
     void Active(){
         if(animator != null){
+            MageManager.instance.PlaySoundName("Item_Clock", false);
             animator.Play("Active",0);
         }
     }

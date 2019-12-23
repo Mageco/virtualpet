@@ -9,6 +9,7 @@ public class ToyCarItem : BaseFloorItem
 	float time;
 	float maxDoubleClickTime = 0.4f;
 	bool isClick = false;
+    int soundId = 0;
 
 	Vector3[] paths;
 
@@ -66,14 +67,17 @@ public class ToyCarItem : BaseFloorItem
 		iTween.StopByName("car");
 		isActive = false;
 		animator.Play("Idle_"+direction.ToString());
-	}
+
+        soundId = MageManager.instance.PlaySoundName("Item_Car_Charge", true);
+
+    }
 
 	protected override void OnMouseUp()
 	{
 		round = Mathf.Clamp((int) dragTime*2 + 1,1,6);
 		base.OnMouseUp();
-		
-		if(!isActive){
+        MageManager.instance.StopSound(soundId);
+        if (!isActive){
 			if(round > 1){
 				Run();
 			}else{
@@ -86,6 +90,7 @@ public class ToyCarItem : BaseFloorItem
 	}
 
 	void Run(){
+        MageManager.instance.PlaySoundName("Item_Car", false);
 		isActive = true;
         animator.speed = 2;
 		GameManager.instance.LogAchivement(AchivementType.Use_Item,ActionType.None,this.item.itemID);
