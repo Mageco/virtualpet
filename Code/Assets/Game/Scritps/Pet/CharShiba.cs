@@ -53,7 +53,7 @@ public class CharShiba : CharController
 
     protected override IEnumerator Discover()
     {
-        if (data.curious > data.maxCurious * 0.4f)
+        if (data.curious > data.MaxCurious * 0.4f)
         {
             int ran = Random.Range(0,100);
             if(ran < 30){
@@ -123,7 +123,7 @@ public class CharShiba : CharController
         }
 
         Debug.Log("Itchi");
-        while (data.itchi > 0.5 * data.maxItchi && !isAbort)
+        while (data.itchi > 0.5 * data.MaxItchi && !isAbort)
         {
             data.itchi -= 0.1f;
             yield return new WaitForEndOfFrame();

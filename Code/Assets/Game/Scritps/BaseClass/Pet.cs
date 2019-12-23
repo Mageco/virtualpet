@@ -26,6 +26,7 @@ public class Pet : BaseModel
 	public int level = 0;
 	public int exp = 0;
 	public float intelligent = 0;
+    public int happy = 0;
 	//Attribute Data
 	public float food = 50;
 	public float water = 50;
@@ -78,17 +79,13 @@ public class Pet : BaseModel
 	[HideInInspector]
 	public float maxDamage = 100;
 	[HideInInspector]
-	public float maxHappy = 100;
-	[HideInInspector]
-	public float maxStamina = 100;
-	[HideInInspector]
 	public float maxDirty = 100;
     [HideInInspector]
     public float maxItchi = 100;
     [HideInInspector]
-    public float maxFear = 100;
-    [HideInInspector]
     public float maxCurious = 100;
+
+    int levelRate = 5;
 
 
     public CharController character;
@@ -270,8 +267,8 @@ public class Pet : BaseModel
 			this.food = value;
 			if (this.food < 0)
 				this.food = 0;
-			else if (this.food > maxFood)
-				this.food = maxFood;
+			else if (this.food > MaxFood)
+				this.food = MaxFood;
 		}
 	}
 
@@ -286,8 +283,8 @@ public class Pet : BaseModel
 			this.water = value;
 			if (this.water < 0)
 				this.water = 0;
-			else if (this.water > maxWater)
-				this.water = maxWater;
+			else if (this.water > MaxWater)
+				this.water = MaxWater;
 		}
 	}
 
@@ -302,8 +299,8 @@ public class Pet : BaseModel
 			this.sleep = value;
 			if (this.sleep < 0)
 				this.sleep = 0;
-			else if (this.sleep > maxSleep)
-				this.sleep = maxSleep;
+			else if (this.sleep > MaxSleep)
+				this.sleep = MaxSleep;
 		}
 	}
 
@@ -318,8 +315,8 @@ public class Pet : BaseModel
 			this.energy = value;
 			if (this.energy < 0)
 				this.energy = 0;
-			else if (this.energy > maxEnergy)
-				this.energy = maxEnergy;
+			else if (this.energy > MaxEnergy)
+				this.energy = MaxEnergy;
 		}
 	}
 
@@ -334,8 +331,8 @@ public class Pet : BaseModel
 			this.health = value;
 			if (this.health < 0)
 				this.health = 0;
-			else if (this.health > maxHealth)
-				this.health = maxHealth;
+			else if (this.health > MaxHealth)
+				this.health = MaxHealth;
 		}
 	}
 
@@ -350,8 +347,8 @@ public class Pet : BaseModel
 			this.damage = value;
 			if (this.damage < 0)
 				this.damage = 0;
-			else if (this.damage > maxDamage)
-				this.damage = maxDamage;
+			else if (this.damage > MaxDamage)
+				this.damage = MaxDamage;
 		}
 	}
 
@@ -366,8 +363,8 @@ public class Pet : BaseModel
 			this.shit = value;
 			if (this.shit < 0)
 				this.shit = 0;
-			else if (this.shit > maxShit)
-				this.shit = maxShit;
+			else if (this.shit > MaxShit)
+				this.shit = MaxShit;
 		}
 	}
 
@@ -382,8 +379,8 @@ public class Pet : BaseModel
 			this.pee = value;
 			if (this.pee < 0)
 				this.pee = 0;
-			else if (this.pee > maxPee)
-				this.pee = maxPee;
+			else if (this.pee > MaxPee)
+				this.pee = MaxPee;
 		}
 	}
 
@@ -400,8 +397,8 @@ public class Pet : BaseModel
 			this.dirty = value;
 			if (this.dirty < 0)
 				this.dirty = 0;
-			else if (this.dirty > maxDirty)
-				this.dirty = maxDirty;
+			else if (this.dirty > MaxDirty)
+				this.dirty = MaxDirty;
 		}
 	}
 
@@ -416,26 +413,11 @@ public class Pet : BaseModel
 			this.itchi = value;
 			if (this.itchi < 0)
 				this.itchi = 0;
-			else if (this.itchi > maxItchi)
-				this.itchi = maxItchi;
+			else if (this.itchi > MaxItchi)
+				this.itchi = MaxItchi;
 		}
 	}
 
-	public float Fear
-	{
-		get
-		{
-			return this.fear;
-		}
-		set
-		{
-			this.fear = value;
-			if (this.fear < 0)
-				this.fear = 0;
-			else if (this.fear > maxFear)
-				this.fear = maxFear;
-		}
-	}
 
 	public float Curious
 	{
@@ -486,7 +468,6 @@ public class Pet : BaseModel
 				level ++;
 				e = 10 * level + 10 * level * level;
 			}
-			maxEnergy = 100 + level;
 			if(level > temp){
 				if(character != null){
 					character.OnLevelUp();
@@ -507,7 +488,142 @@ public class Pet : BaseModel
 		}
 	}
 
-	public int GetSkillProgress(SkillType type){
+    public float MaxFood
+    {
+        get
+        {
+            return maxFood + level*levelRate;
+        }
+        set
+        {
+            this.maxFood = value;
+        }
+    }
+
+    public float MaxWater
+    {
+        get
+        {
+            return maxWater + level * levelRate;
+        }
+        set
+        {
+            this.maxWater = value;
+        }
+    }
+
+    public float MaxShit
+    {
+        get
+        {
+            return maxShit + level * levelRate;
+        }
+        set
+        {
+            this.maxShit = value;
+        }
+    }
+
+
+
+    public float MaxPee
+    {
+        get
+        {
+            return maxPee + level * levelRate;
+        }
+        set
+        {
+            this.maxPee = value;
+        }
+    }
+
+    public float MaxSleep
+    {
+        get
+        {
+            return maxSleep + level * levelRate;
+        }
+        set
+        {
+            this.maxSleep = value;
+        }
+    }
+
+    public float MaxEnergy
+    {
+        get
+        {
+            return maxEnergy + level * levelRate;
+        }
+        set
+        {
+            this.maxEnergy = value;
+        }
+    }
+
+    public float MaxHealth
+    {
+        get
+        {
+            return maxHealth + level * levelRate;
+        }
+        set
+        {
+            this.maxHealth = value;
+        }
+    }
+
+    public float MaxDamage
+    {
+        get
+        {
+            return maxDamage + level * levelRate;
+        }
+        set
+        {
+            this.maxDamage = value;
+        }
+    }
+
+    public float MaxDirty
+    {
+        get
+        {
+            return maxDirty + level * levelRate;
+        }
+        set
+        {
+            this.maxDirty = value;
+        }
+    }
+
+    public float MaxItchi
+    {
+        get
+        {
+            return maxItchi + level * levelRate;
+        }
+        set
+        {
+            this.maxItchi = value;
+        }
+    }
+
+    public float MaxCurious
+    {
+        get
+        {
+            return maxCurious;
+        }
+        set
+        {
+            this.maxCurious = value;
+        }
+    }
+
+
+    public int GetSkillProgress(SkillType type){
 		for(int i=0;i<skills.Count;i++){
 			if(DataHolder.Skills().GetSkill(skills[i].skillId).skillType == type){
 				return skills[i].level;

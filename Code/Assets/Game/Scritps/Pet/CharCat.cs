@@ -70,7 +70,7 @@ public class CharCat : CharController
             yield return StartCoroutine(Wait(Random.Range(5,15)));
         }else{
             anim.Play("Sleep", 0);
-            while (data.Sleep < data.maxSleep && !isAbort)
+            while (data.Sleep < data.MaxSleep && !isAbort)
             {
                 data.Sleep += data.rateSleep * Time.deltaTime;
                 yield return new WaitForEndOfFrame();
