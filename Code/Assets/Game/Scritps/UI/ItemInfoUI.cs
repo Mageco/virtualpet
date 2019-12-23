@@ -35,7 +35,7 @@ public class ItemInfoUI : MonoBehaviour
         icon.sprite = Resources.Load<Sprite>(url) as Sprite;
         price.text = d.buyPrice.ToString();
         itemName.text = DataHolder.GetItem(itemId).GetName(0);
-        description.text = DataHolder.GetItem(itemId).GetDescription(0);
+        description.text = DataHolder.GetItem(itemId).GetDescription(MageManager.instance.GetLanguage());
 
         if(!d.isAvailable){
             isCommingSoon = true;
@@ -112,7 +112,7 @@ public class ItemInfoUI : MonoBehaviour
         icon.sprite = Resources.Load<Sprite>(url) as Sprite;
         price.text = d.buyPrice.ToString();
         itemName.text = DataHolder.GetPet(itemId).GetName(0);
-        description.text = DataHolder.GetPet(itemId).GetDescription(0);
+        description.text = DataHolder.GetPet(itemId).GetDescription(MageManager.instance.GetLanguage());
 
         if(!d.isAvailable){
             isCommingSoon = true;

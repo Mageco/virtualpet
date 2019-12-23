@@ -587,12 +587,12 @@ public class CharController : MonoBehaviour
     public virtual void OnHold()
     {
         if(actionType == ActionType.Sick){
-            UIManager.instance.OnQuestNotificationPopup("Thú cưng bị ốm, bạn cần cho thú cưng uống thuốc");
+            UIManager.instance.OnQuestNotificationPopup(DataHolder.Dialog(0).GetDescription(MageManager.instance.GetLanguage()));
             return;
         }
 
         if(actionType == ActionType.Injured){
-            UIManager.instance.OnQuestNotificationPopup("Thú cưng bị chấn thương, bạn cần băng bó nhé");
+            UIManager.instance.OnQuestNotificationPopup(DataHolder.Dialog(1).GetDescription(MageManager.instance.GetLanguage()));
             return;
         }
 
@@ -639,9 +639,6 @@ public class CharController : MonoBehaviour
 
     protected void OnBath()
     {
-        if(data.GetSkillProgress(SkillType.Bath) == 0){
-            UIManager.instance.OnQuestNotificationPopup("Bạn có thể dùng xà bông và vòi hoa sen để tắm cho thú cưng");
-        }
         Abort();
         actionType = ActionType.OnBath;
     }
@@ -1634,13 +1631,6 @@ public class CharController : MonoBehaviour
         currentSkill = type;
         //skillLearnEffect.SetActive(true);
         ItemManager.instance.ActivateSkillItems(type);
-        if(data.GetSkillProgress(type) == 0){
-            if(type == SkillType.Sleep){
-                UIManager.instance.OnQuestNotificationPopup("Ngủ đúng chỗ sẽ có giấc ngủ ngon hơn và được nhiều điểm kinh nghiệm hơn, hãy huấn luyện thú cưng của bạn nhé!");
-            }else if(type == SkillType.Toilet){
-                UIManager.instance.OnQuestNotificationPopup("Đi ị và tè không đúng chỗ sẽ rất bẩn đấy, hãy huấn luyện chó của bạn dần nhé!");
-            }
-        }   
     }
 
     public void OffLearnSkill(){

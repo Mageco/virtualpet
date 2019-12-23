@@ -12,7 +12,7 @@ public class ToyCarItem : BaseFloorItem
 
 	Vector3[] paths;
 
-	bool isActive = false;
+	public bool isActive = false;
 
 	public GameObject body;
 
@@ -44,11 +44,11 @@ public class ToyCarItem : BaseFloorItem
 			energyBar.SetActive(false);
 			animator.speed = Mathf.Lerp(animator.speed,0,Time.deltaTime * 0.3f);
 		}else
-			animator.speed = 2;
+			animator.speed = 1;
 		if(isDrag){
 			animator.Play("Drag_" + direction.ToString());
 			energyBar.SetActive(true);
-			float t = Mathf.Clamp(dragTime/4,0,1.5f);
+			float t = Mathf.Clamp(dragTime/2,0,1.5f);
 			
 			energyProgress.transform.localScale = new Vector3(t,1.5f,1);
 		}
@@ -70,7 +70,7 @@ public class ToyCarItem : BaseFloorItem
 
 	protected override void OnMouseUp()
 	{
-		round = Mathf.Clamp((int) dragTime + 1,1,6);
+		round = Mathf.Clamp((int) dragTime*2 + 1,1,6);
 		base.OnMouseUp();
 		
 		if(!isActive){
@@ -87,6 +87,7 @@ public class ToyCarItem : BaseFloorItem
 
 	void Run(){
 		isActive = true;
+        animator.speed = 2;
 		GameManager.instance.LogAchivement(AchivementType.Use_Item,ActionType.None,this.item.itemID);
 		List<Transform> points = ItemManager.instance.GetRandomPoints (PointType.MouseEat);
 		List<Transform> pointRandoms = ItemManager.instance.GetRandomPoints (PointType.Mouse);

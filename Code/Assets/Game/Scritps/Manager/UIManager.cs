@@ -123,7 +123,7 @@ public class UIManager : MonoBehaviour
     public void OnQuestNotification()
     {
         if(QuestManager.instance != null)
-            OnQuestNotificationPopup(DataHolder.Quest(GameManager.instance.myPlayer.questId).GetDescription(0));
+            OnQuestNotificationPopup(DataHolder.Quest(GameManager.instance.myPlayer.questId).GetDescription(MageManager.instance.GetLanguage()));
     }
 
 	public NotificationPopup OnQuestNotificationPopup(string description)

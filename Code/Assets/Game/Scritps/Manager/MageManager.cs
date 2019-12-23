@@ -31,6 +31,8 @@ public class MageManager : MonoBehaviour {
 
 	[HideInInspector]
 	public float soundVolume = 1;
+    float originalSoundVolume = 0.6f;
+    float originalMusicVolume = 0.2f;
 
 	[HideInInspector]
 	public int currentID = 1;
@@ -148,13 +150,19 @@ public class MageManager : MonoBehaviour {
 
 	public void SetMusicVolume(float v)
 	{
-		music.volume = v;
+        if (v > 0)
+            music.volume = originalMusicVolume;
+        else
+            music.volume = 0;
 		ES2.Save (music.volume, "MusicVolume");
 	}
 
 	public float GetMusicVolume()
 	{
-		return music.volume;
+        if (music.volume > 0)
+            return 1;
+        else
+            return 0;
 	}
 	#endregion
 
@@ -272,13 +280,18 @@ public class MageManager : MonoBehaviour {
 
 	public void SetSoundVolume(float v)
 	{
-		soundVolume = v;
+        if (v > 0)
+            soundVolume = originalSoundVolume;
+        else
+            soundVolume = 0;
 		ES2.Save (soundVolume, "SoundVolume");
 	}
 
 	public float GetSoundVolume()
 	{
-		return soundVolume;
+        if (soundVolume > 0)
+            return 1;
+        else return 0;
 	}
 	#endregion
 

@@ -36,6 +36,7 @@ public class EnviromentManager : MonoBehaviour
 
         LoadWeather();
         CheckDayNight();
+        MageManager.instance.PlayMusicName("nightMusic", true);
     }
 
     void LoadWeather(){

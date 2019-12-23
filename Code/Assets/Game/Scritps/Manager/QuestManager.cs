@@ -17,7 +17,7 @@ public class QuestManager : MonoBehaviour
     bool isActive = true;
 
     float replayTime = 0;
-    float maxReplayTime = 30;
+    float maxReplayTime = 60;
 
     float fadeDuration = 1f;
 
@@ -309,6 +309,6 @@ public class QuestManager : MonoBehaviour
 
     public void OnQuestNotification()
     {
-        tipUI = UIManager.instance.OnQuestNotificationPopup(DataHolder.Quest(GameManager.instance.myPlayer.questId).GetDescription(0));
+        tipUI = UIManager.instance.OnQuestNotificationPopup(DataHolder.Quest(GameManager.instance.myPlayer.questId).GetDescription(MageManager.instance.GetLanguage()));
     }
 }
