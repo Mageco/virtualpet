@@ -27,7 +27,7 @@ public class ProfileUI : MonoBehaviour
         exp.text = data.Exp.ToString("F0") + "/" + e.ToString("F0");
         expProgress.fillAmount = data.Exp/e;
         sick.fillAmount = (data.MaxHealth - data.Health)/data.MaxHealth;
-        ịnjury.fillAmount = data.Damage;
+        ịnjury.fillAmount = data.Damage/data.MaxDamage;
         sleep.fillAmount = (data.MaxSleep - data.Sleep)/data.MaxSleep;
         food.fillAmount = (data.MaxFood - data.Food)/data.MaxFood;
         drink.fillAmount = (data.MaxWater - data.Water)/data.MaxWater;
@@ -46,7 +46,7 @@ public class ProfileUI : MonoBehaviour
         exp.text = data.Exp.ToString("F0") + "/" + e.ToString("F0");
         expProgress.fillAmount = data.Exp/e;
         sick.fillAmount = (data.MaxHealth - data.Health)/data.MaxHealth;
-        ịnjury.fillAmount = data.Damage;
+        ịnjury.fillAmount = data.Damage / data.MaxDamage;
         sleep.fillAmount = (data.MaxSleep - data.Sleep)/data.MaxSleep;
         food.fillAmount = (data.MaxFood - data.Food)/data.MaxFood;
         drink.fillAmount = (data.MaxWater - data.Water)/data.MaxWater;

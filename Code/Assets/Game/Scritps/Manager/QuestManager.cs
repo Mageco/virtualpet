@@ -73,27 +73,27 @@ public class QuestManager : MonoBehaviour
         
         OnQuestNotification();
         if(GameManager.instance.myPlayer.questId == 0){
-            GameManager.instance.GetPet(0).Food = 30;
+            GameManager.instance.GetPet(0).Food = 0.3f* GameManager.instance.GetPet(0).MaxFood;
             GameManager.instance.SetCameraTarget(ItemManager.instance.GetItemChildObject(ItemType.Food));
             yield return new WaitForEndOfFrame();
             GameManager.instance.ResetCameraTarget();
         }else if(GameManager.instance.myPlayer.questId == 1){
-            GameManager.instance.GetPet(0).Water = 30;
+            GameManager.instance.GetPet(0).Water = 0.3f * GameManager.instance.GetPet(0).MaxWater;
             GameManager.instance.SetCameraTarget(ItemManager.instance.GetItemChildObject(ItemType.Drink));
             yield return new WaitForEndOfFrame();
             GameManager.instance.ResetCameraTarget();
         }else if(GameManager.instance.myPlayer.questId == 2){
-            GameManager.instance.GetPet(0).Pee = 65;
+            GameManager.instance.GetPet(0).Pee = GameManager.instance.GetPet(0).MaxPee - 3;
             GameManager.instance.SetCameraTarget(ItemManager.instance.GetItemChildObject(ItemType.Toilet));
             yield return new WaitForEndOfFrame();
             GameManager.instance.ResetCameraTarget();
         }else if(GameManager.instance.myPlayer.questId == 3){
-            GameManager.instance.GetPet(0).Dirty = 68;
+            GameManager.instance.GetPet(0).Dirty = GameManager.instance.GetPet(0).MaxDirty - 2;
             GameManager.instance.SetCameraTarget(ItemManager.instance.GetItemChildObject(ItemType.Bath));
             yield return new WaitForEndOfFrame();
             GameManager.instance.ResetCameraTarget();
         }else if(GameManager.instance.myPlayer.questId == 4){
-            GameManager.instance.GetPet(0).Sleep = 35;
+            GameManager.instance.GetPet(0).Sleep = 0.3f * GameManager.instance.GetPet(0).MaxSleep;
             originalValue = GameManager.instance.GetPet(0).rateSleep;
             GameManager.instance.GetPet(0).rateSleep = 4;
             GameManager.instance.SetCameraTarget(ItemManager.instance.GetItemChildObject(ItemType.Bed));
@@ -116,12 +116,12 @@ public class QuestManager : MonoBehaviour
         }else if(GameManager.instance.myPlayer.questId == 10){
         }else if(GameManager.instance.myPlayer.questId == 11){
         }else if(GameManager.instance.myPlayer.questId == 12){
-            GameManager.instance.GetPet(0).Health = 30;
+            GameManager.instance.GetPet(0).Health = 0.3f * GameManager.instance.GetPet(0).MaxHealth;
             GameManager.instance.SetCameraTarget(ItemManager.instance.GetItemChildObject(ItemType.MedicineBox));
             yield return new WaitForEndOfFrame();
             GameManager.instance.ResetCameraTarget();
         }else if(GameManager.instance.myPlayer.questId == 13){
-            GameManager.instance.GetPet(0).Damage = 70;
+            GameManager.instance.GetPet(0).Damage = 0.7f * GameManager.instance.GetPet(0).MaxDamage;
         }else if(GameManager.instance.myPlayer.questId == 14){
         }else if(GameManager.instance.myPlayer.questId == 15){
         }
