@@ -15,6 +15,7 @@ public class EnviromentManager : MonoBehaviour
     float time = 0;
     public float maxTimeCheck = 10;
     DateTime today;
+   
 
     void Awake()
     {
@@ -65,12 +66,20 @@ public class EnviromentManager : MonoBehaviour
             nightBG.SetActive(true);
         } else{
             dayBG.SetActive(true);
-            nightBG.SetActive(false);            
+            nightBG.SetActive(false);
         }
     }
 
     public void LoadMusic()
     {
-        MageManager.instance.PlayMusicName("nightMusic", true);
+        if (DateTime.Now.Hour < 6 || DateTime.Now.Hour > 18)
+        {
+            MageManager.instance.PlayMusicName("nightMusic", true);
+        }
+        else
+        {
+            MageManager.instance.PlayMusicName("English_Country_Garden", true);
+        }
+
     }
 }
