@@ -36,8 +36,8 @@ public class ItemManager : MonoBehaviour
     IEnumerator Start()
     {
         MageManager.instance.PlayMusicName("Rainy_Day_Games",true);
-        MageManager.instance.SetMusicVolume(0.3f);
-        MageManager.instance.SetSoundVolume(0.5f);
+        MageManager.instance.SetMusicVolume(0.1f);
+        MageManager.instance.SetSoundVolume(0.7f);
         //ES3AutoSaveMgr.Instance.Load();
         bool isLoad = false;
         while(!isLoad){

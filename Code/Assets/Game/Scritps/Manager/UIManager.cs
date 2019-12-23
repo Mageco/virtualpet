@@ -49,7 +49,7 @@ public class UIManager : MonoBehaviour
 		if (instance == null)
 			instance = this;
         else 
-            GameObject.Destroy(this.gameObject);
+            Destroy(this.gameObject);
 
         DontDestroyOnLoad(this.gameObject);
 	}
