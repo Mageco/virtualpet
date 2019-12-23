@@ -75,6 +75,7 @@ public class MageManager : MonoBehaviour {
 		if (ES2.Exists ("VoiceVolume"))
 			voice.volume = ES2.Load<float> ("VoiceVolume");
 
+        /*
 		if (ES2.Exists ("Language"))
 			currentLanguage = ES2.Load<int> ("Language");
 		else {
@@ -83,7 +84,7 @@ public class MageManager : MonoBehaviour {
 			} else
 				currentLanguage = 1;
 				
-		}
+		}*/
 
 		fadeScreen.SetActive (false);
 		waitingScreen.SetActive (false);
