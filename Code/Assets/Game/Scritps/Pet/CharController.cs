@@ -681,9 +681,13 @@ public class CharController : MonoBehaviour
 
     public virtual void OnFall(){
         if(!isArrived){
-            Abort();
-            isArrived = true;
-            actionType = ActionType.Fall;
+            int ran = Random.Range(0, 100);
+            if(ran > 50)
+            {
+                Abort();
+                isArrived = true;
+                actionType = ActionType.Fall;
+            }
         }
     }
 
