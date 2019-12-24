@@ -100,7 +100,8 @@ public class QuestManager : MonoBehaviour
             yield return new WaitForEndOfFrame();
             GameManager.instance.ResetCameraTarget();
         }else if(GameManager.instance.myPlayer.questId == 5){
-            GameManager.instance.myPlayer.questValue = GameManager.instance.GetAchivement(19);
+            if(GameManager.instance.myPlayer.questValue == 0)
+                GameManager.instance.myPlayer.questValue = GameManager.instance.GetAchivement(19);
             ItemManager.instance.SpawnDirty();
             GameManager.instance.SetCameraTarget(ItemManager.instance.GetItemChildObject(ItemType.Clean));
             yield return new WaitForSeconds(1);
@@ -112,23 +113,28 @@ public class QuestManager : MonoBehaviour
                 GameManager.instance.ResetCameraTarget();
             }
         }else if(GameManager.instance.myPlayer.questId == 6){
-            GameManager.instance.myPlayer.questValue = GameManager.instance.GetAchivement(18);
+            if (GameManager.instance.myPlayer.questValue == 0)
+                GameManager.instance.myPlayer.questValue = GameManager.instance.GetAchivement(18);
         }
         else if (GameManager.instance.myPlayer.questId == 7)
         {
 
         }
         else if(GameManager.instance.myPlayer.questId == 8){
-            GameManager.instance.myPlayer.questValue = GameManager.instance.GetAchivement(17);
+            if (GameManager.instance.myPlayer.questValue == 0)
+                GameManager.instance.myPlayer.questValue = GameManager.instance.GetAchivement(17);
         }
         else if(GameManager.instance.myPlayer.questId == 9){
-            GameManager.instance.myPlayer.questValue = GameManager.instance.myPlayer.minigameLevels[0];
+            if (GameManager.instance.myPlayer.questValue == 0)
+                GameManager.instance.myPlayer.questValue = GameManager.instance.myPlayer.minigameLevels[0];
         }
         else if(GameManager.instance.myPlayer.questId == 10){
-            GameManager.instance.myPlayer.questValue = GameManager.instance.GetAchivement(23);
+            if (GameManager.instance.myPlayer.questValue == 0)
+                GameManager.instance.myPlayer.questValue = GameManager.instance.GetAchivement(23);
         }
         else if(GameManager.instance.myPlayer.questId == 11){
-            GameManager.instance.myPlayer.questValue = GameManager.instance.GetActivePet().level;
+            if (GameManager.instance.myPlayer.questValue == 0)
+                GameManager.instance.myPlayer.questValue = GameManager.instance.GetActivePet().level;
         }
         else if(GameManager.instance.myPlayer.questId == 12){
             GameManager.instance.GetActivePet().Health = 0.3f * GameManager.instance.GetActivePet().MaxHealth;
@@ -138,7 +144,8 @@ public class QuestManager : MonoBehaviour
         }else if(GameManager.instance.myPlayer.questId == 13){
             GameManager.instance.GetActivePet().Damage = 0.7f * GameManager.instance.GetActivePet().MaxDamage;
         }else if(GameManager.instance.myPlayer.questId == 14){
-            GameManager.instance.myPlayer.questValue = GameManager.instance.GetAchivementCollectTime();
+            if (GameManager.instance.myPlayer.questValue == 0)
+                GameManager.instance.myPlayer.questValue = GameManager.instance.GetAchivementCollectTime();
         }
         else if(GameManager.instance.myPlayer.questId == 15){
         }
@@ -187,6 +194,7 @@ public class QuestManager : MonoBehaviour
         isTimeline = true;
         delayTime = 0;
         replayTime = 0;
+        GameManager.instance.myPlayer.questValue = 0;
 
     }
 
