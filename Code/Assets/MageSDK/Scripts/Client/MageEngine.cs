@@ -41,6 +41,7 @@ namespace MageSDK.Client {
 
 		#region private variables
 		private bool _isLogin = false;
+		private bool _isReloadRequired = false;
 		private static bool _isLoaded = false;
 
 		private Hashtable variables;
@@ -89,6 +90,7 @@ namespace MageSDK.Client {
 						LoginWithDeviceID();
 					}
 				#endif
+
 			}
 			
 		}
@@ -117,6 +119,7 @@ namespace MageSDK.Client {
 					Debug.Log("Login: " + result.ToJson());
 					OnCompleteLogin (result);
 					//GetApplicationData ();
+					OnLoginCompleteCallback();
 				},
 				(errorStatus) => {
 					Debug.Log("Error: " + errorStatus);
@@ -219,6 +222,7 @@ namespace MageSDK.Client {
 			} else {
 				// in case data from server is newer, then replace local by copy from server
 				SetUser(u);
+				_isReloadRequired = true;
 			}
 		}
 
@@ -474,6 +478,9 @@ namespace MageSDK.Client {
 			return _isLogin;
 		}
 
+		public bool IsReloadRequired() {
+			return _isReloadRequired;
+		}
 		public User GetUser() {
 			return RuntimeParameters.GetInstance().GetParam<User>(MageEngineSettings.GAME_ENGINE_USER);
 		}
