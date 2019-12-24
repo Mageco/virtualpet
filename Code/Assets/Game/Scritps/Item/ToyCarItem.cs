@@ -64,7 +64,7 @@ public class ToyCarItem : BaseFloorItem
 
 	protected override void OnMouseDown(){
 		base.OnMouseDown();
-		iTween.StopByName("car");
+		iTween.Stop(this.gameObject);
 		isActive = false;
 		animator.Play("Idle_"+direction.ToString());
 
