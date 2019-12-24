@@ -289,7 +289,8 @@ public class QuestManager : MonoBehaviour
             if (!isEndQuest)
             {
                 if(!isTimeline && isReplay){
-                    if(replayTime > maxReplayTime){
+                    if(replayTime > maxReplayTime && GameManager.instance.myPlayer.questId < DataHolder.Quests().GetDataCount() - 1)
+                    {
                         OnQuestNotification();
                         replayTime = 0;
                     }else
@@ -309,6 +310,7 @@ public class QuestManager : MonoBehaviour
 
     public void OnQuestNotification()
     {
-        tipUI = UIManager.instance.OnQuestNotificationPopup(DataHolder.Quest(GameManager.instance.myPlayer.questId).GetDescription(MageManager.instance.GetLanguage()));
+        if(GameManager.instance.myPlayer.questId < DataHolder.Quests().GetDataCount())
+            tipUI = UIManager.instance.OnQuestNotificationPopup(DataHolder.Quest(GameManager.instance.myPlayer.questId).GetDescription(MageManager.instance.GetLanguage()));
     }
 }
