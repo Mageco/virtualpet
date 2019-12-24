@@ -22,4 +22,10 @@ public class StoryUI : MonoBehaviour
             MageManager.instance.LoadSceneWithLoading("House");
         }   
     }
+
+    public void Skip()
+    {
+        if (ES2.Exists("PlayTime"))
+            MageManager.instance.LoadSceneWithLoading("House");
+    }
 }
