@@ -39,8 +39,15 @@ public class ApiManager : MageEngine {
 	}
 
 	protected override void OnLoginCompleteCallback() {
+        if (IsReloadRequired())
+        {
+            if(ItemManager.instance != null)
+            {
+                MageManager.instance.LoadSceneWithLoading("House");
+            }
+        }
 
-	}
+    }
 
 	public static ApiManager GetInstance() {
 		return instance;

@@ -70,7 +70,7 @@ public class WinPanel : MonoBehaviour
 
     public void Replay(){
         MageManager.instance.PlaySoundName("BubbleButton", false);
-        int price = 10; 
+        int price = Mathf.Min(GameManager.instance.myPlayer.minigameLevels[0], 10); 
         if(GameManager.instance.GetHappy() >= price){
             GameManager.instance.AddHappy(-price);
             MageManager.instance.LoadScene(SceneManager.GetActiveScene().name,0.5f);
