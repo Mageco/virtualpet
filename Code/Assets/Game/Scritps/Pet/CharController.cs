@@ -505,7 +505,11 @@ public class CharController : MonoBehaviour
         }else if (actionType == ActionType.Injured)
         {
             StartCoroutine(Injured());
-        }            
+        }
+        else if (actionType == ActionType.JumpOut)
+        {
+            StartCoroutine(JumpOut());
+        }
     }
 
     #endregion
@@ -743,6 +747,13 @@ public class CharController : MonoBehaviour
     {
         //if (actionType == ActionType.Mouse)
         //    actionType = ActionType.None;
+    }
+
+    public virtual void OnJumpOut()
+    {
+        isAbort = true;
+        //if(charType != CharType.Cat)
+        actionType = ActionType.JumpOut;
     }
 
     public virtual void OnToy(ToyItem item){
@@ -1404,6 +1415,9 @@ public class CharController : MonoBehaviour
             yield return StartCoroutine(JumpDown(-5,15,35));
         }else if(enviromentType == EnviromentType.Bed || enviromentType == EnviromentType.Toilet){
             yield return StartCoroutine(JumpDown(-7,10,30)); 
+        }else if(enviromentType == EnviromentType.Table)
+        {
+            yield return StartCoroutine(JumpDown(-2, 10, 30));
         }
         CheckAbort();
     }

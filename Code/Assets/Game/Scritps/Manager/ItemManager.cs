@@ -73,6 +73,7 @@ public class ItemManager : MonoBehaviour
     {
         StartCoroutine(EquipItemCoroutine());
         UpdateItemColliders();
+        
     }
 
     IEnumerator EquipItemCoroutine()
@@ -219,6 +220,7 @@ public class ItemManager : MonoBehaviour
     public void RemoveItem(int id){
         foreach(ItemObject item in items){
             if(item.itemID == id){
+
                 RemoveItem(item);
                 return;
             }
@@ -227,6 +229,16 @@ public class ItemManager : MonoBehaviour
 
     void RemoveItem(ItemObject item)
     {
+        if(DataHolder.GetItem(item.itemID).itemType == ItemType.Table)
+        {
+            foreach(CharController pet in GameManager.instance.GetPetObjects())
+            {
+                if(pet.enviromentType == EnviromentType.Table)
+                {
+                    pet.OnJumpOut();
+                }
+            }
+        }
         items.Remove(item);
         if(item != null)
             Destroy(item.gameObject);
