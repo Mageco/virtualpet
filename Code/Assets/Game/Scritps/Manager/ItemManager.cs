@@ -239,6 +239,36 @@ public class ItemManager : MonoBehaviour
                 }
             }
         }
+        if (DataHolder.GetItem(item.itemID).itemType == ItemType.Bed)
+        {
+            foreach (CharController pet in GameManager.instance.GetPetObjects())
+            {
+                if (pet.enviromentType == EnviromentType.Bed)
+                {
+                    pet.OnJumpOut();
+                }
+            }
+        }
+        if (DataHolder.GetItem(item.itemID).itemType == ItemType.Bath)
+        {
+            foreach (CharController pet in GameManager.instance.GetPetObjects())
+            {
+                if (pet.enviromentType == EnviromentType.Bath)
+                {
+                    pet.OnJumpOut();
+                }
+            }
+        }
+        if (DataHolder.GetItem(item.itemID).itemType == ItemType.Toilet)
+        {
+            foreach (CharController pet in GameManager.instance.GetPetObjects())
+            {
+                if (pet.enviromentType == EnviromentType.Toilet)
+                {
+                    pet.OnJumpOut();
+                }
+            }
+        }
         items.Remove(item);
         if(item != null)
             Destroy(item.gameObject);
