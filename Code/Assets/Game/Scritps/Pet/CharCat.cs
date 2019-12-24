@@ -43,15 +43,19 @@ public class CharCat : CharController
         else if (ran < 70){
             anim.Play("Idle_" + this.direction.ToString(), 0);
             yield return StartCoroutine(Wait(Random.Range(1, 5)));
-        }else{ 
-            SetTarget(PointType.Table);
-            yield return StartCoroutine(RunToPoint());
-            if(Vector2.Distance(this.transform.position,target) < 1){
-                ItemCollider col = ItemManager.instance.GetItemCollider(ItemType.Table);
-                enviromentType = EnviromentType.Table;
-                yield return StartCoroutine(JumpUp(35,0,col.transform.position + new Vector3(0,col.height-0.5f,0),col.height));
-                enviromentType = EnviromentType.Table;
-                CheckEnviroment();
+        }else{
+            if(GetRandomPoint(PointType.Table) != null)
+            {
+                SetTarget(PointType.Table);
+                yield return StartCoroutine(RunToPoint());
+                if (Vector2.Distance(this.transform.position, target) < 1)
+                {
+                    ItemCollider col = ItemManager.instance.GetItemCollider(ItemType.Table);
+                    enviromentType = EnviromentType.Table;
+                    yield return StartCoroutine(JumpUp(35, 0, col.transform.position + new Vector3(0, col.height - 0.5f, 0), col.height));
+                    enviromentType = EnviromentType.Table;
+                    CheckEnviroment();
+                }
             }
         }
         CheckAbort();

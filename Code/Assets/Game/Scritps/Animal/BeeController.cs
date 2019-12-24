@@ -22,6 +22,7 @@ public class BeeController : MonoBehaviour
 	CharController target;
 
 	int hitCount = 0;
+    int maxCount = 3;
 
 	Animator anim;
 
@@ -55,6 +56,7 @@ public class BeeController : MonoBehaviour
 
 	void Enter(){
 		hitCount = 0;
+        maxCount = Random.Range(3, 10);
 		state = BeeState.Enter;
 		paths = new Vector3[3];
 		paths [0] = originalPosition;
@@ -195,7 +197,7 @@ public class BeeController : MonoBehaviour
 		MageManager.instance.PlaySoundName("Punch1",false);
 		MageManager.instance.PlaySoundName("collect_item_02",false);
 		anim.Play("Hit",0);
-		GameManager.instance.AddCoin(1);
+		GameManager.instance.AddCoin(3);
 		GameManager.instance.LogAchivement(AchivementType.Tap_Animal,ActionType.None,-1,AnimalType.Bee);
 		if(state == BeeState.Fight || state == BeeState.Seek || state == BeeState.Enter || state == BeeState.Patrol) {
 			hitCount ++;

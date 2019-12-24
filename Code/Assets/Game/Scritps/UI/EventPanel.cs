@@ -26,7 +26,7 @@ public class EventPanel : MonoBehaviour
     public void OnEvent(int id){
         if(id > 0)
         {
-             MageManager.instance.OnNotificationPopup ("Trò chơi này chưa ra mắt");
+             MageManager.instance.OnNotificationPopup ("The game is comming soon.");
         }else{
             if(GameManager.instance.GetHappy() >= price){
                 this.Close();
@@ -36,7 +36,7 @@ public class EventPanel : MonoBehaviour
                 GameManager.instance.LogAchivement(AchivementType.Play_MiniGame);
             }else
             {
-                MageManager.instance.OnNotificationPopup ("Bạn không đủ tim để chơi trò chơi này hãy chăm sóc thú cưng để thu thập thêm tim nhé.");
+                MageManager.instance.OnNotificationPopup ("You have not enough happy point to play this level, come back and earn more.");
             }
         }
        

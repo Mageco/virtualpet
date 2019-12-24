@@ -127,8 +127,9 @@ public class ItemUI : MonoBehaviour
         url = url.Replace(".png", "");
         icon.sprite = Resources.Load<Sprite>(url) as Sprite;
         price.text = d.buyPrice.ToString();
+        iconType.sprite = Resources.Load<Sprite>("Icons/ItemType/Pet");
 
-        if(!d.isAvailable){
+        if (!d.isAvailable){
             isCommingSoon = true;
         }
 
@@ -248,7 +249,7 @@ public class ItemUI : MonoBehaviour
         else
         {
             if(DataHolder.GetItem(itemId).itemType == ItemType.Diamond){
-                MageManager.instance.OnNotificationPopup("Tính năng mua kim cương chưa mở");
+                MageManager.instance.OnNotificationPopup("You can not buy diamond now.");
             }else if(DataHolder.GetItem(itemId).itemType == ItemType.Coin){
                 UIManager.instance.OnConfirmationShopPanel(itemId,false,true);
             }else

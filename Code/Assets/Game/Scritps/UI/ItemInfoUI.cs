@@ -216,7 +216,7 @@ public class ItemInfoUI : MonoBehaviour
         else
         {
             if(DataHolder.GetItem(itemId).itemType == ItemType.Diamond){
-                MageManager.instance.OnNotificationPopup("Tính năng mua kim cương chưa mở");
+                MageManager.instance.OnNotificationPopup("You can not buy diamon now.");
             }else if(DataHolder.GetItem(itemId).itemType == ItemType.Coin){
                 UIManager.instance.OnConfirmationShopPanel(itemId,false,true);
             }else

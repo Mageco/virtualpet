@@ -77,7 +77,7 @@ public class WinPanel : MonoBehaviour
             this.GetComponent<Popup>().Close();
         }else
         {
-            MageManager.instance.OnNotificationPopup ("Bạn không đủ tim để chơi trò chơi này hãy chăm sóc thú cưng để thu thập thêm tim nhé.");
+            MageManager.instance.OnNotificationPopup ("You have not enough happy point to play this level, come back and earn more.");
         }
     }
 
