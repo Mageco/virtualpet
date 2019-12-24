@@ -38,7 +38,7 @@ public class CharCollider : MonoBehaviour
         }else if(other.tag == "Car"){
             if(other.transform.parent.GetComponent<ToyCarItem>().IsSupprised())
                 character.OnSupprised();
-            else
+            else if(character.actionType == ActionType.Patrol)
                 character.OnStop();
         }else if(other.tag == "Toy"){
             ToyItem toy = other.transform.parent.GetComponent<ToyItem>();
