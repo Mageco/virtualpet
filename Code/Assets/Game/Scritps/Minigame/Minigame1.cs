@@ -59,21 +59,37 @@ public class Minigame1 : Minigame
         chickenSpawner.maxNumber = 5;
         chickenSpawner.speed = 5;
 
-        float addSpeed = gameLevel/10f;
-        if(addSpeed > 10)
-            addSpeed = 10;
+        float addSpeed = gameLevel/5f;
+        if(addSpeed > 20)
+            addSpeed = 20;
 
-        foxSpawner.maxNumber = initNumber + gameLevel/5;
+        
+        if(gameLevel < 10)
+        {
+            foxSpawner.maxNumber = initNumber + gameLevel;
+        }else if(gameLevel < 20)
+        {
+            foxSpawner.maxNumber = initNumber + 10 + (gameLevel - 10) / 3;
+        }else if(gameLevel < 30)
+        {
+            foxSpawner.maxNumber = initNumber + 13 + (gameLevel - 20) / 5;
+        }
+        else
+        {
+            foxSpawner.maxNumber = initNumber + 15 + (gameLevel - 30) / 5;
+        }
+
+
         foxSpawner.speed = initSpeed + addSpeed;
 
-        if(gameLevel > 5 && gameLevel % 5 == 0){
+        if(gameLevel >= 5 && gameLevel % 5 == 0){
             int n = gameLevel - 5;
             snakeSpawner.maxNumber = 1 + n/5;
             snakeSpawner.speed = initSpeed + addSpeed;
         }else
             snakeSpawner.maxNumber = 0;
 
-        if(gameLevel > 10 && gameLevel % 10 == 0){
+        if(gameLevel >= 10 && gameLevel % 10 == 0){
             int n = gameLevel - 10;
             eagleSpawner.maxNumber = 1 + n/5;
             eagleSpawner.speed = initSpeed + addSpeed;
