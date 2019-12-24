@@ -14,6 +14,7 @@ public class PlayerData : BaseModel
 	public int[] minigameLevels = new int[1];
 
 	public int questId = 0;
+    public int questValue = 0;
 	public List<PlayerAchivement> achivements = new List<PlayerAchivement>();
 	
 	public PlayerData(){

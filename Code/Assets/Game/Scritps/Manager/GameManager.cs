@@ -191,6 +191,7 @@ public class GameManager : MonoBehaviour
 		}
 		RemovePet (petId);
 	}
+   
 
     public Pet GetPet(int id){
         foreach(Pet p in myPlayer.pets){
