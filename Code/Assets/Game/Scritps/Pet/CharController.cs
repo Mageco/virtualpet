@@ -1527,7 +1527,7 @@ public class CharController : MonoBehaviour
 
     protected virtual IEnumerator Happy()
     {
-        yield return StartCoroutine(DoAnim("Happy"));
+        yield return StartCoroutine(DoAnim("Love"));
         CheckAbort();
     }
 
@@ -1561,9 +1561,10 @@ public class CharController : MonoBehaviour
 
     protected virtual IEnumerator Fall()
     {
-        MageManager.instance.PlaySoundName("weapon_fun_pea_shooter_03",false);
+        MageManager.instance.PlaySoundName("Fall",false);
        
         data.Damage += Random.Range(2,10);
+        MageManager.instance.PlaySoundName("Drop", false,1);
         yield return StartCoroutine(DoAnim("Fall_" + direction.ToString()));
         
         CheckAbort();
