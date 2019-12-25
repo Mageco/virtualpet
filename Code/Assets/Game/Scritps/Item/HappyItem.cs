@@ -8,8 +8,10 @@ public class HappyItem : MonoBehaviour
     Animator animator;
     public int value = 5;
     bool isPick = false;
-    public void Load(int e){
+    bool isSound = true;
+    public void Load(int e,bool isSound){
         value = e;
+        this.isSound = isSound;
     }
 
     void Awake(){
@@ -19,7 +21,8 @@ public class HappyItem : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        MageManager.instance.PlaySoundName("Button",false);
+        if(isSound)
+            MageManager.instance.PlaySoundName("Button",false);
         Vector3 pos = this.transform.position;
         pos.z = (this.transform.position.y - 2) * 10;
         this.transform.position = pos;

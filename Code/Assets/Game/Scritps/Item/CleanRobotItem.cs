@@ -150,7 +150,7 @@ public class CleanRobotItem : MonoBehaviour
 			yield return new WaitForEndOfFrame();
 		}
 		if(dirtyTarget == null){
-			ItemManager.instance.SpawnHeart(this.transform.position,Quaternion.identity,1);
+			ItemManager.instance.SpawnHeart(this.transform.position,Quaternion.identity,1,true);
 			GameManager.instance.LogAchivement(AchivementType.Clean);
 		}
 		if(!isAbort){

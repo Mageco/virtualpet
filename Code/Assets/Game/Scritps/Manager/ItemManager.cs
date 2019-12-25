@@ -20,6 +20,7 @@ public class ItemManager : MonoBehaviour
     public GameObject dirtyPrefab;
     float time = 0;
     float maxTimeCheck = 1;
+    System.DateTime playTime = System.DateTime.Now;
 
     float timeDirty = 0;
     float maxTimeDirty = 200;
@@ -31,6 +32,8 @@ public class ItemManager : MonoBehaviour
             instance = this;
         else 
             GameObject.Destroy(this.gameObject);
+
+
     }
     // Start is called before the first frame update
     IEnumerator Start()
@@ -47,7 +50,13 @@ public class ItemManager : MonoBehaviour
             yield return new WaitForEndOfFrame();
         }
         LoadItemData();
- 
+
+        if (ES2.Exists("PlayTime"))
+        {
+            playTime = ES2.Load<System.DateTime>("PlayTime");
+            LoadPetData((float)(System.DateTime.Now - playTime).TotalSeconds);
+        }
+
     }
 
     // Update is called once per frame
@@ -56,7 +65,10 @@ public class ItemManager : MonoBehaviour
         if(time > maxTimeCheck){
             CheckItemData();
             time = 0;
-        }else{
+            playTime = System.DateTime.Now;
+            ES2.Save(playTime, "PlayTime");
+        }
+        else{
             time += Time.deltaTime;
         }
 
@@ -427,9 +439,9 @@ public class ItemManager : MonoBehaviour
         go.GetComponent<ItemDirty>().dirty = value;
     }
 
-    public void SpawnHeart(Vector3 pos,Quaternion rot, int value){
+    public void SpawnHeart(Vector3 pos,Quaternion rot, int value,bool isSound){
         GameObject go = GameObject.Instantiate(heartPrefab,pos,rot);
-        go.GetComponent<HappyItem>().Load(value);
+        go.GetComponent<HappyItem>().Load(value,isSound);
     }
 
     public void SpawnDirty()
@@ -496,9 +508,72 @@ public class ItemManager : MonoBehaviour
                     GetItem(item.id).GetComponentInChildren<EatItem>().transform.position = item.position;
                 }
             }else if(item.itemType == ItemSaveDataType.Happy){
-                SpawnHeart(item.position,item.rotation,(int)item.value);
+                SpawnHeart(item.position,item.rotation,(int)item.value,false);
             }
         }
+    }
+
+    public void LoadPetData(float t)
+    {
+        int petNumber = GameManager.instance.GetPetObjects().Count;
+        int peeNumber = (int)Mathf.Clamp(t / 3600 * petNumber, 0, 10);
+        int shitNumber = (int)Mathf.Clamp(t / 7200 * petNumber, 0, 10);
+        int dirtyNumber = (int)Mathf.Clamp(t / 7200, 0, 3);
+        
+        foreach (CharController p in GameManager.instance.GetPetObjects())
+        {
+            p.LoadTime(t);
+        }
+
+        for (int i = 0; i < dirtyNumber; i++)
+        {
+            SpawnDirty();
+        }
+
+        for (int i = 0; i < peeNumber; i++)
+        {
+            SpawnPee(GetRandomPoint(PointType.Patrol).position,Random.Range(50,100));
+        }
+
+        for (int i = 0; i < shitNumber; i++)
+        {
+            SpawnShit(GetRandomPoint(PointType.Patrol).position, Random.Range(50, 100));
+        }
+
+
+        if (GetItem(ItemType.Food) != null)
+        {
+            int n = Mathf.Min((int)(0.05f * t * petNumber / 50), (int)GetItem(ItemType.Food).GetComponent<FoodBowlItem>().foodAmount / 50);
+            GetItem(ItemType.Food).GetComponent<FoodBowlItem>().Eat(0.05f * t * petNumber);
+            
+            for (int i = 0; i < n; i++)
+            {
+                int ran = Random.Range(0, 100);
+                Quaternion rot = Quaternion.identity;
+                if (ran > 50)
+                    rot = Quaternion.Euler(new Vector3(0, 180, -1));
+                Vector3 pos = GetItem(ItemType.Food).transform.position + new Vector3(Random.Range(-1, 1), Random.Range(-1, 1), 0);
+                ItemManager.instance.SpawnHeart(pos, rot, 1, true);
+            }
+        }
+
+        if (GetItem(ItemType.Drink) != null)
+        {
+            int n = Mathf.Min((int)(0.05f * t * petNumber / 50), (int)GetItem(ItemType.Drink).GetComponent<DrinkBowlItem>().foodAmount / 50);
+            GetItem(ItemType.Drink).GetComponent<DrinkBowlItem>().Eat(0.05f * t * petNumber);
+            for (int i = 0; i < n; i++)
+            {
+                int ran = Random.Range(0, 100);
+                Quaternion rot = Quaternion.identity;
+                if (ran > 50)
+                    rot = Quaternion.Euler(new Vector3(0, 180, -1));
+                Vector3 pos = GetItem(ItemType.Drink).transform.position + new Vector3(Random.Range(-1, 1), Random.Range(-1, 1), 0);
+                ItemManager.instance.SpawnHeart(pos, rot, 1, true);
+            }
+        }
+
+        
+
 
 
     }

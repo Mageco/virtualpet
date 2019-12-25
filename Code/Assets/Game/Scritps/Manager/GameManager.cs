@@ -472,7 +472,7 @@ public class GameManager : MonoBehaviour
                     if(ran > 50)
                         rot = Quaternion.Euler(new Vector3(0,180,-1));
                     Vector3 pos = GetPetObject(petId).charScale.scalePosition + new Vector3(Random.Range(-1,1),Random.Range(-1,1),0);
-                    ItemManager.instance.SpawnHeart(pos,rot,1);
+                    ItemManager.instance.SpawnHeart(pos,rot,1,true);
                 }
             }else{
                 GameObject go = GameObject.Instantiate(expPrefab,petObjects[0].transform.position,Quaternion.identity);

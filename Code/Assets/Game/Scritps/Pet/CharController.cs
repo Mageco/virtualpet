@@ -54,8 +54,7 @@ public class CharController : MonoBehaviour
     FoodBowlItem foodItem;
     DrinkBowlItem drinkItem;
     MouseController mouse;
-    public GameObject growUpTimeline;
-    System.DateTime playTime = System.DateTime.Now;
+    
 
     public Vector3 dropPosition = Vector3.zero;
 
@@ -94,10 +93,6 @@ public class CharController : MonoBehaviour
         
         agent.maxSpeed = data.speed;
 
-        if(ES2.Exists("PlayTime")){
-            playTime = ES2.Load<System.DateTime>("PlayTime");
-        }
-
         SetDirection(Direction.R);
 
         if(iconStatusObject != null)
@@ -128,11 +123,34 @@ public class CharController : MonoBehaviour
         Load();
     }
 
-    public void LoadTime(float t){
+    public void LoadTime(float t)
+    {
+        int n = 1;
+        int h = (int)((data.Health + data.Damage)/100);
+        n += (int)(h * t/3600 * data.level);
+        if (n > 10)
+            n = 10;
+        data.Sleep -= data.recoverSleep * t;
+        if(data.Sleep < 0.01f)
+        {
+            data.Sleep += data.MaxSleep * Random.Range(0, 1);
+        }
+        data.Energy -= 0.05f * t;
+        data.Food -= 0.05f * t;
+        data.Water -= 0.05f * t;
+        data.Pee += 0.05f * t;
+        data.Shit += 0.05f * t;
+        data.Dirty += data.recoverDirty * t;
 
-        //Debug.Log("Load Time " + t);
-        int n = (int)(t/10);
-        data.Sleep = data.MaxSleep - (t%28800)*0.005f; 
+        for (int i = 0; i < n; i++)
+        {
+            int ran = Random.Range(0, 100);
+            Quaternion rot = Quaternion.identity;
+            if (ran > 50)
+                rot = Quaternion.Euler(new Vector3(0, 180, -1));
+            Vector3 pos = this.charScale.scalePosition + new Vector3(Random.Range(-1, 1), Random.Range(-1, 1), 0);
+            ItemManager.instance.SpawnHeart(pos, rot, 1, true);
+        }
 
     }
 
@@ -193,11 +211,7 @@ public class CharController : MonoBehaviour
             CalculateStatus();
             dataTime = 0;
 //            Debug.Log((System.DateTime.Now - playTime).Seconds);
-            if((System.DateTime.Now - playTime).Seconds > 10){
-                LoadTime((System.DateTime.Now - playTime).Seconds);
-            }
-            playTime = System.DateTime.Now;
-            ES2.Save(playTime,"PlayTime");
+
         }
         else
             dataTime += Time.deltaTime;
@@ -1697,13 +1711,7 @@ public class CharController : MonoBehaviour
 
     #region Effect
 
-    protected void SpawnFly(){
-        //GameObject go = Instantiate(flyPrefab,Vector3.zero, Quaternion.identity); 
-    }
 
-    protected void GrowUp(){
-         GameObject go = Instantiate(growUpTimeline, new Vector3(0, 0, -50), Quaternion.identity);
-    }
 
     #endregion
 

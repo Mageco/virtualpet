@@ -30,14 +30,14 @@ public class ItemDirty : MonoBehaviour
 	{
 		dirty -= clean;
 		if (dirty < 0){
-			GameObject.Destroy(this.gameObject);
+			Destroy(this.gameObject);
 		}
 			
 	}
 
 	void OnTriggerEnter2D(Collider2D other) {
         if (other.tag == "Player") {
-           other.GetComponent<CharController>().data.Dirty += this.dirty/5f;   
+           other.GetComponent<CharController>().data.Dirty += this.dirty/20f;   
 		}else if(other.tag == "Toilet"){
 			isClearning = true;
 		}        
