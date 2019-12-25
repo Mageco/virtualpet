@@ -41,7 +41,9 @@ public class ApiManager : MageEngine {
 	protected override void OnLoginCompleteCallback() {
         if (IsReloadRequired())
         {
-            if(ItemManager.instance != null)
+            Debug.Log("Load data from server");
+            GameManager.instance.myPlayer = GetUserData<PlayerData>();
+            if (ItemManager.instance != null)
             {
                 MageManager.instance.LoadSceneWithLoading("House");
             }
