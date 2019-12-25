@@ -24,7 +24,7 @@ using Mage.Models.Users;
 using Mage.Models.Game;
 using Mage.Models.Application;
 using Mage.Models;
-
+using UnityEngine.UI;
 
 namespace MageSDK.Client {
 	public class MageEngine : MonoBehaviour {
@@ -56,6 +56,7 @@ namespace MageSDK.Client {
 
 		//private List<ActionLog> cachedActionLog = new List<ActionLog>();
 		private Hashtable cachedActionLog = new Hashtable();
+
 		#endregion
 
 		void Awake() {
@@ -81,28 +82,29 @@ namespace MageSDK.Client {
 				InitApiCache();
 
 				LoadEngineCache();
-				
-				#if PLATFORM_TEST
-					if (this.resetUserDataOnStart || !this.isWorkingOnline) {
-						// in unity and test mode don't reuse user saved previously, always initate new user
-						_isLogin = true;
-						//test callback
-						OnLoginCompleteCallback();
-					} else {
-						// login user during start
-						if (loginMethod == ClientLoginMethod.LOGIN_DEVICE_UUID) {
-							LoginWithDeviceID();
-						}
-					}
-				#else
-					// Always connect to server login user during start
+			}
+			
+		}
+
+		public void DoLogin() {
+			#if PLATFORM_TEST
+				if (this.resetUserDataOnStart || !this.isWorkingOnline) {
+					// in unity and test mode don't reuse user saved previously, always initate new user
+					_isLogin = true;
+					//test callback
+					OnLoginCompleteCallback();
+				} else {
+					// login user during start
 					if (loginMethod == ClientLoginMethod.LOGIN_DEVICE_UUID) {
 						LoginWithDeviceID();
 					}
-				#endif
-
-			}
-			
+				}
+			#else
+				// Always connect to server login user during start
+				if (loginMethod == ClientLoginMethod.LOGIN_DEVICE_UUID) {
+					LoginWithDeviceID();
+				}
+			#endif
 		}
 
 		///<summary>Other implementation will override this function</summary>
@@ -118,7 +120,10 @@ namespace MageSDK.Client {
 		#region Login & user handling
 		///<summary>Login using device id</summary>
 		public void LoginWithDeviceID() {
+			//text.text += RuntimeParameters.GetInstance().ToString();
 			LoginRequest r = new LoginRequest (ApiSettings.LOGIN_DEVICE_UUID);
+
+			//text.text += "-----\r\n" + r.ToJson();
 
 			//call to login api
 			ApiHandler.instance.SendApi<LoginResponse>(
@@ -255,7 +260,7 @@ namespace MageSDK.Client {
 		public void UpdateUserData<T>(T obj) where T:BaseModel {
 			string className = typeof(T).Name;
 			UserData d = new UserData() {
-				attr_name = ApiHandler.GetInstance().ApplicationKey + "_" + className,
+				attr_name = ApiHandler.instance.ApplicationKey + "_" + className,
 				attr_value = obj.ToJson(),
 				attr_type = className
 			};
@@ -276,22 +281,11 @@ namespace MageSDK.Client {
 				u.SetUserData(d);
 			}
 
-			// user must logged in
-			//if (this.IsLogin()) {
-				// update user to game engine
-				//#if PLATFORM_TEST
-				//	if (this.resetUserDataOnStart || !this.isWorkingOnline) {
-				//		this.SaveCacheData<User>(u, MageEngineSettings.GAME_ENGINE_USER);
-				//		return;	
-				//	}
-                //#endif
-
             this.SaveCacheData<User>(u, MageEngineSettings.GAME_ENGINE_USER);
 
-            if (IsLogin() && this.IsSendable("UpdateUserDataRequest")) {
-					SaveUserDataToServer(u);
+            if (this.isWorkingOnline && IsLogin() && this.IsSendable("UpdateUserDataRequest")) {
+				SaveUserDataToServer(u);
 			}
-			//}
 		}
 
 		private void SaveUserDataToServer(User u) {
@@ -323,7 +317,7 @@ namespace MageSDK.Client {
 
 		///<summary>Update user data to current user. Once complete, save data to cache</summary>
 		public T GetUserData<T>() where T:BaseModel {
-			string key = ApiHandler.GetInstance().ApplicationKey + "_" + typeof(T).Name;
+			string key = ApiHandler.instance.ApplicationKey + "_" + typeof(T).Name;
 			return BaseModel.CreateFromJSON<T>(GetUser().GetUserData(key));
 		}
 
@@ -397,16 +391,10 @@ namespace MageSDK.Client {
 
 		///<summary>Upload file to server and get back the url</summary>
 		private void UpdateUserProfileToServer(User u) {
-			// user must logged in
-			if (IsLogin()) {
-				// update user to game engine
-				#if PLATFORM_TEST
-					if (this.resetUserDataOnStart || !this.isWorkingOnline) {
-						this.SaveCacheData<User>(u, MageEngineSettings.GAME_ENGINE_USER);
-						return;	
-					}
-				#endif
+			this.SaveCacheData<User>(u, MageEngineSettings.GAME_ENGINE_USER);
 
+			// user must logged in
+			if (this.isWorkingOnline && IsLogin()) {
 				// save data to server
 				UpdateProfileRequest r = new UpdateProfileRequest (u.fullname, u.phone, u.email, u.avatar, u.notification_token);
 				
@@ -416,7 +404,6 @@ namespace MageSDK.Client {
 					r, 
 					(result) => {
 						Debug.Log("Success: Update user profile");
-						this.SaveCacheData<User>(u, MageEngineSettings.GAME_ENGINE_USER);
 					},
 					(errorStatus) => {
 						Debug.Log("Error: " + errorStatus);
@@ -659,29 +646,27 @@ namespace MageSDK.Client {
 				}
 			#endif
 
-			if (!this.IsSendable("SendUserEventListRequest")) {
-				return;
+			if (this.IsSendable("SendUserEventListRequest")) {
+				SendUserEventListRequest r = new SendUserEventListRequest (this.cachedEvent);
+
+				//call to login api
+				ApiHandler.instance.SendApi<SendUserEventListResponse>(
+					ApiSettings.API_SEND_USER_EVENT_LIST,
+					r, 
+					(result) => {
+						//Debug.Log("Success: send event successfully");
+						this.cachedEvent = new List<MageEvent>();
+						SaveEvents();
+					},
+					(errorStatus) => {
+						//Debug.Log("Error: " + errorStatus);
+						//do some other processing here
+					},
+					() => {
+						TimeoutHandler();
+					}
+				);
 			}
-
-			SendUserEventListRequest r = new SendUserEventListRequest (this.cachedEvent);
-
-			//call to login api
-			ApiHandler.instance.SendApi<SendUserEventListResponse>(
-				ApiSettings.API_SEND_USER_EVENT_LIST,
-				r, 
-				(result) => {
-					//Debug.Log("Success: send event successfully");
-					this.cachedEvent = new List<MageEvent>();
-					SaveEvents();
-				},
-				(errorStatus) => {
-					//Debug.Log("Error: " + errorStatus);
-					//do some other processing here
-				},
-				() => {
-					TimeoutHandler();
-				}
-			);
 		}
 
 		public void OnEvent(MageEventType type, string eventDetail = "") {
@@ -798,27 +783,26 @@ namespace MageSDK.Client {
 				}
 			#endif
 
-			if (!this.IsSendable("SendGameUserActionLogRequest" + LoggerID<T>())) {
-				return;
+			if (this.IsSendable("SendGameUserActionLogRequest" + LoggerID<T>())) {
+				SendGameUserActionLogRequest r = new SendGameUserActionLogRequest (GetLogger<T>());
+			
+				//call to send action log api
+				ApiHandler.instance.SendApi<SendGameActionLogResponse>(
+					ApiSettings.API_SEND_GAME_USER_ACTION_LOG,
+					r, 
+					(result) => {
+						ClearLogger<T>();
+					},
+					(errorStatus) => {
+						//Debug.Log("Error: " + errorStatus);
+						//do some other processing here
+					},
+					() => {
+						TimeoutHandler();
+					}
+				);
 			}
 
-			SendGameUserActionLogRequest r = new SendGameUserActionLogRequest (GetLogger<T>());
-			
-			//call to send action log api
-			ApiHandler.instance.SendApi<SendGameActionLogResponse>(
-				ApiSettings.API_SEND_GAME_USER_ACTION_LOG,
-				r, 
-				(result) => {
-					ClearLogger<T>();
-				},
-				(errorStatus) => {
-					//Debug.Log("Error: " + errorStatus);
-					//do some other processing here
-				},
-				() => {
-					TimeoutHandler();
-				}
-			);
 		}
 
 

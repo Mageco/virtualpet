@@ -27,7 +27,6 @@ public class ApiManager : MageEngine {
 	[HideInInspector]
 	public int option = 0;
 
-
 	protected override void Load()
 	{
         /*
@@ -57,7 +56,7 @@ public class ApiManager : MageEngine {
 	//}
 
 	protected void Start() {
-		
+		DoLogin();
 	}
 	
 }
