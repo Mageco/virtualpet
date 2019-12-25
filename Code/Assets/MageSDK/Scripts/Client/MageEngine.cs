@@ -29,9 +29,11 @@ using Mage.Models;
 namespace MageSDK.Client {
 	public class MageEngine : MonoBehaviour {
 
-		///<summary>isLocalApplicationData is using to indicate where to get Application Data.</summary>
-		// this is used to test application in Editor mode, if this is true then Application Data will be load from local resources
-		public bool isLocalApplicationData = true;
+        public static MageEngine instance;
+
+        ///<summary>isLocalApplicationData is using to indicate where to get Application Data.</summary>
+        // this is used to test application in Editor mode, if this is true then Application Data will be load from local resources
+        public bool isLocalApplicationData = true;
 		///<summary>resetUserDataOnStart is used during test in Unity editor to reset user data whenever editor is running.</summary>
 		// if this variable is false, then data will be save to local storage and server accordingly
 		public bool resetUserDataOnStart = true;
@@ -57,7 +59,15 @@ namespace MageSDK.Client {
 		#endregion
 
 		void Awake() {
-			if (!_isLoaded) {
+
+            if (instance == null)
+                instance = this;
+            else
+                Destroy(this.gameObject);
+
+            DontDestroyOnLoad(this.gameObject);
+
+            if (!_isLoaded) {
 				_isLoaded = true;
 				Load();
 
@@ -267,25 +277,21 @@ namespace MageSDK.Client {
 			}
 
 			// user must logged in
-			if (this.IsLogin()) {
+			//if (this.IsLogin()) {
 				// update user to game engine
-				#if PLATFORM_TEST
-					if (this.resetUserDataOnStart || !this.isWorkingOnline) {
-						this.SaveCacheData<User>(u, MageEngineSettings.GAME_ENGINE_USER);
-						return;	
-					}
-				#endif
+				//#if PLATFORM_TEST
+				//	if (this.resetUserDataOnStart || !this.isWorkingOnline) {
+				//		this.SaveCacheData<User>(u, MageEngineSettings.GAME_ENGINE_USER);
+				//		return;	
+				//	}
+                //#endif
 
-				if (!this.IsSendable("UpdateUserDataRequest")) {
-					Debug.Log("Keep api in cache: UpdateUserDataRequest");
-					if (this.resetUserDataOnStart || !this.isWorkingOnline) {
-						this.SaveCacheData<User>(u, MageEngineSettings.GAME_ENGINE_USER);
-						return;	
-					}
-				} else {
+            this.SaveCacheData<User>(u, MageEngineSettings.GAME_ENGINE_USER);
+
+            if (IsLogin() && this.IsSendable("UpdateUserDataRequest")) {
 					SaveUserDataToServer(u);
-				}
 			}
+			//}
 		}
 
 		private void SaveUserDataToServer(User u) {

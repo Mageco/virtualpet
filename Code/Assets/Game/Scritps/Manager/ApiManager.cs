@@ -14,7 +14,7 @@ using MageSDK.Client;
 
 public class ApiManager : MageEngine {
 
-	private static ApiManager instance;
+	//private static ApiManager instance;
 	[HideInInspector]
 	public int testRound = 0;
 	[HideInInspector]
@@ -30,12 +30,13 @@ public class ApiManager : MageEngine {
 
 	protected override void Load()
 	{
+        /*
 		if (instance == null)
 			instance = this;
 		else
 			Destroy (this.gameObject);
 
-		DontDestroyOnLoad (this.gameObject);
+		DontDestroyOnLoad (this.gameObject);*/
 	}
 
 	protected override void OnLoginCompleteCallback() {
@@ -51,9 +52,9 @@ public class ApiManager : MageEngine {
 
     }
 
-	public static ApiManager GetInstance() {
-		return instance;
-	}
+	//public static ApiManager GetInstance() {
+	//	return instance;
+	//}
 
 	protected void Start() {
 		

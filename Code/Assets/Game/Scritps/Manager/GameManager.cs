@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using MageSDK.Client;
 using UnityEngine;
 
 
@@ -520,14 +521,14 @@ public class GameManager : MonoBehaviour
                 item.value = itemObject.GetComponentInChildren<DrinkBowlItem>().foodAmount;
             }
         } */
-        ApiManager.GetInstance().UpdateUserData<PlayerData>(myPlayer); 
+        MageEngine.instance.UpdateUserData<PlayerData>(myPlayer); 
     }
 
     public void LoadPlayer(){
-        if(ApiManager.GetInstance().GetUserData<PlayerData>() != null){
+        if(MageEngine.instance.GetUserData<PlayerData>() != null){
             Debug.Log("Load data from local");
-            Debug.Log(ApiManager.GetInstance().GetUser().ToJson());
-            myPlayer = ApiManager.GetInstance().GetUserData<PlayerData>();
+            Debug.Log(MageEngine.instance.GetUser().ToJson());
+            myPlayer = MageEngine.instance.GetUserData<PlayerData>();
             //LoadNewUser();
         }else{
             Debug.Log("Create New Data");
