@@ -27,7 +27,8 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 7.73, z: 0}
   m_LocalScale: {x: 1.5, y: 1.5, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 322735002885123881}
   m_Father: {fileID: 193803885500558729}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -203,6 +204,98 @@ Transform:
   m_Father: {fileID: 578573572266600834}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &591155077979141396
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 322735002885123881}
+  - component: {fileID: 6499690754823414218}
+  - component: {fileID: 3433870804843710903}
+  m_Layer: 0
+  m_Name: TimeWait
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &322735002885123881
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 591155077979141396}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -1.2, z: -0.5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 853995389}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!23 &6499690754823414218
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 591155077979141396}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 9b4ab9a405a684c5ab1bee3fbe07fa65, type: 3}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+--- !u!102 &3433870804843710903
+TextMesh:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 591155077979141396}
+  m_Text: 19:20
+  m_OffsetZ: 0
+  m_CharacterSize: 0.07
+  m_LineSpacing: 1
+  m_Anchor: 4
+  m_Alignment: 0
+  m_TabSize: 4
+  m_FontSize: 100
+  m_FontStyle: 0
+  m_RichText: 1
+  m_Font: {fileID: 12800000, guid: 9b4ab9a405a684c5ab1bee3fbe07fa65, type: 3}
+  m_Color:
+    serializedVersion: 2
+    rgba: 4278190080
 --- !u!1 &1786678155666974602
 GameObject:
   m_ObjectHideFlags: 0
@@ -387,6 +480,7 @@ MonoBehaviour:
   data:
     iD: 0
     iconUrl: 
+    iconProfileUrl: 
     languageItem: []
     buyPrice: 0
     priceType: 1
@@ -395,10 +489,12 @@ MonoBehaviour:
     isAvailable: 1
     skills: []
     petName: 
+    shopOrder: 0
     speed: 0
     level: 0
     exp: 0
     intelligent: 10
+    happy: 0
     food: 50
     water: 50
     sleep: 50
@@ -411,6 +507,7 @@ MonoBehaviour:
     itchi: 50
     fear: 0
     curious: 0
+    maxTimeSick: 1800
     rateFood: 10
     rateWater: 10
     rateSleep: 0.5
@@ -428,15 +525,18 @@ MonoBehaviour:
     maxEnergy: 100
     maxHealth: 100
     maxDamage: 100
-    maxHappy: 100
-    maxStamina: 100
     maxDirty: 100
     maxItchi: 100
-    maxFear: 100
     maxCurious: 100
     character: {fileID: 0}
+    actionType: 0
+    position: {x: 0, y: 0, z: 0}
+    scalePosition: {x: 0, y: 0, z: 0}
+    height: 0
+    enviromentType: 0
   petPrefab: {fileID: 2776677470726071290, guid: 137eece5d071748929751c451ae79de6,
     type: 3}
+  charType: 0
   enviromentType: 0
   direction: 1
   target: {x: 0, y: 0, z: 0}
@@ -450,18 +550,16 @@ MonoBehaviour:
   charScale: {fileID: 0}
   peePosition: {fileID: 4213929617894132666}
   shitPosition: {fileID: 3260102857673776288}
-  peePrefab: {fileID: 7166089402494124037, guid: ccefdc6a159554ad68c454188f52587b,
-    type: 3}
-  shitPrefab: {fileID: 4887335964014193537, guid: 6cd2b87a2c28c424ba4e4c5f8d1ddfd2,
-    type: 3}
   shadow: {fileID: 0}
   originalShadowScale: {x: 0, y: 0, z: 0}
   currentSkill: 0
-  growUpTimeline: {fileID: 0}
   dropPosition: {x: 0, y: 0, z: 0}
   iconStatusObject: {fileID: 853995390}
+  timeWait: {fileID: 3433870804843710903}
   iconStatus: 0
   dirties: []
+  dirties_L: []
+  dirties_LD: []
 --- !u!114 &8264768739376955380
 MonoBehaviour:
   m_ObjectHideFlags: 0

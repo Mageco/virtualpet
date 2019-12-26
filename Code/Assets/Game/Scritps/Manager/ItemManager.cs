@@ -18,6 +18,7 @@ public class ItemManager : MonoBehaviour
     public GameObject heartPrefab; 
 
     public GameObject dirtyPrefab;
+    public GameObject healthEffectPrefab;
     float time = 0;
     float maxTimeCheck = 1;
     System.DateTime playTime = System.DateTime.Now;
@@ -31,7 +32,7 @@ public class ItemManager : MonoBehaviour
         if (instance == null)
             instance = this;
         else 
-            GameObject.Destroy(this.gameObject);
+            Destroy(this.gameObject);
 
 
     }
@@ -366,7 +367,7 @@ public class ItemManager : MonoBehaviour
 
     List<ItemSkill> GetSkillItem(SkillType type){
         List<ItemSkill> itemSkills = new List<ItemSkill>();
-        ItemSkill[] skills = GameObject.FindObjectsOfType<ItemSkill>();
+        ItemSkill[] skills = FindObjectsOfType<ItemSkill>();
         for(int i=0;i<skills.Length;i++){
             if(skills[i].skillType == type){
                 itemSkills.Add(skills[i]);
@@ -388,7 +389,7 @@ public class ItemManager : MonoBehaviour
     List<GizmoPoint> GetPoints(PointType type)
 	{
 		List<GizmoPoint> temp = new List<GizmoPoint>();
-		GizmoPoint[] points = GameObject.FindObjectsOfType <GizmoPoint> ();
+		GizmoPoint[] points = FindObjectsOfType <GizmoPoint> ();
 		for(int i=0;i<points.Length;i++)
 		{
 			if(points[i].type == type)
@@ -440,13 +441,18 @@ public class ItemManager : MonoBehaviour
     }
 
     public void SpawnHeart(Vector3 pos,Quaternion rot, int value,bool isSound){
-        GameObject go = GameObject.Instantiate(heartPrefab,pos,rot);
+        GameObject go = Instantiate(heartPrefab,pos,rot);
         go.GetComponent<HappyItem>().Load(value,isSound);
+    }
+
+    public void SpawnHealth(Vector3 pos)
+    {
+        GameObject go = Instantiate(healthEffectPrefab, pos, Quaternion.identity);
     }
 
     public void SpawnDirty()
     {
-        Vector3 pos = GetRandomPoint(PointType.Patrol).position;
+        Vector3 pos = GetRandomPoint(PointType.Patrol).position + new Vector3(Random.Range(-1, 1), Random.Range(-1, 1), 0);
         pos.z = 990;
         GameObject go = Instantiate(dirtyPrefab, pos, Quaternion.identity);
     }
@@ -455,7 +461,7 @@ public class ItemManager : MonoBehaviour
        itemSaveDatas.Clear();
 
        //Find All dirty items
-       ItemDirty[] dirties = GameObject.FindObjectsOfType<ItemDirty>();
+       ItemDirty[] dirties = FindObjectsOfType<ItemDirty>();
        for(int i=0;i<dirties.Length;i++){
            ItemSaveData data = new ItemSaveData();
            data.itemType = dirties[i].itemType;
@@ -465,7 +471,7 @@ public class ItemManager : MonoBehaviour
        }
 
         //Find All Food/Drink Item
-        EatItem[] eats = GameObject.FindObjectsOfType<EatItem>();
+        EatItem[] eats = FindObjectsOfType<EatItem>();
         for(int i=0;i<eats.Length;i++){
            ItemSaveData data = new ItemSaveData();
            data.id = eats[i].item.itemID;
@@ -475,7 +481,7 @@ public class ItemManager : MonoBehaviour
            itemSaveDatas.Add(data);
        }
 
-       HappyItem[] happies = GameObject.FindObjectsOfType<HappyItem>();
+       HappyItem[] happies = FindObjectsOfType<HappyItem>();
        for(int i=0;i<happies.Length;i++){
            ItemSaveData data = new ItemSaveData();
            data.itemType = happies[i].itemSaveDataType;
@@ -516,9 +522,9 @@ public class ItemManager : MonoBehaviour
     public void LoadPetData(float t)
     {
         int petNumber = GameManager.instance.GetPetObjects().Count;
-        int peeNumber = (int)Mathf.Clamp(t / 3600 * petNumber, 0, 10);
-        int shitNumber = (int)Mathf.Clamp(t / 7200 * petNumber, 0, 10);
-        int dirtyNumber = (int)Mathf.Clamp(t / 7200, 0, 3);
+        int peeNumber = (int)Mathf.Clamp(t / 7200 * petNumber, 0, 5);
+        int shitNumber = (int)Mathf.Clamp(t / 14400 * petNumber, 0, 5);
+        int dirtyNumber = (int)Mathf.Clamp(t / 14400, 0, 3);
         
         foreach (CharController p in GameManager.instance.GetPetObjects())
         {
@@ -532,18 +538,19 @@ public class ItemManager : MonoBehaviour
 
         for (int i = 0; i < peeNumber; i++)
         {
-            SpawnPee(GetRandomPoint(PointType.Patrol).position,Random.Range(50,100));
+            SpawnPee(GetRandomPoint(PointType.Patrol).position + new Vector3(Random.Range(-1, 1), Random.Range(-1, 1), 0), Random.Range(50,100));
         }
 
         for (int i = 0; i < shitNumber; i++)
         {
-            SpawnShit(GetRandomPoint(PointType.Patrol).position, Random.Range(50, 100));
+            SpawnShit(GetRandomPoint(PointType.Patrol).position + new Vector3(Random.Range(-1, 1), Random.Range(-1, 1), 0), Random.Range(50, 100));
         }
 
 
-        if (GetItem(ItemType.Food) != null)
+        if (GetItem(ItemType.Food) != null && GetItem(ItemType.Food).GetComponent<EatItem>() != null)
         {
-            int n = Mathf.Min((int)(0.05f * t * petNumber / 50), (int)GetItem(ItemType.Food).GetComponent<FoodBowlItem>().foodAmount / 50);
+            Debug.Log(GetItem(ItemType.Food).GetComponent<EatItem>().foodAmount);
+            int n = Mathf.Min((int)(0.05f * t * petNumber / 50), (int)GetItem(ItemType.Food).GetComponent<EatItem>().foodAmount / 50);
             GetItem(ItemType.Food).GetComponent<FoodBowlItem>().Eat(0.05f * t * petNumber);
             
             for (int i = 0; i < n; i++)
@@ -557,9 +564,9 @@ public class ItemManager : MonoBehaviour
             }
         }
 
-        if (GetItem(ItemType.Drink) != null)
+        if (GetItem(ItemType.Drink) != null && GetItem(ItemType.Drink).GetComponent<EatItem>() != null)
         {
-            int n = Mathf.Min((int)(0.05f * t * petNumber / 50), (int)GetItem(ItemType.Drink).GetComponent<DrinkBowlItem>().foodAmount / 50);
+            int n = Mathf.Min((int)(0.05f * t * petNumber / 50), (int)GetItem(ItemType.Drink).GetComponent<EatItem>().foodAmount / 50);
             GetItem(ItemType.Drink).GetComponent<DrinkBowlItem>().Eat(0.05f * t * petNumber);
             for (int i = 0; i < n; i++)
             {

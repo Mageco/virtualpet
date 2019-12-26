@@ -630,6 +630,13 @@ public class GameManager : MonoBehaviour
         return count;
     }
 
+    public void OnTreatment(Pet p,SickType sickType,int coin)
+    {
+        AddCoin(-coin);
+        ItemManager.instance.SpawnHealth(p.character.transform.position);
+        p.character.OnTreatment(sickType);
+    }
+
     #region  Camera
    public void SetCameraTarget(GameObject t){
         if(camera == null)

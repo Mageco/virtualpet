@@ -24,8 +24,10 @@ public class CharController : MonoBehaviour
     protected float maxDataTime = 1f;
 
     //Movement
-    public Vector3 target;
+    [HideInInspector]
+    public Vector3 target;
 
+    [HideInInspector]
     public PolyNavAgent agent;
     public bool isArrived = true;
     public bool isAbort = false;
@@ -37,35 +39,44 @@ public class CharController : MonoBehaviour
     protected Animator anim;
 
     //Interact
+    [HideInInspector]
     public CharInteract charInteract;
+    [HideInInspector]
     public CharScale charScale;
     //Pee,Sheet
     public Transform peePosition;
     public Transform shitPosition;
+  
 
-
+    [HideInInspector]
     public GameObject shadow;
+    [HideInInspector]
     public Vector3 originalShadowScale;
 
     #endregion
 
     //Skill
+    [HideInInspector]
     public SkillType currentSkill = SkillType.NONE;
     FoodBowlItem foodItem;
     DrinkBowlItem drinkItem;
     MouseController mouse;
-    
 
+    [HideInInspector]
     public Vector3 dropPosition = Vector3.zero;
 
     public SpriteRenderer iconStatusObject;
+    public TextMesh timeWait;
     public IconStatus iconStatus = IconStatus.None;
     IconStatus lastIconStatus = IconStatus.None;
 
     protected ToyItem toyItem;
 
+    [HideInInspector]
     public List<GameObject> dirties = new List<GameObject>();
+    [HideInInspector]
     public List<GameObject> dirties_L = new List<GameObject>();
+    [HideInInspector]
     public List<GameObject> dirties_LD = new List<GameObject>();
 
     #region Load
@@ -97,6 +108,9 @@ public class CharController : MonoBehaviour
 
         if(iconStatusObject != null)
             iconStatusObject.gameObject.SetActive(false);
+
+        if (timeWait != null)
+            timeWait.gameObject.SetActive(false);
 
 
         //Load Dirty Effect
@@ -197,6 +211,12 @@ public class CharController : MonoBehaviour
             }
             DoAction();
             LogAction();
+        }else if(actionType == ActionType.Sick || actionType == ActionType.Injured)
+        {
+            float t = data.MaxTimeSick - (System.DateTime.Now - data.timeSick).Seconds;
+            float m = (int)(t / 60);
+            float s = (int)(t - m * 60);
+            timeWait.text = m.ToString("00") + ":" + s.ToString("00");
         }
 
 
@@ -605,12 +625,12 @@ public class CharController : MonoBehaviour
     public virtual void OnHold()
     {
         if(actionType == ActionType.Sick){
-            UIManager.instance.OnQuestNotificationPopup(DataHolder.Dialog(0).GetDescription(MageManager.instance.GetLanguage()));
+            UIManager.instance.OnTreatmentPopup(this.data,SickType.Sick);
             return;
         }
 
         if(actionType == ActionType.Injured){
-            UIManager.instance.OnQuestNotificationPopup(DataHolder.Dialog(1).GetDescription(MageManager.instance.GetLanguage()));
+            UIManager.instance.OnTreatmentPopup(this.data, SickType.Injured);
             return;
         }
 
@@ -798,6 +818,12 @@ public class CharController : MonoBehaviour
     public virtual void OnLevelUp()
     {
 
+    }
+
+    public virtual void OnTreatment(SickType sickType)
+    {
+        Abort();
+        actionType = ActionType.Happy;
     }
 
     void LogAction(){
@@ -1440,15 +1466,18 @@ public class CharController : MonoBehaviour
 
     protected virtual IEnumerator Sick()
     {
+        timeWait.gameObject.SetActive(true);
+        data.timeSick = System.DateTime.Now;
         SetTarget(PointType.Favourite);
         yield return StartCoroutine(WalkToPoint());
         anim.Play("Sick", 0);
         Debug.Log("Sick");
-        while (data.health < 0.5f * data.MaxHealth && !isAbort)
+        while ((System.DateTime.Now - data.timeSick).Seconds < data.MaxTimeSick && !isAbort)
         {
-            data.Health += 0.1f * Time.deltaTime;
             yield return new WaitForEndOfFrame();
         }
+        data.Health = 0.5f * data.MaxHealth;
+        timeWait.gameObject.SetActive(false);
         GameManager.instance.LogAchivement(AchivementType.Do_Action,ActionType.Sick);
         CheckEnviroment();
         CheckAbort();
@@ -1456,15 +1485,18 @@ public class CharController : MonoBehaviour
 
     protected virtual IEnumerator Injured()
     {
+        timeWait.gameObject.SetActive(true);
+        data.timeSick = System.DateTime.Now;
         SetTarget(PointType.Favourite);
         yield return StartCoroutine(WalkToPoint());
         anim.Play("Injured", 0);
         Debug.Log("Injured");
-        while (data.Damage > 0.5f * data.MaxDamage && !isAbort)
+        while ((System.DateTime.Now - data.timeSick).Seconds < data.MaxTimeSick && !isAbort)
         {
-            data.Damage -= 0.05f * Time.deltaTime;
             yield return new WaitForEndOfFrame();
         }
+        data.Damage = 0.5f * data.MaxHealth;
+        timeWait.gameObject.SetActive(false);
         GameManager.instance.LogAchivement(AchivementType.Do_Action,ActionType.Injured);
         CheckEnviroment();
         CheckAbort();

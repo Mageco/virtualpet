@@ -2479,6 +2479,8 @@ MonoBehaviour:
     type: 3}
   dirtyPrefab: {fileID: 1950067868025273820, guid: e0ee5a05abb3343b1892e76545773be2,
     type: 3}
+  healthEffectPrefab: {fileID: 5279987827855304787, guid: ef2d0effe2b5743ac899bdd36e0213eb,
+    type: 3}
 --- !u!4 &852301776
 Transform:
   m_ObjectHideFlags: 0
@@ -3767,6 +3769,10 @@ MonoBehaviour:
   confirmBuyShopPrefab: {fileID: 4039681933990909816, guid: 9aa96c88e7374984db2401080f21ec1b,
     type: 3}
   itemInfoPrefab: {fileID: 4039681933990909816, guid: e9ff7585e45163b44aacd7f01fb99aa9,
+    type: 3}
+  treatmentPopupPrefab: {fileID: 8151612463901336215, guid: 551a9f216088c2f4b94daf3e4cc1fdfa,
+    type: 3}
+  treatmentConfirmPrefab: {fileID: 4039681933990909816, guid: dd172e9196a844248842bae921ec0ee1,
     type: 3}
   coinText: {fileID: 65223674}
   diamonText: {fileID: 949322702}
@@ -5424,12 +5430,6 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7819968567118400076, guid: dd172e9196a844248842bae921ec0ee1,
-        type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: 21300000, guid: baa79bab0c1e0164598a8aa90a0b17bd,
-        type: 3}
     - target: {fileID: 7897173834667212416, guid: dd172e9196a844248842bae921ec0ee1,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -7190,7 +7190,7 @@ PrefabInstance:
     - target: {fileID: 7629980631625239534, guid: da4a7d975ac124a23850b2bb20c236a9,
         type: 3}
       propertyPath: isTest
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7629980631625239535, guid: da4a7d975ac124a23850b2bb20c236a9,
         type: 3}

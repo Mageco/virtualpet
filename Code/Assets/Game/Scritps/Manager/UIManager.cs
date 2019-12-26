@@ -16,6 +16,8 @@ public class UIManager : MonoBehaviour
     public GameObject achivementPrefab;
     public GameObject confirmBuyShopPrefab;
     public GameObject itemInfoPrefab;
+    public GameObject treatmentPopupPrefab;
+    public GameObject treatmentConfirmPrefab;
     public static UIManager instance;
 	public Text coinText;
 	public Text diamonText;
@@ -33,6 +35,8 @@ public class UIManager : MonoBehaviour
     ProfilePanel profilePanel;
 
     ItemInfoUI itemInfoUI;
+    TreatmentPopup treatmentPopup;
+    TreatmentConfirmPopup treatmentConfirmPopup;
 
     public GameObject homeUI;
 
@@ -271,7 +275,35 @@ public class UIManager : MonoBehaviour
         }
      }
 
-     public void OnHome(){
+    public void OnTreatmentPopup(Pet p, SickType sickType)
+    {
+        if (treatmentPopup == null)
+        {
+            var popup = Instantiate(treatmentPopupPrefab) as GameObject;
+            popup.SetActive(true);
+            popup.transform.localScale = Vector3.zero;
+            popup.transform.SetParent(GameObject.Find("Canvas").transform, false);
+            popup.GetComponent<Popup>().Open();
+            treatmentPopup = popup.GetComponent<TreatmentPopup>();
+            treatmentPopup.Load(p, sickType);
+        }
+    }
+
+    public void OnTreatmentConfirmPopup(Pet p, SickType sickType)
+    {
+        if (treatmentConfirmPopup == null)
+        {
+            var popup = Instantiate(treatmentConfirmPrefab) as GameObject;
+            popup.SetActive(true);
+            popup.transform.localScale = Vector3.zero;
+            popup.transform.SetParent(GameObject.Find("Canvas").transform, false);
+            popup.GetComponent<Popup>().Open();
+            treatmentConfirmPopup = popup.GetComponent<TreatmentConfirmPopup>();
+            treatmentConfirmPopup.Load(p, sickType);
+        }
+    }
+
+    public void OnHome(){
         MageManager.instance.PlaySoundName("BubbleButton", false);
         GameManager.instance.gameType = GameType.House;
         MageManager.instance.LoadSceneWithLoading("House");

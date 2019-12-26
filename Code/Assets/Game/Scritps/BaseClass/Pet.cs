@@ -23,7 +23,7 @@ public class Pet : BaseModel
 
 	//Main Data
 	public float speed = 20;
-	public int level = 0;
+	public int level = 1;
 	public int exp = 0;
 	public float intelligent = 0;
     public int happy = 0;
@@ -40,6 +40,8 @@ public class Pet : BaseModel
 	public float itchi = 10;
 	public float fear = 0;
 	public float curious = 70;
+    public System.DateTime timeSick;
+    public float maxTimeSick = 1800;
 
 	[HideInInspector]
 	public float rateFood = 10f;
@@ -619,6 +621,18 @@ public class Pet : BaseModel
         set
         {
             this.maxCurious = value;
+        }
+    }
+
+    public float MaxTimeSick
+    {
+        get
+        {
+            return 300 * level;
+        }
+        set
+        {
+            this.maxTimeSick = value;
         }
     }
 
