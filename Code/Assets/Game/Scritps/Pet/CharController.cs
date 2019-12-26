@@ -139,7 +139,7 @@ public class CharController : MonoBehaviour
 
     public void LoadTime(float t)
     {
-        int n = 1;
+        int n = 0;
         int h = (int)((data.Health + data.Damage)/100);
         n += (int)(h * t/3600 * data.level);
         if (n > 10)
