@@ -213,6 +213,18 @@ public class ItemManager : MonoBehaviour
         return null;
     }
 
+    public Item GetItemData(ItemType type)
+    {
+        foreach (ItemObject item in items)
+        {
+            if (DataHolder.GetItem(item.itemID).itemType == type)
+            {
+                return DataHolder.GetItem(item.itemID);
+            }
+        }
+        return null;
+    }
+
 
     ItemObject AddItem(int itemId)
     {
@@ -445,6 +457,19 @@ public class ItemManager : MonoBehaviour
         go.GetComponent<HappyItem>().Load(value,isSound);
     }
 
+    public void SpawnHeart(int n,Vector3 p)
+    {
+        for (int i = 0; i < n; i++)
+        {
+            int ran = Random.Range(0, 100);
+            Quaternion rot = Quaternion.identity;
+            if (ran > 50)
+                rot = Quaternion.Euler(new Vector3(0, 180, -1));
+            Vector3 pos = p + new Vector3(Random.Range(-1, 1), Random.Range(-1, 1), 0);
+            SpawnHeart(pos, rot, 1, true);
+        }
+    }
+
     public void SpawnHealth(Vector3 pos)
     {
         GameObject go = Instantiate(healthEffectPrefab, pos, Quaternion.identity);
@@ -521,6 +546,18 @@ public class ItemManager : MonoBehaviour
 
     public void LoadPetData(float t)
     {
+        if(t > 3600 && t <= 28800)
+        {
+            t = 3600 + (t-3600)/10;
+        }else if(t <= 86400)
+        {
+            t = 6120 + (t-28800)/50;
+        }
+        else if(t>86400)
+        {
+            t = 7272 + (t-86400)/100;
+        }
+
         int petNumber = GameManager.instance.GetPetObjects().Count;
         int peeNumber = (int)Mathf.Clamp(t / 7200 * petNumber, 0, 5);
         int shitNumber = (int)Mathf.Clamp(t / 14400 * petNumber, 0, 5);
@@ -550,8 +587,8 @@ public class ItemManager : MonoBehaviour
         if (GetItem(ItemType.Food) != null && GetItem(ItemType.Food).GetComponent<EatItem>() != null)
         {
             Debug.Log(GetItem(ItemType.Food).GetComponent<EatItem>().foodAmount);
-            int n = Mathf.Min((int)(0.05f * t * petNumber / 50), (int)GetItem(ItemType.Food).GetComponent<EatItem>().foodAmount / 50);
-            GetItem(ItemType.Food).GetComponent<FoodBowlItem>().Eat(0.05f * t * petNumber);
+            int n = Mathf.Min((int)(0.01f * t * petNumber / 50), (int)GetItem(ItemType.Food).GetComponent<EatItem>().foodAmount / 50);
+            GetItem(ItemType.Food).GetComponent<FoodBowlItem>().Eat(0.01f * t * petNumber);
             
             for (int i = 0; i < n; i++)
             {
@@ -566,8 +603,8 @@ public class ItemManager : MonoBehaviour
 
         if (GetItem(ItemType.Drink) != null && GetItem(ItemType.Drink).GetComponent<EatItem>() != null)
         {
-            int n = Mathf.Min((int)(0.05f * t * petNumber / 50), (int)GetItem(ItemType.Drink).GetComponent<EatItem>().foodAmount / 50);
-            GetItem(ItemType.Drink).GetComponent<DrinkBowlItem>().Eat(0.05f * t * petNumber);
+            int n = Mathf.Min((int)(0.01f * t * petNumber / 50), (int)GetItem(ItemType.Drink).GetComponent<EatItem>().foodAmount / 50);
+            GetItem(ItemType.Drink).GetComponent<DrinkBowlItem>().Eat(0.01f * t * petNumber);
             for (int i = 0; i < n; i++)
             {
                 int ran = Random.Range(0, 100);

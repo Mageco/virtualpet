@@ -34,7 +34,11 @@ public class CleanItem : MonoBehaviour
 			if(item.itemType == ItemType.Clean && dirtyItem.dirty <= clean*Time.deltaTime){
 				ItemManager.instance.SpawnHeart(this.transform.position,Quaternion.identity,1,true);
 				GameManager.instance.LogAchivement(AchivementType.Clean);
-			}
+                if (DataHolder.GetItem(item.itemID).happy > 0)
+                {
+                    ItemManager.instance.SpawnHeart((int)DataHolder.GetItem(item.itemID).happy, this.transform.position);
+                }
+            }
 			
 			if(item.itemType == ItemType.Clean && time > maxTime){
 				MageManager.instance.PlaySoundName("Item_Broom", false);

@@ -143,15 +143,7 @@ public class ItemTab : BaseTab
                 EditorGUILayout.Separator();
                 DataHolder.Items().GetItem(selection,temcategory).happy = EditorGUILayout.FloatField("+Happy", DataHolder.Items().GetItem(selection,temcategory).happy, GUILayout.Width(pw.mWidth));
                 DataHolder.Items().GetItem(selection,temcategory).health = EditorGUILayout.FloatField("+Health", DataHolder.Items().GetItem(selection,temcategory).health, GUILayout.Width(pw.mWidth));
-                DataHolder.Items().GetItem(selection,temcategory).energy = EditorGUILayout.FloatField("+Energy", DataHolder.Items().GetItem(selection,temcategory).energy, GUILayout.Width(pw.mWidth));
-                DataHolder.Items().GetItem(selection,temcategory).sleep = EditorGUILayout.FloatField("+Sleep", DataHolder.Items().GetItem(selection,temcategory).sleep, GUILayout.Width(pw.mWidth));
-                DataHolder.Items().GetItem(selection,temcategory).dirty = EditorGUILayout.FloatField("+Dirty", DataHolder.Items().GetItem(selection,temcategory).dirty, GUILayout.Width(pw.mWidth));
-                DataHolder.Items().GetItem(selection,temcategory).itchi = EditorGUILayout.FloatField("+Itchi", DataHolder.Items().GetItem(selection,temcategory).itchi, GUILayout.Width(pw.mWidth));
-                DataHolder.Items().GetItem(selection,temcategory).rateSleep = EditorGUILayout.FloatField("+RateSleep", DataHolder.Items().GetItem(selection,temcategory).rateSleep, GUILayout.Width(pw.mWidth));
-                DataHolder.Items().GetItem(selection,temcategory).rateEat = EditorGUILayout.FloatField("+RateEat", DataHolder.Items().GetItem(selection,temcategory).rateEat, GUILayout.Width(pw.mWidth));
-                DataHolder.Items().GetItem(selection,temcategory).rateDrink = EditorGUILayout.FloatField("+RateDrink", DataHolder.Items().GetItem(selection,temcategory).rateDrink, GUILayout.Width(pw.mWidth));
-                DataHolder.Items().GetItem(selection,temcategory).rateShit = EditorGUILayout.FloatField("+RateShit", DataHolder.Items().GetItem(selection,temcategory).rateShit, GUILayout.Width(pw.mWidth));
-                DataHolder.Items().GetItem(selection,temcategory).ratePee = EditorGUILayout.FloatField("+RatePee", DataHolder.Items().GetItem(selection,temcategory).ratePee, GUILayout.Width(pw.mWidth));
+                DataHolder.Items().GetItem(selection,temcategory).injured = EditorGUILayout.FloatField("+Injured", DataHolder.Items().GetItem(selection,temcategory).injured, GUILayout.Width(pw.mWidth));
 
 			}
 			EditorGUILayout.EndVertical(); 

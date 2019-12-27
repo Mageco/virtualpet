@@ -21,18 +21,9 @@ public class Item
 
 	//All item properties
 	public float value = 0; //Value can be food amount, cleaness 
-	public float sleep = 0;
-	public float energy = 0;
 	public float health = 0;
 	public float happy = 0;
-	public float dirty = 0;
-	public float itchi = 0;
-	public float rateSleep = 0;
-	public float ratePee = 0;
-	public float rateShit = 0;
-	public float rateEat = 0;
-	public float rateDrink = 0;
-
+    public float injured = 0;
 
 	public Item()
 	{

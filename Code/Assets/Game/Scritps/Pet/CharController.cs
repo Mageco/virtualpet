@@ -144,16 +144,12 @@ public class CharController : MonoBehaviour
         n += (int)(h * t/3600 * data.level);
         if (n > 10)
             n = 10;
-        data.Sleep -= data.recoverSleep * t;
-        if(data.Sleep < 0.01f)
-        {
-            data.Sleep += data.MaxSleep * Random.Range(0, 1);
-        }
-        data.Energy -= 0.05f * t;
-        data.Food -= 0.05f * t;
-        data.Water -= 0.05f * t;
-        data.Pee += 0.05f * t;
-        data.Shit += 0.05f * t;
+        data.Sleep += 0.01f * t;
+        data.Energy -= 0.01f * t;
+        data.Food -= 0.01f * t;
+        data.Water -= 0.01f * t;
+        data.Pee += 0.01f * t;
+        data.Shit += 0.01f * t;
         data.Dirty += data.recoverDirty * t;
 
         for (int i = 0; i < n; i++)
@@ -1207,6 +1203,9 @@ public class CharController : MonoBehaviour
                 GameManager.instance.AddExp(10,data.iD);
                 GameManager.instance.LogAchivement(AchivementType.Do_Action,ActionType.OnToilet);
                 LevelUpSkill(SkillType.Toilet);
+                ItemManager.instance.SpawnHeart((int)ItemManager.instance.GetItemData(ItemType.Toilet).happy, this.transform.position);
+                data.Health += ItemManager.instance.GetItemData(ItemType.Toilet).health;
+                data.Damage -= ItemManager.instance.GetItemData(ItemType.Toilet).injured;
             }
 
             yield return StartCoroutine(JumpDown(-7,10,30));     
@@ -1249,6 +1248,9 @@ public class CharController : MonoBehaviour
                 GameManager.instance.AddExp(10,data.iD);
                 GameManager.instance.LogAchivement(AchivementType.Do_Action,ActionType.OnToilet);
                 LevelUpSkill(SkillType.Toilet);
+                ItemManager.instance.SpawnHeart((int)ItemManager.instance.GetItemData(ItemType.Toilet).happy, this.transform.position);
+                data.Health += ItemManager.instance.GetItemData(ItemType.Toilet).health;
+                data.Damage -= ItemManager.instance.GetItemData(ItemType.Toilet).injured;
             }
             yield return StartCoroutine(JumpDown(-7,10,30));     
         }
@@ -1285,7 +1287,10 @@ public class CharController : MonoBehaviour
                 if(data.Food >= data.MaxFood - 2){
                     GameManager.instance.LogAchivement(AchivementType.Do_Action,ActionType.Eat);
                     GameManager.instance.AddExp(5,data.iD);
-                    if(GetFoodItem() != null && GetFoodItem().GetComponent<ItemObject>() != null)
+                    ItemManager.instance.SpawnHeart((int)ItemManager.instance.GetItemData(ItemType.Food).happy, this.transform.position);
+                    data.Health += ItemManager.instance.GetItemData(ItemType.Food).health;
+                    data.Damage -= ItemManager.instance.GetItemData(ItemType.Food).injured;
+                    if (GetFoodItem() != null && GetFoodItem().GetComponent<ItemObject>() != null)
                         GameManager.instance.LogAchivement(AchivementType.Eat,ActionType.None,GetFoodItem().GetComponent<ItemObject>().itemID);
                 }
             }else{
@@ -1341,7 +1346,10 @@ public class CharController : MonoBehaviour
                 if(data.Water >= data.MaxWater - 2){
                     GameManager.instance.LogAchivement(AchivementType.Do_Action,ActionType.Drink);
                     GameManager.instance.AddExp(5,data.iD);
-                    if(GetDrinkItem() != null && GetDrinkItem().GetComponent<ItemObject>() != null)
+                    ItemManager.instance.SpawnHeart((int)ItemManager.instance.GetItemData(ItemType.Drink).happy, this.transform.position);
+                    data.Health += ItemManager.instance.GetItemData(ItemType.Drink).health;
+                    data.Damage -= ItemManager.instance.GetItemData(ItemType.Drink).injured;
+                    if (GetDrinkItem() != null && GetDrinkItem().GetComponent<ItemObject>() != null)
                         GameManager.instance.LogAchivement(AchivementType.Drink,ActionType.None,GetDrinkItem().GetComponent<ItemObject>().itemID);
                 }
             }else{

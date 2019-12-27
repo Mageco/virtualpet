@@ -98,4 +98,13 @@ public class SettingPopUp : MonoBehaviour {
 		Close();
 	}
 
+
+    public void OnRate()
+    {
+    #if UNITY_ANDROID
+            Application.OpenURL("https://play.google.com/store/apps/details?id=vn.com.mage.virtualpet");
+    #elif UNITY_IOS
+
+    #endif
+    }
 }
