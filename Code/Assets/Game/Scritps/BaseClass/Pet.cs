@@ -628,6 +628,7 @@ public class Pet : BaseModel
     {
         get
         {
+            //return this.maxTimeSick;
             return 300 * level;
         }
         set

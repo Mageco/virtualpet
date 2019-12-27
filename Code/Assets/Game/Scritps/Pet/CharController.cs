@@ -209,10 +209,11 @@ public class CharController : MonoBehaviour
             LogAction();
         }else if(actionType == ActionType.Sick || actionType == ActionType.Injured)
         {
-            float t = data.MaxTimeSick - (System.DateTime.Now - data.timeSick).Seconds;
+            float t = data.MaxTimeSick - (float)(System.DateTime.Now - data.timeSick).TotalSeconds;
             float m = (int)(t / 60);
             float s = (int)(t - m * 60);
             timeWait.text = m.ToString("00") + ":" + s.ToString("00");
+            //Debug.Log(t);
         }
 
 
@@ -264,22 +265,22 @@ public class CharController : MonoBehaviour
 
         if(data.Health > 0.1f*data.MaxHealth){
             if (data.Dirty > data.MaxDirty * 0.95f)
-                deltaHealth -= (data.Dirty - data.MaxDirty * 0.95f) * 0.005f;
+                deltaHealth -= (data.Dirty - data.MaxDirty * 0.95f) * 0.001f;
 
             if (data.Pee > data.MaxPee * 0.95f)
-                deltaHealth -= (data.Pee - data.MaxPee * 0.95f) * 0.005f;
+                deltaHealth -= (data.Pee - data.MaxPee * 0.95f) * 0.001f;
 
             if (data.Shit > data.MaxShit * 0.95f)
-                deltaHealth -= (data.Shit - data.MaxShit * 0.95f) * 0.005f;
+                deltaHealth -= (data.Shit - data.MaxShit * 0.95f) * 0.001f;
 
             if (data.Food < data.MaxFood * 0.05f)
-                deltaHealth -= (data.MaxFood * 0.05f - data.Food) * 0.005f;
+                deltaHealth -= (data.MaxFood * 0.05f - data.Food) * 0.001f;
 
             if (data.Water < data.MaxWater * 0.05f)
-                deltaHealth -= (data.MaxWater * 0.05f - data.Water) * 0.005f;
+                deltaHealth -= (data.MaxWater * 0.05f - data.Water) * 0.001f;
 
             if (data.Sleep < data.MaxSleep * 0.05f)
-                deltaHealth -= (data.MaxSleep * 0.05f - data.Sleep) * 0.01f;
+                deltaHealth -= (data.MaxSleep * 0.05f - data.Sleep) * 0.002f;
         }
 
         data.Health += deltaHealth;
@@ -714,6 +715,10 @@ public class CharController : MonoBehaviour
     }
 
     public virtual void OnFall(){
+        if (actionType == ActionType.Sick || actionType == ActionType.Injured)
+            return;
+
+
         if(!isArrived){
             int ran = Random.Range(0, 100);
             if(ran > 50)
@@ -1414,6 +1419,10 @@ public class CharController : MonoBehaviour
                 GameManager.instance.AddExp(20,data.iD);
                 GameManager.instance.LogAchivement(AchivementType.Do_Action,ActionType.Sleep);
                 LevelUpSkill(SkillType.Sleep);
+                //Debug.Log(ItemManager.instance.GetItemData(ItemType.Bed).GetName(0));
+                ItemManager.instance.SpawnHeart((int)ItemManager.instance.GetItemData(ItemType.Bed).happy, this.transform.position);
+                data.Health += ItemManager.instance.GetItemData(ItemType.Bed).health;
+                data.Damage -= ItemManager.instance.GetItemData(ItemType.Bed).injured;
             }
             yield return StartCoroutine(JumpDown(-7,10,30)); 
         }
@@ -1480,7 +1489,7 @@ public class CharController : MonoBehaviour
         yield return StartCoroutine(WalkToPoint());
         anim.Play("Sick", 0);
         Debug.Log("Sick");
-        while ((System.DateTime.Now - data.timeSick).Seconds < data.MaxTimeSick && !isAbort)
+        while ((System.DateTime.Now - data.timeSick).TotalSeconds < data.MaxTimeSick && !isAbort)
         {
             yield return new WaitForEndOfFrame();
         }
@@ -1499,7 +1508,7 @@ public class CharController : MonoBehaviour
         yield return StartCoroutine(WalkToPoint());
         anim.Play("Injured", 0);
         Debug.Log("Injured");
-        while ((System.DateTime.Now - data.timeSick).Seconds < data.MaxTimeSick && !isAbort)
+        while ((System.DateTime.Now - data.timeSick).TotalSeconds < data.MaxTimeSick && !isAbort)
         {
             yield return new WaitForEndOfFrame();
         }

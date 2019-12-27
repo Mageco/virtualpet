@@ -42,7 +42,7 @@ public class TreatmentPopup : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        float t = pet.MaxTimeSick - (System.DateTime.Now - pet.timeSick).Seconds;
+        float t = pet.MaxTimeSick - (float)(System.DateTime.Now - pet.timeSick).TotalSeconds;
         float m = (int)(t / 60);
         float s = (int)(t - m * 60);
         timeWait.text = m.ToString("00") + ":" + s.ToString("00");

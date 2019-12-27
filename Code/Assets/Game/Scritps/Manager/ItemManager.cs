@@ -546,17 +546,20 @@ public class ItemManager : MonoBehaviour
 
     public void LoadPetData(float t)
     {
-        if(t > 3600 && t <= 28800)
+        //Debug.Log(t);
+        if (t > 86400)
+        {
+            t = 7272 + (t - 86400) / 100;
+        }
+        else if (t > 28800)
+        {
+            t = 6120 + (t - 28800) / 50;
+        }
+        else if (t > 3600)
         {
             t = 3600 + (t-3600)/10;
-        }else if(t <= 86400)
-        {
-            t = 6120 + (t-28800)/50;
         }
-        else if(t>86400)
-        {
-            t = 7272 + (t-86400)/100;
-        }
+        
 
         int petNumber = GameManager.instance.GetPetObjects().Count;
         int peeNumber = (int)Mathf.Clamp(t / 7200 * petNumber, 0, 5);
