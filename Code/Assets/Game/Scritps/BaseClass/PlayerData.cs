@@ -9,6 +9,7 @@ public class PlayerData : BaseModel
     public int coin;
     public int diamond;
 	public int happy;
+    public float playTime = 0;
     public List<PlayerItem> items = new List<PlayerItem>();
     public List<Pet> pets = new List<Pet>();
 	public int[] minigameLevels = new int[1];

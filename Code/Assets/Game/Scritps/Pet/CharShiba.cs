@@ -62,12 +62,6 @@ public class CharShiba : CharController
                 yield return StartCoroutine(DoAnim("Smell_" + direction.ToString())) ;
                 yield return StartCoroutine(DoAnim("Smell_Bark"));
                 data.curious -= 10;
-            }else if(ran < 50)
-            {
-                SetTarget(PointType.Door);
-                yield return StartCoroutine(RunToPoint());
-                yield return StartCoroutine(DoAnim("Dig_" + direction.ToString())) ;
-                data.curious -= 10;                
             }else
             {
                 int ran1 = Random.Range(0,100);

@@ -37,6 +37,10 @@ public class GameManager : MonoBehaviour
 		DataHolder.Instance();
 		DataHolder.Instance().Init();    
         camera = Camera.main.GetComponent<CameraController>();
+        if (ES2.Exists("GameTime"))
+        {
+            gameTime = ES2.Load<float>("GameTime");
+        }
     }
 
 
@@ -47,9 +51,6 @@ public class GameManager : MonoBehaviour
 
     void Update(){
 		gameTime += Time.deltaTime;
-
-
-
 	}
 
     void LateUpdate(){
@@ -512,15 +513,17 @@ public class GameManager : MonoBehaviour
 
 
     public void SavePlayer(){
-/*         foreach(PlayerItem item in myPlayer.items){
-            ItemObject itemObject = ItemManager.instance.GetItem(item.itemId);
-            item.position = itemObject.transform.position;
-            if(DataHolder.GetItem(item.itemId).itemType == ItemType.Food){
-                item.value = itemObject.GetComponentInChildren<FoodBowlItem>().foodAmount;
-            }else if(DataHolder.GetItem(item.itemId).itemType == ItemType.Drink){
-                item.value = itemObject.GetComponentInChildren<DrinkBowlItem>().foodAmount;
-            }
-        } */
+        /*         foreach(PlayerItem item in myPlayer.items){
+                    ItemObject itemObject = ItemManager.instance.GetItem(item.itemId);
+                    item.position = itemObject.transform.position;
+                    if(DataHolder.GetItem(item.itemId).itemType == ItemType.Food){
+                        item.value = itemObject.GetComponentInChildren<FoodBowlItem>().foodAmount;
+                    }else if(DataHolder.GetItem(item.itemId).itemType == ItemType.Drink){
+                        item.value = itemObject.GetComponentInChildren<DrinkBowlItem>().foodAmount;
+                    }
+                } */
+        myPlayer.playTime = gameTime;
+        ES2.Save(gameTime, "GameTime");
         MageEngine.instance.UpdateUserData<PlayerData>(myPlayer); 
     }
 
