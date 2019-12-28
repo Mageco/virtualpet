@@ -5,7 +5,7 @@ using UnityEngine.EventSystems;
 
 public class BaseDragItem : MonoBehaviour
 {
-	Vector3 dragOffset;
+	protected Vector3 dragOffset;
     protected Animator anim;
     public ItemDragState state = ItemDragState.None;
     protected Vector3 originalPosition;
@@ -39,7 +39,7 @@ public class BaseDragItem : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    protected virtual void Update()
     {
      	if (state == ItemDragState.Drag ) {
             OnDrag();
@@ -68,11 +68,10 @@ public class BaseDragItem : MonoBehaviour
 			float delta = this.transform.position.y - lastPosition.y;
 			height += delta;
 			if(height <= 0 && this.transform.position.y <= scalePosition.y ){
-				Vector3 p = this.transform.position;
-				p.y = lastPosition.y;
-				this.transform.position = p;
-				height = 0;
-			}else{
+                scalePosition.y = this.transform.position.y;
+                height = 0;
+            }
+            else{
 				if(delta >= 0 && height > maxHeight){
 					scalePosition.y += height - maxHeight;	
 					height = maxHeight;
@@ -114,7 +113,8 @@ public class BaseDragItem : MonoBehaviour
     {
         if (isDragable)
         {
-            anim.Play("Drag");
+            if(anim != null)
+                anim.Play("Drag");
             Vector3 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition) - dragOffset;
             pos.z = this.transform.position.z;
             pos.z = -1000;
@@ -192,9 +192,11 @@ public class BaseDragItem : MonoBehaviour
 
 	protected IEnumerator DoAnim(string a)
     {
-        anim.Play(a, 0);
+        if (anim != null)
+            anim.Play(a, 0);
         yield return new WaitForEndOfFrame();
-        yield return new WaitForSeconds(anim.GetCurrentAnimatorStateInfo(0).length);
+        if (anim != null)
+            yield return new WaitForSeconds(anim.GetCurrentAnimatorStateInfo(0).length);
     }
 
     protected IEnumerator ReturnPosition(Vector3 pos)
@@ -277,7 +279,7 @@ public class BaseDragItem : MonoBehaviour
     }
 
 
-	private bool IsPointerOverUIObject() {
+    protected bool IsPointerOverUIObject() {
 		PointerEventData eventDataCurrentPosition = new PointerEventData(EventSystem.current);
 		eventDataCurrentPosition.position = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
 		List<RaycastResult> results = new List<RaycastResult>();

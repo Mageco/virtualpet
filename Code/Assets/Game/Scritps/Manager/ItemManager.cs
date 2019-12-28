@@ -563,6 +563,7 @@ public class ItemManager : MonoBehaviour
 
         int petNumber = GameManager.instance.GetPetObjects().Count;
         int peeNumber = (int)Mathf.Clamp(t / 7200 * petNumber, 0, 5);
+        Debug.Log("Pee Number " + peeNumber);
         int shitNumber = (int)Mathf.Clamp(t / 14400 * petNumber, 0, 5);
         int dirtyNumber = (int)Mathf.Clamp(t / 14400, 0, 3);
         
