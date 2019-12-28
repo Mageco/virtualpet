@@ -10,9 +10,12 @@ public class ToyBallItem : BaseDragItem
     public GameObject wall;
     Vector3 lastPos = Vector3.zero;
     float time = 0;
+    bool isOnForce = false;
+
 
     protected override void Start()
     {
+        
         base.Start();
         col = this.GetComponent<CircleCollider2D>();
         rigid = this.GetComponent<Rigidbody2D>();
@@ -23,6 +26,8 @@ public class ToyBallItem : BaseDragItem
     public override void StartDrag()
     {
         rigid.isKinematic = true;
+        rigid.angularVelocity = 0;
+        rigid.velocity = Vector2.zero;
         col.isTrigger = true;
         if (IsPointerOverUIObject())
             return;
@@ -48,9 +53,24 @@ public class ToyBallItem : BaseDragItem
         GameManager.instance.ResetCameraTarget();
     }
 
-    public void OnForce(Vector2 f)
+    public void OnForce()
     {
-        StartCoroutine(AddForce(f * 5000));
+        if (isOnForce)
+            return;
+        isOnForce = true;
+        rigid.isKinematic = false;
+        col.isTrigger = false;
+        state = ItemDragState.Drop;
+        rigid.angularVelocity = 0;
+        rigid.velocity = Vector2.zero;
+        rigid.AddForce(new Vector2(Random.Range(-1000,1000),Random.Range(1000,5000)));
+        rigid.AddTorque(Random.Range(-100, 100));
+        Invoke("EndForce", 1);
+    }
+
+    void EndForce()
+    {
+        isOnForce = false;
     }
 
     IEnumerator AddForce(Vector2 f)
@@ -69,10 +89,12 @@ public class ToyBallItem : BaseDragItem
 
     private void Stop()
     {
+        rigid.angularVelocity = 0;
+        rigid.velocity = Vector2.zero;
         rigid.isKinematic = true;
         col.isTrigger = false;
-        height = 0;
-        this.scalePosition = this.transform.position;
+        height = minHeight;
+        this.scalePosition = this.transform.position + new Vector3(0,-minHeight,0);
         state = ItemDragState.None;
     }
 
@@ -94,6 +116,10 @@ public class ToyBallItem : BaseDragItem
             wall.transform.position = pos;
             wall.transform.localScale = Vector3.one + this.transform.localScale * -pos.y * 0.008f;
         }
+
+       
+
+        
     }
 
 }

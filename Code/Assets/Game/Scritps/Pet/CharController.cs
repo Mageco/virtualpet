@@ -43,6 +43,7 @@ public class CharController : MonoBehaviour
     public CharInteract charInteract;
     [HideInInspector]
     public CharScale charScale;
+    
     //Pee,Sheet
     public Transform peePosition;
     public Transform shitPosition;
@@ -69,6 +70,7 @@ public class CharController : MonoBehaviour
     public TextMesh timeWait;
     public IconStatus iconStatus = IconStatus.None;
     IconStatus lastIconStatus = IconStatus.None;
+    Vector3 originalStatusScale;
 
     protected ToyItem toyItem;
 
@@ -106,8 +108,11 @@ public class CharController : MonoBehaviour
 
         SetDirection(Direction.R);
 
-        if(iconStatusObject != null)
+        if (iconStatusObject != null)
+        {
             iconStatusObject.gameObject.SetActive(false);
+            originalStatusScale = iconStatusObject.transform.localScale;
+        }
 
         if (timeWait != null)
             timeWait.gameObject.SetActive(false);
@@ -586,6 +591,8 @@ public class CharController : MonoBehaviour
             LoadIconStatus();
         }
 
+        iconStatusObject.transform.localScale = originalStatusScale / charScale.scaleAgeFactor;
+
     }
 
     void LoadIconStatus(){
@@ -793,11 +800,11 @@ public class CharController : MonoBehaviour
 
     public virtual void OnToy(ToyItem item){
         if(actionType != ActionType.Sick && actionType != ActionType.Injured
-        && actionType != ActionType.Toy){
+        && actionType != ActionType.Toy && enviromentType == EnviromentType.Room && actionType != ActionType.Supprised){
             actionType = ActionType.Toy;
             isAbort = true;
             toyItem = item;
-            Debug.Log("Toy");
+            Debug.Log(item.toyType);
         }
     }
 
@@ -1545,64 +1552,111 @@ public class CharController : MonoBehaviour
 
     protected virtual IEnumerator Toy()
     {
-            if(toyItem != null){
-            int n = Random.Range(3,10);
-            int count = 0;
-            dropPosition = toyItem.anchorPoint.position + new Vector3(0,Random.Range(-2f,2f),0);
-            agent.transform.position = dropPosition;
-            
-            yield return new WaitForEndOfFrame();
-            while(!isAbort && count < n){
-                toyItem.OnActive();
-                MageManager.instance.PlaySoundName(charType.ToString() + "_Supprised", false);
-                MageManager.instance.PlaySoundName("Drag", false);
-                anim.Play("Teased",0);  
-                shadow.SetActive(false);   
-                charInteract.interactType = InteractType.Jump;
+        if (toyItem != null)
+        {
+            if (toyItem.toyType == ToyType.WaterJet)
+            {
+                int n = Random.Range(3, 10);
+                int count = 0;
+                dropPosition = toyItem.anchorPoint.position + new Vector3(0, Random.Range(-2f, 2f), 0);
+                agent.transform.position = dropPosition;
+
                 yield return new WaitForEndOfFrame();
-                float ySpeed = 30 * anim.GetCurrentAnimatorStateInfo(0).length / 2;
-                if(anim.GetCurrentAnimatorStateInfo(0).length < 2){
-                    anim.speed = 0.5f;
-                    ySpeed = 60 * anim.GetCurrentAnimatorStateInfo(0).length / 2;
-                }
-
-                while (charInteract.interactType == InteractType.Jump && !isAbort)
+                while (!isAbort && count < n)
                 {
-                    ySpeed -= 30 * Time.deltaTime;
-                    Vector3 pos1 = agent.transform.position;
-                    pos1.y += ySpeed * Time.deltaTime;
-                    
-                    if(count == n-1){
-                        pos1.x += 15 * Time.deltaTime;
-                        Debug.Log(pos1.x);
-                    }
-                    agent.transform.position = pos1;
-                        
-                    if (ySpeed < 0 && this.transform.position.y < dropPosition.y)
-                    {
-                        if(count ==  n-1){
-                            MageManager.instance.PlaySoundName("whoosh_swish_med_03", false);
-                            yield return StartCoroutine(DoAnim("Drop"));
-                            
-                        }
-                        else
-                        {
-                            agent.transform.position = dropPosition;
-                        }
-                        charInteract.interactType = InteractType.None;
-
-                    }
-                    data.Energy -= Time.deltaTime;
+                    toyItem.OnActive();
+                    MageManager.instance.PlaySoundName(charType.ToString() + "_Supprised", false);
+                    MageManager.instance.PlaySoundName("Drag", false);
+                    anim.Play("Teased", 0);
+                    shadow.SetActive(false);
+                    charInteract.interactType = InteractType.Jump;
                     yield return new WaitForEndOfFrame();
+                    float ySpeed = 30 * anim.GetCurrentAnimatorStateInfo(0).length / 2;
+                    if (anim.GetCurrentAnimatorStateInfo(0).length < 2)
+                    {
+                        anim.speed = 0.5f;
+                        ySpeed = 60 * anim.GetCurrentAnimatorStateInfo(0).length / 2;
+                    }
+
+                    while (charInteract.interactType == InteractType.Jump && !isAbort)
+                    {
+                        ySpeed -= 30 * Time.deltaTime;
+                        Vector3 pos1 = agent.transform.position;
+                        pos1.y += ySpeed * Time.deltaTime;
+
+                        if (count == n - 1)
+                        {
+                            pos1.x += 15 * Time.deltaTime;
+                            Debug.Log(pos1.x);
+                        }
+                        agent.transform.position = pos1;
+
+                        if (ySpeed < 0 && this.transform.position.y < dropPosition.y)
+                        {
+                            if (count == n - 1)
+                            {
+                                MageManager.instance.PlaySoundName("whoosh_swish_med_03", false);
+                                yield return StartCoroutine(DoAnim("Drop"));
+
+                            }
+                            else
+                            {
+                                agent.transform.position = dropPosition;
+                            }
+                            charInteract.interactType = InteractType.None;
+
+                        }
+                        data.Energy -= Time.deltaTime;
+                        yield return new WaitForEndOfFrame();
+                    }
+                    count++;
                 }
-                count ++;
+               
+                int ran = Random.Range(0, 100);
+                if (ran < 40)
+                {
+                    GameManager.instance.AddExp(5, data.iD);
+                }
+            }else if(toyItem.toyType == ToyType.Ball)
+            {
+                ToyBallItem ball = toyItem.GetComponent<ToyBallItem>();
+                if (charType == CharType.Dog || charType == CharType.Hamster || charType == CharType.Cat)
+                {
+                    charScale.speedFactor = 1.5f;
+                    
+                    while (ball != null && data.Energy > data.MaxEnergy * 0.1f && !isAbort)
+                    {
+                        
+                        anim.speed = 1.5f;
+                        agent.SetDestination(ball.transform.position);
+                        anim.Play("Run_" + this.direction.ToString(), 0);
+                        data.Energy -= 2f * Time.deltaTime;
+                        if(Vector2.Distance(this.transform.position, ball.scalePosition) < 2 && ball.state != ItemDragState.Drag)
+                        {
+                            agent.Stop();
+                            data.Energy -= 2;
+                            ball.OnForce();
+                            int ran = Random.Range(0, 100);
+                            if(ran < 20)
+                                GameManager.instance.AddExp(5,data.iD);
+                            yield return StartCoroutine(DoAnim("Standby"));
+                        }
+                        yield return new WaitForEndOfFrame();
+                    }
+                    charScale.speedFactor = 1f;
+                }
+                else
+                {
+                    if (ball != null && Vector2.Distance(this.transform.position, ball.scalePosition) < 2 && ball.state == ItemDragState.Drop)
+                    {
+                        yield return StartCoroutine(DoAnim("Teased"));
+                        Debug.Log("Supprised");
+                    }
+                }
             }
         }
         anim.speed = 1f;
-        int ran = Random.Range(0,100);
-        if(ran < 40){
-            GameManager.instance.AddExp(5,data.iD);
-        }
+
         CheckAbort();
     }
 

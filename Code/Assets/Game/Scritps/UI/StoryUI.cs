@@ -25,7 +25,6 @@ public class StoryUI : MonoBehaviour
 
     public void Skip()
     {
-        if (ES2.Exists("PlayTime"))
-            MageManager.instance.LoadSceneWithLoading("House");
+         MageManager.instance.LoadSceneWithLoading("House");
     }
 }

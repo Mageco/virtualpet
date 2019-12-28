@@ -15,19 +15,23 @@ public class CharScale : MonoBehaviour
 	public Vector3 scalePosition = Vector3.zero;
 	Vector3 lastPosition = Vector3.zero;
     public float speedFactor = 1;
+    public float scaleAgeFactor = 1;
 	
 
 	void Awake()
 	{
 		character = this.GetComponent <CharController> ();
-		originalScale = character.transform.localScale;
+        originalScale = character.transform.localScale;
+
 		interact = this.GetComponent<CharInteract>();
+
 		
 	}
     // Start is called before the first frame update
     void Start()
     {
         lastPosition = this.transform.position;
+        
     }
 
     // Update is called once per frame
@@ -94,7 +98,8 @@ public class CharScale : MonoBehaviour
 			height = 0;
 		}
 
-		dragScale = originalScale * (1 - scalePosition.y * scaleFactor);
+        scaleAgeFactor = Mathf.Min(0.3f + (character.data.level + 5) / 20f,1.2f);
+        dragScale = originalScale * (1 - scalePosition.y * scaleFactor) * scaleAgeFactor;
 		character.transform.localScale = Vector3.Lerp(dragScale,character.transform.localScale,Time.deltaTime *  3f);
 		character.agent.maxSpeed = 0.3f * character.data.speed * speedFactor *(1 - scalePosition.y * scaleFactor);
 		//Vector3 pos = this.transform.position;

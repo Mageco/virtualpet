@@ -12,7 +12,7 @@ public class ItemDirty : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-		this.transform.localScale = (1f + dirty / 100) * Vector3.one;
+		this.transform.localScale = (1f + dirty / 200) * Vector3.one;
 		originalScale = this.transform.localScale;
 		position = this.transform.position;
     }
@@ -20,7 +20,7 @@ public class ItemDirty : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-		this.transform.localScale = (1f + dirty / 100) * Vector3.one;
+		this.transform.localScale = (1f + dirty / 200) * Vector3.one;
 		if(isClearning){
 			OnClean(0.2f);
 		}

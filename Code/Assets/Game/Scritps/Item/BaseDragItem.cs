@@ -21,9 +21,12 @@ public class BaseDragItem : MonoBehaviour
 	public float scaleFactor = 0.05f;
 	Vector3 dragScale;
 	public float height = 0;
+    public float minHeight = 0;
     protected float originalHeight = 0;
 	public Vector3 scalePosition = Vector3.zero;
 	Vector3 lastPosition = Vector3.zero;
+    public GameObject shadow;
+    Vector3 originalShadowScale;
 
     float touchTime = 0;
 
@@ -34,8 +37,10 @@ public class BaseDragItem : MonoBehaviour
 		originalPosition = this.transform.position;
 		originalRotation = this.transform.rotation;
 		originalScale = this.transform.localScale;
-        scalePosition = this.transform.position + new Vector3(0,-height,0);
-        originalHeight = height;
+        scalePosition = this.transform.position + new Vector3(0,-height + minHeight,0);
+        originalHeight = height + minHeight;
+        if(shadow != null)
+            originalShadowScale = shadow.transform.localScale;
     }
 
     // Update is called once per frame
@@ -60,16 +65,16 @@ public class BaseDragItem : MonoBehaviour
         }
     }
 
-	void LateUpdate()
+	protected virtual void LateUpdate()
     {
 
         scalePosition.x = this.transform.position.x;
 		if(state == ItemDragState.Drag || state == ItemDragState.Highlight){
 			float delta = this.transform.position.y - lastPosition.y;
 			height += delta;
-			if(height <= 0 && this.transform.position.y <= scalePosition.y ){
-                scalePosition.y = this.transform.position.y;
-                height = 0;
+			if(height <= minHeight && this.transform.position.y <= scalePosition.y + minHeight ){
+                scalePosition.y = this.transform.position.y - minHeight;
+                height = minHeight;
             }
             else{
 				if(delta >= 0 && height > maxHeight){
@@ -81,7 +86,7 @@ public class BaseDragItem : MonoBehaviour
 						p.y = lastPosition.y;
 						this.transform.position = p;
 					}
-				}else if(delta < 0 && height > 0){
+				}else if(delta < 0 && height > minHeight){
 					if(scalePosition.y > -20){
 						scalePosition.y += delta;
 						height -= delta;
@@ -89,19 +94,27 @@ public class BaseDragItem : MonoBehaviour
 				}		
 			}
 		}else if(state == ItemDragState.Drop || state == ItemDragState.Fall || state == ItemDragState.Hit){
-			height = this.transform.position.y - scalePosition.y;
-			if(height <= 0 && this.transform.position.y <= scalePosition.y ){
+			height = this.transform.position.y - scalePosition.y + minHeight;
+			if(height <= minHeight && this.transform.position.y <= scalePosition.y ){
 				Vector3 p = this.transform.position;
-				p.y = scalePosition.y;
+				p.y = scalePosition.y + minHeight;
 				this.transform.position = p;
-				height = 0;
+				height = minHeight;
 			}
 		}
 
-		dragScale = originalScale * (1 - scalePosition.y * scaleFactor);
+        
+
+        dragScale = originalScale * (1 - scalePosition.y * scaleFactor);
 		this.transform.localScale = Vector3.Lerp(dragScale,this.transform.localScale,Time.deltaTime *  3f);
 
-		Vector3 pos = this.transform.position;
+        if(shadow != null)
+        {
+            shadow.transform.position = scalePosition + new Vector3(0, 0, 100);
+            shadow.transform.localScale = (1 - scalePosition.y * scaleFactor) * originalShadowScale * (1f - 0.5f * height / maxHeight);
+        }
+
+        Vector3 pos = this.transform.position;
 		pos.z = scalePosition.y * 10;
 		this.transform.position = pos;
 

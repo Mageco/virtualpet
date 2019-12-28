@@ -41,7 +41,8 @@ public class Pet : BaseModel
 	public float fear = 0;
 	public float curious = 70;
     public System.DateTime timeSick;
-    public float maxTimeSick = 1800;
+    public float maxTimeSick = 3600;
+   
 
 	[HideInInspector]
 	public float rateFood = 10f;
@@ -629,7 +630,7 @@ public class Pet : BaseModel
         get
         {
             //return this.maxTimeSick;
-            return 300 * level;
+            return Mathf.Min(300 * level,3600);
         }
         set
         {
