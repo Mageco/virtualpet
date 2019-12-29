@@ -44,6 +44,11 @@ public class HappyItem : MonoBehaviour
         
     }
 
+    public void OnPick()
+    {
+        OnMouseUp();
+    }
+
     IEnumerator Pick(){
         MageManager.instance.PlaySoundName("happy_collect_item_01",false);
         animator.Play("Pick");
@@ -51,6 +56,6 @@ public class HappyItem : MonoBehaviour
         yield return new WaitForEndOfFrame();
         yield return new WaitForSeconds(animator.GetCurrentAnimatorStateInfo(0).length);
         GameManager.instance.AddHappy(value);
-        GameObject.Destroy(this.gameObject);
+        Destroy(this.gameObject);
     }
 }

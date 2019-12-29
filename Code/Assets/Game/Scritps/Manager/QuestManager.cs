@@ -83,7 +83,7 @@ public class QuestManager : MonoBehaviour
             yield return new WaitForEndOfFrame();
             GameManager.instance.ResetCameraTarget();
         }else if(GameManager.instance.myPlayer.questId == 2){
-            GameManager.instance.GetActivePet().Pee = GameManager.instance.GetActivePet().MaxPee - 3;
+            GameManager.instance.GetActivePet().Pee = 0.7f*GameManager.instance.GetActivePet().MaxPee - 2;
             GameManager.instance.SetCameraTarget(ItemManager.instance.GetItemChildObject(ItemType.Toilet));
             yield return new WaitForEndOfFrame();
             GameManager.instance.ResetCameraTarget();

@@ -110,8 +110,9 @@ public class BaseDragItem : MonoBehaviour
 
         if(shadow != null)
         {
-            shadow.transform.position = scalePosition + new Vector3(0, 0, 100);
+            
             shadow.transform.localScale = (1 - scalePosition.y * scaleFactor) * originalShadowScale * (1f - 0.5f * height / maxHeight);
+            shadow.transform.position = scalePosition + new Vector3(0, 0, 100);
         }
 
         Vector3 pos = this.transform.position;
@@ -203,7 +204,7 @@ public class BaseDragItem : MonoBehaviour
 		}
 	}
 
-	protected IEnumerator DoAnim(string a)
+	protected virtual IEnumerator DoAnim(string a)
     {
         if (anim != null)
             anim.Play(a, 0);
