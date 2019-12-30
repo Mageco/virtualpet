@@ -26,6 +26,8 @@ public class QuestManager : MonoBehaviour
     QuestPanel questPanel;
     float originalValue = 0;
 
+    GameObject guideItem;
+
     void Awake()
     {
         if (instance == null)
@@ -73,26 +75,36 @@ public class QuestManager : MonoBehaviour
         
         OnQuestNotification();
         if(GameManager.instance.myPlayer.questId == 0){
+            if(guideItem == null)
+                guideItem = ItemManager.instance.SpawnGuideArrow(ItemType.Food);
             GameManager.instance.GetActivePet().Food = 0.3f* GameManager.instance.GetActivePet().MaxFood;
             GameManager.instance.SetCameraTarget(ItemManager.instance.GetItemChildObject(ItemType.Food));
             yield return new WaitForEndOfFrame();
             GameManager.instance.ResetCameraTarget();
         }else if(GameManager.instance.myPlayer.questId == 1){
+            if (guideItem == null)
+                guideItem = ItemManager.instance.SpawnGuideArrow(ItemType.Drink);
             GameManager.instance.GetActivePet().Water = 0.3f * GameManager.instance.GetActivePet().MaxWater;
             GameManager.instance.SetCameraTarget(ItemManager.instance.GetItemChildObject(ItemType.Drink));
             yield return new WaitForEndOfFrame();
             GameManager.instance.ResetCameraTarget();
         }else if(GameManager.instance.myPlayer.questId == 2){
-            GameManager.instance.GetActivePet().Pee = 0.7f*GameManager.instance.GetActivePet().MaxPee - 2;
+            if (guideItem == null)
+                guideItem = ItemManager.instance.SpawnGuideArrow(ItemType.Toilet);
+            GameManager.instance.GetActivePet().Pee = 0.7f*GameManager.instance.GetActivePet().MaxPee;
             GameManager.instance.SetCameraTarget(ItemManager.instance.GetItemChildObject(ItemType.Toilet));
             yield return new WaitForEndOfFrame();
             GameManager.instance.ResetCameraTarget();
         }else if(GameManager.instance.myPlayer.questId == 3){
-            GameManager.instance.GetActivePet().Dirty = GameManager.instance.GetActivePet().MaxDirty - 2;
+            if (guideItem == null)
+                guideItem = ItemManager.instance.SpawnGuideArrow(ItemType.Bath);
+            GameManager.instance.GetActivePet().Dirty = GameManager.instance.GetActivePet().MaxDirty;
             GameManager.instance.SetCameraTarget(ItemManager.instance.GetItemChildObject(ItemType.Bath));
             yield return new WaitForEndOfFrame();
             GameManager.instance.ResetCameraTarget();
         }else if(GameManager.instance.myPlayer.questId == 4){
+            if (guideItem == null)
+                guideItem = ItemManager.instance.SpawnGuideArrow(ItemType.Bed);
             GameManager.instance.GetActivePet().Sleep = 0.3f * GameManager.instance.GetActivePet().MaxSleep;
             originalValue = GameManager.instance.GetActivePet().rateSleep;
             GameManager.instance.GetActivePet().rateSleep = 4;
@@ -104,29 +116,37 @@ public class QuestManager : MonoBehaviour
                 GameManager.instance.myPlayer.questValue = GameManager.instance.GetAchivement(19);
             ItemManager.instance.SpawnDirty();
             GameManager.instance.SetCameraTarget(ItemManager.instance.GetItemChildObject(ItemType.Clean));
-            yield return new WaitForSeconds(1);
+            if (guideItem == null)
+                guideItem = ItemManager.instance.SpawnGuideArrow(ItemType.Clean);
+            yield return new WaitForSeconds(1f);
             GameManager.instance.ResetCameraTarget();
-            ItemDirty go = GameObject.FindObjectOfType<ItemDirty>();
+            ItemDirty go = FindObjectOfType<ItemDirty>();
             if(go != null){
                 GameManager.instance.SetCameraTarget(go.gameObject);
-                yield return new WaitForSeconds(1);
+                yield return new WaitForSeconds(0.1f);
                 GameManager.instance.ResetCameraTarget();
             }
         }else if(GameManager.instance.myPlayer.questId == 6){
             if (GameManager.instance.myPlayer.questValue == 0)
                 GameManager.instance.myPlayer.questValue = GameManager.instance.GetAchivement(18);
+
         }
         else if (GameManager.instance.myPlayer.questId == 7)
         {
-
+            yield return new WaitForSeconds(4);
+            UIManager.instance.OnShopPanel(4);
         }
         else if(GameManager.instance.myPlayer.questId == 8){
             if (GameManager.instance.myPlayer.questValue == 0)
                 GameManager.instance.myPlayer.questValue = GameManager.instance.GetAchivement(17);
+            if (guideItem == null)
+                guideItem = ItemManager.instance.SpawnGuideArrow(ItemType.Toy);
         }
         else if(GameManager.instance.myPlayer.questId == 9){
             if (GameManager.instance.myPlayer.questValue == 0)
                 GameManager.instance.myPlayer.questValue = GameManager.instance.myPlayer.minigameLevels[0];
+            yield return new WaitForSeconds(4);
+            UIManager.instance.OnEventPanel();
         }
         else if(GameManager.instance.myPlayer.questId == 10){
             if (GameManager.instance.myPlayer.questValue == 0)
@@ -184,7 +204,9 @@ public class QuestManager : MonoBehaviour
         GameManager.instance.AddCoin(DataHolder.Quest(GameManager.instance.myPlayer.questId).coinValue);
         GameManager.instance.AddDiamond(DataHolder.Quest(GameManager.instance.myPlayer.questId).diamondValue);
         GameManager.instance.AddExp(DataHolder.Quest(GameManager.instance.myPlayer.questId).expValue,GameManager.instance.GetActivePet().iD,false);
-           
+
+        if (guideItem != null)
+            Destroy(guideItem);
 
         GameManager.instance.myPlayer.questId++;
         GameManager.instance.SavePlayer();

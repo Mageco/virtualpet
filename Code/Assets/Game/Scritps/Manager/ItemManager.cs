@@ -19,6 +19,7 @@ public class ItemManager : MonoBehaviour
 
     public GameObject dirtyPrefab;
     public GameObject healthEffectPrefab;
+    public GameObject guidePrefab;
     float time = 0;
     float maxTimeCheck = 1;
     System.DateTime playTime = System.DateTime.Now;
@@ -455,6 +456,13 @@ public class ItemManager : MonoBehaviour
     public void SpawnHeart(Vector3 pos,Quaternion rot, int value,bool isSound){
         GameObject go = Instantiate(heartPrefab,pos,rot);
         go.GetComponent<HappyItem>().Load(value,isSound);
+    }
+
+    public GameObject SpawnGuideArrow(ItemType itemType)
+    {
+        GameObject go = Instantiate(guidePrefab, GetItem(itemType).transform.GetChild(0).transform.position + new Vector3(0,3,0), Quaternion.identity);
+        go.transform.parent = GetItem(itemType).transform.GetChild(0).transform;
+        return go;
     }
 
     public void SpawnHeart(int n,Vector3 p)
