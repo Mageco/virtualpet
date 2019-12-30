@@ -23,6 +23,9 @@ public class GameManager : MonoBehaviour
 
     public PlayerData myPlayer = new PlayerData();
 
+    [HideInInspector]
+    public int rateCount = 0;
+
     void Awake()
     {
         if (instance == null)
@@ -631,6 +634,16 @@ public class GameManager : MonoBehaviour
             count += item.level;
         }
         return count;
+    }
+
+    public bool IsCollectAchivement()
+    {
+        foreach (var item in myPlayer.achivements)
+        {
+            if (item.rewardState == RewardState.Ready)
+                return true;
+        }
+        return false;
     }
 
     public void OnTreatment(Pet p,SickType sickType,int coin)

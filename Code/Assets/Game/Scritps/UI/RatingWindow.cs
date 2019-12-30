@@ -16,11 +16,12 @@ public class RatingWindow : MonoBehaviour {
 
 	public void Rate()
 	{
-		#if UNITY_IOS
-		Application.OpenURL ("https://itunes.apple.com/us/app/ky-nang-thoat-hiem-cho-be/id1028955406?ls=1&mt=8");
-		#endif
-		#if UNITY_ANDROID
-		Application.OpenURL ("https://play.google.com/store/apps/details?id=com.bluebirdaward.survivalskill");
-		#endif
-	}
+        #if UNITY_ANDROID
+                Application.OpenURL("https://play.google.com/store/apps/details?id=vn.com.mage.virtualpet");
+
+#elif UNITY_IOS
+
+#endif
+        ES2.Save(true, "RateUs");
+    }
 }

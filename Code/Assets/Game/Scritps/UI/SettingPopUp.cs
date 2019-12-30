@@ -106,5 +106,6 @@ public class SettingPopUp : MonoBehaviour {
     #elif UNITY_IOS
 
     #endif
+        ES2.Save(true, "RateUs");
     }
 }

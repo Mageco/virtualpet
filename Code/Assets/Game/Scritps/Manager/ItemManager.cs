@@ -24,6 +24,8 @@ public class ItemManager : MonoBehaviour
     float maxTimeCheck = 1;
     System.DateTime playTime = System.DateTime.Now;
 
+    
+
     float timeDirty = 0;
     float maxTimeDirty = 200;
 
@@ -59,6 +61,12 @@ public class ItemManager : MonoBehaviour
             LoadPetData((float)(System.DateTime.Now - playTime).TotalSeconds);
         }
 
+        if (!ES2.Exists("RateUs") && GameManager.instance.gameTime > 720 && GameManager.instance.rateCount % 5 == 0)
+        {
+            UIManager.instance.OnRatingPopup();
+            GameManager.instance.rateCount++;
+        }
+
     }
 
     // Update is called once per frame
@@ -69,6 +77,20 @@ public class ItemManager : MonoBehaviour
             time = 0;
             playTime = System.DateTime.Now;
             ES2.Save(playTime, "PlayTime");
+
+            //Check Notification
+            if (GameManager.instance.IsCollectAchivement())
+            {
+                UIManager.instance.achivementNotification.SetActive(true);
+            }else
+                UIManager.instance.achivementNotification.SetActive(false);
+
+            //Check Event Notification
+            if(GameManager.instance.GetHappy() >= Mathf.Min(GameManager.instance.myPlayer.minigameLevels[0], 10))
+            {
+                UIManager.instance.eventNotification.SetActive(true);
+            }else
+                UIManager.instance.eventNotification.SetActive(false);
         }
         else{
             time += Time.deltaTime;

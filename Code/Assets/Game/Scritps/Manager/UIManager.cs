@@ -7,6 +7,7 @@ public class UIManager : MonoBehaviour
 {
 
 	public GameObject questUIPrefab;
+    public GameObject rateUsUIPrefab;
     public GameObject questCompletePrefab;
     public GameObject shopUIPrefab;
     public GameObject eventUIPrefab;
@@ -28,6 +29,10 @@ public class UIManager : MonoBehaviour
     EventPanel eventPanel;
     SkillCompletePanel skillCompletePanel;
     ConfirmBuyShopPopup confirmBuyShopPopup;
+    RatingWindow ratingWindow;
+
+    public GameObject achivementNotification;
+    public GameObject eventNotification;
 
     [HideInInspector]
     public AchivementPanel achivementPanel;
@@ -307,6 +312,19 @@ public class UIManager : MonoBehaviour
             popup.GetComponent<Popup>().Open();
             treatmentConfirmPopup = popup.GetComponent<TreatmentConfirmPopup>();
             treatmentConfirmPopup.Load(p, sickType);
+        }
+    }
+
+    public void OnRatingPopup()
+    {
+        if (ratingWindow == null)
+        {
+            var popup = Instantiate(rateUsUIPrefab) as GameObject;
+            popup.SetActive(true);
+            popup.transform.localScale = Vector3.zero;
+            popup.transform.SetParent(GameObject.Find("Canvas").transform, false);
+            popup.GetComponent<Popup>().Open();
+            ratingWindow = popup.GetComponent<RatingWindow>();
         }
     }
 
