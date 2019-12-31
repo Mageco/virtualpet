@@ -43,6 +43,7 @@ public class ApiManager : MageEngine {
         {
             Debug.Log("Load data from server");
             GameManager.instance.myPlayer = GetUserData<PlayerData>();
+            GameManager.instance.UnLoadPets();
             if (ItemManager.instance != null)
             {
                 MageManager.instance.LoadSceneWithLoading("House");

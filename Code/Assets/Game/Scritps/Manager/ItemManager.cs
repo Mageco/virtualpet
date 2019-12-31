@@ -64,8 +64,9 @@ public class ItemManager : MonoBehaviour
         if (!ES2.Exists("RateUs") && GameManager.instance.gameTime > 720 && GameManager.instance.rateCount % 5 == 0)
         {
             UIManager.instance.OnRatingPopup();
-            GameManager.instance.rateCount++;
+           
         }
+        GameManager.instance.rateCount++;
 
     }
 

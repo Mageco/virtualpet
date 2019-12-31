@@ -11,6 +11,8 @@ public class FishController : MonoBehaviour
     public FishState state = FishState.Move;
     Animator anim;
 
+    Vector3[] paths;
+
     void Awake()
     {
         col = this.transform.GetComponentInChildren<BoxCollider2D>();
@@ -36,6 +38,11 @@ public class FishController : MonoBehaviour
         anim.Play("Run", 0);
     }
 
+    void CompleteMove()
+    {
+
+    }
+
     void Catched()
     {
 
@@ -53,18 +60,7 @@ public class FishController : MonoBehaviour
 
     void Update()
     {
-        if(state == FishState.Move)
-        {
-            Move();
-        }else if(state == FishState.Cached)
-        {
-            Catched();
-        }else if(state == FishState.Active)
-        {
-            Active();
-        }else if(state == FishState.DeActive){
-            DeActive();
-        }
+
     }
 
    
@@ -79,5 +75,5 @@ public class FishController : MonoBehaviour
     }
 }
 
-public enum FishState { DeActive, Move, Cached, Active };
+public enum FishState { Idle, Move, Cached, Active };
 

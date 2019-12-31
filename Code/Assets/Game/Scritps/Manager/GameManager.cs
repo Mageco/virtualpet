@@ -23,7 +23,6 @@ public class GameManager : MonoBehaviour
 
     public PlayerData myPlayer = new PlayerData();
 
-    [HideInInspector]
     public int rateCount = 0;
 
     void Awake()
@@ -145,6 +144,17 @@ public class GameManager : MonoBehaviour
             p.UnLoad();
         }
         UpdatePetObjects();
+    }
+
+    public void UnLoadPets()
+    {
+        foreach (CharController p in petObjects)
+        {
+            Destroy(p.agent.gameObject);
+            Destroy(p.gameObject);
+
+        }
+        petObjects.Clear();
     }
 
 

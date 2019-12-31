@@ -41,7 +41,7 @@ public class AnimalSpawner : MonoBehaviour
         int n = Random.Range(maxNumber-1,maxNumber + 1 );
         for(int i=0;i<n;i++){
             SpawnAnimal();
-            yield return new WaitForSeconds(Random.Range(1,3f));
+            yield return new WaitForSeconds(Random.Range(0,2f));
         }
     }
 

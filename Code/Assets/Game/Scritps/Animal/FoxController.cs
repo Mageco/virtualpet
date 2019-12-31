@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class FoxController : AnimalController
 {
-    float maxTimeWait = 5;
+    float maxTimeWait = 1;
     public ChickenController target;
     public ChickenController[] targets;
 
@@ -116,6 +116,7 @@ public class FoxController : AnimalController
         this.transform.position = agent.transform.position;
         fleePoint = this.transform.position;
         yield return StartCoroutine(Wait(Random.Range(maxTimeWait-0.5f,maxTimeWait+0.5f)));
+        maxTimeWait = 10;
         GetTarget();
         if(target != null && Minigame.instance.time < Minigame.instance.maxTime - 5){
             isAbort = true;

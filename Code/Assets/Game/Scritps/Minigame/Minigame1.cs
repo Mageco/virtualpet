@@ -53,23 +53,23 @@ public class Minigame1 : Minigame
     }
 
     void Load(){
-        int initNumber = 5;
-        float initSpeed = 20;
+        int initNumber = 1;
+        float initSpeed = 30;
         maxTime = 30 + gameLevel/5*5;
         chickenSpawner.maxNumber = 5;
         chickenSpawner.speed = 5;
 
-        float addSpeed = gameLevel/5f;
+        float addSpeed = gameLevel;
         if(addSpeed > 20)
             addSpeed = 20;
 
         
-        if(gameLevel < 10)
+        if(gameLevel < 5)
         {
             foxSpawner.maxNumber = initNumber + gameLevel;
         }else if(gameLevel < 20)
         {
-            foxSpawner.maxNumber = initNumber + 10 + (gameLevel - 10) / 3;
+            foxSpawner.maxNumber = initNumber + 5 + (gameLevel - 5) / 3;
         }else if(gameLevel < 30)
         {
             foxSpawner.maxNumber = initNumber + 13 + (gameLevel - 20) / 5;

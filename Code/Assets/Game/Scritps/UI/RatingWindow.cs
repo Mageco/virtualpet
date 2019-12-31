@@ -23,5 +23,12 @@ public class RatingWindow : MonoBehaviour {
 
 #endif
         ES2.Save(true, "RateUs");
+        Close();
+        
+    }
+
+    void Close()
+    {
+        this.GetComponent<Popup>().Close();
     }
 }
