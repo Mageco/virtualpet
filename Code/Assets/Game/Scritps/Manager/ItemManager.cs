@@ -488,6 +488,13 @@ public class ItemManager : MonoBehaviour
         return go;
     }
 
+    public GameObject SpawnGuideArrow(GameObject item,Vector3 pos)
+    {
+        GameObject go = Instantiate(guidePrefab, pos, Quaternion.identity);
+        go.transform.parent = item.transform;
+        return go;
+    }
+
     public void SpawnHeart(int n,Vector3 p)
     {
         for (int i = 0; i < n; i++)

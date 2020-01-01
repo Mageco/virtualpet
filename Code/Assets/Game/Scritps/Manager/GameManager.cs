@@ -465,11 +465,13 @@ public class GameManager : MonoBehaviour
 
     public void AddCoin(int c){
         myPlayer.Coin += c;
+        myPlayer.collectedCoin += c;
         SavePlayer();
     }
 
     public void AddHappy(int c){
         myPlayer.Happy += c;
+        myPlayer.collectedHappy += c;
         SavePlayer();
     }
 
@@ -535,6 +537,8 @@ public class GameManager : MonoBehaviour
                         item.value = itemObject.GetComponentInChildren<DrinkBowlItem>().foodAmount;
                     }
                 } */
+        myPlayer.petCount = myPlayer.pets.Count;
+        myPlayer.itemCount = myPlayer.items.Count;
         myPlayer.playTime = gameTime;
         ES2.Save(gameTime, "GameTime");
         MageEngine.instance.UpdateUserData<PlayerData>(myPlayer); 
@@ -562,17 +566,17 @@ public class GameManager : MonoBehaviour
         
         AddItem(17);
         AddItem(41);
+        AddItem(2);
+        AddItem(11);
+        AddItem(8);
+        AddItem(58);
+        AddItem(59);
+        AddItem(4);
 
-        
         AddPet(0);
         
         //#if UNITY_EDITOR
         if(isTest){
-            AddItem(2);
-            AddItem(11);                
-            AddItem(8);
-            AddItem(58);
-            AddItem(4);
             AddCoin(10000);
             AddDiamond(10000);
             AddPet(1);

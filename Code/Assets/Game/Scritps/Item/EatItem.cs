@@ -53,12 +53,12 @@ public class EatItem : BaseFloorItem
 	{
 
 		base.OnMouseUp();
-
-		if (isClick) {
+        Fill();
+        if (isClick) {
 			if (time > maxDoubleClickTime) {
 				time = 0;
 			} else {
-				Fill ();
+				//Fill ();
 				time = 0;
 				isClick = false;
 				return;

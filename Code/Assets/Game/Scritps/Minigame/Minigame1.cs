@@ -53,7 +53,7 @@ public class Minigame1 : Minigame
     }
 
     void Load(){
-        int initNumber = 1;
+        int initNumber = 5;
         float initSpeed = 30;
         maxTime = 30 + gameLevel/5*5;
         chickenSpawner.maxNumber = 5;

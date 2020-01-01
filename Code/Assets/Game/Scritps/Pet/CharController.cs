@@ -88,6 +88,12 @@ public class CharController : MonoBehaviour
 
     }
 
+    protected virtual void Start()
+    {
+        if (actionType != ActionType.None)
+            DoAction();
+    }
+
 
     public void LoadPrefab(){
         GameObject go = Instantiate(petPrefab) as GameObject;
@@ -173,11 +179,7 @@ public class CharController : MonoBehaviour
 
     }
     // Use this for initialization
-    void Start()
-    {
-        if(actionType != ActionType.None)
-            DoAction();
-    }
+
     #endregion
 
     #region Update
@@ -385,7 +387,7 @@ public class CharController : MonoBehaviour
         if (data.Food < data.MaxFood * 0.1f)
         {
             int ran = Random.Range(0, 100);
-            if (ran > 30)
+            if (ran > 10)
             {
                 actionType = ActionType.Eat;
                 return;
@@ -396,7 +398,7 @@ public class CharController : MonoBehaviour
         if (data.Water < data.MaxWater * 0.1f)
         {
             int ran = Random.Range(0, 100);
-            if (ran > 30)
+            if (ran > 10)
             {
                 actionType = ActionType.Drink;
                 return;
@@ -546,6 +548,10 @@ public class CharController : MonoBehaviour
         {
             StartCoroutine(JumpOut());
         }
+        else if (actionType == ActionType.OnCall)
+        {
+            StartCoroutine(Call());
+        }
     }
 
     #endregion
@@ -591,7 +597,7 @@ public class CharController : MonoBehaviour
             LoadIconStatus();
         }
 
-        iconStatusObject.transform.localScale = originalStatusScale / charScale.scaleAgeFactor;
+        //iconStatusObject.transform.localScale = originalStatusScale / charScale.scaleAgeFactor;
 
     }
 
@@ -1106,6 +1112,13 @@ public class CharController : MonoBehaviour
         CheckAbort();
     }
 
+    protected virtual IEnumerator Call()
+    {
+        SetTarget(PointType.Call);
+        yield return StartCoroutine(DoAnim("Standby"));
+        CheckAbort();
+    }
+
     protected virtual IEnumerator Discover()
     {
         
@@ -1273,20 +1286,23 @@ public class CharController : MonoBehaviour
     {
         if (GetFoodItem() != null)
         {
-            SetTarget(PointType.Eat);
-            yield return StartCoroutine(RunToPoint());
+            if (Vector2.Distance(this.transform.position, GetFoodItem().anchor.position) > 0.5f)
+            {
+                SetTarget(PointType.Eat);
+                yield return StartCoroutine(RunToPoint());
+            }
             bool canEat = true;
             if (Vector2.Distance(this.transform.position, GetFoodItem().anchor.position) > 1f)
                 canEat = false;
             if (GetFoodItem().CanEat() && canEat)
             {
                 anim.Play("Eat", 0);
-                int soundid =  MageManager.instance.PlaySoundName("Eat",false);
+                int soundid = MageManager.instance.PlaySoundName("Eat", false);
                 yield return StartCoroutine(Wait(0.1f));
                 while (data.Food < data.MaxFood && !isAbort && canEat)
                 {
-                    data.Food += data.rateFood*0.1f;
-                    GetFoodItem().Eat(data.rateFood*0.1f);
+                    data.Food += data.rateFood * 0.1f;
+                    GetFoodItem().Eat(data.rateFood * 0.1f);
                     if (!GetFoodItem().CanEat())
                     {
                         canEat = false;
@@ -1296,26 +1312,21 @@ public class CharController : MonoBehaviour
                     yield return new WaitForEndOfFrame();
                 }
                 MageManager.instance.StopSound(soundid);
-                if(data.Food >= data.MaxFood - 2){
-                    GameManager.instance.LogAchivement(AchivementType.Do_Action,ActionType.Eat);
-                    GameManager.instance.AddExp(5,data.iD);
+                if (data.Food >= data.MaxFood - 2)
+                {
+                    GameManager.instance.LogAchivement(AchivementType.Do_Action, ActionType.Eat);
+                    GameManager.instance.AddExp(5, data.iD);
                     ItemManager.instance.SpawnHeart((int)ItemManager.instance.GetItemData(ItemType.Food).happy, this.transform.position);
                     data.Health += ItemManager.instance.GetItemData(ItemType.Food).health;
                     data.Damage -= ItemManager.instance.GetItemData(ItemType.Food).injured;
                     if (GetFoodItem() != null && GetFoodItem().GetComponent<ItemObject>() != null)
-                        GameManager.instance.LogAchivement(AchivementType.Eat,ActionType.None,GetFoodItem().GetComponent<ItemObject>().itemID);
+                        GameManager.instance.LogAchivement(AchivementType.Eat, ActionType.None, GetFoodItem().GetComponent<ItemObject>().itemID);
                 }
-            }else{
-                int ran = Random.Range(0,100);
-                if(ran < 40){
-                    MageManager.instance.PlaySoundName(charType.ToString() + "_Speak",false);
-                    yield return DoAnim("Speak_" + direction.ToString());
-                } 
-                else{
-                    SetTarget(PointType.Patrol);
-                    yield return StartCoroutine(RunToPoint());
-                    yield return DoAnim("Standby");
-                }
+            }
+            else
+            {
+                MageManager.instance.PlaySoundName(charType.ToString() + "_Speak", false);
+                yield return DoAnim("Speak_" + direction.ToString());
             }
         }
 
@@ -1329,8 +1340,12 @@ public class CharController : MonoBehaviour
         {
             //Debug.Log("Drink");
 
-            SetTarget(PointType.Drink);
-            yield return StartCoroutine(RunToPoint());
+            if (Vector2.Distance(this.transform.position, GetDrinkItem().anchor.position) > 0.5f)
+            {
+                SetTarget(PointType.Drink);
+                yield return StartCoroutine(RunToPoint());
+            }
+
             
 
             bool canDrink = true;
@@ -1365,16 +1380,8 @@ public class CharController : MonoBehaviour
                         GameManager.instance.LogAchivement(AchivementType.Drink,ActionType.None,GetDrinkItem().GetComponent<ItemObject>().itemID);
                 }
             }else{
-                int ran = Random.Range(0,100);
-                if(ran < 40){
-                    yield return DoAnim("Speak_" + direction.ToString());
-                    MageManager.instance.PlaySoundName(charType.ToString() + "_Speak",false);
-                }
-                else{
-                    SetTarget(PointType.Patrol);
-                    yield return StartCoroutine(RunToPoint());
-                    yield return DoAnim("Standby");
-                }
+                yield return DoAnim("Speak_" + direction.ToString());
+                MageManager.instance.PlaySoundName(charType.ToString() + "_Speak",false);
             }
         }
         CheckAbort();
@@ -1612,11 +1619,8 @@ public class CharController : MonoBehaviour
                     count++;
                 }
                
-                int ran = Random.Range(0, 100);
-                if (ran < 40)
-                {
-                    GameManager.instance.AddExp(5, data.iD);
-                }
+                GameManager.instance.AddExp(5, data.iD);
+                
             }else if(toyItem.toyType == ToyType.Ball)
             {
                 ToyBallItem ball = toyItem.GetComponent<ToyBallItem>();
@@ -1680,7 +1684,7 @@ public class CharController : MonoBehaviour
 
     protected virtual IEnumerator Supprised(){
         int ran = Random.Range(0,100);
-        if (ran > 20)
+        if (ran > 50)
         {
             MageManager.instance.PlaySoundName(charType.ToString() + "_Supprised", false);
             yield return StartCoroutine(DoAnim("Teased"));

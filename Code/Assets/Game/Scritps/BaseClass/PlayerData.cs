@@ -9,6 +9,11 @@ public class PlayerData : BaseModel
     public int coin;
     public int diamond;
 	public int happy;
+
+    public int collectedHappy = 0;
+    public int collectedCoin = 0;
+    public int petCount = 1;
+    public int itemCount = 0;
     public float playTime = 0;
     public List<PlayerItem> items = new List<PlayerItem>();
     public List<Pet> pets = new List<Pet>();

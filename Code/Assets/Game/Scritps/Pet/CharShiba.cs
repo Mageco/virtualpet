@@ -6,9 +6,13 @@ public class CharShiba : CharController
 {
     #region Main Action
 
-   
+    protected override void Start()
+    {
+        actionType = ActionType.OnCall;
+        base.Start();
+    }
 
-    protected override IEnumerator Patrol()
+    protected override IEnumerator Patrol()
     {
         int n = 0;
         int maxCount = Random.Range(2, 5);
@@ -125,7 +129,33 @@ public class CharShiba : CharController
         CheckAbort();
     }
 
-    
-    #endregion
+    protected override IEnumerator Call()
+    {
+        int ran = Random.Range(3,5);
+        SetTarget(PointType.Call);
+        yield return StartCoroutine(RunToPoint());
+        int n = 0;
+        while(n < ran && !isAbort)
+        {
+            int r = Random.Range(0, 100);
+            if(r < 30)
+                yield return StartCoroutine(DoAnim("Standby"));
+            else if (r < 50)
+                yield return StartCoroutine(DoAnim("Sit"));
+            else if (r < 70)
+            {
+                MageManager.instance.PlaySoundName(charType.ToString() + "_Speak", false);
+                yield return DoAnim("Speak_" + direction.ToString());
+            }else
+                yield return StartCoroutine(DoAnim("Love"));
+
+            n++;
+        }
+        
+        CheckAbort();
+    }
+
+
+    #endregion
 
 }
