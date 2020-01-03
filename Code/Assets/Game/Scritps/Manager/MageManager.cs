@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using Mage.Models.Application;
+using MageSDK.Client;
 
 public class MageManager : MonoBehaviour {
 
@@ -335,6 +336,7 @@ public class MageManager : MonoBehaviour {
 
 	IEnumerator LoadSceneWithLoadingCouroutine(string sceneName)
 	{
+        MageEngine.instance.OnEvent(MageEventType.OpenScreen, sceneName);
         StopAllSound();
 		loadingBar.gameObject.SetActive (true);
 		yield return null;

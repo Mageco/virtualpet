@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using MageSDK.Client;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -101,7 +102,8 @@ public class UIManager : MonoBehaviour
 	}
 
 	public void BuyItem(int itemID){
-	  GameManager.instance.BuyItem(itemID);
+        MageEngine.instance.OnEvent(Mage.Models.Application.MageEventType.CheckOutItem ,DataHolder.GetItem(itemID).GetName(MageManager.instance.GetLanguage()));
+        GameManager.instance.BuyItem(itemID);
       GameManager.instance.EquipItem(itemID);
       ItemManager.instance.EquipItem();
       GameManager.instance.LogAchivement(AchivementType.Buy_Item);
@@ -110,7 +112,7 @@ public class UIManager : MonoBehaviour
     }
 
     public void SellItem(int itemID){
-	  GameManager.instance.SellItem(itemID);
+        GameManager.instance.SellItem(itemID);
         if (shopPanel != null)
             shopPanel.ReLoad();
 	}
@@ -122,7 +124,8 @@ public class UIManager : MonoBehaviour
 	}
 
 	public void BuyPet(int itemID){
-	  GameManager.instance.BuyPet(itemID);
+        MageEngine.instance.OnEvent(Mage.Models.Application.MageEventType.CheckOutItem, DataHolder.GetPet(itemID).GetName(MageManager.instance.GetLanguage()));
+        GameManager.instance.BuyPet(itemID);
       GameManager.instance.EquipPet(itemID);
         if (shopPanel != null)
             shopPanel.Close();
@@ -193,6 +196,7 @@ public class UIManager : MonoBehaviour
             popup.transform.SetParent(GameObject.Find("Canvas").transform, false);
             popup.GetComponent<Popup>().Open();
             shopPanel = popup.GetComponent<ShopPanel>();
+            MageEngine.instance.OnEvent(Mage.Models.Application.MageEventType.OpenStore, "Shop");
         }
         return shopPanel;
      }
@@ -235,6 +239,7 @@ public class UIManager : MonoBehaviour
             popup.transform.SetParent(GameObject.Find("Canvas").transform, false);
             popup.GetComponent<Popup>().Open();
             eventPanel = popup.GetComponent<EventPanel>();
+            MageEngine.instance.OnEvent(Mage.Models.Application.MageEventType.OpenStore, "Minigame");
         }
         return eventPanel;
      }
@@ -262,6 +267,7 @@ public class UIManager : MonoBehaviour
             popup.transform.SetParent(GameObject.Find("Canvas").transform, false);
             popup.GetComponent<Popup>().Open();
             profilePanel = popup.GetComponent<ProfilePanel>();
+            MageEngine.instance.OnEvent(Mage.Models.Application.MageEventType.OpenStore, "Profile");
         }
      }
 
@@ -290,6 +296,7 @@ public class UIManager : MonoBehaviour
             popup.GetComponent<Popup>().Open();
             achivementPanel = popup.GetComponent<AchivementPanel>();
             achivementPanel.Load();
+            MageEngine.instance.OnEvent(Mage.Models.Application.MageEventType.OpenStore, "Achivement");
         }
         return achivementPanel;
      }

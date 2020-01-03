@@ -8,7 +8,7 @@ public class QuestManager : MonoBehaviour
     public static QuestManager instance;
     public bool isStartQuest = false;
     public bool isEndQuest = false;
-    bool isTimeline = true;
+    bool isTimeline = false;
     bool isComplete = false;
     System.DateTime startTime;
     float time;
@@ -64,6 +64,7 @@ public class QuestManager : MonoBehaviour
             GameManager.instance.GetActivePet().Dirty = GameManager.instance.GetActivePet().MaxDirty * 0.65f;
         }
         else if(GameManager.instance.myPlayer.questId == 1){
+            ItemManager.instance.GetItemChildObject(ItemType.Food).GetComponent<FoodBowlItem>().foodAmount = 0;
         }
         else if(GameManager.instance.myPlayer.questId == 2){
             delayTime = 2;
@@ -84,6 +85,7 @@ public class QuestManager : MonoBehaviour
 
     IEnumerator PlayTimeline()
     {
+        isTimeline = true;
         yield return new WaitForSeconds(delayTime);
 
        // if(!isComplete)
@@ -95,7 +97,7 @@ public class QuestManager : MonoBehaviour
 
         }
         else if(GameManager.instance.myPlayer.questId == 1){
-            ItemManager.instance.GetItemChildObject(ItemType.Food).GetComponent<FoodBowlItem>().foodAmount = 0;
+            
             GameManager.instance.SetCameraTarget(ItemManager.instance.GetItemChildObject(ItemType.Food));
             yield return new WaitForSeconds(1);
             GameManager.instance.ResetCameraTarget();
@@ -165,7 +167,7 @@ public class QuestManager : MonoBehaviour
         isTimeline = false;
         isStartQuest = false;
         isEndQuest = false;
-        isTimeline = true;
+        isTimeline = false;
         isComplete = false;
         delayTime = 0;
         replayTime = 0;
@@ -176,8 +178,8 @@ public class QuestManager : MonoBehaviour
     public void CheckQuest()
     {
 
-       // if (isTimeline)
-       //     return;
+        if (isTimeline)
+            return;
 
         if(GameManager.instance.myPlayer.questId == 0){
             if (GameManager.instance.IsEquipItem(41))
