@@ -18,6 +18,7 @@ public class ConfirmBuyShopPopup : MonoBehaviour
     public GameObject replaceText;
     public Image replaceIcon;
     ItemState state = ItemState.OnShop;
+    public GameObject okButton;
     
     bool isBuy = false;
     bool isReplace = false;

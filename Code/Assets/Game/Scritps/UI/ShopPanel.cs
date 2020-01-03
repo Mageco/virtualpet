@@ -10,7 +10,8 @@ public class ShopPanel : MonoBehaviour
     List<ItemUI> items = new List<ItemUI>();
     public GameObject itemUIPrefab;
     int currentTab = 0;
-    List<Toggle> toggles = new List<Toggle>();
+    [HideInInspector]
+    public List<Toggle> toggles = new List<Toggle>();
     public Transform toogleAnchor;
     
     // Start is called before the first frame update
@@ -123,6 +124,16 @@ public class ShopPanel : MonoBehaviour
  
 
         
+    }
+
+    public ItemUI GetItem(int id)
+    {
+        foreach(ItemUI item in items)
+        {
+            if (item.itemId == id)
+                return item;
+        }
+        return null;
     }
 
     void LoadItem(Item data){

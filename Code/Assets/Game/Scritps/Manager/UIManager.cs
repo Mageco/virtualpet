@@ -23,13 +23,20 @@ public class UIManager : MonoBehaviour
 	public Text coinText;
 	public Text diamonText;
     public Text heartText;
-	NotificationPopup questNotification;
-    QuestPanel questComplete;
-    ShopPanel shopPanel;
-    EventPanel eventPanel;
-    SkillCompletePanel skillCompletePanel;
-    ConfirmBuyShopPopup confirmBuyShopPopup;
-    RatingWindow ratingWindow;
+    [HideInInspector]
+	public NotificationPopup questNotification;
+    [HideInInspector]
+    public QuestPanel questComplete;
+    [HideInInspector]
+    public ShopPanel shopPanel;
+    [HideInInspector]
+    public EventPanel eventPanel;
+    [HideInInspector]
+    public SkillCompletePanel skillCompletePanel;
+    [HideInInspector]
+    public ConfirmBuyShopPopup confirmBuyShopPopup;
+    [HideInInspector]
+    public RatingWindow ratingWindow;
 
     public GameObject achivementNotification;
     public GameObject eventNotification;
@@ -52,6 +59,10 @@ public class UIManager : MonoBehaviour
 
     public GameObject doubleClickEffect;
 	GameObject doubleClick;
+
+    public GameObject eventButton;
+    public GameObject achivementButton;
+    public GameObject shopButton;
 
 	void Awake()
 	{
@@ -172,7 +183,7 @@ public class UIManager : MonoBehaviour
         return questComplete;
     }
 
-    public void OnShopPanel()
+    public ShopPanel OnShopPanel()
     {
         if (shopPanel == null)
         {
@@ -183,6 +194,7 @@ public class UIManager : MonoBehaviour
             popup.GetComponent<Popup>().Open();
             shopPanel = popup.GetComponent<ShopPanel>();
         }
+        return shopPanel;
      }
 
     public void OnShopPanel(int id)
@@ -199,7 +211,7 @@ public class UIManager : MonoBehaviour
         }
      }
 
-    public void OnEventPanel()
+    public EventPanel OnEventPanel()
     {
         if (eventPanel == null)
         {
@@ -210,6 +222,7 @@ public class UIManager : MonoBehaviour
             popup.GetComponent<Popup>().Open();
             eventPanel = popup.GetComponent<EventPanel>();
         }
+        return eventPanel;
      }
 
     public void OnProfilePanel()
@@ -239,7 +252,7 @@ public class UIManager : MonoBehaviour
         }
      }
 
-    public void OnAchivementPanel()
+    public AchivementPanel OnAchivementPanel()
     {
         if (achivementPanel == null)
         {
@@ -251,6 +264,7 @@ public class UIManager : MonoBehaviour
             achivementPanel = popup.GetComponent<AchivementPanel>();
             achivementPanel.Load();
         }
+        return achivementPanel;
      }
 
     public void OnItemInfoPanel(int itemId,bool isPet)

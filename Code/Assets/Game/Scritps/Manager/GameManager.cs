@@ -561,11 +561,11 @@ public class GameManager : MonoBehaviour
         myPlayer = new PlayerData();
         myPlayer.LoadData();
 
-        AddCoin(10);
+        AddCoin(50);
         AddDiamond(1);
         
         AddItem(17);
-        AddItem(41);
+        //AddItem(41);
         AddItem(2);
         AddItem(11);
         AddItem(8);

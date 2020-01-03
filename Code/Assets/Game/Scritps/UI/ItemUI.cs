@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class ItemUI : MonoBehaviour
 {
-    int itemId = 0;
+    public int itemId = 0;
     public Image icon;
     public Image iconType;
     public Text price;
