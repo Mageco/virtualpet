@@ -25,6 +25,7 @@ public class CameraController : MonoBehaviour
 	public Vector2 offset = Vector2.zero;
 	public Vector2 boundX;
 	public Vector2 boundY;
+    public float screenOffset = 0.7f;
 
 	public void SetTarget(GameObject t)
 	{
@@ -105,10 +106,10 @@ public class CameraController : MonoBehaviour
 			if (this.target) {
 				float x = this.transform.position.x;
 				float y = this.transform.position.y;
-				if(this.target.position.x < this.transform.position.x - width * 0.7f || this.target.position.x > this.transform.position.x + width * 0.7f)
+				if(this.target.position.x < this.transform.position.x - width * screenOffset || this.target.position.x > this.transform.position.x + width * screenOffset)
 					x = Mathf.Lerp (this.transform.position.x, target.position.x + offset.x, damping * Time.deltaTime);
 
-				if (this.target.position.y < this.transform.position.y - height * 0.7f || this.target.position.y > this.transform.position.y + height * 0.7f) 
+				if (this.target.position.y < this.transform.position.y - height * screenOffset || this.target.position.y > this.transform.position.y + height * screenOffset) 
 					y = Mathf.Lerp (this.transform.position.y, target.position.y + offset.y, damping * Time.deltaTime);
 
 				x = Mathf.Clamp (x, boundX.x + width,boundX.y - width);

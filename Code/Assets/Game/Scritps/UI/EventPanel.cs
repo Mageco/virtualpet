@@ -9,6 +9,7 @@ public class EventPanel : MonoBehaviour
      int price = 10;
      public Text priceText;
      public Text levelText;
+    public GameObject playButton;
     // Start is called before the first frame update
     void Start()
     {

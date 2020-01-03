@@ -7,8 +7,9 @@ public class TutorialManager : MonoBehaviour
 	public static TutorialManager instance;
     public GameObject blackScreenUI;
     public GameObject blackScreen;
+    public GameObject blackScreenButton;
     public GameObject handClickUI;
-    public GameObject handClick;
+
     int step = 0;
     int questId = 0;
 
@@ -19,6 +20,7 @@ public class TutorialManager : MonoBehaviour
         blackScreenUI.SetActive(false);
         blackScreen.SetActive(false);
         handClickUI.SetActive(false);
+        blackScreenButton.SetActive(false);
     }
 
     // Start is called before the first frame update
@@ -37,11 +39,6 @@ public class TutorialManager : MonoBehaviour
     {
         step = 0;
         questId = GameManager.instance.myPlayer.questId;
-        CheckQuest();
-    }
-
-    public void CheckQuest()
-	{
         if (questId == 0)
         {
             if (step == 0)
@@ -50,14 +47,30 @@ public class TutorialManager : MonoBehaviour
                 GameObject go = UIManager.instance.shopButton;
                 AddSorting(go);
             }
-        }else if(questId == 1)
+        }
+        else if (questId == 1)
         {
             blackScreen.SetActive(true);
             Animator anim = ItemManager.instance.GetItemChildObject(ItemType.Food).GetComponent<Animator>();
             anim.Play("Tutorial", 0);
-            anim.transform.parent.transform.position += new Vector3(0, 0, -1001);
+            anim.GetComponent<FoodBowlItem>().isSortingOrder = false;
+            Camera.main.GetComponent<CameraController>().SetOrthographic(20);
+            Camera.main.GetComponent<CameraController>().screenOffset = 0;
+            anim.transform.position += new Vector3(0, 0, -1001);
+            blackScreenButton.SetActive(true);
+        }
+        if (questId == 2)
+        {
+            if (step == 0)
+            {
+                blackScreenUI.SetActive(true);
+                GameObject go = UIManager.instance.eventButton;
+                AddSorting(go);
+            }
         }
     }
+
+
 
 
     public void OnClick()
@@ -92,6 +105,7 @@ public class TutorialManager : MonoBehaviour
             }
             else if (step == 3)
             {
+                handClickUI.transform.SetParent(blackScreenUI.transform);
                 UIManager.instance.confirmBuyShopPopup.Close();
                 UIManager.instance.shopPanel.Close();
                 blackScreenUI.SetActive(false);
@@ -101,6 +115,13 @@ public class TutorialManager : MonoBehaviour
         }else if(questId == 1)
         {
 
+        }else if(questId == 2)
+        {
+            if(step == 0)
+            {
+                UIManager.instance.OnMinigame(0);
+                step = 1;
+            }
         }
     }
 
@@ -111,13 +132,18 @@ public class TutorialManager : MonoBehaviour
 
         }else if(questId == 1)
         {
-
+            Animator anim = ItemManager.instance.GetItemChildObject(ItemType.Food).GetComponent<Animator>();
+            anim.Play("Idle", 0);
+            anim.GetComponent<FoodBowlItem>().isSortingOrder = true;
+            Camera.main.GetComponent<CameraController>().ResetOrthographic();
+            Camera.main.GetComponent<CameraController>().screenOffset = 0.7f;
         }
 
         step = 0;
         blackScreenUI.SetActive(false);
         blackScreen.SetActive(false);
         handClickUI.SetActive(false);
+        blackScreenButton.SetActive(false);
     }
 
     void AddSorting(GameObject go)

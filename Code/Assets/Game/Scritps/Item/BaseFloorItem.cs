@@ -16,8 +16,9 @@ public class BaseFloorItem : MonoBehaviour
 	protected Vector3 lastPosition;
 	public bool isBusy = false;
 	public ItemObject item;
+    public bool isSortingOrder = true;
 
-	protected float dragTime = 0;
+    protected float dragTime = 0;
 
 	protected virtual void Awake(){
 		originalPosition = this.transform.position;
@@ -32,7 +33,7 @@ public class BaseFloorItem : MonoBehaviour
     // Update is called once per frame
     protected virtual void Update()
     {
-		if (isDrag &&isDragable) {
+		if (isDrag &&isDragable && isSortingOrder) {
 			Vector3 pos = Camera.main.ScreenToWorldPoint (Input.mousePosition) - dragOffset;
 			pos.z = this.transform.position.z;
 			if(pos.y > -3)
@@ -59,9 +60,12 @@ public class BaseFloorItem : MonoBehaviour
 		else
 			transform.localScale = originalScale;
 
-		Vector3 pos = this.transform.position;
-		pos.z = this.transform.position.y * 10;
-		this.transform.position = pos;
+        if (isSortingOrder)
+        {
+            Vector3 pos = this.transform.position;
+            pos.z = this.transform.position.y * 10;
+            this.transform.position = pos;
+        }
 	}
 
 	protected virtual void OnMouseUp()

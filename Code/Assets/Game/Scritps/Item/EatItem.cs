@@ -11,6 +11,7 @@ public class EatItem : BaseFloorItem
 	public float maxfoodAmount = 100;
 	public SpriteRenderer image;
 	public Sprite[] foodSprites;
+    
 
 	float time;
 	float maxDoubleClickTime = 0.4f;
