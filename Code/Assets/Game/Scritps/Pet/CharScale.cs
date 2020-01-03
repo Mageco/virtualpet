@@ -38,7 +38,8 @@ public class CharScale : MonoBehaviour
     void LateUpdate()
     {
 		
-		if(interact.interactType == InteractType.Drag){
+		if(interact.interactType == InteractType.Drag || interact.interactType == InteractType.Touch)
+        {
 			scalePosition.x = this.transform.position.x;
 			float delta = this.transform.position.y - lastPosition.y;
 			height += delta;

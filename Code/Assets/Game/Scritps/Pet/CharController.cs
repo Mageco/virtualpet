@@ -36,7 +36,7 @@ public class CharController : MonoBehaviour
 
     //Action
     public ActionType actionType = ActionType.None;
-    protected Animator anim;
+    public Animator anim;
 
     //Interact
     [HideInInspector]
@@ -387,7 +387,7 @@ public class CharController : MonoBehaviour
         if (data.Food < data.MaxFood * 0.1f)
         {
             int ran = Random.Range(0, 100);
-            if (ran > 10)
+            if (ran > 2)
             {
                 actionType = ActionType.Eat;
                 return;
@@ -398,7 +398,7 @@ public class CharController : MonoBehaviour
         if (data.Water < data.MaxWater * 0.1f)
         {
             int ran = Random.Range(0, 100);
-            if (ran > 10)
+            if (ran > 2)
             {
                 actionType = ActionType.Drink;
                 return;
@@ -552,6 +552,10 @@ public class CharController : MonoBehaviour
         {
             StartCoroutine(Call());
         }
+        else if (actionType == ActionType.OnControl)
+        {
+            StartCoroutine(Control());
+        }
     }
 
     #endregion
@@ -644,7 +648,7 @@ public class CharController : MonoBehaviour
             return;
         }
 
-        if(charInteract.interactType == InteractType.Drop || charInteract.interactType == InteractType.Jump)
+        if(charInteract.interactType == InteractType.Drop || charInteract.interactType == InteractType.Jump || actionType == ActionType.OnControl)
             return;
 
         Abort();
@@ -771,6 +775,12 @@ public class CharController : MonoBehaviour
             MageManager.instance.PlaySoundName("Shake",false);
         }
             
+    }
+
+    public virtual void OnControl()
+    {
+        actionType = ActionType.OnControl;
+        isAbort = true;
     }
 
     public virtual void OnStop(){
@@ -1040,7 +1050,7 @@ public class CharController : MonoBehaviour
         anim.Play("Hold", 0);
         if(shadow != null)
             shadow.SetActive(true);
-        while (charInteract.interactType == InteractType.Drag)
+        while (charInteract.interactType == InteractType.Drag && !isAbort)
         {
             Vector3 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition) - charInteract.dragOffset;
             pos.z = 0;
@@ -1695,6 +1705,77 @@ public class CharController : MonoBehaviour
             GameManager.instance.AddExp(5, data.iD);
         }
         data.Energy -= 2;
+        CheckAbort();
+    }
+
+    protected virtual IEnumerator Control()
+    {
+        MageManager.instance.PlaySoundName("Drag", false);
+        charInteract.interactType = InteractType.Touch;
+        enviromentType = EnviromentType.Room;
+        GameManager.instance.SetCameraTarget(this.gameObject);
+        anim.Play("Hold", 0);
+        if (shadow != null)
+            shadow.SetActive(true);
+        while (charInteract.interactType == InteractType.Touch)
+        {
+            Vector3 pos = target;
+            pos.z = 0;
+            if (pos.y > charScale.maxHeight)
+                pos.y = charScale.maxHeight;
+            else if (pos.y < -24)
+                pos.y = -24;
+
+            if (pos.x > 52)
+                pos.x = 52;
+            else if (pos.x < -49)
+                pos.x = -49;
+
+            pos.z = -50;
+            agent.transform.position = pos;
+
+            this.transform.rotation = Quaternion.Lerp(this.transform.rotation, Quaternion.identity, Time.deltaTime * 2);
+            yield return new WaitForEndOfFrame();
+        }
+
+        //Start Drop
+        CheckDrop();
+
+        float fallSpeed = 0;
+
+        while (charInteract.interactType == InteractType.Drop)
+        {
+            if (agent.transform.position.y > dropPosition.y)
+            {
+                fallSpeed += 100f * Time.deltaTime;
+                if (fallSpeed > 50)
+                    fallSpeed = 50;
+                Vector3 pos1 = agent.transform.position;
+                pos1.y -= fallSpeed * Time.deltaTime;
+                pos1.x = Mathf.Lerp(pos1.x, dropPosition.x, Time.deltaTime * 5);
+                pos1.z = charScale.scalePosition.z;
+                agent.transform.position = pos1;
+            }
+            else
+            {
+                this.transform.rotation = Quaternion.identity;
+                Vector3 pos3 = agent.transform.position;
+                pos3.y = dropPosition.y;
+                pos3.x = dropPosition.x;
+                agent.transform.position = pos3;
+                charScale.height = dropPosition.y - charScale.scalePosition.y;
+                charInteract.interactType = InteractType.None;
+            }
+            yield return new WaitForEndOfFrame();
+        }
+        GameManager.instance.ResetCameraTarget();
+        charInteract.interactType = InteractType.None;
+
+        CheckEnviroment();
+        MageManager.instance.PlaySoundName("whoosh_swish_med_03", false);
+        yield return StartCoroutine(DoAnim("Drop"));
+
+
         CheckAbort();
     }
 

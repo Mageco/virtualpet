@@ -59,7 +59,7 @@ public class Minigame1 : Minigame
         chickenSpawner.maxNumber = 5;
         chickenSpawner.speed = 5;
 
-        float addSpeed = gameLevel;
+        float addSpeed = Mathf.Sqrt(gameLevel);
         if(addSpeed > 20)
             addSpeed = 20;
 
@@ -91,7 +91,7 @@ public class Minigame1 : Minigame
 
         if(gameLevel >= 10 && gameLevel % 10 == 0){
             int n = gameLevel - 10;
-            eagleSpawner.maxNumber = 1 + n/5;
+            eagleSpawner.maxNumber = 1 + n/10;
             eagleSpawner.speed = initSpeed + addSpeed;
         }else
             eagleSpawner.maxNumber = 0;
@@ -131,6 +131,7 @@ public class Minigame1 : Minigame
     }
 
     public override void EndGame(){
+        GameManager.instance.LogAchivement(AchivementType.Play_MiniGame);
         state = GameState.End;
         AnimalSpawner[] animals = GameObject.FindObjectsOfType<AnimalSpawner>();
         for(int i=0;i<animals.Length;i++){

@@ -8,7 +8,8 @@ public class CharShiba : CharController
 
     protected override void Start()
     {
-        actionType = ActionType.OnCall;
+        if(actionType != ActionType.Sick && actionType != ActionType.Injured && enviromentType == EnviromentType.Room)
+            actionType = ActionType.OnCall;
         base.Start();
     }
 
