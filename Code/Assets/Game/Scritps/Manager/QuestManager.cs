@@ -58,7 +58,7 @@ public class QuestManager : MonoBehaviour
 
     void LoadQuestObject()
     {
-        delayTime = 1;
+        delayTime = 2;
         if (GameManager.instance.myPlayer.questId == 0){
             GameManager.instance.GetActivePet().Food = 0.05f * GameManager.instance.GetActivePet().MaxFood;
             GameManager.instance.GetActivePet().Dirty = GameManager.instance.GetActivePet().MaxDirty * 0.65f;
@@ -88,6 +88,7 @@ public class QuestManager : MonoBehaviour
 
        // if(!isComplete)
          OnQuestNotification();
+        yield return new WaitForSeconds(3);
         if (TutorialManager.instance != null)
             TutorialManager.instance.StartQuest();
         if(GameManager.instance.myPlayer.questId == 0){
