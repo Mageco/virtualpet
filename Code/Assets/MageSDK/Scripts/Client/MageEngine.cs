@@ -639,14 +639,13 @@ namespace MageSDK.Client {
 
 		#region Event 
 		private void SendAppEvents() {
-
 			#if PLATFORM_TEST
 				if (this.resetUserDataOnStart || !this.isWorkingOnline) {
 					return;
 				}
 			#endif
-
 			if (this.IsSendable("SendUserEventListRequest")) {
+				
 				SendUserEventListRequest r = new SendUserEventListRequest (this.cachedEvent);
 
 				//call to login api
@@ -654,7 +653,6 @@ namespace MageSDK.Client {
 					ApiSettings.API_SEND_USER_EVENT_LIST,
 					r, 
 					(result) => {
-						//Debug.Log("Success: send event successfully");
 						this.cachedEvent = new List<MageEvent>();
 						SaveEvents();
 					},
@@ -812,7 +810,7 @@ namespace MageSDK.Client {
 		private void InitApiCache() {
 			this.apiCounter.Add("UpdateUserDataRequest", new OnlineCacheCounter(0, 10));
 			this.apiCounter.Add("UpdateGameCharacterDataRequest", new OnlineCacheCounter(0, 10));
-			this.apiCounter.Add("SendUserEventListRequest", new OnlineCacheCounter(0, 10));
+			this.apiCounter.Add("SendUserEventListRequest", new OnlineCacheCounter(0, 1));
 			
 		}
 
