@@ -119,7 +119,6 @@ public class QuestManager : MonoBehaviour
     public void ReplayQuest()
     {
         replayTime = 0;
-        isTimeline = true;
         OnQuestNotification();
         if (TutorialManager.instance != null)
             TutorialManager.instance.StartQuest();
