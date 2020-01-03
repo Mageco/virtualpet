@@ -43,7 +43,12 @@ public class CharInteract : MonoBehaviour
 
     }
 
-    void OnMouseUp()
+    public void OnHold()
+    {
+        character.OnHold();
+    }
+
+    void OnMouseUp()
     {
         dragOffset = Vector3.zero;
         //isTouch = false;

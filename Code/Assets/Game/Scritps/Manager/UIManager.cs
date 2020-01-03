@@ -197,6 +197,19 @@ public class UIManager : MonoBehaviour
         return shopPanel;
      }
 
+    public void OnShopPanelUI()
+    {
+        if (shopPanel == null)
+        {
+            var popup = Instantiate(shopUIPrefab) as GameObject;
+            popup.SetActive(true);
+            popup.transform.localScale = Vector3.zero;
+            popup.transform.SetParent(GameObject.Find("Canvas").transform, false);
+            popup.GetComponent<Popup>().Open();
+            shopPanel = popup.GetComponent<ShopPanel>();
+        }
+    }
+
     public void OnShopPanel(int id)
     {
         if (shopPanel == null)
@@ -211,6 +224,7 @@ public class UIManager : MonoBehaviour
         }
      }
 
+
     public EventPanel OnEventPanel()
     {
         if (eventPanel == null)
@@ -224,6 +238,19 @@ public class UIManager : MonoBehaviour
         }
         return eventPanel;
      }
+
+    public void OnEventPanelUI()
+    {
+        if (eventPanel == null)
+        {
+            var popup = Instantiate(eventUIPrefab) as GameObject;
+            popup.SetActive(true);
+            popup.transform.localScale = Vector3.zero;
+            popup.transform.SetParent(GameObject.Find("Canvas").transform, false);
+            popup.GetComponent<Popup>().Open();
+            eventPanel = popup.GetComponent<EventPanel>();
+        }
+    }
 
     public void OnProfilePanel()
     {
@@ -266,6 +293,20 @@ public class UIManager : MonoBehaviour
         }
         return achivementPanel;
      }
+
+    public void OnAchivementPanelUI()
+    {
+        if (achivementPanel == null)
+        {
+            var popup = Instantiate(achivementPrefab) as GameObject;
+            popup.SetActive(true);
+            popup.transform.localScale = Vector3.zero;
+            popup.transform.SetParent(GameObject.Find("Canvas").transform, false);
+            popup.GetComponent<Popup>().Open();
+            achivementPanel = popup.GetComponent<AchivementPanel>();
+            achivementPanel.Load();
+        }
+    }
 
     public void OnItemInfoPanel(int itemId,bool isPet)
     {

@@ -34,7 +34,6 @@ public class EventPanel : MonoBehaviour
                 MageManager.instance.PlaySoundName("BubbleButton",false);
                 GameManager.instance.AddHappy(-price);
                 UIManager.instance.OnMinigame(1);
-                GameManager.instance.LogAchivement(AchivementType.Play_MiniGame);
             }else
             {
                 MageManager.instance.OnNotificationPopup ("You have not enough happy point to play this level, come back and earn more.");

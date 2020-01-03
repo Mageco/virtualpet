@@ -565,13 +565,10 @@ public class GameManager : MonoBehaviour
         AddDiamond(1);
         
         AddItem(17);
-        //AddItem(41);
-        AddItem(2);
-        AddItem(11);
+        AddItem(7);
         AddItem(8);
         AddItem(58);
-        AddItem(59);
-        AddItem(4);
+
 
         AddPet(0);
         

@@ -46,6 +46,7 @@ public class Minigame : MonoBehaviour
     {
         time += Time.deltaTime;
         if(time >= maxTime && state == GameState.Run){
+            
             EndGame();
             if(live == maxLive){
                 OnWin(3);
@@ -113,6 +114,6 @@ public class Minigame : MonoBehaviour
     }
 
     public virtual void EndGame(){
-
+        GameManager.instance.LogAchivement(AchivementType.Play_MiniGame);
     }
 }

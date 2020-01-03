@@ -170,6 +170,14 @@ public class ItemManager : MonoBehaviour
         {
             ItemObject item = AddItem(adds[i]);
             MageManager.instance.PlaySoundName("Item_Appear",false);
+            for (int j = 0; j < item.transform.childCount; j++)
+            {
+                Animator anim = item.transform.GetChild(j).GetComponent<Animator>();
+                if (anim != null)
+                {
+                    anim.Play("Appear", 0);
+                }
+            }
             //GameManager.instance.SetCameraTarget(item.transform.GetChild(0).gameObject);
         }
         
@@ -223,7 +231,16 @@ public class ItemManager : MonoBehaviour
 
         for (int i = 0; i < adds.Count; i++)
         {
-            AddItem(adds[i]);
+            ItemObject item = AddItem(adds[i]);
+
+            for (int j = 0; j < item.transform.childCount; j++)
+            {
+                Animator anim = item.transform.GetChild(j).GetComponent<Animator>();
+                if (anim != null)
+                {
+                    anim.Play("Idle", 0);
+                }
+            }
         }
 
         UpdateItemColliders();
@@ -263,6 +280,7 @@ public class ItemManager : MonoBehaviour
         items.Add(item);
         go.transform.parent = this.transform;
         Debug.Log(DataHolder.GetItem(itemId).GetName(0));
+
         return item;
     }
 
