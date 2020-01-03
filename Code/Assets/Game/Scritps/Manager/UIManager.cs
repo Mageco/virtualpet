@@ -196,7 +196,7 @@ public class UIManager : MonoBehaviour
             popup.transform.SetParent(GameObject.Find("Canvas").transform, false);
             popup.GetComponent<Popup>().Open();
             shopPanel = popup.GetComponent<ShopPanel>();
-            MageEngine.instance.OnEvent(Mage.Models.Application.MageEventType.OpenStore, "Shop");
+           
         }
         return shopPanel;
      }
@@ -211,6 +211,7 @@ public class UIManager : MonoBehaviour
             popup.transform.SetParent(GameObject.Find("Canvas").transform, false);
             popup.GetComponent<Popup>().Open();
             shopPanel = popup.GetComponent<ShopPanel>();
+            MageEngine.instance.OnEvent(Mage.Models.Application.MageEventType.OpenStore, "Shop");
         }
     }
 
@@ -239,7 +240,7 @@ public class UIManager : MonoBehaviour
             popup.transform.SetParent(GameObject.Find("Canvas").transform, false);
             popup.GetComponent<Popup>().Open();
             eventPanel = popup.GetComponent<EventPanel>();
-            MageEngine.instance.OnEvent(Mage.Models.Application.MageEventType.OpenStore, "Minigame");
+            
         }
         return eventPanel;
      }
@@ -254,6 +255,7 @@ public class UIManager : MonoBehaviour
             popup.transform.SetParent(GameObject.Find("Canvas").transform, false);
             popup.GetComponent<Popup>().Open();
             eventPanel = popup.GetComponent<EventPanel>();
+            MageEngine.instance.OnEvent(Mage.Models.Application.MageEventType.OpenStore, "Minigame");
         }
     }
 
@@ -296,7 +298,7 @@ public class UIManager : MonoBehaviour
             popup.GetComponent<Popup>().Open();
             achivementPanel = popup.GetComponent<AchivementPanel>();
             achivementPanel.Load();
-            MageEngine.instance.OnEvent(Mage.Models.Application.MageEventType.OpenStore, "Achivement");
+           
         }
         return achivementPanel;
      }
@@ -312,6 +314,7 @@ public class UIManager : MonoBehaviour
             popup.GetComponent<Popup>().Open();
             achivementPanel = popup.GetComponent<AchivementPanel>();
             achivementPanel.Load();
+            MageEngine.instance.OnEvent(Mage.Models.Application.MageEventType.OpenStore, "Achivement");
         }
     }
 
