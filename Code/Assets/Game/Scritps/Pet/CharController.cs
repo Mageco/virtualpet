@@ -387,7 +387,7 @@ public class CharController : MonoBehaviour
         if (data.Food < data.MaxFood * 0.1f)
         {
             int ran = Random.Range(0, 100);
-            if (ran > 2)
+            if (ran > 0)
             {
                 actionType = ActionType.Eat;
                 return;
@@ -398,7 +398,7 @@ public class CharController : MonoBehaviour
         if (data.Water < data.MaxWater * 0.1f)
         {
             int ran = Random.Range(0, 100);
-            if (ran > 2)
+            if (ran > 0)
             {
                 actionType = ActionType.Drink;
                 return;
@@ -674,7 +674,7 @@ public class CharController : MonoBehaviour
 
     public virtual void OnEat(){
         if(enviromentType == EnviromentType.Room && data.Food < 0.3f * data.MaxFood && 
-            (actionType == ActionType.Patrol || actionType == ActionType.Discover)){
+            (actionType == ActionType.Patrol || actionType == ActionType.Discover || actionType == ActionType.OnCall)){
             actionType = ActionType.Eat;
             isAbort = true;
         }
@@ -1204,17 +1204,46 @@ public class CharController : MonoBehaviour
 
     protected virtual IEnumerator Pee()
     {
-        if(enviromentType != EnviromentType.Toilet)
+        if (enviromentType != EnviromentType.Toilet)
         {
-            if (data.SkillLearned(SkillType.Toilet) )
+            if (data.GetSkillProgress(SkillType.Toilet) == 0)
+            {
+                if (GameManager.instance.IsEquipItem(ItemType.Toilet))
+                {
+                    UIManager.instance.OnQuestNotificationPopup("Hold " + data.petName + " to the toilet and he will be happy");
+                }
+                else
+                {
+                    if (!GameManager.instance.IsEquipItem(ItemType.Clean))
+                    {
+                        UIManager.instance.OnQuestNotificationPopup("You may need to buy a broom to clean your home");
+                    }
+                    else
+                        UIManager.instance.OnQuestNotificationPopup("You can buy a toilet for " + data.petName);
+                }
+            }
+
+            if (data.SkillLearned(SkillType.Toilet))
             {
                 SetTarget(PointType.Toilet);
                 yield return StartCoroutine(RunToPoint());
                 ItemCollider col = ItemManager.instance.GetItemCollider(ItemType.Toilet);
-                yield return StartCoroutine(JumpUp(10,5,col.transform.position + new Vector3(0,col.height,0),col.height));
+                yield return StartCoroutine(JumpUp(10, 5, col.transform.position + new Vector3(0, col.height, 0), col.height));
                 enviromentType = EnviromentType.Toilet;
-            }else{
+            }
+            else
+            {
                 OnLearnSkill(SkillType.Toilet);
+            }
+        }
+        else
+        {
+            if (data.GetSkillProgress(SkillType.Toilet) == 1)
+            {
+                UIManager.instance.OnQuestNotificationPopup("Good job " + data.petName + " will learn how to go to toilet soon!");
+            }else if(data.GetSkillProgress(SkillType.Toilet) == 10)
+            {
+                UIManager.instance.OnQuestNotificationPopup("Well done!! now " + data.petName + " can go to toilet by him self");
             }
         }
 
@@ -1243,8 +1272,9 @@ public class CharController : MonoBehaviour
                 data.Damage -= ItemManager.instance.GetItemData(ItemType.Toilet).injured;
             }
 
-            yield return StartCoroutine(JumpDown(-7,10,30));     
+            yield return StartCoroutine(JumpDown(-7,10,30));
         }
+
         
 
         CheckAbort();
@@ -1322,7 +1352,7 @@ public class CharController : MonoBehaviour
                     yield return new WaitForEndOfFrame();
                 }
                 MageManager.instance.StopSound(soundid);
-                if (data.Food >= data.MaxFood - 2)
+                if (data.Food >= data.MaxFood - 10)
                 {
                     GameManager.instance.LogAchivement(AchivementType.Do_Action, ActionType.Eat);
                     GameManager.instance.AddExp(5, data.iD);
@@ -1335,8 +1365,17 @@ public class CharController : MonoBehaviour
             }
             else
             {
-                MageManager.instance.PlaySoundName(charType.ToString() + "_Speak", false);
-                yield return DoAnim("Speak_" + direction.ToString());
+               
+                int ran = Random.Range(0, 100);
+                if (ran < 30)
+                {
+                    MageManager.instance.PlaySoundName(charType.ToString() + "_Speak", false);
+                    yield return StartCoroutine(DoAnim("Speak_" + direction.ToString()));
+                }
+                else
+                {
+                    yield return StartCoroutine(DoAnim("Standby"));
+                }
             }
         }
 
@@ -1380,7 +1419,7 @@ public class CharController : MonoBehaviour
                     yield return new WaitForEndOfFrame();
                 }
                 MageManager.instance.StopSound(soundid);
-                if(data.Water >= data.MaxWater - 2){
+                if(data.Water >= data.MaxWater - 10){
                     GameManager.instance.LogAchivement(AchivementType.Do_Action,ActionType.Drink);
                     GameManager.instance.AddExp(5,data.iD);
                     ItemManager.instance.SpawnHeart((int)ItemManager.instance.GetItemData(ItemType.Drink).happy, this.transform.position);
@@ -1390,8 +1429,16 @@ public class CharController : MonoBehaviour
                         GameManager.instance.LogAchivement(AchivementType.Drink,ActionType.None,GetDrinkItem().GetComponent<ItemObject>().itemID);
                 }
             }else{
-                yield return DoAnim("Speak_" + direction.ToString());
-                MageManager.instance.PlaySoundName(charType.ToString() + "_Speak",false);
+                int ran = Random.Range(0, 100);
+                if (ran < 30)
+                {
+                    MageManager.instance.PlaySoundName(charType.ToString() + "_Speak", false);
+                    yield return StartCoroutine(DoAnim("Speak_" + direction.ToString()));
+                }
+                else
+                {
+                    yield return StartCoroutine(DoAnim("Standby"));
+                }
             }
         }
         CheckAbort();

@@ -42,49 +42,94 @@ public class TutorialManager : MonoBehaviour
     {
         step = 0;
         questId = GameManager.instance.myPlayer.questId;
+        //Tap to the food bowl
         if (questId == 0)
         {
             if (step == 0)
             {
-                blackScreenUI.SetActive(true);
-                GameObject go = UIManager.instance.shopButton;
-                AddSorting(go);
+                blackScreen.SetActive(true);
+                Animator anim = ItemManager.instance.GetItemChildObject(ItemType.Food).GetComponent<Animator>();
+                anim.Play("Tutorial", 0);
+                anim.GetComponent<FoodBowlItem>().isSortingOrder = false;
+                //Camera.main.GetComponent<CameraController>().SetOrthographic(20);
+                Camera.main.GetComponent<CameraController>().screenOffset = 0;
+                anim.transform.position += new Vector3(0, 0, -1001);
+                blackScreenButton.SetActive(true);
+
             }
         }
+        //Collect heart
         else if (questId == 1)
-        {
-            blackScreen.SetActive(true);
-            Animator anim = ItemManager.instance.GetItemChildObject(ItemType.Food).GetComponent<Animator>();
-            anim.Play("Tutorial", 0);
-            anim.GetComponent<FoodBowlItem>().isSortingOrder = false;
-            //Camera.main.GetComponent<CameraController>().SetOrthographic(20);
-            Camera.main.GetComponent<CameraController>().screenOffset = 0;
-            anim.transform.position += new Vector3(0, 0, -1001);
-            blackScreenButton.SetActive(true);
-        }
-        else if (questId == 2)
         {
             if (step == 0)
             {
-                blackScreenUI.SetActive(true);
-                GameObject go = UIManager.instance.eventButton;
-                AddSorting(go);
+                if(FindObjectOfType<HappyItem>() != null)
+                {
+                    blackScreen.SetActive(true);
+                    Animator anim = FindObjectOfType<HappyItem>().gameObject.GetComponent<Animator>();
+                    anim.Play("Tutorial", 0);
+                    Vector3 pos = anim.transform.position;
+                    pos.z = -1200;
+                    anim.transform.position = pos;
+                    blackScreenButton.SetActive(true);
+
+                }
             }
         }
+        //Buy water bowl
+        else if (questId == 2)
+        {
+            blackScreenUI.SetActive(true);
+            GameObject go = UIManager.instance.shopButton;
+            AddSorting(go);
+        }
+        //Tap to the water bowl
         else if (questId == 3)
         {
             if (step == 0)
             {
-                StartCoroutine(Hold());
+                blackScreen.SetActive(true);
+                Animator anim = ItemManager.instance.GetItemChildObject(ItemType.Drink).GetComponent<Animator>();
+                anim.Play("Tutorial", 0);
+                anim.GetComponent<DrinkBowlItem>().isSortingOrder = false;
+                Camera.main.GetComponent<CameraController>().screenOffset = 0;
+                anim.transform.position += new Vector3(0, 0, -1001);
+                blackScreenButton.SetActive(true);
             }
         }
+        //Collect heart
         else if (questId == 4)
+        {
+            if (step == 0)
+            {
+                if (FindObjectOfType<HappyItem>() != null)
+                {
+                    blackScreen.SetActive(true);
+                    Animator anim = FindObjectOfType<HappyItem>().gameObject.GetComponent<Animator>();
+                    anim.Play("Tutorial", 0);
+                    Vector3 pos = anim.transform.position;
+                    pos.z = -1200;
+                    anim.transform.position = pos;
+                    blackScreenButton.SetActive(true);
+                }
+            }
+        }
+        //Buy bath
+        else if (questId == 5)
         {
             if (step == 0)
             {
                 blackScreenUI.SetActive(true);
                 GameObject go = UIManager.instance.shopButton;
                 AddSorting(go);
+            }
+        }
+        //Take Bath
+        else if (questId == 6)
+        {
+            if (step == 0)
+            {
+                StartCoroutine(Hold());
             }
         }
     }
@@ -112,6 +157,11 @@ public class TutorialManager : MonoBehaviour
         yield return new WaitForSeconds(6);
         ItemManager.instance.GetItem(ItemType.Bath).GetComponent<Animator>().enabled = false;
         UIManager.instance.OnQuestNotificationPopup("Now try use soap and shower by yourself");
+        if(FindObjectOfType<SoapItem>() != null && FindObjectOfType<BathShowerItem>() != null)
+        {
+            FindObjectOfType<SoapItem>().GetComponent<Animator>().Play("Tutorial", 0);
+            FindObjectOfType<BathShowerItem>().GetComponent<Animator>().Play("Tutorial", 0);
+        }
     }
 
 
@@ -119,6 +169,14 @@ public class TutorialManager : MonoBehaviour
     {
         Debug.Log("OnClick");
         if (questId == 0)
+        {
+
+        }
+        else if (questId == 1)
+        {
+
+        }
+        else if (questId == 2)
         {
             if (step == 0)
             {
@@ -132,14 +190,14 @@ public class TutorialManager : MonoBehaviour
             else if (step == 1)
             {
                 Destroy(UIManager.instance.shopPanel.toogleAnchor.GetChild(2).gameObject.GetComponent<Canvas>());
-                UIManager.instance.shopPanel.OnTab(2);
-                ItemUI item = UIManager.instance.shopPanel.GetItem(41);
+                UIManager.instance.shopPanel.ReLoadTab(2);
+                ItemUI item = UIManager.instance.shopPanel.GetItem(58);
                 AddSorting(item.buyButton.gameObject);
                 step = 2;
             }
             else if (step == 2)
             {
-                ItemUI item = UIManager.instance.shopPanel.GetItem(41);
+                ItemUI item = UIManager.instance.shopPanel.GetItem(58);
                 Destroy(item.buyButton.gameObject.GetComponent<Canvas>());
                 item.OnBuy();
                 AddSorting(UIManager.instance.confirmBuyShopPopup.okButton.gameObject);
@@ -152,27 +210,7 @@ public class TutorialManager : MonoBehaviour
                 UIManager.instance.shopPanel.Close();
                 blackScreenUI.SetActive(false);
                 handClickUI.SetActive(false);
-                UIManager.instance.BuyItem(41);
-            }
-        }
-        else if (questId == 1)
-        {
-
-        }
-        else if (questId == 2)
-        {
-            if (step == 0)
-            {
-                Destroy(UIManager.instance.eventButton.GetComponent<Canvas>());
-                EventPanel eventPanel = UIManager.instance.OnEventPanel();
-                GameObject go = eventPanel.playButton;
-                AddSorting(go);
-                step = 1;
-            }
-            else if (step == 1)
-            {
-                UIManager.instance.eventPanel.OnEvent(0);
-                step = 2;
+                UIManager.instance.BuyItem(58);
             }
         }
         else if (questId == 3)
@@ -181,26 +219,32 @@ public class TutorialManager : MonoBehaviour
         }
         else if (questId == 4)
         {
+
+        }
+        else if (questId == 5)
+        {
             if (step == 0)
             {
                 Debug.Log("OnClick");
                 Destroy(UIManager.instance.shopButton.GetComponent<Canvas>());
                 ShopPanel shop = UIManager.instance.OnShopPanel();
-                GameObject go = shop.toogleAnchor.GetChild(1).gameObject;
+                GameObject go = shop.toogleAnchor.GetChild(3).gameObject;
                 AddSorting(go);
                 step = 1;
             }
             else if (step == 1)
             {
-                Destroy(UIManager.instance.shopPanel.toogleAnchor.GetChild(1).gameObject.GetComponent<Canvas>());
-                UIManager.instance.shopPanel.OnTab(1);
-                ItemUI item = UIManager.instance.shopPanel.GetItem(5);
+                Destroy(UIManager.instance.shopPanel.toogleAnchor.GetChild(3).gameObject.GetComponent<Canvas>());
+                UIManager.instance.shopPanel.ReLoadTab(3);
+                UIManager.instance.shopPanel.ScrollToItem(2);
+                ItemUI item = UIManager.instance.shopPanel.GetItem(2);
                 AddSorting(item.buyButton.gameObject);
                 step = 2;
             }
             else if (step == 2)
             {
-                ItemUI item = UIManager.instance.shopPanel.GetItem(5);
+                
+                ItemUI item = UIManager.instance.shopPanel.GetItem(2);
                 Destroy(item.buyButton.gameObject.GetComponent<Canvas>());
                 item.OnBuy();
                 AddSorting(UIManager.instance.confirmBuyShopPopup.okButton.gameObject);
@@ -213,7 +257,7 @@ public class TutorialManager : MonoBehaviour
                 UIManager.instance.shopPanel.Close();
                 blackScreenUI.SetActive(false);
                 handClickUI.SetActive(false);
-                UIManager.instance.BuyPet(5);
+                UIManager.instance.BuyItem(2);
             }
         }
     }
@@ -222,14 +266,26 @@ public class TutorialManager : MonoBehaviour
     {
         if(questId == 0)
         {
-
-        }else if(questId == 1)
-        {
             Animator anim = ItemManager.instance.GetItemChildObject(ItemType.Food).GetComponent<Animator>();
             anim.Play("Idle", 0);
             anim.GetComponent<FoodBowlItem>().isSortingOrder = true;
             Camera.main.GetComponent<CameraController>().ResetOrthographic();
             Camera.main.GetComponent<CameraController>().screenOffset = 0.7f;
+        }
+        else if(questId == 3)
+        {
+            Animator anim = ItemManager.instance.GetItemChildObject(ItemType.Drink).GetComponent<Animator>();
+            anim.Play("Idle", 0);
+            anim.GetComponent<DrinkBowlItem>().isSortingOrder = true;
+            Camera.main.GetComponent<CameraController>().ResetOrthographic();
+            Camera.main.GetComponent<CameraController>().screenOffset = 0.7f;
+        }else if(questId == 6)
+        {
+            if (FindObjectOfType<SoapItem>() != null && FindObjectOfType<BathShowerItem>() != null)
+            {
+                FindObjectOfType<SoapItem>().GetComponent<Animator>().Play("Idle", 0);
+                FindObjectOfType<BathShowerItem>().GetComponent<Animator>().Play("Idle", 0);
+            }
         }
 
         step = 0;

@@ -521,7 +521,7 @@ public class ItemManager : MonoBehaviour
             Quaternion rot = Quaternion.identity;
             if (ran > 50)
                 rot = Quaternion.Euler(new Vector3(0, 180, -1));
-            Vector3 pos = p + new Vector3(Random.Range(-1, 1), Random.Range(-1, 1), 0);
+            Vector3 pos = p + new Vector3(Random.Range(-0.2f, 0.2f), Random.Range(-1, 1), 0);
             SpawnHeart(pos, rot, 1, true);
         }
     }

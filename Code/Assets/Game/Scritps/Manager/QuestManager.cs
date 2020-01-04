@@ -61,19 +61,27 @@ public class QuestManager : MonoBehaviour
         delayTime = 2;
         if (GameManager.instance.myPlayer.questId == 0){
             GameManager.instance.GetActivePet().Food = 0.05f * GameManager.instance.GetActivePet().MaxFood;
-            GameManager.instance.GetActivePet().Dirty = GameManager.instance.GetActivePet().MaxDirty * 0.65f;
-        }
-        else if(GameManager.instance.myPlayer.questId == 1){
             ItemManager.instance.GetItemChildObject(ItemType.Food).GetComponent<FoodBowlItem>().foodAmount = 0;
         }
+        else if(GameManager.instance.myPlayer.questId == 1){
+            delayTime = 0;
+        }
         else if(GameManager.instance.myPlayer.questId == 2){
-            delayTime = 2;
+            
         }
         else if(GameManager.instance.myPlayer.questId == 3){
-        }else if(GameManager.instance.myPlayer.questId == 4){
+            GameManager.instance.GetActivePet().Water = 0.05f * GameManager.instance.GetActivePet().MaxWater;
+        }
+        else if(GameManager.instance.myPlayer.questId == 4){
         }else if(GameManager.instance.myPlayer.questId == 5){
-        }else if(GameManager.instance.myPlayer.questId == 6){
-        }else if(GameManager.instance.myPlayer.questId == 7){
+            GameManager.instance.GetActivePet().Dirty = GameManager.instance.GetActivePet().MaxDirty * 0.8f;
+        }
+        else if(GameManager.instance.myPlayer.questId == 6){
+            GameManager.instance.GetActivePet().Dirty = GameManager.instance.GetActivePet().MaxDirty * 0.9f;
+            GameManager.instance.GetActivePet().Pee = GameManager.instance.GetActivePet().MaxPee * 0.6f;
+            GameManager.instance.GetActivePet().Shit = GameManager.instance.GetActivePet().MaxShit * 0.6f;
+        }
+        else if(GameManager.instance.myPlayer.questId == 7){
         }
        
     }
@@ -93,26 +101,43 @@ public class QuestManager : MonoBehaviour
         yield return new WaitForSeconds(3);
         if (TutorialManager.instance != null)
             TutorialManager.instance.StartQuest();
-        if(GameManager.instance.myPlayer.questId == 0){
-
-        }
-        else if(GameManager.instance.myPlayer.questId == 1){
-            
+        if(GameManager.instance.myPlayer.questId == 0)
+        {
             GameManager.instance.SetCameraTarget(ItemManager.instance.GetItemChildObject(ItemType.Food));
+            GameManager.instance.GetActivePet().character.OnEat();
             yield return new WaitForSeconds(1);
             GameManager.instance.ResetCameraTarget();
+        }
+        else if(GameManager.instance.myPlayer.questId == 1){
+            if(FindObjectOfType<HappyItem>() != null)
+            {
+                GameManager.instance.SetCameraTarget(FindObjectOfType<HappyItem>().gameObject);
+                yield return new WaitForSeconds(1);
+                GameManager.instance.ResetCameraTarget();
+            }
         }
         else if(GameManager.instance.myPlayer.questId == 2){
 
         }else if(GameManager.instance.myPlayer.questId == 3){
+            GameManager.instance.SetCameraTarget(ItemManager.instance.GetItemChildObject(ItemType.Drink));
+            GameManager.instance.GetActivePet().character.OnDrink();
+            yield return new WaitForSeconds(1);
+            GameManager.instance.ResetCameraTarget();
+        }
+        else if(GameManager.instance.myPlayer.questId == 4){
+
+        }
+        else if (GameManager.instance.myPlayer.questId == 5)
+        {
+
+        }
+        else if (GameManager.instance.myPlayer.questId == 6)
+        {
             if (guideItem == null)
                 guideItem = ItemManager.instance.SpawnGuideArrow(ItemType.Bath);
             GameManager.instance.SetCameraTarget(ItemManager.instance.GetItemChildObject(ItemType.Bath));
             yield return new WaitForSeconds(0.1f);
             GameManager.instance.ResetCameraTarget();
-        }
-        else if(GameManager.instance.myPlayer.questId == 4){
-
         }
 
         isTimeline = false;
@@ -128,6 +153,9 @@ public class QuestManager : MonoBehaviour
 
     public void StartCompleteQuest()
     {
+        if (UIManager.instance.questNotification != null)
+            UIManager.instance.questNotification.Close();
+
         if (TutorialManager.instance != null)
             TutorialManager.instance.EndQuest();
         if(questPanel == null && !isEndQuest){
@@ -148,8 +176,7 @@ public class QuestManager : MonoBehaviour
             ItemManager.instance.LoadItems();
         }
 
-        if(UIManager.instance.questNotification != null)
-            UIManager.instance.questNotification.Close();
+
 
         GameManager.instance.AddCoin(DataHolder.Quest(GameManager.instance.myPlayer.questId).coinValue);
         GameManager.instance.AddDiamond(DataHolder.Quest(GameManager.instance.myPlayer.questId).diamondValue);
@@ -182,35 +209,49 @@ public class QuestManager : MonoBehaviour
             return;
 
         if(GameManager.instance.myPlayer.questId == 0){
-            if (GameManager.instance.IsEquipItem(41))
+            if (GameManager.instance.GetAchivement(1) >= 1)
             {
                 isComplete = true;
             }
         }
         else if(GameManager.instance.myPlayer.questId == 1){
-            if (ItemManager.instance.GetItemChildObject(ItemType.Food).GetComponent<FoodBowlItem>().foodAmount > ItemManager.instance.GetItemChildObject(ItemType.Food).GetComponent<FoodBowlItem>().maxfoodAmount - 5)
+            if (GameManager.instance.GetAchivement(23) >= 1)
             {
                 isComplete = true;
             }
         }
         else if(GameManager.instance.myPlayer.questId == 2){
-            if(GameManager.instance.GetAchivement(20) >= 1)
+            if (GameManager.instance.IsEquipItem(58))
             {
                 isComplete = true;
             }
         }else if(GameManager.instance.myPlayer.questId == 3){
-            if(GameManager.instance.GetActivePet().Dirty < 40)
+            if (GameManager.instance.GetAchivement(2) >= 1)
             {
                 isComplete = true;
             }
         } else if(GameManager.instance.myPlayer.questId == 4){
-            if (GameManager.instance.GetPets().Count >= 2)
+            if (GameManager.instance.GetAchivement(23) >= 2)
             {
                 isComplete = true;
             }
         }
-              
-        
+        else if (GameManager.instance.myPlayer.questId == 5)
+        {
+            if (GameManager.instance.IsEquipItem(2))
+            {
+                isComplete = true;
+            }
+        }
+        else if (GameManager.instance.myPlayer.questId == 6)
+        {
+            if (GameManager.instance.GetActivePet().dirty < 30)
+            {
+                isComplete = true;
+            }
+        }
+
+
         if (isComplete)
         {
             StartCompleteQuest();

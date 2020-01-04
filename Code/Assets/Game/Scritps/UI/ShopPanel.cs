@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class ShopPanel : MonoBehaviour
 {
     public ScrollRect scroll;
+    public ScrollRect scrollItem;
     public Transform anchor;
     List<ItemUI> items = new List<ItemUI>();
     public GameObject itemUIPrefab;
@@ -49,6 +50,7 @@ public class ShopPanel : MonoBehaviour
 
     public void ReLoadTab(int id){
         currentTab = id;
+        toggles[currentTab].isOn = true;
         OnTab(currentTab);
     }
 
@@ -57,6 +59,8 @@ public class ShopPanel : MonoBehaviour
     {
 
     }
+
+
 
     public void OnTab(int id){
         MageManager.instance.PlaySoundName("BubbleButton",false);
@@ -124,6 +128,27 @@ public class ShopPanel : MonoBehaviour
  
 
         
+    }
+
+    public void ScrollToItem(int id)
+    {
+        StartCoroutine(ScrollToItemCoroutine(id));
+    }
+
+    IEnumerator ScrollToItemCoroutine(int id)
+    {
+        yield return new WaitForSeconds(0.1f);
+        foreach (ItemUI item in items)
+        {
+            if (item.itemId == id)
+            {
+                float normalizePosition = (float)item.transform.GetSiblingIndex() / (float)scrollItem.content.transform.childCount;
+                Debug.Log(normalizePosition);
+                scrollItem.verticalNormalizedPosition = 1 - normalizePosition;
+
+            }
+        }
+
     }
 
     public ItemUI GetItem(int id)

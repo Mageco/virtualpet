@@ -120,6 +120,7 @@ public class Pet : BaseModel
         Pet p = DataHolder.GetPet(id);
         iD = p.iD;        
         iconUrl = p.iconUrl;
+        petName = p.GetName(MageManager.instance.GetLanguage());
         languageItem = new LanguageItem[p.languageItem.Length];
         for(int i = 0; i < p.languageItem.Length; i++)
         {

@@ -189,7 +189,19 @@ public class GameManager : MonoBehaviour
 			AddDiamond (-price);
 			AddPet (petId);
 			return true;
-		}else
+		}
+        else if (type == PriceType.Happy)
+        {
+            if (price > GetHappy())
+            {
+                MageManager.instance.OnNotificationPopup("You have not enough Happy");
+                return false;
+            }
+            AddHappy(-price);
+            AddPet(petId);
+            return true;
+        }
+        else
 		{
 			return false;
 		}
@@ -204,7 +216,11 @@ public class GameManager : MonoBehaviour
 		}else if(type == PriceType.Diamond){
 			AddDiamond (price);
 		}
-		RemovePet (petId);
+        else if (type == PriceType.Happy)
+        {
+            AddHappy(price);
+        }
+        RemovePet (petId);
 	}
    
 
@@ -313,7 +329,19 @@ public class GameManager : MonoBehaviour
 			AddDiamond (-price);
 			AddItem (itemId);
 			return true;
-		}else
+		}
+        else if (type == PriceType.Happy)
+        {
+            if (price > GetHappy())
+            {
+                MageManager.instance.OnNotificationPopup("You have not enough Happy");
+                return false;
+            }
+            AddHappy(-price);
+            AddItem(itemId);
+            return true;
+        }
+        else
 		{
 			return false;
 		}
@@ -328,6 +356,10 @@ public class GameManager : MonoBehaviour
 		}else if(type == PriceType.Diamond){
 			AddDiamond (price);
 		}
+        else if (type == PriceType.Happy)
+        {
+            AddHappy(price);
+        }
         RemoveItem(itemId);
     }
 
@@ -401,7 +433,19 @@ public class GameManager : MonoBehaviour
         return false;
 	}
 
-	public List<int> GetBuyItems(){
+    public bool IsEquipItem(ItemType itemType)
+    {
+        foreach (PlayerItem item in myPlayer.items)
+        {
+            if (DataHolder.GetItem(item.itemId).itemType == itemType && item.state == ItemState.Equiped)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public List<int> GetBuyItems(){
 		List<int> items = new List<int>();
 		for(int i=0;i<DataHolder.Items().GetDataCount();i++){
 			if(IsHaveItem(DataHolder.Item(i).iD)){
@@ -561,13 +605,13 @@ public class GameManager : MonoBehaviour
         myPlayer = new PlayerData();
         myPlayer.LoadData();
 
-        AddCoin(50);
+        AddCoin(0);
         AddDiamond(1);
         
         AddItem(17);
         AddItem(7);
         AddItem(8);
-        AddItem(58);
+        AddItem(41);
 
 
         AddPet(0);

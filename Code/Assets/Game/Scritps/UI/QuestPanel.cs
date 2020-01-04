@@ -23,6 +23,8 @@ public class QuestPanel : MonoBehaviour
     {
         yield return new WaitForSeconds(0.5f);
         MageManager.instance.PlaySoundName("Win",false);
+        yield return new WaitForSeconds(1f);
+        StartCoroutine(CloseCoroutine());
         //MageManager.instance.PlaySoundName("Changing2",false);
     }
 
@@ -78,7 +80,7 @@ public class QuestPanel : MonoBehaviour
     }
 
     public void Close(){
-        StartCoroutine(CloseCoroutine());        
+               
     }
 
     IEnumerator CloseCoroutine()

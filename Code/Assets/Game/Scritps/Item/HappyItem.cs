@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class HappyItem : MonoBehaviour
 {
@@ -36,6 +37,10 @@ public class HappyItem : MonoBehaviour
     }
 
     void OnMouseUp(){
+
+        if (IsPointerOverUIObject())
+            return;
+
         if(!isPick){
             isPick = true;
             GameManager.instance.LogAchivement(AchivementType.CollectHeart);
@@ -57,5 +62,14 @@ public class HappyItem : MonoBehaviour
         yield return new WaitForSeconds(animator.GetCurrentAnimatorStateInfo(0).length);
         GameManager.instance.AddHappy(value);
         Destroy(this.gameObject);
+    }
+
+    private bool IsPointerOverUIObject()
+    {
+        PointerEventData eventDataCurrentPosition = new PointerEventData(EventSystem.current);
+        eventDataCurrentPosition.position = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
+        List<RaycastResult> results = new List<RaycastResult>();
+        EventSystem.current.RaycastAll(eventDataCurrentPosition, results);
+        return results.Count > 0;
     }
 }

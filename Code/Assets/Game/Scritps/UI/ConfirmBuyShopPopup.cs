@@ -12,6 +12,7 @@ public class ConfirmBuyShopPopup : MonoBehaviour
     public GameObject coinIcon;
     public GameObject diamonIcon;
     public GameObject moneyIcon;
+    public GameObject happyIcon;
     public Text priceText;
     public Text question;
     public GameObject replacePanel;
@@ -62,18 +63,28 @@ public class ConfirmBuyShopPopup : MonoBehaviour
             coinIcon.SetActive(true);
             diamonIcon.SetActive(false);
             moneyIcon.SetActive(false);
+            happyIcon.SetActive(false);
         }
         else if (d.priceType == PriceType.Diamond)
         {
             coinIcon.SetActive(false);
             diamonIcon.SetActive(true);
             moneyIcon.SetActive(false);
+            happyIcon.SetActive(false);
         }
         else if (d.priceType == PriceType.Money)
         {
             coinIcon.SetActive(false);
             diamonIcon.SetActive(false);
             moneyIcon.SetActive(true);
+            happyIcon.SetActive(false);
+        }
+        else if (d.priceType == PriceType.Happy)
+        {
+            coinIcon.SetActive(false);
+            diamonIcon.SetActive(false);
+            moneyIcon.SetActive(false);
+            happyIcon.SetActive(true);
         }
     }
 
@@ -99,18 +110,28 @@ public class ConfirmBuyShopPopup : MonoBehaviour
             coinIcon.SetActive(true);
             diamonIcon.SetActive(false);
             moneyIcon.SetActive(false);
+            happyIcon.SetActive(false);
         }
         else if (d.priceType == PriceType.Diamond)
         {
             coinIcon.SetActive(false);
             diamonIcon.SetActive(true);
             moneyIcon.SetActive(false);
+            happyIcon.SetActive(false);
         }
         else if (d.priceType == PriceType.Money)
         {
             coinIcon.SetActive(false);
             diamonIcon.SetActive(false);
             moneyIcon.SetActive(true);
+            happyIcon.SetActive(false);
+        }
+        else if (d.priceType == PriceType.Happy)
+        {
+            coinIcon.SetActive(false);
+            diamonIcon.SetActive(false);
+            moneyIcon.SetActive(false);
+            happyIcon.SetActive(true);
         }
     }
 

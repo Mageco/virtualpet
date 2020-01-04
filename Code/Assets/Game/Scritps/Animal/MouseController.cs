@@ -154,7 +154,7 @@ public class MouseController : MonoBehaviour
 				Run();
 		}
 		else {
-			if (time > maxTimeSpawn) {
+			if (time > maxTimeSpawn && GameManager.instance.myPlayer.questId > 5) {
 				Spawn ();
 				time = 0;
 			} else

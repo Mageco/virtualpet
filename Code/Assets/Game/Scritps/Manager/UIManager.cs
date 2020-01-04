@@ -54,7 +54,7 @@ public class UIManager : MonoBehaviour
     public GameObject homeUI;
 
     public GameObject profilePrefab;
-    public Transform profileAnchor;
+    public GameObject notificationIcon;
     List<ProfileUI> profiles = new List<ProfileUI>();
     public List<string> notificationText = new List<string>();
 
@@ -87,6 +87,8 @@ public class UIManager : MonoBehaviour
         if(notificationText.Count > 0){
             OnQuestNotificationPopup(notificationText[0]);
         }
+        if (GameManager.instance.myPlayer.questId >= DataHolder.Quests().GetDataCount())
+            notificationIcon.SetActive(false);
     }
 
 
