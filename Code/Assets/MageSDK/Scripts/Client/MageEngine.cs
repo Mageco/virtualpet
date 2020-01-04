@@ -816,7 +816,7 @@ namespace MageSDK.Client {
 		private void InitApiCache() {
 			this.apiCounter.Add("UpdateUserDataRequest", new OnlineCacheCounter(0, 10));
 			this.apiCounter.Add("UpdateGameCharacterDataRequest", new OnlineCacheCounter(0, 10));
-			this.apiCounter.Add("SendUserEventListRequest", new OnlineCacheCounter(0, 1));
+			this.apiCounter.Add("SendUserEventListRequest", new OnlineCacheCounter(0, 0));
 			
 		}
 
