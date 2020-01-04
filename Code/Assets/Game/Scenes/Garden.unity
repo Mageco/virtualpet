@@ -2552,6 +2552,7 @@ MonoBehaviour:
   offset: {x: 0, y: 5}
   boundX: {x: -67, y: 67}
   boundY: {x: -24, y: 30}
+  screenOffset: 0.7
 --- !u!1 &1174364352
 GameObject:
   m_ObjectHideFlags: 0
@@ -2902,6 +2903,13 @@ MonoBehaviour:
   coinText: {fileID: 0}
   diamonText: {fileID: 0}
   heartText: {fileID: 0}
+  questNotification: {fileID: 0}
+  questComplete: {fileID: 0}
+  shopPanel: {fileID: 0}
+  eventPanel: {fileID: 0}
+  skillCompletePanel: {fileID: 0}
+  confirmBuyShopPopup: {fileID: 0}
+  ratingWindow: {fileID: 0}
   achivementNotification: {fileID: 0}
   eventNotification: {fileID: 0}
   achivementPanel: {fileID: 0}
@@ -2910,6 +2918,9 @@ MonoBehaviour:
   profileAnchor: {fileID: 0}
   notificationText: []
   doubleClickEffect: {fileID: 0}
+  eventButton: {fileID: 0}
+  achivementButton: {fileID: 0}
+  shopButton: {fileID: 0}
 --- !u!1 &1327298518
 GameObject:
   m_ObjectHideFlags: 0
@@ -4618,26 +4629,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 515313017622999825, guid: 4467d71f1b89b4a4993d4798a10717f1,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -1.27
-      objectReference: {fileID: 0}
-    - target: {fileID: 515313017622999825, guid: 4467d71f1b89b4a4993d4798a10717f1,
-        type: 3}
-      propertyPath: m_LocalScale.x
-      value: 3.4648614
-      objectReference: {fileID: 0}
-    - target: {fileID: 515313017622999825, guid: 4467d71f1b89b4a4993d4798a10717f1,
-        type: 3}
-      propertyPath: m_LocalScale.y
-      value: 3.032876
-      objectReference: {fileID: 0}
-    - target: {fileID: 515313017622999825, guid: 4467d71f1b89b4a4993d4798a10717f1,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 5.27
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4467d71f1b89b4a4993d4798a10717f1, type: 3}
