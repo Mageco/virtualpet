@@ -26,7 +26,7 @@ public class ES2UserType_MageModelsApplicationMageEvent : ES2Type
 	{
 		Mage.Models.Application.MageEvent data = (Mage.Models.Application.MageEvent)c;
 		// Add your reader.Read calls here to read the data into the object.
-		data.eventName = reader.Read<Mage.Models.Application.MageEventType>();
+		data.eventName = reader.Read<System.String>();
 		data.eventDetail = reader.Read<System.String>();
 		data.eventDate = reader.Read<System.String>();
 

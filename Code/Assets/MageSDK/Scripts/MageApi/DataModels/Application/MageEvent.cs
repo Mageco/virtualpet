@@ -10,7 +10,7 @@ namespace Mage.Models.Application{
 	[Serializable]
 	public class MageEvent : BaseModel
 	{
-		public MageEventType eventName = MageEventType.OpenScreen;
+		public string eventName = MageEventType.OpenScreen.ToString();
 		public string eventDetail = "";
 
 		public string eventDate = String.Format("{0:s}", DateTime.Now);
@@ -19,7 +19,7 @@ namespace Mage.Models.Application{
 		}
 
 		public MageEvent(MageEventType type, string eventDetail = "") {
-			this.eventName = type;
+			this.eventName = type.ToString();
 			this.eventDetail = eventDetail;
 			eventDate = String.Format("{0:s}", DateTime.Now);
 

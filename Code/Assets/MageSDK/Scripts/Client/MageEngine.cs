@@ -685,7 +685,13 @@ namespace MageSDK.Client {
 
 		private void LoadEngineCache(){
 			if(ES2.Exists(MageEngineSettings.GAME_ENGINE_EVENT_CACHE)){
-				this.cachedEvent = ES2.LoadList<MageEvent>(MageEngineSettings.GAME_ENGINE_EVENT_CACHE);
+				try {
+					this.cachedEvent = ES2.LoadList<MageEvent>(MageEngineSettings.GAME_ENGINE_EVENT_CACHE);
+				} catch (Exception e) {
+					this.cachedEvent = new List<MageEvent>();
+					SaveEvents();
+				}
+				
 			} else  {
 				this.cachedEvent = new List<MageEvent>();
 			}
