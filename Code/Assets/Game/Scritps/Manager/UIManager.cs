@@ -87,7 +87,7 @@ public class UIManager : MonoBehaviour
         if(notificationText.Count > 0){
             OnQuestNotificationPopup(notificationText[0]);
         }
-        if (GameManager.instance.myPlayer.questId >= DataHolder.Quests().GetDataCount())
+        if (GameManager.instance.myPlayer.questId >= DataHolder.Quests().GetDataCount() && notificationIcon != null)
             notificationIcon.SetActive(false);
     }
 

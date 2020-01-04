@@ -44,22 +44,7 @@ public class Minigame : MonoBehaviour
     // Update is called once per frame
     protected virtual void Update()
     {
-        time += Time.deltaTime;
-        if(time >= maxTime && state == GameState.Run){
-            
-            EndGame();
-            if(live == maxLive){
-                OnWin(3);
-                GameManager.instance.GetPlayer().minigameLevels[0] ++;
-                GameManager.instance.LogAchivement(AchivementType.Minigame_Level);
-            }else if(live == maxLive - 1)
-            {
-                OnWin(2);
-            }else{
-                OnWin(1);
-            }
-            Debug.Log("Win");
-        }
+
     }
 
     public virtual void UpdateLive(){

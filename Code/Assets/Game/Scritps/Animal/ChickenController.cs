@@ -8,6 +8,7 @@ public class ChickenController : AnimalController
     public GameObject[] bodies;
     public InteractType interactType;
     Vector3 dragOffset;
+    public GameObject happyItem;
 
     CircleCollider2D col2D;
 
@@ -111,6 +112,9 @@ public class ChickenController : AnimalController
                 direction = Direction.L;
             else
                 direction = Direction.R;
+            ran = Random.Range(0, 100);
+            if (ran > 60)
+                SpawnHappy();
             yield return StartCoroutine(DoAnim("Eat_" + direction.ToString()));
         }
         CheckAbort();
@@ -163,6 +167,7 @@ public class ChickenController : AnimalController
 
     void OnMouseDown()
     {
+        /*
         if (IsPointerOverUIObject ()) {
             return;
         }
@@ -171,17 +176,18 @@ public class ChickenController : AnimalController
             interactType = InteractType.Drag;
             MageManager.instance.PlaySoundName("Drag", false);
             OnHold();
-        }
+        }*/
 
     }
 
     void OnMouseUp()
     {
+        /*
         dragOffset = Vector3.zero;
         if (interactType == InteractType.Drag) {
             interactType = InteractType.Drop;
             MageManager.instance.PlaySoundName("whoosh_swish_med_03", false);
-        } 
+        } */
     }
 
     private bool IsPointerOverUIObject() {
@@ -191,5 +197,16 @@ public class ChickenController : AnimalController
         EventSystem.current.RaycastAll(eventDataCurrentPosition, results);
         return results.Count > 0;
     }
+
+    void SpawnHappy()
+    {
+        int ran = Random.Range(0, 100);
+        Quaternion rot = Quaternion.identity;
+        if (ran > 50)
+            rot = Quaternion.Euler(new Vector3(0, 180, -1));
+        Vector3 pos = this.transform.position + new Vector3(Random.Range(-0.2f, 0.2f), Random.Range(-1, 1), 0);
+        GameObject go = Instantiate(happyItem, pos, rot);
+        go.GetComponent<HappyItem>().Load(1, true);
+    }
 
 }

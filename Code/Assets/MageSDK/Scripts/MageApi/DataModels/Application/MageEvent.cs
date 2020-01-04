@@ -208,7 +208,9 @@ namespace Mage.Models.Application{
 		///<summary>
 		///InAppPurchase.CheckoutIAPWindow
 		///</summary>
-		CheckoutIAPWindow
+		CheckoutIAPWindow,
+        Quest
+
 
 	}
 }

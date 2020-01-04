@@ -75,7 +75,7 @@ public class AnimalController : MonoBehaviour
     void LateUpdate()
     {
         Vector3 pos = this.transform.position;
-        pos.z = this.transform.position.y;
+        pos.z = this.transform.position.y * 10;
         this.transform.position = pos;
 
         float offset = initZ;

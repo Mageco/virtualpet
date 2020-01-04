@@ -56,7 +56,7 @@ public class Minigame1 : Minigame
         int initNumber = 5;
         float initSpeed = 30;
         maxTime = 30 + gameLevel/5*5;
-        chickenSpawner.maxNumber = 5;
+        chickenSpawner.maxNumber = 3 + gameLevel / 5 ;
         chickenSpawner.speed = 5;
 
         float addSpeed = Mathf.Sqrt(gameLevel);
@@ -69,14 +69,14 @@ public class Minigame1 : Minigame
             foxSpawner.maxNumber = initNumber + gameLevel;
         }else if(gameLevel < 20)
         {
-            foxSpawner.maxNumber = initNumber + 5 + (gameLevel - 5) / 3;
+            foxSpawner.maxNumber = initNumber + 5 + (gameLevel - 5) / 5;
         }else if(gameLevel < 30)
         {
-            foxSpawner.maxNumber = initNumber + 13 + (gameLevel - 20) / 5;
+            foxSpawner.maxNumber = initNumber + 7 + (gameLevel - 20) / 10;
         }
         else
         {
-            foxSpawner.maxNumber = initNumber + 15 + (gameLevel - 30) / 5;
+            foxSpawner.maxNumber = initNumber + 8 + (gameLevel - 30) / 15;
         }
 
 
@@ -120,8 +120,24 @@ public class Minigame1 : Minigame
     }
 
     protected override void Update(){
-        base.Update();
-        if(state == GameState.Run)
+        time += Time.deltaTime;
+        if (time >= maxTime && state == GameState.Run)
+        {
+
+            EndGame();
+            if (live == maxLive)
+            {
+                OnWin(3);
+                GameManager.instance.GetPlayer().minigameLevels[0]++;
+                GameManager.instance.LogAchivement(AchivementType.Minigame_Level);
+            }
+            else
+            {
+                OnLose();
+            }
+        }
+
+        if (state == GameState.Run)
         {
             float t = maxTime - time;
             float m = (int)(t/60);

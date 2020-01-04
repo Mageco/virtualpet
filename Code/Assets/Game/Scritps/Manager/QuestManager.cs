@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using MageSDK.Client;
 using UnityEngine;
 
 
@@ -254,6 +255,7 @@ public class QuestManager : MonoBehaviour
 
         if (isComplete)
         {
+            MageEngine.instance.OnEvent(Mage.Models.Application.MageEventType.Quest, GameManager.instance.myPlayer.questId.ToString());
             StartCompleteQuest();
         }
 
