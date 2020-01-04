@@ -29,15 +29,15 @@ public class EventPanel : MonoBehaviour
         {
              MageManager.instance.OnNotificationPopup ("The game is comming soon.");
         }else{
-            if(GameManager.instance.GetHappy() >= price){
+            //if(GameManager.instance.GetHappy() >= price){
                 this.Close();
                 MageManager.instance.PlaySoundName("BubbleButton",false);
-                GameManager.instance.AddHappy(-price);
+                //GameManager.instance.AddHappy(-price);
                 UIManager.instance.OnMinigame(1);
-            }else
-            {
-                MageManager.instance.OnNotificationPopup ("You have not enough happy point to play this level, come back and earn more.");
-            }
+            //}else
+            //{
+            //    MageManager.instance.OnNotificationPopup ("You have not enough happy point to play this level, come back and earn more.");
+            //}
         }
        
     }

@@ -11,6 +11,7 @@ public class ItemInfoUI : MonoBehaviour
     public GameObject coinIcon;
     public GameObject diamonIcon;
     public GameObject moneyIcon;
+    public GameObject heartIcon;
     public Text itemName;
     public Text description;
 
@@ -98,6 +99,7 @@ public class ItemInfoUI : MonoBehaviour
             coinIcon.SetActive(true);
             diamonIcon.SetActive(false);
             moneyIcon.SetActive(false);
+            heartIcon.SetActive(false);
            if(state == ItemState.OnShop && GameManager.instance.GetCoin() < (DataHolder.GetItem(itemId).buyPrice)){
                buyButton.interactable = false;
            }
@@ -107,7 +109,8 @@ public class ItemInfoUI : MonoBehaviour
             coinIcon.SetActive(false);
             diamonIcon.SetActive(true);
             moneyIcon.SetActive(false);
-            if(state == ItemState.OnShop && GameManager.instance.GetDiamond() < (DataHolder.GetItem(itemId).buyPrice)){
+            heartIcon.SetActive(false);
+            if (state == ItemState.OnShop && GameManager.instance.GetDiamond() < (DataHolder.GetItem(itemId).buyPrice)){
                buyButton.interactable = false;
            }
         }
@@ -116,9 +119,17 @@ public class ItemInfoUI : MonoBehaviour
             coinIcon.SetActive(false);
             diamonIcon.SetActive(false);
             moneyIcon.SetActive(true);
+            heartIcon.SetActive(false);
+        }
+        else if (d.priceType == PriceType.Happy)
+        {
+            coinIcon.SetActive(false);
+            diamonIcon.SetActive(false);
+            moneyIcon.SetActive(false);
+            heartIcon.SetActive(true);
         }
 
-        if(d.itemType == ItemType.Food)
+        if (d.itemType == ItemType.Food)
         {
             if(d.value > 0)
             {
@@ -153,19 +164,19 @@ public class ItemInfoUI : MonoBehaviour
         if(d.happy > 0)
         {
             happyIcon.gameObject.SetActive(true);
-            happyText.text = d.happy.ToString("F0");
+            happyText.text = "+" + d.happy.ToString("F0");
         }
 
         if (d.health > 0)
         {
             sickIcon.gameObject.SetActive(true);
-            sickText.text = d.health.ToString("F0");
+            sickText.text = "+" + d.health.ToString("F0");
         }
 
         if (d.injured > 0)
         {
             injuredIcon.gameObject.SetActive(true);
-            injuredText.text = d.injured.ToString("F0");
+            injuredText.text = "+" + d.injured.ToString("F0");
         }
 
     }
@@ -238,7 +249,8 @@ public class ItemInfoUI : MonoBehaviour
             coinIcon.SetActive(true);
             diamonIcon.SetActive(false);
             moneyIcon.SetActive(false);
-           if(state == ItemState.OnShop && GameManager.instance.GetCoin() < (DataHolder.GetPet(itemId).buyPrice)){
+            heartIcon.SetActive(false);
+            if (state == ItemState.OnShop && GameManager.instance.GetCoin() < (DataHolder.GetPet(itemId).buyPrice)){
                buyButton.interactable = false;
            }
         }
@@ -247,7 +259,8 @@ public class ItemInfoUI : MonoBehaviour
             coinIcon.SetActive(false);
             diamonIcon.SetActive(true);
             moneyIcon.SetActive(false);
-            if(state == ItemState.OnShop && GameManager.instance.GetDiamond() < (DataHolder.GetItem(itemId).buyPrice)){
+            heartIcon.SetActive(false);
+            if (state == ItemState.OnShop && GameManager.instance.GetDiamond() < (DataHolder.GetItem(itemId).buyPrice)){
                buyButton.interactable = false;
            }
         }
@@ -256,6 +269,14 @@ public class ItemInfoUI : MonoBehaviour
             coinIcon.SetActive(false);
             diamonIcon.SetActive(false);
             moneyIcon.SetActive(true);
+            heartIcon.SetActive(false);
+        }
+        else if (d.priceType == PriceType.Happy)
+        {
+            coinIcon.SetActive(false);
+            diamonIcon.SetActive(false);
+            moneyIcon.SetActive(false);
+            heartIcon.SetActive(true);
         }
     }
 
