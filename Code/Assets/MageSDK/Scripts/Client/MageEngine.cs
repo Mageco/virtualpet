@@ -646,24 +646,46 @@ namespace MageSDK.Client {
 			#endif
 			if (this.IsSendable("SendUserEventListRequest")) {
 				
-				SendUserEventListRequest r = new SendUserEventListRequest (this.cachedEvent);
+				if (this.cachedEvent.Count > 1) {
+					SendUserEventListRequest r = new SendUserEventListRequest (this.cachedEvent);
 
-				//call to login api
-				ApiHandler.instance.SendApi<SendUserEventListResponse>(
-					ApiSettings.API_SEND_USER_EVENT_LIST,
-					r, 
-					(result) => {
-						this.cachedEvent = new List<MageEvent>();
-						SaveEvents();
-					},
-					(errorStatus) => {
-						//Debug.Log("Error: " + errorStatus);
-						//do some other processing here
-					},
-					() => {
-						TimeoutHandler();
-					}
-				);
+					//call to login api
+					ApiHandler.instance.SendApi<SendUserEventListResponse>(
+						ApiSettings.API_SEND_USER_EVENT_LIST,
+						r, 
+						(result) => {
+							this.cachedEvent = new List<MageEvent>();
+							SaveEvents();
+						},
+						(errorStatus) => {
+							//Debug.Log("Error: " + errorStatus);
+							//do some other processing here
+						},
+						() => {
+							TimeoutHandler();
+						}
+					);
+				} else {
+					MageEvent t = this.cachedEvent[0];
+					SendUserEventRequest r = new SendUserEventRequest(t.eventName, t.eventDetail);
+					//call to login api
+					ApiHandler.instance.SendApi<SendUserEventResponse>(
+						ApiSettings.API_SEND_USER_EVENT,
+						r, 
+						(result) => {
+							this.cachedEvent = new List<MageEvent>();
+							SaveEvents();
+						},
+						(errorStatus) => {
+							//Debug.Log("Error: " + errorStatus);
+							//do some other processing here
+						},
+						() => {
+							TimeoutHandler();
+						}
+					);
+				}
+				
 			}
 		}
 
