@@ -47,6 +47,7 @@ public class TutorialManager : MonoBehaviour
         {
             if (step == 0)
             {
+                blackScreen.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, 0.4f);
                 blackScreen.SetActive(true);
                 Animator anim = ItemManager.instance.GetItemChildObject(ItemType.Food).GetComponent<Animator>();
                 anim.Play("Tutorial", 0);
@@ -170,7 +171,9 @@ public class TutorialManager : MonoBehaviour
         Debug.Log("OnClick");
         if (questId == 0)
         {
-
+            blackScreen.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0);
+            handClick.SetActive(false);
+            FindObjectOfType<FoodBowlItem>().Fill();
         }
         else if (questId == 1)
         {

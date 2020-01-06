@@ -78,7 +78,7 @@ public class EnviromentManager : MonoBehaviour
         }
         else
         {
-            MageManager.instance.PlayMusicName("English_Country_Garden", true);
+            MageManager.instance.PlayMusicName("dayMusic", true);
         }
 
     }

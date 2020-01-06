@@ -33,14 +33,7 @@ public class LosePanel : MonoBehaviour
 
     public void Replay(){
         MageManager.instance.PlaySoundName("BubbleButton", false);
-        int price = Mathf.Min(GameManager.instance.myPlayer.minigameLevels[0], 10);
-        if (GameManager.instance.GetHappy() >= price){
-            GameManager.instance.AddHappy(-price);
-            MageManager.instance.LoadScene(SceneManager.GetActiveScene().name,0.5f);
-            this.GetComponent<Popup>().Close();
-        }else
-        {
-            MageManager.instance.OnNotificationPopup ("You have not enough happy point to play this level, come back and earn more.");
-        }
+        MageManager.instance.LoadScene(SceneManager.GetActiveScene().name,0.5f);
+        this.GetComponent<Popup>().Close();
     }
 }

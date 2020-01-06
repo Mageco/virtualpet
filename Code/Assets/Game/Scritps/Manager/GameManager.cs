@@ -610,7 +610,7 @@ public class GameManager : MonoBehaviour
         
         AddItem(17);
         AddItem(7);
-        AddItem(8);
+        //AddItem(8);
         AddItem(41);
 
 

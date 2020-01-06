@@ -1,0 +1,26 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class Hand : MonoBehaviour
+{
+    // Start is called before the first frame update
+    void Start()
+    {
+        
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        
+    }
+
+    private void OnMouseUp()
+    {
+        if(TutorialManager.instance != null)
+        {
+            TutorialManager.instance.OnClick();
+        }
+    }
+}
