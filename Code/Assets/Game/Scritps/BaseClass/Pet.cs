@@ -9,12 +9,15 @@ public class Pet : BaseModel
 	public int iD = 0;
 	public string iconUrl = "";
 	public string iconProfileUrl = "";
-	public LanguageItem[] languageItem = new LanguageItem[0];
+    public string iconCollectUrl = "";
+    public LanguageItem[] languageItem = new LanguageItem[0];
 	public int buyPrice = 0;
 	public PriceType priceType = PriceType.Coin;
     public ItemState itemState = ItemState.OnShop;
 	public string petBig = "";
 	public bool isAvailable = true;
+    public int[] requireEquipments = new int[0];
+    public int[] requirePets = new int[0];
 	//Common Data
 	public List<PetSkill> skills = new List<PetSkill>();
 	public string petName = "";

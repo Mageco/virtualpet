@@ -236,7 +236,7 @@ public class TutorialManager : MonoBehaviour
         }
         else if (questId == 2)
         {
-            ClickShopItem(58);
+            ClickShopItem(58,2);
         }
         else if (questId == 3)
         {
@@ -250,7 +250,7 @@ public class TutorialManager : MonoBehaviour
         }
         else if (questId == 5)
         {
-            ClickShopItem(2);
+            ClickShopItem(2,3);
         }
         else if(questId == 8)
         {
@@ -258,19 +258,19 @@ public class TutorialManager : MonoBehaviour
         }
         else if (questId == 9)
         {
-            ClickShopItem(59);
+            ClickShopItem(59,3);
         }
         else if (questId == 11)
         {
-            ClickShopItem(11);
+            ClickShopItem(11,3);
         }
         else if (questId == 13)
         {
-            ClickShopItem(4);
+            ClickShopItem(4,3);
         }
     }
 
-    void ClickShopItem(int itemId)
+    void ClickShopItem(int itemId,int tabID)
     {
         
         if (step == 0)
@@ -278,14 +278,14 @@ public class TutorialManager : MonoBehaviour
             Debug.Log("OnClick");
             Destroy(UIManager.instance.shopButton.GetComponent<Canvas>());
             ShopPanel shop = UIManager.instance.OnShopPanel();
-            GameObject go = shop.toogleAnchor.GetChild(3).gameObject;
+            GameObject go = shop.toogleAnchor.GetChild(tabID).gameObject;
             AddSorting(go);
             step = 1;
         }
         else if (step == 1)
         {
-            Destroy(UIManager.instance.shopPanel.toogleAnchor.GetChild(3).gameObject.GetComponent<Canvas>());
-            UIManager.instance.shopPanel.ReLoadTab(3);
+            Destroy(UIManager.instance.shopPanel.toogleAnchor.GetChild(tabID).gameObject.GetComponent<Canvas>());
+            UIManager.instance.shopPanel.ReLoadTab(tabID);
             UIManager.instance.shopPanel.ScrollToItem(itemId);
             ItemUI item = UIManager.instance.shopPanel.GetItem(itemId);
             AddSorting(item.buyButton.gameObject);

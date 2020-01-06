@@ -10,6 +10,9 @@ public class PetTab : BaseTab
     private GameObject tmp2Prefab;
     private GameObject tmp3Prefab;
     private GameObject tmp4Prefab;
+    private int tempId = 0;
+    private int tempPetId = 0;
+    int lastSellection = -1;
 
     public PetTab(ProjectWindow pw) : base(pw)
     {
@@ -111,7 +114,31 @@ public class PetTab : BaseTab
                 }
             }
 
-			EditorGUILayout.BeginVertical("box");
+            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.LabelField("Collect Icon", GUILayout.MaxWidth(110));
+            if (DataHolder.Pet(selection).iconCollectUrl != null)
+            {
+                this.tmpCollectSprites = AssetDatabase.LoadAssetAtPath<Texture2D>(DataHolder.Pet(selection).iconCollectUrl);
+            }
+            this.tmpCollectSprites = (Texture2D)EditorGUILayout.ObjectField(GUIContent.none, this.tmpCollectSprites, typeof(Texture2D), false, GUILayout.MaxWidth(100));
+            if (this.tmpCollectSprites != null)
+            {
+                DataHolder.Pet(selection).iconCollectUrl = AssetDatabase.GetAssetPath(this.tmpCollectSprites);
+
+            }
+            EditorGUILayout.LabelField(DataHolder.Pet(selection).iconCollectUrl);
+            EditorGUILayout.EndHorizontal();
+
+            if (this.tmpCollectSprites != null)
+            {
+                if (GUILayout.Button("Clear Image", GUILayout.Width(100)))
+                {
+                    DataHolder.Pet(selection).iconCollectUrl = "";
+                    tmpCollectSprites = null;
+                }
+            }
+
+            EditorGUILayout.BeginVertical("box");
 			fold2 = EditorGUILayout.Foldout(fold2, "Pet Settings");
 			if(fold2)
 			{
@@ -135,7 +162,68 @@ public class PetTab : BaseTab
 			}
 			EditorGUILayout.EndVertical();
 
- 			EditorGUILayout.BeginVertical("box");
+            EditorGUILayout.BeginVertical("box");
+            fold2 = EditorGUILayout.Foldout(fold2, "Collection");
+            if (fold2)
+            {
+                if (GUILayout.Button("Add Require Equipment", GUILayout.Width(pw.mWidth*0.7f)))
+                {
+                    DataHolder.Pet(selection).requireEquipments = ArrayHelper.Add(1, DataHolder.Pet(selection).requireEquipments);
+                }
+
+
+                for (int i = 0; i < DataHolder.Pet(selection).requireEquipments.Length; i++)
+                {
+                    EditorGUILayout.BeginHorizontal();
+                    if (lastSellection != selection)
+                        tempId = DataHolder.Items().GetItemPosition(DataHolder.Pet(selection).requireEquipments[i]);
+
+                    if (tempId == -1)
+                        tempId = 0;
+
+                    tempId = EditorGUILayout.Popup("Item", tempId, DataHolder.Items().GetNameList(true), GUILayout.Width(pw.mWidth));
+
+                    if (DataHolder.Item(tempId) != null)
+                        DataHolder.Pet(selection).requireEquipments[i] = DataHolder.Item(tempId).iD;
+                    if (GUILayout.Button("X", GUILayout.Width(pw.mWidth * 0.2f)))
+                    {
+                        DataHolder.Pet(selection).requireEquipments = ArrayHelper.Remove(i, DataHolder.Pet(selection).requireEquipments);
+                    }
+                    EditorGUILayout.EndHorizontal();
+                }
+
+
+                EditorGUILayout.Separator();
+                EditorGUILayout.Separator();
+
+                if (GUILayout.Button("Add Require Pets", GUILayout.Width(pw.mWidth * 0.7f)))
+                {
+                    DataHolder.Pet(selection).requirePets = ArrayHelper.Add(1, DataHolder.Pet(selection).requirePets);
+                }
+
+                for (int i = 0; i < DataHolder.Pet(selection).requirePets.Length; i++)
+                {
+                    EditorGUILayout.BeginHorizontal();
+                    if (lastSellection != selection)
+                        tempPetId = DataHolder.Pets().GetPetPosition(DataHolder.Pet(selection).requirePets[i]);
+
+                    if (tempPetId == -1)
+                        tempPetId = 0;
+
+                    tempPetId = EditorGUILayout.Popup("Pet", tempPetId, DataHolder.Pets().GetNameList(true), GUILayout.Width(pw.mWidth));
+
+                    if (DataHolder.Pet(tempPetId) != null)
+                        DataHolder.Pet(selection).requirePets[i] = DataHolder.Pet(tempPetId).iD;
+                    if (GUILayout.Button("X", GUILayout.Width(pw.mWidth * 0.2f)))
+                    {
+                        DataHolder.Pet(selection).requirePets = ArrayHelper.Remove(i, DataHolder.Pet(selection).requirePets);
+                    }
+                    EditorGUILayout.EndHorizontal();
+                }
+            }
+            EditorGUILayout.EndVertical();
+
+            EditorGUILayout.BeginVertical("box");
 			fold3 = EditorGUILayout.Foldout(fold3, "Attribute Settings");
 			if(fold3)
 			{

@@ -139,8 +139,20 @@ public class PetData : BaseData
 	}
 
 
+    public int GetPetPosition(int id)
+    {
+
+        for (int i = 0; i < pets.Length; i++)
+        {
+            if (pets[i].iD == id)
+            {
+                return i;
+            }
+        }
+
+        return -1;
+    }
 
 
-	
 
 }
