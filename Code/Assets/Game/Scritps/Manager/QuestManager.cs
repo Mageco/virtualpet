@@ -96,21 +96,29 @@ public class QuestManager : MonoBehaviour
         }
         else if (GameManager.instance.myPlayer.questId == 10)
         {
-            GameManager.instance.GetActivePet().Shit = GameManager.instance.GetActivePet().MaxShit * 0.7f;
+
         }
         else if (GameManager.instance.myPlayer.questId == 11)
         {
-            GameManager.instance.GetActivePet().Shit = GameManager.instance.GetActivePet().MaxShit * 0.71f;
+            GameManager.instance.GetActivePet().Shit = GameManager.instance.GetActivePet().MaxShit * 0.7f;
         }
         else if (GameManager.instance.myPlayer.questId == 12)
         {
-            GameManager.instance.GetActivePet().Sleep = GameManager.instance.GetActivePet().MaxSleep * 0.1f;
+            GameManager.instance.GetActivePet().Shit = GameManager.instance.GetActivePet().MaxShit * 0.71f;
         }
         else if (GameManager.instance.myPlayer.questId == 13)
         {
             GameManager.instance.GetActivePet().Sleep = GameManager.instance.GetActivePet().MaxSleep * 0.1f;
         }
         else if (GameManager.instance.myPlayer.questId == 14)
+        {
+            GameManager.instance.GetActivePet().Sleep = GameManager.instance.GetActivePet().MaxSleep * 0.1f;
+        }
+        else if (GameManager.instance.myPlayer.questId == 15)
+        {
+
+        }
+        else if (GameManager.instance.myPlayer.questId == 16)
         {
 
         }
@@ -293,54 +301,61 @@ public class QuestManager : MonoBehaviour
         }
         else if (GameManager.instance.myPlayer.questId == 8)
         {
-            if (GameManager.instance.IsEquipItem(59))
+            if (GameManager.instance.GetAchivement(23) >= 7)
             {
                 isComplete = true;
             }
         }
         else if (GameManager.instance.myPlayer.questId == 9)
         {
-            if (FindObjectOfType<ItemDirty>() == null)
+            if (GameManager.instance.IsEquipItem(59))
             {
                 isComplete = true;
             }
         }
         else if (GameManager.instance.myPlayer.questId == 10)
         {
-            if (GameManager.instance.IsEquipItem(11))
+            if (FindObjectOfType<ItemDirty>() == null)
             {
                 isComplete = true;
             }
         }
         else if (GameManager.instance.myPlayer.questId == 11)
         {
-            if (GameManager.instance.GetAchivement(4) >= 1)
+            if (GameManager.instance.IsEquipItem(11))
             {
                 isComplete = true;
             }
         }
         else if (GameManager.instance.myPlayer.questId == 12)
         {
-            if (GameManager.instance.IsEquipItem(4))
+            if (GameManager.instance.GetAchivement(4) >= 1)
             {
                 isComplete = true;
             }
         }
         else if (GameManager.instance.myPlayer.questId == 13)
         {
-            if (GameManager.instance.GetActivePet().enviromentType == EnviromentType.Bed)
+            if (GameManager.instance.IsEquipItem(4))
             {
                 isComplete = true;
             }
         }
         else if (GameManager.instance.myPlayer.questId == 14)
         {
-            if (GameManager.instance.IsEquipItem(1) && GameManager.instance.IsEquipItem(8))
+            if (GameManager.instance.GetActivePet().enviromentType == EnviromentType.Bed)
             {
                 isComplete = true;
             }
         }
         else if (GameManager.instance.myPlayer.questId == 15)
+        {
+            if (GameManager.instance.IsEquipItem(1) && GameManager.instance.IsEquipItem(8))
+            {
+                isComplete = true;
+            }
+        }
+        else if (GameManager.instance.myPlayer.questId == 16)
         {
             if (GameManager.instance.IsEquipPet(1))
             {

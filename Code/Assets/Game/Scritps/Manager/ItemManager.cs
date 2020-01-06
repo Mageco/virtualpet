@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using MageApi;
+using MageSDK.Client;
 using UnityEngine;
 
 public class ItemManager : MonoBehaviour
@@ -580,7 +581,12 @@ public class ItemManager : MonoBehaviour
     }
 
     void LoadItemData(){
-       if(ES2.Exists("ItemSaveData")){
+
+    #if UNITY_EDITOR
+        if (MageEngine.instance.resetUserDataOnStart)
+            return;
+    #endif
+        if(ES2.Exists("ItemSaveData")){
             itemSaveDatas = ES2.LoadList<ItemSaveData>("ItemSaveData");
         }
 

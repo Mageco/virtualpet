@@ -182,7 +182,8 @@ public class BeeController : MonoBehaviour
 		}
 		else {
 			if (time > maxTimeSpawn) {
-				Spawn ();
+                if(GameManager.instance.myPlayer.questId > 16)
+                    Spawn ();
 				time = 0;
 			} else
 				time += Time.deltaTime;
