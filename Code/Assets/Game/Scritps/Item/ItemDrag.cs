@@ -94,6 +94,11 @@ public class ItemDrag : MonoBehaviour
 		}
 	}
 
+    public void Return()
+    {
+        StartCoroutine(ReturnPosition(originalPosition));
+    }
+
 	protected IEnumerator ReturnPosition(Vector3 pos)
 	{
 		MageManager.instance.PlaySoundName("Drag",false);

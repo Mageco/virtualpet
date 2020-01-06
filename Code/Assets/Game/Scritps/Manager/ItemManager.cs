@@ -608,6 +608,10 @@ public class ItemManager : MonoBehaviour
 
     public void LoadPetData(float t)
     {
+        #if UNITY_EDITOR
+                if (MageEngine.instance.resetUserDataOnStart)
+                    return;
+        #endif
         //Debug.Log(t);
         if (t > 86400)
         {

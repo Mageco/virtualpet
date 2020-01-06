@@ -577,7 +577,7 @@ public class CharController : MonoBehaviour
         }else if(data.Water < 0.1f*data.MaxWater){
             iconStatus = IconStatus.Thirsty_2; 
         }else if(data.sleep < 0.1f*data.MaxSleep){
-            iconStatus = IconStatus.Sleeyp_2;
+            iconStatus = IconStatus.Sleepy_2;
         }else if(data.dirty > 0.9f*data.MaxDirty){
             iconStatus = IconStatus.Dirty_2; 
         }else if(data.Damage > 0.7f*data.MaxDamage){

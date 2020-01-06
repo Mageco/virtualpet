@@ -112,7 +112,9 @@ public class QuestManager : MonoBehaviour
         }
         else if (GameManager.instance.myPlayer.questId == 14)
         {
-            GameManager.instance.GetActivePet().Sleep = GameManager.instance.GetActivePet().MaxSleep * 0.1f;
+            GameManager.instance.GetActivePet().Sleep = GameManager.instance.GetActivePet().MaxSleep * 0.05f;
+            GameManager.instance.GetActivePet().Food = 0.6f * GameManager.instance.GetActivePet().MaxFood;
+            GameManager.instance.GetActivePet().Water = 0.6f * GameManager.instance.GetActivePet().MaxWater;
         }
         else if (GameManager.instance.myPlayer.questId == 15)
         {
@@ -178,8 +180,9 @@ public class QuestManager : MonoBehaviour
             yield return new WaitForSeconds(0.1f);
             GameManager.instance.ResetCameraTarget();
         }
-        else if (GameManager.instance.myPlayer.questId == 7)
+        else if (GameManager.instance.myPlayer.questId == 9)
         {
+            
         }
 
         isTimeline = false;
@@ -294,14 +297,15 @@ public class QuestManager : MonoBehaviour
         }
         else if (GameManager.instance.myPlayer.questId == 7)
         {
-            if (GameManager.instance.GetActivePet().enviromentType == EnviromentType.Room && FindObjectOfType<ItemDirty>() != null)
+            if (GameManager.instance.GetAchivement(23) >= 8)
             {
                 isComplete = true;
             }
+
         }
         else if (GameManager.instance.myPlayer.questId == 8)
         {
-            if (GameManager.instance.GetAchivement(23) >= 7)
+            if (GameManager.instance.GetActivePet().enviromentType == EnviromentType.Room && FindObjectOfType<ItemDirty>() != null)
             {
                 isComplete = true;
             }
@@ -343,7 +347,7 @@ public class QuestManager : MonoBehaviour
         }
         else if (GameManager.instance.myPlayer.questId == 14)
         {
-            if (GameManager.instance.GetActivePet().enviromentType == EnviromentType.Bed)
+            if (GameManager.instance.GetActivePet().enviromentType == EnviromentType.Bed && GameManager.instance.GetActivePet().actionType == ActionType.Sleep)
             {
                 isComplete = true;
             }
