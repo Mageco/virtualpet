@@ -572,15 +572,6 @@ public class GameManager : MonoBehaviour
 
 
     public void SavePlayer(){
-        /*         foreach(PlayerItem item in myPlayer.items){
-                    ItemObject itemObject = ItemManager.instance.GetItem(item.itemId);
-                    item.position = itemObject.transform.position;
-                    if(DataHolder.GetItem(item.itemId).itemType == ItemType.Food){
-                        item.value = itemObject.GetComponentInChildren<FoodBowlItem>().foodAmount;
-                    }else if(DataHolder.GetItem(item.itemId).itemType == ItemType.Drink){
-                        item.value = itemObject.GetComponentInChildren<DrinkBowlItem>().foodAmount;
-                    }
-                } */
         myPlayer.petCount = myPlayer.pets.Count;
         myPlayer.itemCount = myPlayer.items.Count;
         myPlayer.playTime = gameTime;
@@ -593,7 +584,6 @@ public class GameManager : MonoBehaviour
             Debug.Log("Load data from local");
             Debug.Log(MageEngine.instance.GetUser().ToJson());
             myPlayer = MageEngine.instance.GetUserData<PlayerData>();
-            //LoadNewUser();
         }else{
             Debug.Log("Create New Data");
             LoadNewUser();

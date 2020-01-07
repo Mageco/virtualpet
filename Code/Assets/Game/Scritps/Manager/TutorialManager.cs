@@ -63,28 +63,12 @@ public class TutorialManager : MonoBehaviour
         //Collect heart
         else if (questId == 1)
         {
-            if (step == 0)
-            {
-                if(FindObjectOfType<HappyItem>() != null)
-                {
-                    blackScreen.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, 0.4f);
-                    blackScreen.SetActive(true);
-                    Animator anim = FindObjectOfType<HappyItem>().gameObject.GetComponent<Animator>();
-                    anim.Play("Tutorial", 0);
-                    Vector3 pos = anim.transform.position;
-                    pos.z = -1200;
-                    anim.transform.position = pos;
-                    blackScreenButton.SetActive(true);
-
-                }
-            }
+            CollectHappy();
         }
         //Buy water bowl
         else if (questId == 2)
         {
-            blackScreenUI.SetActive(true);
-            GameObject go = UIManager.instance.shopButton;
-            AddSorting(go);
+            OnShop(2);
         }
         //Tap to the water bowl
         else if (questId == 3)
@@ -107,29 +91,12 @@ public class TutorialManager : MonoBehaviour
         //Collect heart
         else if (questId == 4)
         {
-            if (step == 0)
-            {
-                if (FindObjectOfType<HappyItem>() != null)
-                {
-                    blackScreen.SetActive(true);
-                    Animator anim = FindObjectOfType<HappyItem>().gameObject.GetComponent<Animator>();
-                    anim.Play("Tutorial", 0);
-                    Vector3 pos = anim.transform.position;
-                    pos.z = -1200;
-                    anim.transform.position = pos;
-                    blackScreenButton.SetActive(true);
-                }
-            }
+            CollectHappy();
         }
         //Buy bath
         else if (questId == 5)
         {
-            if (step == 0)
-            {
-                blackScreenUI.SetActive(true);
-                GameObject go = UIManager.instance.shopButton;
-                AddSorting(go);
-            }
+            OnShop(3);
         }
         //Take Bath
         else if (questId == 6)
@@ -142,24 +109,7 @@ public class TutorialManager : MonoBehaviour
         //Collect Heart
         else if (questId == 7)
         {
-            if (step == 0)
-            {
-                if (FindObjectOfType<HappyItem>() != null)
-                {
-                    blackScreen.SetActive(true);
-                    HappyItem[] happies = FindObjectsOfType<HappyItem>();
-                    for(int i = 0; i < happies.Length; i++)
-                    {
-                        happies[i].GetComponent<Animator>().Play("Tutorial", 0);
-                        Vector3 pos = happies[i].transform.position;
-                        pos.z = -1200 + i;
-                        happies[i].transform.position = pos;
-                    }
-                    
-                    
-                    blackScreenButton.SetActive(true);
-                }
-            }
+            CollectHappy();
         }
         //Take out of bath
 
@@ -168,12 +118,7 @@ public class TutorialManager : MonoBehaviour
         //Buy a broom
         else if (questId == 9)
         {
-            if (step == 0)
-            {
-                blackScreenUI.SetActive(true);
-                GameObject go = UIManager.instance.shopButton;
-                AddSorting(go);
-            }
+            OnShop(3);
         }
         //Clean
         else if (questId == 10)
@@ -186,12 +131,7 @@ public class TutorialManager : MonoBehaviour
         //Buy Toilet
         else if (questId == 11)
         {
-            if (step == 0)
-            {
-                blackScreenUI.SetActive(true);
-                GameObject go = UIManager.instance.shopButton;
-                AddSorting(go);
-            }
+            OnShop(3);
         }
         //Go to toilet
         else if (questId == 12)
@@ -204,12 +144,7 @@ public class TutorialManager : MonoBehaviour
         //Buy Bed
         else if (questId == 13)
         {
-            if (step == 0)
-            {
-                blackScreenUI.SetActive(true);
-                GameObject go = UIManager.instance.shopButton;
-                AddSorting(go);
-            }
+            OnShop(3);
         }
         //Go to sleep
         else if (questId == 14)
@@ -220,7 +155,50 @@ public class TutorialManager : MonoBehaviour
             }
         }
     }
-    
+
+
+    void OnShop(int tabID)
+    {
+        if (step == 0)
+        {
+            if (UIManager.instance.shopPanel == null)
+            {
+                blackScreenUI.SetActive(true);
+                GameObject go = UIManager.instance.shopButton;
+                AddSorting(go);
+            }
+            else
+            {
+                GameObject go = UIManager.instance.shopPanel.toogleAnchor.GetChild(tabID).gameObject;
+                AddSorting(go);
+                step = 1;
+            }
+        }
+    }
+
+
+    void CollectHappy()
+    {
+        if (step == 0)
+        {
+            if (FindObjectOfType<HappyItem>() != null)
+            {
+                blackScreen.SetActive(true);
+                HappyItem[] happies = FindObjectsOfType<HappyItem>();
+                for (int i = 0; i < happies.Length; i++)
+                {
+                    happies[i].GetComponent<Animator>().Play("Tutorial", 0);
+                    Vector3 pos = happies[i].transform.position;
+                    pos.z = -1200 + i;
+                    happies[i].transform.position = pos;
+                }
+
+
+                blackScreenButton.SetActive(true);
+            }
+        }
+    }
+
 
     public void OnClick()
     {

@@ -59,6 +59,7 @@ public class QuestManager : MonoBehaviour
 
     void LoadQuestObject()
     {
+        isReplay = false;
         delayTime = 2;
         if (GameManager.instance.myPlayer.questId == 0){
             GameManager.instance.GetActivePet().Food = 0.05f * GameManager.instance.GetActivePet().MaxFood;
@@ -81,6 +82,7 @@ public class QuestManager : MonoBehaviour
             GameManager.instance.GetActivePet().Dirty = GameManager.instance.GetActivePet().MaxDirty * 0.9f;
             GameManager.instance.GetActivePet().Pee = GameManager.instance.GetActivePet().MaxPee * 0.65f;
             GameManager.instance.GetActivePet().Shit = GameManager.instance.GetActivePet().MaxShit * 0.1f;
+            isReplay = true;
         }
         else if(GameManager.instance.myPlayer.questId == 7){
             delayTime = 0;
