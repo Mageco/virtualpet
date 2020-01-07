@@ -10,6 +10,8 @@ public class ItemManager : MonoBehaviour
 
     public List<ItemObject> items = new List<ItemObject>();
     public List<ItemSaveData> itemSaveDatas = new List<ItemSaveData>();
+    
+
 
     public ItemCollider[] itemColliders;
     public float expireTime = 10;
@@ -25,7 +27,9 @@ public class ItemManager : MonoBehaviour
     float maxTimeCheck = 1;
     System.DateTime playTime = System.DateTime.Now;
 
-    
+    CameraController activeCamera;
+    public CameraController gardenCamera;
+    public CameraController houseCamera;
 
     float timeDirty = 0;
     float maxTimeDirty = 200;
@@ -38,11 +42,12 @@ public class ItemManager : MonoBehaviour
         else 
             Destroy(this.gameObject);
 
-
+        
     }
     // Start is called before the first frame update
     IEnumerator Start()
     {
+        SetCamera();
         //ES3AutoSaveMgr.Instance.Load();
         bool isLoad = false;
         while(!isLoad){
@@ -105,7 +110,56 @@ public class ItemManager : MonoBehaviour
         }else{
             timeDirty += Time.deltaTime;
         }
+
+        
     }
+
+    #region  Camera
+    public CameraController GetActiveCamera()
+    {
+        return activeCamera;
+    }
+
+    public void SetCameraTarget(GameObject t)
+    {
+        if (activeCamera != null)
+        {
+            activeCamera.SetTarget(t);
+        }
+
+    }
+
+    public void ResetCameraTarget()
+    {
+        if (activeCamera != null)
+            activeCamera.target = null;
+    }
+
+    public void SetCamera()
+    {
+        if (GameManager.instance.gameType == GameType.Garden)
+        {
+            activeCamera = gardenCamera;
+            gardenCamera.gameObject.SetActive(true);
+            houseCamera.gameObject.SetActive(false);
+        }
+        else if(GameManager.instance.gameType == GameType.House)
+        {
+            gardenCamera.gameObject.SetActive(false);
+            houseCamera.gameObject.SetActive(true);
+            activeCamera = houseCamera;
+        }
+    }
+
+    public void SetLocation(GameType type)
+    {
+        GameManager.instance.gameType = type;
+        SetCamera();
+    }
+
+    #endregion
+
+
 
     public void EquipItem()
     {

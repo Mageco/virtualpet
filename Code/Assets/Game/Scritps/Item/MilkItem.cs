@@ -29,7 +29,7 @@ public class MilkItem : BaseDragItem
                 anim.Play("Active");
                 pet.OnEat();
                 eated = true;
-                GameManager.instance.ResetCameraTarget();
+                ItemManager.instance.ResetCameraTarget();
                 this.transform.position = new Vector3(1000,1000,0);
                 Invoke("OnReturn",5);
                 

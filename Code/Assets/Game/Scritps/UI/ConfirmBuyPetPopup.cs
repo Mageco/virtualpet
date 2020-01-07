@@ -47,6 +47,10 @@ public class ConfirmBuyPetPopup : MonoBehaviour
     }
 
     public void Confirm(){
+        if (UIManager.instance.petRequirementPanel)
+        {
+            UIManager.instance.petRequirementPanel.Close();
+        }
         UIManager.instance.BuyPet(itemId);    
         this.Close();
     }

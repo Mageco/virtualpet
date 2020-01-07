@@ -698,24 +698,6 @@ public class GameManager : MonoBehaviour
         p.character.OnTreatment(sickType);
     }
 
-    #region  Camera
-   public void SetCameraTarget(GameObject t){
-        if(camera == null)
-            camera = Camera.main.GetComponent<CameraController>();
-        if(camera != null){
-            camera.SetTarget(t);
-        }
-            
-    }
 
-    public void ResetCameraTarget(){
-        if(camera == null)
-            camera = Camera.main.GetComponent<CameraController>();
-        if(camera != null)
-            camera.target = null;
-    }
-
-
-    #endregion
 
 }

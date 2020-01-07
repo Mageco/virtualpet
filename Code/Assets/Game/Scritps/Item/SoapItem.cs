@@ -29,14 +29,14 @@ public class SoapItem : MonoBehaviour
 			return;
 		}
 		isTouch = true;
-		GameManager.instance.SetCameraTarget(this.gameObject);
+        ItemManager.instance.SetCameraTarget(this.gameObject);
 	}
 
 	void OnMouseUp()
 	{
 		bubbleEffect.SetActive(false);
 		isTouch = false;
-		GameManager.instance.ResetCameraTarget();
+        ItemManager.instance.ResetCameraTarget();
 	}
 
 

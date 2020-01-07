@@ -37,7 +37,7 @@ public class Parallax2D : MonoBehaviour
 	 */
 	public void Update()
 	{
-		perspectiveOffset = new Vector2 (Camera.main.transform.position.x, Camera.main.transform.position.y);
+		perspectiveOffset = new Vector2 (ItemManager.instance.GetActiveCamera().transform.position.x, ItemManager.instance.GetActiveCamera().transform.position.y);
 
 		xDesired = xStart;
 		if (xScroll)

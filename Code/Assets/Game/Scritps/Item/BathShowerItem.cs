@@ -84,7 +84,7 @@ public class BathShowerItem : MonoBehaviour
 
 		if (isBusy)
 			return;
-		GameManager.instance.SetCameraTarget(this.gameObject);
+        ItemManager.instance.SetCameraTarget(this.gameObject);
 		dragOffset = Camera.main.ScreenToWorldPoint (Input.mousePosition) - this.transform.position ;
 		isDrag = true;
 
@@ -96,7 +96,7 @@ public class BathShowerItem : MonoBehaviour
 		if(isDrag)
 			StartCoroutine (Return ());
 		isDrag = false;
-		GameManager.instance.ResetCameraTarget();
+        ItemManager.instance.ResetCameraTarget();
 	}
 
 	IEnumerator Return()

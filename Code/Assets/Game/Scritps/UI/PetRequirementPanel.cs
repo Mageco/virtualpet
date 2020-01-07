@@ -153,7 +153,7 @@ public class PetRequirementPanel : MonoBehaviour
         items.Clear();
     }
 
-    void Close()
+    public void Close()
     {
         this.GetComponent<Popup>().Close();
     }

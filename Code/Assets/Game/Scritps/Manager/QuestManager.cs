@@ -158,26 +158,26 @@ public class QuestManager : MonoBehaviour
             TutorialManager.instance.StartQuest();
         if(GameManager.instance.myPlayer.questId == 0)
         {
-            GameManager.instance.SetCameraTarget(ItemManager.instance.GetItemChildObject(ItemType.Food));
+            ItemManager.instance.SetCameraTarget(ItemManager.instance.GetItemChildObject(ItemType.Food));
             GameManager.instance.GetActivePet().character.OnEat();
             yield return new WaitForSeconds(1);
-            GameManager.instance.ResetCameraTarget();
+            ItemManager.instance.ResetCameraTarget();
         }
         else if(GameManager.instance.myPlayer.questId == 1){
             if(FindObjectOfType<HappyItem>() != null)
             {
-                GameManager.instance.SetCameraTarget(FindObjectOfType<HappyItem>().gameObject);
+                ItemManager.instance.SetCameraTarget(FindObjectOfType<HappyItem>().gameObject);
                 yield return new WaitForSeconds(1);
-                GameManager.instance.ResetCameraTarget();
+                ItemManager.instance.ResetCameraTarget();
             }
         }
         else if(GameManager.instance.myPlayer.questId == 2){
 
         }else if(GameManager.instance.myPlayer.questId == 3){
-            GameManager.instance.SetCameraTarget(ItemManager.instance.GetItemChildObject(ItemType.Drink));
+            ItemManager.instance.SetCameraTarget(ItemManager.instance.GetItemChildObject(ItemType.Drink));
             GameManager.instance.GetActivePet().character.OnDrink();
             yield return new WaitForSeconds(1);
-            GameManager.instance.ResetCameraTarget();
+            ItemManager.instance.ResetCameraTarget();
         }
         else if(GameManager.instance.myPlayer.questId == 4){
 
@@ -190,9 +190,9 @@ public class QuestManager : MonoBehaviour
         {
             if (guideItem == null)
                 guideItem = ItemManager.instance.SpawnGuideArrow(ItemType.Bath);
-            GameManager.instance.SetCameraTarget(ItemManager.instance.GetItemChildObject(ItemType.Bath));
+            ItemManager.instance.SetCameraTarget(ItemManager.instance.GetItemChildObject(ItemType.Bath));
             yield return new WaitForSeconds(0.1f);
-            GameManager.instance.ResetCameraTarget();
+            ItemManager.instance.ResetCameraTarget();
         }
         else if (GameManager.instance.myPlayer.questId == 9)
         {

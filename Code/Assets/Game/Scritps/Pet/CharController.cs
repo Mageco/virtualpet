@@ -1049,7 +1049,7 @@ public class CharController : MonoBehaviour
         MageManager.instance.PlaySoundName("Drag",false);
         charInteract.interactType = InteractType.Drag;
         enviromentType = EnviromentType.Room;
-        GameManager.instance.SetCameraTarget(this.gameObject);
+        ItemManager.instance.SetCameraTarget(this.gameObject);
         anim.Play("Hold", 0);
         if(shadow != null)
             shadow.SetActive(true);
@@ -1104,7 +1104,7 @@ public class CharController : MonoBehaviour
             }
             yield return new WaitForEndOfFrame();
         }
-        GameManager.instance.ResetCameraTarget();
+        ItemManager.instance.ResetCameraTarget();
         charInteract.interactType = InteractType.None; 
         
         CheckEnviroment();
@@ -1761,7 +1761,7 @@ public class CharController : MonoBehaviour
                     {
                         
                         anim.speed = 1.5f;
-                        agent.SetDestination(ball.transform.position + new Vector3(Random.Range(-0.1f,0.1f),Random.Range(-0.1f,0.1f),0));
+                        agent.SetDestination(ball.transform.position + new Vector3(Random.Range(-0.5f,0.5f),Random.Range(-0.5f,0.5f),0));
                         anim.Play("Run_" + this.direction.ToString(), 0);
                         data.Energy -= 2f * Time.deltaTime;
                         if(Vector2.Distance(this.transform.position, ball.scalePosition) < 2 && ball.state != ItemDragState.Drag)
@@ -1833,7 +1833,7 @@ public class CharController : MonoBehaviour
         MageManager.instance.PlaySoundName("Drag", false);
         charInteract.interactType = InteractType.Touch;
         enviromentType = EnviromentType.Room;
-        GameManager.instance.SetCameraTarget(this.gameObject);
+        ItemManager.instance.SetCameraTarget(this.gameObject);
         anim.Play("Hold", 0);
         if (shadow != null)
             shadow.SetActive(true);
@@ -1888,7 +1888,7 @@ public class CharController : MonoBehaviour
             }
             yield return new WaitForEndOfFrame();
         }
-        GameManager.instance.ResetCameraTarget();
+        ItemManager.instance.ResetCameraTarget();
         charInteract.interactType = InteractType.None;
 
         CheckEnviroment();

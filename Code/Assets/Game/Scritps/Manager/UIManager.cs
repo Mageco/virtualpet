@@ -70,6 +70,8 @@ public class UIManager : MonoBehaviour
     public GameObject eventButton;
     public GameObject achivementButton;
     public GameObject shopButton;
+    public GameObject gardenButton;
+    public GameObject houseButton;
 
 	void Awake()
 	{
@@ -95,6 +97,26 @@ public class UIManager : MonoBehaviour
         }
         if (GameManager.instance.myPlayer.questId >= DataHolder.Quests().GetDataCount() && notificationIcon != null)
             notificationIcon.SetActive(false);
+
+        if(GameManager.instance.gameType == GameType.House)
+        {
+            houseButton.SetActive(false);
+            if (ItemManager.instance.GetActiveCamera().IsBoundXLeft())
+            {
+                gardenButton.SetActive(true);
+            }
+            else
+                gardenButton.SetActive(false);
+        }else if(GameManager.instance.gameType == GameType.Garden)
+        {
+            gardenButton.SetActive(false);
+            if (ItemManager.instance.GetActiveCamera().IsBoundXRight())
+            {
+                houseButton.SetActive(true);
+            }
+            else
+                houseButton.SetActive(false);
+        }
     }
 
 
@@ -451,6 +473,15 @@ public class UIManager : MonoBehaviour
         
     }
 
+    public void OnGarden()
+    {
+        ItemManager.instance.SetLocation(GameType.Garden);
+    }
+
+    public void OnHouse()
+    {
+        ItemManager.instance.SetLocation(GameType.House);
+    }
 }
 
 public enum NotificationType{None,Shop,Skill}

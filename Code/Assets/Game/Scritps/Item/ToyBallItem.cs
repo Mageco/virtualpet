@@ -38,7 +38,7 @@ public class ToyBallItem : BaseDragItem
 
         dragOffset = Camera.main.ScreenToWorldPoint(Input.mousePosition) - this.transform.position;
         state = ItemDragState.Drag;
-        GameManager.instance.SetCameraTarget(this.gameObject);
+        ItemManager.instance.SetCameraTarget(this.gameObject);
 
     }
 
@@ -50,7 +50,7 @@ public class ToyBallItem : BaseDragItem
         state = ItemDragState.Drop;
         Vector2 vel = new Vector2(this.transform.position.x - lastPos.x, this.transform.position.y - lastPos.y).normalized;
         StartCoroutine(AddForce(vel*5000));
-        GameManager.instance.ResetCameraTarget();
+        ItemManager.instance.ResetCameraTarget();
     }
 
     public void OnForce()

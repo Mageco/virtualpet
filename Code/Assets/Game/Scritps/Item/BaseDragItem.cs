@@ -247,14 +247,31 @@ public class BaseDragItem : MonoBehaviour
         {
             dragOffset = Camera.main.ScreenToWorldPoint(Input.mousePosition) - this.transform.position;
             state = ItemDragState.Drag;
-            GameManager.instance.SetCameraTarget(this.gameObject);
+            ItemManager.instance.SetCameraTarget(this.gameObject);
         }
 
     }
 
     public virtual void EndDrag()
     {
-        GameManager.instance.ResetCameraTarget();
+        ItemManager.instance.ResetCameraTarget();
+        if (touchTime < 0.3f && Vector2.Distance(this.transform.position, lastPosition) < 0.3f)
+        {
+            OnClick();
+        }
+        touchTime = 0;
+        dragOffset = Vector3.zero;
+        if (state == ItemDragState.Drag)
+        {
+            state = ItemDragState.Drop;
+        }
+
+
+
+        else if (state == ItemDragState.Highlight)
+        {
+            state = ItemDragState.Active;
+        }
     }
 
 
@@ -270,21 +287,7 @@ public class BaseDragItem : MonoBehaviour
 	{
         EndDrag();
 
-        if(touchTime < 0.3f && Vector2.Distance(this.transform.position,lastPosition) < 0.3f){
-            OnClick();
-        }
-        touchTime = 0;
-		dragOffset = Vector3.zero;
-		if(state == ItemDragState.Drag){
-            state = ItemDragState.Drop;
-        }
 
-
-			
-        else if(state == ItemDragState.Highlight)
-        {
-            state = ItemDragState.Active;
-        }
 		
 	}
 

@@ -51,7 +51,7 @@ public class HealthItem : ItemDrag
                 effect.transform.parent = pet.transform;
                 effect.GetComponent<AutoDestroy>().liveTime = timeDelay;
             }
-            GameManager.instance.ResetCameraTarget();
+            ItemManager.instance.ResetCameraTarget();
             //Reset();
             StartCoroutine(Deactive());
         }

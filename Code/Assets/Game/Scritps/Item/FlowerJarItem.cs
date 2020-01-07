@@ -28,7 +28,7 @@ public class FlowerJarItem : BaseDragItem
 		breakObject.SetActive(true);
         MageManager.instance.PlaySoundName("Item_Vase", false);
 		yield return StartCoroutine(DoAnim("Break"));
-		GameManager.instance.ResetCameraTarget();
+        ItemManager.instance.ResetCameraTarget();
 		yield return new WaitForSeconds(2);
 		breakObject.SetActive(false);
 		this.transform.position = originalPosition;

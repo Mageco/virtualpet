@@ -76,7 +76,7 @@ public class BaseFloorItem : MonoBehaviour
 		if (isDrag && !isDragable)
 			StartCoroutine (ReturnPosition (lastPosition));
 		isDrag = false;
-		GameManager.instance.ResetCameraTarget();
+        ItemManager.instance.ResetCameraTarget();
 		dragTime = 0;
 	}
 
@@ -102,7 +102,7 @@ public class BaseFloorItem : MonoBehaviour
 		isDrag = true;
 		lastPosition = this.transform.position;
 
-		GameManager.instance.SetCameraTarget(this.gameObject);
+        ItemManager.instance.SetCameraTarget(this.gameObject);
 	}
 
 	IEnumerator ReturnPosition(Vector3 pos)

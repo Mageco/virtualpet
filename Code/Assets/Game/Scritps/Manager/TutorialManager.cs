@@ -160,7 +160,7 @@ public class TutorialManager : MonoBehaviour
             CharCollector cat = ItemManager.instance.GetCharCollector(1);
             if(cat != null)
             {
-                GameManager.instance.SetCameraTarget(cat.gameObject);
+                ItemManager.instance.SetCameraTarget(cat.gameObject);
                 Camera.main.GetComponent<CameraController>().screenOffset = 0;
                 cat.Active();
             }
@@ -458,7 +458,7 @@ public class TutorialManager : MonoBehaviour
     protected virtual IEnumerator HoldBroom()
     {
         GameObject broom = ItemManager.instance.GetItemChildObject(ItemType.Clean);
-        GameManager.instance.SetCameraTarget(broom);
+        ItemManager.instance.SetCameraTarget(broom);
         handClick.SetActive(true);
         handClick.transform.parent = broom.transform;
         handClick.transform.localPosition = new Vector3(0, 0, -10);
@@ -481,7 +481,7 @@ public class TutorialManager : MonoBehaviour
             //broom.GetComponent<Animator>().Play("Tutorial", 0);
         }
         handClick.SetActive(false);
-        GameManager.instance.ResetCameraTarget();
+        ItemManager.instance.ResetCameraTarget();
         broom.GetComponent<ItemDrag>().isDragable = true;
     }
 

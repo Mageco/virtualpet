@@ -94,7 +94,29 @@ public class CameraController : MonoBehaviour
 		this.orthographicsize = original_orthographicSize;
 	}
 
-	void  ExecuteCamera()
+    public bool IsBoundXLeft()
+    {
+        height = Camera.main.orthographicSize;
+        width = height * Screen.width / Screen.height;
+        if (this.transform.position.x < boundX.x + width + 1f)
+        {
+            return true;
+        }
+        return false;
+    }
+
+    public bool IsBoundXRight()
+    {
+        height = Camera.main.orthographicSize;
+        width = height * Screen.width / Screen.height;
+        if (this.transform.position.x > boundX.y - width - 1f)
+        {
+            return true;
+        }
+        return false;
+    }
+
+    void  ExecuteCamera()
 	{
 
 		height = Camera.main.orthographicSize;
