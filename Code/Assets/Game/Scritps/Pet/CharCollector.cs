@@ -25,13 +25,17 @@ public class CharCollector : MonoBehaviour
 
     public void Active()
     {
-        isActive = true;
-        Pet p = DataHolder.GetPet(petId);
-        petObject = Instantiate(petPrefab) as GameObject;
-        petObject.transform.parent = this.transform;
-        petObject.transform.localPosition = Vector3.zero;
-        anim = petObject.GetComponent<Animator>();
-        anim.Play("Standby", 0);
+        if (!isActive)
+        {
+            isActive = true;
+            Pet p = DataHolder.GetPet(petId);
+            petObject = Instantiate(petPrefab) as GameObject;
+            petObject.transform.parent = this.transform;
+            petObject.transform.localPosition = Vector3.zero;
+            anim = petObject.GetComponent<Animator>();
+            anim.Play("Standby", 0);
+        }
+
     }
 
     private void OnMouseUp()

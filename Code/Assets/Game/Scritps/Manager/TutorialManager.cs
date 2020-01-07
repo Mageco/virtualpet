@@ -168,12 +168,21 @@ public class TutorialManager : MonoBehaviour
         //On Buy equipment
         else if (questId == 16)
         {
+            CharCollector cat = ItemManager.instance.GetCharCollector(1);
+            if (cat != null)
+            {
+                cat.Active();
+            }
 
         }
         //Collect heart
         else if (questId == 17)
         {
-
+            CharCollector cat = ItemManager.instance.GetCharCollector(1);
+            if (cat != null)
+            {
+                cat.Active();
+            }
         }
         //Get Cat
         else if (questId == 18)
