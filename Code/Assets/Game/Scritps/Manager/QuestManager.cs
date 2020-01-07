@@ -205,13 +205,13 @@ public class QuestManager : MonoBehaviour
 
         if (TutorialManager.instance != null)
             TutorialManager.instance.EndQuest();
-        if(questPanel == null && !isEndQuest){
-            questPanel = UIManager.instance.OnQuestCompletePopup();
-            questPanel.Load(GameManager.instance.myPlayer.questId);
-            Debug.Log("Quest Complete");
-        }
+        //if(questPanel == null && !isEndQuest){
+        //    questPanel = UIManager.instance.OnQuestCompletePopup();
+        //    questPanel.Load(GameManager.instance.myPlayer.questId);
+        //    Debug.Log("Quest Complete");
+        //}
         isEndQuest = true;
-
+        EndCompleteQuest();
     }
 
     public void EndCompleteQuest()
@@ -222,8 +222,6 @@ public class QuestManager : MonoBehaviour
            GameManager.instance.EquipItem(DataHolder.Quest(GameManager.instance.myPlayer.questId).itemId);
             ItemManager.instance.LoadItems();
         }
-
-
 
         GameManager.instance.AddCoin(DataHolder.Quest(GameManager.instance.myPlayer.questId).coinValue);
         GameManager.instance.AddDiamond(DataHolder.Quest(GameManager.instance.myPlayer.questId).diamondValue);

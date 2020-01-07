@@ -125,6 +125,11 @@ public class ItemUI : MonoBehaviour
             diamonIcon.SetActive(false);
             moneyIcon.SetActive(false);
             happyIcon.SetActive(true);
+            if (state == ItemState.OnShop && GameManager.instance.GetHappy() < (DataHolder.GetItem(itemId).buyPrice))
+            {
+                buyButton.interactable = false;
+                sellButton.interactable = false;
+            }
         }
 
     }
