@@ -652,7 +652,11 @@ namespace MageSDK.Client {
 
 			if (t == null) {
 				if (ES2.Exists(cacheName)) {
-					return ES2.Load<T>(cacheName);
+					t =  ES2.Load<T>(cacheName);
+					if (t == null) {
+						return default(T);
+					}
+					return t;
 				} else {
 					return default(T);
 				}
@@ -688,20 +692,6 @@ namespace MageSDK.Client {
 			#endif
 
 			RuntimeParameters.GetInstance().SetParam(cacheName, data);
-		}
-
-		private List<T> GetCacheListData<T>(string cacheName) {
-			List<T> t = (List<T>)RuntimeParameters.GetInstance().GetParam(cacheName);
-
-			if (t == null) {
-				if (ES2.Exists(cacheName)) {
-					return ES2.LoadList<T>(cacheName);
-				} else {
-					return new List<T>();
-				}
-			} else {
-				return t;
-			}
 		}
 
 		private List<CacheScreenTime> LoadScreenCacheListData(string cacheName) {
