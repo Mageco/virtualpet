@@ -483,6 +483,21 @@ public class ItemManager : MonoBehaviour
 		return randomPoints;
 	}
 
+    public CharCollector GetCharCollector(int id)
+    {
+        CharCollector[] chars = FindObjectsOfType<CharCollector>();
+
+        for (int i = 0; i < chars.Length; i++)
+        {
+            if (chars[i].petId == id)
+            {
+                return chars[i];
+            }
+        }
+        
+        return null;
+    }
+
     public void SpawnPee(Vector3 pos,float value)
     {
         GameObject go = Instantiate(peePrefab, pos, Quaternion.identity);

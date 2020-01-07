@@ -156,8 +156,9 @@ public class CharController : MonoBehaviour
         {
             n += data.level/2;
         }
-        
-        //data.Sleep -= 0.001f * t;
+
+        if(actionType == ActionType.Sleep)
+            data.Sleep += 0.01f * t;
         data.Energy -= 0.01f * t;
         data.Food -= 0.01f * t;
         data.Water -= 0.01f * t;
@@ -1736,15 +1737,31 @@ public class CharController : MonoBehaviour
             }else if(toyItem.toyType == ToyType.Ball)
             {
                 ToyBallItem ball = toyItem.GetComponent<ToyBallItem>();
-                if (charType == CharType.Dog || charType == CharType.Hamster || charType == CharType.Cat)
+                bool isPlay = false;
+                bool isFear = false;
+                if (charType == CharType.Cat)
+                    isPlay = true;
+
+                int ran1 = Random.Range(0, 100);
+                if((charType == CharType.Dog || charType == CharType.Hamster) && ran1 > 70 && data.Energy > data.MaxEnergy * 0.1f)
                 {
+                    isPlay = true;
+                }
+
+                if (charType == CharType.Turtle || charType == CharType.Parrot || charType == CharType.Rabbit)
+                    isFear = true;
+
+
+                if (isPlay)
+                {
+
                     charScale.speedFactor = 1.5f;
                     
                     while (ball != null && data.Energy > data.MaxEnergy * 0.1f && !isAbort)
                     {
                         
                         anim.speed = 1.5f;
-                        agent.SetDestination(ball.transform.position);
+                        agent.SetDestination(ball.transform.position + new Vector3(Random.Range(-0.1f,0.1f),Random.Range(-0.1f,0.1f),0));
                         anim.Play("Run_" + this.direction.ToString(), 0);
                         data.Energy -= 2f * Time.deltaTime;
                         if(Vector2.Distance(this.transform.position, ball.scalePosition) < 2 && ball.state != ItemDragState.Drag)
@@ -1761,7 +1778,8 @@ public class CharController : MonoBehaviour
                     }
                     charScale.speedFactor = 1f;
                 }
-                else
+
+                if(isFear)
                 {
                     if (ball != null && Vector2.Distance(this.transform.position, ball.scalePosition) < 2 && ball.state == ItemDragState.Drop)
                     {

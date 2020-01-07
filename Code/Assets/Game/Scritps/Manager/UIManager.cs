@@ -20,6 +20,8 @@ public class UIManager : MonoBehaviour
     public GameObject itemInfoPrefab;
     public GameObject treatmentPopupPrefab;
     public GameObject treatmentConfirmPrefab;
+    public GameObject PetRequirementPanelPrefab;
+    public GameObject confirmBuyPetPrefab;
     public static UIManager instance;
 	public Text coinText;
 	public Text diamonText;
@@ -38,6 +40,10 @@ public class UIManager : MonoBehaviour
     public ConfirmBuyShopPopup confirmBuyShopPopup;
     [HideInInspector]
     public RatingWindow ratingWindow;
+    [HideInInspector]
+    public PetRequirementPanel petRequirementPanel;
+    [HideInInspector]
+    public ConfirmBuyPetPopup confirmBuyPetPopup;
 
     public GameObject achivementNotification;
     public GameObject eventNotification;
@@ -128,9 +134,12 @@ public class UIManager : MonoBehaviour
 	public void BuyPet(int itemID){
         MageEngine.instance.OnEvent(Mage.Models.Application.MageEventType.CheckOutItem, DataHolder.GetPet(itemID).GetName(MageManager.instance.GetLanguage()));
         GameManager.instance.BuyPet(itemID);
-      GameManager.instance.EquipPet(itemID);
+        GameManager.instance.EquipPet(itemID);
         if (shopPanel != null)
             shopPanel.Close();
+
+        if(ItemManager.instance.GetCharCollector(itemID) != null)
+            ItemManager.instance.GetCharCollector(itemID).DeActive();
       
 	}
 
@@ -274,6 +283,34 @@ public class UIManager : MonoBehaviour
             MageEngine.instance.OnEvent(Mage.Models.Application.MageEventType.OpenStore, "Profile");
         }
      }
+
+    public void OnPetRequirementPanel(Pet pet)
+    {
+        if (petRequirementPanel == null)
+        {
+            var popup = Instantiate(PetRequirementPanelPrefab) as GameObject;
+            popup.SetActive(true);
+            popup.transform.localScale = Vector3.zero;
+            popup.transform.SetParent(GameObject.Find("Canvas").transform, false);
+            popup.GetComponent<Popup>().Open();
+            petRequirementPanel = popup.GetComponent<PetRequirementPanel>();
+            petRequirementPanel.Load(pet);
+        }
+    }
+
+    public void OnConfirmBuyPetPopup(Pet pet)
+    {
+        if (confirmBuyPetPopup == null)
+        {
+            var popup = Instantiate(confirmBuyPetPrefab) as GameObject;
+            popup.SetActive(true);
+            popup.transform.localScale = Vector3.zero;
+            popup.transform.SetParent(GameObject.Find("Canvas").transform, false);
+            popup.GetComponent<Popup>().Open();
+            confirmBuyPetPopup = popup.GetComponent<ConfirmBuyPetPopup>();
+            confirmBuyPetPopup.Load(pet);
+        }
+    }
 
     public void OnSkillCompletePanel(SkillType t)
     {

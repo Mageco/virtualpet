@@ -76,10 +76,10 @@ public class QuestManager : MonoBehaviour
         }
         else if(GameManager.instance.myPlayer.questId == 4){
         }else if(GameManager.instance.myPlayer.questId == 5){
-            GameManager.instance.GetActivePet().Dirty = GameManager.instance.GetActivePet().MaxDirty * 0.8f;
+            GameManager.instance.GetActivePet().Dirty = GameManager.instance.GetActivePet().MaxDirty * 0.7f;
         }
         else if(GameManager.instance.myPlayer.questId == 6){
-            GameManager.instance.GetActivePet().Dirty = GameManager.instance.GetActivePet().MaxDirty * 0.9f;
+            GameManager.instance.GetActivePet().Dirty = GameManager.instance.GetActivePet().MaxDirty * 0.8f;
             GameManager.instance.GetActivePet().Pee = GameManager.instance.GetActivePet().MaxPee * 0.65f;
             GameManager.instance.GetActivePet().Shit = GameManager.instance.GetActivePet().MaxShit * 0.1f;
             isReplay = true;
@@ -120,11 +120,23 @@ public class QuestManager : MonoBehaviour
         }
         else if (GameManager.instance.myPlayer.questId == 15)
         {
-
+            delayTime = 5;
         }
         else if (GameManager.instance.myPlayer.questId == 16)
         {
 
+        }
+        else if (GameManager.instance.myPlayer.questId == 17)
+        {
+            GameManager.instance.GetActivePet().Sleep = GameManager.instance.GetActivePet().MaxSleep * 0.95f;
+        }
+        else if (GameManager.instance.myPlayer.questId == 18)
+        {
+
+        }
+        else if (GameManager.instance.myPlayer.questId == 19)
+        {
+            delayTime = 80;
         }
 
     }
@@ -253,29 +265,29 @@ public class QuestManager : MonoBehaviour
         if (isTimeline)
             return;
 
-        if(GameManager.instance.myPlayer.questId == 0){
+        if (GameManager.instance.myPlayer.questId == 0) {
             if (GameManager.instance.GetAchivement(1) >= 1)
             {
                 isComplete = true;
             }
         }
-        else if(GameManager.instance.myPlayer.questId == 1){
+        else if (GameManager.instance.myPlayer.questId == 1) {
             if (GameManager.instance.GetAchivement(23) >= 1)
             {
                 isComplete = true;
             }
         }
-        else if(GameManager.instance.myPlayer.questId == 2){
+        else if (GameManager.instance.myPlayer.questId == 2) {
             if (GameManager.instance.IsEquipItem(58))
             {
                 isComplete = true;
             }
-        }else if(GameManager.instance.myPlayer.questId == 3){
+        } else if (GameManager.instance.myPlayer.questId == 3) {
             if (GameManager.instance.GetAchivement(2) >= 1)
             {
                 isComplete = true;
             }
-        } else if(GameManager.instance.myPlayer.questId == 4){
+        } else if (GameManager.instance.myPlayer.questId == 4) {
             if (GameManager.instance.GetAchivement(23) >= 2)
             {
                 isComplete = true;
@@ -354,13 +366,26 @@ public class QuestManager : MonoBehaviour
         }
         else if (GameManager.instance.myPlayer.questId == 15)
         {
-            if (GameManager.instance.IsEquipItem(1) && GameManager.instance.IsEquipItem(8))
+            if (UIManager.instance.petRequirementPanel != null)
             {
                 isComplete = true;
             }
         }
         else if (GameManager.instance.myPlayer.questId == 16)
         {
+            if (GameManager.instance.IsEquipItem(1) && GameManager.instance.IsEquipItem(8))
+            {
+                isComplete = true;
+            }
+
+        }
+        else if (GameManager.instance.myPlayer.questId == 17)
+        {
+            if (GameManager.instance.GetHappy() >= DataHolder.GetPet(1).buyPrice)
+            {
+                isComplete = true;
+            }
+        } else if (GameManager.instance.myPlayer.questId == 18) { 
             if (GameManager.instance.IsEquipPet(1))
             {
                 isComplete = true;

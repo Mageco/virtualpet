@@ -154,6 +154,37 @@ public class TutorialManager : MonoBehaviour
                 StartCoroutine(HoldToSleep());
             }
         }
+        //Talk with Cat
+        else if (questId == 15)
+        {
+            CharCollector cat = ItemManager.instance.GetCharCollector(1);
+            if(cat != null)
+            {
+                GameManager.instance.SetCameraTarget(cat.gameObject);
+                Camera.main.GetComponent<CameraController>().screenOffset = 0;
+                cat.Active();
+            }
+        }
+        //On Buy equipment
+        else if (questId == 16)
+        {
+
+        }
+        //Collect heart
+        else if (questId == 17)
+        {
+
+        }
+        //Get Cat
+        else if (questId == 18)
+        {
+
+        }
+        //Go Out
+        else if (questId == 19)
+        {
+
+        }
     }
 
 
@@ -169,7 +200,8 @@ public class TutorialManager : MonoBehaviour
             }
             else
             {
-                GameObject go = UIManager.instance.shopPanel.toogleAnchor.GetChild(tabID).gameObject;
+                EventPanel eventPanel = UIManager.instance.OnEventPanel();
+                GameObject go = eventPanel.playButton;
                 AddSorting(go);
                 step = 1;
             }
@@ -245,6 +277,13 @@ public class TutorialManager : MonoBehaviour
         else if (questId == 13)
         {
             ClickShopItem(4,3);
+        }else if(questId == 17)
+        {
+
+        }
+        else if (questId == 19)
+        {
+
         }
     }
 
@@ -313,6 +352,10 @@ public class TutorialManager : MonoBehaviour
                 FindObjectOfType<SoapItem>().GetComponent<Animator>().Play("Idle", 0);
                 FindObjectOfType<BathShowerItem>().GetComponent<Animator>().Play("Idle", 0);
             }
+        }else if(questId == 15)
+        {
+            Camera.main.GetComponent<CameraController>().ResetOrthographic();
+            Camera.main.GetComponent<CameraController>().screenOffset = 0.7f;
         }
 
         step = 0;

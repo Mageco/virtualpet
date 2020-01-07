@@ -141,7 +141,7 @@ public class PetRequirementPanel : MonoBehaviour
 
     public void OnCollect()
     {
-
+        UIManager.instance.OnConfirmBuyPetPopup(DataHolder.GetPet(petId));
     }
 
     void ClearItems()
