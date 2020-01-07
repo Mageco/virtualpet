@@ -25,6 +25,7 @@ using Mage.Models.Game;
 using Mage.Models.Application;
 using Mage.Models;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 namespace MageSDK.Client {
 	public class MageEngine : MonoBehaviour {
@@ -57,6 +58,7 @@ namespace MageSDK.Client {
 		//private List<ActionLog> cachedActionLog = new List<ActionLog>();
 		private Hashtable cachedActionLog = new Hashtable();
 
+		private List<CacheScreenTime> cachedScreenTime = new List<CacheScreenTime>();
 		#endregion
 
 		void Awake() {
@@ -84,6 +86,10 @@ namespace MageSDK.Client {
 				LoadEngineCache();
 			}
 			
+		}
+
+		void Update() {
+			AddScreenTime();
 		}
 
 		public void DoLogin() {
@@ -281,10 +287,30 @@ namespace MageSDK.Client {
 				u.SetUserData(d);
 			}
 
+			u.SetUserData(new UserData(ApiHandler.instance.ApplicationKey+"_"+MageEngineSettings.GAME_ENGINE_SCREEN_TIME_CACHE, ConvertCacheScreenJson(), "MageEngine"));
+
             this.SaveCacheData<User>(u, MageEngineSettings.GAME_ENGINE_USER);
 
             if (this.isWorkingOnline && IsLogin() && this.IsSendable("UpdateUserDataRequest")) {
 				SaveUserDataToServer(u);
+			}
+		}
+
+		private string ConvertCacheScreenJson() {
+			if (null != cachedScreenTime) {
+				string output = "{";
+				for (int i = 0; i < cachedScreenTime.Count; i++) {
+					output += "\"" + cachedScreenTime[i].Key + "\": " + cachedScreenTime[i].Value + ", ";
+				}
+
+				if (cachedScreenTime.Count > 0) {
+					output = output.Substring(0, output.Length - 2);
+				}
+
+				output += "}";
+				return output;
+			} else {
+				return "";
 			}
 		}
 
@@ -633,8 +659,70 @@ namespace MageSDK.Client {
 			} else {
 				return t;
 			}
-
 		}
+
+		private T LoadCacheData<T>(string cacheName) {
+			
+			if (ES2.Exists(cacheName)) {
+				T t = ES2.Load<T>(cacheName);
+				if (t == null) {
+					t = default(T);
+				}
+
+				RuntimeParameters.GetInstance().SetParam(cacheName, t);
+				return t;
+			} else {
+				T t = default(T);
+				RuntimeParameters.GetInstance().SetParam(cacheName, t);
+				return t;
+			}
+		}
+
+		private void SaveScreenCacheListData(List<CacheScreenTime> data, string cacheName) {
+			#if PLATFORM_TEST
+				if (!this.resetUserDataOnStart) {
+					ES2.Save(data, cacheName);
+				}
+			#else
+				ES2.Save(data, cacheName);
+			#endif
+
+			RuntimeParameters.GetInstance().SetParam(cacheName, data);
+		}
+
+		private List<T> GetCacheListData<T>(string cacheName) {
+			List<T> t = (List<T>)RuntimeParameters.GetInstance().GetParam(cacheName);
+
+			if (t == null) {
+				if (ES2.Exists(cacheName)) {
+					return ES2.LoadList<T>(cacheName);
+				} else {
+					return new List<T>();
+				}
+			} else {
+				return t;
+			}
+		}
+
+		private List<CacheScreenTime> LoadScreenCacheListData(string cacheName) {
+			
+			if (ES2.Exists(cacheName)) {
+				try {
+					List<CacheScreenTime> t = ES2.LoadList<CacheScreenTime>(cacheName);
+					RuntimeParameters.GetInstance().SetParam(cacheName, t);
+					return t;
+				} catch (Exception e) {
+					List<CacheScreenTime> t = new List<CacheScreenTime>();
+					RuntimeParameters.GetInstance().SetParam(cacheName, t);
+					return t;
+				}
+			} else {
+				List<CacheScreenTime> t = new List<CacheScreenTime>();
+				RuntimeParameters.GetInstance().SetParam(cacheName, t);
+				return t;
+			}
+		}
+
 		#endregion
 
 		#region Event 
@@ -706,6 +794,7 @@ namespace MageSDK.Client {
 		}
 
 		private void LoadEngineCache(){
+			// load event cache
 			if(ES2.Exists(MageEngineSettings.GAME_ENGINE_EVENT_CACHE)){
 				this.cachedEvent = ES2.LoadList<MageEvent>(MageEngineSettings.GAME_ENGINE_EVENT_CACHE);
 				if (this.cachedEvent == null) {
@@ -717,8 +806,12 @@ namespace MageSDK.Client {
 				this.cachedEvent = new List<MageEvent>();
 			}
 
+			// load action log cache
 			if(ES2.Exists(MageEngineSettings.GAME_ENGINE_ACTION_LOGS_KEY_LOOKUP)){
 				this.actionLogsKeyLookup = ES2.LoadList<string>(MageEngineSettings.GAME_ENGINE_ACTION_LOGS_KEY_LOOKUP);
+				if (this.actionLogsKeyLookup == null) {
+					this.actionLogsKeyLookup = new List<string>();
+				}
 			} else  {
 				this.actionLogsKeyLookup = new List<string>();
 			}
@@ -726,12 +819,23 @@ namespace MageSDK.Client {
 			foreach(string key in this.actionLogsKeyLookup) {
 				if(ES2.Exists(key)){
 					List<ActionLog> tmp = ES2.LoadList<ActionLog>(key);
+					if (tmp == null) {
+						tmp =new List<ActionLog>();
+					} 
+					
 					this.cachedActionLog.Add(key, tmp);
 				} else  {
 					List<ActionLog> tmp =new List<ActionLog>();
 					this.cachedActionLog.Add(key, tmp);
 				}
 			}
+
+			// load screen cache
+			this.cachedScreenTime = LoadScreenCacheListData(MageEngineSettings.GAME_ENGINE_SCREEN_TIME_CACHE);
+
+			LoadCacheData<string>(MageEngineSettings.GAME_ENGINE_LAST_SCREEN);
+			LoadCacheData<DateTime>(MageEngineSettings.GAME_ENGINE_LAST_SCREEN_TIMESTAMP);
+
 		}
 
 
@@ -827,6 +931,40 @@ namespace MageSDK.Client {
 					}
 				);
 			}
+
+		}
+
+		private void AddScreenTime() {
+			if (cachedScreenTime == null) {
+				cachedScreenTime = new List<CacheScreenTime>();
+			}
+			DateTime now = DateTime.Now;
+
+			DateTime lastScreenTime = GetCacheData<DateTime>(MageEngineSettings.GAME_ENGINE_LAST_SCREEN_TIMESTAMP);
+			string lastScreen = GetCacheData<string>(MageEngineSettings.GAME_ENGINE_LAST_SCREEN);
+			string currentScreen = SceneManager.GetActiveScene().name;
+
+			double timeToAdd = (lastScreen == currentScreen) ? now.Subtract(lastScreenTime).TotalSeconds : 0;
+
+			bool found = false;
+			for (int i = 0; i < cachedScreenTime.Count; i++) {
+				if (cachedScreenTime[i].Key == currentScreen) {
+					found = true;
+					var newKvp = new CacheScreenTime(cachedScreenTime[i].Key, cachedScreenTime[i].Value + timeToAdd);
+					cachedScreenTime.RemoveAt(i);
+					cachedScreenTime.Insert(i, newKvp);
+				}
+			}
+
+			if (!found) {
+				var newKvp = new CacheScreenTime(currentScreen, timeToAdd);
+				cachedScreenTime.Insert(cachedScreenTime.Count, newKvp);
+			}
+
+			SaveScreenCacheListData(cachedScreenTime, MageEngineSettings.GAME_ENGINE_SCREEN_TIME_CACHE);
+			SaveCacheData<string>(currentScreen, MageEngineSettings.GAME_ENGINE_LAST_SCREEN);
+			SaveCacheData<DateTime>(now, MageEngineSettings.GAME_ENGINE_LAST_SCREEN_TIMESTAMP);
+			//Debug.Log(ConvertCacheScreenJson());
 
 		}
 

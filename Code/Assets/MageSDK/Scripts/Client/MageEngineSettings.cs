@@ -24,6 +24,9 @@ namespace MageSDK.Client {
 		public const string GAME_ENGINE_VARIABLES = "Variables";
 
 		public const string GAME_ENGINE_EVENT_CACHE= "MageEventCache";
+		public const string GAME_ENGINE_SCREEN_TIME_CACHE= "MageScreenTimeCache";
+		public const string GAME_ENGINE_LAST_SCREEN = "MageLastScreen";
+		public const string GAME_ENGINE_LAST_SCREEN_TIMESTAMP = "MageLastScreenTimeStamp";
 
 
 		public static string[] GAME_ENGINE_APPLICATION_DATA_ITEM = {
