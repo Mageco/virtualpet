@@ -454,6 +454,7 @@ public class TutorialManager : MonoBehaviour
         handClick.transform.parent = broom.transform;
         handClick.transform.localPosition = new Vector3(0, 0, -10);
         handClick.GetComponent<Animator>().Play("Hold", 0);
+        broom.GetComponent<ItemDrag>().isDragable = false;
 
         ItemDirty dirty = FindObjectOfType<ItemDirty>();
 
@@ -472,6 +473,7 @@ public class TutorialManager : MonoBehaviour
         }
         handClick.SetActive(false);
         GameManager.instance.ResetCameraTarget();
+        broom.GetComponent<ItemDrag>().isDragable = true;
     }
 
 
