@@ -81,10 +81,10 @@ public class ToyBallItem : BaseDragItem
 
     protected override void OnDrop()
     {
-        //if(rigid.IsSleeping())
-        //{
-        //    Stop();
-        //}
+        if(rigid.IsSleeping())
+        {
+            Stop();
+        }
     }
 
     private void Stop()

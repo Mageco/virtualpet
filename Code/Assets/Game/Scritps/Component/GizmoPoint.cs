@@ -24,8 +24,10 @@ public class GizmoPoint : MonoBehaviour
 			Gizmos.color = Color.black;
 		else if(type == PointType.Spawn)
 			Gizmos.color = Color.black;
-		Gizmos.DrawSphere(transform.position, 0.5f);
+        else if (type == PointType.Garden)
+            Gizmos.color = Color.white;
+        Gizmos.DrawSphere(transform.position, 0.5f);
 	}
 }
 
-public enum PointType {Sleep,Eat,Drink,Favourite,Call,Mouse,Patrol,Caress,Bath,Table,Window,MouseGate,Door,Safe,Cleaner,Toilet,MouseEat,Spawn,Bee};
+public enum PointType {Sleep,Eat,Drink,Favourite,Call,Mouse,Patrol,Caress,Bath,Table,Window,MouseGate,Door,Safe,Cleaner,Toilet,MouseEat,Spawn,Bee,Garden};
