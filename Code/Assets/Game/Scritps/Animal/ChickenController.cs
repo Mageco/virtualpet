@@ -176,6 +176,7 @@ public class ChickenController : AnimalController
 
     void OnMouseDown()
     {
+        /*
         if (!isMinigame)
         {
             if (IsPointerOverUIObject())
@@ -189,12 +190,13 @@ public class ChickenController : AnimalController
                 MageManager.instance.PlaySoundName("Drag", false);
                 OnHold();
             }
-        }
+        }*/
 
     }
 
     void OnMouseUp()
     {
+        /*
         if (!isMinigame)
         {
             dragOffset = Vector3.zero;
@@ -203,7 +205,7 @@ public class ChickenController : AnimalController
                 interactType = InteractType.Drop;
                 MageManager.instance.PlaySoundName("whoosh_swish_med_03", false);
             }
-        }
+        }*/
     }
 
     private bool IsPointerOverUIObject() {
