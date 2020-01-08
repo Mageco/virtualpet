@@ -12,6 +12,7 @@ public class CharController : MonoBehaviour
     public Pet data;
     public GameObject petPrefab;
     public CharType charType = CharType.Dog;
+    public GameType gameType = GameType.House;
     //[HideInInspector]
 
     //[HideInInspector]
@@ -442,8 +443,10 @@ public class CharController : MonoBehaviour
             return;
         }
 
-
-        actionType = ActionType.Patrol;
+        if (gameType == GameType.Garden)
+            actionType = ActionType.OnGarden;
+        else if(gameType == GameType.House)
+            actionType = ActionType.Patrol;
         //Other Action
     }
 
@@ -558,6 +561,10 @@ public class CharController : MonoBehaviour
         else if (actionType == ActionType.OnControl)
         {
             StartCoroutine(Control());
+        }
+        else if (actionType == ActionType.OnGarden)
+        {
+            StartCoroutine(Garden());
         }
     }
 
@@ -804,10 +811,27 @@ public class CharController : MonoBehaviour
         }
     }
 
-    public virtual void OffMouse()
+    public virtual void OnGarden()
     {
-        //if (actionType == ActionType.Mouse)
-        //    actionType = ActionType.None;
+        Debug.Log("Check enviroment On Garden");
+        gameType = GameType.Garden;
+        SetDirection(Direction.L);
+        enviromentType = EnviromentType.Room;
+        Abort();
+        actionType = ActionType.OnGarden;
+        Debug.Log("Check enviroment On Garden " + isAbort);
+    }
+
+    public virtual void OnHouse()
+    {
+        gameType = GameType.House;
+        Debug.Log("OnHouse");
+        SetDirection(Direction.R);
+        enviromentType = EnviromentType.Room;
+        Abort();
+        actionType = ActionType.Patrol;
+        
+        
     }
 
     public virtual void OnJumpOut()
@@ -818,8 +842,8 @@ public class CharController : MonoBehaviour
     }
 
     public virtual void OnToy(ToyItem item){
-        if(actionType != ActionType.Sick && actionType != ActionType.Injured
-        && actionType != ActionType.Toy && enviromentType == EnviromentType.Room && actionType != ActionType.Supprised){
+        if(actionType != ActionType.Sick && actionType != ActionType.Injured && actionType != ActionType.OnControl && actionType != ActionType.Hold
+         && actionType != ActionType.Toy && enviromentType == EnviromentType.Room && actionType != ActionType.Supprised){
             actionType = ActionType.Toy;
             isAbort = true;
             toyItem = item;
@@ -1062,10 +1086,20 @@ public class CharController : MonoBehaviour
             else if (pos.y < -24)
                 pos.y = -24;
 
-            if (pos.x > 52)
-                pos.x = 52;
-            else if (pos.x < -49)
-                pos.x = -49;
+            if(GameManager.instance.gameType == GameType.House)
+            {
+                if (pos.x > 52)
+                    pos.x = 52;
+                else if (pos.x < -51)
+                    pos.x = -51;
+            }else if(GameManager.instance.gameType == GameType.Garden)
+            {
+                if (pos.x > -95)
+                    pos.x = -95;
+                else if (pos.x < -320)
+                    pos.x = -320;
+            }
+
 
             pos.z = -50;
             agent.transform.position = pos;
@@ -1585,7 +1619,42 @@ public class CharController : MonoBehaviour
         CheckAbort();
     }
 
- 
+    protected virtual IEnumerator Garden()
+    {
+        int n = 0;
+        int maxCount = Random.Range(2, 5);
+        SetTarget(PointType.Garden);
+        yield return StartCoroutine(RunToPoint());
+        while (!isAbort && n < maxCount)
+        {
+            int ran = Random.Range(0, 100);
+            if (ran < 40)
+            {
+                SetTarget(PointType.Garden);
+                yield return StartCoroutine(RunToPoint());
+            }
+            else if (ran < 60)
+            {
+                anim.Play("Standby", 0);
+                yield return StartCoroutine(Wait(Random.Range(1, 10)));
+            }
+            else if (ran < 80)
+            {
+                anim.Play("Idle_" + this.direction.ToString(), 0);
+                yield return StartCoroutine(Wait(Random.Range(1, 10)));
+            }
+            else
+            {
+                MageManager.instance.PlaySoundName(charType.ToString() + "_Speak", false);
+                yield return DoAnim("Speak_" + direction.ToString());
+            }
+
+            n++;
+        }
+        CheckAbort();
+    }
+
+
     protected virtual IEnumerator Listening(){
         yield return StartCoroutine(DoAnim("Idle_" + direction.ToString()));
         CheckAbort();
@@ -1915,8 +1984,10 @@ public class CharController : MonoBehaviour
         dropPosition = charScale.scalePosition;
         ItemCollider col = ItemManager.instance.GetItemCollider(dropPosition);
 
-        if(col != null){
-            if(col.tag == "Table"){
+        
+        if (col != null){
+           
+            if (col.tag == "Table"){
                 enviromentType = EnviromentType.Table;
             }else if(col.tag == "Bath"){
                 enviromentType = EnviromentType.Bath;
@@ -1924,6 +1995,16 @@ public class CharController : MonoBehaviour
                 enviromentType = EnviromentType.Bed;
             }else if(col.tag == "Toilet"){
                 enviromentType = EnviromentType.Toilet;
+            }
+            else if (col.tag == "Door")
+            {
+                Debug.Log(col.name + col.tag);
+                enviromentType = EnviromentType.Door;
+            }
+            else if (col.tag == "ToHouse")
+            {
+                Debug.Log("ToHouse");
+                enviromentType = EnviromentType.ToHouse;
             }
             //if(enviromentType != EnviromentType.Room)
             //    GameManager.instance.CheckEnviroment(this,enviromentType);
@@ -1953,7 +2034,9 @@ public class CharController : MonoBehaviour
     }
 
     protected void CheckEnviroment(){
-        if(!isAbort)
+        Debug.Log("Check enviroment");
+        Debug.Log(isAbort);
+        if(isAbort)
             return;
         if (enviromentType == EnviromentType.Bath)
         {
@@ -1970,6 +2053,15 @@ public class CharController : MonoBehaviour
         else if (enviromentType == EnviromentType.Toilet)
         {
             OnToilet();
+        }else if(enviromentType == EnviromentType.Door)
+        {
+            Debug.Log("Check enviroment Garden");
+            OnGarden();
+        }
+        else if (enviromentType == EnviromentType.ToHouse)
+        {
+            OnHouse();
+            Debug.Log("OnHouse");
         }
 
     }

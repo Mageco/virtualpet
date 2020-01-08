@@ -105,12 +105,18 @@ public class CharShiba : CharController
             return;
         }
 
-        int r = Random.Range(0, 100);
-        if (r < 20)
-            actionType = ActionType.Patrol;
-        else
-            actionType = ActionType.OnCall;
-        //Other Action
+        if (GameManager.instance.gameType == GameType.Garden)
+        {
+            actionType = ActionType.OnGarden;
+        }
+        else if (GameManager.instance.gameType == GameType.House)
+        {
+            int r = Random.Range(0, 100);
+            if (r < 20)
+                actionType = ActionType.Patrol;
+            else
+                actionType = ActionType.OnCall;
+        }
     }
 
     protected override void Start()
@@ -132,7 +138,7 @@ public class CharShiba : CharController
         {
 
             SetTarget(PointType.Patrol);
-            if(ran1 < 30){
+            if(ran1 < 20){
                 yield return StartCoroutine(WalkToPoint());
             }else{
                 yield return StartCoroutine(RunToPoint());
@@ -174,36 +180,11 @@ public class CharShiba : CharController
                 yield return StartCoroutine(DoAnim("Smell_" + direction.ToString())) ;
                 yield return StartCoroutine(DoAnim("Smell_Bark"));
                 data.curious -= 10;
-            }else
+            }else 
             {
-                int ran1 = Random.Range(0,100);
-                Vector3 t = GetRandomPoint(PointType.Patrol).position;
-                if(ran1 < 5 && GetRandomPoint(PointType.Eat) != null){
-                    t = GetRandomPoint(PointType.Eat).position;
-                }else if(ran1 < 10 && GetRandomPoint(PointType.Drink) != null){
-                    t = GetRandomPoint(PointType.Drink).position;                    
-                }else if(ran1 < 15 && GetRandomPoint(PointType.Toilet) != null){
-                    t = GetRandomPoint(PointType.Toilet).position;                    
-                }else if(ran1 < 20 && GetRandomPoint(PointType.Sleep) != null){
-                    t = GetRandomPoint(PointType.Sleep).position;                    
-                }else if(ran1 < 25 && GetRandomPoint(PointType.Bath) != null){
-                    t = GetRandomPoint(PointType.Bath).position;                    
-                }else if(ran1 < 30 && GetRandomPoint(PointType.Table) != null){
-                    t = GetRandomPoint(PointType.Table).position;                    
-                }else if(ran1 < 35 && GetRandomPoint(PointType.Cleaner) != null){
-                    t = GetRandomPoint(PointType.Cleaner).position;                    
-                }else if(ran1 < 40 && GetRandomPoint(PointType.Caress) != null){
-                    t = GetRandomPoint(PointType.Caress).position;                    
-                }else if(ran1 < 45 && GetRandomPoint(PointType.Window) != null){
-                    t = GetRandomPoint(PointType.Window).position;                    
-                }
-
-                target = t;
-                yield return StartCoroutine(RunToPoint());
-                yield return StartCoroutine(DoAnim("Smell_" + direction.ToString()));
-                yield return StartCoroutine(DoAnim("Smell_Bark"));
+                data.curious -= 50;
+                OnGarden();
             }
-
         }
         CheckAbort();
     }

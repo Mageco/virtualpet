@@ -12,10 +12,10 @@ public enum SkillType {NONE,Toilet,Sleep,Call,Bath,Table};
 public enum AchivementType {Do_Action,Buy_Item,Use_Item,Tap_Animal,Dissmiss_Animal,LevelUp,Minigame_Level,Eat,Drink,Play_MiniGame,Sick,Injured,Clean,CollectHeart};
 public enum Direction {R =0, D = 1, L = 2, U = 3, RU = 4,RD = 5,LU = 6,LD = 7};
 public enum CharAge{Small,Middle,Big};
-public enum EnviromentType { Room, Table, Bath,Bed, Toilet};
+public enum EnviromentType { Room, Table, Bath,Bed, Toilet,Door,ToHouse};
 public enum GameType{House,Garden,Minigame1};
 public enum GameState{Prepare,Ready,Run,End};
-public enum ActionType { None, Mouse, Sleep, Eat, Drink, Patrol, Discover, Pee, Shit, Itchi, Sick, Fear, Happy, Tired, Hold, OnTable, OnBath,Fall,OnBed,OnToilet,Injured,Supprised,Stop,Toy,JumpOut,OnCall,OnControl};
+public enum ActionType { None, Mouse, Sleep, Eat, Drink, Patrol, Discover, Pee, Shit, Itchi, Sick, Fear, Happy, Tired, Hold, OnTable, OnBath,Fall,OnBed,OnToilet,Injured,Supprised,Stop,Toy,JumpOut,OnCall,OnControl,OnGarden};
 public enum CharType{Dog,Cat,Rabbit,Turtle,Mouse,Parrot,Hamster};
 public enum WeatherType{None,Sunny,Rain,Snow,Storm}
 public enum AnimalState {None,Idle,Seek,Eat,Run,Flee,Hit,Hit_Grab,Hold,Cached,InActive }

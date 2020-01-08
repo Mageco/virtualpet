@@ -15,7 +15,7 @@ public class CharCollector : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        if (!GameManager.instance.IsEquipPet(petId) && quesId > 14)
+        if (!GameManager.instance.IsEquipPet(petId) && GameManager.instance.myPlayer.questId > quesId)
             Active();
     }
 
