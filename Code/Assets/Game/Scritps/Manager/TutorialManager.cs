@@ -193,7 +193,10 @@ public class TutorialManager : MonoBehaviour
         //Go Out
         else if (questId == 19)
         {
-
+            if (step == 0)
+            {
+                StartCoroutine(HoldToDoor());
+            }
         }
         //Pan Camera
         else if(questId == 20)
@@ -529,6 +532,27 @@ public class TutorialManager : MonoBehaviour
         }
         handClick.SetActive(false);
         pet.charInteract.interactType = InteractType.Drop;
+    }
+
+    protected virtual IEnumerator HoldToDoor()
+    {
+        CharController pet = GameManager.instance.GetPetObject(0);
+        pet.OnControl();
+        handClick.SetActive(true);
+        handClick.transform.parent = pet.transform;
+        handClick.transform.localPosition = new Vector3(0, 0, -10);
+        handClick.GetComponent<Animator>().Play("Hold", 0);
+
+        pet.target = pet.transform.position;
+        Vector3 holdPosition = GameObject.FindGameObjectWithTag("Door").transform.position + new Vector3(0, 15, 0);
+        while (Vector2.Distance(pet.transform.position, holdPosition) > 1)
+        {
+            pet.target = Vector3.Lerp(pet.target, holdPosition, Time.deltaTime);
+            yield return new WaitForEndOfFrame();
+        }
+        handClick.SetActive(false);
+        pet.charInteract.interactType = InteractType.Drop;
+        UIManager.instance.OnQuestNotificationPopup("Now continue to hold the cat to door");
     }
 
     protected virtual IEnumerator HoldBroom()

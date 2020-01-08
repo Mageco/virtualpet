@@ -1094,8 +1094,8 @@ public class CharController : MonoBehaviour
                     pos.x = -51;
             }else if(GameManager.instance.gameType == GameType.Garden)
             {
-                if (pos.x > -95)
-                    pos.x = -95;
+                if (pos.x > -92)
+                    pos.x = -92;
                 else if (pos.x < -320)
                     pos.x = -320;
             }
