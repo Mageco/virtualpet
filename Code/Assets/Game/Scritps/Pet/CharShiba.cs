@@ -180,10 +180,13 @@ public class CharShiba : CharController
                 yield return StartCoroutine(DoAnim("Smell_" + direction.ToString())) ;
                 yield return StartCoroutine(DoAnim("Smell_Bark"));
                 data.curious -= 10;
-            }else 
+            }else
             {
-                data.curious -= 50;
-                OnGarden();
+                if(GameManager.instance.myPlayer.questId > 19)
+                {
+                    data.curious -= 50;
+                    OnGarden();
+                }
             }
         }
         CheckAbort();
