@@ -29,11 +29,11 @@ public class EnviromentManager : MonoBehaviour
     void Start()
     {
         today = DateTime.Today;
-        if(today.DayOfYear % 7 == 1){
-            weatherType = WeatherType.Rain;
-        }else{
-            weatherType = WeatherType.None;
-        }
+        //if(today.DayOfYear % 7 == 1){
+        //    weatherType = WeatherType.Rain;
+        //}else{
+        weatherType = WeatherType.None;
+        //}
 
         LoadWeather();
         CheckDayNight();

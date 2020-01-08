@@ -832,8 +832,6 @@ public class CharController : MonoBehaviour
         enviromentType = EnviromentType.Room;
         Abort();
         actionType = ActionType.Patrol;
-        
-        
     }
 
     public virtual void OnJumpOut()

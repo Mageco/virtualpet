@@ -11,6 +11,7 @@ public class TutorialManager : MonoBehaviour
     public GameObject handClickUI;
     public GameObject handClick;
     public Transform dropPosition;
+    public Transform pointer;
 
     int step = 0;
     int questId = 0;
@@ -197,9 +198,47 @@ public class TutorialManager : MonoBehaviour
         //Pan Camera
         else if(questId == 20)
         {
-            //    ItemManager.instance.GetActiveCamera
-            
-            
+            Vector3 pos = ItemManager.instance.GetActiveCamera().transform.position;
+
+            pos.x = ItemManager.instance.GetActiveCamera().boundX.x;
+            pointer.transform.position = pos;
+            ItemManager.instance.GetActiveCamera().SetTarget(pointer.gameObject);
+            blackScreenUI.SetActive(true);
+            blackScreen.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, 0);
+            StartCoroutine(OnGarden());
+        }
+        else if (questId == 21)
+        {
+            if(GameManager.instance.gameType == GameType.House)
+            {
+                UIManager.instance.OnGarden();
+            }
+            if(UIManager.instance.eventPanel == null)
+            {
+                MinigameOpen[] minigames = FindObjectsOfType<MinigameOpen>();
+                for (int i = 0; i < minigames.Length; i++)
+                {
+                    if (minigames[i].gameId == 0)
+                    {
+                        blackScreen.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, 0);
+                        blackScreen.SetActive(true);
+                        handClick.SetActive(true);
+                        ItemManager.instance.SetCameraTarget(minigames[i].gameObject);
+                        Camera.main.GetComponent<CameraController>().screenOffset = 0;
+                        blackScreenButton.SetActive(true);
+                        handClick.transform.position = minigames[i].transform.position + new Vector3(0, 5, -1000);
+                        handClick.GetComponent<Animator>().Play("Click", 0);
+                    }
+                }
+            }
+            else
+            {
+                EventPanel eventPanel = UIManager.instance.OnEventPanel();
+                GameObject go = eventPanel.playButton.gameObject;
+                AddSorting(go);
+                step = 1;
+            }
+
         }
     }
 
@@ -305,6 +344,29 @@ public class TutorialManager : MonoBehaviour
         {
 
         }
+        else if (questId == 20)
+        {
+            Destroy(UIManager.instance.gardenButton.GetComponent<Canvas>());
+            UIManager.instance.OnGarden();
+        }
+        else if (questId == 21)
+        {
+            if(step == 0)
+            {
+                handClick.SetActive(false);
+                EventPanel eventPanel = UIManager.instance.OnEventPanel();
+                GameObject go = eventPanel.playButton.gameObject;
+                AddSorting(go);
+                step = 1;
+            }
+            else if(step == 1)
+            {
+                EventPanel eventPanel = UIManager.instance.OnEventPanel();
+                if (eventPanel != null)
+                    eventPanel.OnEvent(0);
+            }
+
+        }
     }
 
     void ClickShopItem(int itemId,int tabID)
@@ -376,6 +438,9 @@ public class TutorialManager : MonoBehaviour
         {
             Camera.main.GetComponent<CameraController>().ResetOrthographic();
             Camera.main.GetComponent<CameraController>().screenOffset = 0.7f;
+        }else if(questId == 20)
+        {
+            ItemManager.instance.houseCamera.target = null;
         }
 
         step = 0;
@@ -496,6 +561,13 @@ public class TutorialManager : MonoBehaviour
         broom.GetComponent<ItemDrag>().isDragable = true;
     }
 
-
+    IEnumerator OnGarden()
+    {
+        yield return new WaitForSeconds(1f);
+        
+        GameObject go = UIManager.instance.gardenButton;
+        go.SetActive(true);
+        AddSorting(go);
+    }
 
 }

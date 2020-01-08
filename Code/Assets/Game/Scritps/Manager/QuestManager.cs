@@ -415,6 +415,12 @@ public class QuestManager : MonoBehaviour
             {
                 isComplete = true;
             }
+        }else if (GameManager.instance.myPlayer.questId == 20)
+        {
+            if(GameManager.instance.gameType == GameType.Garden)
+            {
+                isComplete = true;
+            }
         }
 
         if (isComplete)

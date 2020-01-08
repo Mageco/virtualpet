@@ -105,6 +105,25 @@ public class CameraController : MonoBehaviour
         return false;
     }
 
+    public void SetBoundLeft()
+    {
+        height = Camera.main.orthographicSize;
+        width = height * Screen.width / Screen.height;
+        Vector3 pos = this.transform.position;
+        pos.x = boundX.x + width;
+        
+        this.transform.position = pos;
+    }
+
+    public void SetBoundRight()
+    {
+        height = Camera.main.orthographicSize;
+        width = height * Screen.width / Screen.height;
+        Vector3 pos = this.transform.position;
+        pos.x = boundX.y - width;
+        this.transform.position = pos;
+    }
+
     public bool IsBoundXRight()
     {
         height = Camera.main.orthographicSize;
