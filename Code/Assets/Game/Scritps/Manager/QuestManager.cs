@@ -24,6 +24,7 @@ public class QuestManager : MonoBehaviour
     float fadeDuration = 1f;
 
     bool isReplay = true;
+    bool isReward = false;
 
     QuestPanel questPanel;
     float originalValue = 0;
@@ -59,6 +60,7 @@ public class QuestManager : MonoBehaviour
 
     void LoadQuestObject()
     {
+        isReward = false;
         isReplay = false;
         delayTime = 2;
         if (GameManager.instance.myPlayer.questId == 0){
@@ -138,6 +140,11 @@ public class QuestManager : MonoBehaviour
         {
             delayTime = 10;
         }
+        else if (GameManager.instance.myPlayer.questId == 21)
+        {
+            isReward = true;
+        }
+
 
     }
 
@@ -227,13 +234,20 @@ public class QuestManager : MonoBehaviour
 
         if (TutorialManager.instance != null)
             TutorialManager.instance.EndQuest();
-        //if(questPanel == null && !isEndQuest){
-        //    questPanel = UIManager.instance.OnQuestCompletePopup();
-        //    questPanel.Load(GameManager.instance.myPlayer.questId);
-        //    Debug.Log("Quest Complete");
-        //}
-        isEndQuest = true;
-        EndCompleteQuest();
+        if (isReward)
+        {
+            if(questPanel == null && !isEndQuest){
+                questPanel = UIManager.instance.OnQuestCompletePopup();
+                questPanel.Load(GameManager.instance.myPlayer.questId);
+                Debug.Log("Quest Complete");
+            }
+        }
+        else
+        {
+            isEndQuest = true;
+            EndCompleteQuest();
+        }
+
     }
 
     public void EndCompleteQuest()
@@ -421,6 +435,14 @@ public class QuestManager : MonoBehaviour
             {
                 isComplete = true;
             }
+        }
+        else if (GameManager.instance.myPlayer.questId == 21)
+        {
+            if (GameManager.instance.GetAchivement(20) >= 1)
+            {
+                isComplete = true;
+            }
+
         }
 
         if (isComplete)

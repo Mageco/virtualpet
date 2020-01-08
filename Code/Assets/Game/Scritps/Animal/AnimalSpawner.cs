@@ -56,6 +56,7 @@ public class AnimalSpawner : MonoBehaviour
         spawnPoints.RemoveAt(id1);
         AnimalController a = go.GetComponent<AnimalController>();
         a.maxSpeed = this.speed;
+        a.isMinigame = true;
         GizmoPoint[] temp = this.transform.GetComponentsInChildren<GizmoPoint>();
         for(int i=0;i<temp.Length;i++){
             a.fleePoints.Add(temp[i]);

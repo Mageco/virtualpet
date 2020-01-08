@@ -101,13 +101,13 @@ public class UIManager : MonoBehaviour
         if(GameManager.instance.gameType == GameType.House)
         {
             houseButton.SetActive(false);
-            if (ItemManager.instance.GetActiveCamera().IsBoundXLeft())
+            if (ItemManager.instance.GetActiveCamera() != null && ItemManager.instance.GetActiveCamera().IsBoundXLeft())
             {
                 gardenButton.SetActive(true);
             }
             else
                 gardenButton.SetActive(false);
-        }else if(GameManager.instance.gameType == GameType.Garden)
+        }else if(ItemManager.instance.GetActiveCamera() != null && GameManager.instance.gameType == GameType.Garden)
         {
             gardenButton.SetActive(false);
             if (ItemManager.instance.GetActiveCamera().IsBoundXRight())
@@ -456,7 +456,6 @@ public class UIManager : MonoBehaviour
 
     public void OnHome(){
         MageManager.instance.PlaySoundName("BubbleButton", false);
-        GameManager.instance.gameType = GameType.House;
         MageManager.instance.LoadSceneWithLoading("House");
         homeUI.SetActive(true);
      }
@@ -467,10 +466,7 @@ public class UIManager : MonoBehaviour
     public void OnMinigame(int id){
         //ES3AutoSaveMgr.Instance.Save();
         MageManager.instance.LoadSceneWithLoading("Minigame" + id.ToString());
-        GameManager.instance.gameType = GameType.Minigame1;
-        //GameManager.instance.GetActivePet().Load();
-        homeUI.SetActive(false);
-        
+        homeUI.SetActive(false);        
     }
 
     public void OnGarden()
