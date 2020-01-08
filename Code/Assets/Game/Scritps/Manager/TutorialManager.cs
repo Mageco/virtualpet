@@ -68,7 +68,7 @@ public class TutorialManager : MonoBehaviour
         //Buy water bowl
         else if (questId == 2)
         {
-            OnShop(2);
+            OnShop(2,58);
         }
         //Tap to the water bowl
         else if (questId == 3)
@@ -96,7 +96,7 @@ public class TutorialManager : MonoBehaviour
         //Buy bath
         else if (questId == 5)
         {
-            OnShop(3);
+            OnShop(3,2);
         }
         //Take Bath
         else if (questId == 6)
@@ -118,7 +118,7 @@ public class TutorialManager : MonoBehaviour
         //Buy a broom
         else if (questId == 9)
         {
-            OnShop(3);
+            OnShop(3,59);
         }
         //Clean
         else if (questId == 10)
@@ -131,7 +131,7 @@ public class TutorialManager : MonoBehaviour
         //Buy Toilet
         else if (questId == 11)
         {
-            OnShop(3);
+            OnShop(3,11);
         }
         //Go to toilet
         else if (questId == 12)
@@ -144,7 +144,7 @@ public class TutorialManager : MonoBehaviour
         //Buy Bed
         else if (questId == 13)
         {
-            OnShop(3);
+            OnShop(3,4);
         }
         //Go to sleep
         else if (questId == 14)
@@ -197,8 +197,11 @@ public class TutorialManager : MonoBehaviour
     }
 
 
-    void OnShop(int tabID)
+    void OnShop(int tabID,int itemId)
     {
+        if (GameManager.instance.IsEquipItem(itemId))
+            return;
+
         if (step == 0)
         {
             if (UIManager.instance.shopPanel == null)
@@ -209,8 +212,9 @@ public class TutorialManager : MonoBehaviour
             }
             else
             {
-                EventPanel eventPanel = UIManager.instance.OnEventPanel();
-                GameObject go = eventPanel.playButton;
+                blackScreenUI.SetActive(true);
+                ShopPanel shop = UIManager.instance.OnShopPanel();
+                GameObject go = shop.toogleAnchor.GetChild(tabID).gameObject;
                 AddSorting(go);
                 step = 1;
             }
