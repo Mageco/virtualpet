@@ -81,12 +81,13 @@ public class UIManager : MonoBehaviour
             Destroy(this.gameObject);
 
         DontDestroyOnLoad(this.gameObject);
-        gardenButton.SetActive(false);
-        houseButton.SetActive(false);
+
     }
     // Start is called before the first frame update
     void Start()
     {
+        gardenButton.SetActive(false);
+        houseButton.SetActive(false);
         UpdateUI();
     }
 
