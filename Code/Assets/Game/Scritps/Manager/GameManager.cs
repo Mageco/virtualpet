@@ -12,6 +12,7 @@ public class GameManager : MonoBehaviour
     public List<CharController> petObjects = new List<CharController>();
     CameraController camera;
     public GameType gameType = GameType.House;
+    GameType lastGameType = GameType.House;
 
     //Testing
     public bool isLoad = false;

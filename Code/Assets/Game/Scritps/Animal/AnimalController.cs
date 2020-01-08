@@ -5,6 +5,7 @@ using PolyNav;
 
 public class AnimalController : MonoBehaviour
 {
+    public bool isMinigame = true;
     protected Vector3 originalPosition;
     protected Vector3 lastPosition;
     protected float speed = 5;

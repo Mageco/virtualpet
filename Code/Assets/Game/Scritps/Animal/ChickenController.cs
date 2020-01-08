@@ -5,6 +5,7 @@ using UnityEngine.EventSystems;
 
 public class ChickenController : AnimalController
 {
+    
     public GameObject[] bodies;
     public InteractType interactType;
     Vector3 dragOffset;
@@ -113,7 +114,11 @@ public class ChickenController : AnimalController
             else
                 direction = Direction.R;
             ran = Random.Range(0, 100);
-            if (ran > 60)
+            
+            if (ran > 60 && isMinigame)
+                SpawnHappy();
+
+            if (ran > 90 && !isMinigame)
                 SpawnHappy();
             yield return StartCoroutine(DoAnim("Eat_" + direction.ToString()));
         }
@@ -122,7 +127,11 @@ public class ChickenController : AnimalController
 
     IEnumerator Run()
     {
-        Vector3 target = Minigame.instance.GetPointInBound()/3f;
+        Vector3 target = Vector3.zero;
+        if (isMinigame)
+            target = Minigame.instance.GetPointInBound() / 3f;
+        else
+            target = originalPosition + new Vector3(Random.Range(-10f, 10f), Random.Range(-5, 5),0);
         speed = Random.Range(maxSpeed/2,maxSpeed/1.5f);
         if(target.x > this.transform.position.x){
             SetDirection(Direction.R);
@@ -168,14 +177,19 @@ public class ChickenController : AnimalController
     void OnMouseDown()
     {
         /*
-        if (IsPointerOverUIObject ()) {
-            return;
-        }
-        if(state != AnimalState.Hold){
-            dragOffset = Camera.main.ScreenToWorldPoint (Input.mousePosition) - this.transform.position ;
-            interactType = InteractType.Drag;
-            MageManager.instance.PlaySoundName("Drag", false);
-            OnHold();
+        if (!isMinigame)
+        {
+            if (IsPointerOverUIObject())
+            {
+                return;
+            }
+            if (state != AnimalState.Hold)
+            {
+                dragOffset = Camera.main.ScreenToWorldPoint(Input.mousePosition) - this.transform.position;
+                interactType = InteractType.Drag;
+                MageManager.instance.PlaySoundName("Drag", false);
+                OnHold();
+            }
         }*/
 
     }
@@ -183,11 +197,15 @@ public class ChickenController : AnimalController
     void OnMouseUp()
     {
         /*
-        dragOffset = Vector3.zero;
-        if (interactType == InteractType.Drag) {
-            interactType = InteractType.Drop;
-            MageManager.instance.PlaySoundName("whoosh_swish_med_03", false);
-        } */
+        if (!isMinigame)
+        {
+            dragOffset = Vector3.zero;
+            if (interactType == InteractType.Drag)
+            {
+                interactType = InteractType.Drop;
+                MageManager.instance.PlaySoundName("whoosh_swish_med_03", false);
+            }
+        }*/
     }
 
     private bool IsPointerOverUIObject() {
