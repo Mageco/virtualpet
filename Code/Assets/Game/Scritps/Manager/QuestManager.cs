@@ -136,7 +136,7 @@ public class QuestManager : MonoBehaviour
         }
         else if (GameManager.instance.myPlayer.questId == 19)
         {
-            delayTime = 80;
+            delayTime = 10;
         }
 
     }
@@ -194,9 +194,19 @@ public class QuestManager : MonoBehaviour
             yield return new WaitForSeconds(0.1f);
             ItemManager.instance.ResetCameraTarget();
         }
-        else if (GameManager.instance.myPlayer.questId == 9)
+        else if (GameManager.instance.myPlayer.questId == 19)
         {
-            
+            GameObject door = GameObject.FindGameObjectWithTag("Door");
+            if (guideItem == null && door != null)
+            {
+                Vector3 pos = door.transform.position;
+                pos.z = pos.y * 10;
+                guideItem = ItemManager.instance.SpawnGuideArrow(door, pos);
+            }
+                
+            GameManager.instance.GetActivePet().Sleep = GameManager.instance.GetActivePet().MaxSleep * 0.6f;
+            GameManager.instance.GetActivePet().Food = 0.6f * GameManager.instance.GetActivePet().MaxFood;
+            GameManager.instance.GetActivePet().Water = 0.6f * GameManager.instance.GetActivePet().MaxWater;
         }
 
         isTimeline = false;
@@ -387,6 +397,21 @@ public class QuestManager : MonoBehaviour
             }
         } else if (GameManager.instance.myPlayer.questId == 18) { 
             if (GameManager.instance.IsEquipPet(1))
+            {
+                isComplete = true;
+            }
+        }
+        else if (GameManager.instance.myPlayer.questId == 19)
+        {
+            bool isOk = true;
+            foreach(Pet p in GameManager.instance.GetPets())
+            {
+                if(p.actionType != ActionType.OnGarden)
+                {
+                    isOk = false;
+                }
+            }
+            if (isOk)
             {
                 isComplete = true;
             }

@@ -813,6 +813,8 @@ public class CharController : MonoBehaviour
 
     public virtual void OnGarden()
     {
+        if (GameManager.instance.myPlayer.questId < 19)
+            return;
         Debug.Log("Check enviroment On Garden");
         gameType = GameType.Garden;
         SetDirection(Direction.L);

@@ -194,6 +194,13 @@ public class TutorialManager : MonoBehaviour
         {
 
         }
+        //Pan Camera
+        else if(questId == 20)
+        {
+            //    ItemManager.instance.GetActiveCamera
+            
+            
+        }
     }
 
 
