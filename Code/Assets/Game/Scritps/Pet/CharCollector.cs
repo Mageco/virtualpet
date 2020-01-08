@@ -5,6 +5,7 @@ using UnityEngine;
 public class CharCollector : MonoBehaviour
 {
     public int petId = 0;
+    public int quesId = 0;
     public GameObject petPrefab;
     GameObject petObject;
     Animator anim;
@@ -14,7 +15,8 @@ public class CharCollector : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        if (!GameManager.instance.IsEquipPet(petId) && quesId > 14)
+            Active();
     }
 
     // Update is called once per frame
