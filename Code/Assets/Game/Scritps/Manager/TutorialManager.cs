@@ -545,7 +545,7 @@ public class TutorialManager : MonoBehaviour
 
         pet.target = pet.transform.position;
         Vector3 holdPosition = GameObject.FindGameObjectWithTag("Door").transform.position + new Vector3(0, 15, 0);
-        while (Vector2.Distance(pet.transform.position, holdPosition) > 1)
+        while (Vector2.Distance(pet.transform.position, holdPosition) > 2)
         {
             pet.target = Vector3.Lerp(pet.target, holdPosition, Time.deltaTime);
             yield return new WaitForEndOfFrame();
