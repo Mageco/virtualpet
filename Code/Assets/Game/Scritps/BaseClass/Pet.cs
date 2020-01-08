@@ -198,10 +198,14 @@ public class Pet : BaseModel
 			go.transform.position = ItemManager.instance.GetRandomPoint(PointType.Spawn).position;    
 		else
 			go.transform.position = this.position;
-		character.actionType = this.actionType;
-		character.enviromentType = this.enviromentType;
-		character.GetComponent<CharScale>().scalePosition = this.scalePosition;
-		character.GetComponent<CharScale>().height = this.height;
+        if(this.actionType != ActionType.Hold)
+        {
+            character.actionType = this.actionType;
+            character.enviromentType = this.enviromentType;
+            character.GetComponent<CharScale>().scalePosition = this.scalePosition;
+            character.GetComponent<CharScale>().height = this.height;
+        }
+		
         character.data = this;
 		character.LoadPrefab();
 		

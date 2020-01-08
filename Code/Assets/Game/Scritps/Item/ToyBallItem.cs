@@ -55,6 +55,8 @@ public class ToyBallItem : BaseDragItem
 
     public void OnForce()
     {
+        if (state == ItemDragState.Drag)
+            return;
         if (isOnForce)
             return;
         isOnForce = true;
@@ -81,10 +83,7 @@ public class ToyBallItem : BaseDragItem
 
     protected override void OnDrop()
     {
-        if(rigid.IsSleeping())
-        {
-            Stop();
-        }
+
     }
 
     private void Stop()
@@ -109,17 +108,83 @@ public class ToyBallItem : BaseDragItem
             time += Time.deltaTime;
         
         base.Update();
-        if (state == ItemDragState.Drag)
+    }
+
+    protected override void LateUpdate()
+    {
+
+        scalePosition.x = this.transform.position.x;
+        if (state == ItemDragState.Drag || state == ItemDragState.Highlight)
         {
-            Vector3 pos = wall.transform.position;
-            pos.y = this.scalePosition.y;
-            wall.transform.position = pos;
-            wall.transform.localScale = Vector3.one + this.transform.localScale * -pos.y * 0.008f;
+
+
+
+            float delta = this.transform.position.y - lastPosition.y;
+            height += delta;
+            if (height <= minHeight && this.transform.position.y <= scalePosition.y + minHeight)
+            {
+                scalePosition.y = this.transform.position.y - minHeight;
+                height = minHeight;
+            }
+            else
+            {
+                if (delta >= 0 && height > maxHeight)
+                {
+                    scalePosition.y += height - maxHeight;
+                    height = maxHeight;
+                    if (scalePosition.y > depth)
+                    {
+                        scalePosition.y = depth;
+                        Vector3 p = this.transform.position;
+                        p.y = lastPosition.y;
+                        this.transform.position = p;
+                    }
+                }
+                else if (delta < 0 && height > minHeight)
+                {
+                    if (scalePosition.y > -20)
+                    {
+                        scalePosition.y += delta;
+                        height -= delta;
+                    }
+                }
+            }
+
+            Vector3 pos1 = wall.transform.position;
+            pos1.y = this.scalePosition.y;
+            wall.transform.position = pos1;
+            wall.transform.localScale = Vector3.one + this.transform.localScale * -pos1.y * 0.008f;
+        }
+        else if (state == ItemDragState.Drop || state == ItemDragState.Fall || state == ItemDragState.Hit)
+        {
+            height = this.transform.position.y - scalePosition.y + minHeight;
+            if (height <= minHeight && this.transform.position.y <= scalePosition.y)
+            {
+                Vector3 p = this.transform.position;
+                p.y = scalePosition.y + minHeight;
+                this.transform.position = p;
+                height = minHeight;
+            }
         }
 
-       
 
-        
+
+        dragScale = originalScale * (1 - scalePosition.y * scaleFactor);
+        this.transform.localScale = Vector3.Lerp(dragScale, this.transform.localScale, Time.deltaTime * 3f);
+
+        if (shadow != null)
+        {
+
+            shadow.transform.localScale = (1 - scalePosition.y * scaleFactor) * originalShadowScale * (1f - 0.5f * height / maxHeight);
+            shadow.transform.position = scalePosition + new Vector3(0, 0, 100);
+        }
+
+        Vector3 pos = this.transform.position;
+        pos.z = scalePosition.y * 10;
+        this.transform.position = pos;
+
+        lastPosition = this.transform.position;
+
     }
 
 }

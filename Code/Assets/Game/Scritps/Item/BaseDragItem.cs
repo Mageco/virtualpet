@@ -19,20 +19,20 @@ public class BaseDragItem : MonoBehaviour
 	public float maxHeight = 10;
     public float depth = -1;
 	public float scaleFactor = 0.05f;
-	Vector3 dragScale;
+	protected Vector3 dragScale;
 	public float height = 0;
     public float minHeight = 0;
     protected float originalHeight = 0;
 	public Vector3 scalePosition = Vector3.zero;
-	Vector3 lastPosition = Vector3.zero;
+	protected Vector3 lastPosition = Vector3.zero;
     public GameObject shadow;
-    Vector3 originalShadowScale;
+    protected Vector3 originalShadowScale;
 
     float touchTime = 0;
 
     // Start is called before the first frame update
     protected virtual void Start()
-    {
+    { 
         anim = this.GetComponent<Animator> ();
 		originalPosition = this.transform.position;
 		originalRotation = this.transform.rotation;
