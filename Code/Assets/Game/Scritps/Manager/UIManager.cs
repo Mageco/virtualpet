@@ -92,30 +92,37 @@ public class UIManager : MonoBehaviour
     void Update()
     {
         UpdateUI();
-        if(notificationText.Count > 0){
+        if (notificationText.Count > 0)
+        {
             OnQuestNotificationPopup(notificationText[0]);
         }
         if (GameManager.instance.myPlayer.questId >= DataHolder.Quests().GetDataCount() && notificationIcon != null)
             notificationIcon.SetActive(false);
 
-        if(GameManager.instance.gameType == GameType.House)
+        if (GameManager.instance.myPlayer.questId > 19)
         {
-            houseButton.SetActive(false);
-            if (ItemManager.instance.GetActiveCamera() != null && ItemManager.instance.GetActiveCamera().IsBoundXLeft())
+
+        
+            if (GameManager.instance.gameType == GameType.House)
             {
-                gardenButton.SetActive(true);
-            }
-            else
-                gardenButton.SetActive(false);
-        }else if(ItemManager.instance.GetActiveCamera() != null && GameManager.instance.gameType == GameType.Garden)
-        {
-            gardenButton.SetActive(false);
-            if (ItemManager.instance.GetActiveCamera().IsBoundXRight())
-            {
-                houseButton.SetActive(true);
-            }
-            else
                 houseButton.SetActive(false);
+                if (ItemManager.instance.GetActiveCamera() != null && ItemManager.instance.GetActiveCamera().IsBoundXLeft())
+                {
+                    gardenButton.SetActive(true);
+                }
+                else
+                    gardenButton.SetActive(false);
+            }
+            else if (ItemManager.instance.GetActiveCamera() != null && GameManager.instance.gameType == GameType.Garden)
+            {
+                gardenButton.SetActive(false);
+                if (ItemManager.instance.GetActiveCamera().IsBoundXRight())
+                {
+                    houseButton.SetActive(true);
+                }
+                else
+                    houseButton.SetActive(false);
+            }
         }
     }
 
