@@ -229,8 +229,10 @@ public class TutorialManager : MonoBehaviour
                         ItemManager.instance.SetCameraTarget(minigames[i].gameObject);
                         Camera.main.GetComponent<CameraController>().screenOffset = 0;
                         blackScreenButton.SetActive(true);
+                        handClick.transform.parent = minigames[i].transform;
                         handClick.transform.position = minigames[i].transform.position + new Vector3(0, 5, -1000);
                         handClick.GetComponent<Animator>().Play("Click", 0);
+
                     }
                 }
             }
