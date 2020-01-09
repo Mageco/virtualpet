@@ -610,6 +610,7 @@ public class TutorialManager : MonoBehaviour
         handClick.SetActive(false);
         ItemManager.instance.ResetCameraTarget();
         broom.GetComponent<ItemDrag>().isDragable = true;
+        blackScreen.SetActive(false);
     }
 
     IEnumerator OnGarden()
