@@ -91,6 +91,8 @@ public class PlayerItem : BaseModel{
     public ItemState state = ItemState.OnShop;
 	public Vector3 position = Vector3.zero;
 	public float value = 0;
+	public int number = 1;
+	public bool isConsumable = false;
 }
 
 [System.Serializable]

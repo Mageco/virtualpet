@@ -12,17 +12,10 @@ public class WinPanel : MonoBehaviour
     public Sprite nextButton;
     public Sprite replayButton;
     public Sprite homeButton;
-    int star = 0;
     // Start is called before the first frame update
-    IEnumerator Start()
+    void Start()
     {
         MageManager.instance.PlaySoundName("Win", false);
-        for(int i = 0; i < star; i++)
-        {
-            yield return new WaitForSeconds(0.3f);
-            MageManager.instance.PlaySoundName("collect_item_11", false);
-        }
-       
     }
 
     Animator animator;
@@ -37,13 +30,13 @@ public class WinPanel : MonoBehaviour
         
     }
 
-    public void Load(int star,int e, int d, int c){
+    public void Load(int d, int c){
         animator = this.GetComponent<Animator>();
         animator.Play("Win",0);
-        this.star = star;
-        if(e > 0){
-            exp.text = e.ToString();
-            //GameManager.instance.AddExp(e,GameManager.instance.GetActivePet().iD);
+        if((GameManager.instance.myPlayer.minigameLevels[0] + 1)% 5 == 0){
+            exp.transform.parent.gameObject.SetActive(true);
+            GameManager.instance.AddItem(72);
+            GameManager.instance.EquipItem(72);
         }
         else
             exp.transform.parent.gameObject.SetActive(false);

@@ -35,7 +35,6 @@ public class RewardstManager : MonoBehaviour
         {
             GameManager.instance.AddItem(DataHolder.Quest(GameManager.instance.GetPet(0).level).itemId);
             GameManager.instance.EquipItem(DataHolder.Quest(GameManager.instance.GetPet(0).level).itemId);
-            ItemManager.instance.LoadItems();
         }
 
        GameManager.instance.AddCoin(DataHolder.Quest(GameManager.instance.GetPet(0).level).coinValue);

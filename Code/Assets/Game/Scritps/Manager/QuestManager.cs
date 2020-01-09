@@ -256,7 +256,7 @@ public class QuestManager : MonoBehaviour
         {
            GameManager.instance.AddItem(DataHolder.Quest(GameManager.instance.myPlayer.questId).itemId);
            GameManager.instance.EquipItem(DataHolder.Quest(GameManager.instance.myPlayer.questId).itemId);
-            ItemManager.instance.LoadItems();
+           ItemManager.instance.LoadItems(true);
         }
 
         GameManager.instance.AddCoin(DataHolder.Quest(GameManager.instance.myPlayer.questId).coinValue);

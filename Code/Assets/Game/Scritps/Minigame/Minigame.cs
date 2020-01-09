@@ -52,7 +52,7 @@ public class Minigame : MonoBehaviour
     }
 
 
-    public virtual void OnWin(int star){
+    public virtual void OnWin(){
         if (winPanel == null)
         {
             var popup = Instantiate(winPrefab) as GameObject;
@@ -61,7 +61,7 @@ public class Minigame : MonoBehaviour
             popup.transform.SetParent(GameObject.Find("Canvas").transform, false);
             popup.GetComponent<Popup>().Open();
             winPanel = popup.GetComponent<WinPanel>();
-            winPanel.Load(star,(gameLevel+1)*star*exp,(gameLevel+1)*star*diamon,(gameLevel+1)*star*coin);
+            winPanel.Load((gameLevel+1)*diamon,(gameLevel+1)*3*coin);
         }
     }
 

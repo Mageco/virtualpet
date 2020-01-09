@@ -52,7 +52,7 @@ public class ItemManager : MonoBehaviour
         bool isLoad = false;
         while(!isLoad){
             if(GameManager.instance.isLoad){
-                LoadItems();
+                LoadItems(false);
                 GameManager.instance.EquipPets();
                 GameManager.instance.LoadPetObjects();
                 isLoad = true;
@@ -163,87 +163,15 @@ public class ItemManager : MonoBehaviour
 
     public void EquipItem()
     {
-        StartCoroutine(EquipItemCoroutine());
+        LoadItems(true);
         UpdateItemColliders();
         
     }
 
-    IEnumerator EquipItemCoroutine()
+
+    public void LoadItems(bool isAnimated)
     {
-        List<int> data = GameManager.instance.GetEquipedItems();
-        
-        List<ItemObject> removes = new List<ItemObject>();
-
-        
-        foreach (ItemObject item in items)
-        {
-            bool isRemove = true;
-            for (int i = 0; i < data.Count; i++)
-            {
-                if (data[i] == item.itemID)
-                {
-                    isRemove = false;
-                }
-            }
-            if (isRemove)
-                removes.Add(item);
-        }
-
-        foreach (ItemObject item in removes)
-        {
-            //GameManager.instance.SetCameraTarget(item.transform.GetChild(0).gameObject);
-            for(int i=0;i<item.transform.childCount;i++){
-                Animator anim = item.transform.GetChild(i).GetComponent<Animator>();
-                if (anim != null)
-                {
-                    anim.Play("Disappear", 0);
-                }
-            }
-            yield return new WaitForSeconds(1);
-            RemoveItem(item);
-        }
-
-
-        List<int> adds = new List<int>();
-        for (int i = 0; i < data.Count; i++)
-        {
-            bool isAdd = true;
-            foreach (ItemObject item in items)
-            {
-                if (data[i] == item.itemID)
-                {
-                    isAdd = false;
-                }
-            }
-            if (isAdd && !adds.Contains(data[i]))
-            {
-                adds.Add(data[i]);
-            }
-        }
-
-        for (int i = 0; i < adds.Count; i++)
-        {
-            ItemObject item = AddItem(adds[i]);
-            MageManager.instance.PlaySoundName("Item_Appear",false);
-            for (int j = 0; j < item.transform.childCount; j++)
-            {
-                Animator anim = item.transform.GetChild(j).GetComponent<Animator>();
-                if (anim != null)
-                {
-                    anim.Play("Appear", 0);
-                }
-            }
-            //GameManager.instance.SetCameraTarget(item.transform.GetChild(0).gameObject);
-        }
-        
-        yield return new WaitForSeconds(2);
-        //GameManager.instance.ResetCameraTarget();
-        
-    }
-
-    public void LoadItems()
-    {
-        List<int> data = GameManager.instance.GetEquipedItems();
+        List<PlayerItem> data = GameManager.instance.GetEquipedPLayerItems();
         Debug.Log("Data " + data.Count);
         List<ItemObject> removes = new List<ItemObject>();
 
@@ -252,7 +180,7 @@ public class ItemManager : MonoBehaviour
             bool isRemove = true;
             for (int i = 0; i < data.Count; i++)
             {
-                if (data[i] == item.itemID)
+                if (data[i].itemId == item.itemID)
                 {
                     isRemove = false;
                 }
@@ -267,13 +195,13 @@ public class ItemManager : MonoBehaviour
         }
 
 
-        List<int> adds = new List<int>();
+        List<PlayerItem> adds = new List<PlayerItem>();
         for (int i = 0; i < data.Count; i++)
         {
             bool isAdd = true;
             foreach (ItemObject item in items)
             {
-                if (data[i] == item.itemID)
+                if (data[i].itemId == item.itemID)
                 {
                     isAdd = false;
                 }
@@ -286,16 +214,7 @@ public class ItemManager : MonoBehaviour
 
         for (int i = 0; i < adds.Count; i++)
         {
-            ItemObject item = AddItem(adds[i]);
-
-            for (int j = 0; j < item.transform.childCount; j++)
-            {
-                Animator anim = item.transform.GetChild(j).GetComponent<Animator>();
-                if (anim != null)
-                {
-                    anim.Play("Idle", 0);
-                }
-            }
+            AddItem(adds[i],isAnimated);
         }
 
         UpdateItemColliders();
@@ -322,21 +241,44 @@ public class ItemManager : MonoBehaviour
     }
 
 
-    ItemObject AddItem(int itemId)
+    void AddItem(PlayerItem playerItem,bool isAnimated)
     {
        
-        string url = DataHolder.GetItem(itemId).prefabName.Replace("Assets/Game/Resources/", "");
+        string url = DataHolder.GetItem(playerItem.itemId).prefabName.Replace("Assets/Game/Resources/", "");
         url = url.Replace(".prefab", "");
         url = DataHolder.Items().GetPrefabPath() + url;
-        GameObject go = Instantiate((Resources.Load(url) as GameObject), Vector3.zero, Quaternion.identity) as GameObject;
-        ItemObject item = go.AddComponent<ItemObject>();
-        item.itemType = DataHolder.GetItem(itemId).itemType;
-        item.itemID = itemId;
-        items.Add(item);
-        go.transform.parent = this.transform;
-        Debug.Log(DataHolder.GetItem(itemId).GetName(0));
-
-        return item;
+        for(int i = 0; i < playerItem.number; i++)
+        {
+            GameObject go = Instantiate((Resources.Load(url) as GameObject), Vector3.zero, Quaternion.identity) as GameObject;
+            ItemObject item = go.AddComponent<ItemObject>();
+            item.itemType = DataHolder.GetItem(playerItem.itemId).itemType;
+            item.itemID = playerItem.itemId;
+            items.Add(item);
+            go.transform.parent = this.transform;
+            if (isAnimated)
+            {
+                for (int j = 0; j < item.transform.childCount; j++)
+                {
+                    Animator anim = item.transform.GetChild(j).GetComponent<Animator>();
+                    if (anim != null)
+                    {
+                        anim.Play("Appear", 0);
+                    }
+                }
+            }
+            else
+            {
+                for (int j = 0; j < item.transform.childCount; j++)
+                {
+                    Animator anim = item.transform.GetChild(j).GetComponent<Animator>();
+                    if (anim != null)
+                    {
+                        anim.Play("Idle", 0);
+                    }
+                }
+            }
+        }        
+        Debug.Log(DataHolder.GetItem(playerItem.itemId).GetName(0));
     }
 
     public void RemoveItem(int id){

@@ -373,6 +373,11 @@ public class GameManager : MonoBehaviour
             PlayerItem item = new PlayerItem();
             item.itemId = id;
             item.state = ItemState.Have;
+            item.isConsumable = DataHolder.GetItem(id).consume;
+            if (item.isConsumable)
+                item.number += 1;
+            else
+                item.number = 1;
             myPlayer.items.Add(item);
         }
         SavePlayer();
