@@ -7,6 +7,7 @@ public class ItemSaveData
 {
     public int id;
     public float value;
+    public float time = 0;
     public ItemSaveDataType itemType = ItemSaveDataType.None;
     public Vector3 position = Vector3.zero;
     public Quaternion rotation = Quaternion.identity;

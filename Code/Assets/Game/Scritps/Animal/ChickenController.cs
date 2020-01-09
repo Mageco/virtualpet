@@ -121,7 +121,7 @@ public class ChickenController : AnimalController
             }
                 
 
-            if (ran > 90 && !isMinigame)
+            if (ran > 98 && !isMinigame)
                 SpawnHappy();
             yield return StartCoroutine(DoAnim("Eat_" + direction.ToString()));
         }

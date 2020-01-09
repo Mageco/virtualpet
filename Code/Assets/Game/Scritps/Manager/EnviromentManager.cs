@@ -9,6 +9,8 @@ public class EnviromentManager : MonoBehaviour
     public GameObject dayBG;
     public GameObject nightBG;
     public GameObject rainEffect;
+    public GameObject gardenDayBG;
+    public GameObject gardenNightBG;
 
     WeatherType weatherType = WeatherType.None;
 
@@ -62,9 +64,13 @@ public class EnviromentManager : MonoBehaviour
     void CheckDayNight(){
         if(DateTime.Now.Hour < 6 || DateTime.Now.Hour > 18)
         {
+            gardenDayBG.SetActive(false);
             dayBG.SetActive(false);
             nightBG.SetActive(true);
+            gardenNightBG.SetActive(true);
         } else{
+            gardenNightBG.SetActive(false);
+            gardenDayBG.SetActive(true);
             dayBG.SetActive(true);
             nightBG.SetActive(false);
         }

@@ -5,26 +5,35 @@ using UnityEngine.EventSystems;
 
 public class FruitItem : MonoBehaviour
 {
+    [HideInInspector]
+    public ItemSaveDataType itemSaveDataType = ItemSaveDataType.Fruit;
+    public int id;
     public GameObject collectEffect;
     public GameObject[] steps;
     public int step = 0;
     public float[] maxTime;
-    float time = 0;
+    public float time = 0;
     public int scaleStepId = 1;
     public float minScale = 0.1f;
     public float maxScale = 1f;
     public float maxTimeCalculated = 1;
     float timeCaculated = 0;
+    Animator animator;
 
     void Awake(){
-
         collectEffect.SetActive(false);
+        OnStep();
+        animator = this.GetComponent<Animator>();
     }
     // Start is called before the first frame update
     void Start()
     {
+       
+    }
 
-        
+    public void Load()
+    {
+        OnStep();
     }
 
     // Update is called once per frame
@@ -45,7 +54,7 @@ public class FruitItem : MonoBehaviour
             if (step == scaleStepId)
             {
                 float s = steps[step].transform.localScale.x;
-                s += (maxScale - minScale)/maxTime[scaleStepId];
+                s += (maxScale - minScale)/maxTime[scaleStepId]*Time.deltaTime;
                 if (s > maxScale)
                     s = maxScale;
                 steps[step].transform.localScale = new Vector3(s, s, 1);
@@ -72,14 +81,14 @@ public class FruitItem : MonoBehaviour
     IEnumerator Pick(){
         step = 0;
         time = 0;
-        OnStep();
         MageManager.instance.PlaySoundName("happy_collect_item_01",false);
         GameManager.instance.AddCoin(Random.Range(2, 5));
         GameManager.instance.LogAchivement(AchivementType.CollectFruit);
         collectEffect.SetActive(true);
-        yield return new WaitForSeconds(3);
+        animator.Play("Active");
+        yield return new WaitForSeconds(1);
+        OnStep();
         collectEffect.SetActive(false);
-       
     }
 
     private bool IsPointerOverUIObject()

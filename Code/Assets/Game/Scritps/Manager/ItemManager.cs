@@ -582,8 +582,19 @@ public class ItemManager : MonoBehaviour
            data.position = happies[i].transform.position;
            itemSaveDatas.Add(data);
        }
-       
-       SaveItemData();
+
+        FruitItem[] fruits = FindObjectsOfType<FruitItem>();
+        for (int i = 0; i < fruits.Length; i++)
+        {
+            ItemSaveData data = new ItemSaveData();
+            data.id = fruits[i].id;
+            data.itemType = fruits[i].itemSaveDataType;
+            data.value = fruits[i].step;
+            data.time = fruits[i].time;
+            itemSaveDatas.Add(data);
+        }
+
+        SaveItemData();
     }
 
 
@@ -613,6 +624,18 @@ public class ItemManager : MonoBehaviour
                 }
             }else if(item.itemType == ItemSaveDataType.Happy){
                 SpawnHeart(item.position,item.rotation,(int)item.value,false);
+            }else if(item.itemType == ItemSaveDataType.Fruit)
+            {
+                FruitItem[] fruits = FindObjectsOfType<FruitItem>();
+                for (int i = 0; i < fruits.Length; i++)
+                {
+                    if (fruits[i].id == item.id)
+                    {
+                        fruits[i].step = (int)item.value;
+                        fruits[i].time = item.time;
+                        fruits[i].Load();
+                    }
+                }
             }
         }
     }

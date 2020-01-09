@@ -22,6 +22,7 @@ public class UIManager : MonoBehaviour
     public GameObject treatmentConfirmPrefab;
     public GameObject PetRequirementPanelPrefab;
     public GameObject confirmBuyPetPrefab;
+    public GameObject mapPanelPrefab;
     public static UIManager instance;
 	public Text coinText;
 	public Text diamonText;
@@ -44,6 +45,7 @@ public class UIManager : MonoBehaviour
     public PetRequirementPanel petRequirementPanel;
     [HideInInspector]
     public ConfirmBuyPetPopup confirmBuyPetPopup;
+    MapPanel mapPanel;
 
     public GameObject achivementNotification;
     public GameObject eventNotification;
@@ -72,6 +74,11 @@ public class UIManager : MonoBehaviour
     public GameObject shopButton;
     public GameObject gardenButton;
     public GameObject houseButton;
+    public GameObject mapButton;
+
+    float coin = 0;
+    float happy = 0;
+    float diamond = 0;
 
 	void Awake()
 	{
@@ -89,6 +96,9 @@ public class UIManager : MonoBehaviour
         gardenButton.SetActive(false);
         houseButton.SetActive(false);
         UpdateUI();
+        coin = GameManager.instance.GetCoin();
+        happy = GameManager.instance.GetHappy();
+        diamond = GameManager.instance.GetDiamond();
     }
 
     // Update is called once per frame
@@ -115,6 +125,7 @@ public class UIManager : MonoBehaviour
                 }
                 else
                     gardenButton.SetActive(false);
+                mapButton.SetActive(false);
             }
             else if (ItemManager.instance.GetActiveCamera() != null && GameManager.instance.myPlayer.gameType == GameType.Garden)
             {
@@ -125,6 +136,7 @@ public class UIManager : MonoBehaviour
                 }
                 else
                     houseButton.SetActive(false);
+                mapButton.SetActive(true);
             }
         }
     }
@@ -133,12 +145,16 @@ public class UIManager : MonoBehaviour
 
 	public void UpdateUI()
 	{
-        if(coinText != null)
-		    coinText.text = GameManager.instance.GetCoin().ToString();
+       coin = Mathf.Lerp(coin, GameManager.instance.GetCoin(), Time.deltaTime*5);
+       happy = Mathf.Lerp(happy, GameManager.instance.GetHappy(), Time.deltaTime*5);
+       diamond = Mathf.Lerp(diamond, GameManager.instance.GetDiamond(), Time.deltaTime*5);
+
+        if (coinText != null)
+		    coinText.text = coin.ToString("F0");
         if(diamonText != null)
-		    diamonText.text = GameManager.instance.GetDiamond().ToString();
+		    diamonText.text = diamond.ToString("F0");
         if(heartText != null)
-            heartText.text = GameManager.instance.GetHappy().ToString();
+            heartText.text = happy.ToString("F0");
 	}
 
 	public void BuyItem(int itemID){
@@ -461,6 +477,19 @@ public class UIManager : MonoBehaviour
             popup.transform.SetParent(GameObject.Find("Canvas").transform, false);
             popup.GetComponent<Popup>().Open();
             ratingWindow = popup.GetComponent<RatingWindow>();
+        }
+    }
+
+    public void OnMapPanel()
+    {
+        if (mapPanel == null)
+        {
+            var popup = Instantiate(mapPanelPrefab) as GameObject;
+            popup.SetActive(true);
+            popup.transform.localScale = Vector3.zero;
+            popup.transform.SetParent(GameObject.Find("Canvas").transform, false);
+            popup.GetComponent<Popup>().Open();
+            mapPanel = popup.GetComponent<MapPanel>();
         }
     }
 
