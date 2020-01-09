@@ -5,9 +5,9 @@ using UnityEngine.EventSystems;
 
 public class FruitItem : MonoBehaviour
 {
-    public ItemSaveDataType itemSaveDataType = ItemSaveDataType.Happy;
     Animator animator;
     public int value = 5;
+    public int maxAge;
     bool isPick = false;
     bool isSound = true;
     public void Load(int e,bool isSound){
