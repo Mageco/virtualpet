@@ -65,7 +65,7 @@ public class ItemDrag : MonoBehaviour
 			return;
 
 		if (!isDragable)
-			StartCoroutine (ReturnPosition (originalPosition));
+			return;
 
 
 		if(isDragOffset)

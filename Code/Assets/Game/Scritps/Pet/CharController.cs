@@ -1113,7 +1113,7 @@ public class CharController : MonoBehaviour
 
         float fallSpeed = 0;
         
-        while (charInteract.interactType == InteractType.Drop)
+        while (charInteract.interactType == InteractType.Drop && actionType != ActionType.OnControl)
         {
             if (agent.transform.position.y > dropPosition.y)
             {
