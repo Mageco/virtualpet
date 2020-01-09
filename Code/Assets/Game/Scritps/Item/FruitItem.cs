@@ -17,8 +17,8 @@ public class FruitItem : MonoBehaviour
     float timeCaculated = 0;
 
     void Awake(){
-        
-        
+
+        collectEffect.SetActive(false);
     }
     // Start is called before the first frame update
     void Start()
@@ -36,7 +36,8 @@ public class FruitItem : MonoBehaviour
         }
         else
         {
-            Grow();
+            if(step < steps.Length - 1)
+                Grow();
         }
 
         if(timeCaculated > maxTimeCalculated)
@@ -73,10 +74,12 @@ public class FruitItem : MonoBehaviour
         time = 0;
         OnStep();
         MageManager.instance.PlaySoundName("happy_collect_item_01",false);
+        GameManager.instance.AddCoin(Random.Range(2, 5));
+        GameManager.instance.LogAchivement(AchivementType.CollectFruit);
         collectEffect.SetActive(true);
         yield return new WaitForSeconds(3);
-        GameManager.instance.AddCoin(Random.Range(2,5));
-        GameManager.instance.LogAchivement(AchivementType.CollectFruit);
+        collectEffect.SetActive(false);
+       
     }
 
     private bool IsPointerOverUIObject()
