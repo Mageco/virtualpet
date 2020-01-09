@@ -471,11 +471,13 @@ public class TutorialManager : MonoBehaviour
 
     protected virtual IEnumerator HoldToBath()
     {
-        
+        blackScreen.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, 0);
+        blackScreen.SetActive(true);
         CharController pet = GameManager.instance.GetPetObject(0);
         if (GameManager.instance.GetActivePet().enviromentType != EnviromentType.Bath)
         {
             pet.OnControl();
+            yield return new WaitForEndOfFrame();
             handClick.SetActive(true);
             handClick.transform.position = pet.transform.position + new Vector3(0, 3, -10);
             handClick.GetComponent<Animator>().Play("Hold", 0);
@@ -505,6 +507,8 @@ public class TutorialManager : MonoBehaviour
 
     protected virtual IEnumerator HoldToToilet()
     {
+        blackScreen.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, 0);
+        blackScreen.SetActive(true);
         CharController pet = GameManager.instance.GetPetObject(0);
         pet.OnControl();
         handClick.SetActive(true);
@@ -525,6 +529,8 @@ public class TutorialManager : MonoBehaviour
 
     protected virtual IEnumerator HoldToSleep()
     {
+        blackScreen.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, 0);
+        blackScreen.SetActive(true);
         CharController pet = GameManager.instance.GetPetObject(0);
         pet.OnControl();
         handClick.SetActive(true);
@@ -545,6 +551,8 @@ public class TutorialManager : MonoBehaviour
 
     protected virtual IEnumerator HoldToDoor()
     {
+        blackScreen.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, 0);
+        blackScreen.SetActive(true);
         CharController pet = GameManager.instance.GetPetObject(0);
         pet.OnControl();
         handClick.SetActive(true);
@@ -566,6 +574,8 @@ public class TutorialManager : MonoBehaviour
 
     protected virtual IEnumerator HoldBroom()
     {
+        blackScreen.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, 0);
+        blackScreen.SetActive(true);
         GameObject broom = ItemManager.instance.GetItemChildObject(ItemType.Clean);
         ItemManager.instance.SetCameraTarget(broom);
         handClick.SetActive(true);

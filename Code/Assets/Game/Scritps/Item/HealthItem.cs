@@ -38,7 +38,7 @@ public class HealthItem : ItemDrag
         item = this.transform.parent.GetComponent<ItemObject>();
     }
 
-
+    /*
     protected override void OnActive(CharController pet)
     {
         if(!isBusy && !eated){
@@ -56,7 +56,7 @@ public class HealthItem : ItemDrag
             StartCoroutine(Deactive());
         }
 
-    }
+    }*/
 
     IEnumerator Deactive(){
         this.transform.position = new Vector3(1000,1000,0);

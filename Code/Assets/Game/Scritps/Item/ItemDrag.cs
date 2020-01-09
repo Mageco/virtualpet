@@ -132,10 +132,6 @@ public class ItemDrag : MonoBehaviour
 		 	isDragable = false;
 		 }
 
-		 if(other.tag == "Player"){
-			 OnActive(other.GetComponent<CharController>());
-		 }
-
 	}
 
 	void OnTriggerExit2D(Collider2D other) {
@@ -147,10 +143,6 @@ public class ItemDrag : MonoBehaviour
 		if (other.tag == "Floor" && isObstruct) {
 			isDragable = false;
 		}
-
-	}
-
-	protected virtual void OnActive(CharController pet){
 
 	}
 
