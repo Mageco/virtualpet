@@ -492,7 +492,7 @@ public class TutorialManager : MonoBehaviour
             handClick.SetActive(false);
             pet.charInteract.interactType = InteractType.Drop;
         }
-        blackScreen.SetActive(false);
+       
         if (pet.data.dirty > 50)
         {
             ItemManager.instance.GetItem(ItemType.Bath).GetComponent<Animator>().enabled = true;
@@ -506,6 +506,7 @@ public class TutorialManager : MonoBehaviour
                 FindObjectOfType<BathShowerItem>().GetComponent<Animator>().Play("Tutorial", 0);
             }
         }
+        blackScreen.SetActive(false);
 
     }
 
