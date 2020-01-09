@@ -510,21 +510,24 @@ public class GameManager : MonoBehaviour
 
     public void AddDiamond(int d){
         myPlayer.Diamond += d;
-        UIManager.instance.diamonText.transform.parent.GetComponent<Animator>().Play("Active", 0);
+        if (UIManager.instance != null)
+            UIManager.instance.diamonText.transform.parent.GetComponent<Animator>().Play("Active", 0);
         SavePlayer();
     }
 
     public void AddCoin(int c){
         myPlayer.Coin += c;
         myPlayer.collectedCoin += c;
-        UIManager.instance.coinText.transform.parent.GetComponent<Animator>().Play("Active", 0);
+        if(UIManager.instance != null)
+            UIManager.instance.coinText.transform.parent.GetComponent<Animator>().Play("Active", 0);
         SavePlayer();
     }
 
     public void AddHappy(int c){
         myPlayer.Happy += c;
         myPlayer.collectedHappy += c;
-        UIManager.instance.heartText.transform.parent.GetComponent<Animator>().Play("Active", 0);
+        if (UIManager.instance != null)
+            UIManager.instance.heartText.transform.parent.GetComponent<Animator>().Play("Active", 0);
         SavePlayer();
     }
 
