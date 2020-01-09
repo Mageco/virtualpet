@@ -492,17 +492,21 @@ public class TutorialManager : MonoBehaviour
             handClick.SetActive(false);
             pet.charInteract.interactType = InteractType.Drop;
         }
-        
-        ItemManager.instance.GetItem(ItemType.Bath).GetComponent<Animator>().enabled = true;
-        ItemManager.instance.GetItem(ItemType.Bath).GetComponent<Animator>().Play("Tutorial", 0);
-        yield return new WaitForSeconds(6);
-        ItemManager.instance.GetItem(ItemType.Bath).GetComponent<Animator>().enabled = false;
-        UIManager.instance.OnQuestNotificationPopup("Now try use soap and shower by yourself");
-        if (FindObjectOfType<SoapItem>() != null && FindObjectOfType<BathShowerItem>() != null)
+        blackScreen.SetActive(false);
+        if (pet.data.dirty > 50)
         {
-            FindObjectOfType<SoapItem>().GetComponent<Animator>().Play("Tutorial", 0);
-            FindObjectOfType<BathShowerItem>().GetComponent<Animator>().Play("Tutorial", 0);
+            ItemManager.instance.GetItem(ItemType.Bath).GetComponent<Animator>().enabled = true;
+            ItemManager.instance.GetItem(ItemType.Bath).GetComponent<Animator>().Play("Tutorial", 0);
+            yield return new WaitForSeconds(6);
+            ItemManager.instance.GetItem(ItemType.Bath).GetComponent<Animator>().enabled = false;
+            UIManager.instance.OnQuestNotificationPopup("Now try use soap and shower by yourself");
+            if (FindObjectOfType<SoapItem>() != null && FindObjectOfType<BathShowerItem>() != null)
+            {
+                FindObjectOfType<SoapItem>().GetComponent<Animator>().Play("Tutorial", 0);
+                FindObjectOfType<BathShowerItem>().GetComponent<Animator>().Play("Tutorial", 0);
+            }
         }
+
     }
 
     protected virtual IEnumerator HoldToToilet()
@@ -525,6 +529,7 @@ public class TutorialManager : MonoBehaviour
         }
         handClick.SetActive(false);
         pet.charInteract.interactType = InteractType.Drop;
+        yield return new WaitForSeconds(3);
     }
 
     protected virtual IEnumerator HoldToSleep()
@@ -547,6 +552,7 @@ public class TutorialManager : MonoBehaviour
         }
         handClick.SetActive(false);
         pet.charInteract.interactType = InteractType.Drop;
+        yield return new WaitForSeconds(3);
     }
 
     protected virtual IEnumerator HoldToDoor()
