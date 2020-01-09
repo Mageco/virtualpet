@@ -107,7 +107,7 @@ public class CharController : MonoBehaviour
         charScale = this.GetComponent<CharScale>();
 
         GameObject go1 = Instantiate(Resources.Load("Prefabs/Pets/Agent")) as GameObject;
-        go1.transform.parent = GameManager.instance.transform;
+        //go1.transform.parent = GameManager.instance.transform;
 		agent = go1.GetComponent<PolyNavAgent>();
         agent.OnDestinationReached += OnArrived;
         agent.transform.position = this.transform.position;

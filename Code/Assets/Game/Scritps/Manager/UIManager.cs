@@ -476,7 +476,8 @@ public class UIManager : MonoBehaviour
     public void OnMinigame(int id){
         //ES3AutoSaveMgr.Instance.Save();
         MageManager.instance.LoadSceneWithLoading("Minigame" + id.ToString());
-        homeUI.SetActive(false);        
+        homeUI.SetActive(false);
+        GameManager.instance.petObjects.Clear();
     }
 
     public void OnGarden()

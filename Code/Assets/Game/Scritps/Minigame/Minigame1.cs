@@ -23,7 +23,6 @@ public class Minigame1 : Minigame
     void Start(){
         chickenNumber.text = "";
         levelText.text = "Stage " + (gameLevel + 1).ToString();
-        GameManager.instance.UnEquipPets();
         MageManager.instance.PlayMusicName("Minigame1",true);
 //        Debug.Log(live);
         if (gameLevel == 0)

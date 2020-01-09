@@ -193,7 +193,6 @@ public class Pet : BaseModel
         url = DataHolder.Pets().GetPrefabPath() + url;
         GameObject go = GameObject.Instantiate((Resources.Load(url) as GameObject), Vector3.zero, Quaternion.identity) as GameObject;
         character = go.GetComponent<CharController>();
-		go.transform.parent = GameManager.instance.transform;  
 		if(this.position == Vector3.zero && ItemManager.instance != null)
 			go.transform.position = ItemManager.instance.GetRandomPoint(PointType.Spawn).position;    
 		else
