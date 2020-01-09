@@ -105,11 +105,11 @@ public class CharShiba : CharController
             return;
         }
 
-        if (GameManager.instance.gameType == GameType.Garden)
+        if (GameManager.instance.myPlayer.gameType == GameType.Garden)
         {
             actionType = ActionType.OnGarden;
         }
-        else if (GameManager.instance.gameType == GameType.House)
+        else if (GameManager.instance.myPlayer.gameType == GameType.House)
         {
             int r = Random.Range(0, 100);
             if (r < 20)

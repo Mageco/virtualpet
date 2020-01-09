@@ -1086,13 +1086,13 @@ public class CharController : MonoBehaviour
             else if (pos.y < -24)
                 pos.y = -24;
 
-            if(GameManager.instance.gameType == GameType.House)
+            if(GameManager.instance.myPlayer.gameType == GameType.House)
             {
                 if (pos.x > 52)
                     pos.x = 52;
                 else if (pos.x < -51)
                     pos.x = -51;
-            }else if(GameManager.instance.gameType == GameType.Garden)
+            }else if(GameManager.instance.myPlayer.gameType == GameType.Garden)
             {
                 if (pos.x > -92)
                     pos.x = -92;

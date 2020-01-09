@@ -32,7 +32,7 @@ public class PetRequirementPanel : MonoBehaviour
         string url = pet.iconCollectUrl.Replace("Assets/Game/Resources/", "");
         url = url.Replace(".png", "");
         petAvatar.sprite = Resources.Load<Sprite>(url) as Sprite;
-        petPrice.text = pet.buyPrice.ToString();
+        //petPrice.text = pet.buyPrice.ToString();
         petName.text = pet.GetName(MageManager.instance.GetLanguage());
         petDescription.text = pet.GetDescription(MageManager.instance.GetLanguage());
 
@@ -55,6 +55,12 @@ public class PetRequirementPanel : MonoBehaviour
             {
                 canBuy = false;
             }
+            else
+            {
+                coinIcon.GetComponent<PetRequirementUI>().done.SetActive(true);
+            }
+            coinIcon.GetComponent<PetRequirementUI>().number.text = GameManager.instance.GetCoin().ToString() + "/" + pet.buyPrice.ToString();
+            
         }
         else if (pet.priceType == PriceType.Diamond)
         {
@@ -65,6 +71,11 @@ public class PetRequirementPanel : MonoBehaviour
             {
                 canBuy = false;
             }
+            else
+            {
+                diamonIcon.GetComponent<PetRequirementUI>().done.SetActive(true);
+            }
+            diamonIcon.GetComponent<PetRequirementUI>().number.text = GameManager.instance.GetDiamond().ToString() + "/" + pet.buyPrice.ToString();
         }
         else if (pet.priceType == PriceType.Happy)
         {
@@ -75,6 +86,13 @@ public class PetRequirementPanel : MonoBehaviour
             {
                 canBuy = false;
             }
+            else
+            {
+                happyIcon.GetComponent<PetRequirementUI>().done.SetActive(true);
+            }
+            happyIcon.GetComponent<PetRequirementUI>().number.text = GameManager.instance.GetHappy().ToString() + "/" + pet.buyPrice.ToString();
+
+
         }
 
         if (canBuy)

@@ -106,7 +106,7 @@ public class UIManager : MonoBehaviour
         {
 
         
-            if (GameManager.instance.gameType == GameType.House)
+            if (GameManager.instance.myPlayer.gameType == GameType.House)
             {
                 houseButton.SetActive(false);
                 if (ItemManager.instance.GetActiveCamera() != null && ItemManager.instance.GetActiveCamera().IsBoundXLeft())
@@ -116,7 +116,7 @@ public class UIManager : MonoBehaviour
                 else
                     gardenButton.SetActive(false);
             }
-            else if (ItemManager.instance.GetActiveCamera() != null && GameManager.instance.gameType == GameType.Garden)
+            else if (ItemManager.instance.GetActiveCamera() != null && GameManager.instance.myPlayer.gameType == GameType.Garden)
             {
                 gardenButton.SetActive(false);
                 if (ItemManager.instance.GetActiveCamera().IsBoundXRight())
