@@ -575,6 +575,7 @@ public class TutorialManager : MonoBehaviour
         }
         handClick.SetActive(false);
         pet.charInteract.interactType = InteractType.Drop;
+        blackScreen.SetActive(false);
         UIManager.instance.OnQuestNotificationPopup("Now continue to hold the cat to door");
     }
 
