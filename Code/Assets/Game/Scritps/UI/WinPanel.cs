@@ -39,7 +39,7 @@ public class WinPanel : MonoBehaviour
 
     public void Load(int star,int e, int d, int c){
         animator = this.GetComponent<Animator>();
-        animator.SetInteger("star",star);
+        animator.Play("Win",0);
         this.star = star;
         if(e > 0){
             exp.text = e.ToString();
