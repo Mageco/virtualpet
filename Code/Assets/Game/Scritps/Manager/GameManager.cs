@@ -11,8 +11,8 @@ public class GameManager : MonoBehaviour
     public float gameTime = 0;
     public List<CharController> petObjects = new List<CharController>();
     CameraController camera;
-    public GameType gameType = GameType.House;
-    GameType lastGameType = GameType.House;
+    
+    //GameType lastGameType = GameType.House;
 
     //Testing
     public bool isLoad = false;

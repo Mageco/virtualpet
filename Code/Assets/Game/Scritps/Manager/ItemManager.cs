@@ -137,13 +137,13 @@ public class ItemManager : MonoBehaviour
 
     public void SetCamera()
     {
-        if (GameManager.instance.gameType == GameType.Garden)
+        if (GameManager.instance.myPlayer.gameType == GameType.Garden)
         {
             activeCamera = gardenCamera;
             gardenCamera.gameObject.SetActive(true);
             houseCamera.gameObject.SetActive(false);
         }
-        else if(GameManager.instance.gameType == GameType.House)
+        else if(GameManager.instance.myPlayer.gameType == GameType.House)
         {
             gardenCamera.gameObject.SetActive(false);
             houseCamera.gameObject.SetActive(true);
@@ -153,7 +153,7 @@ public class ItemManager : MonoBehaviour
 
     public void SetLocation(GameType type)
     {
-        GameManager.instance.gameType = type;
+        GameManager.instance.myPlayer.gameType = type;
         SetCamera();
     }
 

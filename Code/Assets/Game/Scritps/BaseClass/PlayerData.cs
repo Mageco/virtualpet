@@ -22,8 +22,9 @@ public class PlayerData : BaseModel
 	public int questId = 0;
     public int questValue = 0;
 	public List<PlayerAchivement> achivements = new List<PlayerAchivement>();
-	
-	public PlayerData(){
+    public GameType gameType = GameType.House;
+
+    public PlayerData(){
 
 
 	}

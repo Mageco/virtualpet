@@ -164,6 +164,10 @@ public class ToyBallItem : BaseDragItem
                 p.y = scalePosition.y + minHeight;
                 this.transform.position = p;
                 height = minHeight;
+                Vector3 pos1 = wall.transform.position;
+                pos1.y = this.scalePosition.y;
+                wall.transform.position = pos1;
+                wall.transform.localScale = Vector3.one + this.transform.localScale * -pos1.y * 0.008f;
             }
         }
 

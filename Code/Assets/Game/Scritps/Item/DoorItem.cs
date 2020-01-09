@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class DoorItem : MonoBehaviour
 {
-    public GameType gameType = GameType.Garden;
     // Start is called before the first frame update
     void Start()
     {
