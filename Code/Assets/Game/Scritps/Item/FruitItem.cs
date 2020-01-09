@@ -5,35 +5,56 @@ using UnityEngine.EventSystems;
 
 public class FruitItem : MonoBehaviour
 {
-    Animator animator;
-    public int value = 5;
-    public int maxAge;
-    bool isPick = false;
-    bool isSound = true;
-    public void Load(int e,bool isSound){
-        value = e;
-        this.isSound = isSound;
-    }
+    public GameObject collectEffect;
+    public GameObject[] steps;
+    public int step = 0;
+    public float[] maxTime;
+    float time = 0;
+    public int scaleStepId = 1;
+    public float minScale = 0.1f;
+    public float maxScale = 1f;
+    public float maxTimeCalculated = 1;
+    float timeCaculated = 0;
 
     void Awake(){
-        animator = this.GetComponent<Animator>();
+        
         
     }
     // Start is called before the first frame update
     void Start()
     {
-        if(isSound)
-            MageManager.instance.PlaySoundName("Button",false);
-        Vector3 pos = this.transform.position;
-        pos.z = (this.transform.position.y - 2) * 10;
-        this.transform.position = pos;
+
         
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        if(time < maxTime[step])
+        {
+            time += Time.deltaTime;
+        }
+        else
+        {
+            Grow();
+        }
+
+        if(timeCaculated > maxTimeCalculated)
+        {
+            if (step == scaleStepId)
+            {
+                float s = steps[step].transform.localScale.x;
+                s += (maxScale - minScale)/maxTime[scaleStepId];
+                if (s > maxScale)
+                    s = maxScale;
+                steps[step].transform.localScale = new Vector3(s, s, 1);
+            }
+        }
+        else
+        {
+            timeCaculated += Time.deltaTime;
+        }
+
     }
 
     void OnMouseUp(){
@@ -41,27 +62,21 @@ public class FruitItem : MonoBehaviour
         if (IsPointerOverUIObject())
             return;
 
-        if(!isPick){
-            isPick = true;
-            GameManager.instance.LogAchivement(AchivementType.CollectHeart);
+        if(step == steps.Length - 1){
             StartCoroutine(Pick());
         }
         
     }
 
-    public void OnPick()
-    {
-        OnMouseUp();
-    }
-
     IEnumerator Pick(){
+        step = 0;
+        time = 0;
+        OnStep();
         MageManager.instance.PlaySoundName("happy_collect_item_01",false);
-        animator.Play("Pick");
-        this.GetComponent<CircleCollider2D>().enabled = false;
-        yield return new WaitForEndOfFrame();
-        yield return new WaitForSeconds(animator.GetCurrentAnimatorStateInfo(0).length);
-        GameManager.instance.AddHappy(value);
-        Destroy(this.gameObject);
+        collectEffect.SetActive(true);
+        yield return new WaitForSeconds(3);
+        GameManager.instance.AddCoin(Random.Range(2,5));
+        GameManager.instance.LogAchivement(AchivementType.CollectFruit);
     }
 
     private bool IsPointerOverUIObject()
@@ -71,5 +86,27 @@ public class FruitItem : MonoBehaviour
         List<RaycastResult> results = new List<RaycastResult>();
         EventSystem.current.RaycastAll(eventDataCurrentPosition, results);
         return results.Count > 0;
+    }
+
+    void OnStep()
+    {
+        for(int i = 0; i < steps.Length; i++)
+        {
+            if (i != step)
+                steps[i].SetActive(false);
+            else
+                steps[i].SetActive(true);
+        }
+    }
+
+    void Grow()
+    {
+        step++;
+        time = 0;
+        OnStep();
+        if(step == scaleStepId)
+        {
+            steps[step].transform.localScale = new Vector3(minScale, minScale, 1);
+        }
     }
 }
