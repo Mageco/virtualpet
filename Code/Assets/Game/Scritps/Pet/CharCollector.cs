@@ -13,7 +13,18 @@ public class CharCollector : MonoBehaviour
     bool isActive = false;
 
     // Start is called before the first frame update
-    void Start()
+    IEnumerator Start()
+    {
+        while (!GameManager.instance.isLoad)
+        {
+            yield return new WaitForEndOfFrame();
+        }
+        Load();
+    }
+
+
+
+    private void Load()
     {
         if (!GameManager.instance.IsEquipPet(petId) && GameManager.instance.myPlayer.questId > quesId)
             Active();
