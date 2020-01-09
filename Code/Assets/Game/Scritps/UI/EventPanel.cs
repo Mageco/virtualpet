@@ -6,16 +6,10 @@ using UnityEngine.UI;
 public class EventPanel : MonoBehaviour
 {
      public ScrollRect scroll;
-     int price = 10;
-     public Text priceText;
-     public Text levelText;
-    public GameObject playButton;
+     public GameObject playButton;
     // Start is called before the first frame update
     void Start()
     {
-        price = Mathf.Min(GameManager.instance.myPlayer.minigameLevels[0],10); 
-        priceText.text = price.ToString();
-        levelText.text = "Level " + (GameManager.instance.myPlayer.minigameLevels[0] + 1).ToString();
     }
 
     // Update is called once per frame
@@ -29,15 +23,9 @@ public class EventPanel : MonoBehaviour
         {
              MageManager.instance.OnNotificationPopup ("The game is comming soon.");
         }else{
-            //if(GameManager.instance.GetHappy() >= price){
-                this.Close();
-                MageManager.instance.PlaySoundName("BubbleButton",false);
-                //GameManager.instance.AddHappy(-price);
-                UIManager.instance.OnMinigame(1);
-            //}else
-            //{
-            //    MageManager.instance.OnNotificationPopup ("You have not enough happy point to play this level, come back and earn more.");
-            //}
+            this.Close();
+            MageManager.instance.PlaySoundName("BubbleButton",false);
+            UIManager.instance.OnMinigame(1);
         }
        
     }
