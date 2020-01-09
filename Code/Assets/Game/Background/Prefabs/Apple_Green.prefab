@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 8840090791412584881}
   - component: {fileID: 898010322930407810}
   m_Layer: 0
-  m_Name: Sprite
+  m_Name: Fruit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -89,6 +89,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7895603154910195752}
+  - component: {fileID: 902618026358355230}
   m_Layer: 0
   m_Name: Apple_Green
   m_TagString: Untagged
@@ -108,6 +109,89 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 8840090791412584881}
+  - {fileID: 5173304881111795485}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!95 &902618026358355230
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7390357788129838351}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: e3a285d594f6f9c458dbde82d2b789e3, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!1001 &5173304881111408029
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 7895603154910195752}
+    m_Modifications:
+    - target: {fileID: 100000, guid: 84d992a6972a8564182f7e0cb5e836c5, type: 3}
+      propertyPath: m_Name
+      value: Fruit_Pop_Coin
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 84d992a6972a8564182f7e0cb5e836c5, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 84d992a6972a8564182f7e0cb5e836c5, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 84d992a6972a8564182f7e0cb5e836c5, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 84d992a6972a8564182f7e0cb5e836c5, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 84d992a6972a8564182f7e0cb5e836c5, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 84d992a6972a8564182f7e0cb5e836c5, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.3569873
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 84d992a6972a8564182f7e0cb5e836c5, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.9341092
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 84d992a6972a8564182f7e0cb5e836c5, type: 3}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 84d992a6972a8564182f7e0cb5e836c5, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 84d992a6972a8564182f7e0cb5e836c5, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 84d992a6972a8564182f7e0cb5e836c5, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 41.831
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 84d992a6972a8564182f7e0cb5e836c5, type: 3}
+--- !u!4 &5173304881111795485 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 400000, guid: 84d992a6972a8564182f7e0cb5e836c5,
+    type: 3}
+  m_PrefabInstance: {fileID: 5173304881111408029}
+  m_PrefabAsset: {fileID: 0}
