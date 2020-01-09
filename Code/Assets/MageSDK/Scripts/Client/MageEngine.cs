@@ -697,15 +697,13 @@ namespace MageSDK.Client {
 		private List<CacheScreenTime> LoadScreenCacheListData(string cacheName) {
 			
 			if (ES2.Exists(cacheName)) {
-				try {
-					List<CacheScreenTime> t = ES2.LoadList<CacheScreenTime>(cacheName);
-					RuntimeParameters.GetInstance().SetParam(cacheName, t);
-					return t;
-				} catch (Exception e) {
-					List<CacheScreenTime> t = new List<CacheScreenTime>();
-					RuntimeParameters.GetInstance().SetParam(cacheName, t);
-					return t;
+				List<CacheScreenTime> t = ES2.LoadList<CacheScreenTime>(cacheName);
+				if (t == null) {
+					t = new List<CacheScreenTime>();
 				}
+				RuntimeParameters.GetInstance().SetParam(cacheName, t);
+				return t;
+				
 			} else {
 				List<CacheScreenTime> t = new List<CacheScreenTime>();
 				RuntimeParameters.GetInstance().SetParam(cacheName, t);
