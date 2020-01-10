@@ -23,6 +23,7 @@ public class UIManager : MonoBehaviour
     public GameObject PetRequirementPanelPrefab;
     public GameObject confirmBuyPetPrefab;
     public GameObject mapPanelPrefab;
+    public GameObject petCollecPanelPrefab;
     public static UIManager instance;
 	public Text coinText;
 	public Text diamonText;
@@ -58,6 +59,7 @@ public class UIManager : MonoBehaviour
     ItemInfoUI itemInfoUI;
     TreatmentPopup treatmentPopup;
     TreatmentConfirmPopup treatmentConfirmPopup;
+    PetCollectionPanel petCollectionPanel;
 
     public GameObject homeUI;
 
@@ -485,6 +487,18 @@ public class UIManager : MonoBehaviour
             popup.transform.SetParent(GameObject.Find("Canvas").transform, false);
             popup.GetComponent<Popup>().Open();
             ratingWindow = popup.GetComponent<RatingWindow>();
+        }
+    }
+
+    public void OnPetCollectionPanel()
+    {
+        if (petCollectionPanel == null)
+        {
+            var popup = Instantiate(petCollecPanelPrefab) as GameObject;
+            popup.SetActive(true);
+            popup.transform.SetParent(GameObject.Find("Canvas").transform, false);
+            popup.GetComponent<Popup>().Open();
+            petCollectionPanel = popup.GetComponent<PetCollectionPanel>();
         }
     }
 
