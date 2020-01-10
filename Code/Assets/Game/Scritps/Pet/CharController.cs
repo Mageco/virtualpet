@@ -1830,7 +1830,7 @@ public class CharController : MonoBehaviour
                     {
                         
                         anim.speed = 1.5f;
-                        agent.SetDestination(ball.transform.position + new Vector3(Random.Range(-0.5f,0.5f),Random.Range(-0.5f,0.5f),0));
+                        agent.SetDestination(ball.transform.position + new Vector3(Random.Range(-2f,2f),Random.Range(-2f,2f),0));
                         anim.Play("Run_" + this.direction.ToString(), 0);
                         data.Energy -= 2f * Time.deltaTime;
                         if(Vector2.Distance(this.transform.position, ball.scalePosition) < 2 && ball.state != ItemDragState.Drag)

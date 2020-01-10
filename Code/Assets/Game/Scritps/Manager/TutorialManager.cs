@@ -455,6 +455,7 @@ public class TutorialManager : MonoBehaviour
             Camera.main.GetComponent<CameraController>().screenOffset = 0.7f;
         }else if(questId == 20)
         {
+            Destroy(UIManager.instance.gardenButton.GetComponent<Canvas>());
             ItemManager.instance.houseCamera.target = null;
         }
 
