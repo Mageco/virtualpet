@@ -12,14 +12,14 @@ public class StoryUI : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        if (ES2.Exists("PlayTime"))
-        {
-            skipButton.SetActive(true);
-        }
-        else
-        {
-            skipButton.SetActive(false);
-        }
+        //if (ES2.Exists("PlayTime"))
+        //{
+        //    skipButton.SetActive(true);
+        //}
+        //else
+        //{
+        //    skipButton.SetActive(false);
+        //}
     }
 
     // Update is called once per frame
