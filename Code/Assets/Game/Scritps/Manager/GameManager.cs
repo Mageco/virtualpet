@@ -370,15 +370,28 @@ public class GameManager : MonoBehaviour
         }else if(DataHolder.GetItem(id).itemType == ItemType.Coin){
             AddCoin(DataHolder.GetItem(id).sellPrice);
         }else{
-            PlayerItem item = new PlayerItem();
-            item.itemId = id;
-            item.state = ItemState.Have;
-            item.isConsumable = DataHolder.GetItem(id).consume;
-            if (item.isConsumable)
-                item.number += 1;
-            else
+
+            bool isExist = false;
+            foreach(PlayerItem item in myPlayer.items)
+            {
+                if(item.itemId == id)
+                {
+                    if (DataHolder.GetItem(id).consume)
+                    {
+                        item.number++;
+                        isExist = true;
+                    }
+                }
+            }
+            if (!isExist)
+            {
+                PlayerItem item = new PlayerItem();
+                item.itemId = id;
+                item.state = ItemState.Have;
+                item.isConsumable = DataHolder.GetItem(id).consume;
                 item.number = 1;
-            myPlayer.items.Add(item);
+            }
+            
         }
         SavePlayer();
     }

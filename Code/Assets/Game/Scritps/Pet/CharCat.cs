@@ -32,18 +32,30 @@ public class CharCat : CharController
     protected override IEnumerator Patrol()
     {
        int ran = Random.Range(0, 100);
-        if(ran < 30){
+        if(ran < 20){
             SetTarget(PointType.Patrol);
             yield return StartCoroutine(RunToPoint());
-        }else if (ran < 50)
+        }else if (ran < 30)
         {
             anim.Play("Standby", 0);
             yield return StartCoroutine(Wait(Random.Range(1, 5)));
         }
-        else if (ran < 70){
+        else if (ran < 40){
             anim.Play("Idle_" + this.direction.ToString(), 0);
             yield return StartCoroutine(Wait(Random.Range(1, 5)));
-        }else{
+        }else if(ran < 70 && GameManager.instance.myPlayer.questId > 19)
+        {
+            SetTarget(PointType.Sunny);
+            yield return StartCoroutine(RunToPoint());
+            anim.Play("Sleep", 0);
+            while (data.Sleep < data.MaxSleep && !isAbort)
+            {
+                data.Sleep += data.rateSleep * Time.deltaTime;
+                yield return new WaitForEndOfFrame();
+            }
+            GameManager.instance.AddExp(5, data.iD);
+        }
+        else{
             if(GetRandomPoint(PointType.Table) != null)
             {
                 SetTarget(PointType.Table);
