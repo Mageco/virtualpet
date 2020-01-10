@@ -206,14 +206,17 @@ public class TutorialManager : MonoBehaviour
         //Pan Camera
         else if(questId == 20)
         {
-            Vector3 pos = ItemManager.instance.GetActiveCamera().transform.position;
+            if (GameManager.instance.myPlayer.gameType != GameType.Garden)
+            {
+                Vector3 pos = ItemManager.instance.GetActiveCamera().transform.position;
+                pos.x = ItemManager.instance.GetActiveCamera().boundX.x;
+                pointer.transform.position = pos;
+                ItemManager.instance.GetActiveCamera().SetTarget(pointer.gameObject);
+                blackScreenUI.SetActive(true);
+                blackScreen.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, 0);
+                StartCoroutine(OnGarden());
+            }
 
-            pos.x = ItemManager.instance.GetActiveCamera().boundX.x;
-            pointer.transform.position = pos;
-            ItemManager.instance.GetActiveCamera().SetTarget(pointer.gameObject);
-            blackScreenUI.SetActive(true);
-            blackScreen.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, 0);
-            StartCoroutine(OnGarden());
         }
         else if (questId == 21)
         {
