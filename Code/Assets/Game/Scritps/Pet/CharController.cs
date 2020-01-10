@@ -842,7 +842,7 @@ public class CharController : MonoBehaviour
     }
 
     public virtual void OnToy(ToyItem item){
-        if(actionType != ActionType.Sick && actionType != ActionType.Injured && actionType != ActionType.OnControl && actionType != ActionType.Hold
+        if(actionType != ActionType.Sick && actionType != ActionType.Injured && actionType != ActionType.OnControl && charInteract.interactType != InteractType.Drag //actionType != ActionType.Hold
          && actionType != ActionType.Toy && enviromentType == EnviromentType.Room && actionType != ActionType.Supprised){
             actionType = ActionType.Toy;
             isAbort = true;
