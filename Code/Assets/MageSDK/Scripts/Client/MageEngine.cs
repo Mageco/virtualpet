@@ -59,6 +59,7 @@ namespace MageSDK.Client {
 		private Hashtable cachedActionLog = new Hashtable();
 
 		private List<CacheScreenTime> cachedScreenTime = new List<CacheScreenTime>();
+		private bool isAppActive = true;
 		#endregion
 
 		void Awake() {
@@ -90,6 +91,14 @@ namespace MageSDK.Client {
 
 		void Update() {
 			AddScreenTime();
+		}
+
+		void OnApplicationFocus(bool hasFocus) {
+			if (hasFocus) {
+				ResetScreenTime();
+			} else {
+				isAppActive = false;
+			}
 		}
 
 		public void DoLogin() {
@@ -929,6 +938,11 @@ namespace MageSDK.Client {
 		}
 
 		private void AddScreenTime() {
+			// don't count when app is not active
+			if (!isAppActive) {
+				return;
+			}
+
 			if (cachedScreenTime == null) {
 				cachedScreenTime = new List<CacheScreenTime>();
 			}
@@ -958,8 +972,11 @@ namespace MageSDK.Client {
 			SaveScreenCacheListData(cachedScreenTime, MageEngineSettings.GAME_ENGINE_SCREEN_TIME_CACHE);
 			SaveCacheData<string>(currentScreen, MageEngineSettings.GAME_ENGINE_LAST_SCREEN);
 			SaveCacheData<DateTime>(now, MageEngineSettings.GAME_ENGINE_LAST_SCREEN_TIMESTAMP);
-			//Debug.Log(ConvertCacheScreenJson());
+		}
 
+		private void ResetScreenTime() {
+			SaveCacheData<DateTime>(DateTime.Now, MageEngineSettings.GAME_ENGINE_LAST_SCREEN_TIMESTAMP);
+			isAppActive = true;
 		}
 
 
