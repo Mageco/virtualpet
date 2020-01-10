@@ -231,7 +231,8 @@ namespace MageSDK.Client {
 			User tmp = GetUser();
 
 			//if (tmp.id == "0") {
-				tmp.id = u.id;
+			tmp.id = u.id;
+			tmp.last_run_app_version = u.last_run_app_version;
 			//}
 
 			// check and swap version
@@ -243,6 +244,11 @@ namespace MageSDK.Client {
 			} else {
 				// in case data from server is newer, then replace local by copy from server
 				SetUser(u);
+				_isReloadRequired = true;
+			}
+
+			if (u.last_run_app_version != ""  && string.Compare(u.last_run_app_version, "1.08") <= 0) {
+				Debug.Log("Old Version detected");
 				_isReloadRequired = true;
 			}
 		}

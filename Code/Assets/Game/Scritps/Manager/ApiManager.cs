@@ -42,7 +42,15 @@ public class ApiManager : MageEngine {
         if (IsReloadRequired())
         {
             Debug.Log("Load data from server");
+			
             GameManager.instance.myPlayer = GetUserData<PlayerData>();
+
+			if (GetUser().last_run_app_version != ""  && string.Compare(GetUser().last_run_app_version, "1.08") <= 0) {
+				Debug.Log("Set quest id 100");
+				GameManager.instance.myPlayer.questId = 100;
+				GameManager.instance.SavePlayer();
+			}
+
             GameManager.instance.UnLoadPets();
             if (ItemManager.instance != null)
             {

@@ -25,6 +25,10 @@ namespace Mage.Models.Users{
 		public string notification_token = "";
 		public string country_code = "";
 
+		public string last_run_app_version = "";
+
+		public string app_version = "";
+
 		public List<UserData> user_datas = new List<UserData>();
 
 		public List<Character> characters = new List<Character>();
