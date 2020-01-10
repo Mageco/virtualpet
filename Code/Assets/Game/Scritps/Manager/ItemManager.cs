@@ -10,7 +10,7 @@ public class ItemManager : MonoBehaviour
 
     public List<ItemObject> items = new List<ItemObject>();
     public List<ItemSaveData> itemSaveDatas = new List<ItemSaveData>();
-    
+
 
 
     public ItemCollider[] itemColliders;
