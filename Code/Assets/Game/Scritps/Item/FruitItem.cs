@@ -81,13 +81,14 @@ public class FruitItem : MonoBehaviour
     IEnumerator Pick(){
         step = 0;
         time = 0;
+        OnStep();
         MageManager.instance.PlaySoundName("happy_collect_item_01",false);
         GameManager.instance.AddCoin(Random.Range(2, 5));
         GameManager.instance.LogAchivement(AchivementType.CollectFruit);
         collectEffect.SetActive(true);
-        animator.Play("Active");
+        //animator.Play("Active");
         yield return new WaitForSeconds(1);
-        OnStep();
+        
         collectEffect.SetActive(false);
     }
 

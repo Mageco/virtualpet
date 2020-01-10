@@ -242,6 +242,7 @@ public class TutorialManager : MonoBehaviour
             }
             else
             {
+                blackScreenUI.SetActive(true);
                 EventPanel eventPanel = UIManager.instance.OnEventPanel();
                 GameObject go = eventPanel.playButton.gameObject;
                 AddSorting(go);
@@ -362,6 +363,7 @@ public class TutorialManager : MonoBehaviour
         {
             if(step == 0)
             {
+                blackScreenUI.SetActive(true);
                 handClick.SetActive(false);
                 EventPanel eventPanel = UIManager.instance.OnEventPanel();
                 GameObject go = eventPanel.playButton.gameObject;
@@ -370,6 +372,7 @@ public class TutorialManager : MonoBehaviour
             }
             else if(step == 1)
             {
+                blackScreenUI.SetActive(true);
                 EventPanel eventPanel = UIManager.instance.OnEventPanel();
                 if (eventPanel != null)
                     eventPanel.OnEvent(0);
@@ -392,11 +395,16 @@ public class TutorialManager : MonoBehaviour
         }
         else if (step == 1)
         {
+            if(GameManager.instance.GetHappy() < DataHolder.GetItem(itemId).buyPrice)
+            {
+                GameManager.instance.AddHappy(DataHolder.GetItem(itemId).buyPrice);
+            }
             Destroy(UIManager.instance.shopPanel.toogleAnchor.GetChild(tabID).gameObject.GetComponent<Canvas>());
             UIManager.instance.shopPanel.ReLoadTab(tabID);
             UIManager.instance.shopPanel.ScrollToItem(itemId);
             ItemUI item = UIManager.instance.shopPanel.GetItem(itemId);
             AddSorting(item.buyButton.gameObject);
+
             step = 2;
         }
         else if (step == 2)

@@ -63,10 +63,12 @@ public class CharCollector : MonoBehaviour
     IEnumerator Speak()
     {
         isClick = true;
-        anim.Play("Speak_L", 0);
+        if(anim != null)
+            anim.Play("Speak_L", 0);
         yield return new WaitForEndOfFrame();
         yield return new WaitForSeconds(anim.GetCurrentAnimatorStateInfo(0).length);
-        anim.Play("Standby", 0);
+        if (anim != null)
+            anim.Play("Standby", 0);
         isClick = false;
     }
 

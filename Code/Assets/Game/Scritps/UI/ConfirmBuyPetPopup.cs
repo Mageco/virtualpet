@@ -51,7 +51,8 @@ public class ConfirmBuyPetPopup : MonoBehaviour
         {
             UIManager.instance.petRequirementPanel.Close();
         }
-        UIManager.instance.BuyPet(itemId);    
+        UIManager.instance.BuyPet(itemId);
+        ItemManager.instance.SetLocation(GameType.House);
         this.Close();
     }
 
