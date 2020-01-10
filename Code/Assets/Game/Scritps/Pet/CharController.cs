@@ -1096,8 +1096,8 @@ public class CharController : MonoBehaviour
             {
                 if (pos.x > -92)
                     pos.x = -92;
-                else if (pos.x < -320)
-                    pos.x = -320;
+                else if (pos.x < -290)
+                    pos.x = -290;
             }
 
 

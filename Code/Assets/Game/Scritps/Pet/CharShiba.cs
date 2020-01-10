@@ -174,7 +174,7 @@ public class CharShiba : CharController
         if (data.curious > data.MaxCurious * 0.4f)
         {
             int ran = Random.Range(0,100);
-            if(ran < 30){
+            if(ran < 20){
                 SetTarget(PointType.MouseGate);
                 yield return StartCoroutine(RunToPoint());
                 yield return StartCoroutine(DoAnim("Smell_" + direction.ToString())) ;
@@ -184,8 +184,36 @@ public class CharShiba : CharController
             {
                 if(GameManager.instance.myPlayer.questId > 19)
                 {
-                    data.curious -= 50;
-                    OnGarden();
+                    if(ran < 50)
+                    {
+                        data.curious -= 20;
+                        OnGarden();
+                    }else if(ran < 70)
+                    {
+                        SetTarget(PointType.ChickenDefence);
+                        yield return StartCoroutine(RunToPoint());
+                        anim.Play("Sit");
+                        yield return StartCoroutine(Wait(Random.Range(2f, 10f)));
+                        int ran1 = Random.Range(0, 100);
+                        if(ran1 > 50)
+                        {
+                            yield return StartCoroutine(DoAnim("Love"));
+                            GameManager.instance.AddExp(5, data.iD);
+                        }
+                    }else
+                    {
+                        SetTarget(PointType.Fishing);
+                        yield return StartCoroutine(RunToPoint());
+                        anim.Play("Sit");
+                        yield return StartCoroutine(Wait(Random.Range(2f, 10f)));
+                        int ran1 = Random.Range(0, 100);
+                        if (ran1 > 50)
+                        {
+                            yield return StartCoroutine(DoAnim("Love"));
+                            GameManager.instance.AddExp(5, data.iD);
+                        }
+                    }
+
                 }
             }
         }
