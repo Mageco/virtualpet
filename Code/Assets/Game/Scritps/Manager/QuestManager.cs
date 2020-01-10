@@ -42,8 +42,12 @@ public class QuestManager : MonoBehaviour
     }
 
     // Start is called before the first frame update
-    void Start()
+    IEnumerator Start()
     {
+        while (!GameManager.instance.isLoad)
+        {
+            yield return new WaitForEndOfFrame();
+        }
         CheckQuest();
     }
 
@@ -464,7 +468,7 @@ public class QuestManager : MonoBehaviour
                 isActive = false;
                 return;
             }
-                
+ 
             StartQuest();
         }
         else

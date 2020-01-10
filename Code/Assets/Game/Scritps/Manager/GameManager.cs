@@ -378,8 +378,16 @@ public class GameManager : MonoBehaviour
                 {
                     if (DataHolder.GetItem(id).consume)
                     {
+                        item.state = ItemState.Have;
                         item.number++;
                         isExist = true;
+                    }
+                    else
+                    {
+                        item.state = ItemState.Have;
+                        item.number = 1;
+                        isExist = true;
+                        Debug.Log( " Exist " + id);
                     }
                 }
             }
@@ -390,6 +398,8 @@ public class GameManager : MonoBehaviour
                 item.state = ItemState.Have;
                 item.isConsumable = DataHolder.GetItem(id).consume;
                 item.number = 1;
+                Debug.Log("Not Exist " + id);
+                myPlayer.items.Add(item);
             }
             
         }
