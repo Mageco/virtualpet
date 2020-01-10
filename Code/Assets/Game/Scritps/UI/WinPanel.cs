@@ -33,7 +33,8 @@ public class WinPanel : MonoBehaviour
     public void Load(int d, int c){
         animator = this.GetComponent<Animator>();
         animator.Play("Win",0);
-        if((GameManager.instance.myPlayer.minigameLevels[0] + 1)% 5 == 0){
+        if((GameManager.instance.myPlayer.minigameLevels[0] + 1)% 5 == 0 || GameManager.instance.myPlayer.minigameLevels[0] == 0)
+        {
             exp.transform.parent.gameObject.SetActive(true);
             GameManager.instance.AddItem(72);
             GameManager.instance.EquipItem(72);

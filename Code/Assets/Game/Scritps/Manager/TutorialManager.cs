@@ -167,7 +167,7 @@ public class TutorialManager : MonoBehaviour
             {
                 ItemManager.instance.SetCameraTarget(cat.gameObject);
                 Camera.main.GetComponent<CameraController>().screenOffset = 0;
-                cat.Active();
+                cat.Load();
             }
         }
         //On Buy equipment
@@ -176,7 +176,7 @@ public class TutorialManager : MonoBehaviour
             CharCollector cat = ItemManager.instance.GetCharCollector(1);
             if (cat != null)
             {
-                cat.Active();
+                cat.Load();
             }
 
         }
@@ -186,7 +186,7 @@ public class TutorialManager : MonoBehaviour
             CharCollector cat = ItemManager.instance.GetCharCollector(1);
             if (cat != null)
             {
-                cat.Active();
+                cat.Load();
             }
         }
         //Get Cat

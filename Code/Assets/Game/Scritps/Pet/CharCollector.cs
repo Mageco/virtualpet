@@ -24,7 +24,7 @@ public class CharCollector : MonoBehaviour
 
 
 
-    private void Load()
+    public void Load()
     {
         if (!GameManager.instance.IsEquipPet(petId) && GameManager.instance.myPlayer.questId > quesId)
             Active();
