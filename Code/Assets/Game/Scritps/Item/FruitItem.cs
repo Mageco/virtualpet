@@ -7,7 +7,7 @@ public class FruitItem : MonoBehaviour
 {
     [HideInInspector]
     public ItemSaveDataType itemSaveDataType = ItemSaveDataType.Fruit;
-    public int id;
+    public int id = 0;
     public GameObject collectEffect;
     public GameObject[] steps;
     public int step = 0;
@@ -18,17 +18,20 @@ public class FruitItem : MonoBehaviour
     public float maxScale = 1f;
     public float maxTimeCalculated = 1;
     float timeCaculated = 0;
-    Animator animator;
 
     void Awake(){
+        
         collectEffect.SetActive(false);
+        
+        step = Random.Range(0, steps.Length);
+        time = Random.Range(0, maxTime[step]);
         OnStep();
-        animator = this.GetComponent<Animator>();
     }
     // Start is called before the first frame update
     void Start()
     {
-       
+        if (id == 0)
+            id = ItemManager.instance.GetFruitId();
     }
 
     public void Load()
@@ -86,7 +89,6 @@ public class FruitItem : MonoBehaviour
         GameManager.instance.AddCoin(Random.Range(2, 5));
         GameManager.instance.LogAchivement(AchivementType.CollectFruit);
         collectEffect.SetActive(true);
-        //animator.Play("Active");
         yield return new WaitForSeconds(1);
         
         collectEffect.SetActive(false);
@@ -109,6 +111,11 @@ public class FruitItem : MonoBehaviour
                 steps[i].SetActive(false);
             else
                 steps[i].SetActive(true);
+        }
+
+        if (step == scaleStepId)
+        {
+            steps[step].transform.localScale = new Vector3(minScale, minScale, 1);
         }
     }
 

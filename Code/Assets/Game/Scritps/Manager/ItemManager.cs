@@ -33,7 +33,7 @@ public class ItemManager : MonoBehaviour
 
     float timeDirty = 0;
     float maxTimeDirty = 200;
-
+    int fruitId = 0;
 
     void Awake()
     {
@@ -724,6 +724,12 @@ public class ItemManager : MonoBehaviour
 
 
 
+    }
+
+    public int GetFruitId()
+    {
+        fruitId++;
+        return fruitId;
     }
 
 }

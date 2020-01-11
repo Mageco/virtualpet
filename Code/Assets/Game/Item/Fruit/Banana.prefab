@@ -40,8 +40,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6501422548067649602}
   - component: {fileID: 5324286870914678331}
-  - component: {fileID: 5641080937432154337}
-  - component: {fileID: 1147211747}
+  - component: {fileID: 3136242030047115474}
   m_Layer: 0
   m_Name: Banana
   m_TagString: Untagged
@@ -58,7 +57,7 @@ Transform:
   m_GameObject: {fileID: 5592390264432351261}
   m_LocalRotation: {x: 0, y: 0, z: -0.1283282, w: 0.99173176}
   m_LocalPosition: {x: -1.88, y: 9.94, z: -2.4355671}
-  m_LocalScale: {x: 0.83333355, y: 0.8333334, z: 1}
+  m_LocalScale: {x: 0.8000001, y: 0.79999995, z: 1}
   m_Children:
   - {fileID: 8971683226200067406}
   - {fileID: 4506536658040584038}
@@ -80,7 +79,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemSaveDataType: 7
-  id: 1
+  id: 0
   collectEffect: {fileID: 8971683226200035694}
   steps:
   - {fileID: 3854997824283972496}
@@ -96,7 +95,7 @@ MonoBehaviour:
   minScale: 0.1
   maxScale: 1.44
   maxTimeCalculated: 1
---- !u!58 &5641080937432154337
+--- !u!58 &3136242030047115474
 CircleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -112,25 +111,6 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 1.2
---- !u!95 &1147211747
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5592390264432351261}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: ae5fa67b607d14110b03f2fce4a6d751, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &6065759482600499254
 GameObject:
   m_ObjectHideFlags: 0
