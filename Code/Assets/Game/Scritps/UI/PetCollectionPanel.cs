@@ -25,7 +25,7 @@ public class PetCollectionPanel : MonoBehaviour
         {
             petCollectionUIs[i].Load(DataHolder.Pet(i).iD);
         }
-        //simpleScrollSnap.startingPanel = 0;
+        simpleScrollSnap.startingPanel = 0;
         //simpleScrollSnap.startingPanel = 0;
     }
 
