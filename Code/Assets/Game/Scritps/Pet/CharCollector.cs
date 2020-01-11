@@ -53,6 +53,9 @@ public class CharCollector : MonoBehaviour
 
     private void OnMouseUp()
     {
+        if (IsPointerOverUIObject())
+            return;
+
         if (!isClick && isActive)
         {
             StartCoroutine(Speak());
@@ -77,5 +80,14 @@ public class CharCollector : MonoBehaviour
     {
         Destroy(petObject);
         isActive = false;
+    }
+
+    protected bool IsPointerOverUIObject()
+    {
+        PointerEventData eventDataCurrentPosition = new PointerEventData(EventSystem.current);
+        eventDataCurrentPosition.position = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
+        List<RaycastResult> results = new List<RaycastResult>();
+        EventSystem.current.RaycastAll(eventDataCurrentPosition, results);
+        return results.Count > 0;
     }
 }

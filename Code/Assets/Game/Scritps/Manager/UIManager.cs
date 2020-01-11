@@ -49,7 +49,6 @@ public class UIManager : MonoBehaviour
     MapPanel mapPanel;
 
     public GameObject achivementNotification;
-    public GameObject eventNotification;
 
     [HideInInspector]
     public AchivementPanel achivementPanel;
@@ -195,6 +194,9 @@ public class UIManager : MonoBehaviour
         GameManager.instance.EquipPet(itemID);
         if (shopPanel != null)
             shopPanel.Close();
+
+        OnPetCollectionPanel();
+        petCollectionPanel.OnActive(itemID);
 
         if(ItemManager.instance.GetCharCollector(itemID) != null)
             ItemManager.instance.GetCharCollector(itemID).DeActive();

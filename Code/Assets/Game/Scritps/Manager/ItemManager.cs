@@ -91,13 +91,6 @@ public class ItemManager : MonoBehaviour
                 UIManager.instance.achivementNotification.SetActive(true);
             }else
                 UIManager.instance.achivementNotification.SetActive(false);
-
-            //Check Event Notification
-            if(GameManager.instance.GetHappy() >= Mathf.Min(GameManager.instance.myPlayer.minigameLevels[0], 10))
-            {
-                UIManager.instance.eventNotification.SetActive(true);
-            }else
-                UIManager.instance.eventNotification.SetActive(false);
         }
         else{
             time += Time.deltaTime;

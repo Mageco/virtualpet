@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using DanielLochner.Assets.SimpleScrollSnap;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,10 +9,12 @@ public class PetCollectionPanel : MonoBehaviour
     public Text pageNumber;
     int currentPage = 1;
     PetCollectionUI[] petCollectionUIs;
+    public SimpleScrollSnap simpleScrollSnap;
 
     private void Awake()
     {
         petCollectionUIs = this.transform.GetComponentsInChildren<PetCollectionUI>(true);
+       
     }
 
     // Start is called before the first frame update
@@ -21,27 +24,31 @@ public class PetCollectionPanel : MonoBehaviour
         {
             petCollectionUIs[i].Load(DataHolder.Pet(i).iD);
         }
+        //simpleScrollSnap.startingPanel = 0;
+        simpleScrollSnap.startingPanel = 0;
     }
 
     // Update is called once per frame
     void Update()
     {
-        pageNumber.text = currentPage.ToString() + "/4";
+        pageNumber.text = (simpleScrollSnap.CurrentPanel + 1).ToString() + "/3";
     }
 
-    public void OnNext()
+
+    public void OnActive(int id)
     {
-        currentPage++;
-        if (currentPage > 4)
-            currentPage = 4;
+        for(int i = 0; i < petCollectionUIs.Length; i++)
+        {
+            if(petCollectionUIs[i].petId == id)
+            {
+                simpleScrollSnap.GoToPanel(i / 4);
+                petCollectionUIs[i].OnActive();
+            }
+        }
     }
 
-    public void OnPrevious()
-    {
-        currentPage--;
-        if (currentPage < 1)
-            currentPage = 1;
-    }
+
+
 
     public void Close()
     {
