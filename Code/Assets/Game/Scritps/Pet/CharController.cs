@@ -276,22 +276,22 @@ public class CharController : MonoBehaviour
 
         if(data.Health > 0.1f*data.MaxHealth){
             if (data.Dirty > data.MaxDirty * 0.95f)
-                deltaHealth -= (data.Dirty - data.MaxDirty * 0.95f) * 0.001f;
+                deltaHealth -= (data.Dirty - data.MaxDirty * 0.95f) * 0.003f;
 
             if (data.Pee > data.MaxPee * 0.95f)
-                deltaHealth -= (data.Pee - data.MaxPee * 0.95f) * 0.001f;
+                deltaHealth -= (data.Pee - data.MaxPee * 0.95f) * 0.003f;
 
             if (data.Shit > data.MaxShit * 0.95f)
-                deltaHealth -= (data.Shit - data.MaxShit * 0.95f) * 0.001f;
+                deltaHealth -= (data.Shit - data.MaxShit * 0.95f) * 0.003f;
 
             if (data.Food < data.MaxFood * 0.05f)
-                deltaHealth -= (data.MaxFood * 0.05f - data.Food) * 0.001f;
+                deltaHealth -= (data.MaxFood * 0.05f - data.Food) * 0.003f;
 
             if (data.Water < data.MaxWater * 0.05f)
-                deltaHealth -= (data.MaxWater * 0.05f - data.Water) * 0.001f;
+                deltaHealth -= (data.MaxWater * 0.05f - data.Water) * 0.003f;
 
             if (data.Sleep < data.MaxSleep * 0.05f)
-                deltaHealth -= (data.MaxSleep * 0.05f - data.Sleep) * 0.002f;
+                deltaHealth -= (data.MaxSleep * 0.05f - data.Sleep) * 0.005f;
         }
 
         data.Health += deltaHealth;

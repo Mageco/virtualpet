@@ -48,14 +48,18 @@ public class PetCollectionUI : MonoBehaviour
 
     IEnumerator ActiveCoroutine()
     {
+        
         Pet pet = DataHolder.GetPet(petId);
         petAvatar.color = Color.black;
         int n = petId % 5 + 1;
-        BG.sprite = Resources.Load<Sprite>("Icons/Background/BG_" + n.ToString()) as Sprite;
+        BG.sprite = Resources.Load<Sprite>("Icons/Background/BG_" + n.ToString() + "_Black") as Sprite;
+        yield return new WaitForSeconds(1f);
+        MageManager.instance.PlaySoundName("collect_item_02", false);
         animator.Play("Active");
         yield return new WaitForSeconds(0.3f);
         petAvatar.color = Color.white;
-        BG.sprite = Resources.Load<Sprite>("Icons/Background/BG_" + n.ToString() + "_Black") as Sprite;
+        BG.sprite = Resources.Load<Sprite>("Icons/Background/BG_" + n.ToString()) as Sprite;
+        yield return new WaitForSeconds(1f);
         animator.Play("Idle");
     }
 

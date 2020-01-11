@@ -13,19 +13,20 @@ public class PetCollectionPanel : MonoBehaviour
 
     private void Awake()
     {
-        petCollectionUIs = this.transform.GetComponentsInChildren<PetCollectionUI>(true);
+        
        
     }
 
     // Start is called before the first frame update
-    void Start()
+    public void Load()
     {
-        for(int i = 0; i < DataHolder.Pets().GetDataCount(); i++)
+        petCollectionUIs = this.transform.GetComponentsInChildren<PetCollectionUI>(true);
+        for (int i = 0; i < DataHolder.Pets().GetDataCount(); i++)
         {
             petCollectionUIs[i].Load(DataHolder.Pet(i).iD);
         }
         //simpleScrollSnap.startingPanel = 0;
-        simpleScrollSnap.startingPanel = 0;
+        //simpleScrollSnap.startingPanel = 0;
     }
 
     // Update is called once per frame
@@ -41,7 +42,9 @@ public class PetCollectionPanel : MonoBehaviour
         {
             if(petCollectionUIs[i].petId == id)
             {
+                simpleScrollSnap.startingPanel = i / 4;
                 simpleScrollSnap.GoToPanel(i / 4);
+                Debug.Log(i / 4);
                 petCollectionUIs[i].OnActive();
             }
         }

@@ -501,6 +501,7 @@ public class UIManager : MonoBehaviour
             popup.transform.SetParent(GameObject.Find("Canvas").transform, false);
             popup.GetComponent<Popup>().Open();
             petCollectionPanel = popup.GetComponent<PetCollectionPanel>();
+            petCollectionPanel.Load();
         }
     }
 
