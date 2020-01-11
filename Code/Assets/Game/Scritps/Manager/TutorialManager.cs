@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class TutorialManager : MonoBehaviour
 {
@@ -471,15 +472,20 @@ public class TutorialManager : MonoBehaviour
 
     IEnumerator Quest0()
     {
+        blackScreenUI.GetComponent<Image>().color = new Color(0.2f, 0.2f, 0.2f, 0);
         blackScreenUI.SetActive(true);
         UIManager.instance.OnPetCollectionPanel();
+        
         if (UIManager.instance.petCollectionPanel != null)
             UIManager.instance.petCollectionPanel.OnActive(0);
 
         yield return new WaitForSeconds(3);
 
         UIManager.instance.petCollectionPanel.Close();
+        blackScreenUI.GetComponent<Image>().color = new Color(0.2f, 0.2f, 0.2f, 0.3f);
         blackScreenUI.SetActive(false);
+
+        UIManager.instance.OnQuestNotificationPopup("Oh Shiba is very hungry, tap to the food bowl to fill up.");
 
         FoodBowlItem item = FindObjectOfType<FoodBowlItem>();
         if (item != null && item.foodAmount < item.maxfoodAmount - 2)
@@ -492,7 +498,7 @@ public class TutorialManager : MonoBehaviour
             handClick.transform.position = item.transform.position + new Vector3(0, 0, -1000);
             handClick.GetComponent<Animator>().Play("Click", 0);
         }
-            
+           
     }
 
     protected virtual IEnumerator HoldToBath()

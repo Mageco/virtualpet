@@ -637,7 +637,7 @@ public class Pet : BaseModel
         get
         {
             //return this.maxTimeSick;
-            return Mathf.Min(300 * level,3600);
+            return Mathf.Min(600 * level,86400);
         }
         set
         {

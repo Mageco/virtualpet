@@ -46,7 +46,7 @@ public class TreatmentPopup : MonoBehaviour
         float m = (int)(t / 60);
         float s = (int)(t - m * 60);
         timeWait.text = m.ToString("00") + ":" + s.ToString("00");
-        coin = (int)(t / 60 * 10);
+        coin = Mathf.Max((int)(t / 60),100);
         price.text = coin.ToString();
     }
 

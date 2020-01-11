@@ -26,14 +26,14 @@ public class TreatmentConfirmPopup : MonoBehaviour
             sickTypeIcon.sprite = sickTypes[1];
         }
 
-        coin = (int)((pet.MaxTimeSick - (System.DateTime.Now - pet.timeSick).TotalSeconds) / 60 * 10);
+        coin = coin = Mathf.Max(((int)((pet.MaxTimeSick - (System.DateTime.Now - pet.timeSick).TotalSeconds) / 60)),100);
         price.text = coin.ToString();
     }
 
     // Update is called once per frame
     void Update()
     {
-        coin = (int)((pet.MaxTimeSick - (System.DateTime.Now - pet.timeSick).TotalSeconds) / 60 * 10);
+        coin = coin = Mathf.Max(((int)((pet.MaxTimeSick - (System.DateTime.Now - pet.timeSick).TotalSeconds) / 60)), 100);
         price.text = coin.ToString();
     }
 
