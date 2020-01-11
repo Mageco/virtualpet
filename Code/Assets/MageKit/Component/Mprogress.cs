@@ -8,7 +8,7 @@ public class Mprogress : MonoBehaviour {
 	public Image fill;
     public Text tip;
 	float progress = 0;
-    public Sprite[] loadingImages;
+    public Image icon;
     public Image loadingImage;
 
 	// Use this for initialization
@@ -18,8 +18,11 @@ public class Mprogress : MonoBehaviour {
         int id = Random.Range(0,DataHolder.Dialogs().GetDataCount());
         //if(DataHolder.Instance() != null)
             tip.text = DataHolder.Dialog(id).GetDescription(MageManager.instance.GetLanguage());
-        int n = Random.Range(0, loadingImages.Length);
-        loadingImage.sprite = loadingImages[n];
+        int n = Random.Range(0, DataHolder.Pets().GetDataCount());
+		string url = DataHolder.Pet(n).iconUrl.Replace("Assets/Game/Resources/", "");
+		url = url.Replace(".png", "");
+		icon.sprite = Resources.Load<Sprite>(url) as Sprite;
+
 
 	}
 
