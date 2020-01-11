@@ -46,20 +46,8 @@ public class TutorialManager : MonoBehaviour
         //Tap to the food bowl
         if (questId == 0)
         {
-            if (step == 0)
-            {
-                FoodBowlItem item = FindObjectOfType<FoodBowlItem>();
-                if(item != null && item.foodAmount < item.maxfoodAmount - 2)
-                {
-                    blackScreen.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, 0);
-                    blackScreen.SetActive(true);
-                    handClick.SetActive(true);
-                    Camera.main.GetComponent<CameraController>().screenOffset = 0;
-                    blackScreenButton.SetActive(true);
-                    handClick.transform.position = item.transform.position + new Vector3(0, 0, -1000);
-                    handClick.GetComponent<Animator>().Play("Click", 0);
-                }
-            }
+            StartCoroutine(Quest0());
+
         }
         //Collect heart
         else if (questId == 1)
@@ -479,6 +467,32 @@ public class TutorialManager : MonoBehaviour
         handClickUI.transform.localScale = Vector3.one;
         handClickUI.transform.localPosition = Vector3.zero;
         handClickUI.SetActive(true);
+    }
+
+    IEnumerator Quest0()
+    {
+        blackScreenUI.SetActive(true);
+        UIManager.instance.OnPetCollectionPanel();
+        if (UIManager.instance.petCollectionPanel != null)
+            UIManager.instance.petCollectionPanel.OnActive(0);
+
+        yield return new WaitForSeconds(3);
+
+        UIManager.instance.petCollectionPanel.Close();
+        blackScreenUI.SetActive(false);
+
+        FoodBowlItem item = FindObjectOfType<FoodBowlItem>();
+        if (item != null && item.foodAmount < item.maxfoodAmount - 2)
+        {
+            blackScreen.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, 0);
+            blackScreen.SetActive(true);
+            handClick.SetActive(true);
+            Camera.main.GetComponent<CameraController>().screenOffset = 0;
+            blackScreenButton.SetActive(true);
+            handClick.transform.position = item.transform.position + new Vector3(0, 0, -1000);
+            handClick.GetComponent<Animator>().Play("Click", 0);
+        }
+            
     }
 
     protected virtual IEnumerator HoldToBath()

@@ -68,6 +68,8 @@ public class QuestManager : MonoBehaviour
         isReplay = false;
         delayTime = 2;
         if (GameManager.instance.myPlayer.questId == 0){
+            delayTime = 0;
+            GameManager.instance.GetActivePet().Dirty = GameManager.instance.GetActivePet().MaxDirty * 0.7f;
             GameManager.instance.GetActivePet().Food = 0.05f * GameManager.instance.GetActivePet().MaxFood;
             ItemManager.instance.GetItemChildObject(ItemType.Food).GetComponent<FoodBowlItem>().foodAmount = 0;
         }
@@ -75,7 +77,7 @@ public class QuestManager : MonoBehaviour
             delayTime = 0;
         }
         else if(GameManager.instance.myPlayer.questId == 2){
-            
+            GameManager.instance.GetActivePet().Dirty = GameManager.instance.GetActivePet().MaxDirty * 0.7f;
         }
         else if(GameManager.instance.myPlayer.questId == 3){
             GameManager.instance.GetActivePet().Water = 0.05f * GameManager.instance.GetActivePet().MaxWater;
@@ -164,7 +166,8 @@ public class QuestManager : MonoBehaviour
 
        // if(!isComplete)
         OnQuestNotification();
-        yield return new WaitForSeconds(3);
+        if(GameManager.instance.myPlayer.questId != 0)
+            yield return new WaitForSeconds(3);
         if (TutorialManager.instance != null)
             TutorialManager.instance.StartQuest();
         if(GameManager.instance.myPlayer.questId == 0)

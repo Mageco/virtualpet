@@ -58,7 +58,7 @@ public class UIManager : MonoBehaviour
     ItemInfoUI itemInfoUI;
     TreatmentPopup treatmentPopup;
     TreatmentConfirmPopup treatmentConfirmPopup;
-    PetCollectionPanel petCollectionPanel;
+    public PetCollectionPanel petCollectionPanel;
 
     public GameObject homeUI;
 
