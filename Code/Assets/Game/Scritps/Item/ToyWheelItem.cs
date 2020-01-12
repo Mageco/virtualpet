@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class ToyWheelItem : ToyItem
 {
+    public GameObject wheel;
+
     protected override void Start()
     {
         base.Start();
@@ -16,5 +18,10 @@ public class ToyWheelItem : ToyItem
         animator.Play("Active");
         MageManager.instance.PlaySoundName("Item_WaterJet", false);
         GameManager.instance.LogAchivement(AchivementType.Use_Item, ActionType.None, item.itemID);
+    }
+
+    public void DeActive()
+    {
+        animator.Play("Idle");
     }
 }

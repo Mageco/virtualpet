@@ -1857,6 +1857,71 @@ public class CharController : MonoBehaviour
                     }
                 }
             }
+            else if (toyItem.toyType == ToyType.Wheel)
+            {
+                ToyWheelItem wheel = toyItem.GetComponent<ToyWheelItem>();
+                bool isPlay = false;
+                if ((charType == CharType.Cat || charType == CharType.Hamster) && data.Energy > 0.1f * data.MaxEnergy)
+                    isPlay = true;
+
+                
+
+                if (isPlay)
+                {
+                    MageManager.instance.PlaySoundName("Wheel", false);
+                    float time = 0;
+                    charScale.speedFactor = 2f;
+                    anim.speed = 2f;
+                    SetDirection(Direction.L);
+                    wheel.OnActive();
+                    float maxTime = Random.Range(5, 10);
+                    while (wheel != null && data.Energy > data.MaxEnergy * 0.1f && !isAbort && time < maxTime)
+                    {
+                        time += Time.deltaTime;
+                        agent.transform.position = wheel.anchorPoint.position;
+                        anim.Play("Run_" + this.direction.ToString(), 0);
+                        data.Energy -= 2f * Time.deltaTime;                        
+                        yield return new WaitForEndOfFrame();
+
+                    }
+                    int ran = Random.Range(0, 100);
+                    if (charType == CharType.Hamster)
+                        ran += 30;
+
+                    if(ran < 50)
+                    {
+                        agent.transform.position = wheel.anchorPoint.position + new Vector3(0,3,0); 
+                        time = 0;
+                        while (time < 3 && !isAbort)
+                        {
+                            anim.Play("Idle_" + this.direction.ToString(), 0);
+                            this.transform.parent = wheel.wheel.transform;
+                            time += Time.deltaTime;
+                            yield return new WaitForEndOfFrame();
+                        }
+                        this.transform.rotation = Quaternion.identity;
+                        this.transform.parent = null;
+                        yield return StartCoroutine(DoAnim("Teased"));
+                    }
+                    else
+                    {
+                        
+                        if (time > 5)
+                        {
+                            yield return StartCoroutine(DoAnim("Love"));
+                            GameManager.instance.AddExp(5, data.iD);
+                        }
+  
+                    }
+
+                    //MageManager.instance.StopSound(soundId);
+                    charScale.speedFactor = 1f;
+                    wheel.DeActive();
+                   
+                }
+                target = wheel.anchorPoint.position + new Vector3(0, 3, 0);
+                yield return StartCoroutine(RunToPoint());
+            }
         }
         anim.speed = 1f;
 

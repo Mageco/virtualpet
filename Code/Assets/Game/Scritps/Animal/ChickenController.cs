@@ -24,6 +24,12 @@ public class ChickenController : AnimalController
         isAbort = true;
     }
 
+    public override void OnFlee()
+    {
+        state = AnimalState.Flee;
+        isAbort = true;
+    }
+
     public void OnCached(){
         for(int i=0;i<bodies.Length;i++){
             bodies[i].SetActive(false);
@@ -83,6 +89,9 @@ public class ChickenController : AnimalController
         }else if (state == AnimalState.InActive)
         {
             this.gameObject.SetActive(false);
+        }else if(state == AnimalState.Flee)
+        {
+            StartCoroutine(Flee());
         }
     }
 
@@ -141,6 +150,23 @@ public class ChickenController : AnimalController
         }else
             SetDirection(Direction.L);
         anim.Play("Run_" + direction.ToString(),0);
+
+        yield return StartCoroutine(MoveToPoint(target));
+        CheckAbort();
+    }
+
+    IEnumerator Flee()
+    {
+        MageManager.instance.PlaySoundName("Chicken_Flee", false);
+        Vector3 target = ItemManager.instance.GetRandomPoint(PointType.Garden).position;
+        speed = maxSpeed * 3;
+        if (target.x > this.transform.position.x)
+        {
+            SetDirection(Direction.R);
+        }
+        else
+            SetDirection(Direction.L);
+        anim.Play("Run_" + direction.ToString(), 0);
 
         yield return StartCoroutine(MoveToPoint(target));
         CheckAbort();

@@ -22,13 +22,45 @@ public class CharHamster : CharController
         while (!isAbort && n < maxCount)
         {
             int ran = Random.Range(0, 100);
-            if(ran < 60){
+            if(ran < 30){
                 SetTarget(PointType.Patrol);
                 yield return StartCoroutine(RunToPoint());
-            }else if (ran < 80)
+            }else if (ran < 50)
             {
                 anim.Play("Standby", 0);
                 yield return StartCoroutine(Wait(Random.Range(1, 5)));
+            }
+            else if(ran < 70)
+            {
+                SetTarget(PointType.ChickenDefence);
+                yield return StartCoroutine(RunToPoint());
+                ChickenController chicken = FindObjectOfType<ChickenController>();
+                bool isSpeak = false;
+                while(chicken != null && data.Energy > data.MaxEnergy * 0.1f && !isAbort)
+                {
+                    agent.SetDestination(chicken.transform.position);
+                    anim.Play("Run_Angry_" + this.direction.ToString(), 0);
+                    data.Energy -= 1.5f * Time.deltaTime;
+                    if (Vector2.Distance(this.transform.position, chicken.transform.position) < 2 && !isSpeak)
+                    {
+                        chicken.OnFlee();
+                        int r = Random.Range(0, 100);
+                        if(r < 30)
+                        {
+                            yield return StartCoroutine(DoAnim("Love"));
+                            MageManager.instance.PlaySoundName(charType.ToString() + "_Speak", false);
+                            GameManager.instance.AddExp(5, data.iD);
+                        }
+                            
+                        isSpeak = true;
+                        
+                    }
+                    if(Vector2.Distance(this.transform.position, chicken.transform.position) > 3 && isSpeak)
+                    {
+                        isSpeak = false;
+                    }
+                    yield return new WaitForEndOfFrame();
+                }
             }
             else{
                 anim.Play("Idle_" + this.direction.ToString(), 0);
@@ -39,4 +71,6 @@ public class CharHamster : CharController
         }
         CheckAbort();
     }
+
+   
 }
