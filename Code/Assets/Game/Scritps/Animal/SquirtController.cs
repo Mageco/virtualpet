@@ -7,7 +7,6 @@ public class SquirtController : FishController
     Vector3 target = Vector3.zero;
     Rigidbody2D rigid;
     public BoxCollider2D seaBed;
-    public bool isRotate = true;
 
     protected override void Start()
     {
