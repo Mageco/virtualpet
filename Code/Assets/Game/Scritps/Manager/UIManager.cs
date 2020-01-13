@@ -142,11 +142,13 @@ public class UIManager : MonoBehaviour
         }
         if (GameManager.instance.myPlayer.gameType == GameType.House)
         {
-            mapButton.SetActive(false);
+            if(mapButton != null)
+                mapButton.SetActive(false);
         }
         else if (ItemManager.instance.GetActiveCamera() != null && GameManager.instance.myPlayer.gameType == GameType.Garden)
         {
-            mapButton.SetActive(true);
+            if (mapButton != null)
+                mapButton.SetActive(true);
         }
     }
 
