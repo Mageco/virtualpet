@@ -18,6 +18,7 @@ public class Minigame : MonoBehaviour
     public int exp = 1; 
     public int coin = 10;
     public int diamon = 0;
+    int zIndex = 0;
 
     public GameState state = GameState.Ready;
 
@@ -100,5 +101,11 @@ public class Minigame : MonoBehaviour
 
     public virtual void EndGame(){
         GameManager.instance.LogAchivement(AchivementType.Play_MiniGame);
+    }
+
+    public int GetZindex()
+    {
+        zIndex++;
+        return zIndex;
     }
 }

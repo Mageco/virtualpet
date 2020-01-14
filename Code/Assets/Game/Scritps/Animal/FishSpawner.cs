@@ -7,7 +7,6 @@ public class FishSpawner : MonoBehaviour
     public bool isCouroutine = true;
     List<GizmoPoint> spawnPoints = new List<GizmoPoint>();
     public int maxNumber;
-    public float speed = 10;
     public GameObject[] prefabs;
     List<FishController> animals = new List<FishController>();
     // Start is called before the first frame update
@@ -51,11 +50,14 @@ public class FishSpawner : MonoBehaviour
         int id = Random.Range(0,prefabs.Length);
         int id1 = Random.Range(0,spawnPoints.Count);
         GameObject go = GameObject.Instantiate(prefabs[id]);
-        go.transform.position = spawnPoints[id1].transform.position;
+        Vector3 pos = spawnPoints[id1].transform.position;
+        pos.z = Minigame.instance.GetZindex();
+        go.transform.position = pos;
         go.transform.parent = this.transform;
+        go.transform.localScale *= Random.Range(0.9f,1.1f);
+
         spawnPoints.RemoveAt(id1);
         FishController a = go.GetComponent<FishController>();
-        a.speed = this.speed;
         a.isMinigame = true;            
     }
 }

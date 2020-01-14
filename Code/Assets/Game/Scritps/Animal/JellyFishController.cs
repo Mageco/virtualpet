@@ -10,6 +10,7 @@ public class JellyFishController : FishController
 
     protected override void Start()
     {
+        seaBed = GameObject.FindGameObjectWithTag("SeaBed").GetComponent<BoxCollider2D>();
         this.transform.rotation = Quaternion.Euler(new Vector3(0, 0, Random.Range(-15, 15)));
         rigid = this.GetComponent<Rigidbody2D>();
         rigid.gravityScale = 0.03f;

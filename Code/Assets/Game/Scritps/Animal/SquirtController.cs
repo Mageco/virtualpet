@@ -8,8 +8,10 @@ public class SquirtController : FishController
     Rigidbody2D rigid;
     public BoxCollider2D seaBed;
 
+
     protected override void Start()
     {
+        seaBed = GameObject.FindGameObjectWithTag("SeaBed").GetComponent<BoxCollider2D>();
         rigid = this.GetComponent<Rigidbody2D>();
         rigid.gravityScale = 0.2f;
         Move();

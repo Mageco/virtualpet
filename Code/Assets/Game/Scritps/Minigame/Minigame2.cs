@@ -13,7 +13,14 @@ public class Minigame2 : Minigame
     public GameObject guideUIPrefab;
     GuideUI guildUI;
 
+    public FishSpawner fishSpawner;
+    public FishSpawner squirtSpawner;
+    public FishSpawner jellyFishSpawner;
+    public FishSpawner yellowFishSpawner;
+    public FishSpawner specialFishSpawner;
     
+
+
     void Start(){
         fishNumber.text = "";
         levelText.text = "Stage " + (gameLevel + 1).ToString();
@@ -37,9 +44,42 @@ public class Minigame2 : Minigame
     }
 
 
+
     void Load(){
+
+        int initNumber = 3;
         
-       
+        maxTime = 30 + gameLevel / 5 * 5;
+        fishSpawner.maxNumber = initNumber + gameLevel / 5;
+        squirtSpawner.maxNumber = Random.Range(1,3);
+        jellyFishSpawner.maxNumber = Random.Range(2,5);
+        yellowFishSpawner.maxNumber = 0;
+        specialFishSpawner.maxNumber = 0;
+        
+        if (gameLevel > 5)
+        {
+            int r1 = Random.Range(0, 100);
+            if(r1 > 50)
+            {
+                yellowFishSpawner.maxNumber = 1;
+            }
+        }
+
+        if (gameLevel > 10)
+        {
+            int r1 = Random.Range(0, 100);
+            if (r1 > 80)
+            {
+                specialFishSpawner.maxNumber = 1;
+            }
+        }
+
+
+        fishSpawner.Spawn();
+        squirtSpawner.Spawn();
+        jellyFishSpawner.Spawn();
+        yellowFishSpawner.Spawn();
+        specialFishSpawner.Spawn();
     } 
 
     public override void UpdateLive(){
