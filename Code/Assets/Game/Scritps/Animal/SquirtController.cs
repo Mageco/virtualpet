@@ -32,8 +32,7 @@ public class SquirtController : FishController
             rigid.velocity = transform.up * speed * Time.deltaTime;
             Vector3 direction = target - this.transform.position;
             float rotatingIndex = Vector3.Cross(direction, transform.up).z;
-            if(isRotate)
-                rigid.angularVelocity = -1 * rotatingIndex * 50 * Time.deltaTime;
+            rigid.angularVelocity = -1 * rotatingIndex * 50 * Time.deltaTime;
             time += Time.deltaTime;
             yield return new WaitForEndOfFrame();
         }
