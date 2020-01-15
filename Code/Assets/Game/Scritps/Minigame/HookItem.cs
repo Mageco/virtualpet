@@ -101,7 +101,7 @@ public class HookItem : MonoBehaviour
                 isShock = true;
             }else if(fish.fishType == FishType.Squirt)
             {
-                Minigame.instance.time += 5;
+                Minigame.instance.time -= 5;
             }
         }
 
