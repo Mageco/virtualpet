@@ -120,7 +120,7 @@ public class UIManager : MonoBehaviour
             if (GameManager.instance.myPlayer.gameType == GameType.House)
             {
                 houseButton.SetActive(false);
-                if (ItemManager.instance.GetActiveCamera() != null && ItemManager.instance.GetActiveCamera().IsBoundXLeft())
+                if (ItemManager.instance != null && ItemManager.instance.GetActiveCamera() != null && ItemManager.instance.GetActiveCamera().IsBoundXLeft())
                 {
                     gardenButton.SetActive(true);
                 }
@@ -128,7 +128,7 @@ public class UIManager : MonoBehaviour
                     gardenButton.SetActive(false);
                 mapButton.SetActive(false);
             }
-            else if (ItemManager.instance.GetActiveCamera() != null && GameManager.instance.myPlayer.gameType == GameType.Garden)
+            else if (ItemManager.instance != null && ItemManager.instance.GetActiveCamera() != null && GameManager.instance.myPlayer.gameType == GameType.Garden)
             {
                 gardenButton.SetActive(false);
                 if (ItemManager.instance.GetActiveCamera().IsBoundXRight())
@@ -145,7 +145,7 @@ public class UIManager : MonoBehaviour
             if(mapButton != null)
                 mapButton.SetActive(false);
         }
-        else if (ItemManager.instance.GetActiveCamera() != null && GameManager.instance.myPlayer.gameType == GameType.Garden)
+        else if (ItemManager.instance != null && ItemManager.instance.GetActiveCamera() != null && GameManager.instance.myPlayer.gameType == GameType.Garden)
         {
             if (mapButton != null)
                 mapButton.SetActive(true);
