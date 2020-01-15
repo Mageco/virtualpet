@@ -12,6 +12,7 @@ public class Minigame2 : Minigame
     public Text levelText;
     public GameObject guideUIPrefab;
     GuideUI guildUI;
+    
 
     public FishSpawner fishSpawner;
     public FishSpawner squirtSpawner;
@@ -37,19 +38,31 @@ public class Minigame2 : Minigame
             state = GameState.Run;
             Load();
             fishs = GameObject.FindObjectsOfType<FishController>();
-            this.maxLive = fishs.Length;
-            this.live = this.maxLive;
+            this.maxLive = GetLive();
+            this.live = 0;
             UpdateLive();
         }
     }
 
-
+    int GetLive()
+    {
+        
+        int count = 0;
+        for (int i = 0; i < fishs.Length; i++)
+        {
+            if (fishs[i].state != FishState.DeActive && (fishs[i].fishType == FishType.Fish || fishs[i].fishType == FishType.YellowFish || fishs[i].fishType == FishType.SpecialFish))
+            {
+                count++;
+            }
+        }
+        return count;
+    }
 
     void Load(){
 
-        int initNumber = 3;
+        int initNumber = 10;
         
-        maxTime = 30 + gameLevel / 5 * 5;
+        maxTime = 60 + gameLevel / 5 * 5;
         fishSpawner.maxNumber = initNumber + gameLevel / 5;
         squirtSpawner.maxNumber = Random.Range(1,3);
         jellyFishSpawner.maxNumber = Random.Range(2,5);
@@ -85,7 +98,7 @@ public class Minigame2 : Minigame
     public override void UpdateLive(){
         live = 0;
         for(int i=0;i<fishs.Length;i++){
-            if(fishs[i].state == FishState.Cached){
+            if(fishs[i].state == FishState.DeActive){
                 live ++;
             }
         }

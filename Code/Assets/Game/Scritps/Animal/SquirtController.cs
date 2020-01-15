@@ -13,12 +13,13 @@ public class SquirtController : FishController
     {
         seaBed = GameObject.FindGameObjectWithTag("SeaBed").GetComponent<BoxCollider2D>();
         rigid = this.GetComponent<Rigidbody2D>();
-        rigid.gravityScale = 0.2f;
+        
         Move();
     }
 
     protected override void Move()
     {
+        rigid.gravityScale = 0.2f;
         StartCoroutine(CompleteMoveCoroutine());
     }
 
@@ -44,5 +45,29 @@ public class SquirtController : FishController
         }
         yield return new WaitForEndOfFrame();
         Move();
+    }
+
+    public override void OnCached()
+    {
+        state = FishState.Cached;
+        anim.Play("Hit", 0);
+        rigid.isKinematic = true;
+        col.enabled = false;
+    }
+
+    IEnumerator Idle()
+    {
+        col.enabled = true;
+        rigid.isKinematic = false;
+        rigid.gravityScale = 1f;
+        state = FishState.Idle;
+        yield return new WaitForSeconds(Random.Range(2f,3f));
+        this.transform.parent = null;
+        Move();
+    }
+
+    public override void OnActive()
+    {
+        StartCoroutine(Idle());
     }
 }

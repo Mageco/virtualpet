@@ -7,7 +7,7 @@ public class FishController : MonoBehaviour
     public bool isMinigame = true;
     public float speed = 10f;
     protected Vector3 originalPosition;
-    protected PolygonCollider2D col; 
+    protected PolygonCollider2D col;
     public FishState state = FishState.Move;
     protected Animator anim;
     protected Vector3 lastPosition = Vector3.zero;
@@ -17,7 +17,9 @@ public class FishController : MonoBehaviour
     protected Vector3[] paths;
     public float maxDistance = 5;
     public bool isAbort = false;
-    
+    public float weight = 1;
+    public FishType fishType = FishType.Fish;
+
 
     void Awake()
     {
@@ -29,7 +31,8 @@ public class FishController : MonoBehaviour
 
     protected virtual void Start()
     {
-        Spawn ();
+        Spawn();
+
     }
 
     public void Spawn()
@@ -43,14 +46,14 @@ public class FishController : MonoBehaviour
         state = FishState.Move;
         col.enabled = true;
         anim.Play("Move", 0);
-        
+
         paths = new Vector3[moveCount];
-        for(int i = 0; i < moveCount; i++)
+        for (int i = 0; i < moveCount; i++)
         {
             paths[i] = Minigame.instance.GetPointInBound();
             paths[i].z = this.transform.position.z;
         }
-        iTween.MoveTo(this.gameObject, iTween.Hash("name", "Move", "path", paths, "speed", speed, "orienttopath", false, "easetype", "linear", "onupdate","UpdateMove","oncomplete", "CompleteMove"));
+        iTween.MoveTo(this.gameObject, iTween.Hash("path", paths, "speed", speed, "orienttopath", false, "easetype", "linear", "onupdate", "UpdateMove", "oncomplete", "CompleteMove"));
     }
 
     protected void CompleteMove()
@@ -67,14 +70,14 @@ public class FishController : MonoBehaviour
             float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
             float angleY = 0;
             float scale = 1;
-            if(angle > 90)
+            if (angle > 90)
             {
                 angle = 180 - angle;
                 angleY = 180;
                 scale = -1;
             }
 
-            if(angle < -90)
+            if (angle < -90)
             {
                 angle = -180 - angle;
                 angleY = 180;
@@ -104,14 +107,28 @@ public class FishController : MonoBehaviour
     }
 
 
-    void OnTriggerEnter2D(Collider2D other)
+    public virtual void OnCached()
     {
-        if (other.tag == "Hook")
-        {
+        state = FishState.Cached;
+        anim.Play("Hit", 0);
+        //if(iTween.Check)
+        iTween.Stop(this.gameObject);
+        col.enabled = false;
+    }
 
-        }
+    public void OnDeactive()
+    {
+        state = FishState.DeActive;
+        this.gameObject.SetActive(false);
+    }
+
+    public virtual void OnActive()
+    {
+        col.enabled = true;
+        this.transform.parent = null;
+        Move();
     }
 }
-
-public enum FishState { Idle, Move, Cached, Active };
+public enum FishState { Idle, Move, Cached, Active,DeActive };
+public enum FishType {Fish,Squirt,JellyFish,YellowFish,SpecialFish};
 

@@ -13,13 +13,14 @@ public class JellyFishController : FishController
         seaBed = GameObject.FindGameObjectWithTag("SeaBed").GetComponent<BoxCollider2D>();
         this.transform.rotation = Quaternion.Euler(new Vector3(0, 0, Random.Range(-15, 15)));
         rigid = this.GetComponent<Rigidbody2D>();
-        rigid.gravityScale = 0.03f;
+        
         
         Move();
     }
 
     protected override void Move()
     {
+        rigid.gravityScale = 0.03f;
         StartCoroutine(CompleteMoveCoroutine());
     }
 
@@ -58,9 +59,27 @@ public class JellyFishController : FishController
         Move();
     }
 
-    private void LateUpdate()
+    public override void OnCached()
     {
-        Debug.Log(this.transform.rotation.z);
+        state = FishState.Cached;
+        anim.Play("Hit", 0);
+        rigid.isKinematic = true;
+        col.enabled = false;
+    }
 
+    IEnumerator Idle()
+    {
+        rigid.gravityScale = 1f;
+        col.enabled = true;
+        rigid.isKinematic = false;
+        state = FishState.Idle;
+        this.transform.parent = null;
+        yield return new WaitForSeconds(Random.Range(1f, 2f));
+        Move();
+    }
+
+    public override void OnActive()
+    {
+        StartCoroutine(Idle());
     }
 }
