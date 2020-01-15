@@ -14,12 +14,7 @@ public class StoryUI : MonoBehaviour
     {
         if (ES2.Exists("PlayTime"))
         {
-            skipButton.SetActive(true);
             MageManager.instance.LoadSceneWithLoading("House");
-        }
-        else
-        {
-            skipButton.SetActive(false);
         }
     }
 

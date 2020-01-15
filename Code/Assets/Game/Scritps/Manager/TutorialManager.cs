@@ -103,7 +103,14 @@ public class TutorialManager : MonoBehaviour
             CollectHappy();
         }
         //Take out of bath
+        else if (questId == 8)
+        {
+            if (step == 0)
+            {
 
+                StartCoroutine(HoldOutFromBath());
+            }
+        }
 
 
         //Buy a broom
@@ -167,7 +174,7 @@ public class TutorialManager : MonoBehaviour
             {
                 cat.Load();
             }
-
+            StartCoroutine(BuyToys());
         }
         //Collect heart
         else if (questId == 17)
@@ -254,7 +261,7 @@ public class TutorialManager : MonoBehaviour
         {
             if (UIManager.instance.shopPanel == null)
             {
-                blackScreenUI.SetActive(true);
+                blackScreenUI.SetActive(true);                
                 GameObject go = UIManager.instance.shopButton;
                 AddSorting(go);
             }
@@ -263,6 +270,33 @@ public class TutorialManager : MonoBehaviour
                 blackScreenUI.SetActive(true);
                 ShopPanel shop = UIManager.instance.OnShopPanel();
                 GameObject go = shop.toogleAnchor.GetChild(tabID).gameObject;
+                AddSorting(go);
+                step = 1;
+            }
+        }
+    }
+
+
+    IEnumerator BuyToys()
+    {
+        yield return new WaitForSeconds(3);
+        if(UIManager.instance.petRequirementPanel != null)
+        {
+            UIManager.instance.petRequirementPanel.Close();
+        }
+        if (step == 0)
+        {
+            if (UIManager.instance.shopPanel == null)
+            {
+                blackScreenUI.SetActive(true);
+                GameObject go = UIManager.instance.shopButton;
+                AddSorting(go);
+            }
+            else
+            {
+                blackScreenUI.SetActive(true);
+                ShopPanel shop = UIManager.instance.OnShopPanel();
+                GameObject go = shop.toogleAnchor.GetChild(4).gameObject;
                 AddSorting(go);
                 step = 1;
             }
@@ -338,7 +372,13 @@ public class TutorialManager : MonoBehaviour
         else if (questId == 13)
         {
             ClickShopItem(4,3);
-        }else if(questId == 17)
+        }
+        else if (questId == 16)
+        {
+
+            ClickShopToy();
+        }
+        else if(questId == 17)
         {
 
         }
@@ -416,7 +456,113 @@ public class TutorialManager : MonoBehaviour
             blackScreenUI.SetActive(false);
             handClickUI.SetActive(false);
             UIManager.instance.BuyItem(itemId);
+            step = 4;
         }
+    }
+
+    //Buy Toy for quest id = 16
+    void ClickShopToy()
+    {
+        if(!GameManager.instance.IsEquipItem(1))
+        {
+            if (step == 0)
+            {
+                Debug.Log("OnClick");
+                Destroy(UIManager.instance.shopButton.GetComponent<Canvas>());
+                ShopPanel shop = UIManager.instance.OnShopPanel();
+                GameObject go = shop.toogleAnchor.GetChild(4).gameObject;
+                AddSorting(go);
+                step = 1;
+            }
+            else if (step == 1)
+            {
+                if (GameManager.instance.GetHappy() < DataHolder.GetItem(1).buyPrice)
+                {
+                    GameManager.instance.AddHappy(DataHolder.GetItem(1).buyPrice);
+                }
+                Destroy(UIManager.instance.shopPanel.toogleAnchor.GetChild(4).gameObject.GetComponent<Canvas>());
+                UIManager.instance.shopPanel.ReLoadTab(4);
+                UIManager.instance.shopPanel.ScrollToItem(4);
+                ItemUI item = UIManager.instance.shopPanel.GetItem(1);
+                AddSorting(item.buyButton.gameObject);
+
+                step = 2;
+            }
+            else if (step == 2)
+            {
+
+                ItemUI item = UIManager.instance.shopPanel.GetItem(1);
+                Destroy(item.buyButton.gameObject.GetComponent<Canvas>());
+                item.OnBuy();
+                AddSorting(UIManager.instance.confirmBuyShopPopup.okButton.gameObject);
+                step = 3;
+            }
+            else if (step == 3)
+            {
+                handClickUI.transform.SetParent(blackScreenUI.transform);
+                UIManager.instance.confirmBuyShopPopup.Close();
+                UIManager.instance.shopPanel.Close();
+                blackScreenUI.SetActive(false);
+                handClickUI.SetActive(false);
+                UIManager.instance.BuyItem(1);
+                blackScreenUI.SetActive(true);
+                GameObject go = UIManager.instance.shopButton;
+                AddSorting(go);
+                step = 4;
+            }
+        }
+        else
+        {
+            if (step == 0)
+                step = 4;
+            if (!GameManager.instance.IsEquipItem(8))
+            {
+                if (step == 4)
+                {
+                    Debug.Log("OnClick");
+                    Destroy(UIManager.instance.shopButton.GetComponent<Canvas>());
+                    ShopPanel shop = UIManager.instance.OnShopPanel();
+                    GameObject go = shop.toogleAnchor.GetChild(3).gameObject;
+                    AddSorting(go);
+                    step = 5;
+                }
+                else if (step == 5)
+                {
+                    if (GameManager.instance.GetHappy() < DataHolder.GetItem(8).buyPrice)
+                    {
+                        GameManager.instance.AddHappy(DataHolder.GetItem(8).buyPrice);
+                    }
+                    Destroy(UIManager.instance.shopPanel.toogleAnchor.GetChild(3).gameObject.GetComponent<Canvas>());
+                    UIManager.instance.shopPanel.ReLoadTab(3);
+                    UIManager.instance.shopPanel.ScrollToItem(8);
+                    ItemUI item = UIManager.instance.shopPanel.GetItem(8);
+                    AddSorting(item.buyButton.gameObject);
+
+                    step = 6;
+                }
+                else if (step == 6)
+                {
+
+                    ItemUI item = UIManager.instance.shopPanel.GetItem(8);
+                    Destroy(item.buyButton.gameObject.GetComponent<Canvas>());
+                    item.OnBuy();
+                    AddSorting(UIManager.instance.confirmBuyShopPopup.okButton.gameObject);
+                    step = 7;
+                }
+                else if (step == 7)
+                {
+                    handClickUI.transform.SetParent(blackScreenUI.transform);
+                    UIManager.instance.confirmBuyShopPopup.Close();
+                    UIManager.instance.shopPanel.Close();
+                    blackScreenUI.SetActive(false);
+                    handClickUI.SetActive(false);
+                    UIManager.instance.BuyItem(8);
+                    step = 8;
+                }
+            }
+        }
+        
+        
     }
 
     public void EndQuest()
@@ -482,7 +628,7 @@ public class TutorialManager : MonoBehaviour
         yield return new WaitForSeconds(3);
 
         UIManager.instance.petCollectionPanel.Close();
-        blackScreenUI.GetComponent<Image>().color = new Color(0.2f, 0.2f, 0.2f, 0.3f);
+        blackScreenUI.GetComponent<Image>().color = new Color(0.2f, 0.2f, 0.2f, 0.7f);
         blackScreenUI.SetActive(false);
 
         UIManager.instance.OnQuestNotificationPopup("Oh Shiba is very hungry, tap to the food bowl to fill up.");
@@ -583,6 +729,7 @@ public class TutorialManager : MonoBehaviour
             handClick.transform.position = pet.transform.position + new Vector3(0, 3, -10);
             yield return new WaitForEndOfFrame();
         }
+
         handClick.SetActive(false);
         pet.charInteract.interactType = InteractType.Drop;
         yield return new WaitForSeconds(3);
@@ -599,7 +746,14 @@ public class TutorialManager : MonoBehaviour
         handClick.GetComponent<Animator>().Play("Hold", 0);
 
         pet.target = pet.transform.position;
-        Vector3 holdPosition = GameObject.FindGameObjectWithTag("Door").transform.position + new Vector3(0, 15, 0);
+        Vector3 holdPosition = ItemManager.instance.GetItemChildObject(ItemType.Bed).transform.position + new Vector3(0, 14.5f, 0);
+        while (Vector2.Distance(pet.transform.position, holdPosition) > 1)
+        {
+            pet.target = Vector3.Lerp(pet.target, holdPosition, Time.deltaTime);
+            handClick.transform.position = pet.transform.position + new Vector3(0, 3, -10);
+            yield return new WaitForEndOfFrame();
+        }
+        holdPosition = GameObject.FindGameObjectWithTag("Door").transform.position + new Vector3(0, 15, 0);
         while (Vector2.Distance(pet.transform.position, holdPosition) > 2)
         {
             pet.target = Vector3.Lerp(pet.target, holdPosition, Time.deltaTime);
@@ -610,7 +764,86 @@ public class TutorialManager : MonoBehaviour
         pet.charInteract.interactType = InteractType.Drop;
         blackScreen.SetActive(false);
         UIManager.instance.OnQuestNotificationPopup("Now continue to hold the cat to door");
+        StartCoroutine(HoldCatToDoor());
     }
+
+    protected virtual IEnumerator HoldCatToDoor()
+    {
+        float time = 0;
+        while(time < 10 && questId == 19)
+        {
+            time += Time.deltaTime;
+            yield return new WaitForEndOfFrame();
+        }
+
+        if(questId == 19)
+        {
+            blackScreen.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, 0);
+            blackScreen.SetActive(true);
+            CharController pet = GameManager.instance.GetPetObject(1);
+            pet.OnControl();
+            handClick.SetActive(true);
+            handClick.transform.position = pet.transform.position + new Vector3(0, 3, -10);
+            handClick.GetComponent<Animator>().Play("Hold", 0);
+
+            pet.target = pet.transform.position;
+            Vector3 holdPosition = ItemManager.instance.GetItemChildObject(ItemType.Bed).transform.position + new Vector3(0, 14.5f, 0);
+            while (Vector2.Distance(pet.transform.position, holdPosition) > 1)
+            {
+                pet.target = Vector3.Lerp(pet.target, holdPosition, Time.deltaTime);
+                handClick.transform.position = pet.transform.position + new Vector3(0, 3, -10);
+                yield return new WaitForEndOfFrame();
+            }
+            holdPosition = GameObject.FindGameObjectWithTag("Door").transform.position + new Vector3(0, 15, 0);
+            while (Vector2.Distance(pet.transform.position, holdPosition) > 2)
+            {
+                pet.target = Vector3.Lerp(pet.target, holdPosition, Time.deltaTime);
+                handClick.transform.position = pet.transform.position + new Vector3(0, 3, -10);
+                yield return new WaitForEndOfFrame();
+            }
+            handClick.SetActive(false);
+            pet.charInteract.interactType = InteractType.Drop;
+            blackScreen.SetActive(false);
+        }
+
+    }
+
+
+
+    protected virtual IEnumerator HoldOutFromBath()
+    {
+        CharController pet = GameManager.instance.GetPetObject(0);
+        float time = 0;
+        while(time < 5 && questId == 8)
+        {
+            time += Time.deltaTime;
+            yield return new WaitForEndOfFrame();
+        }
+        if(pet.enviromentType == EnviromentType.Bath)
+        {
+            blackScreen.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, 0);
+            blackScreen.SetActive(true);
+
+            pet.OnControl();
+            handClick.SetActive(true);
+            handClick.transform.position = pet.transform.position + new Vector3(0, 3, -10);
+            handClick.GetComponent<Animator>().Play("Hold", 0);
+
+            pet.target = pet.transform.position;
+            Vector3 holdPosition = ItemManager.instance.GetItem(ItemType.Bath).transform.position + new Vector3(0, -2, 0);
+            while (Vector2.Distance(pet.transform.position, holdPosition) > 2)
+            {
+                pet.target = Vector3.Lerp(pet.target, holdPosition, Time.deltaTime);
+                handClick.transform.position = pet.transform.position + new Vector3(0, 3, -10);
+                yield return new WaitForEndOfFrame();
+            }
+            handClick.SetActive(false);
+            pet.charInteract.interactType = InteractType.Drop;
+            blackScreen.SetActive(false);
+        }
+
+    }
+
 
     protected virtual IEnumerator HoldBroom()
     {
@@ -625,10 +858,10 @@ public class TutorialManager : MonoBehaviour
 
         ItemDirty dirty = FindObjectOfType<ItemDirty>();
 
-        if (dirty != null)
+        if (dirty != null && !broom.GetComponent<ItemDrag>().isBusy)
         {
             Vector3 target = dirty.transform.position + new Vector3(0, 8, 0);
-            while (Vector2.Distance(broom.transform.position, target) > 1)
+            while (Vector2.Distance(broom.transform.position, target) > 1 && !broom.GetComponent<ItemDrag>().isBusy)
             {
                 broom.transform.position = Vector3.Lerp(broom.transform.position, target, Time.deltaTime);
                 handClick.transform.position = broom.transform.position + new Vector3(0, 3, -10);

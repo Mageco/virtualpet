@@ -13,7 +13,7 @@ public class ItemDrag : MonoBehaviour
 	protected Quaternion originalRotation;
 	Vector3 lastPosition;
 	public bool isDragable = true;
-	protected bool isBusy = false;
+	public bool isBusy = false;
 	public bool isReturn = false;
 	public bool isObstruct = true;
 	public bool isDragOffset = true;
