@@ -305,7 +305,7 @@ GameObject:
   - component: {fileID: 7610402270867207338}
   - component: {fileID: 123481675}
   - component: {fileID: 123481674}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Fish_4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -321,7 +321,7 @@ Transform:
   m_GameObject: {fileID: 4514435330005325519}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.6, y: 0.6, z: 1}
   m_Children:
   - {fileID: 3805649319525276599}
   m_Father: {fileID: 0}
@@ -352,11 +352,15 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: 0, y: 1}
-      - {x: -0.95105654, y: 0.30901697}
-      - {x: -0.5877852, y: -0.80901706}
-      - {x: 0.58778536, y: -0.80901694}
-      - {x: 0.9510565, y: 0.30901712}
+    - - {x: -0.55492395, y: 0.44507578}
+      - {x: -0.8643499, y: -0.10717619}
+      - {x: -0.20627497, y: -0.60092026}
+      - {x: 0.5010787, y: -0.5142136}
+      - {x: 0.77469736, y: -0.041333236}
+      - {x: 1.5800315, y: -0.3720905}
+      - {x: 1.5236431, y: 0.78742397}
+      - {x: 0.68081534, y: 0.3844407}
+      - {x: -0.15879153, y: 0.6731857}
 --- !u!114 &123481674
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -376,6 +380,8 @@ MonoBehaviour:
   timeWait: 1
   maxDistance: 5
   isAbort: 0
+  weight: 1
+  fishType: 3
 --- !u!1 &6233509419663242468
 GameObject:
   m_ObjectHideFlags: 0
