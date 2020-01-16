@@ -164,6 +164,12 @@ public class TutorialManager : MonoBehaviour
                 ItemManager.instance.SetCameraTarget(cat.gameObject);
                 Camera.main.GetComponent<CameraController>().screenOffset = 0;
                 cat.Load();
+                blackScreen.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, 0);
+                blackScreen.SetActive(true);
+                handClick.SetActive(true);
+                blackScreenButton.SetActive(true);
+                handClick.transform.position = cat.transform.position + new Vector3(0, 0, -10);
+                handClick.GetComponent<Animator>().Play("Click", 0);
             }
         }
         //On Buy equipment
@@ -373,9 +379,13 @@ public class TutorialManager : MonoBehaviour
         {
             ClickShopItem(4,3);
         }
+        else if (questId == 15)
+        {
+            Pet pet = DataHolder.GetPet(1);
+            UIManager.instance.OnPetRequirementPanel(pet);
+        }
         else if (questId == 16)
         {
-
             ClickShopToy();
         }
         else if(questId == 17)
@@ -867,7 +877,7 @@ public class TutorialManager : MonoBehaviour
                 handClick.transform.position = broom.transform.position + new Vector3(0, 3, -10);
                 yield return new WaitForEndOfFrame();
             }
-            yield return new WaitForSeconds(1);
+            yield return new WaitForSeconds(2);
             broom.GetComponent<ItemDrag>().Return();
             yield return new WaitForSeconds(1);
             //broom.GetComponent<Animator>().Play("Tutorial", 0);
