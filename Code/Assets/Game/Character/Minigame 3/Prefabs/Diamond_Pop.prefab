@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 6737713495177294854}
   - component: {fileID: 6737713495202570534}
   m_Layer: 0
-  m_Name: Coin_Pop_Minigame
+  m_Name: Diamond_Pop
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -28,7 +28,7 @@ Transform:
   m_GameObject: {fileID: 6737713495192360134}
   m_LocalRotation: {x: 0, y: 0, z: 0.35699072, w: 0.93410796}
   m_LocalPosition: {x: 0, y: 1, z: -1}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.60042, y: 0.59013, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -41,8 +41,8 @@ ParticleSystem:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6737713495192360134}
   serializedVersion: 6
-  lengthInSec: 2
-  simulationSpeed: 3
+  lengthInSec: 1.5
+  simulationSpeed: 2
   stopAction: 0
   cullingMode: 1
   ringBufferMode: 0
@@ -493,13 +493,13 @@ ParticleSystem:
         m_PostInfinity: 2
         m_RotationOrder: 4
     randomizeRotationDirection: 0
-    maxNumParticles: 5
+    maxNumParticles: 3
     size3D: 0
     rotation3D: 0
     gravityModifier:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0.3
+      scalar: 0.5
       minScalar: 0
       maxCurve:
         serializedVersion: 2
@@ -1194,7 +1194,7 @@ ParticleSystem:
     curve:
       serializedVersion: 2
       minMaxState: 3
-      scalar: 5.2359877
+      scalar: 2.0943952
       minScalar: 1.5707963
       maxCurve:
         serializedVersion: 2
@@ -1413,7 +1413,7 @@ ParticleSystem:
     uvChannelMask: -1
     rowMode: 1
     sprites:
-    - sprite: {fileID: 21300000, guid: a139634ce96e3934aaa428ec7788aec5, type: 3}
+    - sprite: {fileID: 21300000, guid: b8a5e5c7536414a439ea7e171a00c95f, type: 3}
     flipU: 0
     flipV: 0
   VelocityModule:
