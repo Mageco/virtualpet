@@ -54,7 +54,7 @@ public class BeeController : MonoBehaviour
 		Enter();
         if (GameManager.instance.GetAchivement(18) == 0)
         {
-            UIManager.instance.OnQuestNotificationPopup("Mouse will eat your friends food, tap them to earn coin!");
+            //UIManager.instance.OnQuestNotificationPopup("Mouse will eat your friends food, tap them to earn coin!");
         }
 	}
 

@@ -641,7 +641,7 @@ public class TutorialManager : MonoBehaviour
         blackScreenUI.GetComponent<Image>().color = new Color(0.2f, 0.2f, 0.2f, 0.7f);
         blackScreenUI.SetActive(false);
 
-        UIManager.instance.OnQuestNotificationPopup("Oh Shiba is very hungry, tap to the food bowl to fill up.");
+        UIManager.instance.OnQuestNotificationPopup(DataHolder.Dialog(0).GetDescription(MageManager.instance.GetLanguage()));
 
         FoodBowlItem item = FindObjectOfType<FoodBowlItem>();
         if (item != null && item.foodAmount < item.maxfoodAmount - 2)
@@ -687,7 +687,7 @@ public class TutorialManager : MonoBehaviour
             ItemManager.instance.GetItem(ItemType.Bath).GetComponent<Animator>().Play("Tutorial", 0);
             yield return new WaitForSeconds(6);
             ItemManager.instance.GetItem(ItemType.Bath).GetComponent<Animator>().enabled = false;
-            UIManager.instance.OnQuestNotificationPopup("Now try use soap and shower by yourself");
+            UIManager.instance.OnQuestNotificationPopup(DataHolder.Dialog(1).GetDescription(MageManager.instance.GetLanguage()));
             if (FindObjectOfType<SoapItem>() != null && FindObjectOfType<BathShowerItem>() != null)
             {
                 FindObjectOfType<SoapItem>().GetComponent<Animator>().Play("Tutorial", 0);
@@ -773,7 +773,7 @@ public class TutorialManager : MonoBehaviour
         handClick.SetActive(false);
         pet.charInteract.interactType = InteractType.Drop;
         blackScreen.SetActive(false);
-        UIManager.instance.OnQuestNotificationPopup("Now continue to hold the cat to door");
+        UIManager.instance.OnQuestNotificationPopup(DataHolder.Dialog(2).GetDescription(MageManager.instance.GetLanguage()));
         StartCoroutine(HoldCatToDoor());
     }
 

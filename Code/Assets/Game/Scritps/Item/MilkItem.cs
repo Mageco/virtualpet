@@ -24,7 +24,7 @@ public class MilkItem : BaseDragItem
         if(pet!= null && !eated){
             if(pet.data.Food > 0.8f * pet.data.maxFood){
                 OnReturn();
-                UIManager.instance.OnQuestNotificationPopup("Thú cưng cửa bạn không đói");
+                //UIManager.instance.OnQuestNotificationPopup("Thú cưng cửa bạn không đói");
             }else{
                 anim.Play("Active");
                 pet.OnEat();

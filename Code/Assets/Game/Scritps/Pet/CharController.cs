@@ -1247,16 +1247,18 @@ public class CharController : MonoBehaviour
             {
                 if (GameManager.instance.IsEquipItem(ItemType.Toilet))
                 {
-                    UIManager.instance.OnQuestNotificationPopup("Hold " + data.petName + " to the toilet and he will be happy");
+                    //UIManager.instance.OnQuestNotificationPopup("Hold " + data.petName + " to the toilet and he will be happy");
                 }
                 else
                 {
                     if (!GameManager.instance.IsEquipItem(ItemType.Clean))
                     {
-                        UIManager.instance.OnQuestNotificationPopup("You may need to buy a broom to clean your home");
+                        //UIManager.instance.OnQuestNotificationPopup("You may need to buy a broom to clean your home");
                     }
                     else
-                        UIManager.instance.OnQuestNotificationPopup("You can buy a toilet for " + data.petName + " and " + data.petName + " will be happy");
+                    {
+                        //UIManager.instance.OnQuestNotificationPopup("You can buy a toilet for " + data.petName + " and " + data.petName + " will be happy");
+                    }
                 }
             }
 
@@ -1277,10 +1279,10 @@ public class CharController : MonoBehaviour
         {
             if (data.GetSkillProgress(SkillType.Toilet) == 1)
             {
-                UIManager.instance.OnQuestNotificationPopup("Good job " + data.petName + " will learn how to go to toilet soon!");
+                //UIManager.instance.OnQuestNotificationPopup("Good job " + data.petName + " will learn how to go to toilet soon!");
             }else if(data.GetSkillProgress(SkillType.Toilet) == 10)
             {
-                UIManager.instance.OnQuestNotificationPopup("Well done!! now " + data.petName + " can go to toilet by him self");
+                //UIManager.instance.OnQuestNotificationPopup("Well done!! now " + data.petName + " can go to toilet by him self");
             }
         }
 
@@ -1331,10 +1333,12 @@ public class CharController : MonoBehaviour
                 {
                     if (!GameManager.instance.IsEquipItem(ItemType.Clean))
                     {
-                        UIManager.instance.OnQuestNotificationPopup("You may need to buy a broom to clean your home");
+                        //UIManager.instance.OnQuestNotificationPopup("You may need to buy a broom to clean your home");
                     }
                     else
-                        UIManager.instance.OnQuestNotificationPopup("You can buy a toilet for " + data.petName + " so that " + data.petName + " will be happy");
+                    {
+                        //UIManager.instance.OnQuestNotificationPopup("You can buy a toilet for " + data.petName + " so that " + data.petName + " will be happy");
+                    }
                 }
             }
 
@@ -1353,11 +1357,11 @@ public class CharController : MonoBehaviour
         {
             if (data.GetSkillProgress(SkillType.Toilet) == 1)
             {
-                UIManager.instance.OnQuestNotificationPopup("Good job " + data.petName + " will learn how to go to toilet soon!");
+                //UIManager.instance.OnQuestNotificationPopup("Good job " + data.petName + " will learn how to go to toilet soon!");
             }
             else if (data.GetSkillProgress(SkillType.Toilet) == 10)
             {
-                UIManager.instance.OnQuestNotificationPopup("Well done!! " + data.petName + " can go to toilet by him self");
+                //UIManager.instance.OnQuestNotificationPopup("Well done!! " + data.petName + " can go to toilet by him self");
             }
         }
 
@@ -1532,11 +1536,11 @@ public class CharController : MonoBehaviour
             {
                 if (GameManager.instance.IsEquipItem(ItemType.Bed))
                 {
-                    UIManager.instance.OnQuestNotificationPopup("Hold " + data.petName + " to the bed and he will be happy");
+                    //UIManager.instance.OnQuestNotificationPopup("Hold " + data.petName + " to the bed and he will be happy");
                 }
                 else
                 {
-                     UIManager.instance.OnQuestNotificationPopup("You can buy a bed for " + data.petName + " and " + data.petName + " will be happy");
+                     //UIManager.instance.OnQuestNotificationPopup("You can buy a bed for " + data.petName + " and " + data.petName + " will be happy");
                 }
             }
 
@@ -1556,11 +1560,11 @@ public class CharController : MonoBehaviour
         {
             if (data.GetSkillProgress(SkillType.Toilet) == 1)
             {
-                UIManager.instance.OnQuestNotificationPopup("Good job " + data.petName + " will learn how to go to bed soon!");
+                //UIManager.instance.OnQuestNotificationPopup("Good job " + data.petName + " will learn how to go to bed soon!");
             }
             else if (data.GetSkillProgress(SkillType.Toilet) == 10)
             {
-                UIManager.instance.OnQuestNotificationPopup("Well done!! " + data.petName + " can go to bed by him self");
+                //UIManager.instance.OnQuestNotificationPopup("Well done!! " + data.petName + " can go to bed by him self");
             }
         }
 
