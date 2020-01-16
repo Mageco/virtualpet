@@ -68,6 +68,15 @@ public class ApiManager : MageEngine {
 		DoLogin();
 	}
 	
+
+	protected override void OnHasNewUserMessagesCallback(List<Message> newMessages) {
+       //sample only
+	   for (int i = 0; i < newMessages.Count; i++) {
+		   Debug.Log("Update message: " + newMessages[i].id + " as read");
+		   UpdateMessageStatus(newMessages[i].id, MessageStatus.Read);
+	   }
+
+    }
 }
 
 

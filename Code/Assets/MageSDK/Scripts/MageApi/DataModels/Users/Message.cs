@@ -12,12 +12,18 @@ namespace Mage.Models.Users{
 	{
 		public string id = "";
 		public string message = "";
+		public string title = "";
 		public System.DateTime sent_at = DateTime.Now;
 		public System.DateTime read_at = DateTime.Now;
 		public MessageType message_type = MessageType.PrivateMessage;
-		public string status = "";
+		public MessageStatus status = MessageStatus.New;
 		public User sender = new User();
 		public User receiver = new User();
+
+		public string action_ios = "";
+		public string action_android = "";
+		public string action_windows = "";
+		public string action_others = "";
 
 		public Message() : base () {
 			sender = new User();
@@ -30,5 +36,12 @@ namespace Mage.Models.Users{
 		PublicMessage = 2,
 		PushNotification = 3
 			
+	}
+
+	public enum MessageStatus {
+		New,
+		Delivered,
+		Read,
+		Deleted
 	}
 }

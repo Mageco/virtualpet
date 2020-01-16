@@ -28,7 +28,8 @@ namespace MageSDK.Client {
 		public const string GAME_ENGINE_LAST_SCREEN = "MageLastScreen";
 		public const string GAME_ENGINE_LAST_SCREEN_TIMESTAMP = "MageLastScreenTimeStamp";
 
-
+		// messages sexxion
+		public const string GAME_ENGINE_USER_MESSAGE = "GameEngineUserMessages";
 		public static string[] GAME_ENGINE_APPLICATION_DATA_ITEM = {
 			"DialogData",
 			"ItemData",

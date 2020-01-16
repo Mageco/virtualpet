@@ -53,6 +53,7 @@ namespace MageApi {
 		public const string API_SEND_USER_EVENT_LIST = "SendUserEventList";
 		public const string API_UPDATE_PROFILE = "UpdateProfile";
 		public const string API_UPDATE_USER_DATA = "UpdateUserData";
+		public const string API_UPDATE_MESSAGE_STATUS = "UpdateMessageStatus";
 		public const string API_UPLOAD_FILE = "UploadFile";
 		public const string API_GET_AUDIO_FROM_TEXT = "GetAudioFromText";
 		public const string API_GET_APPLICATION_AUDIO_RESOURCES = "GetApplicationAudioResources";

@@ -11,6 +11,7 @@ namespace MageApi.Models.Response{
 	public class LoginResponse : BaseResponse
 	{
 		public User User;
+		public List<Message> UserMessages = new List<Message>();
 		public string Token = "";
 	}
 }

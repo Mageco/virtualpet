@@ -59,6 +59,8 @@ namespace MageSDK.Client {
 		private Hashtable cachedActionLog = new Hashtable();
 
 		private List<CacheScreenTime> cachedScreenTime = new List<CacheScreenTime>();
+
+		private List<Message> cachedUserMessages = new List<Message>();
 		private bool isAppActive = true;
 		#endregion
 
@@ -209,6 +211,12 @@ namespace MageSDK.Client {
 						CreateNewUser (result.User);
 					} else {
 						CreateExistingUser (result.User);
+					}
+
+					//assign new messages
+					if (result.UserMessages != null && result.UserMessages.Count > 0) {
+						AddNewMessages(result.UserMessages);
+						OnHasNewUserMessagesCallback(result.UserMessages);
 					}
 				}
 			#else
@@ -839,6 +847,8 @@ namespace MageSDK.Client {
 			LoadCacheData<string>(MageEngineSettings.GAME_ENGINE_LAST_SCREEN);
 			LoadCacheData<DateTime>(MageEngineSettings.GAME_ENGINE_LAST_SCREEN_TIMESTAMP);
 
+			// Load User messages
+			LoadUserMessages();
 		}
 
 
@@ -1014,6 +1024,107 @@ namespace MageSDK.Client {
 
 		#region messages & notification 
 		////<summary>Send push notification</summary>
+		
+		private List<Message> LoadUserMessages() {
+			
+			if (ES2.Exists(MageEngineSettings.GAME_ENGINE_USER_MESSAGE)) {
+				List<Message> t = ES2.LoadList<Message>(MageEngineSettings.GAME_ENGINE_USER_MESSAGE);
+				if (t == null) {
+					t = new List<Message>();
+				}
+				this.cachedUserMessages = t;
+				return t;
+				
+			} else {
+				List<Message> t = new List<Message>();
+				this.cachedUserMessages = t;
+				return t;
+			}
+		}
+
+		public void UpdateMessageStatus(string msgId, MessageStatus status) {
+			bool found = false;
+			for (int i = 0; i < this.cachedUserMessages.Count; i++) {
+				if (this.cachedUserMessages[i].id == msgId) {
+					cachedUserMessages[i].status = status;
+					found = true;
+					break;			
+				}
+			}
+
+			SaveUserMessages();
+			if (found ) {
+				UpdateUserMessageStatusToServer(msgId, status);
+			}
+		}
+
+		private void SaveUserMessages() {
+			#if PLATFORM_TEST
+				if (!this.resetUserDataOnStart) {
+					ES2.Save(this.cachedUserMessages, MageEngineSettings.GAME_ENGINE_USER_MESSAGE);
+				}
+			#else
+				ES2.Save(this.cachedUserMessages, MageEngineSettings.GAME_ENGINE_USER_MESSAGE);
+			#endif
+		}
+
+		private void UpdateUserMessageStatusToServer(string msgId, MessageStatus status) {
+			if (this.isWorkingOnline) {
+				UpdateMessageStatusRequest r = new UpdateMessageStatusRequest (msgId, status);
+			
+				//call to send action log api
+				ApiHandler.instance.SendApi<UpdateMessageStatusResponse>(
+					ApiSettings.API_UPDATE_MESSAGE_STATUS,
+					r, 
+					(result) => {
+						//
+					},
+					(errorStatus) => {
+						//
+					},
+					() => {
+						TimeoutHandler();
+					}
+				);
+			}
+		}
+
+		public List<Message> GetUserMessages() {
+			return this.cachedUserMessages;
+		}
+
+		private void AddNewMessages(List<Message> newMessages) {
+			//check and remove messages that in the local list
+			List<Message> tmp = new List<Message>();
+			for (int j = 0; j < newMessages.Count; j++) {
+				bool found = false;
+				for (int i = 0; i < this.cachedUserMessages.Count; i++) {
+					if (this.cachedUserMessages[i].id == newMessages[j].id) {
+						//get status from local
+						newMessages[j].status = this.cachedUserMessages[i].status;
+						found = true;
+						break;			
+					}
+				}
+
+				if (!found) {
+					tmp.Add(newMessages[j]);
+				} else {
+					UpdateUserMessageStatusToServer(newMessages[j].id, newMessages[j].status);
+				}
+			}
+
+			for (int i = 0; i < tmp.Count; i++) {
+				this.cachedUserMessages.Add(tmp[i]);
+			}
+
+			SaveUserMessages();
+		}
+
+		
+		protected virtual void OnHasNewUserMessagesCallback(List<Message> newMessages) {
+
+		}
 
 		#endregion
 	}
