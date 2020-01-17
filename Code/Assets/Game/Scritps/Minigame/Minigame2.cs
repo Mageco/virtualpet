@@ -19,6 +19,7 @@ public class Minigame2 : Minigame
     public FishSpawner jellyFishSpawner;
     public FishSpawner yellowFishSpawner;
     public FishSpawner specialFishSpawner;
+
     
 
 
@@ -98,7 +99,7 @@ public class Minigame2 : Minigame
     public override void UpdateLive(){
         live = 0;
         for(int i=0;i<fishs.Length;i++){
-            if(fishs[i].state == FishState.DeActive){
+            if(fishs[i].state == FishState.DeActive && fishs[i].fishType == FishType.Fish){
                 live ++;
             }
         }
@@ -120,7 +121,7 @@ public class Minigame2 : Minigame
             if (live == maxLive)
             {
                 OnWin();
-                GameManager.instance.GetPlayer().minigameLevels[0]++;
+                GameManager.instance.GetPlayer().minigameLevels[1]++;
                 GameManager.instance.LogAchivement(AchivementType.Minigame_Level);
             }
             else

@@ -25,6 +25,10 @@ public class HookItem : MonoBehaviour
     public Transform hookAnchor;
     public Transform rodAnchor;
     public LineRenderer line;
+    public GameObject coinPopPrefab;
+    public GameObject timeGainPrefab;
+    public GameObject[] bonuses;
+    
 
     private void Awake()
     {
@@ -102,28 +106,65 @@ public class HookItem : MonoBehaviour
             }else if(fish.fishType == FishType.Squirt)
             {
                 Minigame.instance.time -= 5;
+                GameObject go = GameObject.Instantiate(timeGainPrefab);
+                go.transform.position = fish.transform.position + new Vector3(0, 0, -10);
             }
         }
 
         if (!isShock)
         {
-
+            int number = 0;
             int count = 0;
             foreach (FishController fish in fishes)
             {
                 if(fish.fishType == FishType.Fish)
+                {
                     count++;
+                    number++;
+                }
+                    
                 else if(fish.fishType == FishType.YellowFish)
                 {
                     count += 5;
-                }else if(fish.fishType == FishType.SpecialFish)
+                    number++;
+                }
+                else if(fish.fishType == FishType.SpecialFish)
                 {
                     count += 10;
+                    number++;
                 }
+                GameObject go = GameObject.Instantiate(coinPopPrefab);
+                go.transform.position = fish.transform.position + new Vector3(0, 0, -10);
                 fish.OnDeactive();
             }
-          
-            if(count > 0)
+
+
+            if (number == 1)
+            {
+                GameManager.instance.AddCoin(1);
+                GameObject bonus = Instantiate(bonuses[0]);
+                bonus.transform.position = hookAnchor.position + new Vector3(0, 0, -10);
+            }
+            else if (number == 2)
+            {
+                GameManager.instance.AddCoin(2);
+                GameObject bonus = Instantiate(bonuses[1]);
+                bonus.transform.position = hookAnchor.position + new Vector3(0, 0, -10);
+            }
+            else if (number == 3)
+            {
+                GameManager.instance.AddCoin(5);
+                GameObject bonus = Instantiate(bonuses[2]);
+                bonus.transform.position = hookAnchor.position + new Vector3(0, 0, -10);
+            }
+            else if (number > 3)
+            {
+                GameManager.instance.AddCoin(10);
+                GameObject bonus = Instantiate(bonuses[3]);
+                bonus.transform.position = hookAnchor.position + new Vector3(0, 0, -10);
+            }
+
+            if (count > 0)
             {
                 cat.Play("Happy", 0);
                 turtle.Play("Happy", 0);

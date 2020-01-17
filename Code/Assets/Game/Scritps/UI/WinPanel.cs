@@ -30,17 +30,24 @@ public class WinPanel : MonoBehaviour
         
     }
 
-    public void Load(int d, int c){
+    public void Load(int d, int c,int minigameId){
         animator = this.GetComponent<Animator>();
         animator.Play("Win",0);
-        if((GameManager.instance.myPlayer.minigameLevels[0] + 1)% 5 == 0 || GameManager.instance.myPlayer.minigameLevels[0] == 0)
+        if(minigameId == 0)
         {
-            exp.transform.parent.gameObject.SetActive(true);
-            GameManager.instance.AddItem(72);
-            GameManager.instance.EquipItem(72);
-        }
-        else
+            if ((GameManager.instance.myPlayer.minigameLevels[0] + 1) % 5 == 0 || GameManager.instance.myPlayer.minigameLevels[0] == 0)
+            {
+                exp.transform.parent.gameObject.SetActive(true);
+                GameManager.instance.AddItem(72);
+                GameManager.instance.EquipItem(72);
+            }
+            else
+                exp.transform.parent.gameObject.SetActive(false);
+        }else if(minigameId == 1)
+        {
             exp.transform.parent.gameObject.SetActive(false);
+        }
+
         
         if(c > 0){
             coin.text = c.ToString();
