@@ -19,6 +19,7 @@ public class Minigame : MonoBehaviour
     public int coin = 10;
     public int diamon = 0;
     int zIndex = 0;
+    public int minigameId = 0;
 
     public GameState state = GameState.Ready;
 
@@ -62,7 +63,7 @@ public class Minigame : MonoBehaviour
             popup.transform.SetParent(GameObject.Find("Canvas").transform, false);
             popup.GetComponent<Popup>().Open();
             winPanel = popup.GetComponent<WinPanel>();
-            winPanel.Load((gameLevel+1)*diamon,(gameLevel+1)*3*coin);
+            winPanel.Load((gameLevel+1)*diamon,(gameLevel+1)*3*coin,minigameId);
         }
     }
 

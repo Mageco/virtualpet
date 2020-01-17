@@ -15,7 +15,6 @@ public class FishController : MonoBehaviour
     public int moveCount = 10;
     public float timeWait = 0;
     protected Vector3[] paths;
-    public float maxDistance = 5;
     public bool isAbort = false;
     public float weight = 1;
     public FishType fishType = FishType.Fish;
@@ -130,5 +129,5 @@ public class FishController : MonoBehaviour
     }
 }
 public enum FishState { Idle, Move, Cached, Active,DeActive };
-public enum FishType {Fish,Squirt,JellyFish,YellowFish,SpecialFish};
+public enum FishType {Fish,Squirt,JellyFish,YellowFish,SpecialFish,Rabbish};
 
