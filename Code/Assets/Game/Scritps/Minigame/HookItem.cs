@@ -105,9 +105,9 @@ public class HookItem : MonoBehaviour
                 isShock = true;
             }else if(fish.fishType == FishType.Squirt)
             {
-                Minigame.instance.time -= 5;
+        
                 GameObject go = GameObject.Instantiate(timeGainPrefab);
-                go.transform.position = fish.transform.position + new Vector3(0, 0, -10);
+                go.transform.position = fish.transform.position + new Vector3(0, 0, -20);
             }
         }
 
@@ -121,20 +121,25 @@ public class HookItem : MonoBehaviour
                 {
                     count++;
                     number++;
+                    GameObject go = GameObject.Instantiate(coinPopPrefab);
+                    go.transform.position = fish.transform.position + new Vector3(0, 0, -10);
                 }
                     
                 else if(fish.fishType == FishType.YellowFish)
                 {
                     count += 5;
                     number++;
+                    GameObject go = GameObject.Instantiate(coinPopPrefab);
+                    go.transform.position = fish.transform.position + new Vector3(0, 0, -10);
                 }
                 else if(fish.fishType == FishType.SpecialFish)
                 {
                     count += 10;
                     number++;
+                    GameObject go = GameObject.Instantiate(coinPopPrefab);
+                    go.transform.position = fish.transform.position + new Vector3(0, 0, -10);
                 }
-                GameObject go = GameObject.Instantiate(coinPopPrefab);
-                go.transform.position = fish.transform.position + new Vector3(0, 0, -10);
+                
                 fish.OnDeactive();
             }
 
