@@ -55,7 +55,7 @@ public class HookItem : MonoBehaviour
         else if (state == HookState.Active)
         {
             this.transform.position += velocity * Time.deltaTime;
-            this.transform.rotation = Quaternion.Slerp(this.transform.rotation, targetRotation, Time.deltaTime * 5);
+            this.transform.rotation = Quaternion.Slerp(this.transform.rotation, targetRotation, Time.deltaTime * 20);
 
             if (!CheckPositionOutBound())
             {
@@ -231,12 +231,12 @@ public class HookItem : MonoBehaviour
         cat.Play("Throw_Idle", 0);
         body.SetActive(true);
         this.transform.position = hookAnchor.position;
-        originalPosition = this.transform.position;
+        originalPosition = rodAnchor.position;
         Vector3 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         pos.z = this.transform.position.z;
         target = pos;
         Debug.Log(target);
-        velocity = (target - this.transform.position).normalized;
+        velocity = (target - originalPosition).normalized;
         velocity.z = 0;
         this.velocity = speedThrow * SpeedRate() * velocity;
         float angle = Mathf.Atan2(velocity.y, velocity.x) * Mathf.Rad2Deg + 90;
