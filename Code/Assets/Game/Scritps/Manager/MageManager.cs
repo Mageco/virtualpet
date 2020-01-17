@@ -76,16 +76,29 @@ public class MageManager : MonoBehaviour {
 		if (ES2.Exists ("VoiceVolume"))
 			voice.volume = ES2.Load<float> ("VoiceVolume");
 
-        /*
+        
 		if (ES2.Exists ("Language"))
 			currentLanguage = ES2.Load<int> ("Language");
 		else {
-			if (Application.systemLanguage == SystemLanguage.Vietnamese) {
+			if (Application.systemLanguage == SystemLanguage.English) {
 				currentLanguage = 0;
-			} else
+			} else if(Application.systemLanguage == SystemLanguage.Vietnamese)
+            {
 				currentLanguage = 1;
-				
-		}*/
+			}
+			else if (Application.systemLanguage == SystemLanguage.Arabic)
+			{
+				currentLanguage = 2;
+			}
+			else if (Application.systemLanguage == SystemLanguage.Portuguese)
+			{
+				currentLanguage = 3;
+			}
+			else if (Application.systemLanguage == SystemLanguage.Spanish)
+			{
+				currentLanguage = 4;
+			}
+		}
 
 		fadeScreen.SetActive (false);
 		waitingScreen.SetActive (false);
