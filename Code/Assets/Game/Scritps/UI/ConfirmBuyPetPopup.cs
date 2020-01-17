@@ -22,7 +22,7 @@ public class ConfirmBuyPetPopup : MonoBehaviour
         string url = d.iconUrl.Replace("Assets/Game/Resources/", "");
         url = url.Replace(".png", "");
         icon.sprite = Resources.Load<Sprite>(url) as Sprite;
-        question.text = DataHolder.GetDialog(5).GetDescription(MageManager.instance.GetLanguage()) + " ";
+        question.text = DataHolder.Dialog(5).GetDescription(MageManager.instance.GetLanguage()) + " ";
         priceText.text = (d.buyPrice).ToString();
         petName.text = d.GetName(MageManager.instance.GetLanguage());
 
