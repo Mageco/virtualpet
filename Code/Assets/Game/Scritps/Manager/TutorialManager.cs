@@ -168,7 +168,7 @@ public class TutorialManager : MonoBehaviour
                 blackScreen.SetActive(true);
                 handClick.SetActive(true);
                 blackScreenButton.SetActive(true);
-                handClick.transform.position = cat.transform.position + new Vector3(0, 0, -10);
+                handClick.transform.position = cat.transform.position + new Vector3(0, 0, -1000);
                 handClick.GetComponent<Animator>().Play("Click", 0);
             }
         }
@@ -381,6 +381,9 @@ public class TutorialManager : MonoBehaviour
         }
         else if (questId == 15)
         {
+            handClick.SetActive(false);
+            blackScreen.SetActive(false);
+            blackScreenButton.SetActive(false);
             Pet pet = DataHolder.GetPet(1);
             UIManager.instance.OnPetRequirementPanel(pet);
         }

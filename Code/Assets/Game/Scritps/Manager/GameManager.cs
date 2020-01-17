@@ -175,7 +175,7 @@ public class GameManager : MonoBehaviour
 		int price = DataHolder.GetPet(petId).buyPrice;
 		if(type == PriceType.Coin){
 			if (price > GetCoin ()) {
-                MageManager.instance.OnNotificationPopup ("You have not enough Coin");
+                MageManager.instance.OnNotificationPopup (DataHolder.GetDialog(6).GetDescription(MageManager.instance.GetLanguage()));
 				return false;
 			}
 			AddCoin (-price);
@@ -184,7 +184,7 @@ public class GameManager : MonoBehaviour
 			return true;
 		}else if(type == PriceType.Diamond){
 			if (price > GetDiamond ()) {
-                MageManager.instance.OnNotificationPopup ("You have not enough Diamond");
+                MageManager.instance.OnNotificationPopup (DataHolder.GetDialog(7).GetDescription(MageManager.instance.GetLanguage()));
 				return false;
 			}
 			AddDiamond (-price);
@@ -195,7 +195,7 @@ public class GameManager : MonoBehaviour
         {
             if (price > GetHappy())
             {
-                MageManager.instance.OnNotificationPopup("You have not enough Happy");
+                MageManager.instance.OnNotificationPopup(DataHolder.GetDialog(8).GetDescription(MageManager.instance.GetLanguage()));
                 return false;
             }
             AddHappy(-price);
@@ -316,7 +316,7 @@ public class GameManager : MonoBehaviour
 		int price = DataHolder.GetItem(itemId).buyPrice;
 		if(type == PriceType.Coin){
 			if (price > GetCoin ()) {
-				MageManager.instance.OnNotificationPopup ("You have not enough Coin");
+				MageManager.instance.OnNotificationPopup (DataHolder.GetDialog(6).GetDescription(MageManager.instance.GetLanguage()));
 				return false;
 			}
 			AddCoin (-price);
@@ -324,7 +324,7 @@ public class GameManager : MonoBehaviour
 			return true;
 		}else if(type == PriceType.Diamond){
 			if (price > GetDiamond ()) {
-				MageManager.instance.OnNotificationPopup ("You have not enough Coin");
+				MageManager.instance.OnNotificationPopup (DataHolder.GetDialog(7).GetDescription(MageManager.instance.GetLanguage()));
 				return false;
 			}
 			AddDiamond (-price);
@@ -335,7 +335,7 @@ public class GameManager : MonoBehaviour
         {
             if (price > GetHappy())
             {
-                MageManager.instance.OnNotificationPopup("You have not enough Happy");
+                MageManager.instance.OnNotificationPopup(DataHolder.GetDialog(8).GetDescription(MageManager.instance.GetLanguage()));
                 return false;
             }
             AddHappy(-price);

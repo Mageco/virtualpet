@@ -58,7 +58,7 @@ public class TreatmentPopup : MonoBehaviour
             this.Close();
         }
         else
-            MageManager.instance.OnNotificationPopup("You have not enough coin");
+            MageManager.instance.OnNotificationPopup(DataHolder.GetDialog(6).GetDescription(MageManager.instance.GetLanguage()));
         //UIManager.instance.On
     }
 

@@ -52,7 +52,7 @@ public class ItemInfoUI : MonoBehaviour
         url = url.Replace(".png", "");
         icon.sprite = Resources.Load<Sprite>(url) as Sprite;
         price.text = d.buyPrice.ToString();
-        itemName.text = DataHolder.GetItem(itemId).GetName(0);
+        itemName.text = DataHolder.GetItem(itemId).GetName(MageManager.instance.GetLanguage());
         description.text = DataHolder.GetItem(itemId).GetDescription(MageManager.instance.GetLanguage());
 
         if(!d.isAvailable){
@@ -201,7 +201,7 @@ public class ItemInfoUI : MonoBehaviour
         url = url.Replace(".png", "");
         icon.sprite = Resources.Load<Sprite>(url) as Sprite;
         price.text = d.buyPrice.ToString();
-        itemName.text = DataHolder.GetPet(itemId).GetName(0);
+        itemName.text = DataHolder.GetPet(itemId).GetName(MageManager.instance.GetLanguage());
         description.text = DataHolder.GetPet(itemId).GetDescription(MageManager.instance.GetLanguage());
 
         if(!d.isAvailable){

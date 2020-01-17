@@ -71,12 +71,14 @@ public class QuestManager : MonoBehaviour
             delayTime = 0;
             GameManager.instance.GetActivePet().Dirty = GameManager.instance.GetActivePet().MaxDirty * 0.7f;
             GameManager.instance.GetActivePet().Food = 0.05f * GameManager.instance.GetActivePet().MaxFood;
+            GameManager.instance.GetActivePet().Water = 0.05f * GameManager.instance.GetActivePet().MaxWater;
             ItemManager.instance.GetItemChildObject(ItemType.Food).GetComponent<FoodBowlItem>().foodAmount = 0;
         }
         else if(GameManager.instance.myPlayer.questId == 1){
             delayTime = 0;
         }
         else if(GameManager.instance.myPlayer.questId == 2){
+            GameManager.instance.GetActivePet().Water = 0.05f * GameManager.instance.GetActivePet().MaxWater;
             GameManager.instance.GetActivePet().Dirty = GameManager.instance.GetActivePet().MaxDirty * 0.7f;
         }
         else if(GameManager.instance.myPlayer.questId == 3){

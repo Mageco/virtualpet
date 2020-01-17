@@ -32,7 +32,7 @@ public class AchivementUI : MonoBehaviour
         string url = d.iconUrl.Replace("Assets/Game/Resources/","");
         url = url.Replace(".png","");
         icon.sprite = Resources.Load<Sprite>(url) as Sprite;
-        achivementlName.text = d.GetName(0);
+        achivementlName.text = d.GetName(MageManager.instance.GetLanguage());
         achivementDescription.text = d.levelDescription[level];
         progress.text = a.amount.ToString() + "/" + d.maxProgress[level].ToString();
         slider.fillAmount = a.amount * 1f/d.maxProgress[level];
