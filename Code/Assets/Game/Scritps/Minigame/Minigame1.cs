@@ -127,7 +127,7 @@ public class Minigame1 : Minigame
             if (live == maxLive)
             {
                 OnWin();
-                GameManager.instance.GetPlayer().minigameLevels[0]++;
+                GameManager.instance.GetPlayer().minigameLevels[minigameId]++;
                 GameManager.instance.LogAchivement(AchivementType.Minigame_Level);
             }
             else

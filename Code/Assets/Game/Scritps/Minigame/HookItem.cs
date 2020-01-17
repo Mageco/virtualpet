@@ -98,6 +98,15 @@ public class HookItem : MonoBehaviour
         this.transform.rotation = originalRotation;
         bool isShock = false;
 
+        if(Minigame.instance.time >= Minigame.instance.maxTime)
+        {
+            foreach (FishController fish in fishes)
+            {
+                fish.OnActive();
+            }
+            return;
+        }
+
         foreach (FishController fish in fishes)
         {
             if(fish.fishType == FishType.JellyFish)

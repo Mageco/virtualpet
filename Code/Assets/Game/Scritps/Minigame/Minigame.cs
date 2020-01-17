@@ -33,7 +33,7 @@ public class Minigame : MonoBehaviour
         float d = Camera.main.orthographicSize * (float)Screen.width / (float)Screen.height;
         boundX.x = -d;
         boundX.y = d;
-        gameLevel = GameManager.instance.GetPlayer().minigameLevels[0];
+        gameLevel = GameManager.instance.GetPlayer().minigameLevels[minigameId];
     }
 
         
