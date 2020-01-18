@@ -58,6 +58,9 @@ public class ApiManager : MageEngine {
             }
         }
 
+		
+		SetupFirebaseMessaging();
+
     }
 
 	//public static ApiManager GetInstance() {
@@ -77,6 +80,7 @@ public class ApiManager : MageEngine {
 	   }
 
     }
+
 }
 
 
