@@ -668,6 +668,18 @@ public class CharController : MonoBehaviour
 
     public virtual void OnCall()
     {
+        if (actionType == ActionType.Sick)
+        {
+            UIManager.instance.OnTreatmentPopup(this.data, SickType.Sick);
+            return;
+        }
+
+        if (actionType == ActionType.Injured)
+        {
+            UIManager.instance.OnTreatmentPopup(this.data, SickType.Injured);
+            return;
+        }
+
         if (actionType == ActionType.Patrol || actionType == ActionType.Discover || actionType == ActionType.OnGarden)
         {
             Abort();
