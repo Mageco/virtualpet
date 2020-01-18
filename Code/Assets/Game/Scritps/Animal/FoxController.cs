@@ -54,7 +54,7 @@ public class FoxController : AnimalController
     }
 
 
-    void OnMouseDown(){
+    public void OnTap(){
         MageManager.instance.PlaySoundName("Punch2", false);
         if(state == AnimalState.Seek){
             agent.Stop();
@@ -88,6 +88,14 @@ public class FoxController : AnimalController
         //Camera.main.GetComponent<CameraShake>().Shake();
 
     }
+
+    //private void OnTriggerEnter2D(Collider2D collision)
+    //{
+    //    if(collision.tag == "Hammer")
+    //    {
+    //        OnTap();
+    //    }
+    //}
 
     public override void OnFlee(){
         if(state != AnimalState.Flee)

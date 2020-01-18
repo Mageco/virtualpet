@@ -17,8 +17,13 @@ public class Minigame1 : Minigame
     public AnimalSpawner eagleSpawner;
 
     public GameObject guideUIPrefab;
-    GuideUI guildUI;
+    public GameObject hammerEffect;
 
+    public GameObject coinPopPrefab;
+    public GameObject[] bonuses;
+
+    GuideUI guildUI;
+    float timeHit = 0;
     
     void Start(){
         chickenNumber.text = "";
@@ -29,6 +34,8 @@ public class Minigame1 : Minigame
             OnGuildPanel();
         else 
             StartGame();
+
+        hammerEffect.SetActive(false);
     }
 
     public override void StartGame(){
@@ -167,6 +174,69 @@ public class Minigame1 : Minigame
             guildUI = popup.GetComponent<GuideUI>();
         }
      }
+
+    public void OnFingerDown(Vector3 pos)
+    {
+        timeHit = 0;
+        StopAllCoroutines();
+        StartCoroutine(Hit(pos));
+        int number = 0;
+        RaycastHit2D[] hit = Physics2D.RaycastAll(pos, Vector3.forward);
+        for(int i = 0; i < hit.Length; i++)
+        {
+            FoxController animal = hit[i].transform.GetComponent<FoxController>();
+            if (animal != null)
+            {
+                animal.OnTap();
+                number++;
+                GameObject go = GameObject.Instantiate(coinPopPrefab);
+                go.transform.position = animal.transform.position + new Vector3(0, 0, -90);
+            }
+        }
+
+        if (number == 1)
+        {
+            GameManager.instance.AddCoin(1);
+            GameObject bonus = Instantiate(bonuses[0]);
+            bonus.transform.position = pos + new Vector3(0, 2, -100);
+            bonus.transform.localScale = new Vector3(3, 3, 1);
+        }
+        else if (number == 2)
+        {
+            GameManager.instance.AddCoin(2);
+            GameObject bonus = Instantiate(bonuses[1]);
+            bonus.transform.position = pos + new Vector3(0, 2, -100);
+            bonus.transform.localScale = new Vector3(3, 3, 1);
+        }
+        else if (number == 3)
+        {
+            GameManager.instance.AddCoin(5);
+            GameObject bonus = Instantiate(bonuses[2]);
+            bonus.transform.position = pos + new Vector3(0, 2, -100);
+            bonus.transform.localScale = new Vector3(3, 3, 1);
+        }
+        else if (number > 3)
+        {
+            GameManager.instance.AddCoin(10);
+            GameObject bonus = Instantiate(bonuses[3]);
+            bonus.transform.position = pos + new Vector3(0, 2, -100);
+            bonus.transform.localScale = new Vector3(3, 3, 1);
+        }
+
+    }
+
+    IEnumerator Hit(Vector3 pos)
+    {
+        hammerEffect.SetActive(true);
+        pos.z = -80;
+        hammerEffect.transform.position = pos;
+        while(timeHit < 0.2f)
+        {
+            timeHit += Time.deltaTime;
+            yield return new WaitForEndOfFrame();
+        }
+        hammerEffect.SetActive(false);
+    }
     
 }
 
