@@ -31,8 +31,9 @@ public class ConfirmBuyShopPopup : MonoBehaviour
         string url = d.iconUrl.Replace("Assets/Game/Resources/", "");
         url = url.Replace(".png", "");
         icon.sprite = Resources.Load<Sprite>(url) as Sprite;
-        
-        if(isBuy){
+        replaceText.GetComponent<Text>().text = DataHolder.Dialog(14).GetDescription(MageManager.instance.GetLanguage()) + " ";
+
+        if (isBuy){
             Item replaceItem = GameManager.instance.GetEquipedItem(d.itemType);
             question.text = DataHolder.Dialog(3).GetDescription(MageManager.instance.GetLanguage()) + " ";
             

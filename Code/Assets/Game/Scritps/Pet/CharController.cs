@@ -276,19 +276,19 @@ public class CharController : MonoBehaviour
 
         if(data.Health > 0.1f*data.MaxHealth){
             if (data.Dirty > data.MaxDirty * 0.95f)
-                deltaHealth -= (data.Dirty - data.MaxDirty * 0.95f) * 0.003f;
+                deltaHealth -= (data.Dirty - data.MaxDirty * 0.95f) * 0.005f;
 
             if (data.Pee > data.MaxPee * 0.95f)
-                deltaHealth -= (data.Pee - data.MaxPee * 0.95f) * 0.003f;
+                deltaHealth -= (data.Pee - data.MaxPee * 0.95f) * 0.005f;
 
             if (data.Shit > data.MaxShit * 0.95f)
-                deltaHealth -= (data.Shit - data.MaxShit * 0.95f) * 0.003f;
+                deltaHealth -= (data.Shit - data.MaxShit * 0.95f) * 0.005f;
 
             if (data.Food < data.MaxFood * 0.05f)
-                deltaHealth -= (data.MaxFood * 0.05f - data.Food) * 0.003f;
+                deltaHealth -= (data.MaxFood * 0.05f - data.Food) * 0.005f;
 
             if (data.Water < data.MaxWater * 0.05f)
-                deltaHealth -= (data.MaxWater * 0.05f - data.Water) * 0.003f;
+                deltaHealth -= (data.MaxWater * 0.05f - data.Water) * 0.005f;
 
             if (data.Sleep < data.MaxSleep * 0.05f)
                 deltaHealth -= (data.MaxSleep * 0.05f - data.Sleep) * 0.005f;
@@ -664,6 +664,15 @@ public class CharController : MonoBehaviour
         Abort();
         charInteract.interactType = InteractType.Drag;
         actionType = ActionType.Hold;
+    }
+
+    public virtual void OnCall()
+    {
+        if (actionType == ActionType.Patrol || actionType == ActionType.Discover || actionType == ActionType.OnGarden)
+        {
+            Abort();
+            actionType = ActionType.OnCall;
+        }
     }
 
     public virtual void OnSupprised(){
@@ -1161,8 +1170,24 @@ public class CharController : MonoBehaviour
 
     protected virtual IEnumerator Call()
     {
-        SetTarget(PointType.Call);
-        yield return StartCoroutine(DoAnim("Standby"));
+        Vector3 pos = ItemManager.instance.GetActiveCamera().transform.position;
+        pos.y = -22;
+        target = pos;
+        yield return StartCoroutine(RunToPoint());
+        int ran = Random.Range(0, 100);
+        if(ran < 30)
+        {
+            yield return StartCoroutine(DoAnim("Standby"));
+        }else if(ran < 60)
+        {
+            MageManager.instance.PlaySoundName(charType.ToString() + "_Speak", false);
+            yield return DoAnim("Speak_" + direction.ToString());
+        }
+        else
+        {
+            yield return StartCoroutine(DoAnim("Love"));
+        }
+        
         CheckAbort();
     }
 

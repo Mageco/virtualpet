@@ -266,8 +266,12 @@ public class CharShiba : CharController
             {
                 MageManager.instance.PlaySoundName(charType.ToString() + "_Speak", false);
                 yield return DoAnim("Speak_" + direction.ToString());
-            }else
+            }
+            else
+            {
                 yield return StartCoroutine(DoAnim("Love"));
+            }
+                
 
             n++;
         }
