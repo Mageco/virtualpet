@@ -62,7 +62,7 @@ GameObject:
   - component: {fileID: 5284925537624960149}
   - component: {fileID: 4439938952425328424}
   - component: {fileID: 7243309350583049595}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: Boot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -78,7 +78,7 @@ Transform:
   m_GameObject: {fileID: 4009191490779565307}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.7, y: 0.7, z: 1}
   m_Children:
   - {fileID: 8372624790794783637}
   m_Father: {fileID: 0}
@@ -102,7 +102,7 @@ MonoBehaviour:
   moveCount: 10
   timeWait: 5
   isAbort: 0
-  weight: 10
+  weight: 3
   fishType: 5
 --- !u!60 &7243309350583049595
 PolygonCollider2D:
@@ -129,12 +129,10 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: -0.093530655, y: 1.0207846}
-      - {x: -0.63928604, y: 0.29862466}
-      - {x: -0.29757357, y: -0.058187723}
-      - {x: -0.6501391, y: -0.54920834}
-      - {x: -0.34752584, y: -0.88176316}
-      - {x: 0.11991811, y: -0.8714461}
+    - - {x: 0, y: 1}
+      - {x: -0.95105654, y: 0.30901697}
+      - {x: -0.5877852, y: -0.80901706}
+      - {x: 0.58778536, y: -0.80901694}
       - {x: 0.9510565, y: 0.30901712}
 --- !u!1 &7512856056938026809
 GameObject:

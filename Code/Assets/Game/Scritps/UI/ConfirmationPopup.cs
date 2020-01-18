@@ -7,13 +7,16 @@ public class ConfirmationPopup : MonoBehaviour {
 
 	public Text title;
 	public Text description;
-	public Button okButton;
-	public Button cancelButton;
+	[HideInInspector]
+	public string variable;
+	public TintedButton okButton;
+	public TintedButton cancelButton;
 
-	public void Load(string t,string d)
+	public void Load(string t,string d,string v = "")
 	{
 		title.text = t;
 		description.text = d;
+		variable = v;
 	}
 
 	public void Close()

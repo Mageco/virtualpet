@@ -371,7 +371,7 @@ namespace MageSDK.Client {
 		}
 
 		///<summary>Update user profile</summary>
-		private void UpdateUserProfile(User user) {
+		public void UpdateUserProfile(User user) {
 			// check if userDatas is valid
 			if (null == user) {
 				return;
@@ -1124,6 +1124,26 @@ namespace MageSDK.Client {
 		
 		protected virtual void OnHasNewUserMessagesCallback(List<Message> newMessages) {
 
+		}
+
+		
+		public void SetupFirebaseMessaging() {
+			Firebase.Messaging.FirebaseMessaging.TokenReceived += OnTokenReceived;
+			Firebase.Messaging.FirebaseMessaging.MessageReceived += OnMessageReceived;
+		}
+
+		public void OnTokenReceived(object sender, Firebase.Messaging.TokenReceivedEventArgs token) {
+			UnityEngine.Debug.Log("Received Registration Token: " + token.Token);
+
+			User u = GetUser();
+			if (u.notification_token != token.Token) {
+				u.notification_token = token.Token;
+				UpdateUserProfile(u);
+			}
+		}
+
+		public void OnMessageReceived(object sender, Firebase.Messaging.MessageReceivedEventArgs e) {
+			UnityEngine.Debug.Log("Received a new message from: " + e.Message.From);
 		}
 
 		#endregion

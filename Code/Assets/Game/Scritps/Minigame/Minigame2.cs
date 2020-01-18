@@ -19,13 +19,9 @@ public class Minigame2 : Minigame
     public FishSpawner jellyFishSpawner;
     public FishSpawner yellowFishSpawner;
     public FishSpawner specialFishSpawner;
-    public FishSpawner rubbishSpawner;
-    public GameObject bubblePrefab;
 
-    float timeBubble;
-    float maxTimeBubble = 0;
+    
 
-    public Image timeProgress;
 
     void Start(){
         fishNumber.text = "";
@@ -36,8 +32,6 @@ public class Minigame2 : Minigame
             OnGuildPanel();
         else 
             StartGame();
-
-        LoadBubble();
     }
 
     public override void StartGame(){
@@ -49,17 +43,6 @@ public class Minigame2 : Minigame
             this.live = 0;
             UpdateLive();
         }
-    }
-
-    void LoadBubble()
-    {
-        int n = Random.Range(2, 5);
-        for(int i = 0; i < n; i++)
-        {
-            GameObject go = GameObject.Instantiate(bubblePrefab);
-            go.transform.position = new Vector3(Random.Range(-15f, 15f), Random.Range(-12f, -5f), Random.Range(0,20f));
-        }
-        maxTimeBubble = Random.Range(1f, 3f);
     }
 
     int GetLive()
@@ -86,9 +69,7 @@ public class Minigame2 : Minigame
         jellyFishSpawner.maxNumber = Random.Range(2,5);
         yellowFishSpawner.maxNumber = 0;
         specialFishSpawner.maxNumber = 0;
-        rubbishSpawner.maxNumber = 1;
-
-
+        
         if (gameLevel > 5)
         {
             int r1 = Random.Range(0, 100);
@@ -113,7 +94,6 @@ public class Minigame2 : Minigame
         jellyFishSpawner.Spawn();
         yellowFishSpawner.Spawn();
         specialFishSpawner.Spawn();
-        rubbishSpawner.Spawn();
     } 
 
     public override void UpdateLive(){
@@ -154,16 +134,7 @@ public class Minigame2 : Minigame
         {
             float t = maxTime - time;
             timeText.text  = t.ToString("F0");
-            timeProgress.fillAmount = t / maxTime;
         }
-
-        if (timeBubble > maxTimeBubble)
-        {
-            LoadBubble();
-            timeBubble = 0;
-        }
-        else
-            timeBubble += Time.deltaTime;
     }
 
     public override void EndGame(){

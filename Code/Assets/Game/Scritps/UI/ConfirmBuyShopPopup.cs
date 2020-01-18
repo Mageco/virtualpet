@@ -31,10 +31,11 @@ public class ConfirmBuyShopPopup : MonoBehaviour
         string url = d.iconUrl.Replace("Assets/Game/Resources/", "");
         url = url.Replace(".png", "");
         icon.sprite = Resources.Load<Sprite>(url) as Sprite;
-        
-        if(isBuy){
+        replaceText.GetComponent<Text>().text = DataHolder.Dialog(14).GetDescription(MageManager.instance.GetLanguage()) + " ";
+
+        if (isBuy){
             Item replaceItem = GameManager.instance.GetEquipedItem(d.itemType);
-            question.text = DataHolder.GetDialog(3).GetDescription(MageManager.instance.GetLanguage()) + " ";
+            question.text = DataHolder.Dialog(3).GetDescription(MageManager.instance.GetLanguage()) + " ";
             
             if(replaceItem == null || d.itemType == ItemType.Toy)
             {
@@ -53,7 +54,7 @@ public class ConfirmBuyShopPopup : MonoBehaviour
             
 
         }else{
-            question.text = DataHolder.GetDialog(4).GetDescription(MageManager.instance.GetLanguage()) + " ";
+            question.text = DataHolder.Dialog(4).GetDescription(MageManager.instance.GetLanguage()) + " ";
             replacePanel.SetActive(false);
             priceText.text = (d.buyPrice/2).ToString();
         }        
@@ -98,10 +99,10 @@ public class ConfirmBuyShopPopup : MonoBehaviour
         icon.sprite = Resources.Load<Sprite>(url) as Sprite;
         replacePanel.SetActive(false);
         if(isBuy){
-            question.text = DataHolder.GetDialog(3).GetDescription(MageManager.instance.GetLanguage()) + " ";
+            question.text = DataHolder.Dialog(3).GetDescription(MageManager.instance.GetLanguage()) + " ";
             priceText.text = (d.buyPrice).ToString();
         }else{
-            question.text = DataHolder.GetDialog(4).GetDescription(MageManager.instance.GetLanguage()) + " ";
+            question.text = DataHolder.Dialog(4).GetDescription(MageManager.instance.GetLanguage()) + " ";
             priceText.text = (d.buyPrice/2).ToString();
         }        
 

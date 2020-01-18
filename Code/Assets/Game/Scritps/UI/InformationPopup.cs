@@ -7,7 +7,7 @@ public class InformationPopup : MonoBehaviour {
 
 	public Text title;
 	public Text description;
-	public Button okButton;
+	
 
 	// Use this for initialization
 	void Start () {

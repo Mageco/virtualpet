@@ -55,7 +55,7 @@ public class HookItem : MonoBehaviour
         else if (state == HookState.Active)
         {
             this.transform.position += velocity * Time.deltaTime;
-            this.transform.rotation = Quaternion.Slerp(this.transform.rotation, targetRotation, Time.deltaTime * 20);
+            this.transform.rotation = Quaternion.Slerp(this.transform.rotation, targetRotation, Time.deltaTime * 5);
 
             if (!CheckPositionOutBound())
             {
@@ -105,9 +105,9 @@ public class HookItem : MonoBehaviour
                 isShock = true;
             }else if(fish.fishType == FishType.Squirt)
             {
-        
+                Minigame.instance.time -= 5;
                 GameObject go = GameObject.Instantiate(timeGainPrefab);
-                go.transform.position = fish.transform.position + new Vector3(0, 0, -20);
+                go.transform.position = fish.transform.position + new Vector3(0, 0, -10);
             }
         }
 
@@ -121,25 +121,20 @@ public class HookItem : MonoBehaviour
                 {
                     count++;
                     number++;
-                    GameObject go = GameObject.Instantiate(coinPopPrefab);
-                    go.transform.position = fish.transform.position + new Vector3(0, 0, -10);
                 }
                     
                 else if(fish.fishType == FishType.YellowFish)
                 {
                     count += 5;
                     number++;
-                    GameObject go = GameObject.Instantiate(coinPopPrefab);
-                    go.transform.position = fish.transform.position + new Vector3(0, 0, -10);
                 }
                 else if(fish.fishType == FishType.SpecialFish)
                 {
                     count += 10;
                     number++;
-                    GameObject go = GameObject.Instantiate(coinPopPrefab);
-                    go.transform.position = fish.transform.position + new Vector3(0, 0, -10);
                 }
-                
+                GameObject go = GameObject.Instantiate(coinPopPrefab);
+                go.transform.position = fish.transform.position + new Vector3(0, 0, -10);
                 fish.OnDeactive();
             }
 
@@ -231,12 +226,12 @@ public class HookItem : MonoBehaviour
         cat.Play("Throw_Idle", 0);
         body.SetActive(true);
         this.transform.position = hookAnchor.position;
-        originalPosition = rodAnchor.position;
+        originalPosition = this.transform.position;
         Vector3 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         pos.z = this.transform.position.z;
         target = pos;
         Debug.Log(target);
-        velocity = (target - originalPosition).normalized;
+        velocity = (target - this.transform.position).normalized;
         velocity.z = 0;
         this.velocity = speedThrow * SpeedRate() * velocity;
         float angle = Mathf.Atan2(velocity.y, velocity.x) * Mathf.Rad2Deg + 90;

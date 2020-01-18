@@ -10,6 +10,7 @@ public class PetRequirementPanel : MonoBehaviour
     public Text petName;
     public Text petDescription;
     public Text petPrice;
+    public Text requireText;
     public GameObject coinIcon;
     public GameObject diamonIcon;
     public GameObject happyIcon;
@@ -35,6 +36,7 @@ public class PetRequirementPanel : MonoBehaviour
         //petPrice.text = pet.buyPrice.ToString();
         petName.text = pet.GetName(MageManager.instance.GetLanguage());
         petDescription.text = pet.GetDescription(MageManager.instance.GetLanguage());
+        requireText.text = DataHolder.Dialog(15).GetDescription(MageManager.instance.GetLanguage());
 
         for (int i = 0; i < pet.requirePets.Length; i++)
         {

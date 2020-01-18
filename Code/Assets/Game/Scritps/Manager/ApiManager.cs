@@ -26,7 +26,6 @@ public class ApiManager : MageEngine {
 	public string contactPhone = "";
 	[HideInInspector]
 	public int option = 0;
-	string tokenKey = "";
 
 	protected override void Load()
 	{
@@ -59,6 +58,9 @@ public class ApiManager : MageEngine {
             }
         }
 
+		
+		SetupFirebaseMessaging();
+
     }
 
 	//public static ApiManager GetInstance() {
@@ -67,19 +69,6 @@ public class ApiManager : MageEngine {
 
 	protected void Start() {
 		DoLogin();
-		//Test Message
-		/*
-		Message m = new Message();
-		m.message = "Test";
-		m.title = "Update";
-		m.status = MessageStatus.New;
-		m.action_android = "https://play.google.com/store/apps/details?id=vn.com.mage.virtualpet";
-		List<Message> ms = new List<Message>();
-		ms.Add(m);
-		OnHasNewUserMessagesCallback(ms);*/
-
-		Firebase.Messaging.FirebaseMessaging.TokenReceived += OnTokenReceived;
-		Firebase.Messaging.FirebaseMessaging.MessageReceived += OnMessageReceived;
 	}
 	
 
@@ -87,37 +76,11 @@ public class ApiManager : MageEngine {
        //sample only
 	   for (int i = 0; i < newMessages.Count; i++) {
 		   Debug.Log("Update message: " + newMessages[i].id + " as read");
-           if(newMessages[i].status == MessageStatus.New)
-            {
-				ConfirmationPopup confirm = MageManager.instance.OnConfirmationPopup(newMessages[i].title, newMessages[i].message);
-				string url = "";
-                #if UNITY_ANDROID
-				url = newMessages[i].action_android;
-                #elif UNITY_IOS
-                url = newMessages[i].action_android;
-                #endif
-				confirm.okButton.onClick.AddListener(delegate { OnClick(url); });
-				UpdateMessageStatus(newMessages[i].id, MessageStatus.Read);
-			}
+		   UpdateMessageStatus(newMessages[i].id, MessageStatus.Read);
 	   }
+
     }
 
-    void OnClick(string url)
-    {
-		Application.OpenURL(url);
-	}
-
-	public void OnTokenReceived(object sender, Firebase.Messaging.TokenReceivedEventArgs token)
-	{
-		tokenKey = token.Token;
-        
-		UnityEngine.Debug.Log("Received Registration Token: " + token.Token);
-	}
-
-	public void OnMessageReceived(object sender, Firebase.Messaging.MessageReceivedEventArgs e)
-	{
-		UnityEngine.Debug.Log("Received a new message from: " + e.Message.From);
-	}
 }
 
 

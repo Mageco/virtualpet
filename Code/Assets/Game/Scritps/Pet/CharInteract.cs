@@ -10,7 +10,11 @@ public class CharInteract : MonoBehaviour
 
     public Vector3 dragOffset;
     CharController character;
-
+    bool isMouseDown = false;
+    bool isDrag = false;
+    Vector3 holdPosition = Vector3.zero;
+    float touchTime = 0;
+    float maxClickTime = 0.3f;
 
     void Awake()
     {
@@ -26,7 +30,14 @@ public class CharInteract : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (isMouseDown)
+        {
+            if(!isDrag && Vector2.Distance(holdPosition, Camera.main.ScreenToWorldPoint(Input.mousePosition)) > 0.1f)
+            {
+                OnDrag();
+            }
+            touchTime += Time.deltaTime;
+        }
     }
 
     #region Interact
@@ -35,13 +46,19 @@ public class CharInteract : MonoBehaviour
         if (IsPointerOverUIObject ()) {
             return;
         }
-        dragOffset = Camera.main.ScreenToWorldPoint (Input.mousePosition) - this.transform.position ;
-        //isTouch = true;
-        if(interactType == InteractType.None){
-            character.OnHold ();
-        }
-
+        isMouseDown = true;
+        holdPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
     }
+
+    void OnDrag()
+    {
+        isDrag = true;
+        dragOffset = Camera.main.ScreenToWorldPoint(Input.mousePosition) - this.transform.position;
+        if (interactType == InteractType.None)
+        {
+            character.OnHold();
+        }
+    }
 
     public void OnHold()
     {
@@ -50,6 +67,7 @@ public class CharInteract : MonoBehaviour
 
     void OnMouseUp()
     {
+        
         dragOffset = Vector3.zero;
         //isTouch = false;
         if (interactType == InteractType.Drag) {
@@ -59,22 +77,21 @@ public class CharInteract : MonoBehaviour
             character.isAbort = true;
             character.actionType = ActionType.None;
         }
+        else if(touchTime < maxClickTime)
+        {
+            OnClick();
+        }
 
- /*        if (isClick) {
-            if (doubleClickTime > maxDoubleClickTime) {
-                doubleClickTime = 0;
-            } else {
-                //character.OnListening ();
-                doubleClickTime = 0;
-                isClick = false;
-                return;
-            }
-        } else {
-            doubleClickTime = 0;
-            isClick = true;
-        } */
+        touchTime = 0;
+        isDrag = false;
+        isMouseDown = false;
     }
 
+    void OnClick()
+    {
+        MageManager.instance.PlaySoundName("Button", false);
+        character.OnCall();
+    }
 
 
     private bool IsPointerOverUIObject() {
