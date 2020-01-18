@@ -10,6 +10,7 @@ public class TreatmentConfirmPopup : MonoBehaviour
     SickType sickType;
     public Sprite[] sickTypes;
     public Image sickTypeIcon;
+    public Text description;
     Pet pet;
     // Start is called before the first frame update
     public void Load(Pet p, SickType type)
@@ -26,6 +27,7 @@ public class TreatmentConfirmPopup : MonoBehaviour
             sickTypeIcon.sprite = sickTypes[1];
         }
 
+        description.text = DataHolder.Dialog(16).GetDescription(MageManager.instance.GetLanguage());
         coin = coin = Mathf.Max(((int)((pet.MaxTimeSick - (System.DateTime.Now - pet.timeSick).TotalSeconds) / 60)),100);
         price.text = coin.ToString();
     }

@@ -24,11 +24,11 @@ public class TreatmentPopup : MonoBehaviour
         if(sickType == SickType.Sick)
         {
             sickTypeIcon.sprite = sickTypes[0];
-            description.text = DataHolder.Dialog(0).GetDescription(MageManager.instance.GetLanguage());
+            description.text = DataHolder.Dialog(17).GetDescription(MageManager.instance.GetLanguage());
         }else if(sickType == SickType.Injured)
         {
             sickTypeIcon.sprite = sickTypes[1];
-            description.text = DataHolder.Dialog(1).GetDescription(MageManager.instance.GetLanguage());
+            description.text = DataHolder.Dialog(18).GetDescription(MageManager.instance.GetLanguage());
         }
         
     }
