@@ -303,7 +303,7 @@ public class UIManager : MonoBehaviour
      }
 
 
-    public EventPanel OnEventPanel()
+    public EventPanel OnEventPanel(int id)
     {
         if (eventPanel == null)
         {
@@ -313,6 +313,7 @@ public class UIManager : MonoBehaviour
             popup.transform.SetParent(GameObject.Find("Canvas").transform, false);
             popup.GetComponent<Popup>().Open();
             eventPanel = popup.GetComponent<EventPanel>();
+            eventPanel.Load(id);
             
         }
         return eventPanel;

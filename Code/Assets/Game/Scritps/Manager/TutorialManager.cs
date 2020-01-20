@@ -248,7 +248,7 @@ public class TutorialManager : MonoBehaviour
             else
             {
                 blackScreenUI.SetActive(true);
-                EventPanel eventPanel = UIManager.instance.OnEventPanel();
+                EventPanel eventPanel = UIManager.instance.OnEventPanel(0);
                 GameObject go = eventPanel.playButton.gameObject;
                 AddSorting(go);
                 step = 1;
@@ -410,7 +410,7 @@ public class TutorialManager : MonoBehaviour
             {
                 blackScreenUI.SetActive(true);
                 handClick.SetActive(false);
-                EventPanel eventPanel = UIManager.instance.OnEventPanel();
+                EventPanel eventPanel = UIManager.instance.OnEventPanel(0);
                 GameObject go = eventPanel.playButton.gameObject;
                 AddSorting(go);
                 step = 1;
@@ -418,7 +418,7 @@ public class TutorialManager : MonoBehaviour
             else if(step == 1)
             {
                 blackScreenUI.SetActive(true);
-                EventPanel eventPanel = UIManager.instance.OnEventPanel();
+                EventPanel eventPanel = UIManager.instance.OnEventPanel(0);
                 if (eventPanel != null)
                     eventPanel.OnEvent(0);
             }

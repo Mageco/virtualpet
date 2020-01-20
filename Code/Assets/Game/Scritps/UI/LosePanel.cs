@@ -2,9 +2,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class LosePanel : MonoBehaviour
 {
+    public GameObject replayButton;
+    public GameObject adButton;
+    int playCount;
+    System.DateTime startTime;
+    public Text timeText;
+    int gameId = 0;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -14,11 +22,36 @@ public class LosePanel : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        int t = (int)(600 - (System.DateTime.Now - startTime).TotalSeconds);
+        int m = t / 60;
+        timeText.text = m.ToString("00") + ":" + (t - m * 60).ToString("00");
     }
 
-    public void Load(){
+    public void Load(int id){
+        gameId = id;
 
+        if (ES2.Exists("MinigameWait" + gameId.ToString()))
+        {
+            startTime = ES2.Load<System.DateTime>("MinigameWait" + gameId.ToString());
+        }
+        else
+            startTime = System.DateTime.Now;
+
+        if (ES2.Exists("MinigamePlayCount" + gameId.ToString()))
+        {
+            playCount = ES2.Load<int>("MinigamePlayCount" + gameId.ToString());
+        }
+
+        if (playCount <= 0)
+        {
+            replayButton.SetActive(false);
+            adButton.SetActive(true);
+        }
+        else
+        {
+            replayButton.SetActive(true);
+            adButton.SetActive(false);
+        }
     }
 
     public void Close(){
@@ -31,9 +64,15 @@ public class LosePanel : MonoBehaviour
         this.GetComponent<Popup>().Close();
     }
 
-    public void Replay(){
+    public void Replay()
+    {
+        playCount--;
+        startTime = startTime = System.DateTime.Now;
         MageManager.instance.PlaySoundName("BubbleButton", false);
-        MageManager.instance.LoadScene(SceneManager.GetActiveScene().name,0.5f);
+        MageManager.instance.LoadScene(SceneManager.GetActiveScene().name, 0.5f);
         this.GetComponent<Popup>().Close();
+
+        ES2.Save(startTime, "MinigameWait" + gameId.ToString());
+        ES2.Save<int>(playCount, "MinigamePlayCount" + gameId.ToString());
     }
 }

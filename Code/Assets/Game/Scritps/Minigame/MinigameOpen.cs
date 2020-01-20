@@ -22,7 +22,7 @@ public class MinigameOpen : MonoBehaviour
 	{
         if (IsPointerOverUIObject())
             return;
-        UIManager.instance.OnEventPanel();
+        UIManager.instance.OnEventPanel(gameId);
     }
 
     protected bool IsPointerOverUIObject()

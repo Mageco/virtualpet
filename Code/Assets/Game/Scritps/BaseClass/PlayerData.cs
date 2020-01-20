@@ -17,7 +17,7 @@ public class PlayerData : BaseModel
     public float playTime = 0;
     public List<PlayerItem> items = new List<PlayerItem>();
     public List<Pet> pets = new List<Pet>();
-	public int[] minigameLevels = new int[1];
+	public int[] minigameLevels = new int[2];
 
 	public int questId = 0;
     public int questValue = 0;
@@ -25,8 +25,10 @@ public class PlayerData : BaseModel
     public GameType gameType = GameType.House;
 
     public PlayerData(){
-
-
+        for(int i = 0; i < minigameLevels.Length; i++)
+        {
+			minigameLevels[i] = 0;
+        }
 	}
 
 	public void LoadData(){

@@ -619,6 +619,10 @@ public class GameManager : MonoBehaviour
             Debug.Log("Load data from local");
             Debug.Log(MageEngine.instance.GetUser().ToJson());
             myPlayer = MageEngine.instance.GetUserData<PlayerData>();
+            if(myPlayer.minigameLevels.Length == 1)
+            {
+                myPlayer.minigameLevels = ArrayHelper.Add(0, myPlayer.minigameLevels);
+            }
         }else{
             Debug.Log("Create New Data");
             LoadNewUser();

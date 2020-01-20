@@ -7,6 +7,7 @@ public class EventPanel : MonoBehaviour
 {
      public ScrollRect scroll;
      public GameObject playButton;
+    public EventUI[] events;
     // Start is called before the first frame update
     void Start()
     {
@@ -18,16 +19,24 @@ public class EventPanel : MonoBehaviour
         
     }
 
-    public void OnEvent(int id){
-        if(id > 0)
+    public void Load(int id)
+    {
+        for (int i = 0; i < events.Length; i++)
         {
-             MageManager.instance.OnNotificationPopup ("The game is comming soon.");
-        }else{
-            this.Close();
-            MageManager.instance.PlaySoundName("BubbleButton",false);
-            UIManager.instance.OnMinigame(1);
+            if (i == id)
+            {
+                events[i].gameObject.SetActive(true);
+            }else
+            {
+                events[i].gameObject.SetActive(false);
+            }
         }
-       
+    }
+
+    public void OnEvent(int id){
+        this.Close();
+        MageManager.instance.PlaySoundName("BubbleButton",false);
+        UIManager.instance.OnMinigame(id);
     }
 
     public void Close(){

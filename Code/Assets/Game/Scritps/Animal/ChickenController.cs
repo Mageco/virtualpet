@@ -124,12 +124,12 @@ public class ChickenController : AnimalController
                 direction = Direction.R;
             ran = Random.Range(0, 100);
             
-            if (ran > 60 && isMinigame && Minigame.instance.time < Minigame.instance.maxTime - 2)
-            {
-                SpawnHappy();
-            }
+            //if (ran > 60 && isMinigame && Minigame.instance.time < Minigame.instance.maxTime - 2)
+            //{
+            //    SpawnHappy();
+            //}
                 
-
+            //Spawn happy in garden
             if (ran > 98 && !isMinigame)
                 SpawnHappy();
             yield return StartCoroutine(DoAnim("Eat_" + direction.ToString()));

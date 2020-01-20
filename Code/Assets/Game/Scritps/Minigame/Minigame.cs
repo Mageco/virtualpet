@@ -33,7 +33,7 @@ public class Minigame : MonoBehaviour
         float d = Camera.main.orthographicSize * (float)Screen.width / (float)Screen.height;
         boundX.x = -d;
         boundX.y = d;
-        gameLevel = GameManager.instance.GetPlayer().minigameLevels[0];
+        gameLevel = GameManager.instance.GetPlayer().minigameLevels[minigameId];
     }
 
         
@@ -76,6 +76,7 @@ public class Minigame : MonoBehaviour
             popup.transform.SetParent(GameObject.Find("Canvas").transform, false);
             popup.GetComponent<Popup>().Open();
             losePanel = popup.GetComponent<LosePanel>();
+            losePanel.Load(minigameId);
         }
     }
 

@@ -150,6 +150,13 @@ public class Minigame1 : Minigame
             float s = (int)(t - m*60);
             timeText.text  = m.ToString("00") + ":" + s.ToString("00");
         }
+
+        if (timeHit > 0.2f)
+        {
+            hammerEffect.SetActive(false);
+        }
+        else
+            timeHit += Time.deltaTime;
     }
 
     public override void EndGame(){
@@ -178,8 +185,12 @@ public class Minigame1 : Minigame
     public void OnFingerDown(Vector3 pos)
     {
         timeHit = 0;
-        StopAllCoroutines();
-        StartCoroutine(Hit(pos));
+        hammerEffect.SetActive(false);
+        hammerEffect.SetActive(true);
+        hammerEffect.GetComponentInChildren<Animator>().SetBool("tap", true);
+        pos.z = -80;
+        hammerEffect.transform.position = pos;
+
         int number = 0;
         RaycastHit2D[] hit = Physics2D.RaycastAll(pos, Vector3.forward);
         for(int i = 0; i < hit.Length; i++)
@@ -223,19 +234,6 @@ public class Minigame1 : Minigame
             bonus.transform.localScale = new Vector3(3, 3, 1);
         }
 
-    }
-
-    IEnumerator Hit(Vector3 pos)
-    {
-        hammerEffect.SetActive(true);
-        pos.z = -80;
-        hammerEffect.transform.position = pos;
-        while(timeHit < 0.2f)
-        {
-            timeHit += Time.deltaTime;
-            yield return new WaitForEndOfFrame();
-        }
-        hammerEffect.SetActive(false);
     }
     
 }
