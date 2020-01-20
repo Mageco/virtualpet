@@ -64,28 +64,27 @@ public class Minigame2 : Minigame
         int initNumber = 10;
         
         maxTime = 60 + gameLevel / 5 * 5;
-        fishSpawner.maxNumber = initNumber + gameLevel / 5;
-        squirtSpawner.maxNumber = Random.Range(1,3);
-        jellyFishSpawner.maxNumber = Random.Range(2,5);
+        fishSpawner.maxNumber = initNumber + gameLevel / 2;
+        if(gameLevel > 10)
+        {
+            fishSpawner.maxNumber = 15 + gameLevel / 5;
+        }else if(gameLevel > 20)
+        {
+            fishSpawner.maxNumber = 17 + gameLevel / 10;
+        }
+        squirtSpawner.maxNumber = 1 + gameLevel / 6;
+        jellyFishSpawner.maxNumber = 1 + gameLevel / 3;
         yellowFishSpawner.maxNumber = 0;
         specialFishSpawner.maxNumber = 0;
         
-        if (gameLevel > 5)
+        if (gameLevel > 0 && gameLevel % 5  == 0)
         {
-            int r1 = Random.Range(0, 100);
-            if(r1 > 50)
-            {
-                yellowFishSpawner.maxNumber = 1;
-            }
+            yellowFishSpawner.maxNumber = gameLevel/5;
         }
 
-        if (gameLevel > 10)
+        if (gameLevel > 0 && gameLevel % 10 == 0)
         {
-            int r1 = Random.Range(0, 100);
-            if (r1 > 80)
-            {
-                specialFishSpawner.maxNumber = 1;
-            }
+            specialFishSpawner.maxNumber = gameLevel/10;
         }
 
 
