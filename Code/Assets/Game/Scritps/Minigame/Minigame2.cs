@@ -108,6 +108,8 @@ public class Minigame2 : Minigame
        // Debug.Log("Update Live " + live.ToString());
         if(live == maxLive){
             OnWin();
+            GameManager.instance.GetPlayer().minigameLevels[minigameId]++;
+            GameManager.instance.LogAchivement(AchivementType.Minigame_Level);
             EndGame();
         }
     }

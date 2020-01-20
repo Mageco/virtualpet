@@ -15,7 +15,7 @@ public class EventUI : MonoBehaviour
     
     public Text playText;
     public Text timeText;
-    float time = 1;
+    float time = 2;
     float maxTimeUpdate = 1;
     System.DateTime startTime;
     int maxPlayCount = 5;
@@ -26,7 +26,7 @@ public class EventUI : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
-        levelText.text = "Level " + (GameManager.instance.myPlayer.minigameLevels[0] + 1).ToString();
+        levelText.text = "Level " + (GameManager.instance.myPlayer.minigameLevels[gameId] + 1).ToString();
         int n = (GameManager.instance.myPlayer.minigameLevels[0]+1) % 5;
 
         for (int i = 0; i < stars.Length; i++)
