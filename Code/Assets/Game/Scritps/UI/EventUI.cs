@@ -74,7 +74,7 @@ public class EventUI : MonoBehaviour
             timeText.text = m.ToString("00") + ":" + (t - m * 60).ToString("00");
             
 
-            if ((System.DateTime.Now - startTime).TotalSeconds > 600)
+            if ((System.DateTime.Now - startTime).TotalSeconds >= 600)
             {
                 playCount += ((int)(System.DateTime.Now - startTime).TotalSeconds)/600;
                 if(playCount > maxPlayCount)
