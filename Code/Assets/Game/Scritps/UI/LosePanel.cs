@@ -25,6 +25,19 @@ public class LosePanel : MonoBehaviour
         int t = (int)(600 - (System.DateTime.Now - startTime).TotalSeconds);
         int m = t / 60;
         timeText.text = m.ToString("00") + ":" + (t - m * 60).ToString("00");
+
+        if ((System.DateTime.Now - startTime).TotalSeconds >= 600)
+        {
+            playCount += ((int)(System.DateTime.Now - startTime).TotalSeconds) / 600;
+            if (playCount > 5)
+            {
+                playCount = 5;
+            }
+            startTime = System.DateTime.Now;
+
+            ES2.Save(startTime, "MinigameWait" + gameId.ToString());
+            ES2.Save<int>(playCount, "MinigamePlayCount" + gameId.ToString());
+        }
     }
 
     public void Load(int id){
