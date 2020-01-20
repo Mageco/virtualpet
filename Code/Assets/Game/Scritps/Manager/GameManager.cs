@@ -621,7 +621,10 @@ public class GameManager : MonoBehaviour
             myPlayer = MageEngine.instance.GetUserData<PlayerData>();
             if(myPlayer.minigameLevels.Length == 1)
             {
-                myPlayer.minigameLevels = ArrayHelper.Add(0, myPlayer.minigameLevels);
+                for(int i = 0; i < 20; i++)
+                {
+                    myPlayer.minigameLevels = ArrayHelper.Add(0, myPlayer.minigameLevels);
+                }
             }
         }else{
             Debug.Log("Create New Data");

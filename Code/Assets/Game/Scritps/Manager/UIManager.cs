@@ -532,6 +532,13 @@ public class UIManager : MonoBehaviour
 
     public void OnMinigame(int id){
         //ES3AutoSaveMgr.Instance.Save();
+        if (GameManager.instance.myPlayer.minigameLevels.Length == 1)
+        {
+            for (int i = 0; i < 20; i++)
+            {
+                GameManager.instance.myPlayer.minigameLevels = ArrayHelper.Add(0, GameManager.instance.myPlayer.minigameLevels);
+            }
+        }
         MageManager.instance.LoadSceneWithLoading("Minigame" + id.ToString());
         homeUI.SetActive(false);
         GameManager.instance.petObjects.Clear();
