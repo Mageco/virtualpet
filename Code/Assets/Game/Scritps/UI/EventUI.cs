@@ -60,7 +60,9 @@ public class EventUI : MonoBehaviour
             playCount = ES2.Load<int>("MinigamePlayCount" + gameId.ToString());
         }
 
+        CheckTime();
         UpdatePlayCount();
+        
     }
 
     // Update is called once per frame
@@ -72,18 +74,9 @@ public class EventUI : MonoBehaviour
             int t = (int)(600 - (System.DateTime.Now - startTime).TotalSeconds);
             int m = t / 60;
             timeText.text = m.ToString("00") + ":" + (t - m * 60).ToString("00");
-            
 
-            if ((System.DateTime.Now - startTime).TotalSeconds >= 600)
-            {
-                playCount += ((int)(System.DateTime.Now - startTime).TotalSeconds)/600;
-                if(playCount > maxPlayCount)
-                {
-                    playCount = maxPlayCount;
-                }
-                startTime = System.DateTime.Now;
-                UpdatePlayCount();
-            }
+            CheckTime();
+
         }
         else
         {
@@ -106,6 +99,20 @@ public class EventUI : MonoBehaviour
         if (UIManager.instance.eventPanel != null)
         {
             UIManager.instance.eventPanel.Close();
+        }
+    }
+
+    void CheckTime()
+    {
+        if ((System.DateTime.Now - startTime).TotalSeconds >= 600)
+        {
+            playCount += ((int)(System.DateTime.Now - startTime).TotalSeconds) / 600;
+            if (playCount > maxPlayCount)
+            {
+                playCount = maxPlayCount;
+            }
+            startTime = System.DateTime.Now;
+            UpdatePlayCount();
         }
     }
 
