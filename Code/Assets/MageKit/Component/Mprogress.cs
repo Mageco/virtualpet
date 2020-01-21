@@ -15,9 +15,9 @@ public class Mprogress : MonoBehaviour {
 	void OnEnable () {
 		progress = 0;
 		fill.fillAmount = 0;
-        int id = Random.Range(0,DataHolder.Dialogs().GetDataCount());
+        //int id = Random.Range(0,DataHolder.Dialogs().GetDataCount());
         //if(DataHolder.Instance() != null)
-            tip.text = DataHolder.Dialog(id).GetDescription(MageManager.instance.GetLanguage());
+        //    tip.text = DataHolder.Dialog(id).GetDescription(MageManager.instance.GetLanguage());
         int n = Random.Range(0, DataHolder.Pets().GetDataCount());
 		string url = DataHolder.Pet(n).iconUrl.Replace("Assets/Game/Resources/", "");
 		url = url.Replace(".png", "");
