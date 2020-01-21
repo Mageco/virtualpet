@@ -26,7 +26,7 @@ public class Minigame1 : Minigame
     
     void Start(){
         chickenNumber.text = "";
-        levelText.text = "Stage " + (gameLevel + 1).ToString();
+        levelText.text = DataHolder.Dialog(29).GetName(MageManager.instance.GetLanguage()) + " " + (gameLevel + 1).ToString();
         MageManager.instance.PlayMusicName("Minigame1",true);
         if (gameLevel == 0)
             OnGuildPanel();

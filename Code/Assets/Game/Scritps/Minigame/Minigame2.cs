@@ -25,7 +25,7 @@ public class Minigame2 : Minigame
 
     void Start(){
         fishNumber.text = "";
-        levelText.text = "Stage " + (gameLevel + 1).ToString();
+        levelText.text = DataHolder.Dialog(29).GetName(MageManager.instance.GetLanguage()) + " " + (gameLevel + 1).ToString();
         MageManager.instance.PlayMusicName("Minigame1",true);
 //        Debug.Log(live);
         if (gameLevel == 0)
