@@ -20,6 +20,7 @@ public class Minigame : MonoBehaviour
     public int diamon = 0;
     int zIndex = 0;
     public int minigameId = 0;
+    public GameObject coinPrefab;
 
     public GameState state = GameState.Ready;
 
@@ -109,5 +110,15 @@ public class Minigame : MonoBehaviour
     {
         zIndex++;
         return zIndex;
+    }
+
+    public void SpawnCoin(Vector3 pos, int value, GameObject item = null)
+    {
+        GameObject go = Instantiate(coinPrefab, pos, Quaternion.identity);
+        go.GetComponent<CoinItem>().Load(value);
+        if (item != null)
+        {
+            go.transform.parent = item.transform;
+        }
     }
 }

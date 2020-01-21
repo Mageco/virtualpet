@@ -18,7 +18,8 @@ public class ItemManager : MonoBehaviour
 
     public GameObject peePrefab;
     public GameObject shitPrefab;
-    public GameObject heartPrefab; 
+    public GameObject heartPrefab;
+    public GameObject coinPrefab;
 
     public GameObject dirtyPrefab;
     public GameObject healthEffectPrefab;
@@ -502,6 +503,16 @@ public class ItemManager : MonoBehaviour
     public void SpawnHeart(Vector3 pos,Quaternion rot, int value,bool isSound){
         GameObject go = Instantiate(heartPrefab,pos,rot);
         go.GetComponent<HappyItem>().Load(value,isSound);
+    }
+
+    public void SpawnCoin(Vector3 pos, int value,GameObject item = null)
+    {
+        GameObject go = Instantiate(coinPrefab, pos,Quaternion.identity);
+        go.GetComponent<CoinItem>().Load(value);
+        if(item != null)
+        {
+            go.transform.parent = item.transform;
+        }
     }
 
     public GameObject SpawnGuideArrow(ItemType itemType)

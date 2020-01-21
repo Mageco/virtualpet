@@ -8,7 +8,6 @@ public class FruitItem : MonoBehaviour
     [HideInInspector]
     public ItemSaveDataType itemSaveDataType = ItemSaveDataType.Fruit;
     public int id = 0;
-    public GameObject collectEffect;
     public GameObject[] steps;
     public int step = 0;
     public float[] maxTime;
@@ -20,9 +19,6 @@ public class FruitItem : MonoBehaviour
     float timeCaculated = 0;
 
     void Awake(){
-        
-        collectEffect.SetActive(false);
-        
         step = Random.Range(0, steps.Length);
         time = Random.Range(0, maxTime[step]);
         OnStep();
@@ -76,22 +72,20 @@ public class FruitItem : MonoBehaviour
             return;
 
         if(step == steps.Length - 1){
-            StartCoroutine(Pick());
+            Pick();
         }
         
     }
 
-    IEnumerator Pick(){
+    void Pick(){
         step = 0;
         time = 0;
         OnStep();
+        int value = Random.Range(2, 5);
+        ItemManager.instance.SpawnCoin(this.transform.position + new Vector3(0, 2, -1), value, this.gameObject);
+        GameManager.instance.AddCoin(value); 
         MageManager.instance.PlaySoundName("happy_collect_item_01",false);
-        GameManager.instance.AddCoin(Random.Range(2, 5));
         GameManager.instance.LogAchivement(AchivementType.CollectFruit);
-        collectEffect.SetActive(true);
-        yield return new WaitForSeconds(1);
-        
-        collectEffect.SetActive(false);
     }
 
     private bool IsPointerOverUIObject()

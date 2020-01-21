@@ -62,6 +62,9 @@ public class FoxController : AnimalController
             isAbort = true;
             //state = AnimalState.Flee;
             state = AnimalState.Hit;
+            int value = 1;
+            Minigame.instance.SpawnCoin(this.transform.position + new Vector3(0, 2, -1), value, this.gameObject);
+            GameManager.instance.AddCoin(value);
             GameManager.instance.LogAchivement(AchivementType.Dissmiss_Animal,ActionType.None,-1,animalType);
         }else if(state == AnimalState.Run){
             agent.Stop();
@@ -71,6 +74,9 @@ public class FoxController : AnimalController
             target.transform.position = this.transform.position;
             target.agent.transform.position = this.transform.position;
             Minigame.instance.UpdateLive();
+            int value = 1;
+            Minigame.instance.SpawnCoin(this.transform.position + new Vector3(0, 2, -1), value, this.gameObject);
+            GameManager.instance.AddCoin(value);
             GameManager.instance.LogAchivement(AchivementType.Dissmiss_Animal,ActionType.None,-1,animalType);
         }
         col2D.enabled = false;
