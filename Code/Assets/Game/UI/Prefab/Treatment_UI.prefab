@@ -657,6 +657,7 @@ GameObject:
   - component: {fileID: 975839008601320064}
   - component: {fileID: 8508362855035011812}
   - component: {fileID: 367062976903906743}
+  - component: {fileID: 281354048752898265}
   m_Layer: 5
   m_Name: Wait_Txt
   m_TagString: Untagged
@@ -722,7 +723,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: WAIT
+  m_Text: Wait
 --- !u!114 &367062976903906743
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -743,6 +744,20 @@ MonoBehaviour:
   glintVertex: 0
   glintWidth: 0
   glintColor: {r: 0, g: 0, b: 0, a: 0}
+--- !u!114 &281354048752898265
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5898492315475002186}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 06040c762767d48eabdcb7a46129cad1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  text: {fileID: 0}
+  dialogId: 13
 --- !u!1 &6681511513296545201
 GameObject:
   m_ObjectHideFlags: 0
@@ -976,6 +991,7 @@ GameObject:
   - component: {fileID: 705890597071142541}
   - component: {fileID: 364438800626446750}
   - component: {fileID: 5960504389315623204}
+  - component: {fileID: 4086359167734812516}
   m_Layer: 5
   m_Name: Treatment_Txt
   m_TagString: Untagged
@@ -1041,7 +1057,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: TREAT
+  m_Text: Treat
 --- !u!114 &5960504389315623204
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1062,6 +1078,20 @@ MonoBehaviour:
   glintVertex: 0
   glintWidth: 0
   glintColor: {r: 0.13725491, g: 0.40784317, b: 0.6509804, a: 1}
+--- !u!114 &4086359167734812516
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6965321504509130878}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 06040c762767d48eabdcb7a46129cad1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  text: {fileID: 0}
+  dialogId: 14
 --- !u!1 &7433380133571167072
 GameObject:
   m_ObjectHideFlags: 0
@@ -1149,7 +1179,7 @@ GameObject:
   - component: {fileID: 4075245689993578172}
   - component: {fileID: 5524568960245609827}
   m_Layer: 5
-  m_Name: Sick_And_Injury_UI
+  m_Name: Treatment_UI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1233,7 +1263,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timeWait: {fileID: 8638976148150041921}
-  time: 0
   price: {fileID: 9001343928934157785}
   sickTypes:
   - {fileID: 21300000, guid: baa79bab0c1e0164598a8aa90a0b17bd, type: 3}

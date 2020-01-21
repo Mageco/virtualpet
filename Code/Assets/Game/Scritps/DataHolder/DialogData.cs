@@ -124,6 +124,19 @@ public class DialogData : BaseData
 		return result;
 	}
 
+	public int GetDialogPosition(int id)
+	{
+
+		for (int i = 0; i < dialogs.Length; i++)
+		{
+			if (dialogs[i].iD == id)
+			{
+				return i;
+			}
+		}
+
+		return -1;
+	}
 
 	public Dialog GetDialog(int id)
 	{

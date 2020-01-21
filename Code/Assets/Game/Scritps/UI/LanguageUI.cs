@@ -5,28 +5,23 @@ using UnityEngine.UI;
 
 public class LanguageUI : MonoBehaviour {
 
-	public Text[] texts;
-	public string[] vietnamese;
-	public string[] english;
+	public Text text;
+	public int dialogId = -1;
 
-	// Use this for initialization
-	void Start () {
+    private void Awake()
+    {
+		text = this.GetComponent<Text>();
+    }
+
+    // Use this for initialization
+    void Start () {
 		ChangeLanguage ();
 	}
 
 	public void ChangeLanguage()
 	{
-		if (MageManager.instance.GetLanguage()==0) {
-			for (int i = 0; i < texts.Length; i++) {
-				if (vietnamese [i] != null)
-					texts [i].text = vietnamese [i];
-			}
-		} else {
-			for (int i = 0; i < texts.Length; i++) {
-				if (english [i] != null)
-					texts [i].text = english [i];
-			}
-		}
+        if(text != null)
+		    text.text = DataHolder.GetDialog(dialogId).GetName(MageManager.instance.GetLanguage());
 	}
 	
 	// Update is called once per frame
