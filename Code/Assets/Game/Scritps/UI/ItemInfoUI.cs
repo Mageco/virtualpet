@@ -16,6 +16,7 @@ public class ItemInfoUI : MonoBehaviour
     public Text description;
 
     public Button buyButton;
+    public Button sellButton;
     public Text buttonText;
 
     bool isBusy = false;
@@ -73,7 +74,8 @@ public class ItemInfoUI : MonoBehaviour
         }
 
         if(isCommingSoon){
-            buyButton.interactable = false;
+            buyButton.gameObject.SetActive(false);
+
             buttonText.text = "Locked";
             price.text = d.buyPrice.ToString();
         }else{

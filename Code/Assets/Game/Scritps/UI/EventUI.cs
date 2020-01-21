@@ -26,7 +26,7 @@ public class EventUI : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
-        levelText.text = "Level " + (GameManager.instance.myPlayer.minigameLevels[gameId] + 1).ToString();
+        levelText.text = DataHolder.Dialog(27).GetName(MageManager.instance.GetLanguage()) +  " " + (GameManager.instance.myPlayer.minigameLevels[gameId] + 1).ToString();
         int n = (GameManager.instance.myPlayer.minigameLevels[0]+1) % 5;
 
         for (int i = 0; i < stars.Length; i++)
