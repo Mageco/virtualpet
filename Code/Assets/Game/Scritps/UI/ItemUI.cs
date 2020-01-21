@@ -61,7 +61,7 @@ public class ItemUI : MonoBehaviour
             buyButton.interactable = false;
             buttonText.text = "Locked";
             price.text = d.buyPrice.ToString();
-            buyButton.gameObject.SetActive(true);
+            buyButton.gameObject.SetActive(false);
             sellButton.gameObject.SetActive(false);
         }
         else{
@@ -167,7 +167,7 @@ public class ItemUI : MonoBehaviour
             buyButton.interactable = false;
             buttonText.text = "Locked";
             price.text = d.buyPrice.ToString();
-            buyButton.gameObject.SetActive(true);
+            buyButton.gameObject.SetActive(false);
             sellButton.gameObject.SetActive(false);
         }
         else{

@@ -22,7 +22,7 @@ public class ProfileUI : MonoBehaviour
     public void Load(int id){
         data = GameManager.instance.GetPet(id);
         petName.text = data.petName;
-        level.text = "Level " + data.level.ToString();
+        level.text = DataHolder.Dialog(27).GetName(MageManager.instance.GetLanguage()) + " " + data.level.ToString();
         float e = 10 * (data.level) + 10 * (data.level) * (data.level);
         exp.text = data.Exp.ToString("F0") + "/" + e.ToString("F0");
         expProgress.fillAmount = data.Exp/e;
@@ -41,7 +41,7 @@ public class ProfileUI : MonoBehaviour
 
     void Update(){
         petName.text = data.petName;
-        level.text = "Level " + data.level.ToString();
+        level.text = DataHolder.Dialog(27).GetName(MageManager.instance.GetLanguage()) + " " + data.level.ToString();
         float e = 10 * (data.level) + 10 * (data.level) * (data.level);
         exp.text = data.Exp.ToString("F0") + "/" + e.ToString("F0");
         expProgress.fillAmount = data.Exp/e;

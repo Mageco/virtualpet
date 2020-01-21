@@ -188,6 +188,7 @@ GameObject:
   - component: {fileID: 4048053353367869929}
   - component: {fileID: 866663597858755831}
   - component: {fileID: 451381047616175323}
+  - component: {fileID: 535983746}
   m_Layer: 5
   m_Name: Description (1)
   m_TagString: Untagged
@@ -253,7 +254,21 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1.2
-  m_Text: Let's find the below items
+  m_Text: quest21
+--- !u!114 &535983746
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 750183485871761275}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 06040c762767d48eabdcb7a46129cad1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  text: {fileID: 0}
+  dialogId: 16
 --- !u!1 &969050589701667775
 GameObject:
   m_ObjectHideFlags: 0
@@ -937,6 +952,7 @@ GameObject:
   - component: {fileID: 1914295595488520980}
   - component: {fileID: 3427350989648530500}
   - component: {fileID: 8040586476990765217}
+  - component: {fileID: 535983745}
   m_Layer: 5
   m_Name: Text
   m_TagString: Untagged
@@ -1002,7 +1018,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: ADOPT
+  m_Text: Adopt
 --- !u!114 &8040586476990765217
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1023,6 +1039,20 @@ MonoBehaviour:
   glintVertex: 0
   glintWidth: 0
   glintColor: {r: 0, g: 0, b: 0, a: 0}
+--- !u!114 &535983745
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6308043353290393506}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 06040c762767d48eabdcb7a46129cad1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  text: {fileID: 0}
+  dialogId: 40
 --- !u!1 &6786162766708391986
 GameObject:
   m_ObjectHideFlags: 0
@@ -1541,16 +1571,6 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
-    - target: {fileID: 2453487216217811902, guid: c62110110c40b44f99388ab920263d52,
-        type: 3}
-      propertyPath: m_SizeDelta.x
-      value: -20
-      objectReference: {fileID: 0}
-    - target: {fileID: 2453487216217811902, guid: c62110110c40b44f99388ab920263d52,
-        type: 3}
-      propertyPath: m_SizeDelta.y
-      value: -20
-      objectReference: {fileID: 0}
     - target: {fileID: 3291161140276130857, guid: c62110110c40b44f99388ab920263d52,
         type: 3}
       propertyPath: m_Name
@@ -1695,15 +1715,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c62110110c40b44f99388ab920263d52, type: 3}
---- !u!1 &7851142267081152670 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3291161140276130857, guid: c62110110c40b44f99388ab920263d52,
-    type: 3}
-  m_PrefabInstance: {fileID: 4708603389424381111}
-  m_PrefabAsset: {fileID: 0}
 --- !u!224 &5670470142340796304 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1146693152707027751, guid: c62110110c40b44f99388ab920263d52,
+    type: 3}
+  m_PrefabInstance: {fileID: 4708603389424381111}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &7851142267081152670 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3291161140276130857, guid: c62110110c40b44f99388ab920263d52,
     type: 3}
   m_PrefabInstance: {fileID: 4708603389424381111}
   m_PrefabAsset: {fileID: 0}
@@ -1818,16 +1838,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 2453487216217811902, guid: c62110110c40b44f99388ab920263d52,
-        type: 3}
-      propertyPath: m_SizeDelta.x
-      value: -20
-      objectReference: {fileID: 0}
-    - target: {fileID: 2453487216217811902, guid: c62110110c40b44f99388ab920263d52,
-        type: 3}
-      propertyPath: m_SizeDelta.y
-      value: -20
       objectReference: {fileID: 0}
     - target: {fileID: 3291161140276130857, guid: c62110110c40b44f99388ab920263d52,
         type: 3}

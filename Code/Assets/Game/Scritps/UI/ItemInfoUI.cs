@@ -74,24 +74,25 @@ public class ItemInfoUI : MonoBehaviour
         }
 
         if(isCommingSoon){
+            buyButton.interactable = false;
+            sellButton.gameObject.SetActive(false);
             buyButton.gameObject.SetActive(false);
-
             buttonText.text = "Locked";
             price.text = d.buyPrice.ToString();
         }else{
             if (state == ItemState.OnShop)
             {
-               buyButton.interactable = true;
-               buttonText.text = "Buy";
+               buyButton.gameObject.SetActive(true);
+               sellButton.gameObject.SetActive(false);
                price.text = d.buyPrice.ToString();
             }else if (state == ItemState.Equiped)
             {
-                buyButton.interactable = true;
-                buttonText.text = "Sell";
+                buyButton.gameObject.SetActive(false);
+                sellButton.gameObject.SetActive(true);
                 price.text = (d.buyPrice/2).ToString();
                 
                 if(DataHolder.GetItem(itemId).itemType == ItemType.Room && GameManager.instance.GetBuyItems(ItemType.Room).Count == 1){
-                    buyButton.interactable = false;
+                    sellButton.interactable = false;
                 }
             }
         }
@@ -226,21 +227,24 @@ public class ItemInfoUI : MonoBehaviour
 
         if(isCommingSoon){
             buyButton.interactable = false;
-            buttonText.text = "Locked";
+            buyButton.gameObject.SetActive(false);
+            sellButton.gameObject.SetActive(false);
             price.text = d.buyPrice.ToString();
         }else{
             if (state == ItemState.OnShop)
             {
+               buyButton.gameObject.SetActive(true);
+               sellButton.gameObject.SetActive(false);
                buyButton.interactable = true;
-               buttonText.text = "Buy";
                price.text = d.buyPrice.ToString();
             }else if (state == ItemState.Equiped)
             {
-                buyButton.interactable = true;
-                buttonText.text = "Sell";
+                buyButton.gameObject.SetActive(false);
+                sellButton.gameObject.SetActive(true);
                 price.text = (d.buyPrice/2).ToString();
-                if(GameManager.instance.GetBuyPets().Count == 1){
-                    buyButton.interactable = false;
+                if (GameManager.instance.GetBuyPets().Count == 1)
+                {
+                    sellButton.interactable = false;
                 }
             }
         }
