@@ -12,7 +12,7 @@ public class Minigame2 : Minigame
     public Text levelText;
     public GameObject guideUIPrefab;
     GuideUI guildUI;
-    
+    public Image timeProgress;
 
     public FishSpawner fishSpawner;
     public FishSpawner squirtSpawner;
@@ -135,6 +135,7 @@ public class Minigame2 : Minigame
         {
             float t = maxTime - time;
             timeText.text  = t.ToString("F0");
+            timeProgress.fillAmount = t / maxTime;
         }
     }
 

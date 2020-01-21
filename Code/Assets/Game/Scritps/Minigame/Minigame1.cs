@@ -19,7 +19,6 @@ public class Minigame1 : Minigame
     public GameObject guideUIPrefab;
     public GameObject hammerEffect;
 
-    public GameObject coinPopPrefab;
     public GameObject[] bonuses;
 
     GuideUI guildUI;
@@ -29,7 +28,6 @@ public class Minigame1 : Minigame
         chickenNumber.text = "";
         levelText.text = "Stage " + (gameLevel + 1).ToString();
         MageManager.instance.PlayMusicName("Minigame1",true);
-//        Debug.Log(live);
         if (gameLevel == 0)
             OnGuildPanel();
         else 
@@ -50,13 +48,6 @@ public class Minigame1 : Minigame
 
     }
 
-    void LoadPet(int id){
-        /*
-        GameManager.instance.GetPet(id).energy = GameManager.instance.GetActivePet().maxEnergy;
-        GameManager.instance.GetPet(id).Food = 0;
-        GameManager.instance.GetPet(id).Water = 0;
-        GameManager.instance.GetPetObject(id).actionType = ActionType.None;*/
-    }
 
     void Load(){
         int initNumber = 5;
@@ -198,40 +189,48 @@ public class Minigame1 : Minigame
             FoxController animal = hit[i].transform.GetComponent<FoxController>();
             if (animal != null)
             {
+                if(animal.state == AnimalState.Seek || animal.state == AnimalState.Run)
+                {
+                    number++;
+                }
                 animal.OnTap();
-                number++;
-                GameObject go = GameObject.Instantiate(coinPopPrefab);
-                go.transform.position = animal.transform.position + new Vector3(0, 0, -90);
             }
         }
 
+        int value = 0;
         if (number == 1)
         {
-            GameManager.instance.AddCoin(1);
+            value = 1;
             GameObject bonus = Instantiate(bonuses[0]);
             bonus.transform.position = pos + new Vector3(0, 2, -100);
             bonus.transform.localScale = new Vector3(3, 3, 1);
         }
         else if (number == 2)
         {
-            GameManager.instance.AddCoin(2);
+            value = 2;
             GameObject bonus = Instantiate(bonuses[1]);
             bonus.transform.position = pos + new Vector3(0, 2, -100);
             bonus.transform.localScale = new Vector3(3, 3, 1);
         }
         else if (number == 3)
         {
-            GameManager.instance.AddCoin(5);
+            value = 5;
             GameObject bonus = Instantiate(bonuses[2]);
             bonus.transform.position = pos + new Vector3(0, 2, -100);
             bonus.transform.localScale = new Vector3(3, 3, 1);
         }
         else if (number > 3)
         {
-            GameManager.instance.AddCoin(10);
+            value = 10;
             GameObject bonus = Instantiate(bonuses[3]);
             bonus.transform.position = pos + new Vector3(0, 2, -100);
             bonus.transform.localScale = new Vector3(3, 3, 1);
+        }
+
+        if(value > 0)
+        {
+            Minigame.instance.SpawnCoin(pos + new Vector3(0, 2, -1), value);
+            GameManager.instance.AddCoin(value);
         }
 
     }

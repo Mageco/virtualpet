@@ -25,7 +25,6 @@ public class HookItem : MonoBehaviour
     public Transform hookAnchor;
     public Transform rodAnchor;
     public LineRenderer line;
-    public GameObject coinPopPrefab;
     public GameObject timeGainPrefab;
     public GameObject[] bonuses;
     
@@ -55,7 +54,7 @@ public class HookItem : MonoBehaviour
         else if (state == HookState.Active)
         {
             this.transform.position += velocity * Time.deltaTime;
-            this.transform.rotation = Quaternion.Slerp(this.transform.rotation, targetRotation, Time.deltaTime * 5);
+            this.transform.rotation = Quaternion.Slerp(this.transform.rotation, targetRotation, Time.deltaTime * 20);
 
             if (!CheckPositionOutBound())
             {
@@ -98,6 +97,16 @@ public class HookItem : MonoBehaviour
         this.transform.rotation = originalRotation;
         bool isShock = false;
 
+        if(Minigame.instance.time > Minigame.instance.maxTime)
+        {
+            foreach (FishController fish in fishes)
+            {
+                fish.OnActive();
+            }
+            fishes.Clear();
+            return;
+        }
+
         foreach (FishController fish in fishes)
         {
             if(fish.fishType == FishType.JellyFish)
@@ -107,7 +116,7 @@ public class HookItem : MonoBehaviour
             {
                 Minigame.instance.time -= 5;
                 GameObject go = GameObject.Instantiate(timeGainPrefab);
-                go.transform.position = fish.transform.position + new Vector3(0, 0, -10);
+                go.transform.position = fish.transform.position + new Vector3(0, -0.5f, -10);
             }
         }
 
@@ -133,33 +142,31 @@ public class HookItem : MonoBehaviour
                     count += 10;
                     number++;
                 }
-                GameObject go = GameObject.Instantiate(coinPopPrefab);
-                go.transform.position = fish.transform.position + new Vector3(0, 0, -10);
                 fish.OnDeactive();
             }
 
-
+            int value = count;
             if (number == 1)
             {
-                GameManager.instance.AddCoin(1);
+                value += 1;
                 GameObject bonus = Instantiate(bonuses[0]);
                 bonus.transform.position = hookAnchor.position + new Vector3(0, 0, -10);
             }
             else if (number == 2)
             {
-                GameManager.instance.AddCoin(2);
+                value += 2;
                 GameObject bonus = Instantiate(bonuses[1]);
                 bonus.transform.position = hookAnchor.position + new Vector3(0, 0, -10);
             }
             else if (number == 3)
             {
-                GameManager.instance.AddCoin(5);
+                value += 5;
                 GameObject bonus = Instantiate(bonuses[2]);
                 bonus.transform.position = hookAnchor.position + new Vector3(0, 0, -10);
             }
             else if (number > 3)
             {
-                GameManager.instance.AddCoin(10);
+                value += 10;
                 GameObject bonus = Instantiate(bonuses[3]);
                 bonus.transform.position = hookAnchor.position + new Vector3(0, 0, -10);
             }
@@ -175,6 +182,12 @@ public class HookItem : MonoBehaviour
                 cat.Play("Idle", 0);
                 turtle.Play("Idle", 0);
                 parrot.Play("Idle", 0);
+            }
+
+            if(value > 0)
+            {
+                Minigame.instance.SpawnCoin(this.transform.position + new Vector3(0, 0, -10), value);
+                GameManager.instance.AddCoin(value);
             }
 
             GameManager.instance.AddCoin(count);
@@ -209,27 +222,27 @@ public class HookItem : MonoBehaviour
         parrot.Play("Shock", 0);
     }
 
-    public void OnTap()
+    public void OnTap(Vector3 pos)
     {
         if(state == HookState.Idle)
         {
-            StartCoroutine(OnThrow());
+            if(pos.y < 1.5f)
+                StartCoroutine(OnThrow(pos));
         }
     }
 
-    IEnumerator OnThrow()
+    IEnumerator OnThrow(Vector3 pos)
     {
+        target = pos;
         state = HookState.Active;
         cat.Play("Throw", 0);
         yield return new WaitForEndOfFrame();
         yield return new WaitForSeconds(cat.GetCurrentAnimatorStateInfo(0).length);
         cat.Play("Throw_Idle", 0);
+        yield return new WaitForEndOfFrame();
         body.SetActive(true);
         this.transform.position = hookAnchor.position;
         originalPosition = this.transform.position;
-        Vector3 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        pos.z = this.transform.position.z;
-        target = pos;
         Debug.Log(target);
         velocity = (target - this.transform.position).normalized;
         velocity.z = 0;
