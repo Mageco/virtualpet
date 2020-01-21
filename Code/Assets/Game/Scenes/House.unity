@@ -8830,6 +8830,7 @@ GameObject:
   - component: {fileID: 1380276007}
   - component: {fileID: 1380276009}
   - component: {fileID: 1380276008}
+  - component: {fileID: 1380276010}
   m_Layer: 0
   m_Name: New Text (1)
   m_TagString: Untagged
@@ -8859,9 +8860,7 @@ TextMesh:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1380276006}
-  m_Text: 'Chicken
-
-    Defend'
+  m_Text: Chicken Defend
   m_OffsetZ: 0
   m_CharacterSize: 0.13
   m_LineSpacing: 0.7
@@ -8913,6 +8912,20 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!114 &1380276010
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1380276006}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 72f28c78910cd4168973fe81abcbc157, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  text: {fileID: 0}
+  dialogId: 39
 --- !u!114 &1403070479 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 576910064762549869, guid: 1be5e2ab844b1be418df3fb0eb52b1ff,
@@ -22420,12 +22433,12 @@ PrefabInstance:
     - target: {fileID: 5453886026327393268, guid: 2690067ddedd64631953f52f26e327fb,
         type: 3}
       propertyPath: isWorkingOnline
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5453886026327393268, guid: 2690067ddedd64631953f52f26e327fb,
         type: 3}
       propertyPath: resetUserDataOnStart
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5453886026327393268, guid: 2690067ddedd64631953f52f26e327fb,
         type: 3}
