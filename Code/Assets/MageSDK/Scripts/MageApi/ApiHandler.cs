@@ -127,7 +127,7 @@ namespace MageApi {
 					//Debug.Log ("Response: " + www.text);
 					//File.AppendAllText (Application.dataPath + "/Images/result.txt", "\r\n" + www.text);
 					GenericResponse<TResult> result = BaseResponse.CreateFromJSON<GenericResponse<TResult>>(www.text);
-					if (result.status == 0) {
+					if (result != null && result.status == 0) {
 						//save cache to runtime
 						Debug.Log(result.cache.ToJson());
 						RuntimeParameters.GetInstance().SetParam (ApiSettings.API_CACHE, result.cache);

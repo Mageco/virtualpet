@@ -332,7 +332,7 @@ public class ItemInfoUI : MonoBehaviour
                 }
                 else if (state == ItemState.Have)
                 {
-                    
+                    UIManager.instance.EquipItem(itemId);
                 }
                 else
                 {

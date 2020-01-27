@@ -88,4 +88,16 @@ public class LosePanel : MonoBehaviour
         ES2.Save(startTime, "MinigameWait" + gameId.ToString());
         ES2.Save<int>(playCount, "MinigamePlayCount" + gameId.ToString());
     }
+
+    public void ShowAd()
+    {
+        if (gameId == 0)
+        {
+            RewardVideoAdManager.instance.ShowAd(RewardType.ChickenDefend);
+        }
+        else if (gameId == 1)
+        {
+            RewardVideoAdManager.instance.ShowAd(RewardType.FishingCat);
+        }
+    }
 }

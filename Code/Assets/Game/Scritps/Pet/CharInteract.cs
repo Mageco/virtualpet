@@ -69,8 +69,11 @@ public class CharInteract : MonoBehaviour
     {
         
         dragOffset = Vector3.zero;
-        //isTouch = false;
-        if (interactType == InteractType.Drag) {
+
+        if(interactType == InteractType.Touch)
+        {
+
+        }else if (interactType == InteractType.Drag) {
             interactType = InteractType.Drop;
         }else if(interactType == InteractType.Drop){
             interactType = InteractType.None;

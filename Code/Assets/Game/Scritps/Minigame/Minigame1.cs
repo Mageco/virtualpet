@@ -25,6 +25,7 @@ public class Minigame1 : Minigame
     float timeHit = 0;
     
     void Start(){
+        timeText.text = "";
         chickenNumber.text = "";
         levelText.text = DataHolder.Dialog(29).GetName(MageManager.instance.GetLanguage()) + " " + (gameLevel + 1).ToString();
         MageManager.instance.PlayMusicName("Minigame1",true);
@@ -117,7 +118,19 @@ public class Minigame1 : Minigame
     }
 
     protected override void Update(){
-        time += Time.deltaTime;
+        
+        
+
+
+        if (state == GameState.Run)
+        {
+            time += Time.deltaTime;
+            float t = maxTime - time;
+            float m = (int)(t/60);
+            float s = (int)(t - m*60);
+            timeText.text  = m.ToString("00") + ":" + s.ToString("00");
+        }
+
         if (time >= maxTime && state == GameState.Run)
         {
 
@@ -132,14 +145,6 @@ public class Minigame1 : Minigame
             {
                 OnLose();
             }
-        }
-
-        if (state == GameState.Run)
-        {
-            float t = maxTime - time;
-            float m = (int)(t/60);
-            float s = (int)(t - m*60);
-            timeText.text  = m.ToString("00") + ":" + s.ToString("00");
         }
 
         if (timeHit > 0.2f)

@@ -111,7 +111,7 @@ public class AchivementData : BaseData
 			{
 				if(showIDs)
 				{
-					Debug.Log(achivements[i].actionType);
+					//Debug.Log(achivements[i].actionType);
 					result[i] = achivements[i].iD.ToString() + ":" + achivements[i].languageItem[0].Name;
 				}
 				else

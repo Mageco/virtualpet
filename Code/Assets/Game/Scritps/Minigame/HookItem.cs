@@ -63,7 +63,7 @@ public class HookItem : MonoBehaviour
 
         }else if(state == HookState.Catched)
         {
-            velocity = Vector2.Lerp(velocity, Vector2.zero, Time.deltaTime * 5);
+            velocity = Vector2.Lerp(velocity, Vector2.zero, Time.deltaTime * 3);
             this.transform.position += velocity * Time.deltaTime;
             if(velocity.magnitude < 1f)
             {
@@ -97,6 +97,7 @@ public class HookItem : MonoBehaviour
         this.transform.rotation = originalRotation;
         bool isShock = false;
 
+
         if(Minigame.instance.time > Minigame.instance.maxTime)
         {
             foreach (FishController fish in fishes)
@@ -111,9 +112,11 @@ public class HookItem : MonoBehaviour
         {
             if(fish.fishType == FishType.JellyFish)
             {
+                MageManager.instance.PlaySoundName("Jellyfish", false);
                 isShock = true;
             }else if(fish.fishType == FishType.Squirt)
             {
+                MageManager.instance.PlaySoundName("whoosh_swish_med_03", false);
                 Minigame.instance.time -= 5;
                 GameObject go = GameObject.Instantiate(timeGainPrefab);
                 go.transform.position = fish.transform.position + new Vector3(0, -0.5f, -10);
@@ -148,24 +151,28 @@ public class HookItem : MonoBehaviour
             int value = count;
             if (number == 1)
             {
+                MageManager.instance.PlaySoundName("points_ticker_bonus_score_reward_single_01", false);
                 value += 1;
                 GameObject bonus = Instantiate(bonuses[0]);
                 bonus.transform.position = hookAnchor.position + new Vector3(0, 0, -10);
             }
             else if (number == 2)
             {
+                MageManager.instance.PlaySoundName("points_ticker_bonus_score_reward_single_02", false);
                 value += 2;
                 GameObject bonus = Instantiate(bonuses[1]);
                 bonus.transform.position = hookAnchor.position + new Vector3(0, 0, -10);
             }
             else if (number == 3)
             {
+                MageManager.instance.PlaySoundName("points_ticker_bonus_score_reward_single_04", false);
                 value += 5;
                 GameObject bonus = Instantiate(bonuses[2]);
                 bonus.transform.position = hookAnchor.position + new Vector3(0, 0, -10);
             }
             else if (number > 3)
             {
+                MageManager.instance.PlaySoundName("points_ticker_bonus_score_reward_single_06", false);
                 value += 10;
                 GameObject bonus = Instantiate(bonuses[3]);
                 bonus.transform.position = hookAnchor.position + new Vector3(0, 0, -10);
@@ -188,6 +195,7 @@ public class HookItem : MonoBehaviour
             {
                 Minigame.instance.SpawnCoin(this.transform.position + new Vector3(0, 0, -10), value);
                 GameManager.instance.AddCoin(value);
+                
             }
 
             GameManager.instance.AddCoin(count);
@@ -233,12 +241,16 @@ public class HookItem : MonoBehaviour
 
     IEnumerator OnThrow(Vector3 pos)
     {
+        MageManager.instance.PlaySoundName("Drag", false);
+        
+        
         target = pos;
         state = HookState.Active;
         cat.Play("Throw", 0);
         yield return new WaitForEndOfFrame();
         yield return new WaitForSeconds(cat.GetCurrentAnimatorStateInfo(0).length);
         cat.Play("Throw_Idle", 0);
+        MageManager.instance.PlaySoundName("Water_Sound01", false);
         yield return new WaitForEndOfFrame();
         body.SetActive(true);
         this.transform.position = hookAnchor.position;

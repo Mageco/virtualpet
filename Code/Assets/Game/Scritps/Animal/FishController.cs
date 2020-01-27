@@ -113,6 +113,7 @@ public class FishController : MonoBehaviour
         //if(iTween.Check)
         iTween.Stop(this.gameObject);
         col.enabled = false;
+        MageManager.instance.PlaySoundName("Collect_Item", false);
     }
 
     public void OnDeactive()

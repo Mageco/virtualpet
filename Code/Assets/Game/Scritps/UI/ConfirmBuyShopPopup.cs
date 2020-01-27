@@ -34,14 +34,14 @@ public class ConfirmBuyShopPopup : MonoBehaviour
         replaceText.GetComponent<Text>().text = DataHolder.Dialog(14).GetName(MageManager.instance.GetLanguage()) + " ";
 
         if (isBuy){
-            Item replaceItem = GameManager.instance.GetEquipedItem(d.itemType);
-            question.text = DataHolder.Dialog(3).GetDescription(MageManager.instance.GetLanguage()) + " ";
+            //Item replaceItem = GameManager.instance.GetEquipedItem(d.itemType);
+            //question.text = DataHolder.Dialog(3).GetDescription(MageManager.instance.GetLanguage()) + " ";
             
-            if(replaceItem == null || d.itemType == ItemType.Toy)
-            {
+            //if(replaceItem == null || d.itemType == ItemType.Toy)
+            //{
                 priceText.text = d.buyPrice.ToString();
                 replacePanel.SetActive(false);
-            }else{
+            /*}else{
                 
                 itemReplaceId = replaceItem.iD;
                 priceText.text = (d.buyPrice - replaceItem.buyPrice/2).ToString();
@@ -50,7 +50,7 @@ public class ConfirmBuyShopPopup : MonoBehaviour
                 string url1 = replaceItem.iconUrl.Replace("Assets/Game/Resources/", "");
                 url1 = url1.Replace(".png", "");
                 replaceIcon.sprite = Resources.Load<Sprite>(url1) as Sprite;
-            }
+            }*/
             
 
         }else{

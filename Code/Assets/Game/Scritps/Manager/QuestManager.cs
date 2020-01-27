@@ -53,6 +53,7 @@ public class QuestManager : MonoBehaviour
 
     void StartQuest()
     {
+        CheckQuest();
         if (!isComplete)
         {
             LoadQuestObject();
@@ -64,6 +65,7 @@ public class QuestManager : MonoBehaviour
 
     void LoadQuestObject()
     {
+        
         isReward = false;
         isReplay = false;
         delayTime = 2;
@@ -169,7 +171,7 @@ public class QuestManager : MonoBehaviour
        // if(!isComplete)
         OnQuestNotification();
         if(GameManager.instance.myPlayer.questId != 0)
-            yield return new WaitForSeconds(3);
+            yield return new WaitForSeconds(2);
         if (TutorialManager.instance != null)
             TutorialManager.instance.StartQuest();
         if(GameManager.instance.myPlayer.questId == 0)
@@ -299,7 +301,7 @@ public class QuestManager : MonoBehaviour
             return;
 
         if (GameManager.instance.myPlayer.questId == 0) {
-            if (GameManager.instance.GetAchivement(1) >= 1)
+            if(GameManager.instance.GetAchivement(1) >= 1 || ItemManager.instance.GetItemChildObject(ItemType.Food).GetComponent<FoodBowlItem>().foodAmount >= ItemManager.instance.GetItemChildObject(ItemType.Food).GetComponent<FoodBowlItem>().maxfoodAmount - 2)
             {
                 isComplete = true;
             }
@@ -316,7 +318,7 @@ public class QuestManager : MonoBehaviour
                 isComplete = true;
             }
         } else if (GameManager.instance.myPlayer.questId == 3) {
-            if (GameManager.instance.GetAchivement(2) >= 1)
+            if (GameManager.instance.GetAchivement(2) >= 1 || ItemManager.instance.GetItemChildObject(ItemType.Drink).GetComponent<DrinkBowlItem>().foodAmount >= ItemManager.instance.GetItemChildObject(ItemType.Drink).GetComponent<DrinkBowlItem>().maxfoodAmount - 2)
             {
                 isComplete = true;
             }
@@ -426,6 +428,7 @@ public class QuestManager : MonoBehaviour
         }
         else if (GameManager.instance.myPlayer.questId == 19)
         {
+            /*
             bool isOk = true;
             foreach(Pet p in GameManager.instance.GetPets())
             {
@@ -433,8 +436,8 @@ public class QuestManager : MonoBehaviour
                 {
                     isOk = false;
                 }
-            }
-            if (isOk)
+            }*/
+            if (GameManager.instance.GetActivePet().actionType == ActionType.OnGarden)
             {
                 isComplete = true;
             }

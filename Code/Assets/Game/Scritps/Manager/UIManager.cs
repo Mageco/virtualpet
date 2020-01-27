@@ -178,6 +178,13 @@ public class UIManager : MonoBehaviour
             shopPanel.Close();
     }
 
+    public void EquipItem(int itemId)
+    {
+        GameManager.instance.EquipItem(itemId);
+        if (shopPanel != null)
+            shopPanel.ReLoad();
+    }
+
     public void SellItem(int itemID){
         GameManager.instance.SellItem(itemID);
         if (shopPanel != null)

@@ -518,13 +518,13 @@ public class TutorialManager : MonoBehaviour
                 blackScreenUI.SetActive(false);
                 handClickUI.SetActive(false);
                 UIManager.instance.BuyItem(1);
-                blackScreenUI.SetActive(true);
-                GameObject go = UIManager.instance.shopButton;
-                AddSorting(go);
-                step = 4;
+                //blackScreenUI.SetActive(true);
+                //GameObject go = UIManager.instance.shopButton;
+                //AddSorting(go);
+                //step = 4;
             }
         }
-        else
+        /*else
         {
             if (step == 0)
                 step = 4;
@@ -573,7 +573,7 @@ public class TutorialManager : MonoBehaviour
                     step = 8;
                 }
             }
-        }
+        }*/
         
         
     }
@@ -631,6 +631,7 @@ public class TutorialManager : MonoBehaviour
 
     IEnumerator Quest0()
     {
+        /*
         blackScreenUI.GetComponent<Image>().color = new Color(0.2f, 0.2f, 0.2f, 0);
         blackScreenUI.SetActive(true);
         UIManager.instance.OnPetCollectionPanel();
@@ -643,7 +644,8 @@ public class TutorialManager : MonoBehaviour
         UIManager.instance.petCollectionPanel.Close();
         blackScreenUI.GetComponent<Image>().color = new Color(0.2f, 0.2f, 0.2f, 0.7f);
         blackScreenUI.SetActive(false);
-
+        */
+        yield return new WaitForSeconds(2);
         UIManager.instance.OnQuestNotificationPopup(DataHolder.Dialog(0).GetDescription(MageManager.instance.GetLanguage()));
 
         FoodBowlItem item = FindObjectOfType<FoodBowlItem>();
@@ -657,7 +659,6 @@ public class TutorialManager : MonoBehaviour
             handClick.transform.position = item.transform.position + new Vector3(0, 0, -1000);
             handClick.GetComponent<Animator>().Play("Click", 0);
         }
-           
     }
 
     protected virtual IEnumerator HoldToBath()
@@ -672,15 +673,16 @@ public class TutorialManager : MonoBehaviour
             handClick.SetActive(true);
             handClick.transform.position = pet.transform.position + new Vector3(0, 3, -10);
             handClick.GetComponent<Animator>().Play("Hold", 0);
-
+            Vector3 holdPosition = ItemManager.instance.GetItemChildObject(ItemType.Bath).transform.position + new Vector3(0, 15, 0);
             pet.target = pet.transform.position;
-            while (Vector2.Distance(pet.transform.position, dropPosition.position) > 1)
+            while (Vector2.Distance(pet.transform.position, holdPosition) > 2f)
             {
                 pet.target = Vector3.Lerp(pet.target, dropPosition.position, Time.deltaTime);
                 handClick.transform.position = pet.transform.position + new Vector3(0, 3, -10);
                 yield return new WaitForEndOfFrame();
             }
             handClick.SetActive(false);
+            yield return new WaitForEndOfFrame();
             pet.charInteract.interactType = InteractType.Drop;
         }
        
@@ -759,8 +761,8 @@ public class TutorialManager : MonoBehaviour
         handClick.GetComponent<Animator>().Play("Hold", 0);
 
         pet.target = pet.transform.position;
-        Vector3 holdPosition = ItemManager.instance.GetItemChildObject(ItemType.Bed).transform.position + new Vector3(0, 14.5f, 0);
-        while (Vector2.Distance(pet.transform.position, holdPosition) > 1)
+        Vector3 holdPosition = pet.transform.position + new Vector3(0, 15f, 0);
+        while (Vector2.Distance(pet.transform.position, holdPosition) > 3)
         {
             pet.target = Vector3.Lerp(pet.target, holdPosition, Time.deltaTime);
             handClick.transform.position = pet.transform.position + new Vector3(0, 3, -10);
@@ -776,8 +778,8 @@ public class TutorialManager : MonoBehaviour
         handClick.SetActive(false);
         pet.charInteract.interactType = InteractType.Drop;
         blackScreen.SetActive(false);
-        UIManager.instance.OnQuestNotificationPopup(DataHolder.Dialog(2).GetDescription(MageManager.instance.GetLanguage()));
-        StartCoroutine(HoldCatToDoor());
+        //UIManager.instance.OnQuestNotificationPopup(DataHolder.Dialog(2).GetDescription(MageManager.instance.GetLanguage()));
+        //StartCoroutine(HoldCatToDoor());
     }
 
     protected virtual IEnumerator HoldCatToDoor()
@@ -843,7 +845,14 @@ public class TutorialManager : MonoBehaviour
             handClick.GetComponent<Animator>().Play("Hold", 0);
 
             pet.target = pet.transform.position;
-            Vector3 holdPosition = ItemManager.instance.GetItem(ItemType.Bath).transform.position + new Vector3(0, -2, 0);
+            Vector3 holdPosition = pet.transform.position + new Vector3(0, 5 , 0);
+            while (Vector2.Distance(pet.transform.position, holdPosition) > 2)
+            {
+                pet.target = Vector3.Lerp(pet.target, holdPosition, Time.deltaTime);
+                handClick.transform.position = pet.transform.position + new Vector3(0, 3, -10);
+                yield return new WaitForEndOfFrame();
+            }
+            holdPosition = ItemManager.instance.GetItem(ItemType.Bath).transform.position + new Vector3(0, -2, 0);
             while (Vector2.Distance(pet.transform.position, holdPosition) > 2)
             {
                 pet.target = Vector3.Lerp(pet.target, holdPosition, Time.deltaTime);

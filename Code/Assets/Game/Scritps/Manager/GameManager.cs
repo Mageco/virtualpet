@@ -424,8 +424,13 @@ public class GameManager : MonoBehaviour
         foreach(PlayerItem item in myPlayer.items){
             if(item.itemId == id){
                 item.state = ItemState.Equiped;
+            }else if(DataHolder.GetItem(id).itemType == DataHolder.GetItem(item.itemId).itemType)
+            {
+                item.state = ItemState.Have;
             }
         }
+
+        
         
         if(ItemManager.instance != null && DataHolder.GetItem(id).itemType != ItemType.Coin && DataHolder.GetItem(id).itemType != ItemType.Diamond)
             ItemManager.instance.EquipItem();
@@ -642,9 +647,14 @@ public class GameManager : MonoBehaviour
         
         AddItem(17);
         AddItem(7);
-        //AddItem(8);
+        AddItem(8);
+        AddItem(4);
         AddItem(41);
-
+        AddItem(58);
+        AddItem(59);
+        AddItem(11);
+        AddItem(2);
+        AddItem(13);
 
         AddPet(0);
         

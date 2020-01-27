@@ -19,15 +19,16 @@ public class Minigame2 : Minigame
     public FishSpawner jellyFishSpawner;
     public FishSpawner yellowFishSpawner;
     public FishSpawner specialFishSpawner;
+    public FishSpawner rusbishFishSpawner;
 
-    
 
 
     void Start(){
+        timeText.text = "";
         fishNumber.text = "";
         levelText.text = DataHolder.Dialog(29).GetName(MageManager.instance.GetLanguage()) + " " + (gameLevel + 1).ToString();
-        MageManager.instance.PlayMusicName("Minigame1",true);
-//        Debug.Log(live);
+        MageManager.instance.PlayMusicName("Minigame2", true);
+        //        Debug.Log(live);
         if (gameLevel == 0)
             OnGuildPanel();
         else 
@@ -76,7 +77,9 @@ public class Minigame2 : Minigame
         jellyFishSpawner.maxNumber = 1 + gameLevel / 3;
         yellowFishSpawner.maxNumber = 0;
         specialFishSpawner.maxNumber = 0;
-        
+        rusbishFishSpawner.maxNumber = 1 + gameLevel / 10;
+
+
         if (gameLevel > 0 && gameLevel % 5  == 0)
         {
             yellowFishSpawner.maxNumber = gameLevel/5;
@@ -93,6 +96,7 @@ public class Minigame2 : Minigame
         jellyFishSpawner.Spawn();
         yellowFishSpawner.Spawn();
         specialFishSpawner.Spawn();
+        rusbishFishSpawner.Spawn();
     } 
 
     public override void UpdateLive(){
@@ -114,7 +118,17 @@ public class Minigame2 : Minigame
     }
 
     protected override void Update(){
-        time += Time.deltaTime;
+
+       
+
+        if (state == GameState.Run)
+        {
+            time += Time.deltaTime;
+            float t = maxTime - time;
+            timeText.text  = t.ToString("F0");
+            timeProgress.fillAmount = t / maxTime;
+        }
+
         if (time >= maxTime && state == GameState.Run)
         {
 
@@ -129,13 +143,6 @@ public class Minigame2 : Minigame
             {
                 OnLose();
             }
-        }
-
-        if (state == GameState.Run)
-        {
-            float t = maxTime - time;
-            timeText.text  = t.ToString("F0");
-            timeProgress.fillAmount = t / maxTime;
         }
     }
 

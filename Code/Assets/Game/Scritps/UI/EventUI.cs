@@ -27,7 +27,7 @@ public class EventUI : MonoBehaviour
     void Awake()
     {
         levelText.text = DataHolder.Dialog(27).GetName(MageManager.instance.GetLanguage()) +  " " + (GameManager.instance.myPlayer.minigameLevels[gameId] + 1).ToString();
-        int n = (GameManager.instance.myPlayer.minigameLevels[0]+1) % 5;
+        int n = (GameManager.instance.myPlayer.minigameLevels[gameId]+1) % 5;
 
         for (int i = 0; i < stars.Length; i++)
         {
@@ -99,6 +99,18 @@ public class EventUI : MonoBehaviour
         if (UIManager.instance.eventPanel != null)
         {
             UIManager.instance.eventPanel.Close();
+        }
+    }
+
+    public void ShowAd()
+    {
+        if (gameId == 0)
+        {
+            RewardVideoAdManager.instance.ShowAd(RewardType.ChickenDefend);
+        }
+        else if(gameId == 1)
+        {
+            RewardVideoAdManager.instance.ShowAd(RewardType.FishingCat);
         }
     }
 

@@ -22,6 +22,7 @@ public class ItemManager : MonoBehaviour
     public GameObject coinPrefab;
 
     public GameObject dirtyPrefab;
+    public GameObject chestPrefab;
     public GameObject healthEffectPrefab;
     public GameObject guidePrefab;
     float time = 0;
@@ -552,6 +553,13 @@ public class ItemManager : MonoBehaviour
         Vector3 pos = GetRandomPoint(PointType.Patrol).position + new Vector3(Random.Range(-1, 1), Random.Range(-1, 1), 0);
         pos.z = 990;
         GameObject go = Instantiate(dirtyPrefab, pos, Quaternion.identity);
+    }
+
+    public void SpawnChest()
+    {
+        Vector3 pos = GetRandomPoint(PointType.Garden).position + new Vector3(Random.Range(-1, 1), Random.Range(-1, 1), 0);
+        pos.z = pos.y * 10;
+        GameObject go = Instantiate(chestPrefab, pos, Quaternion.identity);
     }
 
     void CheckItemData(){
