@@ -162,6 +162,8 @@ public class ShopPanel : MonoBehaviour
     }
 
     void LoadItem(Item data){
+        if (!data.isAvailable)
+            return;
         GameObject go = Instantiate(itemUIPrefab);
         go.transform.SetParent(this.anchor);
         go.transform.localScale = Vector3.one;
