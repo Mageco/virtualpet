@@ -155,6 +155,7 @@ public class RewardVideoAdManager : MonoBehaviour {
 
 	public void ShowAd(RewardType type)
 	{
+		MageManager.instance.OnNotificationPopup("Ad requested");
 		if (rewardBasedVideo.IsLoaded())
 		{
 			rewardType = type;
