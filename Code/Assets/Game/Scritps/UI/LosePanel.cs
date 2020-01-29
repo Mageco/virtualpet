@@ -38,6 +38,17 @@ public class LosePanel : MonoBehaviour
             ES2.Save(startTime, "MinigameWait" + gameId.ToString());
             ES2.Save<int>(playCount, "MinigamePlayCount" + gameId.ToString());
         }
+
+        if (playCount <= 0)
+        {
+            replayButton.SetActive(false);
+            adButton.SetActive(true);
+        }
+        else
+        {
+            replayButton.SetActive(true);
+            adButton.SetActive(false);
+        }
     }
 
     public void Load(int id){
