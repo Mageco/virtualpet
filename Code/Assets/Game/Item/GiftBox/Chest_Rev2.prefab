@@ -12035,6 +12035,8 @@ GameObject:
   m_Component:
   - component: {fileID: 9171719627063360563}
   - component: {fileID: 1074789907}
+  - component: {fileID: 8543737508747753649}
+  - component: {fileID: 6670564916238544065}
   m_Layer: 0
   m_Name: Chest_Rev2
   m_TagString: Untagged
@@ -12079,6 +12081,47 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &8543737508747753649
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9171719627063360562}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 70cf52c32f8a14ee7a50f2cef7d8c864, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemSaveDataType: 8
+  id: 0
+  valueText: {fileID: 2067528353}
+--- !u!61 &6670564916238544065
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9171719627063360562}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0.8}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 3, y: 2}
+  m_EdgeRadius: 0
 --- !u!1 &9171719627365220801
 GameObject:
   m_ObjectHideFlags: 0

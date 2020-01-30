@@ -13,6 +13,7 @@ public class ChestItem : MonoBehaviour
     int value = 0;
     Animator animator;
     bool isActive = false;
+    public TextMesh valueText;
 
     void Awake()
     {
@@ -78,20 +79,27 @@ public class ChestItem : MonoBehaviour
 
     IEnumerator ActiveCoroutine()
     {
+        valueText.text = "+" + value.ToString();
         MageManager.instance.PlaySoundName("Tinerbell", false);
-        animator.Play("Active");
-        yield return new WaitForEndOfFrame();
-        yield return new WaitForSeconds(animator.GetCurrentAnimatorStateInfo(0).length);
-        if(priceType == PriceType.Coin)
+        if (priceType == PriceType.Coin)
         {
+            animator.Play("Active_Coin",0);
             GameManager.instance.AddCoin(value);
-        }else if(priceType == PriceType.Happy)
+        }
+        else if (priceType == PriceType.Happy)
         {
+            animator.Play("Active_Happy",0);
             GameManager.instance.AddHappy(value);
-        }else if(priceType == PriceType.Diamond)
+        }
+        else if (priceType == PriceType.Diamond)
         {
+            animator.Play("Active_Diamond", 0);
             GameManager.instance.AddDiamond(value);
         }
+        
+        
+        yield return new WaitForEndOfFrame();
+        yield return new WaitForSeconds(animator.GetCurrentAnimatorStateInfo(0).length);
         Destroy(this.gameObject);
     }
 
