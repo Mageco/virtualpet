@@ -102,7 +102,8 @@ public class Minigame2 : Minigame
     public override void UpdateLive(){
         live = 0;
         for(int i=0;i<fishs.Length;i++){
-            if(fishs[i].state == FishState.DeActive && fishs[i].fishType == FishType.Fish){
+            if(fishs[i].state == FishState.DeActive && (fishs[i].fishType == FishType.Fish || fishs[i].fishType == FishType.YellowFish || fishs[i].fishType == FishType.SpecialFish))
+            {
                 live ++;
             }
         }
