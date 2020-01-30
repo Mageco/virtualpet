@@ -20,9 +20,9 @@ public class RewardVideoAdManager : MonoBehaviour {
 #endif
 
     #if UNITY_ANDROID
-	//string adUnitId = "ca-app-pub-6818802678275174/9014893744";
+	string adUnitId = "ca-app-pub-6818802678275174/9014893744";
     //Test unit
-	string adUnitId = "ca-app-pub-3940256099942544/5224354917";
+	//string adUnitId = "ca-app-pub-3940256099942544/5224354917";
 	#elif UNITY_IPHONE
 	string adUnitId = "ca-app-pub-6818802678275174/1271203231";
 	#else
@@ -84,37 +84,37 @@ public class RewardVideoAdManager : MonoBehaviour {
 	public void HandleRewardBasedVideoLoaded(object sender, EventArgs args)
 	{
 		Debug.Log("HandleRewardBasedVideoLoaded event received");
-		MageEngine.instance.OnEvent(Mage.Models.Application.MageEventType.VideoAdLoaded);
+		MageEngine.instance.OnEvent(Mage.Models.Application.MageEventType.VideoAdLoaded,rewardType.ToString());
 	}
 
 	public void HandleRewardBasedVideoFailedToLoad(object sender, AdFailedToLoadEventArgs args)
 	{
 		Debug.Log("HandleRewardBasedVideoFailedToLoad event received with message: "+ args.Message);
-		MageEngine.instance.OnEvent(Mage.Models.Application.MageEventType.VideoAdFailtoLoaded);
+		MageEngine.instance.OnEvent(Mage.Models.Application.MageEventType.VideoAdFailtoLoaded, rewardType.ToString());
 	}
 
 	public void HandleRewardBasedVideoOpened(object sender, EventArgs args)
 	{
 		Debug.Log("HandleRewardBasedVideoOpened event received");
-		MageEngine.instance.OnEvent(Mage.Models.Application.MageEventType.VideoAdOpened);
+		MageEngine.instance.OnEvent(Mage.Models.Application.MageEventType.VideoAdOpened, rewardType.ToString());
 	}
 
 	public void HandleRewardBasedVideoStarted(object sender, EventArgs args)
 	{
 		Debug.Log("HandleRewardBasedVideoStarted event received");
-		MageEngine.instance.OnEvent(Mage.Models.Application.MageEventType.VideoAdStarted);
+		MageEngine.instance.OnEvent(Mage.Models.Application.MageEventType.VideoAdStarted, rewardType.ToString());
 	}
 
 	public void HandleRewardBasedVideoClosed(object sender, EventArgs args)
 	{
 		Debug.Log("HandleRewardBasedVideoClosed event received");
-		MageEngine.instance.OnEvent(Mage.Models.Application.MageEventType.VideoAdClosed);
+		MageEngine.instance.OnEvent(Mage.Models.Application.MageEventType.VideoAdClosed, rewardType.ToString());
 		RequestRewardBasedVideo ();
 	}
 
 	public void HandleRewardBasedVideoRewarded(object sender, Reward args)
 	{
-		MageEngine.instance.OnEvent(Mage.Models.Application.MageEventType.VideoAdRewarded);
+		MageEngine.instance.OnEvent(Mage.Models.Application.MageEventType.VideoAdRewarded, rewardType.ToString());
 		if (rewardType == RewardType.Chest)
 		{
 			GameManager.instance.AddCoin(UnityEngine.Random.Range(10,20));
