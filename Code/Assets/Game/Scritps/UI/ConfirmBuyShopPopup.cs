@@ -41,6 +41,8 @@ public class ConfirmBuyShopPopup : MonoBehaviour
             //{
                 priceText.text = d.buyPrice.ToString();
                 replacePanel.SetActive(false);
+            question.text = DataHolder.Dialog(3).GetDescription(MageManager.instance.GetLanguage()) + " ";
+           
             /*}else{
                 
                 itemReplaceId = replaceItem.iD;
@@ -51,9 +53,10 @@ public class ConfirmBuyShopPopup : MonoBehaviour
                 url1 = url1.Replace(".png", "");
                 replaceIcon.sprite = Resources.Load<Sprite>(url1) as Sprite;
             }*/
-            
 
-        }else{
+
+        }
+        else{
             question.text = DataHolder.Dialog(4).GetDescription(MageManager.instance.GetLanguage()) + " ";
             replacePanel.SetActive(false);
             priceText.text = (d.buyPrice/2).ToString();

@@ -631,6 +631,8 @@ public class TutorialManager : MonoBehaviour
 
     IEnumerator Quest0()
     {
+        blackScreen.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, 0);
+        blackScreen.SetActive(true);
         /*
         blackScreenUI.GetComponent<Image>().color = new Color(0.2f, 0.2f, 0.2f, 0);
         blackScreenUI.SetActive(true);
@@ -649,7 +651,7 @@ public class TutorialManager : MonoBehaviour
         UIManager.instance.OnQuestNotificationPopup(DataHolder.Dialog(0).GetDescription(MageManager.instance.GetLanguage()));
 
         FoodBowlItem item = FindObjectOfType<FoodBowlItem>();
-        if (item != null && item.foodAmount < item.maxfoodAmount - 2)
+        if (GameManager.instance.myPlayer.questId == 0 && item != null && item.foodAmount < item.maxfoodAmount - 2)
         {
             blackScreen.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, 0);
             blackScreen.SetActive(true);
@@ -675,7 +677,7 @@ public class TutorialManager : MonoBehaviour
             handClick.GetComponent<Animator>().Play("Hold", 0);
             Vector3 holdPosition = ItemManager.instance.GetItemChildObject(ItemType.Bath).transform.position + new Vector3(0, 15, 0);
             pet.target = pet.transform.position;
-            while (Vector2.Distance(pet.transform.position, holdPosition) > 2f)
+            while (Vector2.Distance(pet.transform.position, holdPosition) > 1f)
             {
                 pet.target = Vector3.Lerp(pet.target, dropPosition.position, Time.deltaTime);
                 handClick.transform.position = pet.transform.position + new Vector3(0, 3, -10);
