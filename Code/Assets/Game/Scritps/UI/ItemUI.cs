@@ -11,6 +11,7 @@ public class ItemUI : MonoBehaviour
     public Text price;
     public Button buyButton;
     public Button sellButton;
+    public Text usedText;
     public GameObject coinIcon;
     public GameObject diamonIcon;
     public GameObject moneyIcon;
@@ -43,6 +44,7 @@ public class ItemUI : MonoBehaviour
         url = url.Replace(".png", "");
         icon.sprite = Resources.Load<Sprite>(url) as Sprite;
         iconType.sprite = Resources.Load<Sprite>("Icons/ItemType/"+d.itemType.ToString());
+        usedText.gameObject.SetActive(false);
 
         if (GameManager.instance.IsEquipItem(d.iD))
         {
@@ -73,9 +75,10 @@ public class ItemUI : MonoBehaviour
                sellButton.gameObject.SetActive(false);
             }else if (state == ItemState.Equiped)
             {
-                sellButton.gameObject.SetActive(true);
+                sellButton.gameObject.SetActive(false);
                 sellButton.interactable = false;
                 buyButton.gameObject.SetActive(false);
+                usedText.gameObject.SetActive(true);
                 price.gameObject.SetActive(false);
                 this.GetComponent<Image>().color = new Color(251f / 256, 134f / 256, 58f / 256);
                 

@@ -37,6 +37,9 @@ public class ItemManager : MonoBehaviour
     float maxTimeDirty = 200;
     int fruitId = 0;
 
+    float timeChest = 0;
+    float maxTimeChest = 10;
+
     void Awake()
     {
         if (instance == null)
@@ -106,7 +109,18 @@ public class ItemManager : MonoBehaviour
             timeDirty += Time.deltaTime;
         }
 
-        
+        if (timeChest > maxTimeChest)
+        {
+            SpawnChest();
+            timeChest = 0;
+            maxTimeChest = Random.Range(100, 200);
+        }
+        else
+        {
+            timeChest += Time.deltaTime;
+        }
+
+
     }
 
     #region  Camera

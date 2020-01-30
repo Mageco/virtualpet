@@ -20,7 +20,6 @@ public class WinPanel : MonoBehaviour
     void Start()
     {
         MageManager.instance.PlaySoundName("Win", false);
-
     }
 
     Animator animator;
@@ -46,6 +45,11 @@ public class WinPanel : MonoBehaviour
 
             ES2.Save(startTime, "MinigameWait" + gameId.ToString());
             ES2.Save<int>(playCount, "MinigamePlayCount" + gameId.ToString());
+        }
+
+        if (ES2.Exists("MinigamePlayCount" + gameId.ToString()))
+        {
+            playCount = ES2.Load<int>("MinigamePlayCount" + gameId.ToString());
         }
 
         if (playCount <= 0)

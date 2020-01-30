@@ -8,8 +8,9 @@ using MageSDK.Client;
 public class RewardVideoAdManager : MonoBehaviour {
 
 	public static RewardVideoAdManager instance;
-	public RewardType rewardType = RewardType.Chest;
+	public RewardType rewardType = RewardType.ChickenDefend;
 	RewardBasedVideoAd rewardBasedVideo;
+	ChestItem chestItem;
 
 	#if UNITY_ANDROID
 	string appId = "ca-app-pub-6818802678275174~2905900525";
@@ -115,10 +116,7 @@ public class RewardVideoAdManager : MonoBehaviour {
 	public void HandleRewardBasedVideoRewarded(object sender, Reward args)
 	{
 		MageEngine.instance.OnEvent(Mage.Models.Application.MageEventType.VideoAdRewarded, rewardType.ToString());
-		if (rewardType == RewardType.Chest)
-		{
-			GameManager.instance.AddCoin(UnityEngine.Random.Range(10,20));
-		}else if(rewardType == RewardType.ChickenDefend)
+        if(rewardType == RewardType.ChickenDefend)
         {
 			if (ES2.Exists("MinigamePlayCount0"))
 			{
@@ -135,6 +133,10 @@ public class RewardVideoAdManager : MonoBehaviour {
 				playCount++;
 				ES2.Save<int>(playCount, "MinigamePlayCount1");
 			}
+		}else if(rewardType == RewardType.Chest)
+        {
+			if (chestItem != null)
+				chestItem.OnActive();
 		}
 
 	}
@@ -155,11 +157,22 @@ public class RewardVideoAdManager : MonoBehaviour {
 
 	public void ShowAd(RewardType type)
 	{
-		MageManager.instance.OnNotificationPopup("Ad requested");
+		//MageManager.instance.OnNotificationPopup("Ad requested");
 		if (rewardBasedVideo.IsLoaded())
 		{
 			rewardType = type;
 			rewardBasedVideo.Show();
+		}
+	}
+
+	public void ShowAd(RewardType type,ChestItem item)
+	{
+		//MageManager.instance.OnNotificationPopup("Ad requested");
+		if (rewardBasedVideo.IsLoaded())
+		{
+			rewardType = type;
+			rewardBasedVideo.Show();
+			chestItem = item;
 		}
 	}
 

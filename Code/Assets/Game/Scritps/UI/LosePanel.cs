@@ -39,6 +39,11 @@ public class LosePanel : MonoBehaviour
             ES2.Save<int>(playCount, "MinigamePlayCount" + gameId.ToString());
         }
 
+        if (ES2.Exists("MinigamePlayCount" + gameId.ToString()))
+        {
+            playCount = ES2.Load<int>("MinigamePlayCount" + gameId.ToString());
+        }
+
         if (playCount <= 0)
         {
             replayButton.SetActive(false);
@@ -95,7 +100,6 @@ public class LosePanel : MonoBehaviour
         MageManager.instance.PlaySoundName("BubbleButton", false);
         MageManager.instance.LoadScene(SceneManager.GetActiveScene().name, 0.5f);
         this.GetComponent<Popup>().Close();
-
         ES2.Save(startTime, "MinigameWait" + gameId.ToString());
         ES2.Save<int>(playCount, "MinigamePlayCount" + gameId.ToString());
     }

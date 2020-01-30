@@ -24,6 +24,7 @@ public class UIManager : MonoBehaviour
     public GameObject confirmBuyPetPrefab;
     public GameObject mapPanelPrefab;
     public GameObject petCollecPanelPrefab;
+    public GameObject rewardItemPrefab;
     public static UIManager instance;
 	public Text coinText;
 	public Text diamonText;
@@ -46,6 +47,8 @@ public class UIManager : MonoBehaviour
     public PetRequirementPanel petRequirementPanel;
     [HideInInspector]
     public ConfirmBuyPetPopup confirmBuyPetPopup;
+    [HideInInspector]
+    public RewardItemPanel rewardItemPanel;
     MapPanel mapPanel;
 
     public GameObject achivementNotification;
@@ -58,6 +61,7 @@ public class UIManager : MonoBehaviour
     ItemInfoUI itemInfoUI;
     TreatmentPopup treatmentPopup;
     TreatmentConfirmPopup treatmentConfirmPopup;
+    [HideInInspector]
     public PetCollectionPanel petCollectionPanel;
 
     public GameObject homeUI;
@@ -512,6 +516,20 @@ public class UIManager : MonoBehaviour
             popup.GetComponent<Popup>().Open();
             petCollectionPanel = popup.GetComponent<PetCollectionPanel>();
             petCollectionPanel.Load();
+        }
+    }
+
+    public void OnRewardItemPanel(RewardType rewardType,ChestItem item)
+    {
+        if (rewardItemPanel == null)
+        {
+            var popup = Instantiate(rewardItemPrefab) as GameObject;
+            popup.SetActive(true);
+            popup.transform.localScale = Vector3.zero;
+            popup.transform.SetParent(GameObject.Find("Canvas").transform, false);
+            popup.GetComponent<Popup>().Open();
+            rewardItemPanel = popup.GetComponent<RewardItemPanel>();
+            rewardItemPanel.Load(rewardType,item);
         }
     }
 

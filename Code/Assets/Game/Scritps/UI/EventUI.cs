@@ -15,6 +15,7 @@ public class EventUI : MonoBehaviour
     
     public Text playText;
     public Text timeText;
+    public Text timeText1;
     float time = 2;
     float maxTimeUpdate = 1;
     System.DateTime startTime;
@@ -74,7 +75,7 @@ public class EventUI : MonoBehaviour
             int t = (int)(600 - (System.DateTime.Now - startTime).TotalSeconds);
             int m = t / 60;
             timeText.text = m.ToString("00") + ":" + (t - m * 60).ToString("00");
-
+            timeText1.text = m.ToString("00") + ":" + (t - m * 60).ToString("00");
             CheckTime();
 
         }
@@ -133,6 +134,7 @@ public class EventUI : MonoBehaviour
         if(playCount >= maxPlayCount)
         {
             timeText.gameObject.SetActive(false);
+            timeText1.gameObject.SetActive(false);
         }
 
         for(int i = 0; i < playCountIcon.Length; i++)

@@ -88,7 +88,7 @@ public class ItemInfoUI : MonoBehaviour
             }else if (state == ItemState.Equiped)
             {
                 buyButton.gameObject.SetActive(false);
-                sellButton.gameObject.SetActive(true);
+                sellButton.gameObject.SetActive(false);
                 price.text = (d.buyPrice/2).ToString();
                 
                 if(DataHolder.GetItem(itemId).itemType == ItemType.Room && GameManager.instance.GetBuyItems(ItemType.Room).Count == 1){

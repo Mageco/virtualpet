@@ -424,7 +424,8 @@ public class GameManager : MonoBehaviour
         foreach(PlayerItem item in myPlayer.items){
             if(item.itemId == id){
                 item.state = ItemState.Equiped;
-            }else if(DataHolder.GetItem(id).itemType == DataHolder.GetItem(item.itemId).itemType)
+            }else if(DataHolder.GetItem(id).itemType == DataHolder.GetItem(item.itemId).itemType
+                && DataHolder.GetItem(id).itemType != ItemType.Food && DataHolder.GetItem(id).itemType != ItemType.Drink && DataHolder.GetItem(id).itemType != ItemType.Toy)
             {
                 item.state = ItemState.Have;
             }
