@@ -675,7 +675,7 @@ public class TutorialManager : MonoBehaviour
             handClick.GetComponent<Animator>().Play("Hold", 0);
             Vector3 holdPosition = ItemManager.instance.GetItemChildObject(ItemType.Bath).transform.position + new Vector3(0, 15, 0);
             pet.target = pet.transform.position;
-            while (Vector2.Distance(pet.transform.position, holdPosition) > 2f)
+            while (Vector2.Distance(pet.transform.position, holdPosition) > 1f)
             {
                 pet.target = Vector3.Lerp(pet.target, dropPosition.position, Time.deltaTime);
                 handClick.transform.position = pet.transform.position + new Vector3(0, 3, -10);

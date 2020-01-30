@@ -36,10 +36,11 @@ public class ConfirmBuyShopPopup : MonoBehaviour
         if (isBuy){
             //Item replaceItem = GameManager.instance.GetEquipedItem(d.itemType);
             //question.text = DataHolder.Dialog(3).GetDescription(MageManager.instance.GetLanguage()) + " ";
-            
+
             //if(replaceItem == null || d.itemType == ItemType.Toy)
             //{
-                priceText.text = d.buyPrice.ToString();
+            question.text = DataHolder.Dialog(3).GetDescription(MageManager.instance.GetLanguage()) + " ";
+            priceText.text = d.buyPrice.ToString();
                 replacePanel.SetActive(false);
             /*}else{
                 
