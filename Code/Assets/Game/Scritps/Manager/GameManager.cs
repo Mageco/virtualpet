@@ -425,7 +425,7 @@ public class GameManager : MonoBehaviour
             if(item.itemId == id){
                 item.state = ItemState.Equiped;
             }else if(DataHolder.GetItem(id).itemType == DataHolder.GetItem(item.itemId).itemType
-                && DataHolder.GetItem(id).itemType != ItemType.Food && DataHolder.GetItem(id).itemType != ItemType.Drink && DataHolder.GetItem(id).itemType != ItemType.Toy)
+                && DataHolder.GetItem(id).itemType != ItemType.Toy)
             {
                 item.state = ItemState.Have;
             }
@@ -748,6 +748,10 @@ public class GameManager : MonoBehaviour
     {
         AddCoin(-coin);
         ItemManager.instance.SpawnHealth(p.character.transform.position);
+        if (sickType == SickType.Sick)
+            LogAchivement(AchivementType.Sick);
+        else if (sickType == SickType.Injured)
+            LogAchivement(AchivementType.Injured);
         p.character.OnTreatment(sickType);
     }
 
