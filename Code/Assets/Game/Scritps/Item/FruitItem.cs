@@ -81,7 +81,7 @@ public class FruitItem : MonoBehaviour
         step = 0;
         time = 0;
         OnStep();
-        int value = Random.Range(2, 5);
+        int value = Random.Range(1, 3);
         ItemManager.instance.SpawnCoin(this.transform.position + new Vector3(0, 2, -1), value, this.gameObject);
         GameManager.instance.AddCoin(value); 
         MageManager.instance.PlaySoundName("happy_collect_item_01",false);
