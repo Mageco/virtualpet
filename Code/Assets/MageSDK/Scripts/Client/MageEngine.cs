@@ -788,16 +788,47 @@ namespace MageSDK.Client {
 			}
 		}
 
+		private void SendAppEvent(MageEvent t) {
+
+			#if PLATFORM_TEST
+				if (this.resetUserDataOnStart || !this.isWorkingOnline) {
+					return;
+				}
+			#endif
+			
+			SendUserEventRequest r = new SendUserEventRequest(t.eventName, t.eventDetail);
+			//call to login api
+			ApiHandler.instance.SendApi<SendUserEventResponse>(
+				ApiSettings.API_SEND_USER_EVENT,
+				r, 
+				(result) => {
+					//this.cachedEvent = new List<MageEvent>();
+					//SaveEvents();
+				},
+				(errorStatus) => {
+					//Debug.Log("Error: " + errorStatus);
+					//do some other processing here
+				},
+				() => {
+					TimeoutHandler();
+				}
+			);
+		}
+
 		public void OnEvent(MageEventType type, string eventDetail = "") {
-			this.cachedEvent.Add(new MageEvent(type, eventDetail));
+			/*this.cachedEvent.Add(new MageEvent(type, eventDetail));
 			SaveEvents();
-			SendAppEvents();
+			SendAppEvents();*/
+			// temporary fix to send single event
+			SendAppEvent(new MageEvent(type, eventDetail));
 		}
 
 		public void OnEvent<T>(MageEventType type, T obj) where T:BaseModel {
-			this.cachedEvent.Add(new MageEvent(type, obj.ToJson()));
+			/*this.cachedEvent.Add(new MageEvent(type, obj.ToJson()));
 			SaveEvents();
-			SendAppEvents();
+			SendAppEvents();*/
+			// temporary fix to send single event
+			SendAppEvent(new MageEvent(type, obj.ToJson()));
 		}
 
 		private void SaveEvents(){
