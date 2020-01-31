@@ -135,10 +135,16 @@ public class RewardVideoAdManager : MonoBehaviour {
 			}
 		}else if(rewardType == RewardType.Chest)
         {
-			if (chestItem != null)
-				chestItem.OnActive();
+			StartCoroutine(OnRewardChest());
 		}
 
+	}
+
+    IEnumerator OnRewardChest()
+    {
+		yield return new WaitForSeconds(0.5f);
+		if (chestItem != null)
+			chestItem.OnActive();
 	}
 
 

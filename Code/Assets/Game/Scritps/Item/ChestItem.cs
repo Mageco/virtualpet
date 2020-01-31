@@ -73,12 +73,13 @@ public class ChestItem : MonoBehaviour
 
     public void OnActive()
     {
-        isActive = true;
-        StartCoroutine(ActiveCoroutine());
+        if(!isActive)
+            StartCoroutine(ActiveCoroutine());
     }
 
     IEnumerator ActiveCoroutine()
     {
+        isActive = true;
         valueText.text = "+" + value.ToString();
         MageManager.instance.PlaySoundName("Tinerbell", false);
         if (priceType == PriceType.Coin)

@@ -30,6 +30,8 @@ public class RewardItemPanel : MonoBehaviour
         if (chestItem != null)
             RewardVideoAdManager.instance.ShowAd(rewardType,chestItem);
         this.Close();
+        //Test
+        //chestItem.OnActive();
     }
 
     public void Close()
