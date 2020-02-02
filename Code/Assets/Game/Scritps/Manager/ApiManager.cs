@@ -76,9 +76,30 @@ public class ApiManager : MageEngine {
        //sample only
 	   for (int i = 0; i < newMessages.Count; i++) {
 		   Debug.Log("Update message: " + newMessages[i].id + " as read");
-		   UpdateMessageStatus(newMessages[i].id, MessageStatus.Read);
-	   }
+			if (newMessages[i].status == MessageStatus.New)
+			{
+				ConfirmationPopup confirm = MageManager.instance.OnConfirmationPopup(newMessages[i].title, newMessages[i].message);
+				string url = "";
+                #if UNITY_ANDROID
+				url = newMessages[i].action_android;
+                #elif UNITY_IOS
+                url = newMessages[i].action_android;
+                #endif
+				confirm.okButton.onClick.AddListener(delegate {
+					OnClick(url);
+				});
+				UpdateMessageStatus(newMessages[i].id, MessageStatus.Read);
+			}
+		}
 
+	}
+
+
+
+
+    void OnClick(string url)
+    {
+	    Application.OpenURL(url);
     }
 
 }

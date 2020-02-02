@@ -32,13 +32,14 @@ public class ItemManager : MonoBehaviour
     CameraController activeCamera;
     public CameraController gardenCamera;
     public CameraController houseCamera;
+    Vector3 CameraPosition;
 
     float timeDirty = 0;
     float maxTimeDirty = 200;
     int fruitId = 0;
 
     float timeChest = 0;
-    float maxTimeChest = 10;
+    float maxTimeChest = 100;
 
     void Awake()
     {
@@ -53,6 +54,7 @@ public class ItemManager : MonoBehaviour
     IEnumerator Start()
     {
         SetCamera();
+        LoadCamera();
         //ES3AutoSaveMgr.Instance.Load();
         bool isLoad = false;
         while(!isLoad){
@@ -65,6 +67,7 @@ public class ItemManager : MonoBehaviour
             yield return new WaitForEndOfFrame();
         }
         LoadItemData();
+        
 
         if (ES2.Exists("PlayTime"))
         {
@@ -96,6 +99,8 @@ public class ItemManager : MonoBehaviour
                 UIManager.instance.achivementNotification.SetActive(true);
             }else
                 UIManager.instance.achivementNotification.SetActive(false);
+
+            SaveCamera();
         }
         else{
             time += Time.deltaTime;
@@ -113,7 +118,7 @@ public class ItemManager : MonoBehaviour
         {
             SpawnChest();
             timeChest = 0;
-            maxTimeChest = Random.Range(100, 200);
+            maxTimeChest = Random.Range(100, 300);
         }
         else
         {
@@ -158,6 +163,24 @@ public class ItemManager : MonoBehaviour
             houseCamera.gameObject.SetActive(true);
             activeCamera = houseCamera;
         }
+    }
+
+    void LoadCamera()
+    {
+        if (ES2.Exists("GardenCamera")){
+            gardenCamera.transform.position = ES2.Load<Vector3>("GardenCamera");
+            Debug.Log(gardenCamera.transform.position);
+        }
+        if (ES2.Exists("HouseCamera"))
+        {
+            houseCamera.transform.position = ES2.Load<Vector3>("HouseCamera");
+        }
+    }
+
+    void SaveCamera()
+    {
+        ES2.Save(gardenCamera.transform.position, "GardenCamera");
+        ES2.Save(houseCamera.transform.position, "HouseCamera");
     }
 
     public void SetLocation(GameType type)

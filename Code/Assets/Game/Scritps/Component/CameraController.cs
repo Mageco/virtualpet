@@ -53,14 +53,6 @@ public class CameraController : MonoBehaviour
 	void Start()
 	{
 		orthographicsize = Camera.main.orthographicSize;
-		Vector3 pos = this.transform.position;
-
-
-		if(GameObject.FindObjectOfType<CharController> () != null){
-			pos.x = GameObject.FindObjectOfType<CharController> ().transform.position.x;
-			pos.y = GameObject.FindObjectOfType<CharController> ().transform.position.y;
-		}
-		this.transform.position = pos;
 	}
 
 	void Update(){

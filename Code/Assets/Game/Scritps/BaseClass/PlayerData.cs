@@ -24,7 +24,7 @@ public class PlayerData : BaseModel
 	public List<PlayerAchivement> achivements = new List<PlayerAchivement>();
     public GameType gameType = GameType.House;
 
-    public PlayerData(){
+	public PlayerData(){
         for(int i = 0; i < minigameLevels.Length; i++)
         {
 			minigameLevels[i] = 0;
