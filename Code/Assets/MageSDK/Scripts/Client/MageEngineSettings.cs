@@ -25,8 +25,12 @@ namespace MageSDK.Client {
 
 		public const string GAME_ENGINE_EVENT_CACHE= "MageEventCache";
 		public const string GAME_ENGINE_SCREEN_TIME_CACHE= "MageScreenTimeCache";
+		public const string GAME_ENGINE_SCREEN_TIME_CACHE_PREFIX= "screenTime_";
 		public const string GAME_ENGINE_LAST_SCREEN = "MageLastScreen";
 		public const string GAME_ENGINE_LAST_SCREEN_TIMESTAMP = "MageLastScreenTimeStamp";
+
+		public const string GAME_ENGINE_EVENT_COUNTER_CACHE= "MageEventCounterCache";
+		public const string GAME_ENGINE_EVENT_COUNTER_CACHE_PREFIX= "eventCounter_";
 
 		// messages sexxion
 		public const string GAME_ENGINE_USER_MESSAGE = "GameEngineUserMessages";

@@ -310,7 +310,9 @@ namespace MageSDK.Client {
 				u.SetUserData(d);
 			}
 
+			// enrich system auto data
 			u.SetUserData(new UserData(ApiHandler.instance.ApplicationKey+"_"+MageEngineSettings.GAME_ENGINE_SCREEN_TIME_CACHE, ConvertCacheScreenJson(), "MageEngine"));
+			u.SetUserData(new UserData(ApiHandler.instance.ApplicationKey+"_"+MageEngineSettings.GAME_ENGINE_EVENT_COUNTER_CACHE, ConvertEventCounterListToJson(), "MageEngine"));
 
             this.SaveCacheData<User>(u, MageEngineSettings.GAME_ENGINE_USER);
 
@@ -323,7 +325,7 @@ namespace MageSDK.Client {
 			if (null != cachedScreenTime) {
 				string output = "{";
 				for (int i = 0; i < cachedScreenTime.Count; i++) {
-					output += "\"" + cachedScreenTime[i].Key + "\": " + cachedScreenTime[i].Value + ", ";
+					output += "\"" + MageEngineSettings.GAME_ENGINE_SCREEN_TIME_CACHE_PREFIX + cachedScreenTime[i].Key + "\": " + cachedScreenTime[i].Value + ", ";
 				}
 
 				if (cachedScreenTime.Count > 0) {
@@ -820,6 +822,7 @@ namespace MageSDK.Client {
 			SaveEvents();
 			SendAppEvents();*/
 			// temporary fix to send single event
+			AddEventCounter(type.ToString());
 			SendAppEvent(new MageEvent(type, eventDetail));
 		}
 
@@ -828,6 +831,7 @@ namespace MageSDK.Client {
 			SaveEvents();
 			SendAppEvents();*/
 			// temporary fix to send single event
+			AddEventCounter(type.ToString());
 			SendAppEvent(new MageEvent(type, obj.ToJson()));
 		}
 
@@ -880,6 +884,9 @@ namespace MageSDK.Client {
 
 			// Load User messages
 			LoadUserMessages();
+
+			// load event counter
+			LoadEventCounterList();
 		}
 
 
@@ -1175,6 +1182,84 @@ namespace MageSDK.Client {
 
 		public void OnMessageReceived(object sender, Firebase.Messaging.MessageReceivedEventArgs e) {
 			UnityEngine.Debug.Log("Received a new message from: " + e.Message.From);
+		}
+
+		#endregion
+
+		#region event counter
+		
+		private void SaveEventCounterList(List<EventCounter> data) {
+			#if PLATFORM_TEST
+				if (!this.resetUserDataOnStart) {
+					ES2.Save(data, MageEngineSettings.GAME_ENGINE_EVENT_COUNTER_CACHE);
+				}
+			#else
+				ES2.Save(data, MageEngineSettings.GAME_ENGINE_EVENT_COUNTER_CACHE);
+			#endif
+
+			RuntimeParameters.GetInstance().SetParam(MageEngineSettings.GAME_ENGINE_EVENT_COUNTER_CACHE, data);
+		}
+
+		private List<EventCounter> LoadEventCounterList() {
+			
+			if (ES2.Exists(MageEngineSettings.GAME_ENGINE_EVENT_COUNTER_CACHE)) {
+				List<EventCounter> t = ES2.LoadList<EventCounter>(MageEngineSettings.GAME_ENGINE_EVENT_COUNTER_CACHE);
+				if (t == null) {
+					t = new List<EventCounter>();
+				}
+				RuntimeParameters.GetInstance().SetParam(MageEngineSettings.GAME_ENGINE_EVENT_COUNTER_CACHE, t);
+				return t;
+				
+			} else {
+				List<EventCounter> t = new List<EventCounter>();
+				RuntimeParameters.GetInstance().SetParam(MageEngineSettings.GAME_ENGINE_EVENT_COUNTER_CACHE, t);
+				return t;
+			}
+		}
+
+		private List<EventCounter> GetEventCounterList() {
+			return RuntimeParameters.GetInstance().GetParam<List<EventCounter>>(MageEngineSettings.GAME_ENGINE_EVENT_COUNTER_CACHE);
+		}
+
+		private void AddEventCounter(string eventName) {
+			List<EventCounter> eventCounterList = GetEventCounterList();
+			bool found = false;
+			//search for eventName
+			for (int i = 0; i < eventCounterList.Count; i++) {
+				if (eventCounterList[i].Key == eventName) {
+					found = true;
+					var newKvp = new EventCounter(eventCounterList[i].Key, eventCounterList[i].Value++);
+					eventCounterList.RemoveAt(i);
+					eventCounterList.Insert(i, newKvp);
+				}
+			}
+
+			if (!found) {
+				var newKvp = new EventCounter(eventName, 1);
+				eventCounterList.Insert(eventCounterList.Count, newKvp);
+			}
+
+			SaveEventCounterList(eventCounterList);
+		}
+
+		private string ConvertEventCounterListToJson() {
+			List<EventCounter> eventCounterList = GetEventCounterList();
+
+			if (null != eventCounterList) {
+				string output = "{";
+				for (int i = 0; i < eventCounterList.Count; i++) {
+					output += "\"" + MageEngineSettings.GAME_ENGINE_EVENT_COUNTER_CACHE_PREFIX + eventCounterList[i].Key + "\": " + eventCounterList[i].Value + ", ";
+				}
+
+				if (eventCounterList.Count > 0) {
+					output = output.Substring(0, output.Length - 2);
+				}
+
+				output += "}";
+				return output;
+			} else {
+				return "";
+			}
 		}
 
 		#endregion
