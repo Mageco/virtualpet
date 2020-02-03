@@ -64,7 +64,7 @@ public class Minigame : MonoBehaviour
             popup.transform.SetParent(GameObject.Find("Canvas").transform, false);
             popup.GetComponent<Popup>().Open();
             winPanel = popup.GetComponent<WinPanel>();
-            winPanel.Load((gameLevel+1)*diamon,(gameLevel+1)*3*coin,minigameId);
+            winPanel.Load((gameLevel+1)*diamon,(gameLevel+1)*coin,minigameId);
         }
     }
 
