@@ -62,16 +62,16 @@ public class Minigame2 : Minigame
 
     void Load(){
 
-        int initNumber = 10;
+        int initNumber = 5;
         
         maxTime = 60 + gameLevel / 5 * 5;
-        fishSpawner.maxNumber = initNumber + gameLevel / 2;
+        fishSpawner.maxNumber = initNumber + gameLevel/2;
         if(gameLevel > 10)
         {
-            fishSpawner.maxNumber = 15 + gameLevel / 5;
+            fishSpawner.maxNumber = 10 + gameLevel / 5;
         }else if(gameLevel > 20)
         {
-            fishSpawner.maxNumber = 17 + gameLevel / 10;
+            fishSpawner.maxNumber = 12 + gameLevel / 10;
         }
         squirtSpawner.maxNumber = 1 + gameLevel / 6;
         jellyFishSpawner.maxNumber = 1 + gameLevel / 3;

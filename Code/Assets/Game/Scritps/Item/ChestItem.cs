@@ -19,20 +19,19 @@ public class ChestItem : MonoBehaviour
     {
         int n = Random.Range(0, 100);
 
-        if (n < 50)
+        if (n < 70)
         {
             priceType = PriceType.Coin;
-            value = Random.Range(10, 20);
-        }
-        else if (n < 95)
-        {
-            priceType = PriceType.Happy;
             value = Random.Range(20, 30);
+        }else if(n < 90)
+        {
+            priceType = PriceType.Coin;
+            value = Random.Range(30, 50);
         }
         else
         {
             priceType = PriceType.Diamond;
-            value = 1;
+            value = Random.Range(1, 3);
         }
 
         animator = this.GetComponent<Animator>();

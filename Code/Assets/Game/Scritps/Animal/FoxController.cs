@@ -63,6 +63,11 @@ public class FoxController : AnimalController
             //state = AnimalState.Flee;
             state = AnimalState.Hit;
             int value = 1;
+            if (animalType == AnimalType.Snake)
+                value = 2;
+            else if (animalType == AnimalType.Eagle)
+                value = 5;
+            
             Minigame.instance.SpawnCoin(this.transform.position + new Vector3(0, 2, -1), value, this.gameObject);
             GameManager.instance.AddCoin(value);
             GameManager.instance.LogAchivement(AchivementType.Dissmiss_Animal,ActionType.None,-1,animalType);
@@ -75,6 +80,10 @@ public class FoxController : AnimalController
             target.agent.transform.position = this.transform.position;
             Minigame.instance.UpdateLive();
             int value = 1;
+            if (animalType == AnimalType.Snake)
+                value = 2;
+            else if (animalType == AnimalType.Eagle)
+                value = 5;
             Minigame.instance.SpawnCoin(this.transform.position + new Vector3(0, 2, -1), value, this.gameObject);
             GameManager.instance.AddCoin(value);
             GameManager.instance.LogAchivement(AchivementType.Dissmiss_Animal,ActionType.None,-1,animalType);

@@ -6,6 +6,7 @@ public class RewardItemPanel : MonoBehaviour
 {
     RewardType rewardType = RewardType.Chest;
     ChestItem chestItem;
+    int price = 20;
     // Start is called before the first frame update
     void Start()
     {
@@ -37,5 +38,22 @@ public class RewardItemPanel : MonoBehaviour
     public void Close()
     {
         this.GetComponent<Popup>().Close();
+    }
+
+    public void Unlock()
+    {
+        if (GameManager.instance.GetHappy() < price)
+        {
+            MageManager.instance.OnNotificationPopup(DataHolder.Dialog(8).GetDescription(MageManager.instance.GetLanguage()));
+        }
+        else
+        {
+            GameManager.instance.AddHappy(-price);
+            if(chestItem != null)
+            {
+                chestItem.OnActive();
+            }
+            this.GetComponent<Popup>().Close();
+        }
     }
 }

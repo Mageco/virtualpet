@@ -6,81 +6,28 @@ using UnityEngine.UI;
 
 public class LosePanel : MonoBehaviour
 {
-    public GameObject replayButton;
-    public GameObject adButton;
-    int playCount;
-    System.DateTime startTime;
-    public Text timeText;
+    public Text priceText;
     int gameId = 0;
+    int price = 5;
+
 
     // Start is called before the first frame update
     void Start()
     {
+        priceText.text = price.ToString();
         MageManager.instance.PlaySoundName("Lose", false);
     }
 
     // Update is called once per frame
     void Update()
     {
-        int t = (int)(600 - (System.DateTime.Now - startTime).TotalSeconds);
-        int m = t / 60;
-        timeText.text = m.ToString("00") + ":" + (t - m * 60).ToString("00");
-
-        if ((System.DateTime.Now - startTime).TotalSeconds >= 600)
-        {
-            playCount += ((int)(System.DateTime.Now - startTime).TotalSeconds) / 600;
-            if (playCount > 5)
-            {
-                playCount = 5;
-            }
-            startTime = System.DateTime.Now;
-
-            ES2.Save(startTime, "MinigameWait" + gameId.ToString());
-            ES2.Save<int>(playCount, "MinigamePlayCount" + gameId.ToString());
-        }
-
-        if (ES2.Exists("MinigamePlayCount" + gameId.ToString()))
-        {
-            playCount = ES2.Load<int>("MinigamePlayCount" + gameId.ToString());
-        }
-
-        if (playCount <= 0)
-        {
-            replayButton.SetActive(false);
-            adButton.SetActive(true);
-        }
-        else
-        {
-            replayButton.SetActive(true);
-            adButton.SetActive(false);
-        }
+        
     }
 
     public void Load(int id){
         gameId = id;
-
-        if (ES2.Exists("MinigameWait" + gameId.ToString()))
-        {
-            startTime = ES2.Load<System.DateTime>("MinigameWait" + gameId.ToString());
-        }
-        else
-            startTime = System.DateTime.Now;
-
-        if (ES2.Exists("MinigamePlayCount" + gameId.ToString()))
-        {
-            playCount = ES2.Load<int>("MinigamePlayCount" + gameId.ToString());
-        }
-
-        if (playCount <= 0)
-        {
-            replayButton.SetActive(false);
-            adButton.SetActive(true);
-        }
-        else
-        {
-            replayButton.SetActive(true);
-            adButton.SetActive(false);
-        }
+        price = GameManager.instance.myPlayer.minigameLevels[gameId] + 1;
+        priceText.text = price.ToString();
     }
 
     public void Close(){
@@ -95,24 +42,15 @@ public class LosePanel : MonoBehaviour
 
     public void Replay()
     {
-        playCount--;
-        startTime = startTime = System.DateTime.Now;
-        MageManager.instance.PlaySoundName("BubbleButton", false);
-        MageManager.instance.LoadScene(SceneManager.GetActiveScene().name, 0.5f);
-        this.GetComponent<Popup>().Close();
-        ES2.Save(startTime, "MinigameWait" + gameId.ToString());
-        ES2.Save<int>(playCount, "MinigamePlayCount" + gameId.ToString());
-    }
-
-    public void ShowAd()
-    {
-        if (gameId == 0)
+        if (GameManager.instance.GetHappy() < price)
         {
-            RewardVideoAdManager.instance.ShowAd(RewardType.ChickenDefend);
+            MageManager.instance.OnNotificationPopup(DataHolder.Dialog(8).GetDescription(MageManager.instance.GetLanguage()));
         }
-        else if (gameId == 1)
+        else
         {
-            RewardVideoAdManager.instance.ShowAd(RewardType.FishingCat);
+            GameManager.instance.AddHappy(-price);
+            MageManager.instance.LoadScene(SceneManager.GetActiveScene().name, 0.5f);
+            this.GetComponent<Popup>().Close();
         }
     }
 }
