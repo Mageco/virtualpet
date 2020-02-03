@@ -12,6 +12,7 @@ public class DataHolder
 	private DialogData dialogs;
 	private QuestData quests;
 	private PetData pets;
+	private PetColorData petColors;
 
 	private AchivementData achivements;
 
@@ -37,6 +38,7 @@ public class DataHolder
 		quests = new QuestData();
 		pets = new PetData();
 		achivements = new AchivementData();
+		petColors = new PetColorData();
 	}
 
 
@@ -201,6 +203,39 @@ public class DataHolder
 		if(DataHolder.Instance().pets != null && DataHolder.Instance().pets.GetDataCount() > 0)
 			return DataHolder.Instance().pets.pets[DataHolder.Instance().pets.pets.Length - 1].iD;
 		else 
+			return -1;
+	}
+
+	public static PetColorData PetColors()
+	{
+		return DataHolder.Instance().petColors;
+	}
+
+	public static PetColor PetColor(int index)
+	{
+		return DataHolder.Instance().petColors.petColors[index];
+	}
+
+	public static PetColor GetPetColor(int id)
+	{
+		return DataHolder.Instance().petColors.GetPetColor(id);
+	}
+
+	public static int GetPetColorIndex(int id)
+	{
+		for (int i = 0; i < DataHolder.PetColors().GetDataCount(); i++)
+		{
+			if (DataHolder.PetColor(i).iD == id)
+				return i;
+		}
+		return 0;
+	}
+
+	public static int LastPetColorID()
+	{
+		if (DataHolder.Instance().petColors != null && DataHolder.Instance().petColors.GetDataCount() > 0)
+			return DataHolder.Instance().petColors.petColors[DataHolder.Instance().petColors.petColors.Length - 1].iD;
+		else
 			return -1;
 	}
 

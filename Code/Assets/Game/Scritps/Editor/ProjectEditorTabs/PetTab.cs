@@ -142,17 +142,11 @@ public class PetTab : BaseTab
 			fold2 = EditorGUILayout.Foldout(fold2, "Pet Settings");
 			if(fold2)
 			{
-                if(selection != tmpSelection) this.tmp3Prefab = null;
-				if(this.tmp3Prefab == null && "" != DataHolder.Pet(selection).petBig)
-				{
-					this.tmp3Prefab = (GameObject)Resources.Load(DataHolder.Pets().GetPrefabPath()+DataHolder.Pet(selection).petBig, typeof(GameObject));
-				}
-				this.tmp3Prefab = (GameObject)EditorGUILayout.ObjectField("Pet Prefab", this.tmp3Prefab, typeof(GameObject), false, GUILayout.Width(pw.mWidth*2));
-				if(this.tmp3Prefab) DataHolder.Pet(selection).petBig = this.tmp3Prefab.name;
-				else DataHolder.Pet(selection).petBig = "";
 
 
-				EditorGUILayout.Separator();
+                DataHolder.Pet(selection).petColorId = EditorGUILayout.Popup("Pet Color", DataHolder.Pet(selection).petColorId, DataHolder.PetColors().GetNameList(true), GUILayout.Width(pw.mWidth));
+
+                EditorGUILayout.Separator();
 				EditorGUILayout.Separator();
 				EditorGUILayout.Separator();
                 DataHolder.Pet(selection).priceType = (PriceType)EditorTab.EnumToolbar("Price Type", (int)DataHolder.Pet(selection).priceType, typeof(PriceType));    

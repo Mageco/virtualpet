@@ -227,6 +227,22 @@ public class ArrayHelper
 		return tmp.ToArray(typeof(Pet)) as Pet[];
 	}
 
+	public static PetColor[] Add(PetColor n, PetColor[] list)
+	{
+		ArrayList tmp = new ArrayList();
+		foreach (PetColor str in list) tmp.Add(str);
+		tmp.Add(n);
+		return tmp.ToArray(typeof(PetColor)) as PetColor[];
+	}
+
+	public static PetColor[] Remove(int index, PetColor[] list)
+	{
+		ArrayList tmp = new ArrayList();
+		foreach (PetColor str in list) tmp.Add(str);
+		tmp.RemoveAt(index);
+		return tmp.ToArray(typeof(PetColor)) as PetColor[];
+	}
+
 	public static Achivement[] Add(Achivement n, Achivement[] list)
 	{
 		ArrayList tmp = new ArrayList();

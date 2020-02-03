@@ -14,7 +14,7 @@ public class Pet : BaseModel
 	public int buyPrice = 0;
 	public PriceType priceType = PriceType.Coin;
     public ItemState itemState = ItemState.OnShop;
-	public string petBig = "";
+	public int petColorId = 0;
 	public bool isAvailable = true;
     public int[] requireEquipments = new int[0];
     public int[] requirePets = new int[0];
@@ -136,7 +136,7 @@ public class Pet : BaseModel
         }
         buyPrice = p.buyPrice;
         priceType = p.priceType;
-        petBig = p.petBig;
+        petColorId = p.petColorId;
 		speed = p.speed;
 		maxEnergy = p.maxHealth;
 		maxHealth = p.maxHealth;
@@ -183,12 +183,10 @@ public class Pet : BaseModel
 
         string url = "";
 
-		//if(GameManager.instance.gameType == GameType.Minigame1){
-		//	url = DataHolder.GetPet(iD).petMiniGame1.Replace("Assets/Game/Resources/", "");
-		//}else
-        url = DataHolder.GetPet(iD).petBig.Replace("Assets/Game/Resources/", "");
-
-
+		if (this.iD != 0 && petColorId == 0)
+			petColorId = DataHolder.GetPet(this.iD).petColorId;
+        url = DataHolder.GetPetColor(petColorId).prefabName.Replace("Assets/Game/Resources/", "");
+		Debug.Log(petColorId);
         url = url.Replace(".prefab", "");
         url = DataHolder.Pets().GetPrefabPath() + url;
         GameObject go = GameObject.Instantiate((Resources.Load(url) as GameObject), Vector3.zero, Quaternion.identity) as GameObject;
