@@ -310,6 +310,74 @@ public class GameManager : MonoBehaviour
 		return pets;
 	}
 
+    public void AddPetColor(int petId,int colorId)
+    {
+        Pet p = GetPet(petId);
+        p.petColors[colorId].itemState = ItemState.Have;
+        SavePlayer();
+    }
+
+    public void EquipPetColor(int petId,int colorId)
+    {
+        Pet p = GetPet(petId);
+        
+        for(int i = 0; i < p.petColors.Count; i++)
+        {
+            if (p.petColors[colorId].itemState == ItemState.Equiped)
+                p.petColors[colorId].itemState = ItemState.Have;
+        }
+        p.petColorId = colorId;
+        p.petColors[colorId].itemState = ItemState.Equiped;
+        p.UnLoad();
+        p.Load();
+        SavePlayer();
+    }
+
+    public bool BuyPetColor(int petId, int colorId)
+    {
+        PriceType type = DataHolder.GetPet(petId).petColors[colorId].priceType;
+        int price = DataHolder.GetPet(petId).petColors[colorId].buyPrice;
+        if (type == PriceType.Coin)
+        {
+            if (price > GetCoin())
+            {
+                MageManager.instance.OnNotificationPopup(DataHolder.Dialog(6).GetDescription(MageManager.instance.GetLanguage()));
+                return false;
+            }
+            AddCoin(-price);
+            AddPetColor(petId,colorId);
+            return true;
+        }
+        else if (type == PriceType.Diamond)
+        {
+            if (price > GetDiamond())
+            {
+                MageManager.instance.OnNotificationPopup(DataHolder.GetDialog(7).GetDescription(MageManager.instance.GetLanguage()));
+                return false;
+            }
+            AddDiamond(-price);
+            AddPetColor(petId, colorId);
+            return true;
+        }
+        else if (type == PriceType.Happy)
+        {
+            if (price > GetHappy())
+            {
+                MageManager.instance.OnNotificationPopup(DataHolder.Dialog(8).GetDescription(MageManager.instance.GetLanguage()));
+                return false;
+            }
+            AddHappy(-price);
+            AddPetColor(petId, colorId);
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+     
+
+    //Items
     public bool BuyItem(int itemId)
 	{
 		PriceType type = DataHolder.GetItem(itemId).priceType;

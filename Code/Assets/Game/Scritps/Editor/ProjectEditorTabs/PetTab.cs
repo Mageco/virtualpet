@@ -142,10 +142,6 @@ public class PetTab : BaseTab
 			fold2 = EditorGUILayout.Foldout(fold2, "Pet Settings");
 			if(fold2)
 			{
-
-
-                DataHolder.Pet(selection).petColorId = EditorGUILayout.Popup("Pet Color", DataHolder.Pet(selection).petColorId, DataHolder.PetColors().GetNameList(true), GUILayout.Width(pw.mWidth));
-
                 EditorGUILayout.Separator();
 				EditorGUILayout.Separator();
 				EditorGUILayout.Separator();
@@ -213,6 +209,32 @@ public class PetTab : BaseTab
                         DataHolder.Pet(selection).requirePets = ArrayHelper.Remove(i, DataHolder.Pet(selection).requirePets);
                     }
                     EditorGUILayout.EndHorizontal();
+                }
+            }
+            EditorGUILayout.EndVertical();
+
+            EditorGUILayout.BeginVertical("box");
+            fold2 = EditorGUILayout.Foldout(fold2, "Skin");
+            if (fold2)
+            {
+                if (GUILayout.Button("Add Skin", GUILayout.Width(pw.mWidth * 0.7f)))
+                {
+                    DataHolder.Pet(selection).petColors.Add(new PetColor());
+                }
+
+
+                for (int i = 0; i < DataHolder.Pet(selection).petColors.Count; i++)
+                {
+
+
+
+
+                    if (GUILayout.Button("Remove Skin", GUILayout.Width(pw.mWidth * 0.7f)))
+                    {
+                        DataHolder.Pet(selection).petColors.RemoveAt(i);
+                    }
+                    EditorGUILayout.Separator();
+                    EditorGUILayout.Separator();
                 }
             }
             EditorGUILayout.EndVertical();

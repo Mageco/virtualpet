@@ -14,6 +14,7 @@ public class Pet : BaseModel
 	public int buyPrice = 0;
 	public PriceType priceType = PriceType.Coin;
     public ItemState itemState = ItemState.OnShop;
+	public List<PetColor> petColors = new List<PetColor>();
 	public int petColorId = 0;
 	public bool isAvailable = true;
     public int[] requireEquipments = new int[0];
@@ -21,9 +22,7 @@ public class Pet : BaseModel
 	//Common Data
 	public List<PetSkill> skills = new List<PetSkill>();
 	public string petName = "";
-
 	public int shopOrder = 0;
-
 	//Main Data
 	public float speed = 20;
 	public int level = 1;
@@ -136,7 +135,16 @@ public class Pet : BaseModel
         }
         buyPrice = p.buyPrice;
         priceType = p.priceType;
-        petColorId = p.petColorId;
+        for(int i = 0; i < p.petColors.Count; i++)
+        {
+			PetColor c = new PetColor();
+			c.iconUrl = p.petColors[i].iconUrl;
+			c.levelRequire = p.petColors[i].levelRequire;
+			c.buyPrice = p.petColors[i].buyPrice;
+			c.priceType = p.petColors[i].priceType;
+			c.prefabName = p.petColors[i].prefabName;
+        }
+
 		speed = p.speed;
 		maxEnergy = p.maxHealth;
 		maxHealth = p.maxHealth;
@@ -182,10 +190,7 @@ public class Pet : BaseModel
 
 
         string url = "";
-
-		if (this.iD != 0 && petColorId == 0)
-			petColorId = DataHolder.GetPet(this.iD).petColorId;
-        url = DataHolder.GetPetColor(petColorId).prefabName.Replace("Assets/Game/Resources/", "");
+        url = petColors[petColorId].prefabName.Replace("Assets/Game/Resources/", "");
 		Debug.Log(petColorId);
         url = url.Replace(".prefab", "");
         url = DataHolder.Pets().GetPrefabPath() + url;

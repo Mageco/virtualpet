@@ -216,6 +216,8 @@ public class UIManager : MonoBehaviour
       
 	}
 
+
+
     public void SellPet(int itemID){
 	  GameManager.instance.SellPet(itemID);
         if (shopPanel != null)
@@ -226,6 +228,21 @@ public class UIManager : MonoBehaviour
        shopPanel.Close();
        GameManager.instance.EquipPet(itemID);
 	}
+
+    public void BuyPetColor(int petId,int itemId)
+    {
+        MageEngine.instance.OnEvent(Mage.Models.Application.MageEventType.CheckOutItem, DataHolder.GetPet(petId).GetName(MageManager.instance.GetLanguage()));
+        GameManager.instance.BuyPetColor(petId, itemId);
+        GameManager.instance.EquipPetColor(petId, itemId);
+        if (shopPanel != null)
+            shopPanel.Close();
+    }
+
+    public void UsePetColor(int petId, int itemId) {
+        shopPanel.Close();
+        GameManager.instance.EquipPetColor(petId, itemId);
+    }
+
 
     public void OnQuestNotification()
     {

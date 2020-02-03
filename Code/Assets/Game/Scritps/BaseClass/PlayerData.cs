@@ -21,6 +21,7 @@ public class PlayerData : BaseModel
 
 	public int questId = 0;
     public int questValue = 0;
+	public List<PetColor> petColors = new List<PetColor>();
 	public List<PlayerAchivement> achivements = new List<PlayerAchivement>();
     public GameType gameType = GameType.House;
 

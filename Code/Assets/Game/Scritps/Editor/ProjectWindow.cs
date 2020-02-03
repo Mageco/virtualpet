@@ -10,7 +10,7 @@ public class ProjectWindow : EditorWindow
 	public int mWidth = 300;
 	// section handling
 	private int currentSection = 0;
-	private string[] sections = new string[] {"Language","Skill","Item","Dialog","Quest","Pet","Achivement","PetColor"};
+	private string[] sections = new string[] {"Language","Skill","Item","Dialog","Quest","Pet","Achivement"};
 	
 	private int LANGUAGES = 0;
 	private int SKILL = 1;
@@ -19,7 +19,6 @@ public class ProjectWindow : EditorWindow
 	private int QUESTS = 4;
 	private int PETS = 5;
 	private int ACHIVEMENTS = 6;
-	private int PETCOLORS = 7;
 
 	// tabs
 	private LanguageTab langTab = null;
@@ -29,7 +28,6 @@ public class ProjectWindow : EditorWindow
 	private QuestTab questTab = null;
 	private PetTab petTab = null;
 	private AchivementTab achivementTab = null;
-	private PetColorTab petColorTab = null;
 
 
 
@@ -63,11 +61,8 @@ public class ProjectWindow : EditorWindow
 
 		if(petTab == null) petTab = new PetTab(this);
 		else petTab.Reload();
-
-		if (petColorTab == null) petColorTab = new PetColorTab(this);
-		else petColorTab.Reload();
-
-		if (achivementTab == null) achivementTab = new AchivementTab(this);
+		
+		if(achivementTab == null) achivementTab = new AchivementTab(this);
 		else achivementTab.Reload();
 	}
 	
@@ -80,7 +75,6 @@ public class ProjectWindow : EditorWindow
 		DataHolder.Quests().SaveData();
 		DataHolder.Pets().SaveData();
 		DataHolder.Achivements().SaveData();
-		DataHolder.PetColors().SaveData();
 	}
 
 	void OnGUI()
@@ -111,11 +105,7 @@ public class ProjectWindow : EditorWindow
 			this.petTab.ShowTab ();
 		} else if (currentSection == this.ACHIVEMENTS) {
 			this.achivementTab.ShowTab ();
-		}
-		else if (currentSection == this.PETCOLORS)
-		{
-			this.petColorTab.ShowTab();
-		}
+		} 
 
 
 		EditorGUILayout.Separator ();
@@ -146,7 +136,6 @@ public class ProjectWindow : EditorWindow
 		DataHolder.Quests ().AddLanguage ();
 		DataHolder.Pets ().AddLanguage ();
 		DataHolder.Achivements ().AddLanguage ();
-		DataHolder.PetColors().AddLanguage();
 	}
 	
 	public void RemoveLanguage(int lang)
@@ -157,7 +146,6 @@ public class ProjectWindow : EditorWindow
 		DataHolder.Quests ().RemoveLanguage (lang);
 		DataHolder.Pets ().RemoveLanguage (lang);
 		DataHolder.Achivements ().RemoveLanguage (lang);
-		DataHolder.PetColors().RemoveLanguage(lang);
 	}
 
 

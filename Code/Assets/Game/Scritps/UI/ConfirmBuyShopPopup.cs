@@ -34,27 +34,9 @@ public class ConfirmBuyShopPopup : MonoBehaviour
         replaceText.GetComponent<Text>().text = DataHolder.Dialog(14).GetName(MageManager.instance.GetLanguage()) + " ";
 
         if (isBuy){
-            //Item replaceItem = GameManager.instance.GetEquipedItem(d.itemType);
-            //question.text = DataHolder.Dialog(3).GetDescription(MageManager.instance.GetLanguage()) + " ";
-            
-            //if(replaceItem == null || d.itemType == ItemType.Toy)
-            //{
-                priceText.text = d.buyPrice.ToString();
-                replacePanel.SetActive(false);
+            priceText.text = d.buyPrice.ToString();
+            replacePanel.SetActive(false);
             question.text = DataHolder.Dialog(3).GetDescription(MageManager.instance.GetLanguage()) + " ";
-           
-            /*}else{
-                
-                itemReplaceId = replaceItem.iD;
-                priceText.text = (d.buyPrice - replaceItem.buyPrice/2).ToString();
-                isReplace = true;
-                replacePanel.SetActive(true);
-                string url1 = replaceItem.iconUrl.Replace("Assets/Game/Resources/", "");
-                url1 = url1.Replace(".png", "");
-                replaceIcon.sprite = Resources.Load<Sprite>(url1) as Sprite;
-            }*/
-
-
         }
         else{
             question.text = DataHolder.Dialog(4).GetDescription(MageManager.instance.GetLanguage()) + " ";
@@ -100,14 +82,20 @@ public class ConfirmBuyShopPopup : MonoBehaviour
         string url = d.iconUrl.Replace("Assets/Game/Resources/", "");
         url = url.Replace(".png", "");
         icon.sprite = Resources.Load<Sprite>(url) as Sprite;
-        replacePanel.SetActive(false);
-        if(isBuy){
+        replaceText.GetComponent<Text>().text = DataHolder.Dialog(14).GetName(MageManager.instance.GetLanguage()) + " ";
+
+        if (isBuy)
+        {
+            priceText.text = d.buyPrice.ToString();
+            replacePanel.SetActive(false);
             question.text = DataHolder.Dialog(3).GetDescription(MageManager.instance.GetLanguage()) + " ";
-            priceText.text = (d.buyPrice).ToString();
-        }else{
+        }
+        else
+        {
             question.text = DataHolder.Dialog(4).GetDescription(MageManager.instance.GetLanguage()) + " ";
-            priceText.text = (d.buyPrice/2).ToString();
-        }        
+            replacePanel.SetActive(false);
+            priceText.text = (d.buyPrice / 2).ToString();
+        }
 
         if (d.priceType == PriceType.Coin)
         {

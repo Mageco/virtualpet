@@ -116,7 +116,10 @@ public class ShopPanel : MonoBehaviour
             pets.Sort((p1,p2)=>(p1.shopOrder).CompareTo(p2.shopOrder));
             foreach (var item in pets)
             {
-                LoadItem(item);
+                for(int i = 0; i < item.petColors.Count; i++)
+                {
+                    LoadItem(item,i);
+                }
             }            
         }else{
             items.Sort((p1,p2)=>(p1.shopOrder).CompareTo(p2.shopOrder));
@@ -172,14 +175,14 @@ public class ShopPanel : MonoBehaviour
         item.Load(data);
     }
 
-    void LoadItem(Pet data){
+    void LoadItem(Pet data,int colorId){
         GameObject go = Instantiate(itemUIPrefab);
        
         go.transform.SetParent(this.anchor);
         go.transform.localScale = Vector3.one;
         ItemUI item = go.GetComponent<ItemUI>();
         items.Add(item);
-        item.Load(data);
+        item.Load(data,colorId);
     }
 
     void ClearItems(){

@@ -6,8 +6,7 @@ using UnityEngine;
 [System.Serializable]
 public class PetColor : BaseModel
 {
-    public int iD = 0;
-    public int category = 0;
+	public int iD = 0;
     public string iconUrl = "";
     public LanguageItem[] languageItem = new LanguageItem[0];
     public PriceType priceType = PriceType.Coin;
@@ -15,12 +14,9 @@ public class PetColor : BaseModel
     public string prefabName = "";
     public int buyPrice = 0;
     public ItemState itemState = ItemState.OnShop;
-    public bool isAvailable = true;
-    public int shopOrder = 0;
 
 	public PetColor()
 	{
-		iD = DataHolder.LastPetColorID() + 1;
 		languageItem = new LanguageItem[DataHolder.Languages().GetDataCount()];
 		for (int i = 0; i < languageItem.Length; i++)
 		{
