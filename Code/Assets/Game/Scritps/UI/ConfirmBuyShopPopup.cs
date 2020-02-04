@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class ConfirmBuyShopPopup : MonoBehaviour
 {
     int itemId = 0;
+    int orderId = 0;
     int itemReplaceId = 0;
     bool isCharacter = false;
     public Image icon;
@@ -75,18 +76,19 @@ public class ConfirmBuyShopPopup : MonoBehaviour
     }
 
 
-    public void Load(Pet d,bool isBuy){
+    public void Load(Pet d,bool isBuy,int colorId = 0){
         isCharacter = true;
         this.isBuy = isBuy;
         itemId = d.iD;
-        string url = d.iconUrl.Replace("Assets/Game/Resources/", "");
+        orderId = colorId;
+        string url = d.petColors[colorId].iconUrl.Replace("Assets/Game/Resources/", "");
         url = url.Replace(".png", "");
         icon.sprite = Resources.Load<Sprite>(url) as Sprite;
         replaceText.GetComponent<Text>().text = DataHolder.Dialog(14).GetName(MageManager.instance.GetLanguage()) + " ";
 
         if (isBuy)
         {
-            priceText.text = d.buyPrice.ToString();
+            priceText.text = d.petColors[colorId].buyPrice.ToString();
             replacePanel.SetActive(false);
             question.text = DataHolder.Dialog(3).GetDescription(MageManager.instance.GetLanguage()) + " ";
         }
@@ -94,31 +96,31 @@ public class ConfirmBuyShopPopup : MonoBehaviour
         {
             question.text = DataHolder.Dialog(4).GetDescription(MageManager.instance.GetLanguage()) + " ";
             replacePanel.SetActive(false);
-            priceText.text = (d.buyPrice / 2).ToString();
+            priceText.text = (d.petColors[colorId].buyPrice / 2).ToString();
         }
 
-        if (d.priceType == PriceType.Coin)
+        if (d.petColors[colorId].priceType == PriceType.Coin)
         {
             coinIcon.SetActive(true);
             diamonIcon.SetActive(false);
             moneyIcon.SetActive(false);
             happyIcon.SetActive(false);
         }
-        else if (d.priceType == PriceType.Diamond)
+        else if (d.petColors[colorId].priceType == PriceType.Diamond)
         {
             coinIcon.SetActive(false);
             diamonIcon.SetActive(true);
             moneyIcon.SetActive(false);
             happyIcon.SetActive(false);
         }
-        else if (d.priceType == PriceType.Money)
+        else if (d.petColors[colorId].priceType == PriceType.Money)
         {
             coinIcon.SetActive(false);
             diamonIcon.SetActive(false);
             moneyIcon.SetActive(true);
             happyIcon.SetActive(false);
         }
-        else if (d.priceType == PriceType.Happy)
+        else if (d.petColors[colorId].priceType == PriceType.Happy)
         {
             coinIcon.SetActive(false);
             diamonIcon.SetActive(false);
@@ -130,7 +132,7 @@ public class ConfirmBuyShopPopup : MonoBehaviour
     public void Confirm(){
         if(isCharacter){
             if(isBuy){
-                UIManager.instance.BuyPet(itemId);
+                UIManager.instance.BuyPetColor(itemId,orderId);
             }else
                 UIManager.instance.SellPet(itemId);
         }else{

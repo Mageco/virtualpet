@@ -115,6 +115,7 @@ public class Pet : BaseModel
             languageItem[0].Name = "New Pet";
         }
 
+
     }
 
     public Pet(int id)
@@ -188,12 +189,29 @@ public class Pet : BaseModel
         if (character != null)
             return character;
 
+        if(petColors.Count == 0)
+        {
+			Pet p = DataHolder.GetPet(this.iD);
+			for (int i = 0; i < p.petColors.Count; i++)
+			{
+				PetColor c = new PetColor();
+				c.iconUrl = p.petColors[i].iconUrl;
+				c.levelRequire = p.petColors[i].levelRequire;
+				c.buyPrice = p.petColors[i].buyPrice;
+				c.priceType = p.petColors[i].priceType;
+				c.prefabName = p.petColors[i].prefabName;
+				petColors.Add(c);
+			}
+
+			petColors[0].itemState = ItemState.Equiped;
+        }
 
         string url = "";
         url = petColors[petColorId].prefabName.Replace("Assets/Game/Resources/", "");
 		Debug.Log(petColorId);
         url = url.Replace(".prefab", "");
         url = DataHolder.Pets().GetPrefabPath() + url;
+		Debug.Log(url);
         GameObject go = GameObject.Instantiate((Resources.Load(url) as GameObject), Vector3.zero, Quaternion.identity) as GameObject;
         character = go.GetComponent<CharController>();
 		if(this.position == Vector3.zero && ItemManager.instance != null)
@@ -214,6 +232,36 @@ public class Pet : BaseModel
 		GameManager.instance.UpdatePetObjects();
         return character;
     }
+
+	public void ReLoad()
+	{
+		UnLoad();
+
+		string url = "";
+		url = petColors[petColorId].prefabName.Replace("Assets/Game/Resources/", "");
+		Debug.Log(petColorId);
+		url = url.Replace(".prefab", "");
+		url = DataHolder.Pets().GetPrefabPath() + url;
+		Debug.Log(url);
+		GameObject go = GameObject.Instantiate((Resources.Load(url) as GameObject), Vector3.zero, Quaternion.identity) as GameObject;
+		character = go.GetComponent<CharController>();
+		if (this.position == Vector3.zero && ItemManager.instance != null)
+			go.transform.position = ItemManager.instance.GetRandomPoint(PointType.Spawn).position;
+		else
+			go.transform.position = this.position;
+		if (this.actionType != ActionType.Hold)
+		{
+			character.actionType = this.actionType;
+			character.enviromentType = this.enviromentType;
+			character.GetComponent<CharScale>().scalePosition = this.scalePosition;
+			character.GetComponent<CharScale>().height = this.height;
+		}
+
+		character.data = this;
+		character.LoadPrefab();
+
+		GameManager.instance.UpdatePetObjects();
+	}
 
 	public void UnLoad(){
 		if(agent != null)

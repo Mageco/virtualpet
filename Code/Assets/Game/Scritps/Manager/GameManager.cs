@@ -323,13 +323,12 @@ public class GameManager : MonoBehaviour
         
         for(int i = 0; i < p.petColors.Count; i++)
         {
-            if (p.petColors[colorId].itemState == ItemState.Equiped)
-                p.petColors[colorId].itemState = ItemState.Have;
+            if (p.petColors[i].itemState == ItemState.Equiped)
+                p.petColors[i].itemState = ItemState.Have;
         }
         p.petColorId = colorId;
         p.petColors[colorId].itemState = ItemState.Equiped;
-        p.UnLoad();
-        p.Load();
+        p.ReLoad();
         SavePlayer();
     }
 

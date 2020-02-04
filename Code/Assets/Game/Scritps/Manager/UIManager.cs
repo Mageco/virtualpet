@@ -238,7 +238,7 @@ public class UIManager : MonoBehaviour
             shopPanel.Close();
     }
 
-    public void UsePetColor(int petId, int itemId) {
+    public void EquipPetColor(int petId, int itemId) {
         shopPanel.Close();
         GameManager.instance.EquipPetColor(petId, itemId);
     }
@@ -448,7 +448,7 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    public void OnItemInfoPanel(int itemId,bool isPet)
+    public void OnItemInfoPanel(int itemId,bool isPet,int colorId = 0)
     {
         if (itemInfoUI == null)
         {
@@ -459,13 +459,13 @@ public class UIManager : MonoBehaviour
             popup.GetComponent<Popup>().Open();
             itemInfoUI = popup.GetComponent<ItemInfoUI>();
             if(isPet)
-                itemInfoUI.Load(DataHolder.GetPet(itemId));
+                itemInfoUI.Load(DataHolder.GetPet(itemId),colorId);
             else
                 itemInfoUI.Load(DataHolder.GetItem(itemId));
         }
      }
 
-    public void OnConfirmationShopPanel(int itemid,bool isCharacter,bool isBuy)
+    public void OnConfirmationShopPanel(int itemid,bool isCharacter,bool isBuy,int colorId = 0)
     {
         if (confirmBuyShopPopup == null)
         {
@@ -476,7 +476,7 @@ public class UIManager : MonoBehaviour
             popup.GetComponent<Popup>().Open();
             confirmBuyShopPopup = popup.GetComponent<ConfirmBuyShopPopup>();
             if(isCharacter)
-                confirmBuyShopPopup.Load(DataHolder.GetPet(itemid),isBuy);
+                confirmBuyShopPopup.Load(DataHolder.GetPet(itemid),isBuy, colorId);
             else
                 confirmBuyShopPopup.Load(DataHolder.GetItem(itemid),isBuy);
         }

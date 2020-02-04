@@ -73,8 +73,11 @@ public class ShopPanel : MonoBehaviour
         List<Pet> pets = new List<Pet>();
 
         if(currentTab == 1){
-            for(int i=0;i<DataHolder.Pets().GetDataCount();i++){
-                pets.Add(DataHolder.Pet(i));
+            foreach(Pet p in GameManager.instance.GetPets()){
+                for (int i = 0; i < p.petColors.Count; i++)
+                {
+                    LoadItem(p, i);
+                }
             }   
         }else if(currentTab == 0){
             for(int i=0;i<DataHolder.Items().GetDataCount();i++){
@@ -112,16 +115,8 @@ public class ShopPanel : MonoBehaviour
 
         
  
-        if(currentTab == 1){
-            pets.Sort((p1,p2)=>(p1.shopOrder).CompareTo(p2.shopOrder));
-            foreach (var item in pets)
-            {
-                for(int i = 0; i < item.petColors.Count; i++)
-                {
-                    LoadItem(item,i);
-                }
-            }            
-        }else{
+        if(currentTab != 1)
+        {
             items.Sort((p1,p2)=>(p1.shopOrder).CompareTo(p2.shopOrder));
             foreach(Item item in items){
                 LoadItem(item);

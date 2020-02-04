@@ -220,7 +220,7 @@ public class PetTab : BaseTab
                 {
                     DataHolder.Pet(selection).petColors.Add(new PetColor());
                     tempSprites.Add(new Texture2D(256,256));
-                    tempPrefabs.Add(new GameObject());
+                    tempPrefabs.Add(null);
                 }
 
                 for (int i = 0; i < DataHolder.Pet(selection).petColors.Count; i++)
@@ -228,7 +228,7 @@ public class PetTab : BaseTab
                     if(tempPrefabs.Count == i)
                     {
                         tempSprites.Add(new Texture2D(256, 256));
-                        tempPrefabs.Add(new GameObject());
+                        tempPrefabs.Add(null);
                     }
                 }
 

@@ -156,13 +156,14 @@ public class ItemUI : MonoBehaviour
         isCharacter = true;
         itemId = d.iD;
         orderId = colorId;
-        string url = d.iconUrl.Replace("Assets/Game/Resources/", "");
+        string url = d.petColors[colorId].iconUrl.Replace("Assets/Game/Resources/", "");
         url = url.Replace(".png", "");
         icon.sprite = Resources.Load<Sprite>(url) as Sprite;
-        price.text = d.buyPrice.ToString();
+        price.text = d.petColors[colorId].buyPrice.ToString();
         iconType.sprite = Resources.Load<Sprite>("Icons/ItemType/Pet");
         state = GameManager.instance.GetPet(d.iD).petColors[colorId].itemState;
 
+        usedText.gameObject.SetActive(false);
         if (state == ItemState.OnShop)
         {
             buyButton.interactable = true;
@@ -173,7 +174,6 @@ public class ItemUI : MonoBehaviour
         else if (state == ItemState.Equiped)
         {
             sellButton.gameObject.SetActive(false);
-            sellButton.interactable = false;
             buyButton.gameObject.SetActive(false);
             usedText.gameObject.SetActive(true);
             price.gameObject.SetActive(false);
@@ -192,44 +192,44 @@ public class ItemUI : MonoBehaviour
 
         if (state == ItemState.OnShop)
         {
-            if (d.priceType == PriceType.Coin)
+            if (d.petColors[colorId].priceType == PriceType.Coin)
             {
                 coinIcon.SetActive(true);
                 diamonIcon.SetActive(false);
                 moneyIcon.SetActive(false);
                 happyIcon.SetActive(false);
-                if (state == ItemState.OnShop && GameManager.instance.GetCoin() < (DataHolder.GetItem(itemId).buyPrice))
+                if (state == ItemState.OnShop && GameManager.instance.GetCoin() < (DataHolder.GetPet(itemId).petColors[colorId].buyPrice))
                 {
                     buyButton.interactable = false;
                     sellButton.interactable = false;
                 }
             }
-            else if (d.priceType == PriceType.Diamond)
+            else if (d.petColors[colorId].priceType == PriceType.Diamond)
             {
                 coinIcon.SetActive(false);
                 diamonIcon.SetActive(true);
                 moneyIcon.SetActive(false);
                 happyIcon.SetActive(false);
-                if (state == ItemState.OnShop && GameManager.instance.GetDiamond() < (DataHolder.GetItem(itemId).buyPrice))
+                if (state == ItemState.OnShop && GameManager.instance.GetDiamond() < (DataHolder.GetPet(itemId).petColors[colorId].buyPrice))
                 {
                     buyButton.interactable = false;
                     sellButton.interactable = false;
                 }
             }
-            else if (d.priceType == PriceType.Money)
+            else if (d.petColors[colorId].priceType == PriceType.Money)
             {
                 coinIcon.SetActive(false);
                 diamonIcon.SetActive(false);
                 moneyIcon.SetActive(true);
                 happyIcon.SetActive(false);
             }
-            else if (d.priceType == PriceType.Happy)
+            else if (d.petColors[colorId].priceType == PriceType.Happy)
             {
                 coinIcon.SetActive(false);
                 diamonIcon.SetActive(false);
                 moneyIcon.SetActive(false);
                 happyIcon.SetActive(true);
-                if (state == ItemState.OnShop && GameManager.instance.GetHappy() < (DataHolder.GetItem(itemId).buyPrice))
+                if (state == ItemState.OnShop && GameManager.instance.GetHappy() < (DataHolder.GetPet(itemId).petColors[colorId].buyPrice))
                 {
                     buyButton.interactable = false;
                     sellButton.interactable = false;
@@ -275,16 +275,14 @@ public class ItemUI : MonoBehaviour
         if (isCharacter)
         {
             if (state == ItemState.Equiped)
-                UIManager.instance.OnConfirmationShopPanel(itemId,true,false);
+                UIManager.instance.OnConfirmationShopPanel(itemId,true,false,orderId);
             else if (state == ItemState.Have)
             {
-                //animator.Play("Use", 0);
-                //yield return new WaitForSeconds(0.5f);
-                //UIManager.instance.OnConfirmationShopPanel(itemId,true,false);
+                UIManager.instance.EquipPetColor(itemId, orderId);
             }
             else
             {
-                UIManager.instance.OnConfirmationShopPanel(itemId,true,true);
+                UIManager.instance.OnConfirmationShopPanel(itemId,true,true,orderId);
             }
 
         }
@@ -318,7 +316,7 @@ public class ItemUI : MonoBehaviour
 
     public void OnItemInfo(){
         MageManager.instance.PlaySoundName("BubbleButton",false);
-        UIManager.instance.OnItemInfoPanel(itemId,isCharacter);
+        UIManager.instance.OnItemInfoPanel(itemId,isCharacter,orderId);
     }
 
 }
