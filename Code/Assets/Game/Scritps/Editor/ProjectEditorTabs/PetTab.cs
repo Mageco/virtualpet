@@ -1,18 +1,17 @@
 
 using UnityEditor;
 using UnityEngine;
-
+using System.Collections.Generic;
 
 
 public class PetTab : BaseTab
 {
 	private GameObject tmp1Prefab;
-    private GameObject tmp2Prefab;
-    private GameObject tmp3Prefab;
-    private GameObject tmp4Prefab;
     private int tempId = 0;
     private int tempPetId = 0;
     int lastSellection = -1;
+    List<Texture2D> tempSprites = new List<Texture2D>();
+    List<GameObject> tempPrefabs = new List<GameObject>();
 
     public PetTab(ProjectWindow pw) : base(pw)
     {
@@ -220,18 +219,69 @@ public class PetTab : BaseTab
                 if (GUILayout.Button("Add Skin", GUILayout.Width(pw.mWidth * 0.7f)))
                 {
                     DataHolder.Pet(selection).petColors.Add(new PetColor());
+                    tempSprites.Add(new Texture2D(256,256));
+                    tempPrefabs.Add(new GameObject());
                 }
-
 
                 for (int i = 0; i < DataHolder.Pet(selection).petColors.Count; i++)
                 {
+                    if(tempPrefabs.Count == i)
+                    {
+                        tempSprites.Add(new Texture2D(256, 256));
+                        tempPrefabs.Add(new GameObject());
+                    }
+                }
 
 
+                    for (int i = 0; i < DataHolder.Pet(selection).petColors.Count; i++)
+                {
 
+                    EditorGUILayout.BeginHorizontal();
+                    EditorGUILayout.LabelField("Icon", GUILayout.MaxWidth(110));
+                    if (DataHolder.Pet(selection).petColors[i].iconUrl != null)
+                    {
+
+                        this.tempSprites[i] = AssetDatabase.LoadAssetAtPath<Texture2D>(DataHolder.Pet(selection).petColors[i].iconUrl);
+                    }
+                    this.tempSprites[i] = (Texture2D)EditorGUILayout.ObjectField(GUIContent.none, this.tempSprites[i], typeof(Texture2D), false, GUILayout.MaxWidth(100));
+                    if (this.tempSprites[i] != null)
+                    {
+                        DataHolder.Pet(selection).petColors[i].iconUrl = AssetDatabase.GetAssetPath(this.tempSprites[i]);
+                    }
+                    EditorGUILayout.LabelField(DataHolder.Pet(selection).iconUrl);
+                    EditorGUILayout.EndHorizontal();
+
+                    if (this.tempSprites[i] != null)
+                    {
+                        if (GUILayout.Button("Clear Image", GUILayout.Width(100)))
+                        {
+                            DataHolder.Pet(selection).petColors[i].iconUrl = "";
+                            this.tempSprites[i] = null;
+                        }
+                    }
+
+                    if (selection != tmpSelection)
+                    {
+                        this.tempPrefabs[i] = null;
+                    }
+                    if (this.tempPrefabs[i] == null && "" != DataHolder.Pet(selection).petColors[i].prefabName)
+                    {
+                        this.tempPrefabs[i] = (GameObject)Resources.Load(DataHolder.Pets().GetPrefabPath() + DataHolder.Pet(selection).petColors[i].prefabName, typeof(GameObject));
+                    }
+                    this.tempPrefabs[i] = (GameObject)EditorGUILayout.ObjectField("Prefab", this.tempPrefabs[i], typeof(GameObject), false, GUILayout.Width(pw.mWidth * 2));
+                    if (this.tempPrefabs[i]) DataHolder.Pet(selection).petColors[i].prefabName = this.tempPrefabs[i].name;
+                    else DataHolder.Pet(selection).petColors[i].prefabName = "";
+
+
+                    DataHolder.Pet(selection).petColors[i].levelRequire = EditorGUILayout.IntField("Level Require", DataHolder.Pet(selection).petColors[i].levelRequire, GUILayout.Width(pw.mWidth));
+                    DataHolder.Pet(selection).petColors[i].priceType = (PriceType)EditorTab.EnumToolbar("Price Type", (int)DataHolder.Pet(selection).petColors[i].priceType, typeof(PriceType));
+                    DataHolder.Pet(selection).petColors[i].buyPrice = EditorGUILayout.IntField("Buy price", DataHolder.Pet(selection).petColors[i].buyPrice, GUILayout.Width(pw.mWidth));
 
                     if (GUILayout.Button("Remove Skin", GUILayout.Width(pw.mWidth * 0.7f)))
                     {
                         DataHolder.Pet(selection).petColors.RemoveAt(i);
+                        GameObject.Destroy(tempSprites[i]);
+                        this.tempSprites.RemoveAt(i);
                     }
                     EditorGUILayout.Separator();
                     EditorGUILayout.Separator();
