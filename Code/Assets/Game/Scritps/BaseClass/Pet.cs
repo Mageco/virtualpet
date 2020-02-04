@@ -189,10 +189,10 @@ public class Pet : BaseModel
         if (character != null)
             return character;
 
-        if(petColors.Count == 0)
+		Pet p = DataHolder.GetPet(this.iD);
+		if (petColors.Count < p.petColors.Count)
         {
-			Pet p = DataHolder.GetPet(this.iD);
-			for (int i = 0; i < p.petColors.Count; i++)
+			for (int i = petColors.Count; i < p.petColors.Count; i++)
 			{
 				PetColor c = new PetColor();
 				c.iconUrl = p.petColors[i].iconUrl;
