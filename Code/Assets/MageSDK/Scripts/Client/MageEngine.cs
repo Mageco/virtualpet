@@ -26,6 +26,7 @@ using Mage.Models.Application;
 using Mage.Models;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using MageSDK.Client.Helper;
 
 namespace MageSDK.Client {
 	public class MageEngine : MonoBehaviour {
@@ -60,7 +61,7 @@ namespace MageSDK.Client {
 
 		private List<CacheScreenTime> cachedScreenTime = new List<CacheScreenTime>();
 
-		private List<Message> cachedUserMessages = new List<Message>();
+		//private List<Message> cachedUserMessages = new List<Message>();
 		private bool isAppActive = true;
 		#endregion
 
@@ -215,7 +216,7 @@ namespace MageSDK.Client {
 
 					//assign new messages
 					if (result.UserMessages != null && result.UserMessages.Count > 0) {
-						AddNewMessages(result.UserMessages);
+						MessageHelper.GetInstance().AddNewMessages(result.UserMessages, this.UpdateUserMessageStatusToServer);
 						OnHasNewUserMessagesCallback(result.UserMessages);
 					}
 				}
@@ -311,8 +312,15 @@ namespace MageSDK.Client {
 			}
 
 			// enrich system auto data
-			u.SetUserData(new UserData(ApiHandler.instance.ApplicationKey+"_"+MageEngineSettings.GAME_ENGINE_SCREEN_TIME_CACHE, ConvertCacheScreenJson(), "MageEngine"));
-			u.SetUserData(new UserData(ApiHandler.instance.ApplicationKey+"_"+MageEngineSettings.GAME_ENGINE_EVENT_COUNTER_CACHE, ConvertEventCounterListToJson(), "MageEngine"));
+			u.SetUserData(new UserData( ApiHandler.instance.ApplicationKey+"_"+MageEngineSettings.GAME_ENGINE_SCREEN_TIME_CACHE, 
+										ConvertCacheScreenJson(), "MageEngine")
+						);
+			
+			// enrich user event
+			u.SetUserData(new UserData(	ApiHandler.instance.ApplicationKey+"_"+MageEngineSettings.GAME_ENGINE_EVENT_COUNTER_CACHE, 
+										MageEventHelper.GetInstance().ConvertEventCounterListToJson(), 
+										"MageEngine")
+						);
 
             this.SaveCacheData<User>(u, MageEngineSettings.GAME_ENGINE_USER);
 
@@ -822,7 +830,7 @@ namespace MageSDK.Client {
 			SaveEvents();
 			SendAppEvents();*/
 			// temporary fix to send single event
-			AddEventCounter(type.ToString());
+			MageEventHelper.GetInstance().AddEventCounter(type.ToString());
 			SendAppEvent(new MageEvent(type, eventDetail));
 		}
 
@@ -831,7 +839,7 @@ namespace MageSDK.Client {
 			SaveEvents();
 			SendAppEvents();*/
 			// temporary fix to send single event
-			AddEventCounter(type.ToString());
+			MageEventHelper.GetInstance().AddEventCounter(type.ToString());
 			SendAppEvent(new MageEvent(type, obj.ToJson()));
 		}
 
@@ -883,10 +891,10 @@ namespace MageSDK.Client {
 			LoadCacheData<DateTime>(MageEngineSettings.GAME_ENGINE_LAST_SCREEN_TIMESTAMP);
 
 			// Load User messages
-			LoadUserMessages();
+			MessageHelper.GetInstance().LoadUserMessages();
 
 			// load event counter
-			LoadEventCounterList();
+			MageEventHelper.GetInstance().LoadEventCounterList();
 		}
 
 
@@ -1061,51 +1069,6 @@ namespace MageSDK.Client {
 
 
 		#region messages & notification 
-		////<summary>Send push notification</summary>
-		
-		private List<Message> LoadUserMessages() {
-			
-			if (ES2.Exists(MageEngineSettings.GAME_ENGINE_USER_MESSAGE)) {
-				List<Message> t = ES2.LoadList<Message>(MageEngineSettings.GAME_ENGINE_USER_MESSAGE);
-				if (t == null) {
-					t = new List<Message>();
-				}
-				this.cachedUserMessages = t;
-				return t;
-				
-			} else {
-				List<Message> t = new List<Message>();
-				this.cachedUserMessages = t;
-				return t;
-			}
-		}
-
-		public void UpdateMessageStatus(string msgId, MessageStatus status) {
-			bool found = false;
-			for (int i = 0; i < this.cachedUserMessages.Count; i++) {
-				if (this.cachedUserMessages[i].id == msgId) {
-					cachedUserMessages[i].status = status;
-					found = true;
-					break;			
-				}
-			}
-
-			SaveUserMessages();
-			if (found ) {
-				UpdateUserMessageStatusToServer(msgId, status);
-			}
-		}
-
-		private void SaveUserMessages() {
-			#if PLATFORM_TEST
-				if (!this.resetUserDataOnStart) {
-					ES2.Save(this.cachedUserMessages, MageEngineSettings.GAME_ENGINE_USER_MESSAGE);
-				}
-			#else
-				ES2.Save(this.cachedUserMessages, MageEngineSettings.GAME_ENGINE_USER_MESSAGE);
-			#endif
-		}
-
 		private void UpdateUserMessageStatusToServer(string msgId, MessageStatus status) {
 			if (this.isWorkingOnline) {
 				UpdateMessageStatusRequest r = new UpdateMessageStatusRequest (msgId, status);
@@ -1125,38 +1088,6 @@ namespace MageSDK.Client {
 					}
 				);
 			}
-		}
-
-		public List<Message> GetUserMessages() {
-			return this.cachedUserMessages;
-		}
-
-		private void AddNewMessages(List<Message> newMessages) {
-			//check and remove messages that in the local list
-			List<Message> tmp = new List<Message>();
-			for (int j = 0; j < newMessages.Count; j++) {
-				bool found = false;
-				for (int i = 0; i < this.cachedUserMessages.Count; i++) {
-					if (this.cachedUserMessages[i].id == newMessages[j].id) {
-						//get status from local
-						newMessages[j].status = this.cachedUserMessages[i].status;
-						found = true;
-						break;			
-					}
-				}
-
-				if (!found) {
-					tmp.Add(newMessages[j]);
-				} else {
-					UpdateUserMessageStatusToServer(newMessages[j].id, newMessages[j].status);
-				}
-			}
-
-			for (int i = 0; i < tmp.Count; i++) {
-				this.cachedUserMessages.Add(tmp[i]);
-			}
-
-			SaveUserMessages();
 		}
 
 		
@@ -1184,85 +1115,13 @@ namespace MageSDK.Client {
 			UnityEngine.Debug.Log("Received a new message from: " + e.Message.From);
 		}
 
-		#endregion
-
-		#region event counter
-		
-		private void SaveEventCounterList(List<EventCounter> data) {
-			#if PLATFORM_TEST
-				if (!this.resetUserDataOnStart) {
-					ES2.Save(data, MageEngineSettings.GAME_ENGINE_EVENT_COUNTER_CACHE);
-				}
-			#else
-				ES2.Save(data, MageEngineSettings.GAME_ENGINE_EVENT_COUNTER_CACHE);
-			#endif
-
-			RuntimeParameters.GetInstance().SetParam(MageEngineSettings.GAME_ENGINE_EVENT_COUNTER_CACHE, data);
+		public void UpdateMessageStatus(string msgId, MessageStatus status) {
+			MessageHelper.GetInstance().UpdateMessageStatus(msgId, status, this.UpdateUserMessageStatusToServer);
 		}
 
-		private List<EventCounter> LoadEventCounterList() {
-			
-			if (ES2.Exists(MageEngineSettings.GAME_ENGINE_EVENT_COUNTER_CACHE)) {
-				List<EventCounter> t = ES2.LoadList<EventCounter>(MageEngineSettings.GAME_ENGINE_EVENT_COUNTER_CACHE);
-				if (t == null) {
-					t = new List<EventCounter>();
-				}
-				RuntimeParameters.GetInstance().SetParam(MageEngineSettings.GAME_ENGINE_EVENT_COUNTER_CACHE, t);
-				return t;
-				
-			} else {
-				List<EventCounter> t = new List<EventCounter>();
-				RuntimeParameters.GetInstance().SetParam(MageEngineSettings.GAME_ENGINE_EVENT_COUNTER_CACHE, t);
-				return t;
-			}
-		}
-
-		private List<EventCounter> GetEventCounterList() {
-			return RuntimeParameters.GetInstance().GetParam<List<EventCounter>>(MageEngineSettings.GAME_ENGINE_EVENT_COUNTER_CACHE);
-		}
-
-		private void AddEventCounter(string eventName) {
-			List<EventCounter> eventCounterList = GetEventCounterList();
-			bool found = false;
-			//search for eventName
-			for (int i = 0; i < eventCounterList.Count; i++) {
-				if (eventCounterList[i].Key == eventName) {
-					found = true;
-					var newKvp = new EventCounter(eventCounterList[i].Key, eventCounterList[i].Value++);
-					eventCounterList.RemoveAt(i);
-					eventCounterList.Insert(i, newKvp);
-				}
-			}
-
-			if (!found) {
-				var newKvp = new EventCounter(eventName, 1);
-				eventCounterList.Insert(eventCounterList.Count, newKvp);
-			}
-
-			SaveEventCounterList(eventCounterList);
-		}
-
-		private string ConvertEventCounterListToJson() {
-			List<EventCounter> eventCounterList = GetEventCounterList();
-
-			if (null != eventCounterList) {
-				string output = "{";
-				for (int i = 0; i < eventCounterList.Count; i++) {
-					output += "\"" + MageEngineSettings.GAME_ENGINE_EVENT_COUNTER_CACHE_PREFIX + eventCounterList[i].Key + "\": " + eventCounterList[i].Value + ", ";
-				}
-
-				if (eventCounterList.Count > 0) {
-					output = output.Substring(0, output.Length - 2);
-				}
-
-				output += "}";
-				return output;
-			} else {
-				return "";
-			}
-		}
 
 		#endregion
+	
 	}
 }
 
