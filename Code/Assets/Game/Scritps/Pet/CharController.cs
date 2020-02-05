@@ -1730,7 +1730,7 @@ public class CharController : MonoBehaviour
         {
             yield return new WaitForEndOfFrame();
         }
-        data.Health = 0.5f * data.MaxHealth;
+        data.Health = data.MaxHealth;
         timeWait.gameObject.SetActive(false);
         GameManager.instance.LogAchivement(AchivementType.Do_Action,ActionType.Sick);
         CheckEnviroment();
@@ -1749,7 +1749,7 @@ public class CharController : MonoBehaviour
         {
             yield return new WaitForEndOfFrame();
         }
-        data.Damage = 0.5f * data.MaxHealth;
+        data.Damage = data.MaxHealth;
         timeWait.gameObject.SetActive(false);
         GameManager.instance.LogAchivement(AchivementType.Do_Action,ActionType.Injured);
         CheckEnviroment();
