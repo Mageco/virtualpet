@@ -7,9 +7,9 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Cat_Yellow
+  m_Name: Turtle_Blue_CoverUp
   m_Shader: {fileID: 4800000, guid: a36b7719ff0465b42ab1407d67672c5f, type: 3}
-  m_ShaderKeywords: CHANGECOLOR_ON ETC1_EXTERNAL_ALPHA
+  m_ShaderKeywords: ALPHACUTOFF_ON CHANGECOLOR_ON ETC1_EXTERNAL_ALPHA HSV_ON
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -89,7 +89,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Floats:
     - _Alpha: 1
-    - _AlphaCutoffValue: 0
+    - _AlphaCutoffValue: 0.9
     - _BlurHD: 0
     - _BlurIntensity: 10
     - _BumpScale: 1
@@ -99,13 +99,13 @@ Material:
     - _ClipUvLeft: 0
     - _ClipUvRight: 0
     - _ClipUvUp: 0
-    - _ColorChangeLuminosity: 0.94
-    - _ColorChangeTolerance: 0.9
+    - _ColorChangeLuminosity: 1
+    - _ColorChangeTolerance: 0.92
     - _ColorRampLuminosity: 0
     - _ColorRampOutline: 0
     - _ColorSwapBlueLuminosity: 0.5
     - _ColorSwapGreenLuminosity: 0.5
-    - _ColorSwapRedLuminosity: 0.5
+    - _ColorSwapRedLuminosity: 0.472
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
     - _DistortAmount: 0.5
@@ -118,15 +118,15 @@ Material:
     - _FadeBurnWidth: 0.025
     - _FishEyeUvAmount: 0.35
     - _FlickerAlpha: 0
-    - _FlickerFreq: 0.2
-    - _FlickerPercent: 0.05
+    - _FlickerFreq: 0
+    - _FlickerPercent: 0
     - _GhostColorBoost: 1
     - _GhostTransparency: 0
     - _GlitchAmount: 3
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
-    - _Glow: 10
+    - _Glow: 0
     - _GlowTexUsed: 0
     - _GradBlend: 1
     - _GrassManualAnim: 1
@@ -135,8 +135,8 @@ Material:
     - _GrassWind: 20
     - _GreyscaleLuminosity: 0
     - _GreyscaleOutline: 0
-    - _HandDrawnAmount: 10
-    - _HandDrawnSpeed: 5
+    - _HandDrawnAmount: 20
+    - _HandDrawnSpeed: 9.65
     - _HitEffectBlend: 1
     - _HitEffectGlow: 5
     - _HologramFlickerAlpha: 0
@@ -146,12 +146,12 @@ Material:
     - _HologramStripesFill: 0.4
     - _HologramStripesLuminosity: 1
     - _HologramStripesSpeed: 5
-    - _HsvBright: 1
-    - _HsvSaturation: 1
-    - _HsvShift: 180
+    - _HsvBright: 0.84
+    - _HsvSaturation: 1.85
+    - _HsvShift: 155
     - _InnerOutlineAlpha: 1
     - _InnerOutlineGlow: 1
-    - _InnerOutlineThickness: 1
+    - _InnerOutlineThickness: 3
     - _MaxXUV: 1
     - _MaxYUV: 1
     - _Metallic: 0
@@ -170,19 +170,19 @@ Material:
     - _OutlineDistortTexXSpeed: 5
     - _OutlineDistortTexYSpeed: 5
     - _OutlineDistortToggle: 0
-    - _OutlineGlow: 1.5
+    - _OutlineGlow: 1
     - _OutlineIsPixel: 0
     - _OutlinePixelWidth: 1
     - _OutlineTexGrey: 0
     - _OutlineTexToggle: 0
     - _OutlineTexXSpeed: 10
     - _OutlineTexYSpeed: 0
-    - _OutlineWidth: 0.004
+    - _OutlineWidth: 0
     - _Parallax: 0.02
     - _PinchUvAmount: 0.35
     - _PixelateSize: 32
-    - _PosterizeGamma: 0.75
-    - _PosterizeNumColors: 8
+    - _PosterizeGamma: 1.77
+    - _PosterizeNumColors: 18.8
     - _PosterizeOutline: 0
     - _RectSize: 1
     - _RotateUvAmount: 0
@@ -213,20 +213,20 @@ Material:
     - _ZoomUvAmount: 0.5
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
-    - _ColorChangeNewCol: {r: 0.9528302, g: 0.82468826, b: 0.39101997, a: 1}
-    - _ColorChangeTarget: {r: 0.3019608, g: 0.3019608, b: 0.3019608, a: 1}
+    - _ColorChangeNewCol: {r: 0.63372195, g: 0.7882375, b: 0.9528302, a: 1}
+    - _ColorChangeTarget: {r: 0.41960788, g: 0.24705884, b: 0.24705884, a: 1}
     - _ColorSwapBlue: {r: 1, g: 1, b: 1, a: 1}
     - _ColorSwapGreen: {r: 1, g: 1, b: 1, a: 1}
     - _ColorSwapRed: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _FadeBurnColor: {r: 1, g: 1, b: 0, a: 1}
-    - _GlowColor: {r: 1, g: 1, b: 1, a: 1}
+    - _GlowColor: {r: 0.37375522, g: 1, b: 0, a: 1}
     - _GradBotLeftCol: {r: 0, g: 0, b: 1, a: 1}
     - _GradBotRightCol: {r: 0, g: 0, b: 1, a: 1}
     - _GradTopLeftCol: {r: 1, g: 0, b: 0, a: 1}
     - _GradTopRightCol: {r: 1, g: 0, b: 0, a: 1}
     - _GreyscaleTintColor: {r: 1, g: 1, b: 1, a: 1}
     - _HitEffectColor: {r: 1, g: 1, b: 1, a: 1}
-    - _InnerOutlineColor: {r: 1, g: 0, b: 0, a: 1}
+    - _InnerOutlineColor: {r: 0.9450981, g: 0.5882353, b: 0.56078434, a: 1}
     - _OutlineColor: {r: 1, g: 1, b: 1, a: 1}
     - _ShadowColor: {r: 0, g: 0, b: 0, a: 1}
