@@ -312,6 +312,11 @@ public class Pet : BaseModel
 		}
 	}
 
+    public PetColor GetPetColor()
+    {
+		return petColors[petColorId];
+    }
+
 	void Save()
 	{
 

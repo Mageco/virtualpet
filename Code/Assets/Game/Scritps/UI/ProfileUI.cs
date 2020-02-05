@@ -34,7 +34,7 @@ public class ProfileUI : MonoBehaviour
         dirty.fillAmount = data.Dirty/data.MaxDirty;
         toilet.fillAmount = (Mathf.Max(data.Shit/data.MaxShit,data.Pee/data.MaxPee));
         
-        string url = DataHolder.GetPet(id).iconProfileUrl.Replace("Assets/Game/Resources/", "");
+        string url = DataHolder.GetPet(id).GetPetColor().iconUrl.Replace("Assets/Game/Resources/", "");
         url = url.Replace(".png", "");
         icon.sprite = Resources.Load<Sprite>(url) as Sprite;
     }
