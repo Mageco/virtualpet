@@ -276,7 +276,7 @@ public class ItemManager : MonoBehaviour
     void AddItem(PlayerItem playerItem,bool isAnimated)
     {
        
-        string url = DataHolder.GetItem(playerItem.itemId).prefabName.Replace("Assets/Game/Resources/", "");
+        string url = DataHolder.GetItem(playerItem.itemId).skins[playerItem.skinId].prefabName.Replace("Assets/Game/Resources/", "");
         url = url.Replace(".prefab", "");
         url = DataHolder.Items().GetPrefabPath() + url;
         for(int i = 0; i < playerItem.number; i++)

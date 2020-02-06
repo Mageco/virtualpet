@@ -141,9 +141,10 @@ public class UIManager : MonoBehaviour
                 }
                 else
                     houseButton.SetActive(false);
-                mapButton.SetActive(true);
+                //mapButton.SetActive(true);
             }
         }
+        /*
         if (GameManager.instance.myPlayer.gameType == GameType.House)
         {
             if(mapButton != null)
@@ -153,7 +154,7 @@ public class UIManager : MonoBehaviour
         {
             if (mapButton != null)
                 mapButton.SetActive(true);
-        }
+        }*/
     }
 
 

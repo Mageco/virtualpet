@@ -1,13 +1,14 @@
 
 using UnityEditor;
 using UnityEngine;
-
+using System.Collections.Generic;
 
 
 public class ItemTab : BaseTab
 {
 	private GameObject tmpPrefab;
-
+    List<Texture2D> tempSprites = new List<Texture2D>();
+    List<GameObject> tempPrefabs = new List<GameObject>();
 
     public ItemTab(ProjectWindow pw) : base(pw)
     {
@@ -54,14 +55,21 @@ public class ItemTab : BaseTab
 
             EditorGUILayout.LabelField("Item ID: " + DataHolder.Items().GetItem(selection,temcategory).iD.ToString(), GUILayout.Width(pw.mWidth * 2));
             DataHolder.Items().GetItem(selection,temcategory).shopOrder = EditorGUILayout.IntField("Shop Order", DataHolder.Items().GetItem(selection,temcategory).shopOrder, GUILayout.Width(pw.mWidth));
-            
-            for (int i = 0; i < DataHolder.Languages().GetDataCount(); i++)
+
+
+            EditorGUILayout.BeginVertical("box");
+            fold4 = EditorGUILayout.Foldout(fold4, "Item Name");
+            if (fold4)
             {
-                EditorGUILayout.LabelField(DataHolder.Language(i));
-                DataHolder.Items().GetItem(selection,temcategory).languageItem[i].Name = EditorGUILayout.TextField("Name", DataHolder.Items().GetItem(selection,temcategory).languageItem[i].Name, GUILayout.Width(pw.mWidth * 2));
-                DataHolder.Items().GetItem(selection,temcategory).languageItem[i].Description = EditorGUILayout.TextField("Description", DataHolder.Items().GetItem(selection,temcategory).languageItem[i].Description, GUILayout.Width(pw.mWidth * 2));
-                EditorGUILayout.Separator();
+                for (int i = 0; i < DataHolder.Languages().GetDataCount(); i++)
+                {
+                    EditorGUILayout.LabelField(DataHolder.Language(i));
+                    DataHolder.Items().GetItem(selection, temcategory).languageItem[i].Name = EditorGUILayout.TextField("Name", DataHolder.Items().GetItem(selection, temcategory).languageItem[i].Name, GUILayout.Width(pw.mWidth * 2));
+                    DataHolder.Items().GetItem(selection, temcategory).languageItem[i].Description = EditorGUILayout.TextField("Description", DataHolder.Items().GetItem(selection, temcategory).languageItem[i].Description, GUILayout.Width(pw.mWidth * 2));
+                    EditorGUILayout.Separator();
+                }
             }
+            EditorGUILayout.EndVertical();
 
             EditorGUILayout.BeginHorizontal();
             EditorGUILayout.LabelField("Icon", GUILayout.MaxWidth(110));
@@ -92,19 +100,6 @@ public class ItemTab : BaseTab
 			fold2 = EditorGUILayout.Foldout(fold2, "Item Settings");
 			if(fold2)
 			{
-				if(selection != tmpSelection || lastCategory != temcategory){
-                    this.tmpPrefab = null;
-                    //tmpSelection = selection;
-                    //lastCategory = temcategory;
-                } 
-				if(this.tmpPrefab == null && "" != DataHolder.Items().GetItem(selection,temcategory).prefabName)
-				{
-					this.tmpPrefab = (GameObject)Resources.Load(DataHolder.Items().GetPrefabPath()+DataHolder.Items().GetItem(selection,temcategory).prefabName, typeof(GameObject));
-				}
-				this.tmpPrefab = (GameObject)EditorGUILayout.ObjectField("Prefab", this.tmpPrefab, typeof(GameObject), false, GUILayout.Width(pw.mWidth*2));
-				if(this.tmpPrefab) DataHolder.Items().GetItem(selection,temcategory).prefabName = this.tmpPrefab.name;
-				else DataHolder.Items().GetItem(selection,temcategory).prefabName = "";
-
 				EditorGUILayout.Separator();
 				DataHolder.Items().GetItem(selection,temcategory).itemType = (ItemType)EditorGUILayout.EnumPopup("Item Type", DataHolder.Items().GetItem(selection,temcategory).itemType, GUILayout.Width (pw.mWidth * 2));
 				EditorGUILayout.Separator();
@@ -117,40 +112,121 @@ public class ItemTab : BaseTab
                     DataHolder.Items().GetItem(selection,temcategory).sellPrice = EditorGUILayout.IntField("Coin Amount", DataHolder.Items().GetItem(selection,temcategory).sellPrice, GUILayout.Width(pw.mWidth));
                 }
                 DataHolder.Items().GetItem(selection,temcategory).isAvailable = EditorGUILayout.Toggle("Available", DataHolder.Items().GetItem(selection,temcategory).isAvailable, GUILayout.Width(pw.mWidth));
-                DataHolder.Items().GetItem(selection,temcategory).consume = EditorGUILayout.Toggle("Consume", DataHolder.Items().GetItem(selection,temcategory).consume, GUILayout.Width(pw.mWidth));
+                //DataHolder.Items().GetItem(selection,temcategory).consume = EditorGUILayout.Toggle("Consume", DataHolder.Items().GetItem(selection,temcategory).consume, GUILayout.Width(pw.mWidth));
 
 			}
 			EditorGUILayout.EndVertical();
 
- 			EditorGUILayout.BeginVertical("box");
-			fold3 = EditorGUILayout.Foldout(fold3, "Usage Settings");
-			if(fold3)
-			{
+
 				
-				EditorGUILayout.Separator();
-                if(DataHolder.Items().GetItem(selection,temcategory).itemType == ItemType.Food){
-                    DataHolder.Items().GetItem(selection,temcategory).value = EditorGUILayout.FloatField("Food Amount", DataHolder.Items().GetItem(selection,temcategory).value, GUILayout.Width(pw.mWidth));
-                }else if(DataHolder.Items().GetItem(selection,temcategory).itemType == ItemType.Drink){
-                    DataHolder.Items().GetItem(selection,temcategory).value = EditorGUILayout.FloatField("Water Amount", DataHolder.Items().GetItem(selection,temcategory).value, GUILayout.Width(pw.mWidth));
-                }else if(DataHolder.Items().GetItem(selection,temcategory).itemType == ItemType.Toilet){
-                    DataHolder.Items().GetItem(selection,temcategory).value = EditorGUILayout.FloatField("Clean per 1 second", DataHolder.Items().GetItem(selection,temcategory).value, GUILayout.Width(pw.mWidth));
-                }else if(DataHolder.Items().GetItem(selection,temcategory).itemType == ItemType.Bath){
-                    DataHolder.Items().GetItem(selection,temcategory).value = EditorGUILayout.FloatField("Clean after take bath", DataHolder.Items().GetItem(selection,temcategory).value, GUILayout.Width(pw.mWidth));
-                }else if(DataHolder.Items().GetItem(selection,temcategory).itemType == ItemType.Clean){
-                    DataHolder.Items().GetItem(selection,temcategory).value = EditorGUILayout.FloatField("Clean per second", DataHolder.Items().GetItem(selection,temcategory).value, GUILayout.Width(pw.mWidth));
+			EditorGUILayout.Separator();
+            if(DataHolder.Items().GetItem(selection,temcategory).itemType == ItemType.Food){
+                DataHolder.Items().GetItem(selection,temcategory).value = EditorGUILayout.FloatField("Food Amount", DataHolder.Items().GetItem(selection,temcategory).value, GUILayout.Width(pw.mWidth));
+            }else if(DataHolder.Items().GetItem(selection,temcategory).itemType == ItemType.Drink){
+                DataHolder.Items().GetItem(selection,temcategory).value = EditorGUILayout.FloatField("Water Amount", DataHolder.Items().GetItem(selection,temcategory).value, GUILayout.Width(pw.mWidth));
+            }else if(DataHolder.Items().GetItem(selection,temcategory).itemType == ItemType.Toilet){
+                DataHolder.Items().GetItem(selection,temcategory).value = EditorGUILayout.FloatField("Clean per 1 second", DataHolder.Items().GetItem(selection,temcategory).value, GUILayout.Width(pw.mWidth));
+                DataHolder.Items().GetItem(selection, temcategory).happy = EditorGUILayout.FloatField("+Happy", DataHolder.Items().GetItem(selection, temcategory).happy, GUILayout.Width(pw.mWidth));
+            }
+            else if(DataHolder.Items().GetItem(selection,temcategory).itemType == ItemType.Bath){
+                DataHolder.Items().GetItem(selection,temcategory).value = EditorGUILayout.FloatField("Clean after take bath", DataHolder.Items().GetItem(selection,temcategory).value, GUILayout.Width(pw.mWidth));
+                DataHolder.Items().GetItem(selection, temcategory).injured = EditorGUILayout.FloatField("+Injured", DataHolder.Items().GetItem(selection, temcategory).injured, GUILayout.Width(pw.mWidth));
+            }
+            else if(DataHolder.Items().GetItem(selection,temcategory).itemType == ItemType.Clean){
+                DataHolder.Items().GetItem(selection,temcategory).value = EditorGUILayout.FloatField("Clean per second", DataHolder.Items().GetItem(selection,temcategory).value, GUILayout.Width(pw.mWidth));
+            }
+            else if (DataHolder.Items().GetItem(selection, temcategory).itemType == ItemType.Bed)
+            {
+                DataHolder.Items().GetItem(selection, temcategory).value = EditorGUILayout.FloatField("Clean per second", DataHolder.Items().GetItem(selection, temcategory).value, GUILayout.Width(pw.mWidth));
+                DataHolder.Items().GetItem(selection, temcategory).health = EditorGUILayout.FloatField("+Health", DataHolder.Items().GetItem(selection, temcategory).health, GUILayout.Width(pw.mWidth));
+            }
+			
+
+
+
+            if (GUILayout.Button("Add Skin", GUILayout.Width(pw.mWidth * 0.7f)))
+            {
+                DataHolder.Items().GetItem(selection, temcategory).skins.Add(new Skin());
+                tempSprites.Add(new Texture2D(256, 256));
+                tempPrefabs.Add(null);
+            }
+
+            if(DataHolder.Items().GetItem(selection, temcategory).skins.Count > 0)
+            {
+                EditorGUILayout.BeginVertical("box");
+                fold2 = EditorGUILayout.Foldout(fold2, "Skin");
+                if (fold2)
+                {
+
+
+                    for (int i = 0; i < DataHolder.Items().GetItem(selection, temcategory).skins.Count; i++)
+                    {
+                        if (tempPrefabs.Count == i)
+                        {
+                            tempSprites.Add(new Texture2D(256, 256));
+                            tempPrefabs.Add(null);
+                        }
+                    }
+
+
+                    for (int i = 0; i < DataHolder.Items().GetItem(selection, temcategory).skins.Count; i++)
+                    {
+
+                        EditorGUILayout.BeginHorizontal();
+                        EditorGUILayout.LabelField("Icon", GUILayout.MaxWidth(110));
+                        if (DataHolder.Items().GetItem(selection, temcategory).skins[i].iconUrl != null)
+                        {
+
+                            this.tempSprites[i] = AssetDatabase.LoadAssetAtPath<Texture2D>(DataHolder.Items().GetItem(selection, temcategory).skins[i].iconUrl);
+                        }
+                        this.tempSprites[i] = (Texture2D)EditorGUILayout.ObjectField(GUIContent.none, this.tempSprites[i], typeof(Texture2D), false, GUILayout.MaxWidth(100));
+                        if (this.tempSprites[i] != null)
+                        {
+                            DataHolder.Items().GetItem(selection, temcategory).skins[i].iconUrl = AssetDatabase.GetAssetPath(this.tempSprites[i]);
+                        }
+                        EditorGUILayout.LabelField(DataHolder.Items().GetItem(selection, temcategory).iconUrl);
+                        EditorGUILayout.EndHorizontal();
+
+                        if (this.tempSprites[i] != null)
+                        {
+                            if (GUILayout.Button("Clear Image", GUILayout.Width(100)))
+                            {
+                                DataHolder.Items().GetItem(selection, temcategory).skins[i].iconUrl = "";
+                                this.tempSprites[i] = null;
+                            }
+                        }
+
+                        if (selection != tmpSelection)
+                        {
+                            this.tempPrefabs[i] = null;
+                        }
+                        if (this.tempPrefabs[i] == null && "" != DataHolder.Items().GetItem(selection, temcategory).skins[i].prefabName)
+                        {
+                            this.tempPrefabs[i] = (GameObject)Resources.Load(DataHolder.Pets().GetPrefabPath() + DataHolder.Items().GetItem(selection, temcategory).skins[i].prefabName, typeof(GameObject));
+                        }
+                        this.tempPrefabs[i] = (GameObject)EditorGUILayout.ObjectField("Prefab", this.tempPrefabs[i], typeof(GameObject), false, GUILayout.Width(pw.mWidth * 2));
+                        if (this.tempPrefabs[i]) DataHolder.Items().GetItem(selection, temcategory).skins[i].prefabName = this.tempPrefabs[i].name;
+                        else DataHolder.Items().GetItem(selection, temcategory).skins[i].prefabName = "";
+
+
+                        DataHolder.Items().GetItem(selection, temcategory).skins[i].levelRequire = EditorGUILayout.IntField("Level Require", DataHolder.Items().GetItem(selection, temcategory).skins[i].levelRequire, GUILayout.Width(pw.mWidth));
+                        DataHolder.Items().GetItem(selection, temcategory).skins[i].priceType = (PriceType)EditorTab.EnumToolbar("Price Type", (int)DataHolder.Items().GetItem(selection, temcategory).skins[i].priceType, typeof(PriceType));
+                        DataHolder.Items().GetItem(selection, temcategory).skins[i].buyPrice = EditorGUILayout.IntField("Buy price", DataHolder.Items().GetItem(selection, temcategory).skins[i].buyPrice, GUILayout.Width(pw.mWidth));
+
+                        if (GUILayout.Button("Remove Skin", GUILayout.Width(pw.mWidth * 0.7f)))
+                        {
+                            DataHolder.Items().GetItem(selection, temcategory).skins.RemoveAt(i);
+                            GameObject.DestroyImmediate(tempSprites[i]);
+                            this.tempSprites.RemoveAt(i);
+                        }
+                        EditorGUILayout.Separator();
+                        EditorGUILayout.Separator();
+                    }
                 }
-                
-                EditorGUILayout.Separator();
-                DataHolder.Items().GetItem(selection,temcategory).happy = EditorGUILayout.FloatField("+Happy", DataHolder.Items().GetItem(selection,temcategory).happy, GUILayout.Width(pw.mWidth));
-                DataHolder.Items().GetItem(selection,temcategory).health = EditorGUILayout.FloatField("+Health", DataHolder.Items().GetItem(selection,temcategory).health, GUILayout.Width(pw.mWidth));
-                DataHolder.Items().GetItem(selection,temcategory).injured = EditorGUILayout.FloatField("+Injured", DataHolder.Items().GetItem(selection,temcategory).injured, GUILayout.Width(pw.mWidth));
-
-			}
-			EditorGUILayout.EndVertical(); 
-
+                EditorGUILayout.EndVertical();
+            }
             
 
-            
             EditorGUILayout.EndHorizontal();
             EditorGUILayout.EndVertical();
             

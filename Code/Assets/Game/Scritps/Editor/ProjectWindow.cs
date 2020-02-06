@@ -10,15 +10,15 @@ public class ProjectWindow : EditorWindow
 	public int mWidth = 300;
 	// section handling
 	private int currentSection = 0;
-	private string[] sections = new string[] {"Language","Skill","Item","Dialog","Quest","Pet","Achivement"};
+	private string[] sections = new string[] {"Language","Item","Dialog","Quest","Pet","Achivement"};
 	
 	private int LANGUAGES = 0;
-	private int SKILL = 1;
-	private int ITEMS = 2;
-	private int DIALOGS = 3;
-	private int QUESTS = 4;
-	private int PETS = 5;
-	private int ACHIVEMENTS = 6;
+	//private int SKILL = 1;
+	private int ITEMS = 1;
+	private int DIALOGS = 2;
+	private int QUESTS = 3;
+	private int PETS = 4;
+	private int ACHIVEMENTS = 5;
 
 	// tabs
 	private LanguageTab langTab = null;
@@ -50,8 +50,8 @@ public class ProjectWindow : EditorWindow
 		if(itemTab == null) itemTab = new ItemTab(this);
 		else itemTab.Reload();
 
-		if(skillTab == null) skillTab = new SkillTab(this);
-		else skillTab.Reload();
+		//if(skillTab == null) skillTab = new SkillTab(this);
+		//else skillTab.Reload();
 				
 		if(dialogTab == null) dialogTab = new DialogTab(this);
 		else dialogTab.Reload();
@@ -70,7 +70,7 @@ public class ProjectWindow : EditorWindow
 	{
 		DataHolder.Languages().SaveData();
 		DataHolder.Items().SaveData();
-		DataHolder.Skills().SaveData();
+		//DataHolder.Skills().SaveData();
 		DataHolder.Dialogs().SaveData();
 		DataHolder.Quests().SaveData();
 		DataHolder.Pets().SaveData();
@@ -95,9 +95,10 @@ public class ProjectWindow : EditorWindow
 			this.langTab.ShowTab ();
 		} else if (currentSection == this.ITEMS) {
 			this.itemTab.ShowTab ();
-		}  else if (currentSection == this.SKILL) {
-			this.skillTab.ShowTab ();
-		} else if (currentSection == this.DIALOGS) {
+		//}  else if (currentSection == this.SKILL) {
+		//	this.skillTab.ShowTab ();
+		}
+        else if (currentSection == this.DIALOGS) {
 			this.dialogTab.ShowTab ();
 		} else if (currentSection == this.QUESTS) {
 			this.questTab.ShowTab ();

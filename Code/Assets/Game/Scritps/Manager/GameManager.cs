@@ -313,7 +313,7 @@ public class GameManager : MonoBehaviour
     public void AddPetColor(int petId,int colorId)
     {
         Pet p = GetPet(petId);
-        p.petColors[colorId].itemState = ItemState.Have;
+        p.skins[colorId].itemState = ItemState.Have;
         SavePlayer();
     }
 
@@ -321,21 +321,21 @@ public class GameManager : MonoBehaviour
     {
         Pet p = GetPet(petId);
         
-        for(int i = 0; i < p.petColors.Count; i++)
+        for(int i = 0; i < p.skins.Count; i++)
         {
-            if (p.petColors[i].itemState == ItemState.Equiped)
-                p.petColors[i].itemState = ItemState.Have;
+            if (p.skins[i].itemState == ItemState.Equiped)
+                p.skins[i].itemState = ItemState.Have;
         }
-        p.petColorId = colorId;
-        p.petColors[colorId].itemState = ItemState.Equiped;
+        p.skinId = colorId;
+        p.skins[colorId].itemState = ItemState.Equiped;
         p.ReLoad();
         SavePlayer();
     }
 
     public bool BuyPetColor(int petId, int colorId)
     {
-        PriceType type = DataHolder.GetPet(petId).petColors[colorId].priceType;
-        int price = DataHolder.GetPet(petId).petColors[colorId].buyPrice;
+        PriceType type = DataHolder.GetPet(petId).skins[colorId].priceType;
+        int price = DataHolder.GetPet(petId).skins[colorId].buyPrice;
         if (type == PriceType.Coin)
         {
             if (price > GetCoin())

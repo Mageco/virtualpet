@@ -21,11 +21,12 @@ public class ConfirmBuyShopPopup : MonoBehaviour
     public Image replaceIcon;
     ItemState state = ItemState.OnShop;
     public GameObject okButton;
-    
+
     bool isBuy = false;
     bool isReplace = false;
 
-    public void Load(Item d,bool isBuy){
+    public void Load(Item d, bool isBuy)
+    {
 
         itemId = d.iD;
         this.isBuy = isBuy;
@@ -34,16 +35,18 @@ public class ConfirmBuyShopPopup : MonoBehaviour
         icon.sprite = Resources.Load<Sprite>(url) as Sprite;
         replaceText.GetComponent<Text>().text = DataHolder.Dialog(14).GetName(MageManager.instance.GetLanguage()) + " ";
 
-        if (isBuy){
+        if (isBuy)
+        {
             priceText.text = d.buyPrice.ToString();
             replacePanel.SetActive(false);
             question.text = DataHolder.Dialog(3).GetDescription(MageManager.instance.GetLanguage()) + " ";
         }
-        else{
+        else
+        {
             question.text = DataHolder.Dialog(4).GetDescription(MageManager.instance.GetLanguage()) + " ";
             replacePanel.SetActive(false);
-            priceText.text = (d.buyPrice/2).ToString();
-        }        
+            priceText.text = (d.buyPrice / 2).ToString();
+        }
 
         if (d.priceType == PriceType.Coin)
         {
@@ -76,19 +79,20 @@ public class ConfirmBuyShopPopup : MonoBehaviour
     }
 
 
-    public void Load(Pet d,bool isBuy,int colorId = 0){
+    public void Load(Pet d, bool isBuy, int colorId = 0)
+    {
         isCharacter = true;
         this.isBuy = isBuy;
         itemId = d.iD;
         orderId = colorId;
-        string url = d.petColors[colorId].iconUrl.Replace("Assets/Game/Resources/", "");
+        string url = d.skins[colorId].iconUrl.Replace("Assets/Game/Resources/", "");
         url = url.Replace(".png", "");
         icon.sprite = Resources.Load<Sprite>(url) as Sprite;
         replaceText.GetComponent<Text>().text = DataHolder.Dialog(14).GetName(MageManager.instance.GetLanguage()) + " ";
 
         if (isBuy)
         {
-            priceText.text = d.petColors[colorId].buyPrice.ToString();
+            priceText.text = d.skins[colorId].buyPrice.ToString();
             replacePanel.SetActive(false);
             question.text = DataHolder.Dialog(3).GetDescription(MageManager.instance.GetLanguage()) + " ";
         }
@@ -96,31 +100,31 @@ public class ConfirmBuyShopPopup : MonoBehaviour
         {
             question.text = DataHolder.Dialog(4).GetDescription(MageManager.instance.GetLanguage()) + " ";
             replacePanel.SetActive(false);
-            priceText.text = (d.petColors[colorId].buyPrice / 2).ToString();
+            priceText.text = (d.skins[colorId].buyPrice / 2).ToString();
         }
 
-        if (d.petColors[colorId].priceType == PriceType.Coin)
+        if (d.skins[colorId].priceType == PriceType.Coin)
         {
             coinIcon.SetActive(true);
             diamonIcon.SetActive(false);
             moneyIcon.SetActive(false);
             happyIcon.SetActive(false);
         }
-        else if (d.petColors[colorId].priceType == PriceType.Diamond)
+        else if (d.skins[colorId].priceType == PriceType.Diamond)
         {
             coinIcon.SetActive(false);
             diamonIcon.SetActive(true);
             moneyIcon.SetActive(false);
             happyIcon.SetActive(false);
         }
-        else if (d.petColors[colorId].priceType == PriceType.Money)
+        else if (d.skins[colorId].priceType == PriceType.Money)
         {
             coinIcon.SetActive(false);
             diamonIcon.SetActive(false);
             moneyIcon.SetActive(true);
             happyIcon.SetActive(false);
         }
-        else if (d.petColors[colorId].priceType == PriceType.Happy)
+        else if (d.skins[colorId].priceType == PriceType.Happy)
         {
             coinIcon.SetActive(false);
             diamonIcon.SetActive(false);
@@ -129,24 +133,33 @@ public class ConfirmBuyShopPopup : MonoBehaviour
         }
     }
 
-    public void Confirm(){
-        if(isCharacter){
-            if(isBuy){
-                UIManager.instance.BuyPetColor(itemId,orderId);
-            }else
+    public void Confirm()
+    {
+        if (isCharacter)
+        {
+            if (isBuy)
+            {
+                UIManager.instance.BuyPetColor(itemId, orderId);
+            }
+            else
                 UIManager.instance.SellPet(itemId);
-        }else{
-            if(isBuy){
-                if(isReplace)
+        }
+        else
+        {
+            if (isBuy)
+            {
+                if (isReplace)
                     UIManager.instance.SellItem(itemReplaceId);
                 UIManager.instance.BuyItem(itemId);
-            }else
-                UIManager.instance.SellItem(itemId);            
+            }
+            else
+                UIManager.instance.SellItem(itemId);
         }
         this.Close();
     }
 
-    public void Close(){
+    public void Close()
+    {
         this.GetComponent<Popup>().Close();
     }
 }

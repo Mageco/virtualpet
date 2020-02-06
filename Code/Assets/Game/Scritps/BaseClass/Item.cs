@@ -1,15 +1,17 @@
 
 using UnityEngine;
+using System.Collections.Generic;
 
 [System.Serializable]
 public class Item
 {
 	public int iD = 0;
 	public int category = 0;
+	public int level = 1;
 	public string iconUrl = "";
 	public LanguageItem[] languageItem = new LanguageItem[0];
-
-	public string prefabName = "";
+	public List<Skin> skins = new List<Skin>();
+	public int skinId = 0;
 	public ItemType itemType = ItemType.Diamond;
 	public PriceType priceType = PriceType.Coin;
     public ItemState itemState = ItemState.OnShop;

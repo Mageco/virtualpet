@@ -14,41 +14,49 @@ public class ShopPanel : MonoBehaviour
     [HideInInspector]
     public List<Toggle> toggles = new List<Toggle>();
     public Transform toogleAnchor;
-    
+
     // Start is called before the first frame update
 
-    void Awake(){
-        if(ES2.Exists("ShopToggle")){
+    void Awake()
+    {
+        if (ES2.Exists("ShopToggle"))
+        {
             currentTab = ES2.Load<int>("ShopToggle");
         }
-       
+
 
     }
     void Start()
     {
-        for(int i=0;i<toogleAnchor.childCount;i++){
+        for (int i = 0; i < toogleAnchor.childCount; i++)
+        {
             int id = i;
             Toggle t = toogleAnchor.GetChild(i).GetComponent<Toggle>();
             toggles.Add(t);
-            t.onValueChanged.AddListener (delegate {OnTab(id);});
+            t.onValueChanged.AddListener(delegate { OnTab(id); });
         }
 
-        if(currentTab > toggles.Count)
+        if (currentTab > toggles.Count)
             currentTab = 0;
-        
-        if(toggles[currentTab].isOn){
+
+        if (toggles[currentTab].isOn)
+        {
             OnTab(currentTab);
-        }else{
-            toggles[currentTab].isOn = true; 
         }
-           
+        else
+        {
+            toggles[currentTab].isOn = true;
+        }
+
     }
 
-    public void ReLoad(){
+    public void ReLoad()
+    {
         OnTab(currentTab);
     }
 
-    public void ReLoadTab(int id){
+    public void ReLoadTab(int id)
+    {
         currentTab = id;
         toggles[currentTab].isOn = true;
         OnTab(currentTab);
@@ -62,70 +70,89 @@ public class ShopPanel : MonoBehaviour
 
 
 
-    public void OnTab(int id){
-        MageManager.instance.PlaySoundName("BubbleButton",false);
+    public void OnTab(int id)
+    {
+        MageManager.instance.PlaySoundName("BubbleButton", false);
         currentTab = id;
 
-        ES2.Save(id,"ShopToggle");
+        ES2.Save(id, "ShopToggle");
         ClearItems();
 
         List<Item> items = new List<Item>();
         List<Pet> pets = new List<Pet>();
 
-        if(currentTab == 1){
-            foreach(Pet p in GameManager.instance.GetPets()){
-                for (int i = 0; i < p.petColors.Count; i++)
+        if (currentTab == 1)
+        {
+            foreach (Pet p in GameManager.instance.GetPets())
+            {
+                for (int i = 0; i < p.skins.Count; i++)
                 {
                     LoadItem(p, i);
                 }
-            }   
-        }else if(currentTab == 0){
-            for(int i=0;i<DataHolder.Items().GetDataCount();i++){
-                if((int)DataHolder.Item(i).itemType == 0 || (int)DataHolder.Item(i).itemType == 1){
-                    items.Add(DataHolder.Item(i));
-                }   
-            }               
+            }
         }
-        else if(currentTab == 2){
-            for(int i=0;i<DataHolder.Items().GetDataCount();i++){
-                if((int)DataHolder.Item(i).itemType == (int)ItemType.Food || (int)DataHolder.Item(i).itemType == (int)ItemType.Drink){
+        else if (currentTab == 0)
+        {
+            for (int i = 0; i < DataHolder.Items().GetDataCount(); i++)
+            {
+                if ((int)DataHolder.Item(i).itemType == 0 || (int)DataHolder.Item(i).itemType == 1)
+                {
                     items.Add(DataHolder.Item(i));
-                }   
-            }   
-        }else if(currentTab == 3){
-            for(int i=0;i<DataHolder.Items().GetDataCount();i++){
-                if((int)DataHolder.Item(i).itemType == (int)ItemType.Bath || (int)DataHolder.Item(i).itemType == (int)ItemType.Bed
+                }
+            }
+        }
+        else if (currentTab == 2)
+        {
+            for (int i = 0; i < DataHolder.Items().GetDataCount(); i++)
+            {
+                if ((int)DataHolder.Item(i).itemType == (int)ItemType.Food || (int)DataHolder.Item(i).itemType == (int)ItemType.Drink)
+                {
+                    items.Add(DataHolder.Item(i));
+                }
+            }
+        }
+        else if (currentTab == 3)
+        {
+            for (int i = 0; i < DataHolder.Items().GetDataCount(); i++)
+            {
+                if ((int)DataHolder.Item(i).itemType == (int)ItemType.Bath || (int)DataHolder.Item(i).itemType == (int)ItemType.Bed
                 || (int)DataHolder.Item(i).itemType == (int)ItemType.Clean || (int)DataHolder.Item(i).itemType == (int)ItemType.Clock
                 || (int)DataHolder.Item(i).itemType == (int)ItemType.MedicineBox || (int)DataHolder.Item(i).itemType == (int)ItemType.Picture
                 || (int)DataHolder.Item(i).itemType == (int)ItemType.Table || (int)DataHolder.Item(i).itemType == (int)ItemType.Toilet
-                || (int)DataHolder.Item(i).itemType == (int)ItemType.Room){
+                || (int)DataHolder.Item(i).itemType == (int)ItemType.Room)
+                {
                     items.Add(DataHolder.Item(i));
-                }   
-            }  
-        }else if(currentTab == 4){
-            for(int i=0;i<DataHolder.Items().GetDataCount();i++){
-                if((int)DataHolder.Item(i).itemType == (int)ItemType.Toy){
+                }
+            }
+        }
+        else if (currentTab == 4)
+        {
+            for (int i = 0; i < DataHolder.Items().GetDataCount(); i++)
+            {
+                if ((int)DataHolder.Item(i).itemType == (int)ItemType.Toy)
+                {
                     items.Add(DataHolder.Item(i));
-                }   
-            }   
+                }
+            }
         }
 
 
 
 
-        
- 
-        if(currentTab != 1)
+
+
+        if (currentTab != 1)
         {
-            items.Sort((p1,p2)=>(p1.shopOrder).CompareTo(p2.shopOrder));
-            foreach(Item item in items){
+            items.Sort((p1, p2) => (p1.shopOrder).CompareTo(p2.shopOrder));
+            foreach (Item item in items)
+            {
                 LoadItem(item);
             }
         }
-        
- 
 
-        
+
+
+
     }
 
     public void ScrollToItem(int id)
@@ -151,7 +178,7 @@ public class ShopPanel : MonoBehaviour
 
     public ItemUI GetItem(int id)
     {
-        foreach(ItemUI item in items)
+        foreach (ItemUI item in items)
         {
             if (item.itemId == id)
                 return item;
@@ -159,7 +186,8 @@ public class ShopPanel : MonoBehaviour
         return null;
     }
 
-    void LoadItem(Item data){
+    void LoadItem(Item data)
+    {
         if (!data.isAvailable)
             return;
         GameObject go = Instantiate(itemUIPrefab);
@@ -170,18 +198,21 @@ public class ShopPanel : MonoBehaviour
         item.Load(data);
     }
 
-    void LoadItem(Pet data,int colorId){
+    void LoadItem(Pet data, int colorId)
+    {
         GameObject go = Instantiate(itemUIPrefab);
-       
+
         go.transform.SetParent(this.anchor);
         go.transform.localScale = Vector3.one;
         ItemUI item = go.GetComponent<ItemUI>();
         items.Add(item);
-        item.Load(data,colorId);
+        item.Load(data, colorId);
     }
 
-    void ClearItems(){
-        foreach(ItemUI item in items){
+    void ClearItems()
+    {
+        foreach (ItemUI item in items)
+        {
             Destroy(item.gameObject);
         }
         items.Clear();
@@ -192,14 +223,16 @@ public class ShopPanel : MonoBehaviour
         this.GetComponent<Popup>().Close();
     }
 
-    public void OnLeft(){
-        if(scroll.horizontalNormalizedPosition > 0)
-            scroll.horizontalNormalizedPosition -= 0.1f; 
+    public void OnLeft()
+    {
+        if (scroll.horizontalNormalizedPosition > 0)
+            scroll.horizontalNormalizedPosition -= 0.1f;
     }
 
-    public void OnRight(){
-        if(scroll.horizontalNormalizedPosition < 1)
-            scroll.horizontalNormalizedPosition += 0.1f; 
+    public void OnRight()
+    {
+        if (scroll.horizontalNormalizedPosition < 1)
+            scroll.horizontalNormalizedPosition += 0.1f;
     }
 
 }

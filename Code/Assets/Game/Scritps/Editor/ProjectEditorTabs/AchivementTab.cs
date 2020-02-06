@@ -55,16 +55,23 @@ public class AchivementTab : BaseTab
 
 			DataHolder.Achivement(selection).order = EditorGUILayout.IntField("Achivement Order", DataHolder.Achivement(selection).order, GUILayout.Width(pw.mWidth));
 
-			for (int i = 0; i < DataHolder.Languages().GetDataCount(); i++)
+			EditorGUILayout.BeginVertical("box");
+			fold4 = EditorGUILayout.Foldout(fold4, "Achivement Name");
+			if (fold4)
 			{
-				if (DataHolder.Achivement(selection).languageItem[i] == null)
-					DataHolder.Achivement(selection).AddLanguageItem();
 
-				EditorGUILayout.LabelField(DataHolder.Language(i));
-				DataHolder.Achivement(selection).languageItem[i].Name = EditorGUILayout.TextField("Name", DataHolder.Achivement(selection).languageItem[i].Name, GUILayout.Width(pw.mWidth * 2));
-				DataHolder.Achivement(selection).languageItem[i].Description = EditorGUILayout.TextField("Description", DataHolder.Achivement(selection).languageItem[i].Description, GUILayout.Width(pw.mWidth * 2));
-				EditorGUILayout.Separator();
+				for (int i = 0; i < DataHolder.Languages().GetDataCount(); i++)
+				{
+					if (DataHolder.Achivement(selection).languageItem[i] == null)
+						DataHolder.Achivement(selection).AddLanguageItem();
+
+					EditorGUILayout.LabelField(DataHolder.Language(i));
+					DataHolder.Achivement(selection).languageItem[i].Name = EditorGUILayout.TextField("Name", DataHolder.Achivement(selection).languageItem[i].Name, GUILayout.Width(pw.mWidth * 2));
+					DataHolder.Achivement(selection).languageItem[i].Description = EditorGUILayout.TextField("Description", DataHolder.Achivement(selection).languageItem[i].Description, GUILayout.Width(pw.mWidth * 2));
+					EditorGUILayout.Separator();
+				}
 			}
+			EditorGUILayout.EndVertical();
 
 			EditorGUILayout.BeginHorizontal();
 			EditorGUILayout.LabelField("Icon", GUILayout.MaxWidth(110));
