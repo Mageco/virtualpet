@@ -71,28 +71,8 @@ public class ItemTab : BaseTab
             }
             EditorGUILayout.EndVertical();
 
-            EditorGUILayout.BeginHorizontal();
-            EditorGUILayout.LabelField("Icon", GUILayout.MaxWidth(110));
-            if(DataHolder.Items().GetItem(selection,temcategory).iconUrl != null){
-                this.tmpSprites = AssetDatabase.LoadAssetAtPath<Texture2D>(DataHolder.Items().GetItem(selection,temcategory).iconUrl);
-            }
-            this.tmpSprites = (Texture2D)EditorGUILayout.ObjectField(GUIContent.none, this.tmpSprites, typeof(Texture2D), false, GUILayout.MaxWidth(100));
-            if (this.tmpSprites != null)
-            {
-                DataHolder.Items().GetItem(selection,temcategory).iconUrl = AssetDatabase.GetAssetPath(this.tmpSprites);
+            
 
-            }
-            EditorGUILayout.LabelField(DataHolder.Items().GetItem(selection,temcategory).iconUrl);
-            EditorGUILayout.EndHorizontal();
-
-            if (this.tmpSprites != null)
-            {
-                if (GUILayout.Button("Clear Image", GUILayout.Width(100)))
-                {
-                    DataHolder.Items().GetItem(selection,temcategory).iconUrl = "";
-                    tmpSprites = null;
-                }
-            }
 
             
 
@@ -117,9 +97,37 @@ public class ItemTab : BaseTab
 			}
 			EditorGUILayout.EndVertical();
 
+            
+            if(DataHolder.Items().GetItem(selection, temcategory).itemType == ItemType.Diamond || DataHolder.Items().GetItem(selection, temcategory).itemType == ItemType.Coin)
+            {
+                EditorGUILayout.BeginHorizontal();
+                EditorGUILayout.LabelField("Icon", GUILayout.MaxWidth(110));
+                if (DataHolder.Items().GetItem(selection, temcategory).iconUrl != null)
+                {
+                    this.tmpSprites = AssetDatabase.LoadAssetAtPath<Texture2D>(DataHolder.Items().GetItem(selection, temcategory).iconUrl);
+                }
+                this.tmpSprites = (Texture2D)EditorGUILayout.ObjectField(GUIContent.none, this.tmpSprites, typeof(Texture2D), false, GUILayout.MaxWidth(100));
+                if (this.tmpSprites != null)
+                {
+                    DataHolder.Items().GetItem(selection, temcategory).iconUrl = AssetDatabase.GetAssetPath(this.tmpSprites);
 
-				
-			EditorGUILayout.Separator();
+                }
+                EditorGUILayout.LabelField(DataHolder.Items().GetItem(selection, temcategory).iconUrl);
+                EditorGUILayout.EndHorizontal();
+
+                if (this.tmpSprites != null)
+                {
+                    if (GUILayout.Button("Clear Image", GUILayout.Width(100)))
+                    {
+                        DataHolder.Items().GetItem(selection, temcategory).iconUrl = "";
+                        tmpSprites = null;
+                    }
+                }
+            }
+
+
+
+            EditorGUILayout.Separator();
             if(DataHolder.Items().GetItem(selection,temcategory).itemType == ItemType.Food){
                 DataHolder.Items().GetItem(selection,temcategory).value = EditorGUILayout.FloatField("Food Amount", DataHolder.Items().GetItem(selection,temcategory).value, GUILayout.Width(pw.mWidth));
             }else if(DataHolder.Items().GetItem(selection,temcategory).itemType == ItemType.Drink){
@@ -202,7 +210,7 @@ public class ItemTab : BaseTab
                         }
                         if (this.tempPrefabs[i] == null && "" != DataHolder.Items().GetItem(selection, temcategory).skins[i].prefabName)
                         {
-                            this.tempPrefabs[i] = (GameObject)Resources.Load(DataHolder.Pets().GetPrefabPath() + DataHolder.Items().GetItem(selection, temcategory).skins[i].prefabName, typeof(GameObject));
+                            this.tempPrefabs[i] = (GameObject)Resources.Load(DataHolder.Items().GetPrefabPath() + DataHolder.Items().GetItem(selection, temcategory).skins[i].prefabName, typeof(GameObject));
                         }
                         this.tempPrefabs[i] = (GameObject)EditorGUILayout.ObjectField("Prefab", this.tempPrefabs[i], typeof(GameObject), false, GUILayout.Width(pw.mWidth * 2));
                         if (this.tempPrefabs[i]) DataHolder.Items().GetItem(selection, temcategory).skins[i].prefabName = this.tempPrefabs[i].name;

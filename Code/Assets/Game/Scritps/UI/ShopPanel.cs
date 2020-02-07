@@ -14,7 +14,7 @@ public class ShopPanel : MonoBehaviour
     [HideInInspector]
     public List<Toggle> toggles = new List<Toggle>();
     public Transform toogleAnchor;
-
+   
     // Start is called before the first frame update
 
     void Awake()
@@ -81,6 +81,7 @@ public class ShopPanel : MonoBehaviour
         List<Item> items = new List<Item>();
         List<Pet> pets = new List<Pet>();
 
+
         if (currentTab == 1)
         {
             foreach (Pet p in GameManager.instance.GetPets())
@@ -101,21 +102,12 @@ public class ShopPanel : MonoBehaviour
                 }
             }
         }
-        else if (currentTab == 2)
-        {
-            for (int i = 0; i < DataHolder.Items().GetDataCount(); i++)
-            {
-                if ((int)DataHolder.Item(i).itemType == (int)ItemType.Food || (int)DataHolder.Item(i).itemType == (int)ItemType.Drink)
-                {
-                    items.Add(DataHolder.Item(i));
-                }
-            }
-        }
         else if (currentTab == 3)
         {
             for (int i = 0; i < DataHolder.Items().GetDataCount(); i++)
             {
-                if ((int)DataHolder.Item(i).itemType == (int)ItemType.Bath || (int)DataHolder.Item(i).itemType == (int)ItemType.Bed
+                if ((int)DataHolder.Item(i).itemType == (int)ItemType.Food || (int)DataHolder.Item(i).itemType == (int)ItemType.Drink
+                ||   (int)DataHolder.Item(i).itemType == (int)ItemType.Bath || (int)DataHolder.Item(i).itemType == (int)ItemType.Bed
                 || (int)DataHolder.Item(i).itemType == (int)ItemType.Clean || (int)DataHolder.Item(i).itemType == (int)ItemType.Clock
                 || (int)DataHolder.Item(i).itemType == (int)ItemType.MedicineBox || (int)DataHolder.Item(i).itemType == (int)ItemType.Picture
                 || (int)DataHolder.Item(i).itemType == (int)ItemType.Table || (int)DataHolder.Item(i).itemType == (int)ItemType.Toilet
@@ -135,12 +127,6 @@ public class ShopPanel : MonoBehaviour
                 }
             }
         }
-
-
-
-
-
-
         if (currentTab != 1)
         {
             items.Sort((p1, p2) => (p1.shopOrder).CompareTo(p2.shopOrder));
@@ -149,10 +135,6 @@ public class ShopPanel : MonoBehaviour
                 LoadItem(item);
             }
         }
-
-
-
-
     }
 
     public void ScrollToItem(int id)
@@ -195,7 +177,7 @@ public class ShopPanel : MonoBehaviour
         go.transform.localScale = Vector3.one;
         ItemUI item = go.GetComponent<ItemUI>();
         items.Add(item);
-        item.Load(data);
+        item.Load(data,data.skinId);
     }
 
     void LoadItem(Pet data, int colorId)

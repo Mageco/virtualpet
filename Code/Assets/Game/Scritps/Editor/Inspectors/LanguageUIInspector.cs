@@ -15,7 +15,7 @@ public class LanguageUIInspector : Editor
 		{
 			id = DataHolder.Dialogs().GetDialogPosition(((LanguageUI)target).dialogId);
 		}
-		Debug.Log(id);
+		//Debug.Log(id);
 		//((TextVoiceOver)target).text = (Text)EditorGUILayout.ObjectField ("Description",((TextVoiceOver)target).text, typeof(Text), true, GUILayout.MaxWidth (300));
 		id = EditorGUILayout.Popup("Dialog", id, DataHolder.Dialogs().GetNameList(true), GUILayout.Width(300));
 		((LanguageUI)target).dialogId = DataHolder.Dialog(id).iD;

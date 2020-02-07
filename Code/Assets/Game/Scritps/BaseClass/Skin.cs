@@ -6,7 +6,6 @@ using UnityEngine;
 [System.Serializable]
 public class Skin : BaseModel
 {
-	public int iD = 0;
     public string iconUrl = "";
     public LanguageItem[] languageItem = new LanguageItem[0];
     public PriceType priceType = PriceType.Coin;
