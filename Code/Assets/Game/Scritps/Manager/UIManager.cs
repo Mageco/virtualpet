@@ -77,8 +77,6 @@ public class UIManager : MonoBehaviour
     public GameObject eventButton;
     public GameObject achivementButton;
     public GameObject shopButton;
-    public GameObject gardenButton;
-    public GameObject houseButton;
     public GameObject mapButton;
 
     float coin = 0;
@@ -98,8 +96,6 @@ public class UIManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        gardenButton.SetActive(false);
-        houseButton.SetActive(false);
         UpdateUI();
         coin = GameManager.instance.GetCoin();
         happy = GameManager.instance.GetHappy();
@@ -116,45 +112,6 @@ public class UIManager : MonoBehaviour
         }
         if (GameManager.instance.myPlayer.questId >= DataHolder.Quests().GetDataCount() && notificationIcon != null)
             notificationIcon.SetActive(false);
-
-        if (GameManager.instance.myPlayer.questId > 19)
-        {
-
-        
-            if (GameManager.instance.myPlayer.gameType == GameType.House)
-            {
-                houseButton.SetActive(false);
-                if (ItemManager.instance != null && ItemManager.instance.GetActiveCamera() != null && ItemManager.instance.GetActiveCamera().IsBoundXLeft())
-                {
-                    gardenButton.SetActive(true);
-                }
-                else
-                    gardenButton.SetActive(false);
-                mapButton.SetActive(false);
-            }
-            else if (ItemManager.instance != null && ItemManager.instance.GetActiveCamera() != null && GameManager.instance.myPlayer.gameType == GameType.Garden)
-            {
-                gardenButton.SetActive(false);
-                if (ItemManager.instance.GetActiveCamera().IsBoundXRight())
-                {
-                    houseButton.SetActive(true);
-                }
-                else
-                    houseButton.SetActive(false);
-                //mapButton.SetActive(true);
-            }
-        }
-        /*
-        if (GameManager.instance.myPlayer.gameType == GameType.House)
-        {
-            if(mapButton != null)
-                mapButton.SetActive(false);
-        }
-        else if (ItemManager.instance != null && ItemManager.instance.GetActiveCamera() != null && GameManager.instance.myPlayer.gameType == GameType.Garden)
-        {
-            if (mapButton != null)
-                mapButton.SetActive(true);
-        }*/
     }
 
 
@@ -572,15 +529,6 @@ public class UIManager : MonoBehaviour
         GameManager.instance.petObjects.Clear();
     }
 
-    public void OnGarden()
-    {
-        ItemManager.instance.SetLocation(GameType.Garden);
-    }
-
-    public void OnHouse()
-    {
-        ItemManager.instance.SetLocation(GameType.House);
-    }
 }
 
 public enum NotificationType{None,Shop,Skill}

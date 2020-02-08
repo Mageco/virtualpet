@@ -29,9 +29,7 @@ public class ItemManager : MonoBehaviour
     float maxTimeCheck = 1;
     System.DateTime playTime = System.DateTime.Now;
 
-    CameraController activeCamera;
-    public CameraController gardenCamera;
-    public CameraController houseCamera;
+    public CameraController activeCamera;
     Vector3 CameraPosition;
 
     float timeDirty = 0;
@@ -53,9 +51,6 @@ public class ItemManager : MonoBehaviour
     // Start is called before the first frame update
     IEnumerator Start()
     {
-        SetCamera();
-        LoadCamera();
-        //ES3AutoSaveMgr.Instance.Load();
         bool isLoad = false;
         while(!isLoad){
             if(GameManager.instance.isLoad){
@@ -99,8 +94,6 @@ public class ItemManager : MonoBehaviour
                 UIManager.instance.achivementNotification.SetActive(true);
             }else
                 UIManager.instance.achivementNotification.SetActive(false);
-
-            SaveCamera();
         }
         else{
             time += Time.deltaTime;
@@ -147,46 +140,6 @@ public class ItemManager : MonoBehaviour
     {
         if (activeCamera != null)
             activeCamera.target = null;
-    }
-
-    public void SetCamera()
-    {
-        if (GameManager.instance.myPlayer.gameType == GameType.Garden)
-        {
-            activeCamera = gardenCamera;
-            gardenCamera.gameObject.SetActive(true);
-            houseCamera.gameObject.SetActive(false);
-        }
-        else if(GameManager.instance.myPlayer.gameType == GameType.House)
-        {
-            gardenCamera.gameObject.SetActive(false);
-            houseCamera.gameObject.SetActive(true);
-            activeCamera = houseCamera;
-        }
-    }
-
-    void LoadCamera()
-    {
-        if (ES2.Exists("GardenCamera")){
-            gardenCamera.transform.position = ES2.Load<Vector3>("GardenCamera");
-            Debug.Log(gardenCamera.transform.position);
-        }
-        if (ES2.Exists("HouseCamera"))
-        {
-            houseCamera.transform.position = ES2.Load<Vector3>("HouseCamera");
-        }
-    }
-
-    void SaveCamera()
-    {
-        ES2.Save(gardenCamera.transform.position, "GardenCamera");
-        ES2.Save(houseCamera.transform.position, "HouseCamera");
-    }
-
-    public void SetLocation(GameType type)
-    {
-        GameManager.instance.myPlayer.gameType = type;
-        SetCamera();
     }
 
     #endregion

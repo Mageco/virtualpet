@@ -208,24 +208,11 @@ public class TutorialManager : MonoBehaviour
         //Pan Camera
         else if(questId == 20)
         {
-            if (GameManager.instance.myPlayer.gameType != GameType.Garden)
-            {
-                Vector3 pos = ItemManager.instance.GetActiveCamera().transform.position;
-                pos.x = ItemManager.instance.GetActiveCamera().boundX.x;
-                pointer.transform.position = pos;
-                ItemManager.instance.GetActiveCamera().SetTarget(pointer.gameObject);
-                blackScreenUI.SetActive(true);
-                blackScreen.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, 0);
-                StartCoroutine(OnGarden());
-            }
+
 
         }
         else if (questId == 21)
         {
-            if(GameManager.instance.myPlayer.gameType == GameType.House)
-            {
-                UIManager.instance.OnGarden();
-            }
             if(UIManager.instance.eventPanel == null)
             {
                 MinigameOpen[] minigames = FindObjectsOfType<MinigameOpen>();
@@ -253,7 +240,6 @@ public class TutorialManager : MonoBehaviour
                 AddSorting(go);
                 step = 1;
             }
-
         }
     }
 
@@ -401,8 +387,7 @@ public class TutorialManager : MonoBehaviour
         }
         else if (questId == 20)
         {
-            Destroy(UIManager.instance.gardenButton.GetComponent<Canvas>());
-            UIManager.instance.OnGarden();
+
         }
         else if (questId == 21)
         {
@@ -606,8 +591,7 @@ public class TutorialManager : MonoBehaviour
             Camera.main.GetComponent<CameraController>().screenOffset = 0.7f;
         }else if(questId == 20)
         {
-            Destroy(UIManager.instance.gardenButton.GetComponent<Canvas>());
-            ItemManager.instance.houseCamera.target = null;
+
         }
 
         step = 0;
@@ -902,13 +886,5 @@ public class TutorialManager : MonoBehaviour
         blackScreen.SetActive(false);
     }
 
-    IEnumerator OnGarden()
-    {
-        yield return new WaitForSeconds(1f);
-        
-        GameObject go = UIManager.instance.gardenButton;
-        go.SetActive(true);
-        AddSorting(go);
-    }
 
 }
