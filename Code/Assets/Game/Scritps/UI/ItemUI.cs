@@ -16,6 +16,22 @@ public class ItemUI : MonoBehaviour
     public GameObject diamonIcon;
     public GameObject moneyIcon;
     public GameObject happyIcon;
+    public GameObject statPanel;
+    public Image heartIcon;
+    public Image sickIcon;
+    public Image injuredIcon;
+    public Image foodIcon;
+    public Image drinkIcon;
+    public Image cleanIcon;
+    public Image bathIcon;
+
+    public Text happyText;
+    public Text sickText;
+    public Text injuredText;
+    public Text foodText;
+    public Text drinkText;
+    public Text cleanText;
+    public Text bathText;
 
     public Text buttonText;
     Animator animator;
@@ -151,6 +167,59 @@ public class ItemUI : MonoBehaviour
             happyIcon.SetActive(false);
         }
 
+        statPanel.SetActive(true);
+
+
+        if (d.itemType == ItemType.Food)
+        {
+            if (d.value > 0)
+            {
+                foodIcon.gameObject.SetActive(true);
+                foodText.text = d.value.ToString("F0");
+            }
+        }
+        else if (d.itemType == ItemType.Drink)
+        {
+            if (d.value > 0)
+            {
+                drinkIcon.gameObject.SetActive(true);
+                drinkText.text = d.value.ToString("F0");
+            }
+        }
+        else if (d.itemType == ItemType.Bath)
+        {
+            if (d.value > 0)
+            {
+                bathIcon.gameObject.SetActive(true);
+                bathText.text = d.value.ToString("F0");
+            }
+        }
+        else if (d.itemType == ItemType.Clean)
+        {
+            if (d.value > 0)
+            {
+                cleanIcon.gameObject.SetActive(true);
+                cleanText.text = d.value.ToString("F0");
+            }
+        }
+
+        if (d.happy > 0)
+        {
+            happyIcon.gameObject.SetActive(true);
+            happyText.text = "+" + d.happy.ToString("F0");
+        }
+
+        if (d.health > 0)
+        {
+            sickIcon.gameObject.SetActive(true);
+            sickText.text = "+" + d.health.ToString("F0");
+        }
+
+        if (d.injured > 0)
+        {
+            injuredIcon.gameObject.SetActive(true);
+            injuredText.text = "+" + d.injured.ToString("F0");
+        }
 
     }
 
@@ -246,6 +315,8 @@ public class ItemUI : MonoBehaviour
             moneyIcon.SetActive(false);
             happyIcon.SetActive(false);
         }
+
+        statPanel.SetActive(false);
 
     }
 
