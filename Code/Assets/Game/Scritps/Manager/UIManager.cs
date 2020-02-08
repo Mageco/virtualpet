@@ -166,8 +166,8 @@ public class UIManager : MonoBehaviour
         if (shopPanel != null)
             shopPanel.Close();
 
-        OnPetCollectionPanel();
-        petCollectionPanel.OnActive(itemID);
+        //OnPetCollectionPanel();
+        //petCollectionPanel.OnActive(itemID);
 
         if(ItemManager.instance.GetCharCollector(itemID) != null)
             ItemManager.instance.GetCharCollector(itemID).DeActive();

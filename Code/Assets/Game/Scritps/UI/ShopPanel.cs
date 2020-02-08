@@ -84,11 +84,9 @@ public class ShopPanel : MonoBehaviour
 
         if (currentTab == 1)
         {
-            foreach (Pet p in GameManager.instance.GetPets())
+            for (int i=0;i<DataHolder.Pets().GetDataCount();i++)
             {
-   
-                LoadItem(p);
-                
+                pets.Add(DataHolder.Pet(i));              
             }
         }
         else if (currentTab == 0)
@@ -101,12 +99,21 @@ public class ShopPanel : MonoBehaviour
                 }
             }
         }
+        else if (currentTab == 2)
+        {
+            for (int i = 0; i < DataHolder.Items().GetDataCount(); i++)
+            {
+                if ((int)DataHolder.Item(i).itemType == (int)ItemType.Food || (int)DataHolder.Item(i).itemType == (int)ItemType.Drink)
+                {
+                    items.Add(DataHolder.Item(i));
+                }
+            }
+        }
         else if (currentTab == 3)
         {
             for (int i = 0; i < DataHolder.Items().GetDataCount(); i++)
             {
-                if ((int)DataHolder.Item(i).itemType == (int)ItemType.Food || (int)DataHolder.Item(i).itemType == (int)ItemType.Drink
-                ||   (int)DataHolder.Item(i).itemType == (int)ItemType.Bath || (int)DataHolder.Item(i).itemType == (int)ItemType.Bed
+                if ((int)DataHolder.Item(i).itemType == (int)ItemType.Bath || (int)DataHolder.Item(i).itemType == (int)ItemType.Bed
                 || (int)DataHolder.Item(i).itemType == (int)ItemType.Clean || (int)DataHolder.Item(i).itemType == (int)ItemType.Clock
                 || (int)DataHolder.Item(i).itemType == (int)ItemType.MedicineBox || (int)DataHolder.Item(i).itemType == (int)ItemType.Picture
                 || (int)DataHolder.Item(i).itemType == (int)ItemType.Table || (int)DataHolder.Item(i).itemType == (int)ItemType.Toilet
@@ -132,6 +139,14 @@ public class ShopPanel : MonoBehaviour
             foreach (Item item in items)
             {
                 LoadItem(item);
+            }
+        }
+        else
+        {
+            pets.Sort((p1, p2) => (p1.shopOrder).CompareTo(p2.shopOrder));
+            foreach (Pet p in pets)
+            {
+                LoadItem(p);
             }
         }
     }

@@ -168,6 +168,7 @@ public class ItemUI : MonoBehaviour
         }
 
         statPanel.SetActive(true);
+        OffAllIcon();
 
 
         if (d.itemType == ItemType.Food)
@@ -182,6 +183,7 @@ public class ItemUI : MonoBehaviour
         {
             if (d.value > 0)
             {
+        
                 drinkIcon.gameObject.SetActive(true);
                 drinkText.text = d.value.ToString("F0");
             }
@@ -190,6 +192,7 @@ public class ItemUI : MonoBehaviour
         {
             if (d.value > 0)
             {
+                
                 bathIcon.gameObject.SetActive(true);
                 bathText.text = d.value.ToString("F0");
             }
@@ -198,6 +201,7 @@ public class ItemUI : MonoBehaviour
         {
             if (d.value > 0)
             {
+                
                 cleanIcon.gameObject.SetActive(true);
                 cleanText.text = d.value.ToString("F0");
             }
@@ -205,18 +209,21 @@ public class ItemUI : MonoBehaviour
 
         if (d.happy > 0)
         {
-            happyIcon.gameObject.SetActive(true);
+            
+            heartIcon.gameObject.SetActive(true);
             happyText.text = "+" + d.happy.ToString("F0");
         }
 
         if (d.health > 0)
         {
+            
             sickIcon.gameObject.SetActive(true);
             sickText.text = "+" + d.health.ToString("F0");
         }
 
         if (d.injured > 0)
         {
+            
             injuredIcon.gameObject.SetActive(true);
             injuredText.text = "+" + d.injured.ToString("F0");
         }
@@ -233,7 +240,16 @@ public class ItemUI : MonoBehaviour
         icon.sprite = Resources.Load<Sprite>(url) as Sprite;
         price.text = d.buyPrice.ToString();
         iconType.sprite = Resources.Load<Sprite>("Icons/ItemType/Pet");
-        state = GameManager.instance.GetPet(d.iD).itemState;
+
+        state = ItemState.OnShop;
+        foreach(Pet p in GameManager.instance.myPlayer.pets)
+        {
+            if(p.iD == d.iD)
+            {
+                state = GameManager.instance.GetPet(d.iD).itemState;
+            }
+        }
+        
 
         usedText.gameObject.SetActive(false);
         if (state == ItemState.OnShop)
@@ -320,10 +336,16 @@ public class ItemUI : MonoBehaviour
 
     }
 
-    // Update is called once per frame
-    void UpdateState()
-    {
 
+    void OffAllIcon()
+    {
+        happyIcon.gameObject.SetActive(false);
+        sickIcon.gameObject.SetActive(false);
+        injuredIcon.gameObject.SetActive(false);
+        foodIcon.gameObject.SetActive(false);
+        drinkIcon.gameObject.SetActive(false);
+        bathIcon.gameObject.SetActive(false);
+        cleanIcon.gameObject.SetActive(false);
     }
 
     public void OnBuy()

@@ -78,24 +78,24 @@ public class ItemTab : BaseTab
 			{
                 EditorGUILayout.BeginHorizontal();
                 EditorGUILayout.LabelField("Icon", GUILayout.MaxWidth(110));
-                if (DataHolder.Item(selection).iconUrl != null)
+                if (DataHolder.Items().GetItem(selection, temcategory).iconUrl != null)
                 {
-                    this.tmpSprites = AssetDatabase.LoadAssetAtPath<Texture2D>(DataHolder.Item(selection).iconUrl);
+                    this.tmpSprites = AssetDatabase.LoadAssetAtPath<Texture2D>(DataHolder.Items().GetItem(selection, temcategory).iconUrl);
                 }
                 this.tmpSprites = (Texture2D)EditorGUILayout.ObjectField(GUIContent.none, this.tmpSprites, typeof(Texture2D), false, GUILayout.MaxWidth(100));
                 if (this.tmpSprites != null)
                 {
-                    DataHolder.Item(selection).iconUrl = AssetDatabase.GetAssetPath(this.tmpSprites);
+                    DataHolder.Items().GetItem(selection, temcategory).iconUrl = AssetDatabase.GetAssetPath(this.tmpSprites);
 
                 }
-                EditorGUILayout.LabelField(DataHolder.Item(selection).iconUrl);
+                EditorGUILayout.LabelField(DataHolder.Items().GetItem(selection, temcategory).iconUrl);
                 EditorGUILayout.EndHorizontal();
 
                 if (this.tmpSprites != null)
                 {
                     if (GUILayout.Button("Clear Image", GUILayout.Width(100)))
                     {
-                        DataHolder.Item(selection).iconUrl = "";
+                        DataHolder.Items().GetItem(selection, temcategory).iconUrl = "";
                         tmpSprites = null;
                     }
                 }
@@ -105,13 +105,13 @@ public class ItemTab : BaseTab
                 {
                     this.tmpPrefab = null;
                 }
-                if (this.tmpPrefab == null && "" != DataHolder.Item(selection).prefabName)
+                if (this.tmpPrefab == null && "" != DataHolder.Items().GetItem(selection, temcategory).prefabName)
                 {
-                    this.tmpPrefab = (GameObject)Resources.Load(DataHolder.Items().GetPrefabPath() + DataHolder.Item(selection).prefabName, typeof(GameObject));
+                    this.tmpPrefab = (GameObject)Resources.Load(DataHolder.Items().GetPrefabPath() + DataHolder.Items().GetItem(selection, temcategory).prefabName, typeof(GameObject));
                 }
                 this.tmpPrefab = (GameObject)EditorGUILayout.ObjectField("Prefab", this.tmpPrefab, typeof(GameObject), false, GUILayout.Width(pw.mWidth * 2));
-                if (this.tmpPrefab) DataHolder.Item(selection).prefabName = this.tmpPrefab.name;
-                else DataHolder.Item(selection).prefabName = "";
+                if (this.tmpPrefab) DataHolder.Items().GetItem(selection, temcategory).prefabName = this.tmpPrefab.name;
+                else DataHolder.Items().GetItem(selection, temcategory).prefabName = "";
 
 
                 EditorGUILayout.Separator();
@@ -182,8 +182,11 @@ public class ItemTab : BaseTab
                 DataHolder.Items().GetItem(selection, temcategory).value = EditorGUILayout.FloatField("Clean per second", DataHolder.Items().GetItem(selection, temcategory).value, GUILayout.Width(pw.mWidth));
                 DataHolder.Items().GetItem(selection, temcategory).health = EditorGUILayout.FloatField("+Health", DataHolder.Items().GetItem(selection, temcategory).health, GUILayout.Width(pw.mWidth));
             }
-		
-            
+
+            DataHolder.Items().GetItem(selection, temcategory).value = EditorGUILayout.FloatField("Clean per second", DataHolder.Items().GetItem(selection, temcategory).value, GUILayout.Width(pw.mWidth));
+            DataHolder.Items().GetItem(selection, temcategory).happy = EditorGUILayout.FloatField("+Happy", DataHolder.Items().GetItem(selection, temcategory).happy, GUILayout.Width(pw.mWidth));
+            DataHolder.Items().GetItem(selection, temcategory).injured = EditorGUILayout.FloatField("+Injured", DataHolder.Items().GetItem(selection, temcategory).injured, GUILayout.Width(pw.mWidth));
+            DataHolder.Items().GetItem(selection, temcategory).health = EditorGUILayout.FloatField("+Health", DataHolder.Items().GetItem(selection, temcategory).health, GUILayout.Width(pw.mWidth));
 
             EditorGUILayout.EndHorizontal();
             EditorGUILayout.EndVertical();
