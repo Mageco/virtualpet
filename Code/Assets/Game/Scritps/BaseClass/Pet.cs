@@ -12,8 +12,7 @@ public class Pet : BaseModel
     public int buyPrice = 0;
     public PriceType priceType = PriceType.Coin;
     public ItemState itemState = ItemState.OnShop;
-    public List<Skin> skins = new List<Skin>();
-    public int skinId = 0;
+    public string prefabName = "";
     public bool isAvailable = true;
     public int[] requireEquipments = new int[0];
     public int[] requirePets = new int[0];
@@ -134,16 +133,7 @@ public class Pet : BaseModel
         }
         buyPrice = p.buyPrice;
         priceType = p.priceType;
-        for (int i = 0; i < p.skins.Count; i++)
-        {
-            Skin c = new Skin();
-            c.iconUrl = p.skins[i].iconUrl;
-            c.levelRequire = p.skins[i].levelRequire;
-            c.buyPrice = p.skins[i].buyPrice;
-            c.priceType = p.skins[i].priceType;
-            c.prefabName = p.skins[i].prefabName;
-        }
-
+        prefabName = p.prefabName;
         speed = p.speed;
         maxEnergy = p.maxHealth;
         maxHealth = p.maxHealth;
@@ -191,25 +181,10 @@ public class Pet : BaseModel
             return character;
 
         Pet p = DataHolder.GetPet(this.iD);
-        if (skins.Count < p.skins.Count)
-        {
-            for (int i = skins.Count; i < p.skins.Count; i++)
-            {
-                Skin c = new Skin();
-                c.iconUrl = p.skins[i].iconUrl;
-                c.levelRequire = p.skins[i].levelRequire;
-                c.buyPrice = p.skins[i].buyPrice;
-                c.priceType = p.skins[i].priceType;
-                c.prefabName = p.skins[i].prefabName;
-                skins.Add(c);
-            }
 
-            skins[0].itemState = ItemState.Equiped;
-        }
 
         string url = "";
-        url = skins[skinId].prefabName.Replace("Assets/Game/Resources/", "");
-        Debug.Log(skinId);
+        url = prefabName.Replace("Assets/Game/Resources/", "");
         url = url.Replace(".prefab", "");
         url = DataHolder.Pets().GetPrefabPath() + url;
         Debug.Log(url);
@@ -239,8 +214,7 @@ public class Pet : BaseModel
         UnLoad();
 
         string url = "";
-        url = skins[skinId].prefabName.Replace("Assets/Game/Resources/", "");
-        Debug.Log(skinId);
+        url = prefabName.Replace("Assets/Game/Resources/", "");
         url = url.Replace(".prefab", "");
         url = DataHolder.Pets().GetPrefabPath() + url;
         Debug.Log(url);
@@ -320,10 +294,6 @@ public class Pet : BaseModel
         }
     }
 
-    public Skin GetPetColor()
-    {
-        return skins[skinId];
-    }
 
     void Save()
     {

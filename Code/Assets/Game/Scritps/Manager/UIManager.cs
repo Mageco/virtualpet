@@ -230,21 +230,6 @@ public class UIManager : MonoBehaviour
        GameManager.instance.EquipPet(itemID);
 	}
 
-    public void BuyPetColor(int petId,int itemId)
-    {
-        MageEngine.instance.OnEvent(Mage.Models.Application.MageEventType.CheckOutItem, DataHolder.GetPet(petId).GetName(MageManager.instance.GetLanguage()));
-        GameManager.instance.BuyPetColor(petId, itemId);
-        GameManager.instance.EquipPetColor(petId, itemId);
-        if (shopPanel != null)
-            shopPanel.Close();
-    }
-
-    public void EquipPetColor(int petId, int itemId) {
-        shopPanel.Close();
-        GameManager.instance.EquipPetColor(petId, itemId);
-    }
-
-
     public void OnQuestNotification()
     {
         if(QuestManager.instance != null && (GameManager.instance.myPlayer.questId < DataHolder.Quests().GetDataCount()))
@@ -460,7 +445,7 @@ public class UIManager : MonoBehaviour
             popup.GetComponent<Popup>().Open();
             itemInfoUI = popup.GetComponent<ItemInfoUI>();
             if(isPet)
-                itemInfoUI.Load(DataHolder.GetPet(itemId),colorId);
+                itemInfoUI.Load(DataHolder.GetPet(itemId));
             else
                 itemInfoUI.Load(DataHolder.GetItem(itemId));
         }
@@ -477,7 +462,7 @@ public class UIManager : MonoBehaviour
             popup.GetComponent<Popup>().Open();
             confirmBuyShopPopup = popup.GetComponent<ConfirmBuyShopPopup>();
             if(isCharacter)
-                confirmBuyShopPopup.Load(DataHolder.GetPet(itemid),isBuy, colorId);
+                confirmBuyShopPopup.Load(DataHolder.GetPet(itemid),isBuy);
             else
                 confirmBuyShopPopup.Load(DataHolder.GetItem(itemid),isBuy);
         }

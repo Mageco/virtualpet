@@ -6,7 +6,6 @@ using UnityEngine.UI;
 public class ItemInfoUI : MonoBehaviour
 {
     int itemId = 0;
-    int orderId = 0;
     public Image icon;
     public Text price;
     public GameObject coinIcon;
@@ -207,20 +206,18 @@ public class ItemInfoUI : MonoBehaviour
     }
 
 
-    public void Load(Pet d, int colorId)
+    public void Load(Pet d)
     {
         OffAllIcon();
         itemId = d.iD;
-        orderId = colorId;
         itemName.text = DataHolder.GetPet(itemId).GetName(MageManager.instance.GetLanguage());
         description.text = DataHolder.GetPet(itemId).GetDescription(MageManager.instance.GetLanguage());
         itemId = d.iD;
-        orderId = colorId;
-        string url = d.skins[colorId].iconUrl.Replace("Assets/Game/Resources/", "");
+        string url = d.iconUrl.Replace("Assets/Game/Resources/", "");
         url = url.Replace(".png", "");
         icon.sprite = Resources.Load<Sprite>(url) as Sprite;
-        price.text = d.skins[colorId].buyPrice.ToString();
-        state = GameManager.instance.GetPet(d.iD).skins[colorId].itemState;
+        price.text = d.buyPrice.ToString();
+        state = GameManager.instance.GetPet(d.iD).itemState;
 
 
         if (state == ItemState.OnShop)
@@ -248,44 +245,44 @@ public class ItemInfoUI : MonoBehaviour
 
         if (state == ItemState.OnShop)
         {
-            if (d.skins[colorId].priceType == PriceType.Coin)
+            if (d.priceType == PriceType.Coin)
             {
                 coinIcon.SetActive(true);
                 diamonIcon.SetActive(false);
                 moneyIcon.SetActive(false);
                 heartIcon.SetActive(false);
-                if (state == ItemState.OnShop && GameManager.instance.GetCoin() < (DataHolder.GetPet(itemId).skins[colorId].buyPrice))
+                if (state == ItemState.OnShop && GameManager.instance.GetCoin() < (DataHolder.GetPet(itemId).buyPrice))
                 {
                     buyButton.interactable = false;
                     sellButton.interactable = false;
                 }
             }
-            else if (d.skins[colorId].priceType == PriceType.Diamond)
+            else if (d.priceType == PriceType.Diamond)
             {
                 coinIcon.SetActive(false);
                 diamonIcon.SetActive(true);
                 moneyIcon.SetActive(false);
                 heartIcon.SetActive(false);
-                if (state == ItemState.OnShop && GameManager.instance.GetDiamond() < (DataHolder.GetPet(itemId).skins[colorId].buyPrice))
+                if (state == ItemState.OnShop && GameManager.instance.GetDiamond() < (DataHolder.GetPet(itemId).buyPrice))
                 {
                     buyButton.interactable = false;
                     sellButton.interactable = false;
                 }
             }
-            else if (d.skins[colorId].priceType == PriceType.Money)
+            else if (d.priceType == PriceType.Money)
             {
                 coinIcon.SetActive(false);
                 diamonIcon.SetActive(false);
                 moneyIcon.SetActive(true);
                 heartIcon.SetActive(false);
             }
-            else if (d.skins[colorId].priceType == PriceType.Happy)
+            else if (d.priceType == PriceType.Happy)
             {
                 coinIcon.SetActive(false);
                 diamonIcon.SetActive(false);
                 moneyIcon.SetActive(false);
                 heartIcon.SetActive(true);
-                if (state == ItemState.OnShop && GameManager.instance.GetHappy() < (DataHolder.GetPet(itemId).skins[colorId].buyPrice))
+                if (state == ItemState.OnShop && GameManager.instance.GetHappy() < (DataHolder.GetPet(itemId).buyPrice))
                 {
                     buyButton.interactable = false;
                     sellButton.interactable = false;
@@ -322,7 +319,7 @@ public class ItemInfoUI : MonoBehaviour
         if (isCharacter)
         {
             if (state == ItemState.Equiped)
-                UIManager.instance.OnConfirmationShopPanel(itemId, true, false, orderId);
+                UIManager.instance.OnConfirmationShopPanel(itemId, true, false);
             else if (state == ItemState.Have)
             {
                 //animator.Play("Use", 0);
@@ -331,7 +328,7 @@ public class ItemInfoUI : MonoBehaviour
             }
             else
             {
-                UIManager.instance.OnConfirmationShopPanel(itemId, true, true, orderId);
+                UIManager.instance.OnConfirmationShopPanel(itemId, true, true);
             }
 
         }

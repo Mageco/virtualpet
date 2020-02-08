@@ -9,8 +9,8 @@ public class Item
 	public int category = 0;
 	public int level = 1;
 	public string iconUrl = "";
+	public string prefabName = "";
 	public LanguageItem[] languageItem = new LanguageItem[0];
-	public List<Skin> skins = new List<Skin>();
 	public int skinId = 0;
 	public ItemType itemType = ItemType.Diamond;
 	public PriceType priceType = PriceType.Coin;

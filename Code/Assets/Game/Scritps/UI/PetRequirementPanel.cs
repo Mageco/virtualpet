@@ -30,7 +30,7 @@ public class PetRequirementPanel : MonoBehaviour
     public void Load(Pet pet)
     {
         petId = pet.iD;
-        string url = pet.skins[0].iconUrl.Replace("Assets/Game/Resources/", "");
+        string url = pet.iconUrl.Replace("Assets/Game/Resources/", "");
         url = url.Replace(".png", "");
         petAvatar.sprite = Resources.Load<Sprite>(url) as Sprite;
         //petPrice.text = pet.buyPrice.ToString();

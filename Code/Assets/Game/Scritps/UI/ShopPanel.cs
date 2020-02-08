@@ -86,10 +86,9 @@ public class ShopPanel : MonoBehaviour
         {
             foreach (Pet p in GameManager.instance.GetPets())
             {
-                for (int i = 0; i < p.skins.Count; i++)
-                {
-                    LoadItem(p, i);
-                }
+   
+                LoadItem(p);
+                
             }
         }
         else if (currentTab == 0)
@@ -177,10 +176,10 @@ public class ShopPanel : MonoBehaviour
         go.transform.localScale = Vector3.one;
         ItemUI item = go.GetComponent<ItemUI>();
         items.Add(item);
-        item.Load(data,data.skinId);
+        item.Load(data);
     }
 
-    void LoadItem(Pet data, int colorId)
+    void LoadItem(Pet data)
     {
         GameObject go = Instantiate(itemUIPrefab);
 
@@ -188,7 +187,7 @@ public class ShopPanel : MonoBehaviour
         go.transform.localScale = Vector3.one;
         ItemUI item = go.GetComponent<ItemUI>();
         items.Add(item);
-        item.Load(data, colorId);
+        item.Load(data);
     }
 
     void ClearItems()

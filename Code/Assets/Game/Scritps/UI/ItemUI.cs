@@ -6,7 +6,6 @@ using UnityEngine.UI;
 public class ItemUI : MonoBehaviour
 {
     public int itemId = 0;
-    public int skinId = 0;
     public Image icon;
     public Image iconType;
     public Text price;
@@ -32,12 +31,11 @@ public class ItemUI : MonoBehaviour
     }
 
     // Start is called before the first frame update
-    public void Load(Item d,int sId)
+    public void Load(Item d)
     {
         itemId = d.iD;
-        skinId = sId;
         //Debug.Log(d.iconUrl);
-        string url = d.skins[skinId].iconUrl.Replace("Assets/Game/Resources/", "");
+        string url = d.iconUrl.Replace("Assets/Game/Resources/", "");
 
         if (!d.isAvailable)
         {
@@ -157,17 +155,16 @@ public class ItemUI : MonoBehaviour
     }
 
 
-    public void Load(Pet d, int colorId)
+    public void Load(Pet d)
     {
         isCharacter = true;
         itemId = d.iD;
-        skinId = colorId;
-        string url = d.skins[colorId].iconUrl.Replace("Assets/Game/Resources/", "");
+        string url = d.iconUrl.Replace("Assets/Game/Resources/", "");
         url = url.Replace(".png", "");
         icon.sprite = Resources.Load<Sprite>(url) as Sprite;
-        price.text = d.skins[colorId].buyPrice.ToString();
+        price.text = d.buyPrice.ToString();
         iconType.sprite = Resources.Load<Sprite>("Icons/ItemType/Pet");
-        state = GameManager.instance.GetPet(d.iD).skins[colorId].itemState;
+        state = GameManager.instance.GetPet(d.iD).itemState;
 
         usedText.gameObject.SetActive(false);
         if (state == ItemState.OnShop)
@@ -198,44 +195,44 @@ public class ItemUI : MonoBehaviour
 
         if (state == ItemState.OnShop)
         {
-            if (d.skins[colorId].priceType == PriceType.Coin)
+            if (d.priceType == PriceType.Coin)
             {
                 coinIcon.SetActive(true);
                 diamonIcon.SetActive(false);
                 moneyIcon.SetActive(false);
                 happyIcon.SetActive(false);
-                if (state == ItemState.OnShop && GameManager.instance.GetCoin() < (DataHolder.GetPet(itemId).skins[colorId].buyPrice))
+                if (state == ItemState.OnShop && GameManager.instance.GetCoin() < (DataHolder.GetPet(itemId).buyPrice))
                 {
                     buyButton.interactable = false;
                     upgradeButton.interactable = false;
                 }
             }
-            else if (d.skins[colorId].priceType == PriceType.Diamond)
+            else if (d.priceType == PriceType.Diamond)
             {
                 coinIcon.SetActive(false);
                 diamonIcon.SetActive(true);
                 moneyIcon.SetActive(false);
                 happyIcon.SetActive(false);
-                if (state == ItemState.OnShop && GameManager.instance.GetDiamond() < (DataHolder.GetPet(itemId).skins[colorId].buyPrice))
+                if (state == ItemState.OnShop && GameManager.instance.GetDiamond() < (DataHolder.GetPet(itemId).buyPrice))
                 {
                     buyButton.interactable = false;
                     upgradeButton.interactable = false;
                 }
             }
-            else if (d.skins[colorId].priceType == PriceType.Money)
+            else if (d.priceType == PriceType.Money)
             {
                 coinIcon.SetActive(false);
                 diamonIcon.SetActive(false);
                 moneyIcon.SetActive(true);
                 happyIcon.SetActive(false);
             }
-            else if (d.skins[colorId].priceType == PriceType.Happy)
+            else if (d.priceType == PriceType.Happy)
             {
                 coinIcon.SetActive(false);
                 diamonIcon.SetActive(false);
                 moneyIcon.SetActive(false);
                 happyIcon.SetActive(true);
-                if (state == ItemState.OnShop && GameManager.instance.GetHappy() < (DataHolder.GetPet(itemId).skins[colorId].buyPrice))
+                if (state == ItemState.OnShop && GameManager.instance.GetHappy() < (DataHolder.GetPet(itemId).buyPrice))
                 {
                     buyButton.interactable = false;
                     upgradeButton.interactable = false;
@@ -282,14 +279,14 @@ public class ItemUI : MonoBehaviour
         if (isCharacter)
         {
             if (state == ItemState.Equiped)
-                UIManager.instance.OnConfirmationShopPanel(itemId, true, false, skinId);
+                UIManager.instance.OnConfirmationShopPanel(itemId, true, false);
             else if (state == ItemState.Have)
             {
-                UIManager.instance.EquipPetColor(itemId, skinId);
+                UIManager.instance.UsePet(itemId);
             }
             else
             {
-                UIManager.instance.OnConfirmationShopPanel(itemId, true, true, skinId);
+                UIManager.instance.OnConfirmationShopPanel(itemId, true, true);
             }
 
         }
@@ -328,8 +325,8 @@ public class ItemUI : MonoBehaviour
 
     public void OnItemInfo()
     {
-        MageManager.instance.PlaySoundName("BubbleButton", false);
-        UIManager.instance.OnItemInfoPanel(itemId, isCharacter, skinId);
+        //MageManager.instance.PlaySoundName("BubbleButton", false);
+        //UIManager.instance.OnItemInfoPanel(itemId, isCharacter);
     }
 
 }

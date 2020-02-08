@@ -10,8 +10,6 @@ public class PetTab : BaseTab
     private int tempId = 0;
     private int tempPetId = 0;
     int lastSellection = -1;
-    List<Texture2D> tempSprites = new List<Texture2D>();
-    List<GameObject> tempPrefabs = new List<GameObject>();
 
     public PetTab(ProjectWindow pw) : base(pw)
     {
@@ -70,39 +68,50 @@ public class PetTab : BaseTab
                 }
             }
             EditorGUILayout.EndVertical();
-            /*
-            EditorGUILayout.BeginHorizontal();
-            EditorGUILayout.LabelField("Icon", GUILayout.MaxWidth(110));
-            if (DataHolder.Pet(selection).iconUrl != null)
-            {
-                this.tmpSprites = AssetDatabase.LoadAssetAtPath<Texture2D>(DataHolder.Pet(selection).iconUrl);
-            }
-            this.tmpSprites = (Texture2D)EditorGUILayout.ObjectField(GUIContent.none, this.tmpSprites, typeof(Texture2D), false, GUILayout.MaxWidth(100));
-            if (this.tmpSprites != null)
-            {
-                DataHolder.Pet(selection).iconUrl = AssetDatabase.GetAssetPath(this.tmpSprites);
-
-            }
-            EditorGUILayout.LabelField(DataHolder.Pet(selection).iconUrl);
-            EditorGUILayout.EndHorizontal();
-
-            if (this.tmpSprites != null)
-            {
-                if (GUILayout.Button("Clear Image", GUILayout.Width(100)))
-                {
-                    DataHolder.Pet(selection).iconUrl = "";
-                    tmpSprites = null;
-                }
-            }*/
-
-
-
+            
+            
 
 
             EditorGUILayout.BeginVertical("box");
             fold2 = EditorGUILayout.Foldout(fold2, "Pet Settings");
             if (fold2)
             {
+                EditorGUILayout.BeginHorizontal();
+                EditorGUILayout.LabelField("Icon", GUILayout.MaxWidth(110));
+                if (DataHolder.Pet(selection).iconUrl != null)
+                {
+                    this.tmpSprites = AssetDatabase.LoadAssetAtPath<Texture2D>(DataHolder.Pet(selection).iconUrl);
+                }
+                this.tmpSprites = (Texture2D)EditorGUILayout.ObjectField(GUIContent.none, this.tmpSprites, typeof(Texture2D), false, GUILayout.MaxWidth(100));
+                if (this.tmpSprites != null)
+                {
+                    DataHolder.Pet(selection).iconUrl = AssetDatabase.GetAssetPath(this.tmpSprites);
+
+                }
+                EditorGUILayout.LabelField(DataHolder.Pet(selection).iconUrl);
+                EditorGUILayout.EndHorizontal();
+
+                if (this.tmpSprites != null)
+                {
+                    if (GUILayout.Button("Clear Image", GUILayout.Width(100)))
+                    {
+                        DataHolder.Pet(selection).iconUrl = "";
+                        tmpSprites = null;
+                    }
+                }
+
+
+                if (selection != tmpSelection)
+                {
+                    this.tmp1Prefab = null;
+                }
+                if (this.tmp1Prefab == null && "" != DataHolder.Pet(selection).prefabName)
+                {
+                    this.tmp1Prefab = (GameObject)Resources.Load(DataHolder.Pets().GetPrefabPath() + DataHolder.Pet(selection).prefabName, typeof(GameObject));
+                }
+                this.tmp1Prefab = (GameObject)EditorGUILayout.ObjectField("Prefab", this.tmp1Prefab, typeof(GameObject), false, GUILayout.Width(pw.mWidth * 2));
+                if (this.tmp1Prefab) DataHolder.Pet(selection).prefabName = this.tmp1Prefab.name;
+                else DataHolder.Pet(selection).prefabName = "";
                 EditorGUILayout.Separator();
                 EditorGUILayout.Separator();
                 EditorGUILayout.Separator();
@@ -117,6 +126,9 @@ public class PetTab : BaseTab
             fold2 = EditorGUILayout.Foldout(fold2, "Collection");
             if (fold2)
             {
+
+
+
                 if (GUILayout.Button("Add Require Equipment", GUILayout.Width(pw.mWidth * 0.7f)))
                 {
                     DataHolder.Pet(selection).requireEquipments = ArrayHelper.Add(1, DataHolder.Pet(selection).requireEquipments);
@@ -174,87 +186,7 @@ public class PetTab : BaseTab
             }
             EditorGUILayout.EndVertical();
 
-            if (GUILayout.Button("Add Skin", GUILayout.Width(pw.mWidth * 0.7f)))
-            {
-                DataHolder.Pet(selection).skins.Add(new Skin());
-                tempSprites.Add(new Texture2D(256, 256));
-                tempPrefabs.Add(null);
-            }
-
-            if(DataHolder.Pet(selection).skins.Count > 0)
-            {
-                EditorGUILayout.BeginVertical("box");
-                fold2 = EditorGUILayout.Foldout(fold2, "Skin");
-                if (fold2)
-                {
-
-
-                    for (int i = 0; i < DataHolder.Pet(selection).skins.Count; i++)
-                    {
-                        if (tempPrefabs.Count == i)
-                        {
-                            tempSprites.Add(new Texture2D(256, 256));
-                            tempPrefabs.Add(null);
-                        }
-                    }
-
-
-                    for (int i = 0; i < DataHolder.Pet(selection).skins.Count; i++)
-                    {
-
-                        EditorGUILayout.BeginHorizontal();
-                        EditorGUILayout.LabelField("Icon", GUILayout.MaxWidth(110));
-                        if (DataHolder.Pet(selection).skins[i].iconUrl != null)
-                        {
-
-                            this.tempSprites[i] = AssetDatabase.LoadAssetAtPath<Texture2D>(DataHolder.Pet(selection).skins[i].iconUrl);
-                        }
-                        this.tempSprites[i] = (Texture2D)EditorGUILayout.ObjectField(GUIContent.none, this.tempSprites[i], typeof(Texture2D), false, GUILayout.MaxWidth(100));
-                        if (this.tempSprites[i] != null)
-                        {
-                            DataHolder.Pet(selection).skins[i].iconUrl = AssetDatabase.GetAssetPath(this.tempSprites[i]);
-                        }
-                        EditorGUILayout.LabelField(DataHolder.Pet(selection).iconUrl);
-                        EditorGUILayout.EndHorizontal();
-
-                        if (this.tempSprites[i] != null)
-                        {
-                            if (GUILayout.Button("Clear Image", GUILayout.Width(100)))
-                            {
-                                DataHolder.Pet(selection).skins[i].iconUrl = "";
-                                this.tempSprites[i] = null;
-                            }
-                        }
-
-                        if (selection != tmpSelection)
-                        {
-                            this.tempPrefabs[i] = null;
-                        }
-                        if (this.tempPrefabs[i] == null && "" != DataHolder.Pet(selection).skins[i].prefabName)
-                        {
-                            this.tempPrefabs[i] = (GameObject)Resources.Load(DataHolder.Pets().GetPrefabPath() + DataHolder.Pet(selection).skins[i].prefabName, typeof(GameObject));
-                        }
-                        this.tempPrefabs[i] = (GameObject)EditorGUILayout.ObjectField("Prefab", this.tempPrefabs[i], typeof(GameObject), false, GUILayout.Width(pw.mWidth * 2));
-                        if (this.tempPrefabs[i]) DataHolder.Pet(selection).skins[i].prefabName = this.tempPrefabs[i].name;
-                        else DataHolder.Pet(selection).skins[i].prefabName = "";
-
-
-                        DataHolder.Pet(selection).skins[i].levelRequire = EditorGUILayout.IntField("Level Require", DataHolder.Pet(selection).skins[i].levelRequire, GUILayout.Width(pw.mWidth));
-                        DataHolder.Pet(selection).skins[i].priceType = (PriceType)EditorTab.EnumToolbar("Price Type", (int)DataHolder.Pet(selection).skins[i].priceType, typeof(PriceType));
-                        DataHolder.Pet(selection).skins[i].buyPrice = EditorGUILayout.IntField("Buy price", DataHolder.Pet(selection).skins[i].buyPrice, GUILayout.Width(pw.mWidth));
-
-                        if (GUILayout.Button("Remove Skin", GUILayout.Width(pw.mWidth * 0.7f)))
-                        {
-                            DataHolder.Pet(selection).skins.RemoveAt(i);
-                            GameObject.DestroyImmediate(tempSprites[i]);
-                            this.tempSprites.RemoveAt(i);
-                        }
-                        EditorGUILayout.Separator();
-                        EditorGUILayout.Separator();
-                    }
-                }
-                EditorGUILayout.EndVertical();
-            }
+            
             
 
             EditorGUILayout.BeginVertical("box");
