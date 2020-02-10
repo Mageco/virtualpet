@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6321616422857413332}
   m_Layer: 0
-  m_Name: WaterBox_1
+  m_Name: Toy_WaterJet_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -44,7 +44,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0, y: -1}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -71,6 +71,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   toyType: 0
   anchorPoint: {fileID: 9200628169108340574}
+  initZ: -6
+  scaleFactor: 0.05
+  isDrag: 0
+  isDragable: 1
+  isBusy: 0
 --- !u!1 &7413327299974887957
 GameObject:
   m_ObjectHideFlags: 0
@@ -111,6 +116,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8340125362093526563}
   - component: {fileID: 8340125362093526572}
+  - component: {fileID: 8919504605273544684}
   m_Layer: 8
   m_Name: Obstruct (1)
   m_TagString: Toy
@@ -126,7 +132,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8340125362093526562}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.7200012, y: -4.3400006, z: 0}
+  m_LocalPosition: {x: -0.7200012, y: -4.3400006, z: 0.1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1328383098884910937}
@@ -145,7 +151,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 3}
+  m_Offset: {x: 1, y: 3}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -156,8 +162,23 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 4.5, y: 3}
+  m_Size: {x: 7, y: 3}
   m_EdgeRadius: 0
+--- !u!114 &8919504605273544684
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8340125362093526562}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc4f7f33d8fc7c0419b2308165807ce0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shapeType: 1
+  extraOffset: 0
+  invertPolygon: 0
 --- !u!1001 &8340125363002983200
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -165,6 +186,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 6321616422857413332}
     m_Modifications:
+    - target: {fileID: 3133598648764660652, guid: fed9f3150740944acba6ba4483dfb964,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -2.9299998
+      objectReference: {fileID: 0}
+    - target: {fileID: 3133598648764660652, guid: fed9f3150740944acba6ba4483dfb964,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 20
+      objectReference: {fileID: 0}
     - target: {fileID: 3878190962507022348, guid: fed9f3150740944acba6ba4483dfb964,
         type: 3}
       propertyPath: m_Name
@@ -173,7 +204,7 @@ PrefabInstance:
     - target: {fileID: 7048501441889971321, guid: fed9f3150740944acba6ba4483dfb964,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -51.08
+      value: -34.6
       objectReference: {fileID: 0}
     - target: {fileID: 7048501441889971321, guid: fed9f3150740944acba6ba4483dfb964,
         type: 3}
@@ -183,7 +214,7 @@ PrefabInstance:
     - target: {fileID: 7048501441889971321, guid: fed9f3150740944acba6ba4483dfb964,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 600
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7048501441889971321, guid: fed9f3150740944acba6ba4483dfb964,
         type: 3}
@@ -228,22 +259,12 @@ PrefabInstance:
     - target: {fileID: 7048501441889971321, guid: fed9f3150740944acba6ba4483dfb964,
         type: 3}
       propertyPath: m_LocalScale.x
-      value: 1.5
+      value: 0.7
       objectReference: {fileID: 0}
     - target: {fileID: 7048501441889971321, guid: fed9f3150740944acba6ba4483dfb964,
         type: 3}
       propertyPath: m_LocalScale.y
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 3133598648764660652, guid: fed9f3150740944acba6ba4483dfb964,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -2.9299998
-      objectReference: {fileID: 0}
-    - target: {fileID: 3133598648764660652, guid: fed9f3150740944acba6ba4483dfb964,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 20
+      value: 0.7
       objectReference: {fileID: 0}
     - target: {fileID: 8965936872651199781, guid: fed9f3150740944acba6ba4483dfb964,
         type: 3}

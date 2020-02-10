@@ -112,15 +112,7 @@ public class CharParrot : CharController
             else {
                 anim.Play("Idle_" + this.direction.ToString(), 0);
                 yield return StartCoroutine(Wait(Random.Range(1, 10)));
-            }/* else{
-                SetTarget(PointType.Patrol);
-                targetHeight = 100;
-                yield return StartCoroutine(RunToPoint());
-                yield return StartCoroutine(Wait(Random.Range(10,20)));
-                SetTarget(PointType.Patrol);
-                targetHeight = 0;
-                yield return StartCoroutine(RunToPoint());
-            } */
+            }
             
         CheckAbort();
     }

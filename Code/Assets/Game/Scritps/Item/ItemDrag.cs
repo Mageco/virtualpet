@@ -33,7 +33,7 @@ public class ItemDrag : MonoBehaviour
 	}
 
 	// Update is called once per frame
-	void Update()
+	protected virtual void Update()
 	{		
 		if (isDrag ) {
 			if (isDragable) {

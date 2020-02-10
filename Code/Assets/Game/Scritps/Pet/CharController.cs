@@ -443,11 +443,8 @@ public class CharController : MonoBehaviour
             return;
         }
 
-        if (gameType == GameType.Garden)
-            actionType = ActionType.OnGarden;
-        else if(gameType == GameType.House)
-            actionType = ActionType.Patrol;
-        //Other Action
+
+        actionType = ActionType.Patrol;
     }
 
 
@@ -832,28 +829,6 @@ public class CharController : MonoBehaviour
         }
     }
 
-    public virtual void OnGarden()
-    {
-        if (GameManager.instance.myPlayer.questId < 19)
-            return;
-        Debug.Log("Check enviroment On Garden");
-        gameType = GameType.Garden;
-        SetDirection(Direction.L);
-        enviromentType = EnviromentType.Room;
-        Abort();
-        actionType = ActionType.OnGarden;
-        Debug.Log("Check enviroment On Garden " + isAbort);
-    }
-
-    public virtual void OnHouse()
-    {
-        gameType = GameType.House;
-        Debug.Log("OnHouse");
-        SetDirection(Direction.R);
-        enviromentType = EnviromentType.Room;
-        Abort();
-        actionType = ActionType.Patrol;
-    }
 
     public virtual void OnJumpOut()
     {
@@ -1109,8 +1084,8 @@ public class CharController : MonoBehaviour
 
             if (pos.x > 52)
                 pos.x = 52;
-            else if (pos.x < -300)
-                pos.x = -300;
+            else if (pos.x < -270)
+                pos.x = -270;
 
 
             pos.z = -50;
@@ -1544,7 +1519,7 @@ public class CharController : MonoBehaviour
     protected virtual IEnumerator Bed()
     {
         int ran = Random.Range(0,100);
-        if(data.sleep < 0.3f*data.MaxSleep){
+        if(data.sleep < 0.3f*data.MaxSleep || data.Health < 0.3f * data.MaxHealth){
             actionType = ActionType.Sleep;
             Abort();
         }else{                    
@@ -2150,17 +2125,7 @@ public class CharController : MonoBehaviour
         else if (enviromentType == EnviromentType.Toilet)
         {
             OnToilet();
-        }else if(enviromentType == EnviromentType.Door)
-        {
-            Debug.Log("Check enviroment Garden");
-            OnGarden();
         }
-        else if (enviromentType == EnviromentType.ToHouse)
-        {
-            OnHouse();
-            Debug.Log("OnHouse");
-        }
-
     }
 
     #endregion

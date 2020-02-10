@@ -38,6 +38,11 @@ public class HealthItem : ItemDrag
         item = this.transform.parent.GetComponent<ItemObject>();
     }
 
+    protected override void Update()
+    {
+
+    }
+
     /*
     protected override void OnActive(CharController pet)
     {

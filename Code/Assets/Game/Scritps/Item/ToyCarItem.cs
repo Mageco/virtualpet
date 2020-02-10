@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using PolyNav;
 
-public class ToyCarItem : BaseFloorItem
+public class ToyCarItem : ToyItem
 {
 	public float speed = 20;
 	float time;
@@ -29,11 +29,10 @@ public class ToyCarItem : BaseFloorItem
 		energyBar.SetActive(false);
 		energyProgress.transform.localScale = new Vector3(0,1.5f,1);
 	}
-	Animator animator;
+
 
 	protected override void Awake(){
 		base.Awake();
-		animator = this.GetComponent<Animator>();
 	}
 
     // Update is called once per frame
@@ -94,10 +93,9 @@ public class ToyCarItem : BaseFloorItem
 		isActive = true;
         animator.speed = 2;
 		GameManager.instance.LogAchivement(AchivementType.Use_Item,ActionType.None,this.item.itemID);
-		List<Transform> points = ItemManager.instance.GetRandomPoints (PointType.MouseEat);
-		List<Transform> pointRandoms = ItemManager.instance.GetRandomPoints (PointType.Mouse);
+		List<Transform> pointRandoms = ItemManager.instance.GetRandomPoints (PointType.Patrol);
 
-		if(points == null || pointRandoms == null || points.Count == 0 || pointRandoms.Count == 0){
+		if(pointRandoms == null || pointRandoms.Count == 0){
 			return;
 		}
 		Debug.Log(round);
@@ -120,7 +118,7 @@ public class ToyCarItem : BaseFloorItem
 		isActive = false;
 	}
 
-	void LateUpdate()
+	protected override void LateUpdate()
 	{
 		
 		//if (isActive) {
@@ -143,11 +141,6 @@ public class ToyCarItem : BaseFloorItem
 				this.transform.localScale = originalScale * (1 + (-this.transform.position.y + offset) * scaleFactor);
 			else
 				this.transform.localScale = originalScale;	
-
-		//}
-
-
-
 	}
 }
 

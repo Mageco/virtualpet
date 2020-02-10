@@ -153,7 +153,6 @@ public class ToyBallItem : BaseDragItem
             Vector3 pos1 = wall.transform.position;
             pos1.y = this.scalePosition.y;
             wall.transform.position = pos1;
-            wall.transform.localScale = Vector3.one + this.transform.localScale * -pos1.y * 0.008f;
         }
         else if (state == ItemDragState.Drop || state == ItemDragState.Fall || state == ItemDragState.Hit)
         {
@@ -167,7 +166,6 @@ public class ToyBallItem : BaseDragItem
                 Vector3 pos1 = wall.transform.position;
                 pos1.y = this.scalePosition.y;
                 wall.transform.position = pos1;
-                wall.transform.localScale = Vector3.one + this.transform.localScale * -pos1.y * 0.008f;
             }
         }
 

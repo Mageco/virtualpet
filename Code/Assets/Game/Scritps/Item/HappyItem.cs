@@ -20,14 +20,15 @@ public class HappyItem : MonoBehaviour
         
     }
     // Start is called before the first frame update
-    void Start()
+    IEnumerator Start()
     {
         if(isSound)
             MageManager.instance.PlaySoundName("Button",false);
         Vector3 pos = this.transform.position;
         pos.z = (this.transform.position.y - 2) * 10;
         this.transform.position = pos;
-        
+        yield return new WaitForSeconds(0.5f);
+        OnPick();
     }
 
     // Update is called once per frame
@@ -38,6 +39,7 @@ public class HappyItem : MonoBehaviour
 
     void OnMouseUp(){
 
+        /*
         if (IsPointerOverUIObject())
             return;
 
@@ -45,13 +47,15 @@ public class HappyItem : MonoBehaviour
             isPick = true;
             GameManager.instance.LogAchivement(AchivementType.CollectHeart);
             StartCoroutine(Pick());
-        }
+        }*/
         
     }
 
     public void OnPick()
     {
-        OnMouseUp();
+        isPick = true;
+        GameManager.instance.LogAchivement(AchivementType.CollectHeart);
+        StartCoroutine(Pick());
     }
 
     IEnumerator Pick(){

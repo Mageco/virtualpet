@@ -43,8 +43,8 @@ public class BaseFloorItem : MonoBehaviour
 			
             if (pos.x > 52)
                 pos.x = 52;
-            else if (pos.x < -49)
-                pos.x = -49;
+            else if (pos.x < -270)
+                pos.x = -270;
 			this.transform.position = pos;	
 			dragTime += Time.deltaTime;		 
 		}
