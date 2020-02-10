@@ -428,25 +428,10 @@ public class QuestManager : MonoBehaviour
         }
         else if (GameManager.instance.myPlayer.questId == 19)
         {
-            /*
-            bool isOk = true;
-            foreach(Pet p in GameManager.instance.GetPets())
-            {
-                if(p.actionType != ActionType.OnGarden)
-                {
-                    isOk = false;
-                }
-            }*/
-            if (GameManager.instance.GetActivePet().actionType == ActionType.OnGarden)
-            {
-                isComplete = true;
-            }
+            isComplete = true;
         }else if (GameManager.instance.myPlayer.questId == 20)
         {
-            if(GameManager.instance.myPlayer.gameType == GameType.Garden)
-            {
-                isComplete = true;
-            }
+            isComplete = true;
         }
         else if (GameManager.instance.myPlayer.questId == 21)
         {

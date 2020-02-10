@@ -48,6 +48,11 @@ public class PetRequirementPanel : MonoBehaviour
             LoadEquipment(pet.requireEquipments[i]);
         }
 
+
+        coinIcon.SetActive(false);
+        diamonIcon.SetActive(false);
+        happyIcon.SetActive(false);
+        /*
         if (pet.priceType == PriceType.Coin)
         {
             coinIcon.SetActive(true);
@@ -95,7 +100,7 @@ public class PetRequirementPanel : MonoBehaviour
             happyIcon.GetComponent<PetRequirementUI>().number.text = GameManager.instance.GetHappy().ToString() + "/" + pet.buyPrice.ToString();
 
 
-        }
+        }*/
 
         if (canBuy)
         {
@@ -122,7 +127,7 @@ public class PetRequirementPanel : MonoBehaviour
         PetRequirementUI item = go.GetComponent<PetRequirementUI>();
         string url = DataHolder.GetItem(id).iconUrl.Replace("Assets/Game/Resources/", "");
         url = url.Replace(".png", "");
-        if (GameManager.instance.IsEquipItem(id))
+        if (GameManager.instance.IsHaveItem(id) || GameManager.instance.IsEquipItem(id))
         {
             item.Load(url, 1, 1);
         }
@@ -161,7 +166,9 @@ public class PetRequirementPanel : MonoBehaviour
 
     public void OnCollect()
     {
-        UIManager.instance.OnConfirmBuyPetPopup(DataHolder.GetPet(petId));
+        UIManager.instance.BuyPet(petId);
+        this.Close();
+        //UIManager.instance.OnConfirmBuyPetPopup(DataHolder.GetPet(petId));
     }
 
     void ClearItems()
