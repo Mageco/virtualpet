@@ -78,7 +78,7 @@ public class ItemDrag : MonoBehaviour
 		}
 	}
 
-	void OnMouseUp()
+	protected virtual void OnMouseUp()
 	{
 		dragOffset = Vector3.zero;
 
@@ -122,29 +122,7 @@ public class ItemDrag : MonoBehaviour
 	}
 
 
-	void OnTriggerEnter2D(Collider2D other) {
-		//if(isBusy)
-		//	return;
-		if (other.tag == "Floor" && isObstruct) {
-		 	isDragable = true;
-		}
-		 if (other.GetComponent<PolyNavObstacle>() != null && isObstruct) {
-		 	isDragable = false;
-		 }
 
-	}
-
-	void OnTriggerExit2D(Collider2D other) {
-		if(isBusy)
-			return;
-		if (other.GetComponent<PolyNavObstacle>() != null && isObstruct) {
-		 	isDragable = true;
-		}
-		if (other.tag == "Floor" && isObstruct) {
-			isDragable = false;
-		}
-
-	}
 
 
 	private bool IsPointerOverUIObject() {

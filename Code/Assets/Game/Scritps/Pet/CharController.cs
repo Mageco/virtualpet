@@ -646,12 +646,12 @@ public class CharController : MonoBehaviour
     public virtual void OnHold()
     {
         if(actionType == ActionType.Sick){
-            UIManager.instance.OnTreatmentPopup(this.data,SickType.Sick);
+            //UIManager.instance.OnTreatmentPopup(this.data,SickType.Sick);
             return;
         }
 
         if(actionType == ActionType.Injured){
-            UIManager.instance.OnTreatmentPopup(this.data, SickType.Injured);
+            //UIManager.instance.OnTreatmentPopup(this.data, SickType.Injured);
             return;
         }
 
@@ -665,17 +665,11 @@ public class CharController : MonoBehaviour
 
     public virtual void OnCall()
     {
-        if (actionType == ActionType.Sick)
+        if (actionType == ActionType.Sick || actionType == ActionType.Injured)
         {
-            UIManager.instance.OnTreatmentPopup(this.data, SickType.Sick);
             return;
         }
 
-        if (actionType == ActionType.Injured)
-        {
-            UIManager.instance.OnTreatmentPopup(this.data, SickType.Injured);
-            return;
-        }
 
         if (actionType == ActionType.Patrol || actionType == ActionType.Discover || actionType == ActionType.OnGarden)
         {
@@ -766,7 +760,7 @@ public class CharController : MonoBehaviour
 
         if(!isArrived){
             int ran = Random.Range(0, 100);
-            if(ran > 50)
+            if(ran > 20)
             {
                 Abort();
                 isArrived = true;
@@ -1686,18 +1680,19 @@ public class CharController : MonoBehaviour
 
     protected virtual IEnumerator Sick()
     {
-        timeWait.gameObject.SetActive(true);
-        data.timeSick = System.DateTime.Now;
-        SetTarget(PointType.Favourite);
-        yield return StartCoroutine(WalkToPoint());
+        //timeWait.gameObject.SetActive(true);
+        //data.timeSick = System.DateTime.Now;
+        //SetTarget(PointType.Favourite);
+        //yield return StartCoroutine(WalkToPoint());
         anim.Play("Sick", 0);
         Debug.Log("Sick");
-        while ((System.DateTime.Now - data.timeSick).TotalSeconds < data.MaxTimeSick && !isAbort)
+        //while ((System.DateTime.Now - data.timeSick).TotalSeconds < data.MaxTimeSick && !isAbort)
+        while(data.Health < data.MaxHealth * 0.7f && !isAbort)
         {
             yield return new WaitForEndOfFrame();
         }
-        data.Health = data.MaxHealth;
-        timeWait.gameObject.SetActive(false);
+  
+        //timeWait.gameObject.SetActive(false);
         GameManager.instance.LogAchivement(AchivementType.Do_Action,ActionType.Sick);
         CheckEnviroment();
         CheckAbort();

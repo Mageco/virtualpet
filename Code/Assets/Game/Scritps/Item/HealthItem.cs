@@ -40,11 +40,24 @@ public class HealthItem : ItemDrag
 
     protected override void Update()
     {
-
+        base.Update();
+        if (isDrag)
+        {
+            anim.Play("Drag", 0);
+        }
+        else
+            anim.Play("Idle", 0);
     }
 
-    /*
-    protected override void OnActive(CharController pet)
+    protected override void OnMouseUp()
+    {
+        if (pet != null)
+            OnActive(pet);
+        else
+            base.OnMouseUp();
+    }
+
+    void OnActive(CharController pet)
     {
         if(!isBusy && !eated){
             eated = true;
@@ -61,9 +74,10 @@ public class HealthItem : ItemDrag
             StartCoroutine(Deactive());
         }
 
-    }*/
+    }
 
     IEnumerator Deactive(){
+        isDrag = false;
         this.transform.position = new Vector3(1000,1000,0);
         yield return new WaitForSeconds(timeDelay);
         Reset();
@@ -78,6 +92,23 @@ public class HealthItem : ItemDrag
         eated = false;
         isDrag = false;
         isBusy = false;
+    }
+
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        Debug.Log(other);
+        if(other.tag == "Player")
+        {
+            pet = other.GetComponent<CharController>();
+        }
+    }
+
+    void OnTriggerExit2D(Collider2D other)
+    {
+        if (other.tag == "Player" && other.GetComponent<CharController>() == pet)
+        {
+            pet = null;
+        }
     }
 }
 
