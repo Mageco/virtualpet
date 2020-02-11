@@ -755,7 +755,7 @@ public class CharController : MonoBehaviour
     }
 
     public virtual void OnFall(){
-        if (actionType == ActionType.Sick || actionType == ActionType.Injured)
+        if (actionType == ActionType.Sick || actionType == ActionType.Injured || actionType == ActionType.Hold || actionType == ActionType.Toy)
             return;
 
 
@@ -930,6 +930,17 @@ public class CharController : MonoBehaviour
         anim.Play(a, 0);
         //yield return new WaitForEndOfFrame();
         while (time < anim.GetCurrentAnimatorStateInfo(0).length && !isAbort)
+        {
+            time += Time.deltaTime;
+            yield return new WaitForEndOfFrame();
+        }
+    }
+
+    protected virtual IEnumerator DoForceAnim(string a)
+    {
+        float time = 0;
+        anim.Play(a, 0);
+        while (time < anim.GetCurrentAnimatorStateInfo(0).length)
         {
             time += Time.deltaTime;
             yield return new WaitForEndOfFrame();
@@ -1833,16 +1844,17 @@ public class CharController : MonoBehaviour
 
                     while (ball != null && data.Energy > data.MaxEnergy * 0.1f && !isAbort)
                     {
-
                         anim.speed = 1.5f;
-                        agent.SetDestination(ball.transform.position + new Vector3(Random.Range(-2f, 2f), Random.Range(-2f, 2f), 0));
-                        anim.Play("Run_" + this.direction.ToString(), 0);
-                        data.Energy -= 2f * Time.deltaTime;
-                        if (Vector2.Distance(this.transform.position, ball.scalePosition) < 2 && ball.state != ItemDragState.Drag)
+                        target = ball.lastPosition + new Vector3(Random.Range(-2f, 2f), Random.Range(0.5f, 2f), 0);
+                        yield return StartCoroutine(RunToPoint());
+                        //agent.SetDestination(ballPosition);
+                        //anim.Play("Run_" + this.direction.ToString(), 0);
+                        //data.Energy -= 1f * Time.deltaTime;
+                        if (Vector2.Distance(this.transform.position, ball.lastPosition) < 2 && ball.state != ToyState.Active)
                         {
                             agent.Stop();
                             data.Energy -= 2;
-                            ball.OnForce();
+                            ball.OnActive();
                             int ran = Random.Range(0, 100);
                             if (ran < 20)
                                 GameManager.instance.AddExp(5, data.iD);
@@ -1855,7 +1867,7 @@ public class CharController : MonoBehaviour
 
                 if (isFear)
                 {
-                    if (ball != null && Vector2.Distance(this.transform.position, ball.scalePosition) < 2 && ball.state == ItemDragState.Drop)
+                    if (ball != null && Vector2.Distance(this.transform.position, ball.transform.position) < 2 && ball.state != ToyState.Active)
                     {
                         yield return StartCoroutine(DoAnim("Teased"));
                         Debug.Log("Supprised");
@@ -1936,7 +1948,7 @@ public class CharController : MonoBehaviour
                 }
 
                 yield return StartCoroutine(DoAnim("Play_Toy_Slider"));
-                if (toyItem.endPoint != null)
+                if (toyItem.endPoint != null && !isAbort)
                 {
                     agent.transform.position = toyItem.endPoint.position;
                 }

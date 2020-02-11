@@ -9,10 +9,6 @@ public class ItemManager : MonoBehaviour
     public static ItemManager instance;
 
     public List<ItemObject> items = new List<ItemObject>();
-    public List<ItemSaveData> itemSaveDatas = new List<ItemSaveData>();
-
-
-
     public ItemCollider[] itemColliders;
     public float expireTime = 10;
 
@@ -51,6 +47,8 @@ public class ItemManager : MonoBehaviour
     // Start is called before the first frame update
     IEnumerator Start()
     {
+        float t = 0;
+        MageManager.instance.loadingBar.gameObject.SetActive(true);
         bool isLoad = false;
         while(!isLoad){
             if(GameManager.instance.isLoad){
@@ -59,6 +57,8 @@ public class ItemManager : MonoBehaviour
                 GameManager.instance.LoadPetObjects();
                 isLoad = true;
             }
+            t += Time.deltaTime;
+            MageManager.instance.loadingBar.UpdateProgress(t);
             yield return new WaitForEndOfFrame();
         }
         LoadItemData();
@@ -76,7 +76,7 @@ public class ItemManager : MonoBehaviour
            
         }
         GameManager.instance.rateCount++;
-
+        MageManager.instance.loadingBar.gameObject.SetActive(false);
     }
 
     // Update is called once per frame
@@ -553,7 +553,7 @@ public class ItemManager : MonoBehaviour
     }
 
     void CheckItemData(){
-       itemSaveDatas.Clear();
+       GameManager.instance.myPlayer.itemSaveDatas.Clear();
 
        //Find All dirty items
        ItemDirty[] dirties = FindObjectsOfType<ItemDirty>();
@@ -562,7 +562,7 @@ public class ItemManager : MonoBehaviour
            data.itemType = dirties[i].itemType;
            data.value = dirties[i].dirty;
            data.position = dirties[i].transform.position;
-           itemSaveDatas.Add(data);
+           GameManager.instance.myPlayer.itemSaveDatas.Add(data);
        }
 
         //Find All Food/Drink Item
@@ -573,7 +573,7 @@ public class ItemManager : MonoBehaviour
            data.itemType = eats[i].itemSaveDataType;
            data.value = eats[i].foodAmount;
            data.position = eats[i].transform.position;
-           itemSaveDatas.Add(data);
+           GameManager.instance.myPlayer.itemSaveDatas.Add(data);
        }
 
        HappyItem[] happies = FindObjectsOfType<HappyItem>();
@@ -582,7 +582,7 @@ public class ItemManager : MonoBehaviour
            data.itemType = happies[i].itemSaveDataType;
            data.value = happies[i].value;
            data.position = happies[i].transform.position;
-           itemSaveDatas.Add(data);
+           GameManager.instance.myPlayer.itemSaveDatas.Add(data);
        }
 
         FruitItem[] fruits = FindObjectsOfType<FruitItem>();
@@ -593,28 +593,34 @@ public class ItemManager : MonoBehaviour
             data.itemType = fruits[i].itemSaveDataType;
             data.value = fruits[i].step;
             data.time = fruits[i].time;
-            itemSaveDatas.Add(data);
+            GameManager.instance.myPlayer.itemSaveDatas.Add(data);
         }
 
+        ToyItem[] toys = FindObjectsOfType<ToyItem>();
+        for (int i = 0; i < toys.Length; i++)
+        {
+            ItemSaveData data = new ItemSaveData();
+            data.id = toys[i].item.itemID;
+            data.itemType = ItemSaveDataType.Toy;
+            data.position = toys[i].transform.position;
+            GameManager.instance.myPlayer.itemSaveDatas.Add(data);
+        }
+
+        foreach (ItemObject item in items)
+        {
+
+        }
         SaveItemData();
     }
 
 
     void SaveItemData(){
-        ES2.Save(itemSaveDatas,"ItemSaveData");
+        GameManager.instance.SavePlayer();
     }
 
     void LoadItemData(){
 
-    #if UNITY_EDITOR
-        if (MageEngine.instance.resetUserDataOnStart)
-            return;
-    #endif
-        if(ES2.Exists("ItemSaveData")){
-            itemSaveDatas = ES2.LoadList<ItemSaveData>("ItemSaveData");
-        }
-
-        foreach(ItemSaveData item in itemSaveDatas){
+        foreach(ItemSaveData item in GameManager.instance.myPlayer.itemSaveDatas){
             if(item.itemType == ItemSaveDataType.Pee){
                 SpawnPee(item.position,item.value);
             }else if(item.itemType == ItemSaveDataType.Shit){
@@ -637,6 +643,13 @@ public class ItemManager : MonoBehaviour
                         fruits[i].time = item.time;
                         fruits[i].Load();
                     }
+                }
+            }
+            else if (item.itemType == ItemSaveDataType.Toy)
+            {
+                if (GetItem(item.id) != null)
+                {
+                    GetItem(item.id).GetComponentInChildren<ToyItem>().transform.position = item.position;
                 }
             }
         }

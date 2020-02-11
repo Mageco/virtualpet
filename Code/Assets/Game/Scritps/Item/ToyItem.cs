@@ -10,14 +10,15 @@ public class ToyItem : MonoBehaviour
 	public Transform anchorPoint;
 	public Transform startPoint;
 	public Transform endPoint;
-	protected ItemObject item;
+    [HideInInspector]
+	public ItemObject item;
 	public float initZ = -6;
 	public float scaleFactor = 0.05f;
-	Vector3 dragOffset;
+	protected Vector3 dragOffset;
 	public ToyState state = ToyState.Idle;
 	protected Vector3 originalPosition;
 	protected Vector3 originalScale;
-	protected Vector3 lastPosition;
+	public Vector3 lastPosition;
 	protected float dragTime = 0;
 	public Vector2 boundX = new Vector2(-270, 52);
 	public List<CharController> pets = new List<CharController>();
@@ -138,7 +139,7 @@ public class ToyItem : MonoBehaviour
 
 	}
 
-	private bool IsPointerOverUIObject()
+	protected bool IsPointerOverUIObject()
 	{
 		PointerEventData eventDataCurrentPosition = new PointerEventData(EventSystem.current);
 		eventDataCurrentPosition.position = new Vector2(Input.mousePosition.x, Input.mousePosition.y);

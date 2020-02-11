@@ -23,7 +23,8 @@ public class PlayerData : BaseModel
     public int questValue = 0;
 	public List<Skin> petColors = new List<Skin>();
 	public List<PlayerAchivement> achivements = new List<PlayerAchivement>();
-    public GameType gameType = GameType.House;
+	public List<ItemSaveData> itemSaveDatas = new List<ItemSaveData>();
+	public GameType gameType = GameType.House;
 
 	public PlayerData(){
         for(int i = 0; i < minigameLevels.Length; i++)
@@ -91,7 +92,7 @@ public class PlayerData : BaseModel
 [System.Serializable]
 public class PlayerItem : BaseModel{
     public int itemId = 0;
-	public int skinId = 0;
+	public ItemType itemType = ItemType.All;
     public ItemState state = ItemState.OnShop;
 	public Vector3 position = Vector3.zero;
 	public float value = 0;
