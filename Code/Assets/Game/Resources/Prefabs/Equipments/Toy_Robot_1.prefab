@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 332248818682743943}
   m_Layer: 0
-  m_Name: Toy_Robot
+  m_Name: Toy_Robot_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -528,14 +528,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d3e8916b1bf845df85ff4bf4270a720, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  toyType: 7
+  anchorPoint: {fileID: 0}
+  startPoint: {fileID: 0}
   initZ: -6
   scaleFactor: 0.05
+  state: 0
+  boundX: {x: -270, y: 52}
   target: {x: 0, y: 0, z: 0}
   agent: {fileID: 0}
-  isArrived: 1
+  isArrived: 0
   isAbort: 0
   speed: 10
-  state: 0
 --- !u!1 &6869893355120664972
 GameObject:
   m_ObjectHideFlags: 0
@@ -627,7 +631,7 @@ GameObject:
   - component: {fileID: 6985580494604229037}
   - component: {fileID: 510444186481749828}
   - component: {fileID: 1320934575945928745}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Obstruct (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -6,13 +6,6 @@ public class ToyWheelItem : ToyItem
 {
     public GameObject wheel;
 
-    protected override void Start()
-    {
-        base.Start();
-        toyType = ToyType.Wheel;
-    }
-
-
     public override void OnActive()
     {
         animator.Play("Active");

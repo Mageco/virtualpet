@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1202140447}
   - component: {fileID: 1202140448}
+  - component: {fileID: 525367181033744721}
   m_Layer: 8
   m_Name: Obstruct
   m_TagString: Car
@@ -57,6 +58,21 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 8, y: 2}
   m_EdgeRadius: 0
+--- !u!114 &525367181033744721
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1202140446}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc4f7f33d8fc7c0419b2308165807ce0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shapeType: 1
+  extraOffset: 0
+  invertPolygon: 0
 --- !u!1 &4349260780283434857
 GameObject:
   m_ObjectHideFlags: 0
@@ -67,7 +83,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2744978200313139038}
   m_Layer: 0
-  m_Name: Car_1
+  m_Name: Toy_Car_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -183,7 +199,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2673727295603646482
 Transform:
   m_ObjectHideFlags: 0
@@ -306,21 +322,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 12, y: 8}
   m_EdgeRadius: 0
---- !u!114 &1094331344899476
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8983550801612424520}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fc4f7f33d8fc7c0419b2308165807ce0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  shapeType: 1
-  extraOffset: 0
-  invertPolygon: 0
 --- !u!114 &4373976497845572747
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -333,17 +334,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02308cd9743014949b2d9bf7824d8c61, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  toyType: 2
+  anchorPoint: {fileID: 0}
+  startPoint: {fileID: 0}
   initZ: -6
   scaleFactor: 0.05
-  isDrag: 0
-  isDragable: 1
-  isBusy: 0
-  item: {fileID: 0}
-  speed: 40
-  isActive: 0
+  state: 0
+  boundX: {x: -270, y: 52}
+  speed: 20
   body: {fileID: 8983550800580757322}
-  energyBar: {fileID: 5896945697616073121}
-  energyProgress: {fileID: 8887950231388334720}
 --- !u!1001 &5517423947715653868
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -351,6 +350,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2744978200313139038}
     m_Modifications:
+    - target: {fileID: 3475134052541527975, guid: 7d2d3c82735e02e47b25aad095432699,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 3.17
+      objectReference: {fileID: 0}
     - target: {fileID: 3475134053154026916, guid: 7d2d3c82735e02e47b25aad095432699,
         type: 3}
       propertyPath: m_Name
@@ -425,11 +429,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalPosition.y
       value: -0.043198586
-      objectReference: {fileID: 0}
-    - target: {fileID: 3475134052541527975, guid: 7d2d3c82735e02e47b25aad095432699,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 3.17
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7d2d3c82735e02e47b25aad095432699, type: 3}
