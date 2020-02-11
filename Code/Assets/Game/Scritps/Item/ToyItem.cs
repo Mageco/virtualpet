@@ -5,41 +5,40 @@ using UnityEngine.EventSystems;
 
 public class ToyItem : MonoBehaviour
 {
-
 	public ToyType toyType = ToyType.Ball;
 	protected Animator animator;
 	public Transform anchorPoint;
+	public Transform startPoint;
 	protected ItemObject item;
 	public float initZ = -6;
 	public float scaleFactor = 0.05f;
 	Vector3 dragOffset;
-	public bool isDrag = false;
-	public bool isDragable = true;
+	public ToyState state = ToyState.Idle;
 	protected Vector3 originalPosition;
-	protected Vector3 lastPosition;
 	protected Vector3 originalScale;
-
-	public bool isBusy = false;
-
+	protected Vector3 lastPosition;
 	protected float dragTime = 0;
+	public Vector2 boundX = new Vector2(-270, 52);
 
 	protected virtual void Awake()
 	{
 		animator = this.GetComponent<Animator>();
-		item = this.transform.parent.GetComponent<ItemObject>();
 		originalPosition = this.transform.position;
 		originalScale = this.transform.localScale;
+		lastPosition = this.transform.position;
+		
 	}
-	// Start is called before the first frame update
-	protected virtual void Start()
-	{
+
+    protected virtual void Start()
+    {
 		item = this.transform.parent.GetComponent<ItemObject>();
 	}
 
-	// Update is called once per frame
-	protected virtual void Update()
+
+    // Update is called once per frame
+    protected virtual void Update()
 	{
-		if (isDrag && isDragable)
+		if (state == ToyState.Drag)
 		{
 			Vector3 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition) - dragOffset;
 			pos.z = this.transform.position.z;
@@ -48,14 +47,13 @@ public class ToyItem : MonoBehaviour
 			if (pos.y < -24)
 				pos.y = -24;
 
-			if (pos.x > 52)
-				pos.x = 52;
-			else if (pos.x < -270)
-				pos.x = -270;
+			if (pos.x > boundX.y)
+				pos.x = boundX.y;
+			else if (pos.x < boundX.x)
+				pos.x = boundX.x;
 			this.transform.position = pos;
 			dragTime += Time.deltaTime;
 		}
-
 	}
 
 	protected virtual void LateUpdate()
@@ -75,11 +73,18 @@ public class ToyItem : MonoBehaviour
 
 	protected virtual void OnMouseUp()
 	{
-
+        if(dragTime < 0.1f)
+        {
+			OnClick();
+        }
+        else
+        {
+		    state = ToyState.Idle;
+        }
 		dragOffset = Vector3.zero;
-		isDrag = false;
 		ItemManager.instance.ResetCameraTarget();
 		dragTime = 0;
+
 	}
 
 
@@ -90,33 +95,33 @@ public class ToyItem : MonoBehaviour
 			return;
 		}
 
-		if (isBusy)
+		if (state == ToyState.Active || state == ToyState.Busy)
 		{
 			return;
 		}
 
 		dragOffset = Camera.main.ScreenToWorldPoint(Input.mousePosition) - this.transform.position;
-		isDrag = true;
+		state = ToyState.Drag;
 		lastPosition = this.transform.position;
-
 		ItemManager.instance.SetCameraTarget(this.gameObject);
 	}
 
 	IEnumerator ReturnPosition(Vector3 pos)
 	{
-		isBusy = true;
+		state = ToyState.Busy;
 		while (Vector2.Distance(this.transform.position, pos) > 0.1f)
 		{
 			this.transform.position = Vector3.Lerp(this.transform.position, pos, Time.deltaTime * 5);
 			yield return new WaitForEndOfFrame();
 		}
-		isBusy = false;
-		isDragable = true;
-		isDrag = false;
+		state = ToyState.Idle;
 		dragOffset = Vector3.zero;
-
 	}
 
+    protected virtual void OnClick()
+    {
+		state = ToyState.Idle;
+	}
 
 	public virtual void OnActive()
 	{
@@ -134,3 +139,5 @@ public class ToyItem : MonoBehaviour
 		return results.Count > 0;
 	}
 }
+
+public enum ToyState {Idle,Drag,Busy,Active}

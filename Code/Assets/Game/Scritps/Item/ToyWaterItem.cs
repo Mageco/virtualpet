@@ -4,14 +4,6 @@ using UnityEngine;
 
 public class ToyWaterItem : ToyItem
 {
-   
-
-    protected override void Start(){
-        base.Start();
-        toyType = ToyType.WaterJet;
-    }
-
-
     public override void OnActive(){
         animator.Play("Active");
         MageManager.instance.PlaySoundName("Item_WaterJet", false);
