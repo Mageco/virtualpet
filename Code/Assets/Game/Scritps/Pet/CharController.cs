@@ -1804,10 +1804,11 @@ public class CharController : MonoBehaviour
                     }
                     count++;
                 }
-               
+
                 GameManager.instance.AddExp(5, data.iD);
-                
-            }else if(toyItem.toyType == ToyType.Ball)
+
+            }
+            else if (toyItem.toyType == ToyType.Ball)
             {
                 ToyBallItem ball = toyItem.GetComponent<ToyBallItem>();
                 bool isPlay = false;
@@ -1816,7 +1817,7 @@ public class CharController : MonoBehaviour
                     isPlay = true;
 
                 int ran1 = Random.Range(0, 100);
-                if((charType == CharType.Dog || charType == CharType.Hamster) && ran1 > 70 && data.Energy > data.MaxEnergy * 0.1f)
+                if ((charType == CharType.Dog || charType == CharType.Hamster) && ran1 > 70 && data.Energy > data.MaxEnergy * 0.1f)
                 {
                     isPlay = true;
                 }
@@ -1829,22 +1830,22 @@ public class CharController : MonoBehaviour
                 {
 
                     charScale.speedFactor = 1.5f;
-                    
+
                     while (ball != null && data.Energy > data.MaxEnergy * 0.1f && !isAbort)
                     {
-                        
+
                         anim.speed = 1.5f;
-                        agent.SetDestination(ball.transform.position + new Vector3(Random.Range(-2f,2f),Random.Range(-2f,2f),0));
+                        agent.SetDestination(ball.transform.position + new Vector3(Random.Range(-2f, 2f), Random.Range(-2f, 2f), 0));
                         anim.Play("Run_" + this.direction.ToString(), 0);
                         data.Energy -= 2f * Time.deltaTime;
-                        if(Vector2.Distance(this.transform.position, ball.scalePosition) < 2 && ball.state != ItemDragState.Drag)
+                        if (Vector2.Distance(this.transform.position, ball.scalePosition) < 2 && ball.state != ItemDragState.Drag)
                         {
                             agent.Stop();
                             data.Energy -= 2;
                             ball.OnForce();
                             int ran = Random.Range(0, 100);
-                            if(ran < 20)
-                                GameManager.instance.AddExp(5,data.iD);
+                            if (ran < 20)
+                                GameManager.instance.AddExp(5, data.iD);
                             yield return StartCoroutine(DoAnim("Standby"));
                         }
                         yield return new WaitForEndOfFrame();
@@ -1852,7 +1853,7 @@ public class CharController : MonoBehaviour
                     charScale.speedFactor = 1f;
                 }
 
-                if(isFear)
+                if (isFear)
                 {
                     if (ball != null && Vector2.Distance(this.transform.position, ball.scalePosition) < 2 && ball.state == ItemDragState.Drop)
                     {
@@ -1868,7 +1869,7 @@ public class CharController : MonoBehaviour
                 if ((charType == CharType.Cat || charType == CharType.Hamster) && data.Energy > 0.1f * data.MaxEnergy)
                     isPlay = true;
 
-                
+
 
                 if (isPlay)
                 {
@@ -1884,7 +1885,7 @@ public class CharController : MonoBehaviour
                         time += Time.deltaTime;
                         agent.transform.position = wheel.anchorPoint.position;
                         anim.Play("Run_" + this.direction.ToString(), 0);
-                        data.Energy -= 2f * Time.deltaTime;                        
+                        data.Energy -= 2f * Time.deltaTime;
                         yield return new WaitForEndOfFrame();
 
                     }
@@ -1892,9 +1893,9 @@ public class CharController : MonoBehaviour
                     if (charType == CharType.Hamster)
                         ran += 30;
 
-                    if(ran < 50)
+                    if (ran < 50)
                     {
-                        agent.transform.position = wheel.anchorPoint.position + new Vector3(0,3,0); 
+                        agent.transform.position = wheel.anchorPoint.position + new Vector3(0, 3, 0);
                         time = 0;
                         while (time < 3 && !isAbort)
                         {
@@ -1909,22 +1910,36 @@ public class CharController : MonoBehaviour
                     }
                     else
                     {
-                        
+
                         if (time > 5)
                         {
                             yield return StartCoroutine(DoAnim("Love"));
                             GameManager.instance.AddExp(5, data.iD);
                         }
-  
+
                     }
 
                     //MageManager.instance.StopSound(soundId);
                     charScale.speedFactor = 1f;
                     wheel.DeActive();
-                   
+
                 }
                 target = wheel.anchorPoint.position + new Vector3(0, 3, 0);
                 yield return StartCoroutine(RunToPoint());
+            }
+            else if (toyItem.toyType == ToyType.Slider)
+            {
+                if (toyItem.startPoint != null)
+                {
+                    target = toyItem.startPoint.position;
+                    yield return StartCoroutine(RunToPoint());
+                }
+
+                yield return StartCoroutine(DoAnim("Play_Toy_Slider"));
+                if (toyItem.endPoint != null)
+                {
+                    agent.transform.position = toyItem.endPoint.position;
+                }
             }
         }
         anim.speed = 1f;

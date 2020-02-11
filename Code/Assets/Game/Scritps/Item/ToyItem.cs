@@ -9,6 +9,7 @@ public class ToyItem : MonoBehaviour
 	protected Animator animator;
 	public Transform anchorPoint;
 	public Transform startPoint;
+	public Transform endPoint;
 	protected ItemObject item;
 	public float initZ = -6;
 	public float scaleFactor = 0.05f;
