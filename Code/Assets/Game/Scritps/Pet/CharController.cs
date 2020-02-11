@@ -152,6 +152,7 @@ public class CharController : MonoBehaviour
 
     public void LoadTime(float t)
     {
+        /*
         int n = 0;
         if(data.Health > data.MaxHealth * 0.5f && data.Damage < data.MaxDamage * 0.5f && t > 3600)
         {
@@ -175,7 +176,7 @@ public class CharController : MonoBehaviour
                 rot = Quaternion.Euler(new Vector3(0, 180, -1));
             Vector3 pos = this.charScale.scalePosition + new Vector3(Random.Range(-1, 1), Random.Range(-1, 1), 0);
             ItemManager.instance.SpawnHeart(pos, rot, 1, true);
-        }
+        }*/
 
     }
 

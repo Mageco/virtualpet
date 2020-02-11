@@ -67,7 +67,7 @@ public class ItemManager : MonoBehaviour
         if (ES2.Exists("PlayTime"))
         {
             playTime = ES2.Load<System.DateTime>("PlayTime");
-            LoadPetData((float)(System.DateTime.Now - playTime).TotalSeconds);
+            //LoadPetData((float)(System.DateTime.Now - playTime).TotalSeconds);
         }
 
         if (!ES2.Exists("RateUs") && GameManager.instance.gameTime > 720 && GameManager.instance.rateCount % 5 == 0)

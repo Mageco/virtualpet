@@ -194,6 +194,7 @@ public class PetTab : BaseTab
             if (fold3)
             {
                 DataHolder.Pet(selection).speed = EditorGUILayout.FloatField("Speed", DataHolder.Pet(selection).speed, GUILayout.Width(pw.mWidth));
+                /*
                 DataHolder.Pet(selection).maxFood = EditorGUILayout.FloatField("MaxFood", DataHolder.Pet(selection).maxFood, GUILayout.Width(pw.mWidth));
                 DataHolder.Pet(selection).rateFood = EditorGUILayout.FloatField("RateFood", DataHolder.Pet(selection).rateFood, GUILayout.Width(pw.mWidth));
                 DataHolder.Pet(selection).maxWater = EditorGUILayout.FloatField("MaxWater", DataHolder.Pet(selection).maxWater, GUILayout.Width(pw.mWidth));
@@ -208,8 +209,10 @@ public class PetTab : BaseTab
                 DataHolder.Pet(selection).maxDirty = EditorGUILayout.FloatField("MaxDirty", DataHolder.Pet(selection).maxDirty, GUILayout.Width(pw.mWidth));
                 DataHolder.Pet(selection).recoverDirty = EditorGUILayout.FloatField("RecDirty", DataHolder.Pet(selection).recoverDirty, GUILayout.Width(pw.mWidth));
                 DataHolder.Pet(selection).maxHealth = EditorGUILayout.FloatField("MaxHealth", DataHolder.Pet(selection).maxHealth, GUILayout.Width(pw.mWidth));
+                
                 DataHolder.Pet(selection).recoverHealth = EditorGUILayout.FloatField("RecHealth", DataHolder.Pet(selection).recoverHealth, GUILayout.Width(pw.mWidth));
                 DataHolder.Pet(selection).recoverEnergy = EditorGUILayout.FloatField("RecEnergy", DataHolder.Pet(selection).recoverEnergy, GUILayout.Width(pw.mWidth));
+                */
             }
             EditorGUILayout.EndVertical();
 

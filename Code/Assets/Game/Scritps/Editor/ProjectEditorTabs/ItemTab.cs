@@ -101,7 +101,7 @@ public class ItemTab : BaseTab
                 }
 
 
-                if (selection != tmpSelection)
+                if (selection != tmpSelection || lastCategory != temcategory)
                 {
                     this.tmpPrefab = null;
                 }
@@ -126,38 +126,10 @@ public class ItemTab : BaseTab
                     DataHolder.Items().GetItem(selection,temcategory).sellPrice = EditorGUILayout.IntField("Coin Amount", DataHolder.Items().GetItem(selection,temcategory).sellPrice, GUILayout.Width(pw.mWidth));
                 }
                 DataHolder.Items().GetItem(selection,temcategory).isAvailable = EditorGUILayout.Toggle("Available", DataHolder.Items().GetItem(selection,temcategory).isAvailable, GUILayout.Width(pw.mWidth));
-                //DataHolder.Items().GetItem(selection,temcategory).consume = EditorGUILayout.Toggle("Consume", DataHolder.Items().GetItem(selection,temcategory).consume, GUILayout.Width(pw.mWidth));
+                DataHolder.Items().GetItem(selection,temcategory).consume = EditorGUILayout.Toggle("Consume", DataHolder.Items().GetItem(selection,temcategory).consume, GUILayout.Width(pw.mWidth));
 
 			}
 			EditorGUILayout.EndVertical();
-
-            
-            if(DataHolder.Items().GetItem(selection, temcategory).itemType == ItemType.Diamond || DataHolder.Items().GetItem(selection, temcategory).itemType == ItemType.Coin)
-            {
-                EditorGUILayout.BeginHorizontal();
-                EditorGUILayout.LabelField("Icon", GUILayout.MaxWidth(110));
-                if (DataHolder.Items().GetItem(selection, temcategory).iconUrl != null)
-                {
-                    this.tmpSprites = AssetDatabase.LoadAssetAtPath<Texture2D>(DataHolder.Items().GetItem(selection, temcategory).iconUrl);
-                }
-                this.tmpSprites = (Texture2D)EditorGUILayout.ObjectField(GUIContent.none, this.tmpSprites, typeof(Texture2D), false, GUILayout.MaxWidth(100));
-                if (this.tmpSprites != null)
-                {
-                    DataHolder.Items().GetItem(selection, temcategory).iconUrl = AssetDatabase.GetAssetPath(this.tmpSprites);
-
-                }
-                EditorGUILayout.LabelField(DataHolder.Items().GetItem(selection, temcategory).iconUrl);
-                EditorGUILayout.EndHorizontal();
-
-                if (this.tmpSprites != null)
-                {
-                    if (GUILayout.Button("Clear Image", GUILayout.Width(100)))
-                    {
-                        DataHolder.Items().GetItem(selection, temcategory).iconUrl = "";
-                        tmpSprites = null;
-                    }
-                }
-            }
 
 
 
@@ -182,11 +154,18 @@ public class ItemTab : BaseTab
                 DataHolder.Items().GetItem(selection, temcategory).value = EditorGUILayout.FloatField("Clean per second", DataHolder.Items().GetItem(selection, temcategory).value, GUILayout.Width(pw.mWidth));
                 DataHolder.Items().GetItem(selection, temcategory).health = EditorGUILayout.FloatField("+Health", DataHolder.Items().GetItem(selection, temcategory).health, GUILayout.Width(pw.mWidth));
             }
+            else if (DataHolder.Items().GetItem(selection, temcategory).itemType == ItemType.MedicineBox)
+            {
+                DataHolder.Items().GetItem(selection, temcategory).injured = EditorGUILayout.FloatField("+Injured", DataHolder.Items().GetItem(selection, temcategory).injured, GUILayout.Width(pw.mWidth));
+                DataHolder.Items().GetItem(selection, temcategory).health = EditorGUILayout.FloatField("+Health", DataHolder.Items().GetItem(selection, temcategory).health, GUILayout.Width(pw.mWidth));
+            }
 
+            /*
             DataHolder.Items().GetItem(selection, temcategory).value = EditorGUILayout.FloatField("Clean per second", DataHolder.Items().GetItem(selection, temcategory).value, GUILayout.Width(pw.mWidth));
             DataHolder.Items().GetItem(selection, temcategory).happy = EditorGUILayout.FloatField("+Happy", DataHolder.Items().GetItem(selection, temcategory).happy, GUILayout.Width(pw.mWidth));
             DataHolder.Items().GetItem(selection, temcategory).injured = EditorGUILayout.FloatField("+Injured", DataHolder.Items().GetItem(selection, temcategory).injured, GUILayout.Width(pw.mWidth));
             DataHolder.Items().GetItem(selection, temcategory).health = EditorGUILayout.FloatField("+Health", DataHolder.Items().GetItem(selection, temcategory).health, GUILayout.Width(pw.mWidth));
+            */
 
             EditorGUILayout.EndHorizontal();
             EditorGUILayout.EndVertical();

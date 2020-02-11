@@ -58,9 +58,9 @@ public class Pet : BaseModel
     [HideInInspector]
     public float recoverDirty = 0.1f;
     [HideInInspector]
-    public float recoverHealth = 0;
+    public float recoverHealth = 1;
     [HideInInspector]
-    public float recoverEnergy = 0;
+    public float recoverEnergy = 5;
 
 
 

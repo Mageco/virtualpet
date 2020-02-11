@@ -425,16 +425,36 @@ public class GameManager : MonoBehaviour
 	}
 
     public void EquipItem(int id){
+
+        //Fix all item that same id
+        List<PlayerItem> temp = new List<PlayerItem>();
+        foreach(PlayerItem item1 in myPlayer.items)
+        {
+            foreach(PlayerItem item2 in myPlayer.items)
+            {
+                if(item1 != item2 && item1.itemId == item2.itemId)
+                {
+                    temp.Add(item2);
+                }
+            }
+        }
+
+        foreach(PlayerItem item in temp)
+        {
+            myPlayer.items.Remove(item);
+        }
+
         foreach(PlayerItem item in myPlayer.items){
             if(item.itemId == id){
                 item.state = ItemState.Equiped;
-            }else if(DataHolder.GetItem(id).itemType == DataHolder.GetItem(item.itemId).itemType
+            }else if(DataHolder.GetItem(item.itemId) != null && DataHolder.GetItem(id).itemType == DataHolder.GetItem(item.itemId).itemType
                 && DataHolder.GetItem(id).itemType != ItemType.Toy)
             {
                 item.state = ItemState.Have;
             }
         }
 
+        
         
         
         if(ItemManager.instance != null && DataHolder.GetItem(id).itemType != ItemType.Coin && DataHolder.GetItem(id).itemType != ItemType.Diamond)

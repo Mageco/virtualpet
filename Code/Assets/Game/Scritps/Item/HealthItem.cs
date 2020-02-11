@@ -73,7 +73,6 @@ public class HealthItem : ItemDrag
             //Reset();
             StartCoroutine(Deactive());
         }
-
     }
 
     IEnumerator Deactive(){
