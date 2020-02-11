@@ -1758,7 +1758,7 @@ public class CharController : MonoBehaviour
         if (toyItem != null)
         {
             toyItem.pets.Add(this);
-            if (toyItem.toyType == ToyType.WaterJet)
+            if (toyItem.toyType == ToyType.Jump)
             {
                 int n = Random.Range(3, 10);
                 int count = 0;
@@ -1847,9 +1847,6 @@ public class CharController : MonoBehaviour
                         anim.speed = 1.5f;
                         target = ball.lastPosition + new Vector3(Random.Range(-2f, 2f), Random.Range(0.5f, 2f), 0);
                         yield return StartCoroutine(RunToPoint());
-                        //agent.SetDestination(ballPosition);
-                        //anim.Play("Run_" + this.direction.ToString(), 0);
-                        //data.Energy -= 1f * Time.deltaTime;
                         if (Vector2.Distance(this.transform.position, ball.lastPosition) < 2 && ball.state != ToyState.Active)
                         {
                             agent.Stop();
@@ -1874,7 +1871,7 @@ public class CharController : MonoBehaviour
                     }
                 }
             }
-            else if (toyItem.toyType == ToyType.Wheel)
+            else if (toyItem.toyType == ToyType.RunningWheel)
             {
                 ToyWheelItem wheel = toyItem.GetComponent<ToyWheelItem>();
                 bool isPlay = false;
@@ -1939,7 +1936,7 @@ public class CharController : MonoBehaviour
                 target = wheel.anchorPoint.position + new Vector3(0, 3, 0);
                 yield return StartCoroutine(RunToPoint());
             }
-            else if (toyItem.toyType == ToyType.Slider)
+            else if (toyItem.toyType == ToyType.PlayGround)
             {
                 if (toyItem.startPoint != null)
                 {
