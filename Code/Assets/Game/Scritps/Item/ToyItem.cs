@@ -19,6 +19,7 @@ public class ToyItem : MonoBehaviour
 	protected Vector3 lastPosition;
 	protected float dragTime = 0;
 	public Vector2 boundX = new Vector2(-270, 52);
+	public List<CharController> pets = new List<CharController>();
 
 	protected virtual void Awake()
 	{
@@ -73,18 +74,21 @@ public class ToyItem : MonoBehaviour
 
 	protected virtual void OnMouseUp()
 	{
-        if(dragTime < 0.1f)
+        if(state == ToyState.Drag)
         {
-			OnClick();
-        }
-        else
-        {
-		    state = ToyState.Idle;
-        }
-		dragOffset = Vector3.zero;
+			if (dragTime < 0.1f)
+			{
+				OnClick();
+			}
+			else
+			{
+				state = ToyState.Idle;
+			}
+			dragOffset = Vector3.zero;
+			
+			dragTime = 0;
+		}
 		ItemManager.instance.ResetCameraTarget();
-		dragTime = 0;
-
 	}
 
 
@@ -128,7 +132,10 @@ public class ToyItem : MonoBehaviour
 
 	}
 
+	public virtual void DeActive()
+	{
 
+	}
 
 	private bool IsPointerOverUIObject()
 	{

@@ -1746,11 +1746,12 @@ public class CharController : MonoBehaviour
     {
         if (toyItem != null)
         {
+            toyItem.pets.Add(this);
             if (toyItem.toyType == ToyType.WaterJet)
             {
                 int n = Random.Range(3, 10);
                 int count = 0;
-                dropPosition = toyItem.anchorPoint.position + new Vector3(0, Random.Range(-2f, 2f), 0);
+                dropPosition = toyItem.anchorPoint.position + new Vector3(0, Random.Range(-1f, 1f), 0);
                 agent.transform.position = dropPosition;
 
                 yield return new WaitForEndOfFrame();
@@ -1927,7 +1928,8 @@ public class CharController : MonoBehaviour
             }
         }
         anim.speed = 1f;
-
+        if(toyItem != null && toyItem.pets.Contains(this))
+            toyItem.pets.Remove(this);
         CheckAbort();
     }
 
