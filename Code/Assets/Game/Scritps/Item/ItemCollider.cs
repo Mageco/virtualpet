@@ -90,7 +90,7 @@ public class ItemCollider : MonoBehaviour
 
 	protected virtual void OnMouseUp()
 	{
-        if (state == EquipmentState.Drag)
+		if (state == EquipmentState.Hold || state == EquipmentState.Drag)
 		{
 			if (dragTime < 0.1f)
 			{

@@ -606,6 +606,18 @@ public class ItemManager : MonoBehaviour
             GameManager.instance.myPlayer.itemSaveDatas.Add(data);
         }
 
+
+        ItemCollider[] equipments = FindObjectsOfType<ItemCollider>();
+        for (int i = 0; i < equipments.Length; i++)
+        {
+            ItemSaveData data = new ItemSaveData();
+            data.id = equipments[i].item.itemID;
+            data.itemType = ItemSaveDataType.Equipment;
+            data.position = equipments[i].transform.position;
+            GameManager.instance.myPlayer.itemSaveDatas.Add(data);
+        }
+
+
         foreach (ItemObject item in items)
         {
 
@@ -650,6 +662,13 @@ public class ItemManager : MonoBehaviour
                 if (GetItem(item.id) != null)
                 {
                     GetItem(item.id).GetComponentInChildren<ToyItem>().transform.position = item.position;
+                }
+            }
+            else if (item.itemType == ItemSaveDataType.Equipment)
+            {
+                if (GetItem(item.id) != null)
+                {
+                    GetItem(item.id).GetComponentInChildren<ItemCollider>().transform.position = item.position;
                 }
             }
         }
