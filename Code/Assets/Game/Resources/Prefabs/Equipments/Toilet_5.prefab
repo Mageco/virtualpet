@@ -9585,10 +9585,10 @@ GameObject:
   - component: {fileID: 1393902436952508219}
   - component: {fileID: 245765203}
   - component: {fileID: 8668261432034065958}
-  - component: {fileID: 5070955873405959679}
   - component: {fileID: 6165139191975620324}
   - component: {fileID: 1181742433673810580}
-  m_Layer: 0
+  - component: {fileID: 1215305898653501319}
+  m_Layer: 9
   m_Name: Toilet
   m_TagString: Toilet
   m_Icon: {fileID: 0}
@@ -9627,7 +9627,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.5, y: 1.5}
+  m_Offset: {x: 0.14780045, y: 3.9032402}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.49044967, y: 0.05803426}
@@ -9638,7 +9638,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 7, y: 2}
+  m_Size: {x: 11.475006, y: 8.588192}
   m_EdgeRadius: 0
 --- !u!95 &8668261432034065958
 Animator:
@@ -9659,23 +9659,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &5070955873405959679
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1393902436952508220}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f6a733d7c833d435b9d5859e7e52a1a3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  skillType: 1
-  actionType: 0
-  interactType: 0
-  enviromentType: 4
-  maxTime: 10
 --- !u!114 &6165139191975620324
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9705,6 +9688,36 @@ MonoBehaviour:
   depth: 3
   width: 14
   edge: 7
+  anchorPoint: {fileID: 0}
+  startPoint: {fileID: 6920388826472656952}
+  endPoint: {fileID: 0}
+  item: {fileID: 0}
+  state: 0
+  lastPosition: {x: 0, y: 0, z: 0}
+  boundX: {x: -40, y: 60}
+  boundY: {x: -1.1, y: -1.1}
+  pets: []
+--- !u!50 &1215305898653501319
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1393902436952508220}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1 &1552413380920024895
 GameObject:
   m_ObjectHideFlags: 0
