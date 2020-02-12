@@ -9596,9 +9596,9 @@ GameObject:
   - component: {fileID: 6156094059106791757}
   - component: {fileID: 7980756189725471513}
   - component: {fileID: 3496216689732433814}
-  - component: {fileID: 4852075995302127747}
   - component: {fileID: 6412081594076346916}
-  m_Layer: 0
+  - component: {fileID: 2118551919009862826}
+  m_Layer: 9
   m_Name: Bed
   m_TagString: Bed
   m_Icon: {fileID: 0}
@@ -9636,7 +9636,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0.14759445, y: 1.7484393}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -9647,7 +9647,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 3, y: 0.5}
+  m_Size: {x: 6.9283104, y: 8.7199335}
   m_EdgeRadius: 0
 --- !u!95 &3496216689732433814
 Animator:
@@ -9668,23 +9668,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &4852075995302127747
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6156094059106791758}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f6a733d7c833d435b9d5859e7e52a1a3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  skillType: 2
-  actionType: 0
-  interactType: 0
-  enviromentType: 3
-  maxTime: 10
 --- !u!114 &6412081594076346916
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9701,6 +9684,36 @@ MonoBehaviour:
   depth: 3
   width: 12
   edge: 6
+  anchorPoint: {fileID: 0}
+  startPoint: {fileID: 1140540292}
+  endPoint: {fileID: 0}
+  item: {fileID: 0}
+  state: 0
+  lastPosition: {x: 0, y: 0, z: 0}
+  boundX: {x: -40, y: 60}
+  boundY: {x: 0, y: 0}
+  pets: []
+--- !u!50 &2118551919009862826
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6156094059106791758}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1 &8715259787942574206
 GameObject:
   m_ObjectHideFlags: 0
