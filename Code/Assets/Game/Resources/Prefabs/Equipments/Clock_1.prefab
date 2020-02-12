@@ -9443,6 +9443,43 @@ ParticleSystemRenderer:
   m_Mesh2: {fileID: 0}
   m_Mesh3: {fileID: 0}
   m_MaskInteraction: 0
+--- !u!50 &7000092915472289299
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3420501278641985055}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
+--- !u!58 &4671292456388268377
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3420501278641985055}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 5
 --- !u!95 &196908651
 Animator:
   serializedVersion: 3
@@ -9489,6 +9526,31 @@ MonoBehaviour:
   hour: {fileID: 3420501278287429982}
   minutes: {fileID: 3420501277924845389}
   second: {fileID: 6632485950549512416}
+--- !u!114 &2690921993046801691
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3420501278641985055}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d2367fc09d9c472090672a3e878fc4f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  height: 0
+  depth: 0
+  width: 0
+  edge: 0
+  anchorPoint: {fileID: 0}
+  startPoint: {fileID: 0}
+  endPoint: {fileID: 0}
+  item: {fileID: 0}
+  state: 0
+  lastPosition: {x: 0, y: 0, z: 0}
+  boundX: {x: -40, y: 60}
+  boundY: {x: 5, y: 25}
+  pets: []
 --- !u!1 &3630829128990946974
 GameObject:
   m_ObjectHideFlags: 0
@@ -14279,10 +14341,30 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2031004472542983235}
     m_Modifications:
+    - target: {fileID: 2788430481220690594, guid: 9793fa1faad54e841b9cd0e0eff19abc,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2788430481220690594, guid: 9793fa1faad54e841b9cd0e0eff19abc,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2788430481220690594, guid: 9793fa1faad54e841b9cd0e0eff19abc,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 180
+      objectReference: {fileID: 0}
     - target: {fileID: 2788430481709463020, guid: 9793fa1faad54e841b9cd0e0eff19abc,
         type: 3}
       propertyPath: m_Name
       value: Clock_1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2788430481709463020, guid: 9793fa1faad54e841b9cd0e0eff19abc,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 2788430481709463021, guid: 9793fa1faad54e841b9cd0e0eff19abc,
         type: 3}
@@ -14348,21 +14430,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalScale.y
       value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 2788430481220690594, guid: 9793fa1faad54e841b9cd0e0eff19abc,
-        type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2788430481220690594, guid: 9793fa1faad54e841b9cd0e0eff19abc,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2788430481220690594, guid: 9793fa1faad54e841b9cd0e0eff19abc,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 180
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9793fa1faad54e841b9cd0e0eff19abc, type: 3}

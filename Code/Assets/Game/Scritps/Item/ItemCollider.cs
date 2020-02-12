@@ -23,7 +23,7 @@ public class ItemCollider : MonoBehaviour
     [HideInInspector]
 	public Vector3 lastPosition;
 	protected float dragTime = 0;
-	public Vector2 boundX = new Vector2(-45, 60);
+	public Vector2 boundX = new Vector2(-40, 60);
 	public Vector2 boundY = new Vector2(0, 0);
 	public List<CharController> pets = new List<CharController>();
 

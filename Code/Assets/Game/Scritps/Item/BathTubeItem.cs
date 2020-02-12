@@ -11,10 +11,10 @@ public class BathTubeItem : MonoBehaviour
 	public int itemId = 0;
 	public float clean = 10;
 
+
 	void Awake()
 	{
 		anim = this.GetComponent <Animator> ();
-
 	}
     // Start is called before the first frame update
     void Start()
@@ -26,7 +26,7 @@ public class BathTubeItem : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
 	public void OnSoap()
