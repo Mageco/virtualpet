@@ -6,6 +6,8 @@ using UnityEngine.EventSystems;
 public class MinigameOpen : MonoBehaviour
 {
     public int gameId = 0;
+    float time = 0;
+    bool isMouseDown = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -15,14 +17,23 @@ public class MinigameOpen : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (isMouseDown)
+            time += Time.deltaTime;
+    }
+
+    private void OnMouseDown()
+    {
+        isMouseDown = true;
     }
 
     void OnMouseUp()
 	{
         if (IsPointerOverUIObject())
             return;
-        UIManager.instance.OnEventPanel(gameId);
+        if(time < 0.3f)
+            UIManager.instance.OnEventPanel(gameId);
+        time = 0;
+        isMouseDown = false;
     }
 
     protected bool IsPointerOverUIObject()
