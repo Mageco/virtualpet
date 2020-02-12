@@ -71,11 +71,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   toyType: 0
   anchorPoint: {fileID: 9200628169108340574}
+  startPoint: {fileID: 0}
+  endPoint: {fileID: 0}
+  item: {fileID: 0}
   initZ: -6
   scaleFactor: 0.05
-  isDrag: 0
-  isDragable: 1
-  isBusy: 0
+  state: 0
+  lastPosition: {x: 0, y: 0, z: 0}
+  boundX: {x: -270, y: 52}
+  boundY: {x: -24, y: -3}
+  pets: []
 --- !u!1 &7413327299974887957
 GameObject:
   m_ObjectHideFlags: 0

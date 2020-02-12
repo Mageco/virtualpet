@@ -228,42 +228,45 @@ public class ItemManager : MonoBehaviour
 
     void AddItem(PlayerItem playerItem,bool isAnimated)
     {
-       
-        string url = DataHolder.GetItem(playerItem.itemId).prefabName.Replace("Assets/Game/Resources/", "");
-        url = url.Replace(".prefab", "");
-        url = DataHolder.Items().GetPrefabPath() + url;
-        for(int i = 0; i < playerItem.number; i++)
+        if(DataHolder.GetItem(playerItem.itemId) != null)
         {
-            GameObject go = Instantiate((Resources.Load(url) as GameObject), Vector3.zero, Quaternion.identity) as GameObject;
-            ItemObject item = go.AddComponent<ItemObject>();
-            item.itemType = DataHolder.GetItem(playerItem.itemId).itemType;
-            item.itemID = playerItem.itemId;
-            items.Add(item);
-            go.transform.parent = this.transform;
-            if (isAnimated)
+            string url = DataHolder.GetItem(playerItem.itemId).prefabName.Replace("Assets/Game/Resources/", "");
+            url = url.Replace(".prefab", "");
+            url = DataHolder.Items().GetPrefabPath() + url;
+            for (int i = 0; i < playerItem.number; i++)
             {
-                for (int j = 0; j < item.transform.childCount; j++)
+                GameObject go = Instantiate((Resources.Load(url) as GameObject), Vector3.zero, Quaternion.identity) as GameObject;
+                ItemObject item = go.AddComponent<ItemObject>();
+                item.itemType = DataHolder.GetItem(playerItem.itemId).itemType;
+                item.itemID = playerItem.itemId;
+                items.Add(item);
+                go.transform.parent = this.transform;
+                if (isAnimated)
                 {
-                    Animator anim = item.transform.GetChild(j).GetComponent<Animator>();
-                    if (anim != null)
+                    for (int j = 0; j < item.transform.childCount; j++)
                     {
-                        anim.Play("Appear", 0);
+                        Animator anim = item.transform.GetChild(j).GetComponent<Animator>();
+                        if (anim != null)
+                        {
+                            anim.Play("Appear", 0);
+                        }
+                    }
+                }
+                else
+                {
+                    for (int j = 0; j < item.transform.childCount; j++)
+                    {
+                        Animator anim = item.transform.GetChild(j).GetComponent<Animator>();
+                        if (anim != null)
+                        {
+                            anim.Play("Idle", 0);
+                        }
                     }
                 }
             }
-            else
-            {
-                for (int j = 0; j < item.transform.childCount; j++)
-                {
-                    Animator anim = item.transform.GetChild(j).GetComponent<Animator>();
-                    if (anim != null)
-                    {
-                        anim.Play("Idle", 0);
-                    }
-                }
-            }
-        }        
-        Debug.Log(DataHolder.GetItem(playerItem.itemId).GetName(0));
+            Debug.Log(DataHolder.GetItem(playerItem.itemId).GetName(0));
+        }       
+        
     }
 
     public void RemoveItem(int id){

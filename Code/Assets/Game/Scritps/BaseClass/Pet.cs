@@ -182,9 +182,11 @@ public class Pet : BaseModel
 
         Pet p = DataHolder.GetPet(this.iD);
 
+        if (p == null)
+            return null;
 
         string url = "";
-        url = prefabName.Replace("Assets/Game/Resources/", "");
+        url = p.prefabName.Replace("Assets/Game/Resources/", "");
         url = url.Replace(".prefab", "");
         url = DataHolder.Pets().GetPrefabPath() + url;
         Debug.Log(url);
