@@ -801,18 +801,16 @@ public class CharController : MonoBehaviour
     {
         if (type == SickType.Injured)
         {
-            if (data.Damage > data.MaxDamage * 0.6f)
+            if (data.Damage > data.MaxDamage * 0.7f)
             {
-                GameManager.instance.AddExp(5, data.iD);
                 GameManager.instance.LogAchivement(AchivementType.Injured);
             }
             data.Damage -= value;
         }
         else if (type == SickType.Sick)
         {
-            if (data.Health < data.MaxHealth * 0.4f)
+            if (data.Health < data.MaxHealth * 0.3f)
             {
-                GameManager.instance.AddExp(5, data.iD);
                 GameManager.instance.LogAchivement(AchivementType.Sick);
             }
             data.Health += value;
@@ -1847,18 +1845,18 @@ public class CharController : MonoBehaviour
 
     protected virtual IEnumerator Injured()
     {
-        timeWait.gameObject.SetActive(true);
-        data.timeSick = System.DateTime.Now;
-        SetTarget(PointType.Favourite);
-        yield return StartCoroutine(WalkToPoint());
+        //timeWait.gameObject.SetActive(true);
+        //data.timeSick = System.DateTime.Now;
+        //SetTarget(PointType.Favourite);
+        //yield return StartCoroutine(WalkToPoint());
         anim.Play("Injured", 0);
         Debug.Log("Injured");
-        while ((System.DateTime.Now - data.timeSick).TotalSeconds < data.MaxTimeSick && !isAbort)
+        while (data.Damage > data.MaxDamage * 0.3f && !isAbort)
         {
             yield return new WaitForEndOfFrame();
         }
-        data.Damage = data.MaxHealth;
-        timeWait.gameObject.SetActive(false);
+        //data.Damage = data.MaxHealth;
+        //timeWait.gameObject.SetActive(false);
         GameManager.instance.LogAchivement(AchivementType.Do_Action, ActionType.Injured);
         CheckEnviroment();
         CheckAbort();
@@ -2085,6 +2083,32 @@ public class CharController : MonoBehaviour
                     agent.transform.position = toyItem.endPoint.position;
                 }
             }
+            else if (toyItem.toyType == ToyType.SpringCar)
+            {
+                if (toyItem.startPoint != null)
+                {
+                    target = toyItem.startPoint.position;
+                    yield return StartCoroutine(RunToPoint());
+                }
+                charInteract.interactType = InteractType.Jump;
+                float maxTime = Random.Range(3, 10);
+                float t = 0;
+                toyItem.OnActive();
+                while(t < maxTime && !isAbort)
+                {
+                    if (toyItem.anchorPoint != null)
+                        agent.transform.position = toyItem.anchorPoint.position;
+                    anim.Play("Play_Toy_Rocking_Car", 0);
+                    t += Time.deltaTime;
+                    yield return new WaitForEndOfFrame();
+                }
+                toyItem.DeActive();
+                charInteract.interactType = InteractType.None;
+                if (toyItem.endPoint != null && !isAbort)
+                {
+                    agent.transform.position = toyItem.endPoint.position;
+                }
+            }
         }
         anim.speed = 1f;
         if (toyItem != null && toyItem.pets.Contains(this))
@@ -2209,6 +2233,7 @@ public class CharController : MonoBehaviour
         CheckAbort();
     }
 
+
     protected void CheckDrop()
     {
         enviromentType = EnviromentType.Room;
@@ -2222,6 +2247,7 @@ public class CharController : MonoBehaviour
             if (col.tag == "Table")
             {
                 enviromentType = EnviromentType.Table;
+                
             }
             else if (col.tag == "Bath")
             {
@@ -2235,18 +2261,11 @@ public class CharController : MonoBehaviour
             {
                 enviromentType = EnviromentType.Toilet;
             }
-            else if (col.tag == "Door")
-            {
-                Debug.Log(col.name + col.tag);
-                enviromentType = EnviromentType.Door;
-            }
-            else if (col.tag == "ToHouse")
-            {
-                Debug.Log("ToHouse");
-                enviromentType = EnviromentType.ToHouse;
-            }
-            //if(enviromentType != EnviromentType.Room)
-            //    GameManager.instance.CheckEnviroment(this,enviromentType);
+             
+            if(enviromentType != EnviromentType.Room)
+                col.pets.Add(this);
+ 
+
             dropPosition.y = charScale.scalePosition.y + col.height;
             if (this.transform.position.x > col.transform.position.x + col.width / 2 - col.edge)
             {

@@ -132,12 +132,14 @@ public class ToyItem : MonoBehaviour
 
 	public virtual void OnActive()
 	{
-
+        if(animator != null)
+		    animator.Play("Active", 0);
 	}
 
 	public virtual void DeActive()
 	{
-
+		if (animator != null)
+			animator.Play("Idle", 0);
 	}
 
 	protected bool IsPointerOverUIObject()
