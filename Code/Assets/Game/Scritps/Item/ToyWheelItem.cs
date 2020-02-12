@@ -13,7 +13,7 @@ public class ToyWheelItem : ToyItem
         GameManager.instance.LogAchivement(AchivementType.Use_Item, ActionType.None, item.itemID);
     }
 
-    public void DeActive()
+    public override void DeActive()
     {
         animator.Play("Idle");
     }

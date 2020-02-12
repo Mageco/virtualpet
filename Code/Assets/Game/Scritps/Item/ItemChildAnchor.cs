@@ -4,11 +4,12 @@ using UnityEngine;
 
 public class ItemChildAnchor : MonoBehaviour
 {
-
+	ItemCollider item;
     public GameObject[] childs;
     float[] offsets;
 	void Awake()
 	{
+		item = this.GetComponent<ItemCollider>();
 		offsets = new float[childs.Length];
 		for (int i = 0; i < childs.Length; i++)
 		{
@@ -21,12 +22,16 @@ public class ItemChildAnchor : MonoBehaviour
 	// Update is called once per frame
 	void Update()
 	{
-		for (int i = 0; i < childs.Length; i++)
-		{
-			Vector3 pos = childs[i].transform.position;
-			pos.x = offsets[i] + this.transform.position.x;
-			childs[i].transform.position = pos;
+        if(item.state == EquipmentState.Drag || item.state == EquipmentState.Busy)
+        {
+			for (int i = 0; i < childs.Length; i++)
+			{
+				Vector3 pos = childs[i].transform.position;
+				pos.x = offsets[i] + this.transform.position.x;
+				childs[i].transform.position = pos;
+			}
 		}
+
 	}
 	
 }

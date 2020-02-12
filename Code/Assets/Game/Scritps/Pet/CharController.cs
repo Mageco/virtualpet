@@ -2071,7 +2071,7 @@ public class CharController : MonoBehaviour
                 target = wheel.anchorPoint.position + new Vector3(0, 3, 0);
                 yield return StartCoroutine(RunToPoint());
             }
-            else if (toyItem.toyType == ToyType.PlayGround)
+            else if (toyItem.toyType == ToyType.Slider)
             {
                 if (toyItem.startPoint != null)
                 {

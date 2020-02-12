@@ -21,6 +21,7 @@ public class ToyItem : MonoBehaviour
 	public Vector3 lastPosition;
 	protected float dragTime = 0;
 	public Vector2 boundX = new Vector2(-270, 52);
+	public Vector2 boundY = new Vector2(-24, -3);
 	public List<CharController> pets = new List<CharController>();
 
 	protected virtual void Awake()
@@ -45,10 +46,10 @@ public class ToyItem : MonoBehaviour
 		{
 			Vector3 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition) - dragOffset;
 			pos.z = this.transform.position.z;
-			if (pos.y > -3)
-				pos.y = -3;
-			if (pos.y < -24)
-				pos.y = -24;
+			if (pos.y > boundY.y)
+				pos.y = boundY.y;
+			if (pos.y < boundY.x)
+				pos.y = boundY.x;
 
 			if (pos.x > boundX.y)
 				pos.x = boundX.y;

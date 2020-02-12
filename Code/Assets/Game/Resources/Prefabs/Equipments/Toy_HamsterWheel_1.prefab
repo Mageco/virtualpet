@@ -68,13 +68,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf612b25915af4b9da3d6f34f534be46, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  toyType: 6
+  toyType: 5
   anchorPoint: {fileID: 5967279832835210227}
+  startPoint: {fileID: 0}
+  endPoint: {fileID: 0}
+  item: {fileID: 0}
   initZ: -6
   scaleFactor: 0.05
-  isDrag: 0
-  isDragable: 1
-  isBusy: 0
+  state: 0
+  lastPosition: {x: 0, y: 0, z: 0}
+  boundX: {x: -270, y: 52}
+  boundY: {x: -24, y: -3}
+  pets: []
   wheel: {fileID: 9164894374999152236}
 --- !u!61 &1432538066
 BoxCollider2D:

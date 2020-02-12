@@ -83,7 +83,7 @@ public class ItemDrag : MonoBehaviour
 		dragOffset = Vector3.zero;
 
 		if (isDrag && isReturn) {
-			StartCoroutine (ReturnPosition (originalPosition));
+			StartCoroutine (ReturnPosition (lastPosition));
 			StartCoroutine (ReturnRotation (originalRotation));
 		}
 		else if (isDrag && !isDragable)
