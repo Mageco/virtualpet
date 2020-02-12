@@ -23,6 +23,7 @@ public class ToyItem : MonoBehaviour
 	public Vector2 boundX = new Vector2(-270, 52);
 	public Vector2 boundY = new Vector2(-24, -3);
 	public List<CharController> pets = new List<CharController>();
+	Vector3 clickPosition;
 
 	protected virtual void Awake()
 	{
@@ -42,7 +43,14 @@ public class ToyItem : MonoBehaviour
     // Update is called once per frame
     protected virtual void Update()
 	{
-		if (state == EquipmentState.Drag)
+		if (state == EquipmentState.Hold)
+		{
+			dragTime += Time.deltaTime;
+			if (dragTime > 1 && Vector2.Distance(Camera.main.ScreenToWorldPoint(Input.mousePosition), clickPosition) < 0.1f)
+			{
+				OnDrag();
+			}
+		}else if (state == EquipmentState.Drag)
 		{
 			Vector3 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition) - dragOffset;
 			pos.z = this.transform.position.z;
@@ -107,6 +115,15 @@ public class ToyItem : MonoBehaviour
 			return;
 		}
 
+		if (pets.Count > 0)
+			return;
+
+		clickPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+		state = EquipmentState.Hold;
+	}
+
+	private void OnDrag()
+	{
 		dragOffset = Camera.main.ScreenToWorldPoint(Input.mousePosition) - this.transform.position;
 		state = EquipmentState.Drag;
 		lastPosition = this.transform.position;
