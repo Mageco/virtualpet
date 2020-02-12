@@ -75,16 +75,22 @@ public class ItemCollider : MonoBehaviour
 			dragTime += Time.deltaTime;
 		}
 
+		List<CharController> temp = new List<CharController>();
         if(pets.Count > 0)
         {
             foreach(CharController pet in pets)
             {
                 if(pet != null && pet.enviromentType == EnviromentType.Room)
                 {
-					pets.Remove(pet);
+					temp.Add(pet);
                 }
             }
         }
+
+		foreach (CharController pet in temp)
+		{
+			pets.Remove(pet);
+		}
 	}
 
 
