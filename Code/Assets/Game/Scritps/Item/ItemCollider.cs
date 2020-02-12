@@ -27,8 +27,8 @@ public class ItemCollider : MonoBehaviour
 	public Vector2 boundY = new Vector2(0, 0);
 	public List<CharController> pets = new List<CharController>();
 
-	
 	ItemCollider itemCollide;
+	Vector3 clickPosition;
 
 	protected virtual void Awake()
 	{
@@ -48,7 +48,15 @@ public class ItemCollider : MonoBehaviour
 	// Update is called once per frame
 	protected virtual void Update()
 	{
-		if (state == EquipmentState.Drag)
+		if (state == EquipmentState.Hold)
+		{
+			dragTime += Time.deltaTime;
+			if (dragTime > 1 && Vector2.Distance(Camera.main.ScreenToWorldPoint(Input.mousePosition), clickPosition) < 0.1f)
+			{
+				OnDrag();
+			}
+		}
+		else if (state == EquipmentState.Drag)
 		{
 			Vector3 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition) - dragOffset;
 			pos.z = this.transform.position.z;
@@ -66,12 +74,23 @@ public class ItemCollider : MonoBehaviour
             this.transform.position = pos;
 			dragTime += Time.deltaTime;
 		}
+
+        if(pets.Count > 0)
+        {
+            foreach(CharController pet in pets)
+            {
+                if(pet != null && pet.enviromentType == EnviromentType.Room)
+                {
+					pets.Remove(pet);
+                }
+            }
+        }
 	}
 
 
 	protected virtual void OnMouseUp()
 	{
-		if (state == EquipmentState.Drag)
+        if (state == EquipmentState.Drag)
 		{
 			if (dragTime < 0.1f)
 			{
@@ -84,10 +103,10 @@ public class ItemCollider : MonoBehaviour
                 else
 				    state = EquipmentState.Idle;
 			}
-			dragOffset = Vector3.zero;
-			dragTime = 0;
 		}
 		ItemManager.instance.ResetCameraTarget();
+		dragOffset = Vector3.zero;
+		dragTime = 0;
 	}
 
 
@@ -103,13 +122,22 @@ public class ItemCollider : MonoBehaviour
 			return;
 		}
 
+		if (pets.Count > 0)
+			return;
+
+		clickPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+		state = EquipmentState.Hold;
+	}
+
+    private void OnDrag()
+    {
 		dragOffset = Camera.main.ScreenToWorldPoint(Input.mousePosition) - this.transform.position;
 		state = EquipmentState.Drag;
 		lastPosition = this.transform.position;
 		ItemManager.instance.SetCameraTarget(this.gameObject);
 	}
 
-	IEnumerator ReturnPosition(Vector3 pos)
+    IEnumerator ReturnPosition(Vector3 pos)
 	{
 		state = EquipmentState.Busy;
 		while (Vector2.Distance(this.transform.position, pos) > 0.1f)
