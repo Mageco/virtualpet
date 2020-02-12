@@ -23,9 +23,12 @@ public class ItemCollider : MonoBehaviour
     [HideInInspector]
 	public Vector3 lastPosition;
 	protected float dragTime = 0;
-	public Vector2 boundX = new Vector2(-270, 52);
-	public Vector2 boundY = new Vector2(-270, 52);
+	public Vector2 boundX = new Vector2(-45, 60);
+	public Vector2 boundY = new Vector2(0, 0);
 	public List<CharController> pets = new List<CharController>();
+
+	
+	ItemCollider itemCollide;
 
 	protected virtual void Awake()
 	{
@@ -76,10 +79,12 @@ public class ItemCollider : MonoBehaviour
 			}
 			else
 			{
-				state = EquipmentState.Idle;
+				if (itemCollide != null)
+					StartCoroutine(ReturnPosition(lastPosition));
+                else
+				    state = EquipmentState.Idle;
 			}
 			dragOffset = Vector3.zero;
-
 			dragTime = 0;
 		}
 		ItemManager.instance.ResetCameraTarget();
@@ -138,6 +143,21 @@ public class ItemCollider : MonoBehaviour
 		List<RaycastResult> results = new List<RaycastResult>();
 		EventSystem.current.RaycastAll(eventDataCurrentPosition, results);
 		return results.Count > 0;
+	}
+
+	void OnTriggerEnter2D(Collider2D other)
+	{
+		if (other.GetComponent<ItemCollider>() != null)
+		    itemCollide = other.GetComponent<ItemCollider>();
+		Debug.Log(other.name);
+	}
+
+	void OnTriggerExit2D(Collider2D other)
+	{
+        if(other.GetComponent<ItemCollider>() != null && other.GetComponent<ItemCollider>() == itemCollide)
+        {
+			itemCollide = null;
+        }
 	}
 }
 
