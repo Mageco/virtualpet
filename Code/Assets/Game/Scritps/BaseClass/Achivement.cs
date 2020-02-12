@@ -22,7 +22,7 @@ public class Achivement
     public int[] coinValue = new int[0];
     public int[] diamondValue = new int[0];
 	public int order = 0;
-
+	public bool isAvailable = true;
 
 	public Achivement()
 	{

@@ -19,7 +19,8 @@ public Transform anchor;
 
         ClearItems();
         foreach(PlayerAchivement a in GameManager.instance.GetPlayer().achivements){
-            items.Add(a);
+            if(DataHolder.GetAchivement(a.achivementId).isAvailable)
+                items.Add(a);
         }   
 
         items.Sort((p1,p2)=>(p1.order).CompareTo(p2.order));

@@ -145,8 +145,8 @@ public class AchivementTab : BaseTab
 				DataHolder.Achivement(selection).animalType = (AnimalType)EditorGUILayout.EnumPopup("Animal", DataHolder.Achivement(selection).animalType, GUILayout.Width (pw.mWidth));
 			}
 
-			 
 
+			DataHolder.Achivement(selection).isAvailable = EditorGUILayout.Toggle("Available", DataHolder.Achivement(selection).isAvailable, GUILayout.Width(pw.mWidth));
 
 			EditorGUILayout.Separator();
 
