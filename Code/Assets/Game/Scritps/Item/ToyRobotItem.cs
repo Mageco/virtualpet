@@ -42,7 +42,7 @@ public class ToyRobotItem : ToyItem
     protected override void Update()
     {
         base.Update();
-        if(state == ToyState.Active)
+        if(state == EquipmentState.Active)
         {
             CalculateDirection();
             this.transform.position = agent.transform.position;
@@ -54,21 +54,21 @@ public class ToyRobotItem : ToyItem
     protected override void OnClick()
     {
         Debug.Log("Click");
-        if(state == ToyState.Drag)
+        if(state == EquipmentState.Drag)
         {
             isAbort = false;
             Debug.Log("Turn on");
-            state = ToyState.Active;
+            state = EquipmentState.Active;
             target = GameManager.instance.GetRandomPetObject().transform.position + new Vector3(0,-2,0);
             StartCoroutine(MoveToPoint());
             MageManager.instance.PlaySoundName("Item_Robot_TurnOn", false);
         }
-        else if(state == ToyState.Active)
+        else if(state == EquipmentState.Active)
         {
             isAbort = true;
             agent.Stop();
             Debug.Log("Turn off");
-            state = ToyState.Idle;
+            state = EquipmentState.Idle;
             MageManager.instance.PlaySoundName("Item_Robot_TurnOff", false);
             animator.Play("Idle_" + direction.ToString(), 0);
         }
@@ -90,7 +90,7 @@ public class ToyRobotItem : ToyItem
         yield return StartCoroutine(DoAnim("Dance_" + direction.ToString()));
         MageManager.instance.StopSound(soundId);
         animator.Play("Idle_" + direction.ToString(), 0);
-        state = ToyState.Idle;
+        state = EquipmentState.Idle;
     }
 
 

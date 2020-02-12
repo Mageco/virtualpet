@@ -15,7 +15,7 @@ public class ToyItem : MonoBehaviour
 	public float initZ = -6;
 	public float scaleFactor = 0.05f;
 	protected Vector3 dragOffset;
-	public ToyState state = ToyState.Idle;
+	public EquipmentState state = EquipmentState.Idle;
 	protected Vector3 originalPosition;
 	protected Vector3 originalScale;
 	public Vector3 lastPosition;
@@ -41,7 +41,7 @@ public class ToyItem : MonoBehaviour
     // Update is called once per frame
     protected virtual void Update()
 	{
-		if (state == ToyState.Drag)
+		if (state == EquipmentState.Drag)
 		{
 			Vector3 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition) - dragOffset;
 			pos.z = this.transform.position.z;
@@ -76,7 +76,7 @@ public class ToyItem : MonoBehaviour
 
 	protected virtual void OnMouseUp()
 	{
-        if(state == ToyState.Drag)
+        if(state == EquipmentState.Drag)
         {
 			if (dragTime < 0.1f)
 			{
@@ -84,7 +84,7 @@ public class ToyItem : MonoBehaviour
 			}
 			else
 			{
-				state = ToyState.Idle;
+				state = EquipmentState.Idle;
 			}
 			dragOffset = Vector3.zero;
 			
@@ -101,32 +101,32 @@ public class ToyItem : MonoBehaviour
 			return;
 		}
 
-		if (state == ToyState.Active || state == ToyState.Busy)
+		if (state == EquipmentState.Active || state == EquipmentState.Busy)
 		{
 			return;
 		}
 
 		dragOffset = Camera.main.ScreenToWorldPoint(Input.mousePosition) - this.transform.position;
-		state = ToyState.Drag;
+		state = EquipmentState.Drag;
 		lastPosition = this.transform.position;
 		ItemManager.instance.SetCameraTarget(this.gameObject);
 	}
 
 	IEnumerator ReturnPosition(Vector3 pos)
 	{
-		state = ToyState.Busy;
+		state = EquipmentState.Busy;
 		while (Vector2.Distance(this.transform.position, pos) > 0.1f)
 		{
 			this.transform.position = Vector3.Lerp(this.transform.position, pos, Time.deltaTime * 5);
 			yield return new WaitForEndOfFrame();
 		}
-		state = ToyState.Idle;
+		state = EquipmentState.Idle;
 		dragOffset = Vector3.zero;
 	}
 
     protected virtual void OnClick()
     {
-		state = ToyState.Idle;
+		state = EquipmentState.Idle;
 	}
 
 	public virtual void OnActive()
@@ -149,4 +149,4 @@ public class ToyItem : MonoBehaviour
 	}
 }
 
-public enum ToyState {Idle,Drag,Busy,Active}
+

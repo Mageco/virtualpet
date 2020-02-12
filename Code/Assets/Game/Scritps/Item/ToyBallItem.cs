@@ -42,7 +42,7 @@ public class ToyBallItem : ToyItem
         isOnForce = true;
         rigid.isKinematic = false;
         col.isTrigger = false;
-        state = ToyState.Active;
+        state = EquipmentState.Active;
         rigid.angularVelocity = 0;
         rigid.velocity = Vector2.zero;
         rigid.AddForce(new Vector2(Random.Range(-1000,1000),Random.Range(1000,5000)));
@@ -57,13 +57,13 @@ public class ToyBallItem : ToyItem
         rigid.velocity = Vector2.zero;
         rigid.isKinematic = true;
         col.isTrigger = true;
-        state = ToyState.Idle;
+        state = EquipmentState.Idle;
     }
 
     protected override void Update()
     { 
         base.Update();
-        if(state == ToyState.Active)
+        if(state == EquipmentState.Active)
         {
             lastPosition.x = this.transform.position.x;
             float height = this.transform.position.y - lastPosition.y;
@@ -100,7 +100,7 @@ public class ToyBallItem : ToyItem
 
     protected override void LateUpdate()
     {
-        if(state == ToyState.Active)
+        if(state == EquipmentState.Active)
         {
 
         }

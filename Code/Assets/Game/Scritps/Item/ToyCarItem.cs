@@ -11,7 +11,7 @@ public class ToyCarItem : ToyItem
 	Direction direction = Direction.R;
 
 	public bool IsSupprised(){
-		if(animator.speed > 1 && state == ToyState.Active){
+		if(animator.speed > 1 && state == EquipmentState.Active){
 			return true;
 		}else
 			return false;
@@ -26,7 +26,7 @@ public class ToyCarItem : ToyItem
 	public override void OnActive(){
 		int round = Random.Range(3, 10);
         MageManager.instance.PlaySoundName("Item_Car", false);
-		state = ToyState.Active;
+		state = EquipmentState.Active;
         animator.speed = 2;
 		GameManager.instance.LogAchivement(AchivementType.Use_Item,ActionType.None,this.item.itemID);
 		List<Transform> pointRandoms = ItemManager.instance.GetRandomPoints (PointType.Patrol);
@@ -51,7 +51,7 @@ public class ToyCarItem : ToyItem
 		body.transform.localScale = new Vector3 (body.transform.localScale.x, body.transform.localScale.y, 1);
 		animator.Play("Idle_" + direction.ToString(),0);
 		Debug.Log ("Complete Run");
-		state = ToyState.Idle;
+		state = EquipmentState.Idle;
 	}
 
     protected override void Update()
@@ -62,7 +62,7 @@ public class ToyCarItem : ToyItem
 
     protected override void LateUpdate()
 	{
-		if (state == ToyState.Active)
+		if (state == EquipmentState.Active)
 		{
 			if (this.transform.position.x > lastPosition.x)
 			{
