@@ -4722,15 +4722,15 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1422000053426952493}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 23.625, y: 11.485, z: 500}
+  m_LocalPosition: {x: -5.7250004, y: 11.535, z: -10}
   m_LocalScale: {x: 2, y: 2, z: 1}
   m_Children:
   - {fileID: 3652365010652228726}
   - {fileID: 1131172493635489247}
   - {fileID: 5617819945639796915}
   - {fileID: 844174420172080321}
-  m_Father: {fileID: 5207429179553003291}
-  m_RootOrder: 0
+  m_Father: {fileID: 5207429180799487045}
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &822572892188405022
 Animator:
@@ -4810,7 +4810,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 31cb68447e9014f7190d6beddfb0bdc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  toyType: 4
+  toyType: 3
 --- !u!1 &1857062692704924815
 GameObject:
   m_ObjectHideFlags: 0
@@ -9830,9 +9830,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 8157156877955870519}
   - {fileID: 5207429180799487045}
-  - {fileID: 5552975244459815426}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -9849,8 +9847,7 @@ GameObject:
   - component: {fileID: 8964151888672860346}
   - component: {fileID: 8830547495678784069}
   - component: {fileID: 2369765977995751352}
-  - component: {fileID: 6234973668042241983}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: Closet
   m_TagString: Table
   m_Icon: {fileID: 0}
@@ -9871,8 +9868,10 @@ Transform:
   - {fileID: 571391075687517807}
   - {fileID: 4514903668529495782}
   - {fileID: 8478632879217966679}
+  - {fileID: 8157156877955870519}
+  - {fileID: 5552975244459815426}
   m_Father: {fileID: 5207429179553003291}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &8448130619747678177
 Animator:
@@ -9944,6 +9943,7 @@ MonoBehaviour:
   boundX: {x: -40, y: 60}
   boundY: {x: -0.05, y: -0.05}
   pets: []
+  movementType: 1
 --- !u!50 &2369765977995751352
 Rigidbody2D:
   serializedVersion: 4
@@ -9965,20 +9965,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!114 &6234973668042241983
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5207429180799487044}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 10e73436104b64d4a863eee717008795, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  childs:
-  - {fileID: 1422000053426952493}
 --- !u!1 &6443960582043682054
 GameObject:
   m_ObjectHideFlags: 0
@@ -10084,11 +10070,11 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6976299073380630314}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 28.68, y: -3.06, z: 50}
+  m_LocalPosition: {x: -0.6700001, y: -3.01, z: -460}
   m_LocalScale: {x: 2, y: 2, z: 1}
   m_Children: []
-  m_Father: {fileID: 5207429179553003291}
-  m_RootOrder: 2
+  m_Father: {fileID: 5207429180799487045}
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &4251013256761613842
 MonoBehaviour:

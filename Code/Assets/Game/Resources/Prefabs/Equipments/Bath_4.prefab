@@ -4558,12 +4558,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2520610020677393115}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 15.7, y: 11.74, z: 0}
+  m_LocalPosition: {x: 5.79, y: 12.74, z: -500}
   m_LocalScale: {x: 1.5, y: 1.5, z: 1}
   m_Children:
   - {fileID: 724323551584877479}
-  m_Father: {fileID: 2520610022184568620}
-  m_RootOrder: 2
+  m_Father: {fileID: 5505067462061468521}
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!61 &2520610020677393111
 BoxCollider2D:
@@ -4675,6 +4675,7 @@ GameObject:
   - component: {fileID: 2520610021924166597}
   - component: {fileID: 2520610021924166598}
   - component: {fileID: 320701746}
+  - component: {fileID: 107819775941604563}
   m_Layer: 0
   m_Name: Shower
   m_TagString: Untagged
@@ -4690,12 +4691,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2520610021924166601}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 10.2, y: 40.2, z: 800}
+  m_LocalPosition: {x: 0.28999996, y: 41.2, z: 300}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 5542383352672449156}
-  m_Father: {fileID: 2520610022184568620}
-  m_RootOrder: 1
+  m_Father: {fileID: 5505067462061468521}
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!61 &2520610021924166597
 BoxCollider2D:
@@ -4759,6 +4760,27 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!50 &107819775941604563
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2520610021924166601}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1 &2520610022184568621
 GameObject:
   m_ObjectHideFlags: 0
@@ -4787,9 +4809,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 5505067462061468521}
-  - {fileID: 2520610021924166600}
-  - {fileID: 2520610020677393114}
-  - {fileID: 8526314282909029152}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -9792,7 +9811,9 @@ GameObject:
   - component: {fileID: 708324375697090019}
   - component: {fileID: 8932180039792347839}
   - component: {fileID: 5700450020557842154}
-  m_Layer: 0
+  - component: {fileID: 186972735}
+  - component: {fileID: 186972738}
+  m_Layer: 14
   m_Name: Obstruct (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9807,7 +9828,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4481446212710784198}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -1.6949999, z: 100}
+  m_LocalPosition: {x: 0, y: -1.6949999, z: 10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 5505067462061468521}
@@ -9841,7 +9862,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.5, y: 3}
+  m_Offset: {x: 0, y: 2}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -9852,8 +9873,42 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 18, y: 6}
+  m_Size: {x: 18, y: 5}
   m_EdgeRadius: 0
+--- !u!114 &186972735
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4481446212710784198}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5adb53d702b34c46ad8f1a87326f238, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemCollides: []
+--- !u!50 &186972738
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4481446212710784198}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1 &4896097746572224794
 GameObject:
   m_ObjectHideFlags: 0
@@ -9877,13 +9932,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4896097746572224794}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -9.91, y: 1, z: -500}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 5002613506703796516}
-  m_Father: {fileID: 2520610022184568620}
-  m_RootOrder: 3
+  m_Father: {fileID: 5505067462061468521}
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5505067462025789675
 GameObject:
@@ -9977,10 +10032,8 @@ GameObject:
   - component: {fileID: 5505067462061468521}
   - component: {fileID: 5505067462061468522}
   - component: {fileID: 1980404474467130287}
-  - component: {fileID: 1819773552330022665}
   - component: {fileID: 5129820700197405400}
   - component: {fileID: 3439906144348252727}
-  - component: {fileID: 617337144817441092}
   - component: {fileID: 7489625421728162077}
   m_Layer: 0
   m_Name: BathTube
@@ -10006,6 +10059,9 @@ Transform:
   - {fileID: 3674796485635725029}
   - {fileID: 708324375697090019}
   - {fileID: 3986092671528988361}
+  - {fileID: 2520610021924166600}
+  - {fileID: 2520610020677393114}
+  - {fileID: 8526314282909029152}
   m_Father: {fileID: 2520610022184568620}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -10042,23 +10098,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemId: 0
   clean: 10
---- !u!114 &1819773552330022665
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5505067462061468523}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f6a733d7c833d435b9d5859e7e52a1a3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  skillType: 4
-  actionType: 0
-  interactType: 0
-  enviromentType: 2
-  maxTime: 10
 --- !u!61 &5129820700197405400
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -10110,22 +10149,7 @@ MonoBehaviour:
   boundX: {x: -40, y: 60}
   boundY: {x: -1, y: -1}
   pets: []
---- !u!114 &617337144817441092
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5505067462061468523}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 10e73436104b64d4a863eee717008795, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  childs:
-  - {fileID: 2520610021924166601}
-  - {fileID: 2520610020677393115}
-  - {fileID: 4896097746572224794}
+  movementType: 1
 --- !u!50 &7489625421728162077
 Rigidbody2D:
   serializedVersion: 4

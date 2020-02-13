@@ -27,8 +27,13 @@ public class ItemCollider : MonoBehaviour
 	public Vector2 boundY = new Vector2(0, 0);
 	public List<CharController> pets = new List<CharController>();
 
-	ItemCollider itemCollide;
+	GameObject roomCollide;
 	Vector3 clickPosition;
+	GameObject arrow;
+	List<Color> colors = new List<Color>();
+	SpriteRenderer[] sprites;
+	ObstructItem obstructItem;
+	public MovementType movementType = MovementType.FourDirection;
 
 	protected virtual void Awake()
 	{
@@ -36,7 +41,12 @@ public class ItemCollider : MonoBehaviour
 		originalPosition = this.transform.position;
 		originalScale = this.transform.localScale;
 		lastPosition = this.transform.position;
-
+		sprites = GetComponentsInChildren<SpriteRenderer>(true);
+		for (int i = 0; i < sprites.Length; i++)
+		{
+			colors.Add(sprites[i].color);
+		}
+		obstructItem = this.GetComponentInChildren<ObstructItem>(true);
 	}
 
 	protected virtual void Start()
@@ -51,28 +61,67 @@ public class ItemCollider : MonoBehaviour
 		if (state == EquipmentState.Hold)
 		{
 			dragTime += Time.deltaTime;
-			if (dragTime > 1 && Vector2.Distance(Camera.main.ScreenToWorldPoint(Input.mousePosition), clickPosition) < 0.1f)
+			if (dragTime > 0.1f)
+			{
+				if (Vector2.Distance(Camera.main.ScreenToWorldPoint(Input.mousePosition), clickPosition) < 0.1f)
+				{
+					if (arrow == null)
+					{
+						if (movementType == MovementType.FourDirection)
+							arrow = GameObject.Instantiate(Resources.Load("Prefabs/Effects/AllDirectionArrow")) as GameObject;
+						else if (movementType == MovementType.TwoDirection)
+						{
+							arrow = GameObject.Instantiate(Resources.Load("Prefabs/Effects/TwoDirectionArrow")) as GameObject;
+						}
+						arrow.transform.parent = this.transform;
+						Vector3 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+						pos.z = -500;
+						arrow.transform.position = pos;
+					}
+				}
+				else
+				{
+					if (arrow != null)
+						Destroy(arrow);
+				}
+			}
+
+			if (dragTime > 0.5f && Vector2.Distance(Camera.main.ScreenToWorldPoint(Input.mousePosition), clickPosition) < 0.1f)
 			{
 				OnDrag();
 			}
+			else if (dragTime > 0.5f)
+				OffDrag();
+
+
 		}
 		else if (state == EquipmentState.Drag)
 		{
 			Vector3 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition) - dragOffset;
 			pos.z = this.transform.position.z;
-
 			if (pos.y > boundY.y)
 				pos.y = boundY.y;
-			else if (pos.y < boundY.x)
+			if (pos.y < boundY.x)
 				pos.y = boundY.x;
 
 			if (pos.x > boundX.y)
 				pos.x = boundX.y;
 			else if (pos.x < boundX.x)
 				pos.x = boundX.x;
-
-            this.transform.position = pos;
+			this.transform.position = pos;
 			dragTime += Time.deltaTime;
+			if ((obstructItem != null && obstructItem.itemCollides.Count > 0) || roomCollide != null)
+			{
+				SetColor(new Color(1, 0, 0, 0.5f));
+			}
+			else
+				SetColor(new Color(1, 1, 1, 0.5f));
+		}
+		else
+		{
+			if (arrow != null)
+				Destroy(arrow);
+
 		}
 
 		List<CharController> temp = new List<CharController>();
@@ -94,9 +143,10 @@ public class ItemCollider : MonoBehaviour
 	}
 
 
+
 	protected virtual void OnMouseUp()
 	{
-		if (state == EquipmentState.Hold || state == EquipmentState.Drag)
+		if (state == EquipmentState.Drag || state == EquipmentState.Hold)
 		{
 			if (dragTime < 0.1f)
 			{
@@ -104,17 +154,14 @@ public class ItemCollider : MonoBehaviour
 			}
 			else
 			{
-				if (itemCollide != null)
+				if ((obstructItem != null && obstructItem.itemCollides.Count > 0) || roomCollide != null)
 					StartCoroutine(ReturnPosition(lastPosition));
-                else
-				    state = EquipmentState.Idle;
+				else
+					state = EquipmentState.Idle;
 			}
 		}
-		ItemManager.instance.ResetCameraTarget();
-		dragOffset = Vector3.zero;
-		dragTime = 0;
+		OffDrag();
 	}
-
 
 	protected virtual void OnMouseDown()
 	{
@@ -135,13 +182,44 @@ public class ItemCollider : MonoBehaviour
 		state = EquipmentState.Hold;
 	}
 
-    private void OnDrag()
-    {
+	void SetColor(Color c)
+	{
+		for (int i = 0; i < sprites.Length; i++)
+		{
+			sprites[i].color = c;
+		}
+	}
+
+	void ResetColor()
+	{
+		for (int i = 0; i < sprites.Length; i++)
+		{
+			sprites[i].color = colors[i];
+		}
+	}
+
+	private void OnDrag()
+	{
 		dragOffset = Camera.main.ScreenToWorldPoint(Input.mousePosition) - this.transform.position;
 		state = EquipmentState.Drag;
 		lastPosition = this.transform.position;
 		ItemManager.instance.SetCameraTarget(this.gameObject);
+		if (arrow != null)
+			Destroy(arrow);
+
 	}
+
+	void OffDrag()
+	{
+		state = EquipmentState.Idle;
+		dragOffset = Vector3.zero;
+		dragTime = 0;
+		ItemManager.instance.ResetCameraTarget();
+		if (arrow != null)
+			Destroy(arrow);
+		ResetColor();
+	}
+
 
     IEnumerator ReturnPosition(Vector3 pos)
 	{
@@ -177,6 +255,19 @@ public class ItemCollider : MonoBehaviour
 		List<RaycastResult> results = new List<RaycastResult>();
 		EventSystem.current.RaycastAll(eventDataCurrentPosition, results);
 		return results.Count > 0;
+	}
+
+	void OnTriggerEnter2D(Collider2D other)
+	{
+		roomCollide = other.gameObject;
+	}
+
+	void OnTriggerExit2D(Collider2D other)
+	{
+		if (roomCollide == other.gameObject)
+		{
+			roomCollide = null;
+		}
 	}
 }
 

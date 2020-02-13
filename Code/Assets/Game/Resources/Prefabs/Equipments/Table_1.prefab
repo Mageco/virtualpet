@@ -28164,7 +28164,9 @@ GameObject:
   - component: {fileID: 8561447406560365971}
   - component: {fileID: 8554308414299658750}
   - component: {fileID: 7578253541869539602}
-  m_Layer: 0
+  - component: {fileID: 1770494036}
+  - component: {fileID: 1770494039}
+  m_Layer: 14
   m_Name: Obstruct
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -28179,7 +28181,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3365281439093112568}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.82800007, z: 0}
+  m_LocalPosition: {x: 0, y: -0.82800007, z: 10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 5207429180799487045}
@@ -28226,6 +28228,40 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 15, y: 6}
   m_EdgeRadius: 0
+--- !u!114 &1770494036
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3365281439093112568}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5adb53d702b34c46ad8f1a87326f238, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemCollides: []
+--- !u!50 &1770494039
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3365281439093112568}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1 &3642015736986430835
 GameObject:
   m_ObjectHideFlags: 0
@@ -33110,8 +33146,7 @@ GameObject:
   - component: {fileID: 8964151888672860346}
   - component: {fileID: 192054328790187877}
   - component: {fileID: 6624492447489890810}
-  - component: {fileID: 962861353840328342}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: Closet
   m_TagString: Table
   m_Icon: {fileID: 0}
@@ -33209,6 +33244,7 @@ MonoBehaviour:
   boundX: {x: -40, y: 60}
   boundY: {x: -0.8, y: -0.8}
   pets: []
+  movementType: 1
 --- !u!50 &6624492447489890810
 Rigidbody2D:
   serializedVersion: 4
@@ -33230,21 +33266,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!114 &962861353840328342
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5207429180799487044}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 10e73436104b64d4a863eee717008795, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  childs:
-  - {fileID: 5207429180781267592}
-  - {fileID: 6043036966309053193}
 --- !u!1 &6043036965061016969
 GameObject:
   m_ObjectHideFlags: 0
@@ -33497,6 +33518,7 @@ GameObject:
   - component: {fileID: 6043036966309053192}
   - component: {fileID: 1099282159}
   - component: {fileID: 1099282160}
+  - component: {fileID: 8750203975584743245}
   m_Layer: 0
   m_Name: Flower_Jar
   m_TagString: Untagged
@@ -33590,6 +33612,27 @@ MonoBehaviour:
   scalePosition: {x: 0, y: 0, z: 0}
   shadow: {fileID: 0}
   breakObject: {fileID: 9021341852248873714}
+--- !u!50 &8750203975584743245
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6043036966309053193}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1 &6976299073380630314
 GameObject:
   m_ObjectHideFlags: 0

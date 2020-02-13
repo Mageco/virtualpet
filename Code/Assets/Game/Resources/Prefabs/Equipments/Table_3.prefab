@@ -9435,6 +9435,7 @@ GameObject:
   - component: {fileID: 663199352999541557}
   - component: {fileID: 3961295814796160865}
   - component: {fileID: 3434317862316523850}
+  - component: {fileID: 8710916272000877474}
   m_Layer: 0
   m_Name: Bonsai
   m_TagString: Untagged
@@ -9450,15 +9451,15 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2926984553494461380}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 23.775002, y: 3.5, z: 600}
+  m_LocalPosition: {x: -5.039999, y: 4.46, z: -100}
   m_LocalScale: {x: 2, y: 2, z: 1}
   m_Children:
   - {fileID: 1124226761800300086}
   - {fileID: 9194166925088023554}
   - {fileID: 396195026886857105}
   - {fileID: 8022201861613273965}
-  m_Father: {fileID: 5207429179553003291}
-  m_RootOrder: 0
+  m_Father: {fileID: 5207429180799487045}
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &663199352999541557
 Animator:
@@ -9526,6 +9527,27 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 2, y: 2}
   m_EdgeRadius: 0
+--- !u!50 &8710916272000877474
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2926984553494461380}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1 &3005914445231157763
 GameObject:
   m_ObjectHideFlags: 0
@@ -9617,7 +9639,9 @@ GameObject:
   - component: {fileID: 8561447406560365971}
   - component: {fileID: 8554308414299658750}
   - component: {fileID: 7578253541869539602}
-  m_Layer: 0
+  - component: {fileID: 1872359042}
+  - component: {fileID: 1872359045}
+  m_Layer: 14
   m_Name: Obstruct
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9679,6 +9703,40 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 15, y: 4.8874016}
   m_EdgeRadius: 0
+--- !u!114 &1872359042
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3365281439093112568}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5adb53d702b34c46ad8f1a87326f238, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemCollides: []
+--- !u!50 &1872359045
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3365281439093112568}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1 &3642015736986430835
 GameObject:
   m_ObjectHideFlags: 0
@@ -9786,9 +9844,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 8019748096836661003}
   - {fileID: 5207429180799487045}
-  - {fileID: 5552975244459815426}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -9803,11 +9859,9 @@ GameObject:
   - component: {fileID: 5207429180799487045}
   - component: {fileID: 8448130619747678177}
   - component: {fileID: 8964151888672860346}
-  - component: {fileID: 6551418425232419510}
   - component: {fileID: 9135313525595015153}
   - component: {fileID: 2553623667208717658}
-  - component: {fileID: 8360613146863292017}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: Closet
   m_TagString: Table
   m_Icon: {fileID: 0}
@@ -9829,8 +9883,10 @@ Transform:
   - {fileID: 4514903668529495782}
   - {fileID: 8478632879217966679}
   - {fileID: 8561447406560365971}
+  - {fileID: 8019748096836661003}
+  - {fileID: 5552975244459815426}
   m_Father: {fileID: 5207429179553003291}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &8448130619747678177
 Animator:
@@ -9877,23 +9933,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 9, y: 1}
   m_EdgeRadius: 0
---- !u!114 &6551418425232419510
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5207429180799487044}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f6a733d7c833d435b9d5859e7e52a1a3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  skillType: 5
-  actionType: 0
-  interactType: 0
-  enviromentType: 1
-  maxTime: 10
 --- !u!114 &9135313525595015153
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9919,6 +9958,7 @@ MonoBehaviour:
   boundX: {x: -40, y: 60}
   boundY: {x: -0.96, y: -0.96}
   pets: []
+  movementType: 1
 --- !u!50 &2553623667208717658
 Rigidbody2D:
   serializedVersion: 4
@@ -9940,20 +9980,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!114 &8360613146863292017
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5207429180799487044}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 10e73436104b64d4a863eee717008795, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  childs:
-  - {fileID: 2926984553494461380}
 --- !u!1 &6976299073380630314
 GameObject:
   m_ObjectHideFlags: 0
@@ -9979,11 +10005,11 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6976299073380630314}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 28.68, y: -3.69, z: 50}
+  m_LocalPosition: {x: -0.13500023, y: -2.73, z: -650}
   m_LocalScale: {x: 2, y: 2, z: 1}
   m_Children: []
-  m_Father: {fileID: 5207429179553003291}
-  m_RootOrder: 2
+  m_Father: {fileID: 5207429180799487045}
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &4251013256761613842
 MonoBehaviour:
