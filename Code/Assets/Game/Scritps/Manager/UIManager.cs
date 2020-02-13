@@ -30,6 +30,8 @@ public class UIManager : MonoBehaviour
 	public Text diamonText;
     public Text heartText;
     public Text levelText;
+    public Text exp;
+    public Image expProgress;
     [HideInInspector]
 	public NotificationPopup questNotification;
     [HideInInspector]
@@ -132,6 +134,13 @@ public class UIManager : MonoBehaviour
             heartText.text = happy.ToString("F0");
         if(levelText != null)
             levelText.text = GameManager.instance.myPlayer.level.ToString();
+
+        int level = GameManager.instance.myPlayer.level;
+        float e = 20 * level + 20 * level * level;
+        float e1 = 20 * (level-1) + 20 * (level-1) * (level-1);
+        int n = GameManager.instance.myPlayer.collectedHappy;
+        exp.text = (n-e1).ToString("F0") + "/" + (e-e1).ToString("F0");
+        expProgress.fillAmount = (n - e1) / (e-e1);
     }
 
 	public void BuyItem(int itemID){

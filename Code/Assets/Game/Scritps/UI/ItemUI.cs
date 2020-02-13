@@ -39,6 +39,7 @@ public class ItemUI : MonoBehaviour
     bool isBusy = false;
     bool isCharacter = false;
     bool isLevelRequire = false;
+    public Material greyMaterial;
 
     ItemState state = ItemState.OnShop;
 
@@ -78,6 +79,7 @@ public class ItemUI : MonoBehaviour
 
         if (isLevelRequire)
         {
+            icon.material = greyMaterial;
             price.gameObject.SetActive(true);
             levelText.gameObject.SetActive(true);
             levelText.text = DataHolder.Dialog(27).GetName(MageManager.instance.GetLanguage()) + " " + d.levelRequire.ToString(); 
@@ -281,7 +283,7 @@ public class ItemUI : MonoBehaviour
         equipButton.gameObject.SetActive(false);
         buyButton.gameObject.SetActive(false);
         price.gameObject.SetActive(false);
-        coinIcon.SetActive(true);
+        coinIcon.SetActive(false);
         diamonIcon.SetActive(false);
         moneyIcon.SetActive(false);
         happyIcon.SetActive(false);

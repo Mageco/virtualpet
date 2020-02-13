@@ -1187,8 +1187,8 @@ public class CharController : MonoBehaviour
             else if (pos.y < -24)
                 pos.y = -24;
 
-            if (pos.x > 52)
-                pos.x = 52;
+            if (pos.x > 62)
+                pos.x = 62;
             else if (pos.x < -270)
                 pos.x = -270;
 
@@ -1888,8 +1888,9 @@ public class CharController : MonoBehaviour
 
     protected virtual IEnumerator Toy()
     {
-        if (toyItem != null)
+        if (toyItem != null && toyItem.state != EquipmentState.Drag && toyItem.state != EquipmentState.Busy)
         {
+
             toyItem.pets.Add(this);
             if (toyItem.toyType == ToyType.Jump)
             {
@@ -2094,7 +2095,7 @@ public class CharController : MonoBehaviour
                 float maxTime = Random.Range(3, 10);
                 float t = 0;
                 toyItem.OnActive();
-                while(t < maxTime && !isAbort)
+                while (t < maxTime && !isAbort)
                 {
                     if (toyItem.anchorPoint != null)
                         agent.transform.position = toyItem.anchorPoint.position;

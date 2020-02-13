@@ -81,6 +81,27 @@ MonoBehaviour:
   boundX: {x: -270, y: 52}
   boundY: {x: -24, y: -3}
   pets: []
+--- !u!50 &2141617740
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5074441834174366508}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1 &7413327299974887957
 GameObject:
   m_ObjectHideFlags: 0
@@ -122,6 +143,7 @@ GameObject:
   - component: {fileID: 8340125362093526563}
   - component: {fileID: 8340125362093526572}
   - component: {fileID: 8919504605273544684}
+  - component: {fileID: 333413042387580598}
   m_Layer: 8
   m_Name: Obstruct (1)
   m_TagString: Toy
@@ -184,6 +206,19 @@ MonoBehaviour:
   shapeType: 1
   extraOffset: 0
   invertPolygon: 0
+--- !u!114 &333413042387580598
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8340125362093526562}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5adb53d702b34c46ad8f1a87326f238, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemCollides: []
 --- !u!1001 &8340125363002983200
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -209,12 +244,12 @@ PrefabInstance:
     - target: {fileID: 7048501441889971321, guid: fed9f3150740944acba6ba4483dfb964,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -34.6
+      value: -33.771606
       objectReference: {fileID: 0}
     - target: {fileID: 7048501441889971321, guid: fed9f3150740944acba6ba4483dfb964,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -20.56
+      value: -17.798668
       objectReference: {fileID: 0}
     - target: {fileID: 7048501441889971321, guid: fed9f3150740944acba6ba4483dfb964,
         type: 3}
@@ -264,12 +299,12 @@ PrefabInstance:
     - target: {fileID: 7048501441889971321, guid: fed9f3150740944acba6ba4483dfb964,
         type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.7
+      value: 0.8
       objectReference: {fileID: 0}
     - target: {fileID: 7048501441889971321, guid: fed9f3150740944acba6ba4483dfb964,
         type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.7
+      value: 0.8
       objectReference: {fileID: 0}
     - target: {fileID: 8965936872651199781, guid: fed9f3150740944acba6ba4483dfb964,
         type: 3}

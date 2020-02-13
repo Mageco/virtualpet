@@ -8,6 +8,7 @@ public class ToyWheelItem : ToyItem
 
     public override void OnActive()
     {
+        state = EquipmentState.Active;
         animator.Play("Active");
         MageManager.instance.PlaySoundName("Item_WaterJet", false);
         GameManager.instance.LogAchivement(AchivementType.Use_Item, ActionType.None, item.itemID);
@@ -15,6 +16,7 @@ public class ToyWheelItem : ToyItem
 
     public override void DeActive()
     {
+        state = EquipmentState.Idle;
         animator.Play("Idle");
     }
 }

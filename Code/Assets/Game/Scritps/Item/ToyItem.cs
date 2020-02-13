@@ -24,6 +24,10 @@ public class ToyItem : MonoBehaviour
 	public Vector2 boundY = new Vector2(-24, -3);
 	public List<CharController> pets = new List<CharController>();
 	Vector3 clickPosition;
+	GameObject arrow;
+	List<Color> colors = new List<Color>();
+	SpriteRenderer[] sprites;
+	ObstructItem obstructItem;
 
 	protected virtual void Awake()
 	{
@@ -31,7 +35,12 @@ public class ToyItem : MonoBehaviour
 		originalPosition = this.transform.position;
 		originalScale = this.transform.localScale;
 		lastPosition = this.transform.position;
-		
+		sprites = GetComponentsInChildren<SpriteRenderer>(true);
+		for (int i = 0; i < sprites.Length; i++)
+		{
+			colors.Add(sprites[i].color);
+		}
+		obstructItem = this.GetComponentInChildren<ObstructItem>(true);
 	}
 
     protected virtual void Start()
@@ -46,8 +55,29 @@ public class ToyItem : MonoBehaviour
 		if (state == EquipmentState.Hold)
 		{
 			dragTime += Time.deltaTime;
-			if (dragTime > 1 && Vector2.Distance(Camera.main.ScreenToWorldPoint(Input.mousePosition), clickPosition) < 0.1f)
+            if(dragTime > 0.1f)
+            {
+                if(Vector2.Distance(Camera.main.ScreenToWorldPoint(Input.mousePosition), clickPosition) < 0.1f)
+                {
+					if (arrow == null)
+					{
+						arrow = GameObject.Instantiate(Resources.Load("Prefabs/Effects/AllDirectionArrow")) as GameObject;
+						arrow.transform.parent = this.transform;
+						Vector3 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+						pos.z = -500;
+						arrow.transform.position = pos;
+					}
+				}
+                else
+                {
+					if (arrow != null)
+						Destroy(arrow);
+				}
+			}
+
+            if (dragTime > 0.5f && Vector2.Distance(Camera.main.ScreenToWorldPoint(Input.mousePosition), clickPosition) < 0.1f)
 			{
+
 				OnDrag();
 			}
 		}else if (state == EquipmentState.Drag)
@@ -65,6 +95,18 @@ public class ToyItem : MonoBehaviour
 				pos.x = boundX.x;
 			this.transform.position = pos;
 			dragTime += Time.deltaTime;
+			if (obstructItem.itemCollides.Count > 0)
+			{
+				SetColor(new Color(1, 0, 0, 0.5f));
+			}
+			else
+				SetColor(new Color(1, 1, 1, 0.5f));
+        }
+        else
+        {
+			if (arrow != null)
+				Destroy(arrow);
+			
 		}
 	}
 
@@ -93,15 +135,36 @@ public class ToyItem : MonoBehaviour
 			}
 			else
 			{
-				state = EquipmentState.Idle;
+				if (obstructItem.itemCollides.Count > 0)
+					StartCoroutine(ReturnPosition(lastPosition));
+				else
+					state = EquipmentState.Idle;
 			}
 			dragOffset = Vector3.zero;
 			
 			dragTime = 0;
 		}
 		ItemManager.instance.ResetCameraTarget();
+		if (arrow != null)
+			Destroy(arrow);
+		ResetColor();
 	}
 
+    void SetColor(Color c)
+    {
+		for (int i = 0; i < sprites.Length; i++)
+		{
+			sprites[i].color = c;
+		}
+	}
+
+    void ResetColor()
+    {
+		for (int i = 0; i < sprites.Length; i++)
+		{
+			sprites[i].color = colors[i];
+		}
+	}
 
 	protected virtual void OnMouseDown()
 	{
@@ -128,6 +191,9 @@ public class ToyItem : MonoBehaviour
 		state = EquipmentState.Drag;
 		lastPosition = this.transform.position;
 		ItemManager.instance.SetCameraTarget(this.gameObject);
+		if (arrow != null)
+			Destroy(arrow);
+
 	}
 
 	IEnumerator ReturnPosition(Vector3 pos)

@@ -42,6 +42,7 @@ GameObject:
   - component: {fileID: 5239698699930865234}
   - component: {fileID: 8281870956106198228}
   - component: {fileID: 3432490224542530068}
+  - component: {fileID: 8431417776522277784}
   m_Layer: 8
   m_Name: Obstruct (3)
   m_TagString: Toy
@@ -104,6 +105,19 @@ MonoBehaviour:
   shapeType: 1
   extraOffset: 0
   invertPolygon: 0
+--- !u!114 &8431417776522277784
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3251742175731196257}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5adb53d702b34c46ad8f1a87326f238, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemCollides: []
 --- !u!61 &243696714229803281
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -117,7 +131,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 2}
+  m_Offset: {x: 0, y: 4}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -128,7 +142,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 5}
+  m_Size: {x: 2, y: 8}
   m_EdgeRadius: 0
 --- !u!114 &7566637215725022177
 MonoBehaviour:
@@ -154,6 +168,27 @@ MonoBehaviour:
   boundX: {x: -270, y: 52}
   boundY: {x: -24, y: -3}
   pets: []
+--- !u!50 &1091929194
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5103648730116689245}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1001 &7156692475622796725
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -30,6 +30,7 @@ public class CharInteract : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        /*
         if (isMouseDown)
         {
             if(!isDrag && Vector2.Distance(holdPosition, Camera.main.ScreenToWorldPoint(Input.mousePosition)) > 0.1f)
@@ -37,7 +38,7 @@ public class CharInteract : MonoBehaviour
                 OnDrag();
             }
             touchTime += Time.deltaTime;
-        }
+        }*/
     }
 
     #region Interact
@@ -46,8 +47,9 @@ public class CharInteract : MonoBehaviour
         if (IsPointerOverUIObject ()) {
             return;
         }
-        isMouseDown = true;
-        holdPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        OnDrag();
+       // isMouseDown = true;
+       // holdPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
     }
 
     void OnDrag()
