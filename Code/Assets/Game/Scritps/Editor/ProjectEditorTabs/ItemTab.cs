@@ -115,7 +115,8 @@ public class ItemTab : BaseTab
 
 
                 EditorGUILayout.Separator();
-				DataHolder.Items().GetItem(selection,temcategory).itemType = (ItemType)EditorGUILayout.EnumPopup("Item Type", DataHolder.Items().GetItem(selection,temcategory).itemType, GUILayout.Width (pw.mWidth * 2));
+                DataHolder.Items().GetItem(selection, temcategory).levelRequire = EditorGUILayout.IntField("Level Require", DataHolder.Items().GetItem(selection, temcategory).levelRequire, GUILayout.Width(pw.mWidth));
+                DataHolder.Items().GetItem(selection,temcategory).itemType = (ItemType)EditorGUILayout.EnumPopup("Item Type", DataHolder.Items().GetItem(selection,temcategory).itemType, GUILayout.Width (pw.mWidth * 2));
 				EditorGUILayout.Separator();
 				EditorGUILayout.Separator();
 				DataHolder.Items().GetItem(selection,temcategory).buyPrice = EditorGUILayout.IntField("Buy price", DataHolder.Items().GetItem(selection,temcategory).buyPrice, GUILayout.Width(pw.mWidth));

@@ -463,6 +463,20 @@ public class GameManager : MonoBehaviour
         SavePlayer();
     }
 
+    public void UnEquipItem(int itemId)
+    {
+        foreach (PlayerItem item in myPlayer.items)
+        {
+            if (item.itemId == itemId)
+            {
+                item.state = ItemState.Have;
+                ItemManager.instance.RemoveItem(item.itemId);
+                SavePlayer();
+                return;
+            }
+        }
+    }
+
     public bool IsHaveItem(int itemId)
 	{
        foreach(PlayerItem item in myPlayer.items){
@@ -579,6 +593,18 @@ public class GameManager : MonoBehaviour
     public void AddHappy(int c){
         myPlayer.Happy += c;
         myPlayer.collectedHappy += c;
+        int temp = myPlayer.level;
+        int l = 1;
+        float e = 20 * l + 20 * l * l;
+        while (myPlayer.collectedHappy > e)
+        {
+            l++;
+            e = 20 * l + 20 * l * l;
+        }
+        //if (l > temp)
+        //{
+            myPlayer.level = l;
+        //}
         if (UIManager.instance != null)
             UIManager.instance.heartText.transform.parent.GetComponent<Animator>().Play("Active", 0);
         SavePlayer();

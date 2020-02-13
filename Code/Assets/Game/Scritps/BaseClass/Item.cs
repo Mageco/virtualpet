@@ -7,7 +7,6 @@ public class Item
 {
 	public int iD = 0;
 	public int category = 0;
-	public int level = 1;
 	public string iconUrl = "";
 	public string prefabName = "";
 	public LanguageItem[] languageItem = new LanguageItem[0];
@@ -20,7 +19,7 @@ public class Item
 	public bool consume = true;
 	public bool isAvailable = true;
 	public int shopOrder = 0;
-    
+	public int levelRequire = 0;
 
 	//All item properties
 	public float value = 0; //Value can be food amount, cleaness 

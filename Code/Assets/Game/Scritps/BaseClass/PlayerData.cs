@@ -6,10 +6,10 @@ using UnityEngine;
 [System.Serializable]
 public class PlayerData : BaseModel
 {
-    public int coin;
-    public int diamond;
-	public int happy;
-
+    public int coin = 0;
+    public int diamond = 0;
+	public int happy = 0;
+	public int level = 1;
     public int collectedHappy = 0;
     public int collectedCoin = 0;
     public int petCount = 1;

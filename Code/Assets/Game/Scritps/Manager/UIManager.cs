@@ -29,6 +29,7 @@ public class UIManager : MonoBehaviour
 	public Text coinText;
 	public Text diamonText;
     public Text heartText;
+    public Text levelText;
     [HideInInspector]
 	public NotificationPopup questNotification;
     [HideInInspector]
@@ -100,6 +101,7 @@ public class UIManager : MonoBehaviour
         coin = GameManager.instance.GetCoin();
         happy = GameManager.instance.GetHappy();
         diamond = GameManager.instance.GetDiamond();
+        
     }
 
     // Update is called once per frame
@@ -128,7 +130,9 @@ public class UIManager : MonoBehaviour
 		    diamonText.text = diamond.ToString("F0");
         if(heartText != null)
             heartText.text = happy.ToString("F0");
-	}
+        if(levelText != null)
+            levelText.text = GameManager.instance.myPlayer.level.ToString();
+    }
 
 	public void BuyItem(int itemID){
         MageEngine.instance.OnEvent(Mage.Models.Application.MageEventType.CheckOutItem ,DataHolder.GetItem(itemID).GetName(MageManager.instance.GetLanguage()));
@@ -143,6 +147,13 @@ public class UIManager : MonoBehaviour
     public void EquipItem(int itemId)
     {
         GameManager.instance.EquipItem(itemId);
+        if (shopPanel != null)
+            shopPanel.ReLoad();
+    }
+
+    public void UnEquipItem(int itemId)
+    {
+        GameManager.instance.UnEquipItem(itemId);
         if (shopPanel != null)
             shopPanel.ReLoad();
     }
@@ -182,7 +193,14 @@ public class UIManager : MonoBehaviour
             shopPanel.ReLoad();
 	}
 
-	public void UsePet(int itemID){
+    public void UnEquipPet(int itemID)
+    {
+        GameManager.instance.UnEquipPet(itemID);
+        if (shopPanel != null)
+            shopPanel.ReLoad();
+    }
+
+    public void UsePet(int itemID){
        shopPanel.Close();
        GameManager.instance.EquipPet(itemID);
 	}
