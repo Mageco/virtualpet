@@ -9478,7 +9478,6 @@ GameObject:
   - component: {fileID: 1720226836}
   - component: {fileID: 2353112170194004574}
   - component: {fileID: 9209107740218382777}
-  - component: {fileID: 714985607858335146}
   m_Layer: 0
   m_Name: Water_Bowl
   m_TagString: Drink
@@ -9581,6 +9580,7 @@ MonoBehaviour:
   boundX: {x: -270, y: 52}
   boundY: {x: -24, y: -3}
   pets: []
+  movementType: 1
 --- !u!95 &9209107740218382777
 Animator:
   serializedVersion: 3
@@ -9600,18 +9600,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &714985607858335146
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3669580434300967883}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 61c58be95bc0b4154808fbf11c56427f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &5464085897257476328
 GameObject:
   m_ObjectHideFlags: 0
@@ -14509,6 +14497,7 @@ GameObject:
   - component: {fileID: 8319785073708206661}
   - component: {fileID: 8519032005831909108}
   - component: {fileID: 7233053562023113359}
+  - component: {fileID: 1769030013}
   m_Layer: 8
   m_Name: Obstruct (1)
   m_TagString: Drink
@@ -14569,5 +14558,18 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 6, y: 2}
+  m_Size: {x: 3, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &1769030013
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9118011664894073753}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5adb53d702b34c46ad8f1a87326f238, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemCollides: []

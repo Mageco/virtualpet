@@ -9655,6 +9655,7 @@ MonoBehaviour:
   boundX: {x: -270, y: 52}
   boundY: {x: -24, y: -3}
   pets: []
+  movementType: 1
 --- !u!61 &981964013
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -9711,6 +9712,7 @@ GameObject:
   - component: {fileID: 1533766494360012030}
   - component: {fileID: 8156318319848590939}
   - component: {fileID: 2037320147543063267}
+  - component: {fileID: 1859676346}
   m_Layer: 8
   m_Name: Obstruct
   m_TagString: Untagged
@@ -9771,8 +9773,21 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 6, y: 2}
+  m_Size: {x: 4, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &1859676346
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6239718400380778422}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5adb53d702b34c46ad8f1a87326f238, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemCollides: []
 --- !u!1 &7099307127496529468
 GameObject:
   m_ObjectHideFlags: 0

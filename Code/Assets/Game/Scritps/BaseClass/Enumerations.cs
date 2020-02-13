@@ -26,4 +26,4 @@ public enum IconStatus{None,Hungry_1,Hungry_2,Sick_1,Sick_2,Dirty_1,Dirty_2,Toil
 public enum ToyType{Jump,Ball,Car,Doll,SpaceShip,RunningWheel,Robot,Slider,SpringCar,Music,Swing,JumpingCircle,BubbleRobot};
 public enum ItemSaveDataType{None,Pee,Shit,Rubbish,Food,Drink,Happy,Fruit,Chest,Toy,Equipment};
 public enum EquipmentState { Idle,Hold, Drag, Busy, Active }
-
+public enum MovementType {TwoDirection,FourDirection};

@@ -28,6 +28,7 @@ public class ToyItem : MonoBehaviour
 	List<Color> colors = new List<Color>();
 	SpriteRenderer[] sprites;
 	ObstructItem obstructItem;
+	public MovementType movementType = MovementType.FourDirection;
 
 	protected virtual void Awake()
 	{
@@ -61,7 +62,12 @@ public class ToyItem : MonoBehaviour
                 {
 					if (arrow == null)
 					{
-						arrow = GameObject.Instantiate(Resources.Load("Prefabs/Effects/AllDirectionArrow")) as GameObject;
+                        if(movementType == MovementType.FourDirection)
+						    arrow = GameObject.Instantiate(Resources.Load("Prefabs/Effects/AllDirectionArrow")) as GameObject;
+                        else if(movementType == MovementType.TwoDirection)
+                        {
+							arrow = GameObject.Instantiate(Resources.Load("Prefabs/Effects/TwoDirectionArrow")) as GameObject;
+						}
 						arrow.transform.parent = this.transform;
 						Vector3 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 						pos.z = -500;
@@ -77,9 +83,11 @@ public class ToyItem : MonoBehaviour
 
             if (dragTime > 0.5f && Vector2.Distance(Camera.main.ScreenToWorldPoint(Input.mousePosition), clickPosition) < 0.1f)
 			{
-
 				OnDrag();
-			}
+			}else if(dragTime > 0.5f)
+				OffDrag();
+			
+				
 		}else if (state == EquipmentState.Drag)
 		{
 			Vector3 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition) - dragOffset;
@@ -140,14 +148,8 @@ public class ToyItem : MonoBehaviour
 				else
 					state = EquipmentState.Idle;
 			}
-			dragOffset = Vector3.zero;
-			
-			dragTime = 0;
 		}
-		ItemManager.instance.ResetCameraTarget();
-		if (arrow != null)
-			Destroy(arrow);
-		ResetColor();
+		OffDrag();
 	}
 
     void SetColor(Color c)
@@ -194,6 +196,17 @@ public class ToyItem : MonoBehaviour
 		if (arrow != null)
 			Destroy(arrow);
 
+	}
+
+    void OffDrag()
+    {
+		state = EquipmentState.Idle;
+		dragOffset = Vector3.zero;
+		dragTime = 0;
+		ItemManager.instance.ResetCameraTarget();
+		if (arrow != null)
+			Destroy(arrow);
+		ResetColor();
 	}
 
 	IEnumerator ReturnPosition(Vector3 pos)

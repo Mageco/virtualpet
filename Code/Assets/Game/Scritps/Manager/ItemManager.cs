@@ -73,7 +73,10 @@ public class ItemManager : MonoBehaviour
         if (!ES2.Exists("RateUs") && GameManager.instance.gameTime > 720 && GameManager.instance.rateCount % 5 == 0)
         {
             UIManager.instance.OnRatingPopup();
-           
+        }
+        if (ES2.Exists("CameraPosition"))
+        {
+            GetActiveCamera().transform.position = ES2.Load<Vector3>("CameraPosition");
         }
         GameManager.instance.rateCount++;
         MageManager.instance.loadingBar.gameObject.SetActive(false);
@@ -630,6 +633,7 @@ public class ItemManager : MonoBehaviour
 
 
     void SaveItemData(){
+        ES2.Save(GetActiveCamera().transform.position, "CameraPosition");
         GameManager.instance.SavePlayer();
     }
 

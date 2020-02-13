@@ -82,10 +82,10 @@ public class CharInteract : MonoBehaviour
             character.isAbort = true;
             character.actionType = ActionType.None;
         }
-        else if(touchTime < maxClickTime)
-        {
-            OnClick();
-        }
+        //else if(touchTime < maxClickTime)
+        //{
+        //    OnClick();
+        //s}
 
         touchTime = 0;
         isDrag = false;
