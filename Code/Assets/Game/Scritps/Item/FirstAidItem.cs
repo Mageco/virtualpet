@@ -2,36 +2,39 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FirstAidItem : MonoBehaviour
+public class FirstAidItem : ItemCollider
 {
     bool isOpen = false;
-    Animator animator;
     public HealthItem[] healthItems;
+    BoxCollider2D collider;
 
-    void Awake(){
-        animator = this.GetComponent<Animator>();
-    }
-    // Start is called before the first frame update
-    void Start()
+    protected override void Awake()
     {
-        
+        base.Awake();
+        collider = this.GetComponent<BoxCollider2D>();
     }
 
-    // Update is called once per frame
-    void Update()
+    protected override void OnClick()
     {
-        
-    }
-
-    void OnMouseUp()
-    {
-        Debug.Log("Mouse Up");
         if(isOpen){
             Close();
         }else
         {
             Open();
         }
+    }
+
+    protected override void OnMouseDown()
+    {
+        bool isActive = false;
+        for(int i = 0; i < healthItems.Length; i++)
+        {
+            if (healthItems[i].isActive)
+                isActive = true;
+        }
+        if (isActive)
+            return;
+        base.OnMouseDown();
     }
 
     void Open(){
@@ -42,6 +45,8 @@ public class FirstAidItem : MonoBehaviour
             healthItems[i].Open();
         }
         animator.Play("Open",0);
+        collider.size = new Vector2(9, 5);
+        collider.offset = new Vector2(-2, 2.7f);
     }
 
     void Close(){
@@ -52,6 +57,7 @@ public class FirstAidItem : MonoBehaviour
         }
 
         animator.Play("Idle",0);
-
+        collider.size = new Vector2(4.5f, 5);
+        collider.offset = new Vector2(0, 2.7f);
     }
 }

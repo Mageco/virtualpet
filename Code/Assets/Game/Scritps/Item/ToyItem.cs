@@ -72,6 +72,7 @@ public class ToyItem : MonoBehaviour
 						Vector3 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 						pos.z = -500;
 						arrow.transform.position = pos;
+						MageManager.instance.PlaySoundName("BubbleButton", false);
 					}
 				}
                 else
@@ -135,7 +136,7 @@ public class ToyItem : MonoBehaviour
 
 	protected virtual void OnMouseUp()
 	{
-        if(state == EquipmentState.Drag)
+        if(state == EquipmentState.Drag || state == EquipmentState.Hold)
         {
 			if (dragTime < 0.1f)
 			{
@@ -144,12 +145,23 @@ public class ToyItem : MonoBehaviour
 			else
 			{
 				if (obstructItem.itemCollides.Count > 0)
+                {
 					StartCoroutine(ReturnPosition(lastPosition));
-				else
+					MageManager.instance.PlaySoundName("Drag", false);
+				}
+					
+                else
+                {
+					MageManager.instance.PlaySoundName("BubbleButton", false);
 					state = EquipmentState.Idle;
+				}
+					
+
+				OffDrag();
 			}
+
 		}
-		OffDrag();
+		
 	}
 
     void SetColor(Color c)

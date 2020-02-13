@@ -32,6 +32,7 @@ public class ItemCollider : MonoBehaviour
 	GameObject arrow;
 	List<Color> colors = new List<Color>();
 	SpriteRenderer[] sprites;
+	Animator[] animParts;
 	ObstructItem obstructItem;
 	public MovementType movementType = MovementType.FourDirection;
 
@@ -47,6 +48,7 @@ public class ItemCollider : MonoBehaviour
 			colors.Add(sprites[i].color);
 		}
 		obstructItem = this.GetComponentInChildren<ObstructItem>(true);
+		animParts = this.GetComponentsInChildren<Animator>(true);
 	}
 
 	protected virtual void Start()
@@ -200,6 +202,11 @@ public class ItemCollider : MonoBehaviour
 
 	private void OnDrag()
 	{
+		animator.enabled = false;
+        for(int i = 0; i < animParts.Length; i++)
+        {
+			animParts[i].enabled = false;
+        }
 		dragOffset = Camera.main.ScreenToWorldPoint(Input.mousePosition) - this.transform.position;
 		state = EquipmentState.Drag;
 		lastPosition = this.transform.position;
@@ -211,6 +218,11 @@ public class ItemCollider : MonoBehaviour
 
 	void OffDrag()
 	{
+		for (int i = 0; i < animParts.Length; i++)
+		{
+			animParts[i].enabled = true;
+		}
+		animator.enabled = true;
 		state = EquipmentState.Idle;
 		dragOffset = Vector3.zero;
 		dragTime = 0;

@@ -54,11 +54,12 @@ public class ToyRobotItem : ToyItem
     protected override void OnClick()
     {
         Debug.Log("Click");
-        if(state == EquipmentState.Drag)
+        if(state == EquipmentState.Drag || state == EquipmentState.Hold)
         {
             isAbort = false;
             Debug.Log("Turn on");
             state = EquipmentState.Active;
+            agent.transform.position = this.transform.position;
             target = GameManager.instance.GetRandomPetObject().transform.position + new Vector3(0,-2,0);
             StartCoroutine(MoveToPoint());
             MageManager.instance.PlaySoundName("Item_Robot_TurnOn", false);
