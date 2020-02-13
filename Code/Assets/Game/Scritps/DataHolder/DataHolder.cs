@@ -1,5 +1,6 @@
 
 using UnityEngine;
+using System.Collections.Generic;
 
 public class DataHolder
 {
@@ -67,6 +68,17 @@ public class DataHolder
 	public static Item GetItem(int id)
 	{
 		return DataHolder.Instance().items.GetItem(id);
+	}
+
+    public static Item GetItem(int id,ItemType itemType)
+    {
+		List<Item> temp = new List<Item>();
+		for (int i = 0; i < DataHolder.Items().GetDataCount(); i++)
+		{
+			if (DataHolder.Item(i).itemType == itemType)
+				temp.Add(DataHolder.Item(i));
+		}
+		return temp[id];
 	}
 
 	public static int GetItemIndex(int id){

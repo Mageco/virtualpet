@@ -9,6 +9,7 @@ public class PetTab : BaseTab
     private GameObject tmp1Prefab;
     private int tempId = 0;
     private int tempPetId = 0;
+    private int tempToyId = 0;
     int lastSellection = -1;
 
     public PetTab(ProjectWindow pw) : base(pw)
@@ -217,7 +218,37 @@ public class PetTab : BaseTab
             EditorGUILayout.EndVertical();
 
 
+            EditorGUILayout.BeginVertical("box");
+            fold2 = EditorGUILayout.Foldout(fold2, "Toy");
+            if (fold2)
+            {
+                if (GUILayout.Button("Add Favourite Toy", GUILayout.Width(pw.mWidth * 0.7f)))
+                {
+                    DataHolder.Pet(selection).favouriteToys = ArrayHelper.Add(1, DataHolder.Pet(selection).favouriteToys);
+                }
 
+
+                for (int i = 0; i < DataHolder.Pet(selection).favouriteToys.Length; i++)
+                {
+                    EditorGUILayout.BeginHorizontal();
+                    if (lastSellection != selection)
+                        tempToyId = DataHolder.Items().GetItemPosition(DataHolder.Pet(selection).favouriteToys[i],ItemType.Toy);
+
+                    if (tempToyId == -1)
+                        tempToyId = 0;
+
+                    tempToyId = EditorGUILayout.Popup("Item", tempToyId, DataHolder.Items().GetNameListFilter(ItemType.Toy), GUILayout.Width(pw.mWidth));
+
+                    if (DataHolder.Item(tempToyId) != null)
+                        DataHolder.Pet(selection).favouriteToys[i] = DataHolder.GetItem(tempToyId,ItemType.Toy).iD;
+                    if (GUILayout.Button("X", GUILayout.Width(pw.mWidth * 0.2f)))
+                    {
+                        DataHolder.Pet(selection).favouriteToys = ArrayHelper.Remove(i, DataHolder.Pet(selection).favouriteToys);
+                    }
+                    EditorGUILayout.EndHorizontal();
+                }
+            }
+            EditorGUILayout.EndVertical();
 
             EditorGUILayout.EndHorizontal();
             EditorGUILayout.EndVertical();

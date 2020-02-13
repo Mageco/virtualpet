@@ -16,6 +16,7 @@ public class Pet : BaseModel
     public bool isAvailable = true;
     public int[] requireEquipments = new int[0];
     public int[] requirePets = new int[0];
+    public int[] favouriteToys = new int[0];
     //Common Data
     public List<PetSkill> skills = new List<PetSkill>();
     public string petName = "";

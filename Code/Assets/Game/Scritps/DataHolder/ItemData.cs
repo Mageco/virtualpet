@@ -141,6 +141,23 @@ public class ItemData : BaseData
 		return result.ToArray();
 	}
 
+	public string[] GetNameListFilter(ItemType itemType)
+	{
+		List<string> result = new List<string>();
+		if (items != null)
+		{
+			for (int i = 0; i < items.Length; i++)
+			{
+				if (items[i].itemType == itemType)
+				{
+					string text = items[i].iD.ToString() + " : " + items[i].GetName(0);
+					result.Add(text);
+				}
+			}
+		}
+		return result.ToArray();
+	}
+
 	public override string[] GetDescriptionListFilter(int category,int language)
 	{
 		List<string> result = new List<string>();
@@ -220,7 +237,27 @@ public class ItemData : BaseData
         return -1;
     }
 
-  	public int GetItemPosition(int id,int category)
+	public int GetItemPosition(int id,ItemType itemType)
+	{
+		List<Item> temp = new List<Item>();
+		for (int i = 0; i < items.Length; i++)
+		{
+			if (items[i].itemType == itemType)
+			{
+				temp.Add(items[i]);
+			}
+		}
+
+		for (int i = 0; i < temp.Count; i++)
+		{
+			if (temp[i].iD == id)
+				return i;
+		}
+
+		return -1;
+	}
+
+	public int GetItemPosition(int id,int category)
     {
 		List<Item> temp = new List<Item>();
 		for(int i=0; i<items.Length; i++)

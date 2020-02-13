@@ -20,6 +20,7 @@ public class Item
 	public bool consume = true;
 	public bool isAvailable = true;
 	public int shopOrder = 0;
+    
 
 	//All item properties
 	public float value = 0; //Value can be food amount, cleaness 
