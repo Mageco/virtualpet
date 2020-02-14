@@ -61,7 +61,16 @@ public class ApiManager : MageEngine {
 		
 		SetupFirebaseMessaging();
 
+
+		
+
     }
+
+	public void ExampleOfGetRandomFriend() {
+		GetRandomFriend( (User u) => {
+			Debug.Log("Friend: " + u.ToJson());
+		} );
+	}
 
 	//public static ApiManager GetInstance() {
 	//	return instance;

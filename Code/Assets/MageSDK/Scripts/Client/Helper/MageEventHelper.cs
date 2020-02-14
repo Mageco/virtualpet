@@ -10,6 +10,7 @@ using MageApi.Models.Request;
 using MageApi.Models.Response;
 using MageApi;
 using Mage.Models.Application;
+using Mage.Models;
 
 namespace MageSDK.Client.Helper {
 	public class MageEventHelper {
@@ -26,9 +27,13 @@ namespace MageSDK.Client.Helper {
 			return _instance;
 		}
 
+		public void LoadMageEventData() {
+			LoadEventCounterList();
+			LoadMageEventCache();
+		}
         #region event counter
 		
-		public void SaveEventCounterList(List<EventCounter> data) {
+		private void SaveEventCounterList(List<EventCounter> data) {
 			#if PLATFORM_TEST
 				if (!MageEngine.GetInstance().resetUserDataOnStart) {
 					ES2.Save(data, MageEngineSettings.GAME_ENGINE_EVENT_COUNTER_CACHE);
@@ -40,7 +45,7 @@ namespace MageSDK.Client.Helper {
 			RuntimeParameters.GetInstance().SetParam(MageEngineSettings.GAME_ENGINE_EVENT_COUNTER_CACHE, data);
 		}
 
-		public List<EventCounter> LoadEventCounterList() {
+		private List<EventCounter> LoadEventCounterList() {
 			
 			if (ES2.Exists(MageEngineSettings.GAME_ENGINE_EVENT_COUNTER_CACHE)) {
 				List<EventCounter> t = ES2.LoadList<EventCounter>(MageEngineSettings.GAME_ENGINE_EVENT_COUNTER_CACHE);
@@ -57,11 +62,11 @@ namespace MageSDK.Client.Helper {
 			}
 		}
 
-		public List<EventCounter> GetEventCounterList() {
+		private List<EventCounter> GetEventCounterList() {
 			return RuntimeParameters.GetInstance().GetParam<List<EventCounter>>(MageEngineSettings.GAME_ENGINE_EVENT_COUNTER_CACHE);
 		}
 
-		public void AddEventCounter(string eventName) {
+		private void AddEventCounter(string eventName) {
 			List<EventCounter> eventCounterList = GetEventCounterList();
 			bool found = false;
 			//search for eventName
@@ -100,6 +105,57 @@ namespace MageSDK.Client.Helper {
 			} else {
 				return "";
 			}
+		}
+
+		private List<MageEvent> LoadMageEventCache() {
+
+			if (ES2.Exists(MageEngineSettings.GAME_ENGINE_EVENT_CACHE)) {
+				List<MageEvent> t = ES2.LoadList<MageEvent>(MageEngineSettings.GAME_ENGINE_EVENT_CACHE);
+				if (t == null) {
+					t = new List<MageEvent>();
+				}
+				RuntimeParameters.GetInstance().SetParam(MageEngineSettings.GAME_ENGINE_EVENT_CACHE, t);
+				return t;
+				
+			} else {
+				List<MageEvent> t = new List<MageEvent>();
+				RuntimeParameters.GetInstance().SetParam(MageEngineSettings.GAME_ENGINE_EVENT_CACHE, t);
+				return t;
+			}
+		}
+
+		public List<MageEvent> GetMageEventsList() {
+			return RuntimeParameters.GetInstance().GetParam<List<MageEvent>>(MageEngineSettings.GAME_ENGINE_EVENT_CACHE);
+		}
+
+		public void SaveMageEventsList(List<MageEvent> data) {
+			#if PLATFORM_TEST
+				if (!MageEngine.GetInstance().resetUserDataOnStart) {
+					ES2.Save(data, MageEngineSettings.GAME_ENGINE_EVENT_CACHE);
+				}
+			#else
+				ES2.Save(data, MageEngineSettings.GAME_ENGINE_EVENT_CACHE);
+			#endif
+
+			RuntimeParameters.GetInstance().SetParam(MageEngineSettings.GAME_ENGINE_EVENT_CACHE, data);
+		}
+
+		public void OnEvent(MageEventType type, Action<MageEvent> callbackSendEventApi, string eventDetail = "" ) {
+			/*this.cachedEvent.Add(new MageEvent(type, eventDetail));
+			SaveEvents();
+			SendAppEvents();*/
+			// temporary fix to send single event
+			AddEventCounter(type.ToString());
+			callbackSendEventApi(new MageEvent(type, eventDetail));
+		}
+
+		public void OnEvent<T>(MageEventType type, T obj, Action<MageEvent> callbackSendEventApi) where T:BaseModel {
+			/*this.cachedEvent.Add(new MageEvent(type, obj.ToJson()));
+			SaveEvents();
+			SendAppEvents();*/
+			// temporary fix to send single event
+			AddEventCounter(type.ToString());
+			callbackSendEventApi(new MageEvent(type, obj.ToJson()));
 		}
 
 		#endregion

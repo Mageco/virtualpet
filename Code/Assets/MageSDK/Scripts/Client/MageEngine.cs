@@ -48,21 +48,11 @@ namespace MageSDK.Client {
 		private bool _isReloadRequired = false;
 		private static bool _isLoaded = false;
 
-		private Hashtable variables;
+		[HideInInspector]
+		public Hashtable apiCounter = new Hashtable();
 
-		private Hashtable apiCounter = new Hashtable();
-
-		private List<string> actionLogsKeyLookup = new List<string>();
-
-		private List<MageEvent> cachedEvent = new List<MageEvent>();
-
-		//private List<ActionLog> cachedActionLog = new List<ActionLog>();
-		private Hashtable cachedActionLog = new Hashtable();
-
-		private List<CacheScreenTime> cachedScreenTime = new List<CacheScreenTime>();
-
-		//private List<Message> cachedUserMessages = new List<Message>();
-		private bool isAppActive = true;
+		[HideInInspector]
+		public bool isAppActive = true;
 		#endregion
 
 		void Awake() {
@@ -93,12 +83,12 @@ namespace MageSDK.Client {
 		}
 
 		void Update() {
-			AddScreenTime();
+			SceneTrackerHelper.GetInstance().AddScreenTime(SceneManager.GetActiveScene().name);
 		}
 
 		void OnApplicationFocus(bool hasFocus) {
 			if (hasFocus) {
-				ResetScreenTime();
+				SceneTrackerHelper.GetInstance().ResetScreenTime();
 			} else {
 				isAppActive = false;
 			}
@@ -313,7 +303,7 @@ namespace MageSDK.Client {
 
 			// enrich system auto data
 			u.SetUserData(new UserData( ApiHandler.instance.ApplicationKey+"_"+MageEngineSettings.GAME_ENGINE_SCREEN_TIME_CACHE, 
-										ConvertCacheScreenJson(), "MageEngine")
+										SceneTrackerHelper.GetInstance().ConvertCacheScreenJson(), "MageEngine")
 						);
 			
 			// enrich user event
@@ -322,31 +312,12 @@ namespace MageSDK.Client {
 										"MageEngine")
 						);
 
-            this.SaveCacheData<User>(u, MageEngineSettings.GAME_ENGINE_USER);
+            MageCacheHelper.GetInstance().SaveCacheData<User>(u, MageEngineSettings.GAME_ENGINE_USER);
 
             if (this.isWorkingOnline && IsLogin() && this.IsSendable("UpdateUserDataRequest")) {
 				SaveUserDataToServer(u);
 			}
 		}
-
-		private string ConvertCacheScreenJson() {
-			if (null != cachedScreenTime) {
-				string output = "{";
-				for (int i = 0; i < cachedScreenTime.Count; i++) {
-					output += "\"" + MageEngineSettings.GAME_ENGINE_SCREEN_TIME_CACHE_PREFIX + cachedScreenTime[i].Key + "\": " + cachedScreenTime[i].Value + ", ";
-				}
-
-				if (cachedScreenTime.Count > 0) {
-					output = output.Substring(0, output.Length - 2);
-				}
-
-				output += "}";
-				return output;
-			} else {
-				return "";
-			}
-		}
-
 		private void SaveUserDataToServer(User u) {
 			
 			// save data to server
@@ -358,7 +329,7 @@ namespace MageSDK.Client {
 				r, 
 				(result) => {
 					Debug.Log("Success: Update user data");
-					this.SaveCacheData<User>(u, MageEngineSettings.GAME_ENGINE_USER);
+					MageCacheHelper.GetInstance().SaveCacheData<User>(u, MageEngineSettings.GAME_ENGINE_USER);
 					//clear counter cache
 					ResetSendable("UpdateUserDataRequest");
 
@@ -450,7 +421,7 @@ namespace MageSDK.Client {
 
 		///<summary>Upload file to server and get back the url</summary>
 		private void UpdateUserProfileToServer(User u) {
-			this.SaveCacheData<User>(u, MageEngineSettings.GAME_ENGINE_USER);
+			MageCacheHelper.GetInstance().SaveCacheData<User>(u, MageEngineSettings.GAME_ENGINE_USER);
 
 			// user must logged in
 			if (this.isWorkingOnline && IsLogin()) {
@@ -539,7 +510,7 @@ namespace MageSDK.Client {
 
 		private void SetUser(User u) {
 			//RuntimeParameters.GetInstance().SetParam(MageEngineSettings.GAME_ENGINE_USER, u);
-			SaveCacheData<User>(u, MageEngineSettings.GAME_ENGINE_USER);
+			MageCacheHelper.GetInstance().SaveCacheData<User>(u, MageEngineSettings.GAME_ENGINE_USER);
 		}
 
 		#endregion
@@ -667,82 +638,8 @@ namespace MageSDK.Client {
 
 		}
 
-		///<summary>Use this function to save data to both Engine / Local file</summary>
-		private void SaveCacheData<T>(T data, string cacheName) {
-			#if PLATFORM_TEST
-				if (!this.resetUserDataOnStart) {
-					ES2.Save<T>(data, cacheName);
-				}
-			#else
-				ES2.Save<T>(data, cacheName);
-			#endif
+		
 
-			RuntimeParameters.GetInstance().SetParam(cacheName, data);
-		}
-
-		private T GetCacheData<T>(string cacheName) {
-			T t = RuntimeParameters.GetInstance().GetParam<T>(cacheName);
-
-			if (t == null) {
-				if (ES2.Exists(cacheName)) {
-					t =  ES2.Load<T>(cacheName);
-					if (t == null) {
-						return default(T);
-					}
-					return t;
-				} else {
-					return default(T);
-				}
-			} else {
-				return t;
-			}
-		}
-
-		private T LoadCacheData<T>(string cacheName) {
-			
-			if (ES2.Exists(cacheName)) {
-				T t = ES2.Load<T>(cacheName);
-				if (t == null) {
-					t = default(T);
-				}
-
-				RuntimeParameters.GetInstance().SetParam(cacheName, t);
-				return t;
-			} else {
-				T t = default(T);
-				RuntimeParameters.GetInstance().SetParam(cacheName, t);
-				return t;
-			}
-		}
-
-		private void SaveScreenCacheListData(List<CacheScreenTime> data, string cacheName) {
-			#if PLATFORM_TEST
-				if (!this.resetUserDataOnStart) {
-					ES2.Save(data, cacheName);
-				}
-			#else
-				ES2.Save(data, cacheName);
-			#endif
-
-			RuntimeParameters.GetInstance().SetParam(cacheName, data);
-		}
-
-		private List<CacheScreenTime> LoadScreenCacheListData(string cacheName) {
-			
-			if (ES2.Exists(cacheName)) {
-				List<CacheScreenTime> t = ES2.LoadList<CacheScreenTime>(cacheName);
-				if (t == null) {
-					t = new List<CacheScreenTime>();
-				}
-				RuntimeParameters.GetInstance().SetParam(cacheName, t);
-				return t;
-				
-			} else {
-				List<CacheScreenTime> t = new List<CacheScreenTime>();
-				RuntimeParameters.GetInstance().SetParam(cacheName, t);
-				return t;
-			}
-		}
 
 		#endregion
 
@@ -754,17 +651,18 @@ namespace MageSDK.Client {
 				}
 			#endif
 			if (this.IsSendable("SendUserEventListRequest")) {
+				List<MageEvent> cachedEvent = MageEventHelper.GetInstance().GetMageEventsList();
 				
-				if (this.cachedEvent.Count > 1) {
-					SendUserEventListRequest r = new SendUserEventListRequest (this.cachedEvent);
+				if (cachedEvent.Count > 1) {
+					SendUserEventListRequest r = new SendUserEventListRequest (cachedEvent);
 
 					//call to login api
 					ApiHandler.instance.SendApi<SendUserEventListResponse>(
 						ApiSettings.API_SEND_USER_EVENT_LIST,
 						r, 
 						(result) => {
-							this.cachedEvent = new List<MageEvent>();
-							SaveEvents();
+							cachedEvent = new List<MageEvent>();
+							MageEventHelper.GetInstance().SaveMageEventsList(cachedEvent);
 						},
 						(errorStatus) => {
 							//Debug.Log("Error: " + errorStatus);
@@ -775,15 +673,15 @@ namespace MageSDK.Client {
 						}
 					);
 				} else {
-					MageEvent t = this.cachedEvent[0];
+					MageEvent t = cachedEvent[0];
 					SendUserEventRequest r = new SendUserEventRequest(t.eventName, t.eventDetail);
 					//call to login api
 					ApiHandler.instance.SendApi<SendUserEventResponse>(
 						ApiSettings.API_SEND_USER_EVENT,
 						r, 
 						(result) => {
-							this.cachedEvent = new List<MageEvent>();
-							SaveEvents();
+							cachedEvent = new List<MageEvent>();
+							MageEventHelper.GetInstance().SaveMageEventsList(cachedEvent);
 						},
 						(errorStatus) => {
 							//Debug.Log("Error: " + errorStatus);
@@ -830,8 +728,7 @@ namespace MageSDK.Client {
 			SaveEvents();
 			SendAppEvents();*/
 			// temporary fix to send single event
-			MageEventHelper.GetInstance().AddEventCounter(type.ToString());
-			SendAppEvent(new MageEvent(type, eventDetail));
+			MageEventHelper.GetInstance().OnEvent(type, this.SendAppEvent, eventDetail);
 		}
 
 		public void OnEvent<T>(MageEventType type, T obj) where T:BaseModel {
@@ -839,62 +736,20 @@ namespace MageSDK.Client {
 			SaveEvents();
 			SendAppEvents();*/
 			// temporary fix to send single event
-			MageEventHelper.GetInstance().AddEventCounter(type.ToString());
-			SendAppEvent(new MageEvent(type, obj.ToJson()));
+			MageEventHelper.GetInstance().OnEvent(type, obj, this.SendAppEvent);
 		}
 
-		private void SaveEvents(){
-			ES2.Save(this.cachedEvent, MageEngineSettings.GAME_ENGINE_EVENT_CACHE);
-		}
+		
 
 		private void LoadEngineCache(){
-			// load event cache
-			if(ES2.Exists(MageEngineSettings.GAME_ENGINE_EVENT_CACHE)){
-				this.cachedEvent = ES2.LoadList<MageEvent>(MageEngineSettings.GAME_ENGINE_EVENT_CACHE);
-				if (this.cachedEvent == null) {
-					this.cachedEvent = new List<MageEvent>();
-					SaveEvents();
-				}
-	
-			} else  {
-				this.cachedEvent = new List<MageEvent>();
-			}
-
-			// load action log cache
-			if(ES2.Exists(MageEngineSettings.GAME_ENGINE_ACTION_LOGS_KEY_LOOKUP)){
-				this.actionLogsKeyLookup = ES2.LoadList<string>(MageEngineSettings.GAME_ENGINE_ACTION_LOGS_KEY_LOOKUP);
-				if (this.actionLogsKeyLookup == null) {
-					this.actionLogsKeyLookup = new List<string>();
-				}
-			} else  {
-				this.actionLogsKeyLookup = new List<string>();
-			}
-
-			foreach(string key in this.actionLogsKeyLookup) {
-				if(ES2.Exists(key)){
-					List<ActionLog> tmp = ES2.LoadList<ActionLog>(key);
-					if (tmp == null) {
-						tmp =new List<ActionLog>();
-					} 
-					
-					this.cachedActionLog.Add(key, tmp);
-				} else  {
-					List<ActionLog> tmp =new List<ActionLog>();
-					this.cachedActionLog.Add(key, tmp);
-				}
-			}
-
 			// load screen cache
-			this.cachedScreenTime = LoadScreenCacheListData(MageEngineSettings.GAME_ENGINE_SCREEN_TIME_CACHE);
-
-			LoadCacheData<string>(MageEngineSettings.GAME_ENGINE_LAST_SCREEN);
-			LoadCacheData<DateTime>(MageEngineSettings.GAME_ENGINE_LAST_SCREEN_TIMESTAMP);
+			SceneTrackerHelper.GetInstance().LoadSceneCacheListData();
 
 			// Load User messages
 			MessageHelper.GetInstance().LoadUserMessages();
 
 			// load event counter
-			MageEventHelper.GetInstance().LoadEventCounterList();
+			MageEventHelper.GetInstance().LoadMageEventData();
 		}
 
 
@@ -902,67 +757,11 @@ namespace MageSDK.Client {
 
 		#region  Action Logs
 
-		private void AddLogger<T>() where T:BaseModel {
-			if (!this.cachedActionLog.Contains(LoggerID<T>())) {
-				List<ActionLog> tmp = new List<ActionLog>();
-				this.cachedActionLog.Add(LoggerID<T>(), tmp);
-				this.apiCounter.Add("SendGameUserActionLogRequest"+LoggerID<T>(), new OnlineCacheCounter(0, 3));
-			}
-		}
-
 		public void LogAction<T>(T actionData) where T: BaseModel {
-			if (!this.cachedActionLog.Contains(LoggerID<T>())) {
-				// add action
-				List<ActionLog> tmp = new List<ActionLog>();
-				tmp.Add(new ActionLog() {
-					action_date = DateTime.Now.ToString("dd-MM-yyyy"),
-					sequence = int.Parse(DateTime.Now.ToString("yyyyMMddHHmmss")),
-					action_detail = actionData.ToJson()
-				});
-				this.cachedActionLog.Add(LoggerID<T>(), tmp);
-
-				//init api cache counter
-				this.apiCounter.Add("SendGameUserActionLogRequest"+LoggerID<T>(), new OnlineCacheCounter(0, 3));
-				//save action
-				SaveActionsLogs<T>(tmp);
-			} else {
-				List<ActionLog> tmp = (List<ActionLog>)this.cachedActionLog[LoggerID<T>()];
-				tmp.Add(new ActionLog() {
-					action_date = DateTime.Now.ToString("dd-MM-yyyy"),
-					sequence = int.Parse(DateTime.Now.ToString("yyyyMMddHHmmss")),
-					action_detail = actionData.ToJson()
-				});
-				this.cachedActionLog[LoggerID<T>()] = tmp;
-				SaveActionsLogs<T>(tmp);
-			}
+			MageLogHelper.GetInstance().LogAction<T>(actionData);
 
 			SendActionLogs<T>();
 		}
-
-		private void ClearLogger<T>() where T:BaseModel {
-			List<ActionLog> tmp = new List<ActionLog>();
-			this.cachedActionLog[LoggerID<T>()] = tmp;
-			SaveActionsLogs<T>(tmp);
-		}
-
-		private string LoggerID<T>() {
-			string className = typeof(T).Name;
-			return MageEngineSettings.GAME_ENGINE_ACTION_LOGS + "_" + className;
-		}
-		
-		private List<ActionLog> GetLogger<T>() where T: BaseModel{
-			if (!this.cachedActionLog.Contains(LoggerID<T>())) {
-				AddLogger<T>();
-				return (List<ActionLog>)this.cachedActionLog[LoggerID<T>()];
-			} else {
-				return (List<ActionLog>)this.cachedActionLog[LoggerID<T>()];
-			}
-		}
-
-		private void SaveActionsLogs<T>(List<ActionLog> actionLogs) where T: BaseModel {
-			ES2.Save(actionLogs, LoggerID<T>());
-		}
-
 		private void SendActionLogs<T>() where T: BaseModel {
 
 			#if PLATFORM_TEST
@@ -971,15 +770,15 @@ namespace MageSDK.Client {
 				}
 			#endif
 
-			if (this.IsSendable("SendGameUserActionLogRequest" + LoggerID<T>())) {
-				SendGameUserActionLogRequest r = new SendGameUserActionLogRequest (GetLogger<T>());
+			if (this.IsSendable("SendGameUserActionLogRequest" + MageLogHelper.GetInstance().LoggerID<T>())) {
+				SendGameUserActionLogRequest r = new SendGameUserActionLogRequest (MageLogHelper.GetInstance().GetLogger<T>());
 			
 				//call to send action log api
 				ApiHandler.instance.SendApi<SendGameActionLogResponse>(
 					ApiSettings.API_SEND_GAME_USER_ACTION_LOG,
 					r, 
 					(result) => {
-						ClearLogger<T>();
+						MageLogHelper.GetInstance().ClearLogger<T>();
 					},
 					(errorStatus) => {
 						//Debug.Log("Error: " + errorStatus);
@@ -993,47 +792,7 @@ namespace MageSDK.Client {
 
 		}
 
-		private void AddScreenTime() {
-			// don't count when app is not active
-			if (!isAppActive) {
-				return;
-			}
-
-			if (cachedScreenTime == null) {
-				cachedScreenTime = new List<CacheScreenTime>();
-			}
-			DateTime now = DateTime.Now;
-
-			DateTime lastScreenTime = GetCacheData<DateTime>(MageEngineSettings.GAME_ENGINE_LAST_SCREEN_TIMESTAMP);
-			string lastScreen = GetCacheData<string>(MageEngineSettings.GAME_ENGINE_LAST_SCREEN);
-			string currentScreen = SceneManager.GetActiveScene().name;
-
-			double timeToAdd = (lastScreen == currentScreen) ? now.Subtract(lastScreenTime).TotalSeconds : 0;
-
-			bool found = false;
-			for (int i = 0; i < cachedScreenTime.Count; i++) {
-				if (cachedScreenTime[i].Key == currentScreen) {
-					found = true;
-					var newKvp = new CacheScreenTime(cachedScreenTime[i].Key, cachedScreenTime[i].Value + timeToAdd);
-					cachedScreenTime.RemoveAt(i);
-					cachedScreenTime.Insert(i, newKvp);
-				}
-			}
-
-			if (!found) {
-				var newKvp = new CacheScreenTime(currentScreen, timeToAdd);
-				cachedScreenTime.Insert(cachedScreenTime.Count, newKvp);
-			}
-
-			SaveScreenCacheListData(cachedScreenTime, MageEngineSettings.GAME_ENGINE_SCREEN_TIME_CACHE);
-			SaveCacheData<string>(currentScreen, MageEngineSettings.GAME_ENGINE_LAST_SCREEN);
-			SaveCacheData<DateTime>(now, MageEngineSettings.GAME_ENGINE_LAST_SCREEN_TIMESTAMP);
-		}
-
-		private void ResetScreenTime() {
-			SaveCacheData<DateTime>(DateTime.Now, MageEngineSettings.GAME_ENGINE_LAST_SCREEN_TIMESTAMP);
-			isAppActive = true;
-		}
+		
 
 
 		#endregion
@@ -1121,6 +880,34 @@ namespace MageSDK.Client {
 
 
 		#endregion
+
+		#region friends
+
+		public void GetRandomFriend(Action<User> getRandomFriendCallback) {
+			GetUserProfileRequest r = new GetUserProfileRequest ();
+
+			//call to login api
+			ApiHandler.instance.SendApi<GetUserProfileResponse>(
+				ApiSettings.API_GET_USER_PROFILE,
+				r, 
+				(result) => {
+					Debug.Log("Success: get user profile successfully");
+					Debug.Log("Profile result: " + result.ToJson());
+					getRandomFriendCallback(result.UserProfile);
+				},
+				(errorStatus) => {
+					Debug.Log("Error: " + errorStatus);
+					//do some other processing here
+				},
+				() => {
+					//timeout handler here
+					Debug.Log("Api call is timeout");
+				}
+			);
+		}
+
+		#endregion
+
 	
 	}
 }
