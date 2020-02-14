@@ -24,7 +24,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 918684957078432985}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.42, y: 0.25, z: 0}
+  m_LocalPosition: {x: 0.42, y: 0.25, z: 10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1640676760888846042}
@@ -57,7 +57,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 987538669410214940}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -1}
+  m_LocalPosition: {x: 0, y: 0, z: 10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1640676760888846042}
@@ -307,7 +307,6 @@ GameObject:
   - component: {fileID: 4633847064148598721}
   - component: {fileID: 4633847064148598722}
   - component: {fileID: 7405613407879878114}
-  - component: {fileID: 7405613406630032551}
   - component: {fileID: 8873148139002496857}
   m_Layer: 0
   m_Name: Cat_Red
@@ -403,18 +402,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   interactType: 0
   dragOffset: {x: 0, y: 0, z: 0}
---- !u!114 &7405613406630032551
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3744145199000751273}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 61c58be95bc0b4154808fbf11c56427f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &8873148139002496857
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -438,11 +425,11 @@ MonoBehaviour:
     buyPrice: 0
     priceType: 1
     itemState: 0
-    skins: []
-    skinId: 0
+    prefabName: 
     isAvailable: 1
     requireEquipments: 
     requirePets: 
+    favouriteToys: 
     skills: []
     petName: 
     shopOrder: 0
@@ -542,7 +529,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7776368225649195783}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.98, y: -0.02, z: 0}
+  m_LocalPosition: {x: 0.98, y: -0.02, z: 10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1640676760888846042}
@@ -716,7 +703,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &8380078248065643263
 Transform:
   m_ObjectHideFlags: 0

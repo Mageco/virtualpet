@@ -43,7 +43,6 @@ GameObject:
   - component: {fileID: 7167892414397784866}
   - component: {fileID: 7167892414397784865}
   - component: {fileID: 5040026468189022465}
-  - component: {fileID: 5040026469422090308}
   - component: {fileID: 7770314101947120951}
   m_Layer: 0
   m_Name: Parrot_1
@@ -139,18 +138,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   interactType: 0
   dragOffset: {x: 0, y: 0, z: 0}
---- !u!114 &5040026469422090308
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1207566469808353354}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 61c58be95bc0b4154808fbf11c56427f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &7770314101947120951
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -166,13 +153,15 @@ MonoBehaviour:
   data:
     iD: 0
     iconUrl: 
-    iconProfileUrl: 
     languageItem: []
     buyPrice: 0
     priceType: 1
     itemState: 0
-    petBig: 
+    prefabName: 
     isAvailable: 1
+    requireEquipments: 
+    requirePets: 
+    favouriteToys: 
     skills: []
     petName: 
     shopOrder: 0
@@ -223,6 +212,7 @@ MonoBehaviour:
   petPrefab: {fileID: 6135883093576006240, guid: 77354cf5f191c4b4291a5bbe27061c99,
     type: 3}
   charType: 5
+  gameType: 0
   enviromentType: 0
   direction: 1
   target: {x: 0, y: 0, z: 0}
@@ -232,6 +222,7 @@ MonoBehaviour:
   isAction: 0
   isMoving: 0
   actionType: 0
+  anim: {fileID: 0}
   charInteract: {fileID: 0}
   charScale: {fileID: 0}
   peePosition: {fileID: 952929783782276106}
@@ -293,7 +284,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &9079337188314607110
 Transform:
   m_ObjectHideFlags: 0
@@ -392,7 +383,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3425005586235936826}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.31, y: 0.1, z: 0}
+  m_LocalPosition: {x: 0.31, y: 0.1, z: 10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 3887479098509974073}
@@ -533,7 +524,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5250342594562590692}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.53, y: -0.06, z: 0}
+  m_LocalPosition: {x: 0.53, y: -0.06, z: 10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 3887479098509974073}
@@ -717,7 +708,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8984052043775769290}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -1}
+  m_LocalPosition: {x: 0, y: 0, z: 10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 3887479098509974073}
