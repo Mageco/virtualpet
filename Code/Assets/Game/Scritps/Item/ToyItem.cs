@@ -38,11 +38,17 @@ public class ToyItem : MonoBehaviour
 		originalScale = this.transform.localScale;
 		lastPosition = this.transform.position;
 		sprites = GetComponentsInChildren<SpriteRenderer>(true);
+		LoadSprite();
+	}
+
+    void LoadSprite()
+    {
+		sprites = GetComponentsInChildren<SpriteRenderer>(true);
+		colors.Clear();
 		for (int i = 0; i < sprites.Length; i++)
 		{
 			colors.Add(sprites[i].color);
 		}
-		obstructItem = this.GetComponentInChildren<ObstructItem>(true);
 	}
 
     protected virtual void Start()
@@ -72,6 +78,7 @@ public class ToyItem : MonoBehaviour
 						arrow.transform.parent = this.transform;
 						Vector3 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 						pos.z = -500;
+						pos.y += 5;
 						arrow.transform.position = pos;
 						MageManager.instance.PlaySoundName("BubbleButton", false);
 					}
@@ -206,8 +213,8 @@ public class ToyItem : MonoBehaviour
 		state = EquipmentState.Drag;
 		lastPosition = this.transform.position;
 		ItemManager.instance.SetCameraTarget(this.gameObject);
-		if (arrow != null)
-			Destroy(arrow);
+		//if (arrow != null)
+		//	Destroy(arrow);
 
 	}
 
