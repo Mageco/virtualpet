@@ -447,6 +447,16 @@ public class CharController : MonoBehaviour
             }
         }
 
+        if (data.Dirty > data.MaxDirty * 0.9f && data.SkillLearned(SkillType.Bath))
+        {
+            int ran = Random.Range(0, 100);
+            if (ran > 30)
+            {
+                actionType = ActionType.GoToBath;
+                return;
+            }
+        }
+
         if (data.Itchi > data.MaxItchi * 0.7f)
         {
             int ran = Random.Range(0, 100);
@@ -597,6 +607,10 @@ public class CharController : MonoBehaviour
         else if (actionType == ActionType.OnGarden)
         {
             StartCoroutine(Garden());
+        }
+        else if (actionType == ActionType.GoToBath)
+        {
+            StartCoroutine(GoToBath());
         }
     }
 
@@ -1358,26 +1372,7 @@ public class CharController : MonoBehaviour
     {
         if (enviromentType != EnviromentType.Toilet)
         {
-            if (data.GetSkillProgress(SkillType.Toilet) == 0)
-            {
-                if (GameManager.instance.IsEquipItem(ItemType.Toilet))
-                {
-                    //UIManager.instance.OnQuestNotificationPopup("Hold " + data.petName + " to the toilet and he will be happy");
-                }
-                else
-                {
-                    if (!GameManager.instance.IsEquipItem(ItemType.Clean))
-                    {
-                        //UIManager.instance.OnQuestNotificationPopup("You may need to buy a broom to clean your home");
-                    }
-                    else
-                    {
-                        //UIManager.instance.OnQuestNotificationPopup("You can buy a toilet for " + data.petName + " and " + data.petName + " will be happy");
-                    }
-                }
-            }
-
-            if (data.SkillLearned(SkillType.Toilet))
+             if (data.SkillLearned(SkillType.Toilet))
             {
                 SetTarget(PointType.Toilet);
                 yield return StartCoroutine(RunToPoint());
@@ -1390,32 +1385,24 @@ public class CharController : MonoBehaviour
                 OnLearnSkill(SkillType.Toilet);
             }
         }
-        else
+
+        if (!isAbort)
         {
-            if (data.GetSkillProgress(SkillType.Toilet) == 1)
+            anim.Play("Pee", 0);
+            int soundid = MageManager.instance.PlaySoundName("Pee", true);
+            MageManager.instance.PlaySoundName("PeeDrop", false);
+            Debug.Log("Pee");
+            float value = data.Pee;
+            Vector3 pos = peePosition.position;
+            pos.z = 10;
+            ItemManager.instance.SpawnPee(pos, value);
+            while (data.Pee > 0 && !isAbort)
             {
-                //UIManager.instance.OnQuestNotificationPopup("Good job " + data.petName + " will learn how to go to toilet soon!");
+                data.Pee -= data.ratePee * Time.deltaTime;
+                yield return new WaitForEndOfFrame();
             }
-            else if (data.GetSkillProgress(SkillType.Toilet) == 10)
-            {
-                //UIManager.instance.OnQuestNotificationPopup("Well done!! now " + data.petName + " can go to toilet by him self");
-            }
+            MageManager.instance.StopSound(soundid);
         }
-
-
-        anim.Play("Pee", 0);
-        int soundid = MageManager.instance.PlaySoundName("Pee", true);
-        MageManager.instance.PlaySoundName("PeeDrop", false);
-        Debug.Log("Pee");
-        float value = data.Pee;
-        ItemManager.instance.SpawnPee(peePosition.position + new Vector3(0, 0, 50), value);
-        while (data.Pee > 0 && !isAbort)
-        {
-            data.Pee -= data.ratePee * Time.deltaTime;
-            yield return new WaitForEndOfFrame();
-        }
-        MageManager.instance.StopSound(soundid);
-
 
         if (enviromentType == EnviromentType.Toilet)
         {
@@ -1441,25 +1428,6 @@ public class CharController : MonoBehaviour
     {
         if (enviromentType != EnviromentType.Toilet)
         {
-            if (data.GetSkillProgress(SkillType.Toilet) == 0)
-            {
-                if (GameManager.instance.IsEquipItem(ItemType.Toilet))
-                {
-                    UIManager.instance.OnQuestNotificationPopup("Hold " + data.petName + " to the toilet and he will be happy");
-                }
-                else
-                {
-                    if (!GameManager.instance.IsEquipItem(ItemType.Clean))
-                    {
-                        //UIManager.instance.OnQuestNotificationPopup("You may need to buy a broom to clean your home");
-                    }
-                    else
-                    {
-                        //UIManager.instance.OnQuestNotificationPopup("You can buy a toilet for " + data.petName + " so that " + data.petName + " will be happy");
-                    }
-                }
-            }
-
             if (data.SkillLearned(SkillType.Toilet))
             {
                 SetTarget(PointType.Toilet);
@@ -1473,29 +1441,23 @@ public class CharController : MonoBehaviour
                 OnLearnSkill(SkillType.Toilet);
             }
         }
-        else
+
+        if (!isAbort)
         {
-            if (data.GetSkillProgress(SkillType.Toilet) == 1)
+            anim.Play("Shit", 0);
+            MageManager.instance.PlaySoundName("Shit", false);
+            float value = data.Pee;
+
+            while (data.Shit > 0 && !isAbort)
             {
-                //UIManager.instance.OnQuestNotificationPopup("Good job " + data.petName + " will learn how to go to toilet soon!");
+                data.Shit -= data.rateShit * Time.deltaTime;
+                yield return new WaitForEndOfFrame();
             }
-            else if (data.GetSkillProgress(SkillType.Toilet) == 10)
-            {
-                //UIManager.instance.OnQuestNotificationPopup("Well done!! " + data.petName + " can go to toilet by him self");
-            }
+            Vector3 pos = peePosition.position;
+            pos.z = pos.y * 10;
+            ItemManager.instance.SpawnShit(shitPosition.position, value);
         }
 
-
-        anim.Play("Shit", 0);
-        MageManager.instance.PlaySoundName("Shit", false);
-        float value = data.Pee;
-
-        while (data.Shit > 0 && !isAbort)
-        {
-            data.Shit -= data.rateShit * Time.deltaTime;
-            yield return new WaitForEndOfFrame();
-        }
-        ItemManager.instance.SpawnShit(shitPosition.position, value);
 
         if (enviromentType == EnviromentType.Toilet)
         {
@@ -1638,6 +1600,23 @@ public class CharController : MonoBehaviour
         CheckAbort();
     }
 
+    protected virtual IEnumerator GoToBath()
+    {
+        if (enviromentType != EnviromentType.Bath)
+        {
+            if (data.SkillLearned(SkillType.Bath))
+            {
+                SetTarget(PointType.Bath);
+                yield return StartCoroutine(RunToPoint());
+                ItemCollider col = ItemManager.instance.GetItemCollider(ItemType.Bath);
+                yield return StartCoroutine(JumpUp(25, 4, col.transform.position + new Vector3(0, col.height, 0), col.height));
+                enviromentType = EnviromentType.Bath;
+                CheckEnviroment();
+            }
+        }
+        CheckAbort();
+    }
+
     protected virtual IEnumerator Bed()
     {
         int ran = Random.Range(0, 100);
@@ -1660,19 +1639,6 @@ public class CharController : MonoBehaviour
     {
         if (enviromentType != EnviromentType.Bed)
         {
-            if (data.GetSkillProgress(SkillType.Sleep) == 0)
-            {
-                if (GameManager.instance.IsEquipItem(ItemType.Bed))
-                {
-                    //UIManager.instance.OnQuestNotificationPopup("Hold " + data.petName + " to the bed and he will be happy");
-                }
-                else
-                {
-                    //UIManager.instance.OnQuestNotificationPopup("You can buy a bed for " + data.petName + " and " + data.petName + " will be happy");
-                }
-            }
-
-
             if (data.SkillLearned(SkillType.Sleep))
             {
                 SetTarget(PointType.Sleep);
@@ -1686,20 +1652,7 @@ public class CharController : MonoBehaviour
                 OnLearnSkill(SkillType.Sleep);
             }
         }
-        else
-        {
-            if (data.GetSkillProgress(SkillType.Toilet) == 1)
-            {
-                //UIManager.instance.OnQuestNotificationPopup("Good job " + data.petName + " will learn how to go to bed soon!");
-            }
-            else if (data.GetSkillProgress(SkillType.Toilet) == 10)
-            {
-                //UIManager.instance.OnQuestNotificationPopup("Well done!! " + data.petName + " can go to bed by him self");
-            }
-        }
-
-
-
+        
 
         anim.Play("Sleep", 0);
 

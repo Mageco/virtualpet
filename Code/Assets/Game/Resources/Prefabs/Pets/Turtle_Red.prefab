@@ -43,10 +43,9 @@ GameObject:
   - component: {fileID: 8072833312893950004}
   - component: {fileID: 8072833312893950007}
   - component: {fileID: 6233204340961006103}
-  - component: {fileID: 6233204341271311186}
   - component: {fileID: 588894333920148096}
   m_Layer: 0
-  m_Name: Turtle_1
+  m_Name: Turtle_Red
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -139,18 +138,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   interactType: 0
   dragOffset: {x: 0, y: 0, z: 0}
---- !u!114 &6233204341271311186
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 266605466233539420}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 61c58be95bc0b4154808fbf11c56427f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &588894333920148096
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -166,13 +153,15 @@ MonoBehaviour:
   data:
     iD: 0
     iconUrl: 
-    iconProfileUrl: 
     languageItem: []
     buyPrice: 0
     priceType: 1
     itemState: 0
-    petBig: 
+    prefabName: 
     isAvailable: 1
+    requireEquipments: 
+    requirePets: 
+    favouriteToys: 
     skills: []
     petName: 
     shopOrder: 0
@@ -223,6 +212,7 @@ MonoBehaviour:
   petPrefab: {fileID: 3085834020186192874, guid: f80ce286d6ee24367ac9ca792c6e06bf,
     type: 3}
   charType: 3
+  gameType: 0
   enviromentType: 0
   direction: 1
   target: {x: 0, y: 0, z: 0}
@@ -232,6 +222,7 @@ MonoBehaviour:
   isAction: 0
   isMoving: 0
   actionType: 0
+  anim: {fileID: 0}
   charInteract: {fileID: 0}
   charScale: {fileID: 0}
   peePosition: {fileID: 2182121128206862108}
@@ -263,7 +254,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2589279659789558523
 Transform:
   m_ObjectHideFlags: 0
@@ -503,7 +494,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4393577421753559852}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.57, y: 0.52, z: 0}
+  m_LocalPosition: {x: 0.57, y: 0.52, z: 10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 2774805233772994863}
@@ -627,7 +618,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6211401248924772477}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -1}
+  m_LocalPosition: {x: 0, y: 0, z: 10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 2774805233772994863}
@@ -717,7 +708,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6606210872649972978}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.3, y: 0.02, z: 0}
+  m_LocalPosition: {x: 0.3, y: 0.02, z: 10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 2774805233772994863}

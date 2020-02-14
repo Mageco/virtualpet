@@ -115,7 +115,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1407224981598547764}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.3, y: 0.02, z: 0}
+  m_LocalPosition: {x: 0.3, y: 0.02, z: 10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 7973791138900112105}
@@ -208,7 +208,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2169005374436768699}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -1}
+  m_LocalPosition: {x: 0, y: 0, z: 10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 7973791138900112105}
@@ -317,7 +317,6 @@ GameObject:
   - component: {fileID: 4045069485606472690}
   - component: {fileID: 4045069485606472689}
   - component: {fileID: 2209653544821457361}
-  - component: {fileID: 2209653546054672532}
   - component: {fileID: 4613553149749209414}
   m_Layer: 0
   m_Name: Turtle_Pink
@@ -413,18 +412,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   interactType: 0
   dragOffset: {x: 0, y: 0, z: 0}
---- !u!114 &2209653546054672532
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5447563490701367450}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 61c58be95bc0b4154808fbf11c56427f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &4613553149749209414
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -444,11 +431,11 @@ MonoBehaviour:
     buyPrice: 0
     priceType: 1
     itemState: 0
-    skins: []
-    skinId: 0
+    prefabName: 
     isAvailable: 1
     requireEquipments: 
     requirePets: 
+    favouriteToys: 
     skills: []
     petName: 
     shopOrder: 0
@@ -541,7 +528,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &7765461685032579389
 Transform:
   m_ObjectHideFlags: 0
@@ -781,7 +768,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8418231560363276522}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.57, y: 0.52, z: 0}
+  m_LocalPosition: {x: 0.57, y: 0.52, z: 10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 7973791138900112105}

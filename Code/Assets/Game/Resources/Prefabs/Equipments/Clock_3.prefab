@@ -9781,11 +9781,10 @@ GameObject:
   m_Component:
   - component: {fileID: 3420501278641985054}
   - component: {fileID: 196908651}
-  - component: {fileID: 196908650}
   - component: {fileID: 1327030391654128937}
-  - component: {fileID: 5471074841694161985}
   - component: {fileID: 422286013750983123}
   - component: {fileID: 7691422205360763540}
+  - component: {fileID: 728475890671786342}
   m_Layer: 9
   m_Name: Clock_1
   m_TagString: Untagged
@@ -9801,7 +9800,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3420501278641985055}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.86, y: 23, z: 2.1363943}
+  m_LocalPosition: {x: -0.86, y: 23, z: 50}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 3420501278580225491}
@@ -9830,18 +9829,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &196908650
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3420501278641985055}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 61c58be95bc0b4154808fbf11c56427f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1327030391654128937
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9857,18 +9844,6 @@ MonoBehaviour:
   hour: {fileID: 1890780236099994410}
   minutes: {fileID: 3757894100738451715}
   second: {fileID: 534646374}
---- !u!114 &5471074841694161985
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3420501278641985055}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 61c58be95bc0b4154808fbf11c56427f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!61 &422286013750983123
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -9916,6 +9891,32 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &728475890671786342
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3420501278641985055}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d2367fc09d9c472090672a3e878fc4f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  height: 0
+  depth: 0
+  width: 0
+  edge: 0
+  anchorPoint: {fileID: 0}
+  startPoint: {fileID: 0}
+  endPoint: {fileID: 0}
+  item: {fileID: 0}
+  state: 0
+  lastPosition: {x: 0, y: 0, z: 0}
+  boundX: {x: -40, y: 60}
+  boundY: {x: 5, y: 25}
+  pets: []
+  movementType: 1
 --- !u!1 &3630829128990946974
 GameObject:
   m_ObjectHideFlags: 0

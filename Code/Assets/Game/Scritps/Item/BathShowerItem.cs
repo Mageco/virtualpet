@@ -10,6 +10,7 @@ public class BathShowerItem : MonoBehaviour
 	Animator anim;
 	public bool isDrag = false;
 	Vector3 originalPosition;
+	Vector3 lastPosition;
 	public bool isBusy = false;
 	public bool isShower = false;
 	public GameObject showerEffect;
@@ -87,7 +88,7 @@ public class BathShowerItem : MonoBehaviour
         ItemManager.instance.SetCameraTarget(this.gameObject);
 		dragOffset = Camera.main.ScreenToWorldPoint (Input.mousePosition) - this.transform.position ;
 		isDrag = true;
-
+		lastPosition = this.transform.position;
 	}
 
 	void OnMouseUp()
@@ -102,11 +103,11 @@ public class BathShowerItem : MonoBehaviour
 	IEnumerator Return()
 	{
 		isBusy = true;
-		while (Vector2.Distance (this.transform.position, originalPosition) > 1f) {
-			this.transform.position = Vector3.Lerp (this.transform.position, originalPosition, Time.deltaTime * 5);
+		while (Vector2.Distance (this.transform.position, lastPosition) > 1f) {
+			this.transform.position = Vector3.Lerp (this.transform.position, lastPosition, Time.deltaTime * 5);
 			yield return new WaitForEndOfFrame ();
 		}
-		this.transform.position = originalPosition;
+		this.transform.position = lastPosition;
 		isBusy = false;
 	}
 		

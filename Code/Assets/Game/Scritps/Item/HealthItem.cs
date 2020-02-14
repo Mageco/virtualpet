@@ -7,8 +7,6 @@ public class HealthItem : ItemDrag
 {
     ItemObject item;
     public CharController pet;
-    bool eated = false;
-
     public float amounnt = 1;
     public float timeDelay = 10;
     public SickType sickType = SickType.Sick;
@@ -16,7 +14,7 @@ public class HealthItem : ItemDrag
     public GameObject effectPrefab;
 
     GameObject effect;
-
+    public bool isActive = false;
 
     public void OnDestroy()
     {
@@ -35,7 +33,11 @@ public class HealthItem : ItemDrag
 
     protected override void Start(){
         base.Start();
-        item = this.transform.parent.GetComponent<ItemObject>();
+        item = this.transform.parent.parent.parent.GetComponent<ItemObject>();
+        if (sickType == SickType.Sick)
+            amounnt = DataHolder.GetItem(item.itemID).health;
+        else
+            amounnt = DataHolder.GetItem(item.itemID).injured;
     }
 
     protected override void Update()
@@ -59,8 +61,9 @@ public class HealthItem : ItemDrag
 
     void OnActive(CharController pet)
     {
-        if(!isBusy && !eated){
-            eated = true;
+        if(!isBusy && !isActive)
+        {
+            isActive = true;
             anim.Play("Active");
             pet.OnHealth(sickType,amounnt);
             MageManager.instance.PlaySoundName("Heal",false);
@@ -84,11 +87,10 @@ public class HealthItem : ItemDrag
 
     void Reset(){
         StopAllCoroutines();
-        this.transform.position = originalPosition;
+        this.transform.position = lastPosition;
         this.transform.rotation = originalRotation;
-		
+        isActive = false;
         anim.Play("Idle", 0);
-        eated = false;
         isDrag = false;
         isBusy = false;
     }

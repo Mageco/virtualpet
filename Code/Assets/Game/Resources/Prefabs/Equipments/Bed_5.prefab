@@ -9598,7 +9598,7 @@ GameObject:
   - component: {fileID: 3496216689732433814}
   - component: {fileID: 7222405197165983554}
   - component: {fileID: 6896990022316119573}
-  m_Layer: 9
+  m_Layer: 15
   m_Name: Bed
   m_TagString: Bed
   m_Icon: {fileID: 0}
@@ -9693,6 +9693,7 @@ MonoBehaviour:
   boundX: {x: -40, y: 60}
   boundY: {x: 0, y: 0}
   pets: []
+  movementType: 0
 --- !u!50 &6896990022316119573
 Rigidbody2D:
   serializedVersion: 4
@@ -9725,7 +9726,8 @@ GameObject:
   - component: {fileID: 3093005956699460125}
   - component: {fileID: 6320065004245545186}
   - component: {fileID: 1281321511503036158}
-  m_Layer: 0
+  - component: {fileID: 406740923}
+  m_Layer: 14
   m_Name: Obstruct
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9740,7 +9742,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8715259787942574206}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -2.165, z: 56}
+  m_LocalPosition: {x: 0, y: -2.165, z: 10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 6156094059106791757}
@@ -9774,7 +9776,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 1.1702166, y: 3.3645525}
+  m_Offset: {x: 1.1702166, y: 1}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -9785,5 +9787,18 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 10, y: 9}
+  m_Size: {x: 9, y: 4}
   m_EdgeRadius: 0
+--- !u!114 &406740923
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8715259787942574206}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5adb53d702b34c46ad8f1a87326f238, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemCollides: []

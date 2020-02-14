@@ -91,6 +91,7 @@ public class EatItem : MonoBehaviour
 						Vector3 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 						pos.z = -500;
 						arrow.transform.position = pos;
+						MageManager.instance.PlaySoundName("BubbleButton", false);
 					}
 				}
 				else
@@ -165,9 +166,16 @@ public class EatItem : MonoBehaviour
 			else
 			{
 				if (obstructItem.itemCollides.Count > 0)
+				{
 					StartCoroutine(ReturnPosition(lastPosition));
+					MageManager.instance.PlaySoundName("Drag", false);
+				}
+
 				else
+				{
+					MageManager.instance.PlaySoundName("BubbleButton", false);
 					state = EquipmentState.Idle;
+				}
 			}
 		}
 		OffDrag();

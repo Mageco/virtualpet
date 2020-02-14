@@ -6,10 +6,14 @@ using UnityEngine.EventSystems;
 public class FlowerJarItem : BaseDragItem
 {
 	public GameObject breakObject;
+	public Vector3 localPosition;
+	public Transform parent;
 
 	protected override void Start(){
 		base.Start();
 		breakObject.SetActive(false);
+		localPosition = this.transform.localPosition;
+		parent = this.transform.parent;
 	}
 	protected override void OnHit()
     {
@@ -19,7 +23,7 @@ public class FlowerJarItem : BaseDragItem
 
 	IEnumerator OnHitCoroutine(){
 		state = ItemDragState.Hited;
-		
+		this.transform.parent = null;
 		Vector3 pos = this.transform.position;
 		pos.z += 2;
 		this.transform.position = pos;
@@ -31,10 +35,9 @@ public class FlowerJarItem : BaseDragItem
         ItemManager.instance.ResetCameraTarget();
 		yield return new WaitForSeconds(2);
 		breakObject.SetActive(false);
-		this.transform.position = originalPosition;
-			//CharController char = ;
-		
-		this.transform.rotation = originalRotation;
+		this.transform.parent = parent;
+		this.transform.localPosition = localPosition;
+        this.transform.rotation = originalRotation;
 		height = originalHeight;
 		this.scalePosition = this.transform.position + new Vector3(0,-height,0);
 		

@@ -50,7 +50,6 @@ public class CharTurtle : CharController
                 data.Sleep += data.rateSleep * Time.deltaTime;
                 yield return new WaitForEndOfFrame();
             }
-            GameManager.instance.AddExp(5, data.iD);
         }
         else 
         {

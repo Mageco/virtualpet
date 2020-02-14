@@ -47,7 +47,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &4339251042066814102
 Transform:
   m_ObjectHideFlags: 0
@@ -135,7 +135,6 @@ GameObject:
   - component: {fileID: 8061041824581529177}
   - component: {fileID: 8061041824581529178}
   - component: {fileID: 5284463604574397562}
-  - component: {fileID: 5284463603274106175}
   - component: {fileID: 1727915173924605165}
   m_Layer: 0
   m_Name: Turtle_Gold
@@ -231,18 +230,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   interactType: 0
   dragOffset: {x: 0, y: 0, z: 0}
---- !u!114 &5284463603274106175
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2046263391886212401}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 61c58be95bc0b4154808fbf11c56427f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1727915173924605165
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -262,11 +249,11 @@ MonoBehaviour:
     buyPrice: 0
     priceType: 1
     itemState: 0
-    skins: []
-    skinId: 0
+    prefabName: 
     isAvailable: 1
     requireEquipments: 
     requirePets: 
+    favouriteToys: 
     skills: []
     petName: 
     shopOrder: 0
@@ -396,7 +383,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2535520645379808577}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.57, y: 0.52, z: 0}
+  m_LocalPosition: {x: 0.57, y: 0.52, z: 10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4131194335870539586}
@@ -597,7 +584,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4934568866238663327}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.3, y: 0.02, z: 0}
+  m_LocalPosition: {x: 0.3, y: 0.02, z: 10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4131194335870539586}
@@ -630,7 +617,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5324857238019399184}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -1}
+  m_LocalPosition: {x: 0, y: 0, z: 10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4131194335870539586}

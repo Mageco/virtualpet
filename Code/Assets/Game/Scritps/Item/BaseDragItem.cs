@@ -146,6 +146,7 @@ public class BaseDragItem : MonoBehaviour
                 state = ItemDragState.Highlight;
 
             touchTime += Time.deltaTime;
+            
         }
     }
 
@@ -245,11 +246,11 @@ public class BaseDragItem : MonoBehaviour
 
         if (state == ItemDragState.None)
         {
+            originalPosition = this.transform.position;
             dragOffset = Camera.main.ScreenToWorldPoint(Input.mousePosition) - this.transform.position;
             state = ItemDragState.Drag;
             ItemManager.instance.SetCameraTarget(this.gameObject);
         }
-
     }
 
     public virtual void EndDrag()
