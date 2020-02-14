@@ -17,11 +17,15 @@ public class FruitItem : MonoBehaviour
     public float maxScale = 1f;
     public float maxTimeCalculated = 1;
     float timeCaculated = 0;
+    CircleCollider2D collider;
+    Vector3 clickPosition;
 
     void Awake(){
+        collider = this.GetComponent<CircleCollider2D>();
         step = Random.Range(0, steps.Length);
         time = Random.Range(0, maxTime[step]);
         OnStep();
+       
     }
     // Start is called before the first frame update
     void Start()
@@ -66,12 +70,18 @@ public class FruitItem : MonoBehaviour
 
     }
 
+    private void OnMouseDown()
+    {
+        clickPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+    }
+
     void OnMouseUp(){
 
         if (IsPointerOverUIObject())
             return;
 
-        if(step == steps.Length - 1){
+        if(step == steps.Length - 1 && Vector2.Distance(Camera.main.ScreenToWorldPoint(Input.mousePosition), clickPosition) < 0.1f)
+        {
             Pick();
         }
         
@@ -111,6 +121,13 @@ public class FruitItem : MonoBehaviour
         {
             steps[step].transform.localScale = new Vector3(minScale, minScale, 1);
         }
+
+        if (step < steps.Length - 1)
+        {
+            collider.enabled = false;
+        }
+        else
+            collider.enabled = true;
     }
 
     void Grow()

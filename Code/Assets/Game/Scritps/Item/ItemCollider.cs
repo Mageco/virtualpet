@@ -202,7 +202,8 @@ public class ItemCollider : MonoBehaviour
 
 	private void OnDrag()
 	{
-		animator.enabled = false;
+		if (animator != null)
+			animator.enabled = false;
         for(int i = 0; i < animParts.Length; i++)
         {
 			animParts[i].enabled = false;
@@ -222,7 +223,8 @@ public class ItemCollider : MonoBehaviour
 		{
 			animParts[i].enabled = true;
 		}
-		animator.enabled = true;
+        if(animator != null)
+		    animator.enabled = true;
 		state = EquipmentState.Idle;
 		dragOffset = Vector3.zero;
 		dragTime = 0;

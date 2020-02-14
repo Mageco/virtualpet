@@ -133,6 +133,16 @@ public class ShopPanel : MonoBehaviour
                 }
             }
         }
+        else if (currentTab == 5)
+        {
+            for (int i = 0; i < DataHolder.Items().GetDataCount(); i++)
+            {
+                if ((int)DataHolder.Item(i).itemType == (int)ItemType.Fruit)
+                {
+                    items.Add(DataHolder.Item(i));
+                }
+            }
+        }
         if (currentTab != 1)
         {
             items.Sort((p1, p2) => (p1.shopOrder).CompareTo(p2.shopOrder));

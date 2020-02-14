@@ -1372,7 +1372,7 @@ public class CharController : MonoBehaviour
     {
         if (enviromentType != EnviromentType.Toilet)
         {
-             if (data.SkillLearned(SkillType.Toilet))
+            if (data.SkillLearned(SkillType.Toilet))
             {
                 SetTarget(PointType.Toilet);
                 yield return StartCoroutine(RunToPoint());
@@ -1652,7 +1652,7 @@ public class CharController : MonoBehaviour
                 OnLearnSkill(SkillType.Sleep);
             }
         }
-        
+
 
         anim.Play("Sleep", 0);
 
@@ -1878,7 +1878,6 @@ public class CharController : MonoBehaviour
                         if (count == n - 1)
                         {
                             pos1.x += 15 * Time.deltaTime;
-                            Debug.Log(pos1.x);
                         }
                         agent.transform.position = pos1;
 
@@ -2201,7 +2200,7 @@ public class CharController : MonoBehaviour
             if (col.tag == "Table")
             {
                 enviromentType = EnviromentType.Table;
-                
+
             }
             else if (col.tag == "Bath")
             {
@@ -2215,10 +2214,10 @@ public class CharController : MonoBehaviour
             {
                 enviromentType = EnviromentType.Toilet;
             }
-             
-            if(enviromentType != EnviromentType.Room)
+
+            if (enviromentType != EnviromentType.Room)
                 col.pets.Add(this);
- 
+
 
             dropPosition.y = charScale.scalePosition.y + col.height;
             if (this.transform.position.x > col.transform.position.x + col.width / 2 - col.edge)
