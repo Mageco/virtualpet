@@ -72,6 +72,7 @@ public class ToyItem : MonoBehaviour
 						arrow.transform.parent = this.transform;
 						Vector3 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 						pos.z = -500;
+						pos.y += 5;
 						arrow.transform.position = pos;
 						MageManager.instance.PlaySoundName("BubbleButton", false);
 					}
