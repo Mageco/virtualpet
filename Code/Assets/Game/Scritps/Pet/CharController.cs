@@ -1386,7 +1386,15 @@ public class CharController : MonoBehaviour
             }
         }
 
-        if (!isAbort)
+        if (enviromentType == EnviromentType.Toilet)
+        {
+            if (ItemManager.instance.GetItem(ItemType.Toilet) != null)
+            {
+                ItemManager.instance.GetItem(ItemType.Toilet).GetComponentInChildren<ItemCollider>().pets.Add(this);
+            }
+        }
+
+            if (!isAbort)
         {
             anim.Play("Pee", 0);
             int soundid = MageManager.instance.PlaySoundName("Pee", true);
@@ -1439,6 +1447,14 @@ public class CharController : MonoBehaviour
             else
             {
                 OnLearnSkill(SkillType.Toilet);
+            }
+        }
+
+        if (enviromentType == EnviromentType.Toilet)
+        {
+            if (ItemManager.instance.GetItem(ItemType.Toilet) != null)
+            {
+                ItemManager.instance.GetItem(ItemType.Toilet).GetComponentInChildren<ItemCollider>().pets.Add(this);
             }
         }
 
@@ -1653,6 +1669,13 @@ public class CharController : MonoBehaviour
             }
         }
 
+        if (enviromentType == EnviromentType.Bed)
+        {
+            if (ItemManager.instance.GetItem(ItemType.Bed) != null)
+            {
+                ItemManager.instance.GetItem(ItemType.Bed).GetComponentInChildren<ItemCollider>().pets.Add(this);
+            }
+        }
 
         anim.Play("Sleep", 0);
 

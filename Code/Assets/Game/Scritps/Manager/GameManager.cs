@@ -584,7 +584,8 @@ public class GameManager : MonoBehaviour
 
     public void AddCoin(int c){
         myPlayer.Coin += c;
-        myPlayer.collectedCoin += c;
+        if(c > 0)
+            myPlayer.collectedCoin += c;
         if(UIManager.instance != null)
             UIManager.instance.coinText.transform.parent.GetComponent<Animator>().Play("Active", 0);
         SavePlayer();
@@ -592,7 +593,8 @@ public class GameManager : MonoBehaviour
 
     public void AddHappy(int c){
         myPlayer.Happy += c;
-        myPlayer.collectedHappy += c;
+        if (c > 0)
+            myPlayer.collectedHappy += c;
         int temp = myPlayer.level;
         int l = 1;
         float e = 20 * l + 20 * l * l;
