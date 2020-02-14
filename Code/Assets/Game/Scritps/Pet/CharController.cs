@@ -1454,7 +1454,7 @@ public class CharController : MonoBehaviour
                 yield return new WaitForEndOfFrame();
             }
             Vector3 pos = peePosition.position;
-            pos.z = pos.y * 10;
+            pos.z = pos.y * 10 + 10;
             ItemManager.instance.SpawnShit(shitPosition.position, value);
         }
 
