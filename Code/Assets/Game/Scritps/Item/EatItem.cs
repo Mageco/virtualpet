@@ -75,7 +75,7 @@ public class EatItem : MonoBehaviour
 		if (state == EquipmentState.Hold)
 		{
 			dragTime += Time.deltaTime;
-			if (dragTime > 0.1f)
+			if (dragTime > 0.2f)
 			{
 				if (Vector2.Distance(Camera.main.ScreenToWorldPoint(Input.mousePosition), clickPosition) < 0.1f)
 				{
@@ -159,7 +159,7 @@ public class EatItem : MonoBehaviour
 	{
 		if (state == EquipmentState.Drag || state == EquipmentState.Hold)
 		{
-			if (dragTime < 0.1f)
+			if (dragTime < 0.2f)
 			{
 				OnClick();
 			}
