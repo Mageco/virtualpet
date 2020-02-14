@@ -183,7 +183,8 @@ public class BaseFloorItem : MonoBehaviour
 	{
 		for (int i = 0; i < sprites.Length; i++)
 		{
-			sprites[i].color = colors[i];
+            if(sprites[i] != null)
+			    sprites[i].color = colors[i];
 		}
 	}
 
