@@ -447,6 +447,16 @@ public class CharController : MonoBehaviour
             }
         }
 
+        if (data.Dirty > data.MaxDirty * 0.9f && data.SkillLearned(SkillType.Bath))
+        {
+            int ran = Random.Range(0, 100);
+            if (ran > 30)
+            {
+                actionType = ActionType.GoToBath;
+                return;
+            }
+        }
+
         if (data.Itchi > data.MaxItchi * 0.7f)
         {
             int ran = Random.Range(0, 100);
@@ -597,6 +607,10 @@ public class CharController : MonoBehaviour
         else if (actionType == ActionType.OnGarden)
         {
             StartCoroutine(Garden());
+        }
+        else if (actionType == ActionType.GoToBath)
+        {
+            StartCoroutine(GoToBath());
         }
     }
 
@@ -1586,6 +1600,23 @@ public class CharController : MonoBehaviour
         CheckAbort();
     }
 
+    protected virtual IEnumerator GoToBath()
+    {
+        if (enviromentType != EnviromentType.Bath)
+        {
+            if (data.SkillLearned(SkillType.Bath))
+            {
+                SetTarget(PointType.Bath);
+                yield return StartCoroutine(RunToPoint());
+                ItemCollider col = ItemManager.instance.GetItemCollider(ItemType.Bath);
+                yield return StartCoroutine(JumpUp(25, 4, col.transform.position + new Vector3(0, col.height, 0), col.height));
+                enviromentType = EnviromentType.Bath;
+                CheckEnviroment();
+            }
+        }
+        CheckAbort();
+    }
+
     protected virtual IEnumerator Bed()
     {
         int ran = Random.Range(0, 100);
@@ -1608,19 +1639,6 @@ public class CharController : MonoBehaviour
     {
         if (enviromentType != EnviromentType.Bed)
         {
-            if (data.GetSkillProgress(SkillType.Sleep) == 0)
-            {
-                if (GameManager.instance.IsEquipItem(ItemType.Bed))
-                {
-                    //UIManager.instance.OnQuestNotificationPopup("Hold " + data.petName + " to the bed and he will be happy");
-                }
-                else
-                {
-                    //UIManager.instance.OnQuestNotificationPopup("You can buy a bed for " + data.petName + " and " + data.petName + " will be happy");
-                }
-            }
-
-
             if (data.SkillLearned(SkillType.Sleep))
             {
                 SetTarget(PointType.Sleep);
@@ -1634,20 +1652,7 @@ public class CharController : MonoBehaviour
                 OnLearnSkill(SkillType.Sleep);
             }
         }
-        else
-        {
-            if (data.GetSkillProgress(SkillType.Toilet) == 1)
-            {
-                //UIManager.instance.OnQuestNotificationPopup("Good job " + data.petName + " will learn how to go to bed soon!");
-            }
-            else if (data.GetSkillProgress(SkillType.Toilet) == 10)
-            {
-                //UIManager.instance.OnQuestNotificationPopup("Well done!! " + data.petName + " can go to bed by him self");
-            }
-        }
-
-
-
+        
 
         anim.Play("Sleep", 0);
 
