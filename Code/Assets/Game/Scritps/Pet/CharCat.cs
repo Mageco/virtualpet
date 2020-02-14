@@ -43,7 +43,7 @@ public class CharCat : CharController
         else if (ran < 40){
             anim.Play("Idle_" + this.direction.ToString(), 0);
             yield return StartCoroutine(Wait(Random.Range(1, 5)));
-        }else if(ran < 70 && GameManager.instance.myPlayer.questId > 19)
+        }else if(ran < 70)
         {
             SetTarget(PointType.Sunny);
             yield return StartCoroutine(RunToPoint());
@@ -53,7 +53,6 @@ public class CharCat : CharController
                 data.Sleep += data.rateSleep * Time.deltaTime;
                 yield return new WaitForEndOfFrame();
             }
-            GameManager.instance.AddExp(5, data.iD);
         }
         else{
             if(GetRandomPoint(PointType.Table) != null)
@@ -91,7 +90,6 @@ public class CharCat : CharController
                 data.Sleep += data.rateSleep * Time.deltaTime;
                 yield return new WaitForEndOfFrame();
             }
-            GameManager.instance.AddExp(5,data.iD);
         }
         if(!isAbort)
             yield return StartCoroutine(JumpDown(-2,10,30)); 

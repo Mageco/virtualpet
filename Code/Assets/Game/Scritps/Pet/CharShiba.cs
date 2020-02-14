@@ -51,24 +51,12 @@ public class CharShiba : CharController
                 yield return StartCoroutine(RunToPoint());
                 anim.Play("Sit");
                 yield return StartCoroutine(Wait(Random.Range(2f, 10f)));
-                int ran1 = Random.Range(0, 100);
-                if(ran1 > 50)
-                {
-                    yield return StartCoroutine(DoAnim("Love"));
-                    GameManager.instance.AddExp(5, data.iD);
-                }
             }else
             {
                 SetTarget(PointType.Fishing);
                 yield return StartCoroutine(RunToPoint());
                 anim.Play("Sit");
                 yield return StartCoroutine(Wait(Random.Range(2f, 10f)));
-                int ran1 = Random.Range(0, 100);
-                if (ran1 > 50)
-                {
-                    yield return StartCoroutine(DoAnim("Love"));
-                    GameManager.instance.AddExp(5, data.iD);
-                }
             }
         }
         CheckAbort();

@@ -1408,7 +1408,9 @@ public class CharController : MonoBehaviour
         MageManager.instance.PlaySoundName("PeeDrop", false);
         Debug.Log("Pee");
         float value = data.Pee;
-        ItemManager.instance.SpawnPee(peePosition.position + new Vector3(0, 0, 50), value);
+        Vector3 pos = peePosition.position;
+        pos.z = 100;
+        ItemManager.instance.SpawnPee(pos, value);
         while (data.Pee > 0 && !isAbort)
         {
             data.Pee -= data.ratePee * Time.deltaTime;
@@ -1495,6 +1497,8 @@ public class CharController : MonoBehaviour
             data.Shit -= data.rateShit * Time.deltaTime;
             yield return new WaitForEndOfFrame();
         }
+        Vector3 pos = peePosition.position;
+        pos.z = pos.y * 10;
         ItemManager.instance.SpawnShit(shitPosition.position, value);
 
         if (enviromentType == EnviromentType.Toilet)
