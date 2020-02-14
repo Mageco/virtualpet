@@ -166,9 +166,9 @@ public class PetRequirementPanel : MonoBehaviour
 
     public void OnCollect()
     {
-        UIManager.instance.BuyPet(petId);
+        GameManager.instance.AddPet(petId);
+        GameManager.instance.EquipPet(petId);
         this.Close();
-        //UIManager.instance.OnConfirmBuyPetPopup(DataHolder.GetPet(petId));
     }
 
     void ClearItems()

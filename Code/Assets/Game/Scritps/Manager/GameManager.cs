@@ -102,7 +102,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    void AddPet(int itemId)
+    public void AddPet(int itemId)
     {
         Pet p = new Pet(itemId);
         p.itemState = ItemState.Have;
