@@ -210,6 +210,7 @@ GameObject:
   - component: {fileID: 2638271170756502287}
   - component: {fileID: 4676796435724402245}
   - component: {fileID: 1357536302157261149}
+  - component: {fileID: 2119510750011332877}
   m_Layer: 14
   m_Name: Obstruct
   m_TagString: Untagged
@@ -225,7 +226,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4288883823509646505}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 8458131891293945121}
@@ -272,6 +273,19 @@ MonoBehaviour:
   shapeType: 1
   extraOffset: 0
   invertPolygon: 0
+--- !u!114 &2119510750011332877
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4288883823509646505}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5adb53d702b34c46ad8f1a87326f238, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemCollides: []
 --- !u!1 &8458131891248816164
 GameObject:
   m_ObjectHideFlags: 0
@@ -367,6 +381,7 @@ GameObject:
   - component: {fileID: 4615977401439367422}
   - component: {fileID: 1260530029}
   - component: {fileID: 8648184835394969127}
+  - component: {fileID: 8439305637321928298}
   m_Layer: 15
   m_Name: Big_Tree (1)
   m_TagString: Untagged
@@ -410,6 +425,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d2367fc09d9c472090672a3e878fc4f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  item: {fileID: 0}
+  initZ: -6
+  scaleFactor: 0.05
+  state: 0
+  lastPosition: {x: 0, y: 0, z: 0}
+  boundX: {x: -270, y: -70}
+  boundY: {x: -2, y: -2}
+  pets: []
+  movementType: 0
   height: 5
   depth: 2
   width: 4
@@ -417,13 +441,6 @@ MonoBehaviour:
   anchorPoint: {fileID: 0}
   startPoint: {fileID: 0}
   endPoint: {fileID: 0}
-  item: {fileID: 0}
-  state: 0
-  lastPosition: {x: 0, y: 0, z: 0}
-  boundX: {x: -270, y: -70}
-  boundY: {x: -2, y: -2}
-  pets: []
-  movementType: 0
 --- !u!50 &3604890594918160827
 Rigidbody2D:
   serializedVersion: 4
@@ -625,6 +642,20 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &8439305637321928298
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8458131891293945134}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1989e930e76d475a8addf60dd5cc572, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isOrder: 1
+  isStatic: 1
 --- !u!1001 &4625787389890541223
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -645,7 +676,7 @@ PrefabInstance:
     - target: {fileID: 4821914882843086248, guid: cfc366988e04944ef8f4b7cd6a984826,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -1
+      value: -0.01
       objectReference: {fileID: 0}
     - target: {fileID: 4821914882843086248, guid: cfc366988e04944ef8f4b7cd6a984826,
         type: 3}
@@ -692,16 +723,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Apple
       objectReference: {fileID: 0}
-    - target: {fileID: 6147266180652883447, guid: cfc366988e04944ef8f4b7cd6a984826,
-        type: 3}
-      propertyPath: m_Layer
-      value: 15
-      objectReference: {fileID: 0}
-    - target: {fileID: 6773000435242340614, guid: cfc366988e04944ef8f4b7cd6a984826,
-        type: 3}
-      propertyPath: m_IsTrigger
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cfc366988e04944ef8f4b7cd6a984826, type: 3}
 --- !u!1 &1548502814122994512 stripped
@@ -736,7 +757,7 @@ PrefabInstance:
     - target: {fileID: 4821914882843086248, guid: cfc366988e04944ef8f4b7cd6a984826,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -1
+      value: -0.01
       objectReference: {fileID: 0}
     - target: {fileID: 4821914882843086248, guid: cfc366988e04944ef8f4b7cd6a984826,
         type: 3}
@@ -783,16 +804,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Apple (4)
       objectReference: {fileID: 0}
-    - target: {fileID: 6147266180652883447, guid: cfc366988e04944ef8f4b7cd6a984826,
-        type: 3}
-      propertyPath: m_Layer
-      value: 15
-      objectReference: {fileID: 0}
-    - target: {fileID: 6773000435242340614, guid: cfc366988e04944ef8f4b7cd6a984826,
-        type: 3}
-      propertyPath: m_IsTrigger
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cfc366988e04944ef8f4b7cd6a984826, type: 3}
 --- !u!1 &2318834982506722837 stripped
@@ -827,7 +838,7 @@ PrefabInstance:
     - target: {fileID: 4821914882843086248, guid: cfc366988e04944ef8f4b7cd6a984826,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -1
+      value: -0.01
       objectReference: {fileID: 0}
     - target: {fileID: 4821914882843086248, guid: cfc366988e04944ef8f4b7cd6a984826,
         type: 3}
@@ -874,16 +885,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Apple (7)
       objectReference: {fileID: 0}
-    - target: {fileID: 6147266180652883447, guid: cfc366988e04944ef8f4b7cd6a984826,
-        type: 3}
-      propertyPath: m_Layer
-      value: 15
-      objectReference: {fileID: 0}
-    - target: {fileID: 6773000435242340614, guid: cfc366988e04944ef8f4b7cd6a984826,
-        type: 3}
-      propertyPath: m_IsTrigger
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cfc366988e04944ef8f4b7cd6a984826, type: 3}
 --- !u!1 &2318834982894395774 stripped
@@ -918,7 +919,7 @@ PrefabInstance:
     - target: {fileID: 4821914882843086248, guid: cfc366988e04944ef8f4b7cd6a984826,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -1
+      value: -0.01
       objectReference: {fileID: 0}
     - target: {fileID: 4821914882843086248, guid: cfc366988e04944ef8f4b7cd6a984826,
         type: 3}
@@ -965,16 +966,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Apple (6)
       objectReference: {fileID: 0}
-    - target: {fileID: 6147266180652883447, guid: cfc366988e04944ef8f4b7cd6a984826,
-        type: 3}
-      propertyPath: m_Layer
-      value: 15
-      objectReference: {fileID: 0}
-    - target: {fileID: 6773000435242340614, guid: cfc366988e04944ef8f4b7cd6a984826,
-        type: 3}
-      propertyPath: m_IsTrigger
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cfc366988e04944ef8f4b7cd6a984826, type: 3}
 --- !u!1 &2318834983448050256 stripped
@@ -1009,7 +1000,7 @@ PrefabInstance:
     - target: {fileID: 4821914882843086248, guid: cfc366988e04944ef8f4b7cd6a984826,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -1
+      value: -0.01
       objectReference: {fileID: 0}
     - target: {fileID: 4821914882843086248, guid: cfc366988e04944ef8f4b7cd6a984826,
         type: 3}
@@ -1056,16 +1047,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Apple (5)
       objectReference: {fileID: 0}
-    - target: {fileID: 6147266180652883447, guid: cfc366988e04944ef8f4b7cd6a984826,
-        type: 3}
-      propertyPath: m_Layer
-      value: 15
-      objectReference: {fileID: 0}
-    - target: {fileID: 6773000435242340614, guid: cfc366988e04944ef8f4b7cd6a984826,
-        type: 3}
-      propertyPath: m_IsTrigger
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cfc366988e04944ef8f4b7cd6a984826, type: 3}
 --- !u!1 &2318834983324280000 stripped
@@ -1100,7 +1081,7 @@ PrefabInstance:
     - target: {fileID: 4821914882843086248, guid: cfc366988e04944ef8f4b7cd6a984826,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -1
+      value: -0.01
       objectReference: {fileID: 0}
     - target: {fileID: 4821914882843086248, guid: cfc366988e04944ef8f4b7cd6a984826,
         type: 3}
@@ -1147,16 +1128,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Apple (1)
       objectReference: {fileID: 0}
-    - target: {fileID: 6147266180652883447, guid: cfc366988e04944ef8f4b7cd6a984826,
-        type: 3}
-      propertyPath: m_Layer
-      value: 15
-      objectReference: {fileID: 0}
-    - target: {fileID: 6773000435242340614, guid: cfc366988e04944ef8f4b7cd6a984826,
-        type: 3}
-      propertyPath: m_IsTrigger
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cfc366988e04944ef8f4b7cd6a984826, type: 3}
 --- !u!4 &4002486403677425655 stripped
@@ -1191,7 +1162,7 @@ PrefabInstance:
     - target: {fileID: 4821914882843086248, guid: cfc366988e04944ef8f4b7cd6a984826,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -1
+      value: -0.01
       objectReference: {fileID: 0}
     - target: {fileID: 4821914882843086248, guid: cfc366988e04944ef8f4b7cd6a984826,
         type: 3}
@@ -1238,16 +1209,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Apple (3)
       objectReference: {fileID: 0}
-    - target: {fileID: 6147266180652883447, guid: cfc366988e04944ef8f4b7cd6a984826,
-        type: 3}
-      propertyPath: m_Layer
-      value: 15
-      objectReference: {fileID: 0}
-    - target: {fileID: 6773000435242340614, guid: cfc366988e04944ef8f4b7cd6a984826,
-        type: 3}
-      propertyPath: m_IsTrigger
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cfc366988e04944ef8f4b7cd6a984826, type: 3}
 --- !u!4 &4002486403736272478 stripped
@@ -1282,7 +1243,7 @@ PrefabInstance:
     - target: {fileID: 4821914882843086248, guid: cfc366988e04944ef8f4b7cd6a984826,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -1
+      value: -0.01
       objectReference: {fileID: 0}
     - target: {fileID: 4821914882843086248, guid: cfc366988e04944ef8f4b7cd6a984826,
         type: 3}
@@ -1328,16 +1289,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Apple (2)
-      objectReference: {fileID: 0}
-    - target: {fileID: 6147266180652883447, guid: cfc366988e04944ef8f4b7cd6a984826,
-        type: 3}
-      propertyPath: m_Layer
-      value: 15
-      objectReference: {fileID: 0}
-    - target: {fileID: 6773000435242340614, guid: cfc366988e04944ef8f4b7cd6a984826,
-        type: 3}
-      propertyPath: m_IsTrigger
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cfc366988e04944ef8f4b7cd6a984826, type: 3}

@@ -16,6 +16,7 @@ public class PetRequirementPanel : MonoBehaviour
     public GameObject happyIcon;
     public Button buyButton;
     public bool canBuy = true;
+    bool isBuy = false;
 
     public Transform anchor;
     List<PetRequirementUI> items = new List<PetRequirementUI>();
@@ -166,9 +167,14 @@ public class PetRequirementPanel : MonoBehaviour
 
     public void OnCollect()
     {
-        GameManager.instance.AddPet(petId);
-        GameManager.instance.EquipPet(petId);
-        this.Close();
+        if (!isBuy)
+        {
+            GameManager.instance.AddPet(petId);
+            GameManager.instance.EquipPet(petId);
+            isBuy = true;
+            this.Close();
+        }
+
     }
 
     void ClearItems()
