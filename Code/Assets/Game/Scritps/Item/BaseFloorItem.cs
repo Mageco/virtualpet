@@ -8,8 +8,7 @@ public class BaseFloorItem : MonoBehaviour
 	protected Animator animator;
 	[HideInInspector]
 	public ItemObject item;
-	//public float initZ = -6;
-	public float scaleFactor = 0.05f;
+	protected float scaleFactor = 0.05f;
 	protected Vector3 dragOffset;
 	public EquipmentState state = EquipmentState.Idle;
 	protected Vector3 originalPosition;
@@ -128,17 +127,10 @@ public class BaseFloorItem : MonoBehaviour
 
 	protected virtual void LateUpdate()
 	{
-		//float offset = initZ;
-
-		//if (transform.position.y < offset)
 	    transform.localScale = originalScale * (1 + (-transform.position.y) * scaleFactor);
-		//else
-		//	transform.localScale = originalScale;
-
 		Vector3 pos = this.transform.position;
 		pos.z = this.transform.position.y * 10;
 		this.transform.position = pos;
-
 	}
 
 	protected virtual void OnMouseUp()

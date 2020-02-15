@@ -6,16 +6,17 @@ public class FirstAidItem : ItemCollider
 {
     bool isOpen = false;
     public HealthItem[] healthItems;
-    BoxCollider2D collider;
+    BoxCollider2D collide;
 
     protected override void Awake()
     {
         base.Awake();
-        collider = this.GetComponent<BoxCollider2D>();
+        collide = this.GetComponent<BoxCollider2D>();
     }
 
     protected override void OnClick()
     {
+        state = EquipmentState.Idle;
         if(isOpen){
             Close();
         }else
@@ -45,8 +46,8 @@ public class FirstAidItem : ItemCollider
             healthItems[i].Open();
         }
         animator.Play("Open",0);
-        collider.size = new Vector2(9, 5);
-        collider.offset = new Vector2(-2, 2.7f);
+        collide.size = new Vector2(9, 5);
+        collide.offset = new Vector2(-2, 2.7f);
     }
 
     void Close(){
@@ -57,7 +58,7 @@ public class FirstAidItem : ItemCollider
         }
 
         animator.Play("Idle",0);
-        collider.size = new Vector2(4.5f, 5);
-        collider.offset = new Vector2(0, 2.7f);
+        collide.size = new Vector2(4.5f, 5);
+        collide.offset = new Vector2(0, 2.7f);
     }
 }

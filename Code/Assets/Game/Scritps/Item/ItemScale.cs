@@ -4,8 +4,7 @@ using UnityEngine;
 
 public class ItemScale : MonoBehaviour
 {
-	public float initZ = -6;
-	public float scaleFactor = 0.1f;
+	float scaleFactor = 0.05f;
 	ItemObject item;
 	Vector3 originalScale;
 
@@ -23,13 +22,6 @@ public class ItemScale : MonoBehaviour
 	// Update is called once per frame
 	void LateUpdate()
 	{
-
-		float offset = initZ;
-
-
-		if (transform.position.y < offset)
-			transform.localScale = originalScale * (1 + (-transform.position.y + offset) * scaleFactor);
-		else
-			transform.localScale = originalScale;
+		transform.localScale = originalScale * (1 + (-transform.position.y) * scaleFactor);
 	}
 }

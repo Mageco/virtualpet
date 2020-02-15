@@ -96,7 +96,7 @@ public class ItemDrag : MonoBehaviour
 
     public virtual void Return()
     {
-        StartCoroutine(ReturnPosition(originalPosition));
+        StartCoroutine(ReturnPosition(lastPosition));
     }
 
 	protected virtual IEnumerator ReturnPosition(Vector3 pos)
