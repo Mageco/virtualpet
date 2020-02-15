@@ -179,32 +179,6 @@ AnimatorState:
   m_MirrorParameter: 
   m_CycleOffsetParameter: 
   m_TimeParameter: 
---- !u!1102 &-4965136724624888712
-AnimatorState:
-  serializedVersion: 5
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: Jump_L
-  m_Speed: 1
-  m_CycleOffset: 0
-  m_Transitions: []
-  m_StateMachineBehaviours: []
-  m_Position: {x: 50, y: 50, z: 0}
-  m_IKOnFeet: 0
-  m_WriteDefaultValues: 1
-  m_Mirror: 0
-  m_SpeedParameterActive: 0
-  m_MirrorParameterActive: 0
-  m_CycleOffsetParameterActive: 0
-  m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: f1b66057c9eb86e4c8df90f172e422a8, type: 2}
-  m_Tag: 
-  m_SpeedParameter: 
-  m_MirrorParameter: 
-  m_CycleOffsetParameter: 
-  m_TimeParameter: 
 --- !u!1102 &-3894303449919888335
 AnimatorState:
   serializedVersion: 5
@@ -283,14 +257,14 @@ AnimatorState:
   m_MirrorParameter: 
   m_CycleOffsetParameter: 
   m_TimeParameter: 
---- !u!1102 &-2781039895496942901
+--- !u!1102 &-2906106032931464128
 AnimatorState:
   serializedVersion: 5
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Jump_R
+  m_Name: Play_Toy_Bubble_Robot
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -303,7 +277,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: 18dd2061176db5c469c20371159d7359, type: 2}
+  m_Motion: {fileID: 7400000, guid: 066b2e008889e57419f45f7dea075b8b, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -404,6 +378,32 @@ AnimatorState:
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
   m_Motion: {fileID: 7400000, guid: 554dad97e80460143809378e6551171f, type: 2}
+  m_Tag: 
+  m_SpeedParameter: 
+  m_MirrorParameter: 
+  m_CycleOffsetParameter: 
+  m_TimeParameter: 
+--- !u!1102 &-361755839322166593
+AnimatorState:
+  serializedVersion: 5
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Play_Toy_Stereo
+  m_Speed: 1
+  m_CycleOffset: 0
+  m_Transitions: []
+  m_StateMachineBehaviours: []
+  m_Position: {x: 50, y: 50, z: 0}
+  m_IKOnFeet: 0
+  m_WriteDefaultValues: 1
+  m_Mirror: 0
+  m_SpeedParameterActive: 0
+  m_MirrorParameterActive: 0
+  m_CycleOffsetParameterActive: 0
+  m_TimeParameterActive: 0
+  m_Motion: {fileID: 7400000, guid: 46a66121d1e942d409c3b39ba81a335a, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -904,17 +904,17 @@ AnimatorStateMachine:
     m_State: {fileID: -3048983471354472935}
     m_Position: {x: 730, y: 1110, z: 0}
   - serializedVersion: 1
-    m_State: {fileID: -4965136724624888712}
-    m_Position: {x: 470, y: 1190, z: 0}
-  - serializedVersion: 1
     m_State: {fileID: 1094321474205034206}
     m_Position: {x: 470, y: 1080, z: 0}
   - serializedVersion: 1
-    m_State: {fileID: -2781039895496942901}
-    m_Position: {x: 470, y: 1250, z: 0}
-  - serializedVersion: 1
     m_State: {fileID: 2809733545531429817}
     m_Position: {x: 1073.8502, y: 1083.5872, z: 0}
+  - serializedVersion: 1
+    m_State: {fileID: -361755839322166593}
+    m_Position: {x: 1070, y: 1140, z: 0}
+  - serializedVersion: 1
+    m_State: {fileID: -2906106032931464128}
+    m_Position: {x: 1090, y: 1200, z: 0}
   m_ChildStateMachines: []
   m_AnyStateTransitions: []
   m_EntryTransitions: []
