@@ -2052,7 +2052,7 @@ public class CharController : MonoBehaviour
                     target = toyItem.startPoint.position;
                     yield return StartCoroutine(RunToPoint());
                 }
-
+                agent.transform.position = toyItem.startPoint.position;
                 yield return StartCoroutine(DoAnim("Play_Toy_Slider"));
                 if (toyItem.endPoint != null && !isAbort)
                 {

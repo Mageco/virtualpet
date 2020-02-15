@@ -15,6 +15,7 @@ public class HealthItem : ItemDrag
 
     GameObject effect;
     public bool isActive = false;
+    Vector3 localPosition;
 
     public void OnDestroy()
     {
@@ -33,6 +34,7 @@ public class HealthItem : ItemDrag
 
     protected override void Start(){
         base.Start();
+        localPosition = this.transform.localPosition;
         item = this.transform.parent.parent.parent.GetComponent<ItemObject>();
         if (sickType == SickType.Sick)
             amounnt = DataHolder.GetItem(item.itemID).health;
@@ -56,7 +58,10 @@ public class HealthItem : ItemDrag
         if (pet != null)
             OnActive(pet);
         else
+        {
             base.OnMouseUp();
+        }
+            
     }
 
     void OnActive(CharController pet)
@@ -87,12 +92,30 @@ public class HealthItem : ItemDrag
 
     void Reset(){
         StopAllCoroutines();
-        this.transform.position = lastPosition;
+        this.transform.localPosition = localPosition;
         this.transform.rotation = originalRotation;
         isActive = false;
         anim.Play("Idle", 0);
         isDrag = false;
         isBusy = false;
+    }
+
+    public override void Return()
+    {
+        StartCoroutine(ReturnPosition(localPosition));
+    }
+
+    protected override IEnumerator ReturnPosition(Vector3 pos)
+    {
+        MageManager.instance.PlaySoundName("Drag", false);
+        isBusy = true;
+        while (Vector2.Distance(this.transform.localPosition, pos) > 0.1f)
+        {
+            this.transform.localPosition = Vector3.Lerp(this.transform.localPosition, pos, Time.deltaTime * 5);
+            yield return new WaitForEndOfFrame();
+        }
+        isBusy = false;
+
     }
 
     void OnTriggerEnter2D(Collider2D other)

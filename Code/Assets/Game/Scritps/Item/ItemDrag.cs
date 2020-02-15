@@ -83,23 +83,23 @@ public class ItemDrag : MonoBehaviour
 		dragOffset = Vector3.zero;
 
 		if (isDrag && isReturn) {
-			StartCoroutine (ReturnPosition (lastPosition));
+			Return();
 			StartCoroutine (ReturnRotation (originalRotation));
 		}
 		else if (isDrag && !isDragable)
-			StartCoroutine (ReturnPosition (lastPosition));
+			Return();
 		isDrag = false;
 		if (isCameraControl) {
 			ItemManager.instance.ResetCameraTarget();
 		}
 	}
 
-    public void Return()
+    public virtual void Return()
     {
         StartCoroutine(ReturnPosition(originalPosition));
     }
 
-	protected IEnumerator ReturnPosition(Vector3 pos)
+	protected virtual IEnumerator ReturnPosition(Vector3 pos)
 	{
 		MageManager.instance.PlaySoundName("Drag",false);
 		isBusy = true;

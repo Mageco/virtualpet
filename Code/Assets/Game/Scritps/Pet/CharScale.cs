@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class CharScale : MonoBehaviour
 {
-
-	public float maxHeight = 10;
-	public float scaleFactor = 0.1f;
+    [HideInInspector]
+	public float maxHeight = 15;
+	float scaleFactor = 0.05f;
 	CharController character;
 	CharInteract interact;
 	Vector3 originalScale;
