@@ -9494,7 +9494,7 @@ Transform:
   m_GameObject: {fileID: 3669580434300967883}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 25.95, y: -8.51, z: 0}
-  m_LocalScale: {x: 1.4, y: 1.4, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 3134233442027722226}
   - {fileID: 3669580432857011791}
@@ -9538,6 +9538,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e05f49d6b981b41639f492569bc2b7c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  item: {fileID: 0}
+  scaleFactor: 0.05
+  state: 0
+  lastPosition: {x: 0, y: 0, z: 0}
+  boundX: {x: -270, y: 52}
+  boundY: {x: -24, y: -3}
+  pets: []
+  movementType: 1
   itemSaveDataType: 5
   foodAmount: 0
   maxfoodAmount: 200
@@ -9547,16 +9555,6 @@ MonoBehaviour:
   - {fileID: 6433482716631494495, guid: 178446f0fe9aab64ab4018c6b794ac55, type: 3}
   - {fileID: 2730118942064801774, guid: 178446f0fe9aab64ab4018c6b794ac55, type: 3}
   anchor: {fileID: 3669580432857011791}
-  item: {fileID: 0}
-  initZ: -6
-  scaleFactor: 0.05
-  state: 0
-  lastPosition: {x: 0, y: 0, z: 0}
-  boundX: {x: -270, y: 52}
-  boundY: {x: -24, y: -3}
-  pets: []
-  sprites: []
-  movementType: 1
 --- !u!95 &9209107740218382777
 Animator:
   serializedVersion: 3
@@ -9601,17 +9599,18 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: 0.65403366, y: 1.2305255}
-      - {x: 0.41036034, y: 2.3861256}
-      - {x: -0.122644424, y: 2.660449}
-      - {x: -0.19220924, y: 5.4060755}
-      - {x: -2.3951874, y: 5.4137726}
-      - {x: -2.4221344, y: 2.6553698}
-      - {x: -3.3178349, y: 2.1700811}
-      - {x: -3.3440895, y: 0.25753403}
-      - {x: -2.1650276, y: -0.6186323}
-      - {x: 3.2281494, y: -0.5246239}
-      - {x: 3.1902924, y: 1.1747761}
+    - - {x: 0.32383156, y: 2.2465286}
+      - {x: 0.79136276, y: 3.0973282}
+      - {x: 0.715559, y: 5.886258}
+      - {x: -0.7002106, y: 6.1426773}
+      - {x: -1.887186, y: 6.1757746}
+      - {x: -1.9649315, y: 1.7155666}
+      - {x: -2.8352337, y: 0.696877}
+      - {x: -2.8614883, y: -0.19966793}
+      - {x: -0.996624, y: -0.2376318}
+      - {x: 2.262947, y: -0.19442272}
+      - {x: 2.872549, y: 0.2881794}
+      - {x: 2.8854923, y: 2.2415795}
 --- !u!1 &5464085897257476328
 GameObject:
   m_ObjectHideFlags: 0
