@@ -23,8 +23,6 @@ public class CharCollector : MonoBehaviour
         Load();
     }
 
-
-
     public void Load()
     {
         if (!GameManager.instance.IsEquipPet(petId) && GameManager.instance.myPlayer.questId > quesId)

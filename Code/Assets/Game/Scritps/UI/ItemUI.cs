@@ -80,7 +80,7 @@ public class ItemUI : MonoBehaviour
         if (isLevelRequire)
         {
             icon.material = greyMaterial;
-            price.gameObject.SetActive(true);
+            price.gameObject.SetActive(false);
             levelText.gameObject.SetActive(true);
             levelText.text = DataHolder.Dialog(27).GetName(MageManager.instance.GetLanguage()) + " " + d.levelRequire.ToString(); 
         }
@@ -105,42 +105,44 @@ public class ItemUI : MonoBehaviour
             {
                 equipButton.gameObject.SetActive(true);
             }
+
+            if (state == ItemState.OnShop)
+            {
+                if (d.priceType == PriceType.Coin)
+                {
+                    coinIcon.SetActive(true);
+                    if (state == ItemState.OnShop && GameManager.instance.GetCoin() < (DataHolder.GetItem(itemId).buyPrice))
+                    {
+                        buyButton.interactable = false;
+                    }
+                }
+                else if (d.priceType == PriceType.Diamond)
+                {
+                    diamonIcon.SetActive(true);
+                    if (state == ItemState.OnShop && GameManager.instance.GetDiamond() < (DataHolder.GetItem(itemId).buyPrice))
+                    {
+                        buyButton.interactable = false;
+                    }
+                }
+                else if (d.priceType == PriceType.Money)
+                {
+                    moneyIcon.SetActive(true);
+                }
+                else if (d.priceType == PriceType.Happy)
+                {
+                    happyIcon.SetActive(true);
+                    if (state == ItemState.OnShop && GameManager.instance.GetHappy() < (DataHolder.GetItem(itemId).buyPrice))
+                    {
+                        buyButton.interactable = false;
+                    }
+                }
+            }
         }
 
         
 
 
-        if (state == ItemState.OnShop)
-        {
-            if (d.priceType == PriceType.Coin)
-            {
-                coinIcon.SetActive(true);
-                if (state == ItemState.OnShop && GameManager.instance.GetCoin() < (DataHolder.GetItem(itemId).buyPrice))
-                {
-                    buyButton.interactable = false;
-                }
-            }
-            else if (d.priceType == PriceType.Diamond)
-            {
-                diamonIcon.SetActive(true);
-                if (state == ItemState.OnShop && GameManager.instance.GetDiamond() < (DataHolder.GetItem(itemId).buyPrice))
-                {
-                    buyButton.interactable = false;
-                }
-            }
-            else if (d.priceType == PriceType.Money)
-            {
-                moneyIcon.SetActive(true);
-            }
-            else if (d.priceType == PriceType.Happy)
-            {
-                happyIcon.SetActive(true);
-                if (state == ItemState.OnShop && GameManager.instance.GetHappy() < (DataHolder.GetItem(itemId).buyPrice))
-                {
-                    buyButton.interactable = false;
-                }
-            }
-        }
+        
         
 
         statPanel.SetActive(true);

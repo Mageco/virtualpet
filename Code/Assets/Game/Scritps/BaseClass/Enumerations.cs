@@ -6,7 +6,7 @@ public enum ItemType{All=-1,Diamond=0,Coin=1,Food=2,Drink=3,Toy=4,Clean=5,Medici
 public enum PriceType{Money,Coin,Diamond,Happy}
 public enum ItemState {OnShop,Have,Equiped,Locked}
 public enum ItemDragState{None,Drag,Drop,Fall,Hit,Hited,Active,Highlight};
-public enum InteractType {None,Drag,Drop,Touch,Jump,DoubleClick,Fly};
+public enum InteractType {None,Drag,Drop,Touch,Jump,DoubleClick,Fly,Toy};
 public enum QuestRequirementType{Action,Interact,Skill,Variable};
 public enum SkillType {NONE,Toilet,Sleep,Call,Bath,Table};
 public enum AchivementType {Do_Action,Buy_Item,Use_Item,Tap_Animal,Dissmiss_Animal,LevelUp,Minigame_Level,Eat,Drink,Play_MiniGame,Sick,Injured,Clean,CollectHeart,CollectFruit};

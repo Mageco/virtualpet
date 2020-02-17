@@ -74,6 +74,7 @@ public class CharController : MonoBehaviour
     Vector3 originalStatusScale;
 
     protected ToyItem toyItem;
+    float timeToy = 0;
 
     [HideInInspector]
     public List<GameObject> dirties = new List<GameObject>();
@@ -239,6 +240,18 @@ public class CharController : MonoBehaviour
             float s = (int)(t - m * 60);
             timeWait.text = m.ToString("00") + ":" + s.ToString("00");
             //Debug.Log(t);
+        }else if(actionType == ActionType.Toy)
+        {
+            data.Energy -= Time.deltaTime * 2;
+            if (timeToy > 3)
+            {
+                GameManager.instance.AddExp(5, this.data.iD);
+                timeToy = 0;
+            }
+            else
+            {
+                timeToy += Time.deltaTime;
+            }
         }
 
 
@@ -937,14 +950,52 @@ public class CharController : MonoBehaviour
 
     public virtual void OnToy(ToyItem item)
     {
+        if (toyItem != null)
+            return;
+        Debug.Log("0");
+        if (item == null)
+            return;
+
+        Debug.Log("1");
+
+        if (!CanPlayToy(item.item.itemID))
+            return;
+
+        Debug.Log("2");
+
+        if (item.state == EquipmentState.Drag || item.state == EquipmentState.Busy || item.state == EquipmentState.Active)
+            return;
+
+        Debug.Log("3");
+
+        if (data.Energy < data.MaxEnergy * 0.1f)
+        {
+            return;
+        }
+
+        Debug.Log("4");
+
         if (actionType != ActionType.Sick && actionType != ActionType.Injured && actionType != ActionType.OnControl && charInteract.interactType != InteractType.Drag //actionType != ActionType.Hold
          && actionType != ActionType.Toy && enviromentType == EnviromentType.Room && actionType != ActionType.Supprised)
         {
+            timeToy = 0;
+            Debug.Log("5");
             actionType = ActionType.Toy;
             isAbort = true;
             toyItem = item;
-            Debug.Log(item.toyType);
+            Debug.Log(item.toyType);            
         }
+    }
+
+    bool CanPlayToy(int toyId)
+    {
+        Pet p = DataHolder.GetPet(data.iD);
+        for(int i = 0; i < p.favouriteToys.Length; i++)
+        {
+            if (p.favouriteToys[i] == toyId)
+                return true;
+        }
+        return false;
     }
 
     public virtual void OnArrived()
@@ -1219,7 +1270,7 @@ public class CharController : MonoBehaviour
 
         float fallSpeed = 0;
 
-        while (charInteract.interactType == InteractType.Drop && actionType != ActionType.OnControl)
+        while (charInteract.interactType == InteractType.Drop && actionType != ActionType.OnControl && !isAbort)
         {
             if (agent.transform.position.y > dropPosition.y)
             {
@@ -1864,228 +1915,186 @@ public class CharController : MonoBehaviour
 
     protected virtual IEnumerator Toy()
     {
-        if (toyItem != null && toyItem.state != EquipmentState.Drag && toyItem.state != EquipmentState.Busy)
+        toyItem.pets.Add(this);
+        
+        if (toyItem.toyType == ToyType.Jump)
         {
+            
+            int n = Random.Range(3, 10);
+            int count = 0;
+            dropPosition = toyItem.anchorPoint.position + new Vector3(0, Random.Range(-1f, 1f), 0);
+            agent.transform.position = dropPosition;
 
-            toyItem.pets.Add(this);
-            if (toyItem.toyType == ToyType.Jump)
+            yield return new WaitForEndOfFrame();
+            while (!isAbort && count < n)
             {
-                int n = Random.Range(3, 10);
-                int count = 0;
-                dropPosition = toyItem.anchorPoint.position + new Vector3(0, Random.Range(-1f, 1f), 0);
-                agent.transform.position = dropPosition;
-
+                toyItem.OnActive();
+                MageManager.instance.PlaySoundName(charType.ToString() + "_Supprised", false);
+                MageManager.instance.PlaySoundName("Drag", false);
+                anim.Play("Teased", 0);
+                shadow.SetActive(false);
                 yield return new WaitForEndOfFrame();
-                while (!isAbort && count < n)
+                float ySpeed = 30 * anim.GetCurrentAnimatorStateInfo(0).length / 2;
+                if (anim.GetCurrentAnimatorStateInfo(0).length < 2)
                 {
-                    toyItem.OnActive();
-                    MageManager.instance.PlaySoundName(charType.ToString() + "_Supprised", false);
-                    MageManager.instance.PlaySoundName("Drag", false);
-                    anim.Play("Teased", 0);
-                    shadow.SetActive(false);
-                    charInteract.interactType = InteractType.Jump;
-                    yield return new WaitForEndOfFrame();
-                    float ySpeed = 30 * anim.GetCurrentAnimatorStateInfo(0).length / 2;
-                    if (anim.GetCurrentAnimatorStateInfo(0).length < 2)
+                    anim.speed = 0.5f;
+                    ySpeed = 60 * anim.GetCurrentAnimatorStateInfo(0).length / 2;
+                }
+                charInteract.interactType = InteractType.Toy;
+                while (charInteract.interactType == InteractType.Toy && !isAbort)
+                {
+                    ySpeed -= 30 * Time.deltaTime;
+                    Vector3 pos1 = agent.transform.position;
+                    pos1.y += ySpeed * Time.deltaTime;
+
+                    if (count == n - 1)
                     {
-                        anim.speed = 0.5f;
-                        ySpeed = 60 * anim.GetCurrentAnimatorStateInfo(0).length / 2;
+                        pos1.x += 15 * Time.deltaTime;
                     }
+                    agent.transform.position = pos1;
 
-                    while (charInteract.interactType == InteractType.Jump && !isAbort)
+                    if (ySpeed < 0 && this.transform.position.y < dropPosition.y)
                     {
-                        ySpeed -= 30 * Time.deltaTime;
-                        Vector3 pos1 = agent.transform.position;
-                        pos1.y += ySpeed * Time.deltaTime;
-
                         if (count == n - 1)
                         {
-                            pos1.x += 15 * Time.deltaTime;
-                        }
-                        agent.transform.position = pos1;
+                            MageManager.instance.PlaySoundName("whoosh_swish_med_03", false);
+                            yield return StartCoroutine(DoAnim("Drop"));
 
-                        if (ySpeed < 0 && this.transform.position.y < dropPosition.y)
+                        }
+                        else
                         {
-                            if (count == n - 1)
-                            {
-                                MageManager.instance.PlaySoundName("whoosh_swish_med_03", false);
-                                yield return StartCoroutine(DoAnim("Drop"));
-
-                            }
-                            else
-                            {
-                                agent.transform.position = dropPosition;
-                            }
-                            charInteract.interactType = InteractType.None;
-
+                            agent.transform.position = dropPosition;
                         }
-                        data.Energy -= Time.deltaTime;
-                        yield return new WaitForEndOfFrame();
-                    }
-                    count++;
-                }
-
-                GameManager.instance.AddExp(5, data.iD);
-
-            }
-            else if (toyItem.toyType == ToyType.Ball)
-            {
-                ToyBallItem ball = toyItem.GetComponent<ToyBallItem>();
-                bool isPlay = false;
-                bool isFear = false;
-                if (charType == CharType.Cat)
-                    isPlay = true;
-
-                int ran1 = Random.Range(0, 100);
-                if ((charType == CharType.Dog || charType == CharType.Hamster) && ran1 > 70 && data.Energy > data.MaxEnergy * 0.1f)
-                {
-                    isPlay = true;
-                }
-
-                if (charType == CharType.Turtle || charType == CharType.Parrot || charType == CharType.Rabbit)
-                    isFear = true;
-
-
-                if (isPlay)
-                {
-
-                    charScale.speedFactor = 1.5f;
-
-                    while (ball != null && data.Energy > data.MaxEnergy * 0.1f && !isAbort)
-                    {
-                        anim.speed = 1.5f;
-                        target = ball.lastPosition + new Vector3(Random.Range(-2f, 2f), Random.Range(0.5f, 2f), 0);
-                        yield return StartCoroutine(RunToPoint());
-                        if (Vector2.Distance(this.transform.position, ball.lastPosition) < 2 && ball.state != EquipmentState.Active)
-                        {
-                            agent.Stop();
-                            data.Energy -= 2;
-                            ball.OnActive();
-                            int ran = Random.Range(0, 100);
-                            if (ran < 20)
-                                GameManager.instance.AddExp(5, data.iD);
-                            yield return StartCoroutine(DoAnim("Standby"));
-                        }
-                        yield return new WaitForEndOfFrame();
-                    }
-                    charScale.speedFactor = 1f;
-                }
-
-                if (isFear)
-                {
-                    if (ball != null && Vector2.Distance(this.transform.position, ball.transform.position) < 2 && ball.state != EquipmentState.Active)
-                    {
-                        yield return StartCoroutine(DoAnim("Teased"));
-                        Debug.Log("Supprised");
-                    }
-                }
-            }
-            else if (toyItem.toyType == ToyType.RunningWheel)
-            {
-                ToyWheelItem wheel = toyItem.GetComponent<ToyWheelItem>();
-                bool isPlay = false;
-                if ((charType == CharType.Cat || charType == CharType.Hamster) && data.Energy > 0.1f * data.MaxEnergy)
-                    isPlay = true;
-
-
-
-                if (isPlay)
-                {
-                    MageManager.instance.PlaySoundName("Wheel", false);
-                    float time = 0;
-                    charScale.speedFactor = 2f;
-                    anim.speed = 2f;
-                    SetDirection(Direction.L);
-                    wheel.OnActive();
-                    float maxTime = Random.Range(5, 10);
-                    while (wheel != null && data.Energy > data.MaxEnergy * 0.1f && !isAbort && time < maxTime)
-                    {
-                        time += Time.deltaTime;
-                        agent.transform.position = wheel.anchorPoint.position;
-                        anim.Play("Run_" + this.direction.ToString(), 0);
-                        data.Energy -= 2f * Time.deltaTime;
-                        yield return new WaitForEndOfFrame();
-
-                    }
-                    int ran = Random.Range(0, 100);
-                    if (charType == CharType.Hamster)
-                        ran += 30;
-
-                    if (ran < 50)
-                    {
-                        agent.transform.position = wheel.anchorPoint.position + new Vector3(0, 3, 0);
-                        time = 0;
-                        while (time < 3 && !isAbort)
-                        {
-                            anim.Play("Idle_" + this.direction.ToString(), 0);
-                            this.transform.parent = wheel.wheel.transform;
-                            time += Time.deltaTime;
-                            yield return new WaitForEndOfFrame();
-                        }
-                        this.transform.rotation = Quaternion.identity;
-                        this.transform.parent = null;
-                        yield return StartCoroutine(DoAnim("Teased"));
-                    }
-                    else
-                    {
-
-                        if (time > 5)
-                        {
-                            yield return StartCoroutine(DoAnim("Love"));
-                            GameManager.instance.AddExp(5, data.iD);
-                        }
-
+                        charInteract.interactType = InteractType.None;
                     }
 
-                    //MageManager.instance.StopSound(soundId);
-                    charScale.speedFactor = 1f;
-                    wheel.DeActive();
-
-                }
-                target = wheel.anchorPoint.position + new Vector3(0, 3, 0);
-                yield return StartCoroutine(RunToPoint());
-            }
-            else if (toyItem.toyType == ToyType.Slider)
-            {
-                if (toyItem.startPoint != null)
-                {
-                    target = toyItem.startPoint.position;
-                    yield return StartCoroutine(RunToPoint());
-                }
-                agent.transform.position = toyItem.startPoint.position;
-                yield return StartCoroutine(DoAnim("Play_Toy_Slider"));
-                if (toyItem.endPoint != null && !isAbort)
-                {
-                    agent.transform.position = toyItem.endPoint.position;
-                }
-            }
-            else if (toyItem.toyType == ToyType.SpringCar)
-            {
-                if (toyItem.startPoint != null)
-                {
-                    target = toyItem.startPoint.position;
-                    yield return StartCoroutine(RunToPoint());
-                }
-                charInteract.interactType = InteractType.Jump;
-                float maxTime = Random.Range(3, 10);
-                float t = 0;
-                toyItem.OnActive();
-                while (t < maxTime && !isAbort)
-                {
-                    if (toyItem.anchorPoint != null)
-                        agent.transform.position = toyItem.anchorPoint.position;
-                    anim.Play("Play_Toy_Rocking_Car", 0);
-                    t += Time.deltaTime;
                     yield return new WaitForEndOfFrame();
                 }
-                toyItem.DeActive();
-                charInteract.interactType = InteractType.None;
-                if (toyItem.endPoint != null && !isAbort)
+                count++;
+            }
+            toyItem.DeActive();
+        }
+        else if (toyItem.toyType == ToyType.Ball)
+        {
+            ToyBallItem ball = toyItem.GetComponent<ToyBallItem>();
+            charScale.speedFactor = 1.5f;
+            while (ball != null && data.Energy > data.MaxEnergy * 0.1f && !isAbort)
+            {
+                anim.speed = 1.5f;
+                target = ball.lastPosition + new Vector3(Random.Range(-2f, 2f), Random.Range(0.5f, 2f), 0);
+                yield return StartCoroutine(RunToPoint());
+                if (Vector2.Distance(this.transform.position, ball.lastPosition) < 2 && ball.state != EquipmentState.Active)
                 {
-                    agent.transform.position = toyItem.endPoint.position;
+                    agent.Stop();
+                    ball.OnActive();
+                    yield return StartCoroutine(DoAnim("Standby"));
                 }
+                yield return new WaitForEndOfFrame();
+            }
+            toyItem.DeActive();
+            charScale.speedFactor = 1f;
+        }
+        else if (toyItem.toyType == ToyType.RunningWheel)
+        {
+            ToyWheelItem wheel = toyItem.GetComponent<ToyWheelItem>();
+            charInteract.interactType = InteractType.Toy;
+            MageManager.instance.PlaySoundName("Wheel", false);
+            float time = 0;
+            charScale.speedFactor = 2f;
+            anim.speed = 2f;
+            SetDirection(Direction.L);
+            wheel.OnActive();
+            float maxTime = Random.Range(5, 10);
+            while (wheel != null && data.Energy > data.MaxEnergy * 0.1f && !isAbort && time < maxTime)
+            {
+                time += Time.deltaTime;
+                agent.transform.position = wheel.anchorPoint.position;
+                anim.Play("Run_" + this.direction.ToString(), 0);
+                data.Energy -= 2f * Time.deltaTime;
+                yield return new WaitForEndOfFrame();
+            }
+            int ran = Random.Range(0, 100);
+            if (charType == CharType.Hamster)
+                ran += 30;
+
+            if (ran < 50)
+            {
+                agent.transform.position = wheel.anchorPoint.position + new Vector3(0, 3, 0);
+                time = 0;
+                while (time < 3 && !isAbort)
+                {
+                    anim.Play("Idle_" + this.direction.ToString(), 0);
+                    this.transform.parent = wheel.wheel.transform;
+                    time += Time.deltaTime;
+                    yield return new WaitForEndOfFrame();
+                }
+                this.transform.rotation = Quaternion.identity;
+                this.transform.parent = null;
+                yield return StartCoroutine(DoAnim("Teased"));
+            }
+            charInteract.interactType = InteractType.None;
+            charScale.speedFactor = 1f;
+            wheel.DeActive();
+        }
+        else if (toyItem.toyType == ToyType.Slider)
+        {
+            toyItem.OnActive();
+            if (toyItem.startPoint != null)
+            {
+                target = toyItem.startPoint.position;
+                yield return StartCoroutine(RunToPoint());
+            }
+            agent.transform.position = toyItem.startPoint.position;
+            yield return StartCoroutine(DoAnim("Play_Toy_Slider"));
+            if (toyItem.endPoint != null && !isAbort)
+            {
+                agent.transform.position = toyItem.endPoint.position;
+            }
+            toyItem.DeActive();
+        }
+        else if (toyItem.toyType == ToyType.SpringCar || toyItem.toyType == ToyType.Swing)
+        {
+            if (toyItem.startPoint != null)
+            {
+                target = toyItem.startPoint.position;
+                yield return StartCoroutine(RunToPoint());
+                    
+            }
+                
+            float maxTime = Random.Range(3, 10);
+            float t = 0;
+            toyItem.OnActive();
+            charInteract.interactType = InteractType.Toy;
+            while (t < maxTime && !isAbort)
+            {
+                if (toyItem.anchorPoint != null)
+                {
+                    agent.transform.position = toyItem.anchorPoint.position;
+                    //this.transform.position = toyItem.anchorPoint.position;
+                }         
+
+                if(toyItem.toyType == ToyType.SpringCar)
+                {
+                    anim.Play("Play_Toy_Rocking_Car", 0);
+                }
+                else if (toyItem.toyType == ToyType.Swing)
+                {
+                    anim.Play("Play_Toy_Swing", 0);
+                }
+
+                t += Time.deltaTime;
+                yield return new WaitForEndOfFrame();
+            }
+            toyItem.DeActive();
+            charInteract.interactType = InteractType.None;
+            if (toyItem.endPoint != null && !isAbort)
+            {
+                agent.transform.position = toyItem.endPoint.position;
             }
         }
+
+        toyItem = null;
+        
         anim.speed = 1f;
         if (toyItem != null && toyItem.pets.Contains(this))
             toyItem.pets.Remove(this);

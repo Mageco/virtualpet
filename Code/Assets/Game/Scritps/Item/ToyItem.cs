@@ -9,6 +9,14 @@ public class ToyItem : BaseFloorItem
 	public Transform anchorPoint;
 	public Transform startPoint;
 	public Transform endPoint;
+
+    public bool IsActive()
+    {
+        if (state == EquipmentState.Active)
+            return true;
+        else
+            return false;
+    }
 }
 
 

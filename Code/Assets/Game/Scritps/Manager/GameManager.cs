@@ -58,11 +58,15 @@ public class GameManager : MonoBehaviour
 
     void LateUpdate(){
         foreach(CharController c in petObjects){
-            Vector3 pos = c.transform.position;
-            pos.z = (int)(c.charScale.scalePosition.y * 10);
-            c.transform.position = pos;
+            if(c.charInteract.interactType != InteractType.Toy)
+            {
+                Vector3 pos = c.transform.position;
+                pos.z = (int)(c.charScale.scalePosition.y * 10);
+                c.transform.position = pos;
+            }
         }
 
+        /*
         bool isDone = false;
         while(!isDone){
             isDone = true;
@@ -84,7 +88,7 @@ public class GameManager : MonoBehaviour
                     }
                 }
             }
-        } 
+        } */
     }
 
     public PlayerData GetPlayer(){

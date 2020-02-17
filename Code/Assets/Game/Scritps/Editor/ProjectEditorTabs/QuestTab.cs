@@ -49,7 +49,7 @@ public class QuestTab : BaseTab
             EditorGUILayout.BeginHorizontal();
             EditorGUILayout.BeginVertical();
 
-            EditorGUILayout.LabelField("Quest ID: " + DataHolder.Quests().GetQuest(selection).iD.ToString(), GUILayout.Width(pw.mWidth * 2));
+            //EditorGUILayout.LabelField("Quest ID: " + DataHolder.Quests().GetQuest(selection).iD.ToString(), GUILayout.Width(pw.mWidth * 2));
 
             for (int i = 0; i < DataHolder.Languages().GetDataCount(); i++)
             {
