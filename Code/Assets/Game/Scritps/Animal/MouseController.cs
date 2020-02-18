@@ -166,6 +166,11 @@ public class MouseController : MonoBehaviour
 
 	}
 
+    public void OnActive()
+    {
+		OnMouseUp();
+    }
+
 
 	void OnMouseUp(){
 		

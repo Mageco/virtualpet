@@ -13,7 +13,6 @@ public class UIManager : MonoBehaviour
     public GameObject shopUIPrefab;
     public GameObject eventUIPrefab;
 
-    public GameObject profileUIPrefab;
     public GameObject skillCompletePrefab;
     public GameObject achivementPrefab;
     public GameObject confirmBuyShopPrefab;
@@ -59,7 +58,7 @@ public class UIManager : MonoBehaviour
     [HideInInspector]
     public AchivementPanel achivementPanel;
 
-    ProfilePanel profilePanel;
+    ProfileUI profilePanel;
 
     ItemInfoUI itemInfoUI;
     TreatmentPopup treatmentPopup;
@@ -71,7 +70,6 @@ public class UIManager : MonoBehaviour
 
     public GameObject profilePrefab;
     public GameObject notificationIcon;
-    List<ProfileUI> profiles = new List<ProfileUI>();
     public List<string> notificationText = new List<string>();
 
     public GameObject doubleClickEffect;
@@ -331,16 +329,17 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    public void OnProfilePanel()
+    public void OnProfilePanel(int petId)
     {
         if (profilePanel == null)
         {
-            var popup = Instantiate(profileUIPrefab) as GameObject;
+            var popup = Instantiate(profilePrefab) as GameObject;
             popup.SetActive(true);
             popup.transform.localScale = Vector3.zero;
             popup.transform.SetParent(GameObject.Find("Canvas").transform, false);
             popup.GetComponent<Popup>().Open();
-            profilePanel = popup.GetComponent<ProfilePanel>();
+            profilePanel = popup.GetComponent<ProfileUI>();
+            profilePanel.Load(petId);
             MageEngine.instance.OnEvent(Mage.Models.Application.MageEventType.OpenStore, "Profile");
         }
      }

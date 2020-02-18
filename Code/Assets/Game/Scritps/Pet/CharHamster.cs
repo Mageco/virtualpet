@@ -49,7 +49,7 @@ public class CharHamster : CharController
                         {
                             yield return StartCoroutine(DoAnim("Love"));
                             MageManager.instance.PlaySoundName(charType.ToString() + "_Speak", false);
-                            GameManager.instance.AddExp(5, data.iD);
+                            ItemManager.instance.SpawnHeart(1, this.transform.position);
                         }
                             
                         isSpeak = true;

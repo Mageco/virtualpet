@@ -66,14 +66,14 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        /*
+        
         bool isDone = false;
         while(!isDone){
             isDone = true;
 
             foreach(CharController c in petObjects){
                 foreach(CharController c1 in petObjects){
-                    if(c != c1 && c.transform.position.z == c1.transform.position.z){
+                    if(c != c1 && c.transform.position.z == c1.transform.position.z && c.charInteract.interactType == InteractType.None && c1.charInteract.interactType == InteractType.None){
                         if(c.transform.position.y >= c1.transform.position.y){
                             Vector3 pos = c.transform.position;
                             pos.z -= 1;
@@ -88,7 +88,7 @@ public class GameManager : MonoBehaviour
                     }
                 }
             }
-        } */
+        } 
     }
 
     public PlayerData GetPlayer(){
@@ -616,10 +616,20 @@ public class GameManager : MonoBehaviour
         SavePlayer();
     }
 
-    public void AddExp(int e,int petId,bool happy = true){
-        GetPet(petId).Exp += e;
-        if(GetPetObject(petId) != null){
+    public void LevelUp(int petId)
+    {
+        if (GetPet(petId) != null)
+        {
+            AddHappy(-10 * 10 * GetPet(petId).level);
+            GetPet(petId).level++;
+            SavePlayer();
+        }
+            
+    }
 
+    /*
+    public void AddExp(int e,int petId,bool happy = true){
+        if(GetPetObject(petId) != null){
             if(happy){
                 GameObject go = GameObject.Instantiate(heartPrefab,GetPetObject(petId).transform.position,Quaternion.identity);
                 int n = (e + GetPet(petId).level)/5;
@@ -637,7 +647,7 @@ public class GameManager : MonoBehaviour
             }
 
         }
-    }
+    }*/
 
 
     public void CollectSkillRewards(int skillId){
@@ -803,7 +813,6 @@ public class GameManager : MonoBehaviour
     public void OnTreatment(Pet p,SickType sickType,int coin)
     {
         AddCoin(-coin);
-        ItemManager.instance.SpawnHealth(p.character.transform.position);
         if (sickType == SickType.Sick)
             LogAchivement(AchivementType.Sick);
         else if (sickType == SickType.Injured)

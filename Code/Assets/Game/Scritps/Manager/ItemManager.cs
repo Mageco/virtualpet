@@ -348,6 +348,20 @@ public class ItemManager : MonoBehaviour
         return null;
     }
 
+    public ToyItem GetRandomToyItem()
+    {
+        List<ItemObject> temp = new List<ItemObject>();
+        foreach (ItemObject item in items)
+        {
+            if (DataHolder.GetItem(item.itemID).itemType == ItemType.Toy)
+            {
+                temp.Add(item);
+            }
+        }
+        int n = Random.Range(0, temp.Count);
+        return temp[n].GetComponentInChildren<ToyItem>();
+    }
+
     void UpdateItemColliders(){
         itemColliders = this.GetComponentsInChildren<ItemCollider>();
     }

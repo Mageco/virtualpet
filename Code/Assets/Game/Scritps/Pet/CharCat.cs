@@ -17,7 +17,7 @@ public class CharCat : CharController
             data.Energy -= 1.5f*Time.deltaTime;
             if(Vector2.Distance(GetMouse().transform.position,this.transform.position) < 2){
                 if(!isLove){
-                    GameManager.instance.AddExp(5,data.iD);
+                    GetMouse().OnActive();
                     isLove = true;
                 }
                     

@@ -58,7 +58,7 @@ public class CharTurtle : CharController
         }
        
 
-            CheckAbort();
+        CheckAbort();
     }
 
 }

@@ -11,10 +11,10 @@ public class CharInteract : MonoBehaviour
     public Vector3 dragOffset;
     CharController character;
     bool isMouseDown = false;
-    bool isDrag = false;
+    public bool isDrag = false;
     Vector3 holdPosition = Vector3.zero;
     float touchTime = 0;
-    float maxClickTime = 0.3f;
+    float maxClickTime = 0.2f;
 
     void Awake()
     {
@@ -30,15 +30,11 @@ public class CharInteract : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        /*
+        
         if (isMouseDown)
         {
-            if(!isDrag && Vector2.Distance(holdPosition, Camera.main.ScreenToWorldPoint(Input.mousePosition)) > 0.1f)
-            {
-                OnDrag();
-            }
             touchTime += Time.deltaTime;
-        }*/
+        }
     }
 
     #region Interact
@@ -48,8 +44,8 @@ public class CharInteract : MonoBehaviour
             return;
         }
         OnDrag();
-       // isMouseDown = true;
-       // holdPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        isMouseDown = true;
+        holdPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
     }
 
     void OnDrag()
@@ -71,31 +67,36 @@ public class CharInteract : MonoBehaviour
     {
         
         dragOffset = Vector3.zero;
-
-        if(interactType == InteractType.Touch)
+        if (interactType == InteractType.Touch)
         {
 
-        }else if (interactType == InteractType.Drag) {
+        }
+        else if (interactType == InteractType.Drag) {
             interactType = InteractType.Drop;
         }else if(interactType == InteractType.Drop){
             interactType = InteractType.None;
             character.isAbort = true;
             character.actionType = ActionType.None;
         }
-        //else if(touchTime < maxClickTime)
-        //{
-        //    OnClick();
-        //s}
+
+
+        if (touchTime < maxClickTime && Vector2.Distance(holdPosition, Camera.main.ScreenToWorldPoint(Input.mousePosition)) < 0.1f)
+        {
+            if (character.actionType != ActionType.Sick && character.actionType != ActionType.Injured)
+            {
+                OnClick();
+            }
+        }
 
         touchTime = 0;
         isDrag = false;
         isMouseDown = false;
+        holdPosition = Vector3.zero;
     }
 
     void OnClick()
     {
-        MageManager.instance.PlaySoundName("Button", false);
-        character.OnCall();
+        UIManager.instance.OnProfilePanel(character.data.iD);
     }
 
 

@@ -11,6 +11,7 @@ public class RewardVideoAdManager : MonoBehaviour {
 	public RewardType rewardType = RewardType.ChickenDefend;
 	RewardBasedVideoAd rewardBasedVideo;
 	ChestItem chestItem;
+	int petId = 0;
 
 	#if UNITY_ANDROID
 	string appId = "ca-app-pub-6818802678275174~2905900525";
@@ -137,6 +138,10 @@ public class RewardVideoAdManager : MonoBehaviour {
         {
 			StartCoroutine(OnRewardChest());
 		}
+		else if (rewardType == RewardType.Sick)
+		{
+			StartCoroutine(OnTreatment());
+		}
 
 	}
 
@@ -145,6 +150,15 @@ public class RewardVideoAdManager : MonoBehaviour {
 		yield return new WaitForSeconds(0.5f);
 		if (chestItem != null)
 			chestItem.OnActive();
+	}
+
+    IEnumerator OnTreatment()
+    {
+		yield return new WaitForSeconds(0.5f);
+		if (rewardType == RewardType.Sick)
+			GameManager.instance.OnTreatment(GameManager.instance.GetPet(petId), SickType.Sick, 0);
+        else if(rewardType == RewardType.Injured)
+			GameManager.instance.OnTreatment(GameManager.instance.GetPet(petId), SickType.Injured, 0);
 	}
 
 
@@ -171,6 +185,17 @@ public class RewardVideoAdManager : MonoBehaviour {
 		}
 	}
 
+	public void ShowAd(RewardType type,int petId)
+	{
+		//MageManager.instance.OnNotificationPopup("Ad requested");
+		if (rewardBasedVideo.IsLoaded())
+		{
+			rewardType = type;
+			rewardBasedVideo.Show();
+			this.petId = petId;
+		}
+	}
+
 	public void ShowAd(RewardType type,ChestItem item)
 	{
 		//MageManager.instance.OnNotificationPopup("Ad requested");
@@ -184,4 +209,4 @@ public class RewardVideoAdManager : MonoBehaviour {
 
 }
 
-public enum RewardType {ChickenDefend,FishingCat,Chest};
+public enum RewardType {ChickenDefend,FishingCat,Chest,Sick,Injured};

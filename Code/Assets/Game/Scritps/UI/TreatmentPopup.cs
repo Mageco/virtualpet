@@ -6,8 +6,6 @@ using UnityEngine.UI;
 
 public class TreatmentPopup : MonoBehaviour
 {
-
-    public Text timeWait;
     float coin;
     public Text price;
     SickType sickType;
@@ -20,7 +18,7 @@ public class TreatmentPopup : MonoBehaviour
     {
         pet = p;
         sickType = type;
-        
+        price.text = "100";
         if(sickType == SickType.Sick)
         {
             sickTypeIcon.sprite = sickTypes[0];
@@ -42,24 +40,26 @@ public class TreatmentPopup : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        float t = pet.MaxTimeSick - (float)(System.DateTime.Now - pet.timeSick).TotalSeconds;
-        float m = (int)(t / 60);
-        float s = (int)(t - m * 60);
-        timeWait.text = m.ToString("00") + ":" + s.ToString("00");
-        coin = Mathf.Max((int)(t / 60),100);
-        price.text = coin.ToString();
+
     }
 
     public void OnConfirm()
     {
         if (GameManager.instance.GetCoin() >= coin)
         {
-            UIManager.instance.OnTreatmentConfirmPopup(pet, sickType);
+            GameManager.instance.OnTreatment(pet, sickType, 100);
             this.Close();
         }
         else
             MageManager.instance.OnNotificationPopup(DataHolder.Dialog(6).GetDescription(MageManager.instance.GetLanguage()));
-        //UIManager.instance.On
+    }
+
+    public void OnAd()
+    {
+        if (sickType == SickType.Sick)
+            RewardVideoAdManager.instance.ShowAd(RewardType.Sick, pet.iD);
+        else if(sickType == SickType.Injured)
+            RewardVideoAdManager.instance.ShowAd(RewardType.Injured,pet.iD);
     }
 
     public void Close() {

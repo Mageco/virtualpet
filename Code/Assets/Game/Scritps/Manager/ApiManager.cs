@@ -67,9 +67,10 @@ public class ApiManager : MageEngine {
     }
 
 	public void ExampleOfGetRandomFriend() {
+        /*
 		GetRandomFriend( (User u) => {
 			Debug.Log("Friend: " + u.ToJson());
-		} );
+		} );*/
 	}
 
 	//public static ApiManager GetInstance() {
