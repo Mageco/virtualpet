@@ -1865,7 +1865,7 @@ public class CharController : MonoBehaviour
         CheckAbort();
     }
 
-    protected virtual IEnumerator Toy()
+     protected virtual IEnumerator Toy()
     {
         if (toyItem != null)
         {
@@ -1977,7 +1977,7 @@ public class CharController : MonoBehaviour
                 charScale.speedFactor = 1f;
                 wheel.DeActive();
             }
-            else if (toyItem.toyType == ToyType.Slider)
+            else if (toyItem.toyType == ToyType.Slider || toyItem.toyType == ToyType.JumpingCircle)
             {
                 toyItem.OnActive();
                 if (toyItem.startPoint != null)
@@ -1986,7 +1986,10 @@ public class CharController : MonoBehaviour
                     yield return StartCoroutine(RunToPoint());
                 }
                 agent.transform.position = toyItem.startPoint.position;
-                yield return StartCoroutine(DoAnim("Play_Toy_Slider"));
+                if(toyItem.toyType == ToyType.Slider)
+                    yield return StartCoroutine(DoAnim("Play_Toy_Slider"));
+                else if(toyItem.toyType == ToyType.JumpingCircle)
+                    yield return StartCoroutine(DoAnim("Play_Toy_Jumping_Circle"));
                 if (toyItem.endPoint != null && !isAbort)
                 {
                     agent.transform.position = toyItem.endPoint.position;

@@ -24,6 +24,8 @@ public class ToyCarItem : ToyItem
 
 
 	public override void OnActive(){
+		if (state == EquipmentState.Active)
+			return;
 		int round = Random.Range(3, 10);
         MageManager.instance.PlaySoundName("Item_Car", false);
 		state = EquipmentState.Active;
