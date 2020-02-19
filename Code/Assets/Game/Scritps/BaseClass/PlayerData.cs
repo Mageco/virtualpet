@@ -15,6 +15,7 @@ public class PlayerData : BaseModel
     public int petCount = 1;
     public int itemCount = 0;
     public float playTime = 0;
+	public int exp = 0;
     public List<PlayerItem> items = new List<PlayerItem>();
     public List<Pet> pets = new List<Pet>();
 	public int[] minigameLevels = new int[20];

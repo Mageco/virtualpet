@@ -10,6 +10,7 @@ public class HappyItem : MonoBehaviour
     public int value = 5;
     bool isPick = false;
     bool isSound = true;
+    public GameObject body;
     public void Load(int e,bool isSound){
         value = e;
         this.isSound = isSound;
@@ -37,20 +38,6 @@ public class HappyItem : MonoBehaviour
         
     }
 
-    void OnMouseUp(){
-
-        /*
-        if (IsPointerOverUIObject())
-            return;
-
-        if(!isPick){
-            isPick = true;
-            GameManager.instance.LogAchivement(AchivementType.CollectHeart);
-            StartCoroutine(Pick());
-        }
-        */
-    }
-
     public void OnPick()
     {
         isPick = true;
@@ -59,11 +46,15 @@ public class HappyItem : MonoBehaviour
     }
 
     IEnumerator Pick(){
-        MageManager.instance.PlaySoundName("happy_collect_item_01",false);
-        animator.Play("Pick");
+        animator.enabled = false;
         this.GetComponent<CircleCollider2D>().enabled = false;
-        yield return new WaitForEndOfFrame();
-        yield return new WaitForSeconds(animator.GetCurrentAnimatorStateInfo(0).length);
+        Vector3 target = this.body.transform.position + new Vector3(0,10,0);
+        target.z = -100;
+        while(Vector2.Distance(this.body.transform.position,target) > 0.5)
+        {
+            this.body.transform.position = Vector3.Lerp(this.body.transform.position, target, 5 * Time.deltaTime);
+            yield return new WaitForEndOfFrame();
+        }
         GameManager.instance.AddHappy(value);
         Destroy(this.gameObject);
     }

@@ -16,6 +16,7 @@ public class ItemManager : MonoBehaviour
     public GameObject shitPrefab;
     public GameObject heartPrefab;
     public GameObject coinPrefab;
+    public GameObject starPrefab;
 
     public GameObject dirtyPrefab;
     public GameObject chestPrefab;
@@ -520,6 +521,13 @@ public class ItemManager : MonoBehaviour
     public void SpawnHeart(Vector3 pos,Quaternion rot, int value,bool isSound){
         GameObject go = Instantiate(heartPrefab,pos,rot);
         go.GetComponent<HappyItem>().Load(value,isSound);
+        SpawnStar(pos, rot, 1, isSound);
+    }
+
+    public void SpawnStar(Vector3 pos, Quaternion rot, int value, bool isSound)
+    {
+        GameObject go = Instantiate(starPrefab, pos, rot);
+        go.GetComponent<StarItem>().Load(value, isSound);
     }
 
     public void SpawnCoin(Vector3 pos, int value,GameObject item = null)

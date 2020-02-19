@@ -89,7 +89,7 @@ public class Minigame : MonoBehaviour
     }
 
     public virtual void EndGame(){
-        GameManager.instance.LogAchivement(AchivementType.Play_MiniGame);
+        GameManager.instance.LogAchivement(AchivementType.Play_MiniGame, ActionType.None, minigameId);
     }
 
     public int GetZindex()

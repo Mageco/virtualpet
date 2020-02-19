@@ -768,12 +768,12 @@ public class GameManager : MonoBehaviour
                     }
                 }else if(achivement.achivementType == AchivementType.Minigame_Level || achivement.achivementType == AchivementType.Play_MiniGame)
                 {
-                    if(achivement.itemId == itemId)
+                    if (achivement.itemId == itemId)
                     {
                         a.Amount++;
                     }
                 }
-                else{
+                 else{
                     a.Amount ++;
                 }
             }

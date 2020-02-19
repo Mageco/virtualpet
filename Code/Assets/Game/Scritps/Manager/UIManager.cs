@@ -28,6 +28,9 @@ public class UIManager : MonoBehaviour
 	public Text coinText;
 	public Text diamonText;
     public Text heartText;
+    public GameObject coinIcon;
+    public GameObject diamonIcon;
+    public GameObject heartIcon;
     public Text levelText;
     public Text exp;
     public Image expProgress;

@@ -141,7 +141,7 @@ public class Minigame1 : Minigame
             {
                 OnEndGame(true);
                 GameManager.instance.GetPlayer().minigameLevels[minigameId]++;
-                GameManager.instance.LogAchivement(AchivementType.Minigame_Level);
+                GameManager.instance.LogAchivement(AchivementType.Minigame_Level,ActionType.None,minigameId);
             }
             else
             {
@@ -158,7 +158,8 @@ public class Minigame1 : Minigame
     }
 
     public override void EndGame(){
-        GameManager.instance.LogAchivement(AchivementType.Play_MiniGame);
+        Debug.Log("Minigame Id " + minigameId);
+        GameManager.instance.LogAchivement(AchivementType.Play_MiniGame, ActionType.None, minigameId);
         state = GameState.End;
         AnimalSpawner[] animals = GameObject.FindObjectsOfType<AnimalSpawner>();
         for(int i=0;i<animals.Length;i++){
