@@ -2011,8 +2011,8 @@ Transform:
   - {fileID: 880976789}
   - {fileID: 771910332}
   - {fileID: 1474601126}
-  - {fileID: 1079079211}
   - {fileID: 1677351882}
+  - {fileID: 1079079211}
   m_Father: {fileID: 0}
   m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -4850,7 +4850,7 @@ GameObject:
   - component: {fileID: 1668534891}
   - component: {fileID: 1668534895}
   m_Layer: 5
-  m_Name: Canvas
+  m_Name: Minigame
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4958,19 +4958,17 @@ MonoBehaviour:
   live: 0
   time: 0
   maxTime: 10000
-  winPrefab: {fileID: 6340952420401392005, guid: 40d17cdac4f24364e968a2d4bbdec7dc,
-    type: 3}
-  losePrefab: {fileID: 6340952420401392005, guid: 193bcb29cde7c6f499d6d004181c9b42,
-    type: 3}
+  endGamePrefab: {fileID: 0}
   boundX: {x: -7, y: 7}
   boundY: {x: -8, y: -1}
   exp: 1
-  coin: 1
-  diamon: 0
   minigameId: 1
   coinPrefab: {fileID: 4005113895813422143, guid: 4d7d3500f46e942cebd6922267d3fe53,
     type: 3}
   state: 1
+  winPanel: {fileID: 8944439443721593055, guid: 154d4ff1032584ed5b9093481f8b0c78,
+    type: 3}
+  bonus: 0
   fishs: []
   fishNumber: {fileID: 112075548}
   timeText: {fileID: 1512780572}
@@ -5014,7 +5012,7 @@ Transform:
   m_LocalScale: {x: 1112.815, y: 75.430664, z: 1}
   m_Children: []
   m_Father: {fileID: 610157742}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!61 &1677351883
 BoxCollider2D:

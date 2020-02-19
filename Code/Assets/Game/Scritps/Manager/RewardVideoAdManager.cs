@@ -8,7 +8,7 @@ using MageSDK.Client;
 public class RewardVideoAdManager : MonoBehaviour {
 
 	public static RewardVideoAdManager instance;
-	public RewardType rewardType = RewardType.ChickenDefend;
+	public RewardType rewardType = RewardType.Minigame;
 	RewardBasedVideoAd rewardBasedVideo;
 	ChestItem chestItem;
 	int petId = 0;
@@ -117,24 +117,11 @@ public class RewardVideoAdManager : MonoBehaviour {
 	public void HandleRewardBasedVideoRewarded(object sender, Reward args)
 	{
 		MageEngine.instance.OnEvent(Mage.Models.Application.MageEventType.VideoAdRewarded, rewardType.ToString());
-        if(rewardType == RewardType.ChickenDefend)
+        if(rewardType == RewardType.Minigame)
         {
-			if (ES2.Exists("MinigamePlayCount0"))
-			{
-				int playCount = ES2.Load<int>("MinigamePlayCount0");
-				playCount++;
-				ES2.Save<int>(playCount, "MinigamePlayCount0");
-			}
+			StartCoroutine(OnMinigame());
 		}
-		else if (rewardType == RewardType.FishingCat)
-		{
-			if (ES2.Exists("MinigamePlayCount1"))
-			{
-				int playCount = ES2.Load<int>("MinigamePlayCount1");
-				playCount++;
-				ES2.Save<int>(playCount, "MinigamePlayCount1");
-			}
-		}else if(rewardType == RewardType.Chest)
+        else if(rewardType == RewardType.Chest)
         {
 			StartCoroutine(OnRewardChest());
 		}
@@ -161,6 +148,14 @@ public class RewardVideoAdManager : MonoBehaviour {
 			GameManager.instance.OnTreatment(GameManager.instance.GetPet(petId), SickType.Injured, 0);
 	}
 
+    IEnumerator OnMinigame()
+    {
+		yield return new WaitForEndOfFrame();
+		if (Minigame.instance != null)
+		{
+			Minigame.instance.winPanel.OnWatchedAd();
+	    }
+	}
 
 	public void HandleRewardBasedVideoLeftApplication(object sender, EventArgs args)
 	{
@@ -209,4 +204,4 @@ public class RewardVideoAdManager : MonoBehaviour {
 
 }
 
-public enum RewardType {ChickenDefend,FishingCat,Chest,Sick,Injured};
+public enum RewardType {Minigame,Chest,Sick,Injured};

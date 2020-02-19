@@ -113,7 +113,7 @@ public class Minigame1 : Minigame
         chickenNumber.text = live.ToString() + "/" + maxLive.ToString();
        // Debug.Log("Update Live " + live.ToString());
         if(live <= 0){
-            OnLose();
+            OnEndGame(false);
             EndGame();
         }
     }
@@ -138,13 +138,13 @@ public class Minigame1 : Minigame
             EndGame();
             if (live == maxLive)
             {
-                OnWin();
+                OnEndGame(true);
                 GameManager.instance.GetPlayer().minigameLevels[minigameId]++;
                 GameManager.instance.LogAchivement(AchivementType.Minigame_Level);
             }
             else
             {
-                OnLose();
+                OnEndGame(false);
             }
         }
 

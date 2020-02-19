@@ -6,6 +6,8 @@ using UnityEngine.SceneManagement;
 
 public class WinPanel : MonoBehaviour
 {
+    public Image header;
+    public Sprite[] headerSprites;
     public Text exp;
     public Text coin;
     int price = 5;
@@ -13,6 +15,9 @@ public class WinPanel : MonoBehaviour
     public Text priceText;
     int bonus = 0;
     public Button watchAd;
+    public Text nextText;
+    public Text replayText;
+    public Text completeText;
 
     // Start is called before the first frame update
     void Start()
@@ -43,6 +48,10 @@ public class WinPanel : MonoBehaviour
 
         if (isWin)
         {
+            header.sprite = headerSprites[0];
+            completeText.gameObject.SetActive(true);
+            replayText.gameObject.SetActive(false);
+            nextText.gameObject.SetActive(true);
             if (minigameId == 0)
             {
                 if ((GameManager.instance.myPlayer.minigameLevels[0] + 1) % 5 == 0 || GameManager.instance.myPlayer.minigameLevels[0] == 0)
@@ -59,8 +68,16 @@ public class WinPanel : MonoBehaviour
                 exp.transform.parent.gameObject.SetActive(false);
             }
         }
-        
-        if(c > 0){
+        else
+        {
+            header.sprite = headerSprites[1];
+            completeText.gameObject.SetActive(false);
+            replayText.gameObject.SetActive(true);
+            nextText.gameObject.SetActive(false);
+        }
+            
+
+        if (c > 0){
             coin.text = c.ToString(); 
         }
         else

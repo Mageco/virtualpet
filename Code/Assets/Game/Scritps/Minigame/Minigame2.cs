@@ -111,7 +111,7 @@ public class Minigame2 : Minigame
         fishNumber.text = live.ToString() + "/" + maxLive.ToString();
        // Debug.Log("Update Live " + live.ToString());
         if(live == maxLive){
-            OnWin();
+            OnEndGame(true);
             GameManager.instance.GetPlayer().minigameLevels[minigameId]++;
             GameManager.instance.LogAchivement(AchivementType.Minigame_Level);
             EndGame();
@@ -136,13 +136,13 @@ public class Minigame2 : Minigame
             EndGame();
             if (live == maxLive)
             {
-                OnWin();
+                OnEndGame(true);
                 GameManager.instance.GetPlayer().minigameLevels[minigameId]++;
                 GameManager.instance.LogAchivement(AchivementType.Minigame_Level);
             }
             else
             {
-                OnLose();
+                OnEndGame(false);
             }
         }
     }

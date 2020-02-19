@@ -10,21 +10,17 @@ public class Minigame : MonoBehaviour
     public int live;
     public float time = 0;
     public float maxTime;
-
-    public GameObject winPrefab;
-    public GameObject losePrefab;
+    public GameObject endGamePrefab;
     public Vector2 boundX;
     public Vector2 boundY;
     public int exp = 1; 
     int zIndex = 0;
     public int minigameId = 0;
     public GameObject coinPrefab;
-
     public GameState state = GameState.Ready;
 
-    WinPanel winPanel;
-    LosePanel losePanel;
-    protected int bonus = 0;
+    public WinPanel winPanel;
+    public int bonus = 0;
 
     void Awake(){
         if(instance == null){
@@ -54,46 +50,19 @@ public class Minigame : MonoBehaviour
     }
 
 
-    public virtual void OnWin(){
+    public virtual void OnEndGame(bool isWin){
         if (winPanel == null)
         {
-            var popup = Instantiate(winPrefab) as GameObject;
+            var popup = Instantiate(endGamePrefab) as GameObject;
             popup.SetActive(true);
             popup.transform.localScale = Vector3.zero;
             popup.transform.SetParent(GameObject.Find("Canvas").transform, false);
             popup.GetComponent<Popup>().Open();
             winPanel = popup.GetComponent<WinPanel>();
-            winPanel.Load(bonus,minigameId,true);
+            winPanel.Load(bonus,minigameId, isWin);
         }
     }
 
-    public virtual void OnLose()
-    {
-        if (winPanel == null)
-        {
-            var popup = Instantiate(winPrefab) as GameObject;
-            popup.SetActive(true);
-            popup.transform.localScale = Vector3.zero;
-            popup.transform.SetParent(GameObject.Find("Canvas").transform, false);
-            popup.GetComponent<Popup>().Open();
-            winPanel = popup.GetComponent<WinPanel>();
-            winPanel.Load(bonus, minigameId, false);
-        }
-    }
-
-    /*
-    public virtual void OnLose(){
-        if (losePanel == null)
-        {
-            var popup = Instantiate(losePrefab) as GameObject;
-            popup.SetActive(true);
-            popup.transform.localScale = Vector3.zero;
-            popup.transform.SetParent(GameObject.Find("Canvas").transform, false);
-            popup.GetComponent<Popup>().Open();
-            losePanel = popup.GetComponent<LosePanel>();
-            losePanel.Load(minigameId);
-        }
-    }*/
 
     public bool IsInBound(Vector3 pos){
         if(pos.x > boundX.x && pos.x < boundX.y && pos.y > boundY.x && pos.y < boundY.y){

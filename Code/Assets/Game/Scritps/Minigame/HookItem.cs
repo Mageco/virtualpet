@@ -194,11 +194,12 @@ public class HookItem : MonoBehaviour
             if(value > 0)
             {
                 Minigame.instance.SpawnCoin(this.transform.position + new Vector3(0, 0, -10), value);
-                GameManager.instance.AddCoin(value);
-                
+                //GameManager.instance.AddCoin(value);
+                Minigame.instance.bonus += value;
             }
 
-            GameManager.instance.AddCoin(count);
+            Minigame.instance.bonus += count;
+            //GameManager.instance.AddCoin(count);
             OnIdle();
         }
         else
