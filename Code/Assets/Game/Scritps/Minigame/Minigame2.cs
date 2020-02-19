@@ -113,7 +113,7 @@ public class Minigame2 : Minigame
         if(live == maxLive){
             OnEndGame(true);
             GameManager.instance.GetPlayer().minigameLevels[minigameId]++;
-            GameManager.instance.LogAchivement(AchivementType.Minigame_Level);
+            GameManager.instance.LogAchivement(AchivementType.Minigame_Level, ActionType.None, minigameId);
             EndGame();
         }
     }
@@ -138,7 +138,7 @@ public class Minigame2 : Minigame
             {
                 OnEndGame(true);
                 GameManager.instance.GetPlayer().minigameLevels[minigameId]++;
-                GameManager.instance.LogAchivement(AchivementType.Minigame_Level);
+                GameManager.instance.LogAchivement(AchivementType.Minigame_Level, ActionType.None, minigameId);
             }
             else
             {
@@ -148,7 +148,7 @@ public class Minigame2 : Minigame
     }
 
     public override void EndGame(){
-        GameManager.instance.LogAchivement(AchivementType.Play_MiniGame);
+        GameManager.instance.LogAchivement(AchivementType.Play_MiniGame, ActionType.None, minigameId);
         state = GameState.End;
         FishSpawner[] animals = GameObject.FindObjectsOfType<FishSpawner>();
         for(int i=0;i<animals.Length;i++){

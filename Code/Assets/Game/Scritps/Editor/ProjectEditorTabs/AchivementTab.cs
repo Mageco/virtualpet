@@ -144,6 +144,10 @@ public class AchivementTab : BaseTab
 			else if(DataHolder.Achivement(selection).achivementType == AchivementType.Tap_Animal || DataHolder.Achivement(selection).achivementType == AchivementType.Dissmiss_Animal){
 				DataHolder.Achivement(selection).animalType = (AnimalType)EditorGUILayout.EnumPopup("Animal", DataHolder.Achivement(selection).animalType, GUILayout.Width (pw.mWidth));
 			}
+			else if (DataHolder.Achivement(selection).achivementType == AchivementType.Minigame_Level || DataHolder.Achivement(selection).achivementType == AchivementType.Play_MiniGame)
+			{
+				DataHolder.Achivement(selection).itemId = EditorGUILayout.IntField("Minigame Id", DataHolder.Achivement(selection).itemId, GUILayout.Width(pw.mWidth));
+			}
 
 
 			DataHolder.Achivement(selection).isAvailable = EditorGUILayout.Toggle("Available", DataHolder.Achivement(selection).isAvailable, GUILayout.Width(pw.mWidth));

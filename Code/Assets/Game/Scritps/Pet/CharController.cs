@@ -962,7 +962,7 @@ public class CharController : MonoBehaviour
         if(lastToyItem != null && item == lastToyItem)
         {
             int n = Random.Range(0, 100);
-            if (n > 30)
+            if (n > 50)
                 return;
         }
 
@@ -1870,7 +1870,7 @@ public class CharController : MonoBehaviour
             {
                 dropPosition = toyItem.anchorPoint.position + new Vector3(0, Random.Range(-1f, 1f), 0);
                 agent.transform.position = dropPosition;
-
+                maxCount = Random.Range(6, 10);
                 yield return new WaitForEndOfFrame();
                 while (toyItem != null && !isAbort && count < maxCount)
                 {

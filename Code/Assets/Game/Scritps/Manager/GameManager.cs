@@ -766,7 +766,14 @@ public class GameManager : MonoBehaviour
                     if(achivement.animalType == animalType){
                             a.Amount ++;
                     }
-                }else{
+                }else if(achivement.achivementType == AchivementType.Minigame_Level || achivement.achivementType == AchivementType.Play_MiniGame)
+                {
+                    if(achivement.itemId == itemId)
+                    {
+                        a.Amount++;
+                    }
+                }
+                else{
                     a.Amount ++;
                 }
             }
@@ -804,7 +811,7 @@ public class GameManager : MonoBehaviour
     {
         foreach (var item in myPlayer.achivements)
         {
-            if (item.rewardState == RewardState.Ready)
+            if (DataHolder.GetAchivement(item.achivementId).isAvailable && item.rewardState == RewardState.Ready)
                 return true;
         }
         return false;

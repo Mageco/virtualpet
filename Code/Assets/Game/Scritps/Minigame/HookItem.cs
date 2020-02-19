@@ -127,6 +127,7 @@ public class HookItem : MonoBehaviour
         {
             int number = 0;
             int count = 0;
+
             foreach (FishController fish in fishes)
             {
                 if(fish.fishType == FishType.Fish)
@@ -152,28 +153,28 @@ public class HookItem : MonoBehaviour
             if (number == 1)
             {
                 MageManager.instance.PlaySoundName("points_ticker_bonus_score_reward_single_01", false);
-                value += 1;
+                value += 0;
                 GameObject bonus = Instantiate(bonuses[0]);
                 bonus.transform.position = hookAnchor.position + new Vector3(0, 0, -10);
             }
             else if (number == 2)
             {
                 MageManager.instance.PlaySoundName("points_ticker_bonus_score_reward_single_02", false);
-                value += 2;
+                value += 1;
                 GameObject bonus = Instantiate(bonuses[1]);
                 bonus.transform.position = hookAnchor.position + new Vector3(0, 0, -10);
             }
             else if (number == 3)
             {
                 MageManager.instance.PlaySoundName("points_ticker_bonus_score_reward_single_04", false);
-                value += 5;
+                value += 3;
                 GameObject bonus = Instantiate(bonuses[2]);
                 bonus.transform.position = hookAnchor.position + new Vector3(0, 0, -10);
             }
             else if (number > 3)
             {
                 MageManager.instance.PlaySoundName("points_ticker_bonus_score_reward_single_06", false);
-                value += 10;
+                value += 5;
                 GameObject bonus = Instantiate(bonuses[3]);
                 bonus.transform.position = hookAnchor.position + new Vector3(0, 0, -10);
             }
@@ -198,7 +199,7 @@ public class HookItem : MonoBehaviour
                 Minigame.instance.bonus += value;
             }
 
-            Minigame.instance.bonus += count;
+            //Minigame.instance.bonus += count;
             //GameManager.instance.AddCoin(count);
             OnIdle();
         }
