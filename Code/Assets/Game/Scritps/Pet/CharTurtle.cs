@@ -15,6 +15,7 @@ public class CharTurtle : CharController
         while(!isAbort){
             yield return new WaitForEndOfFrame();
         }
+        ItemManager.instance.SpawnHeart(1, this.transform.position);
         CheckAbort();
     }
 

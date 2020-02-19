@@ -40,29 +40,6 @@ public class CharShiba : CharController
     }
 
 
-    protected override IEnumerator Discover()
-    {
-        if (data.curious > data.MaxCurious * 0.4f)
-        {
-            int ran = Random.Range(0,100);
-            if(ran < 70)
-            {
-                SetTarget(PointType.ChickenDefence);
-                yield return StartCoroutine(RunToPoint());
-                anim.Play("Sit");
-                yield return StartCoroutine(Wait(Random.Range(2f, 10f)));
-            }else
-            {
-                SetTarget(PointType.Fishing);
-                yield return StartCoroutine(RunToPoint());
-                anim.Play("Sit");
-                yield return StartCoroutine(Wait(Random.Range(2f, 10f)));
-            }
-        }
-        CheckAbort();
-    }
-
-
 
     protected override IEnumerator Itchi()
     {

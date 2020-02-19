@@ -660,6 +660,8 @@ public class Pet : BaseModel
         }
     }
 
+
+
     public float MaxCurious
     {
         get
@@ -682,6 +684,18 @@ public class Pet : BaseModel
         set
         {
             this.maxTimeSick = value;
+        }
+    }
+
+    public float RecoveryEnergy
+    {
+        get
+        {
+            return recoverEnergy + level;
+        }
+        set
+        {
+            this.recoverEnergy = value;
         }
     }
 

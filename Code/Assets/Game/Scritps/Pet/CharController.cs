@@ -244,7 +244,7 @@ public class CharController : MonoBehaviour
         }else if(actionType == ActionType.Toy)
         {
             data.Energy -= Time.deltaTime * 2;
-            if (timeToy > 5)
+            if (timeToy > 6)
             {
                 ItemManager.instance.SpawnHeart(1, this.transform.position);
                 timeToy = 0;
@@ -286,7 +286,7 @@ public class CharController : MonoBehaviour
 
         if (data.Food > 0 && data.Water > 0)
         {
-            float delta = data.recoverEnergy / 5;
+            float delta = data.RecoveryEnergy / 5;
             data.Energy += delta;
             data.Food -= delta;
             data.Water -= delta;
@@ -1853,13 +1853,10 @@ public class CharController : MonoBehaviour
     protected virtual IEnumerator Tired()
     {
         anim.Play("Tired", 0);
-        while (data.Food > 0 && data.Water > 0 && data.Sleep > 0 && data.energy < data.MaxEnergy * 0.5f && !isAbort)
+        while (data.Food > 0 && data.Water > 0 && data.Sleep > 0 && data.energy < data.MaxEnergy * 0.7f && !isAbort)
         {
-            float delta = data.recoverEnergy * Time.deltaTime;
+            float delta = data.RecoveryEnergy * Time.deltaTime;
             data.Energy += delta;
-            //data.Food -= delta * 0.1f;
-            //data.Water -= delta * 0.1f;
-            //data.Sleep -= delta * 0.1f;
             yield return new WaitForEndOfFrame();
         }
         CheckAbort();
@@ -1870,17 +1867,18 @@ public class CharController : MonoBehaviour
         if (toyItem != null)
         {
             toyItem.pets.Add(this);
+            float time = 0;
+            float maxTime = Random.Range(5, 10);
+            int count = 0;
+            int maxCount = Random.Range(1, 6);
 
             if (toyItem.toyType == ToyType.Jump)
             {
-
-                int n = Random.Range(3, 10);
-                int count = 0;
                 dropPosition = toyItem.anchorPoint.position + new Vector3(0, Random.Range(-1f, 1f), 0);
                 agent.transform.position = dropPosition;
 
                 yield return new WaitForEndOfFrame();
-                while (!isAbort && count < n)
+                while (toyItem != null && !isAbort && count < maxCount)
                 {
                     toyItem.OnActive();
                     MageManager.instance.PlaySoundName(charType.ToString() + "_Supprised", false);
@@ -1901,7 +1899,7 @@ public class CharController : MonoBehaviour
                         Vector3 pos1 = agent.transform.position;
                         pos1.y += ySpeed * Time.deltaTime;
 
-                        if (count == n - 1)
+                        if (count == maxCount - 1)
                         {
                             pos1.x += 15 * Time.deltaTime;
                         }
@@ -1909,7 +1907,7 @@ public class CharController : MonoBehaviour
 
                         if (ySpeed < 0 && this.transform.position.y < dropPosition.y)
                         {
-                            if (count == n - 1)
+                            if (count == maxCount - 1)
                             {
                                 MageManager.instance.PlaySoundName("whoosh_swish_med_03", false);
                                 yield return StartCoroutine(DoAnim("Drop"));
@@ -1921,18 +1919,14 @@ public class CharController : MonoBehaviour
                             }
                             charInteract.interactType = InteractType.None;
                         }
-
                         yield return new WaitForEndOfFrame();
                     }
                     count++;
                 }
-                toyItem.DeActive();
             }
             else if (toyItem.toyType == ToyType.Ball || toyItem.toyType == ToyType.Car)
             {
                 charScale.speedFactor = 1.5f;
-                int count = 0;
-                int maxCount = Random.Range(1, 5);
                 while (toyItem != null && data.Energy > data.MaxEnergy * 0.1f && count < maxCount && !isAbort)
                 {
                     anim.speed = 1.5f;
@@ -1951,33 +1945,27 @@ public class CharController : MonoBehaviour
                     }
                     yield return new WaitForEndOfFrame();
                 }
-                toyItem.DeActive();
-                charScale.speedFactor = 1f;
+                
             }
-            else if (toyItem.toyType == ToyType.RunningWheel)
+            else if (toyItem.toyType == ToyType.Wheel)
             {
-                ToyWheelItem wheel = toyItem.GetComponent<ToyWheelItem>();
                 charInteract.interactType = InteractType.Toy;
                 MageManager.instance.PlaySoundName("Wheel", false);
-                float time = 0;
                 charScale.speedFactor = 2f;
                 anim.speed = 2f;
                 SetDirection(Direction.L);
-                wheel.OnActive();
-                float maxTime = Random.Range(5, 10);
-                while (wheel != null && data.Energy > data.MaxEnergy * 0.1f && !isAbort && time < maxTime)
+                toyItem.OnActive();
+                while (toyItem != null && data.Energy > data.MaxEnergy * 0.1f && !isAbort && time < maxTime)
                 {
                     time += Time.deltaTime;
-                    agent.transform.position = wheel.anchorPoint.position;
+                    agent.transform.position = toyItem.anchorPoint.position;
                     anim.Play("Run_" + this.direction.ToString(), 0);
                     data.Energy -= 2f * Time.deltaTime;
                     yield return new WaitForEndOfFrame();
                 }
                 charInteract.interactType = InteractType.None;
-                charScale.speedFactor = 1f;
-                wheel.DeActive();
             }
-            else if (toyItem.toyType == ToyType.Slider || toyItem.toyType == ToyType.JumpingCircle)
+            else if (toyItem.toyType == ToyType.Slider || toyItem.toyType == ToyType.Circle)
             {
                 toyItem.OnActive();
                 if (toyItem.startPoint != null)
@@ -1988,15 +1976,14 @@ public class CharController : MonoBehaviour
                 agent.transform.position = toyItem.startPoint.position;
                 if(toyItem.toyType == ToyType.Slider)
                     yield return StartCoroutine(DoAnim("Play_Toy_Slider"));
-                else if(toyItem.toyType == ToyType.JumpingCircle)
+                else if(toyItem.toyType == ToyType.Circle)
                     yield return StartCoroutine(DoAnim("Play_Toy_Jumping_Circle"));
                 if (toyItem.endPoint != null && !isAbort)
                 {
                     agent.transform.position = toyItem.endPoint.position;
                 }
-                toyItem.DeActive();
             }
-            else if (toyItem.toyType == ToyType.SpringCar || toyItem.toyType == ToyType.Swing)
+            else if (toyItem.toyType == ToyType.Spring || toyItem.toyType == ToyType.Swing)
             {
                 if (toyItem.startPoint != null)
                 {
@@ -2004,20 +1991,16 @@ public class CharController : MonoBehaviour
                     yield return StartCoroutine(RunToPoint());
 
                 }
-
-                float maxTime = Random.Range(3, 10);
-                float t = 0;
                 toyItem.OnActive();
                 charInteract.interactType = InteractType.Toy;
-                while (t < maxTime && !isAbort)
+                while (toyItem != null && time < maxTime && !isAbort)
                 {
                     if (toyItem.anchorPoint != null)
                     {
                         agent.transform.position = toyItem.anchorPoint.position;
-                        //this.transform.position = toyItem.anchorPoint.position;
                     }
 
-                    if (toyItem.toyType == ToyType.SpringCar)
+                    if (toyItem.toyType == ToyType.Spring)
                     {
                         anim.Play("Play_Toy_Rocking_Car", 0);
                     }
@@ -2026,22 +2009,48 @@ public class CharController : MonoBehaviour
                         anim.Play("Play_Toy_Swing", 0);
                     }
 
-                    t += Time.deltaTime;
+                    time += Time.deltaTime;
                     yield return new WaitForEndOfFrame();
                 }
-                toyItem.DeActive();
                 charInteract.interactType = InteractType.None;
                 if (toyItem.endPoint != null && !isAbort)
                 {
                     agent.transform.position = toyItem.endPoint.position;
                 }
+            }else if(toyItem.toyType == ToyType.Dance || toyItem.toyType == ToyType.Fun)
+            {
+                toyItem.OnActive();
+                while (toyItem != null && time < maxTime && !isAbort)
+                {
+                    if (toyItem.toyType == ToyType.Dance)
+                    {
+                        anim.Play("Play_Toy_Stereo", 0);
+                    }
+                    else if (toyItem.toyType == ToyType.Fun)
+                    {
+                        anim.Play("Play_Toy_Bubble_Robot", 0);
+                    }
+
+                    time += Time.deltaTime;
+                    yield return new WaitForEndOfFrame();
+                }
             }
 
-            toyItem = null;
+            
 
+            if (toyItem != null)
+            {
+                if(toyItem.pets.Contains(this))
+                    toyItem.pets.Remove(this);
+                toyItem.DeActive();
+            }
+
+            charScale.speedFactor = 1f;
             anim.speed = 1f;
-            if (toyItem != null && toyItem.pets.Contains(this))
-                toyItem.pets.Remove(this);
+            toyItem = null;
+            yield return StartCoroutine(DoAnim("Love"));
+            ItemManager.instance.SpawnHeart(1, this.transform.position);
+
         }
 
         

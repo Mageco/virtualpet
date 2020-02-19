@@ -75,7 +75,7 @@ public class ProfileUI : MonoBehaviour
         price = data.level * data.level * 10;
         priceText.text = price.ToString();
         strengthText.text = data.MaxHealth.ToString();
-        heartText.text = "+" + data.level.ToString();
+        heartText.text = "+" + (1 + data.level/5).ToString();
     }
 
     public void Upgrade()
