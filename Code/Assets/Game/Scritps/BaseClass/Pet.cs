@@ -59,7 +59,7 @@ public class Pet : BaseModel
     [HideInInspector]
     public float recoverDirty = 0.1f;
     [HideInInspector]
-    public float recoverHealth = 1;
+    public float recoverHealth = 0;
     [HideInInspector]
     public float recoverEnergy = 5;
 
@@ -696,6 +696,18 @@ public class Pet : BaseModel
         set
         {
             this.recoverEnergy = value;
+        }
+    }
+
+    public float RecoverHealth
+    {
+        get
+        {
+            return recoverHealth + level / 25;
+        }
+        set
+        {
+            this.recoverHealth = value;
         }
     }
 

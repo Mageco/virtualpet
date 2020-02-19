@@ -288,10 +288,10 @@ public class CharController : MonoBehaviour
         {
             float delta = data.RecoveryEnergy / 5;
             data.Energy += delta;
-            data.Food -= delta;
-            data.Water -= delta;
-            data.Shit += delta / 4;
-            data.Pee += delta / 2;
+            data.Food -= 0.5f;
+            data.Water -= 0.5f;
+            data.Shit += 0.2f;
+            data.Pee += 0.25f;
         }
 
 
@@ -301,7 +301,8 @@ public class CharController : MonoBehaviour
 
         data.Sleep -= data.recoverSleep;
 
-        float deltaHealth = data.recoverHealth;
+        float deltaHealth = data.RecoverHealth;
+        Debug.Log(deltaHealth);
 
         if (data.Health > 0.1f * data.MaxHealth)
         {
@@ -323,6 +324,7 @@ public class CharController : MonoBehaviour
             if (data.Sleep < data.MaxSleep * 0.05f)
                 deltaHealth -= (data.MaxSleep * 0.05f - data.Sleep) * 0.005f;
         }
+        Debug.Log(deltaHealth);
 
         data.Health += deltaHealth;
         data.curious += 0.1f;
