@@ -70,6 +70,7 @@ public class WinPanel : MonoBehaviour
         }
         else
         {
+            exp.transform.parent.gameObject.SetActive(false);
             header.sprite = headerSprites[1];
             completeText.gameObject.SetActive(false);
             replayText.gameObject.SetActive(true);
@@ -97,6 +98,7 @@ public class WinPanel : MonoBehaviour
         }
         else
         {
+            GameManager.instance.AddCoin(bonus);
             GameManager.instance.AddHappy(-price);
             MageManager.instance.LoadScene(SceneManager.GetActiveScene().name, 0.5f);
             this.GetComponent<Popup>().Close();
@@ -112,7 +114,7 @@ public class WinPanel : MonoBehaviour
 
     public void OnWatchAd()
     {
-
+        RewardVideoAdManager.instance.ShowAd(RewardType.Minigame);
     }
 
     public void Close(){

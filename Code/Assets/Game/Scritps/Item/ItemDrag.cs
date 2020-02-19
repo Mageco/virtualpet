@@ -8,7 +8,7 @@ public class ItemDrag : MonoBehaviour
 {
 	Vector3 dragOffset;
 	protected Animator anim;
-	protected bool isDrag = false;
+	public bool isDrag = false;
 	protected Vector3 originalPosition;
 	protected Quaternion originalRotation;
 	protected Vector3 lastPosition;
@@ -98,6 +98,11 @@ public class ItemDrag : MonoBehaviour
     {
         StartCoroutine(ReturnPosition(lastPosition));
     }
+
+    public void ReturnOriginal()
+    {
+		StartCoroutine(ReturnPosition(originalPosition));
+	}
 
 	protected virtual IEnumerator ReturnPosition(Vector3 pos)
 	{

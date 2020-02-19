@@ -1,6 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.UI;
 
 public class Minigame : MonoBehaviour
 {
@@ -19,6 +18,7 @@ public class Minigame : MonoBehaviour
     public GameObject coinPrefab;
     public GameState state = GameState.Ready;
 
+    public Text coinText;
     public WinPanel winPanel;
     public int bonus = 0;
 
@@ -42,7 +42,8 @@ public class Minigame : MonoBehaviour
     // Update is called once per frame
     protected virtual void Update()
     {
-
+        //Debug.Log(bonus);
+        coinText.text = bonus.ToString();
     }
 
     public virtual void UpdateLive(){
@@ -59,6 +60,8 @@ public class Minigame : MonoBehaviour
             popup.transform.SetParent(GameObject.Find("Canvas").transform, false);
             popup.GetComponent<Popup>().Open();
             winPanel = popup.GetComponent<WinPanel>();
+            if (isWin)
+                bonus += GameManager.instance.myPlayer.minigameLevels[minigameId];
             winPanel.Load(bonus,minigameId, isWin);
         }
     }

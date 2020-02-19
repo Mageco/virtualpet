@@ -358,8 +358,14 @@ public class ItemManager : MonoBehaviour
                 temp.Add(item);
             }
         }
-        int n = Random.Range(0, temp.Count);
-        return temp[n].GetComponentInChildren<ToyItem>();
+        if (temp.Count > 0)
+        {
+            int n = Random.Range(0, temp.Count);
+            return temp[n].GetComponentInChildren<ToyItem>();
+        }
+        else
+            return null;
+
     }
 
     void UpdateItemColliders(){

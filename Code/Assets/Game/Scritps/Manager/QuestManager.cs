@@ -90,20 +90,23 @@ public class QuestManager : MonoBehaviour
         }
         else if (GameManager.instance.myPlayer.questId == 3)
         {
-
+            GameManager.instance.GetActivePet().Pee = GameManager.instance.GetActivePet().MaxPee * 0.9f;
         }
         else if (GameManager.instance.myPlayer.questId == 4)
         {
-            GameManager.instance.GetActivePet().Shit = GameManager.instance.GetActivePet().MaxShit * 0.71f;
+
         }
         else if (GameManager.instance.myPlayer.questId == 5)
+        {
+            GameManager.instance.GetActivePet().Shit = GameManager.instance.GetActivePet().MaxShit * 0.9f;
+            GameManager.instance.GetActivePet().Sleep = GameManager.instance.GetActivePet().MaxSleep * 0.7f;
+
+        }
+        else if (GameManager.instance.myPlayer.questId == 6)
         {
             GameManager.instance.GetActivePet().Sleep = GameManager.instance.GetActivePet().MaxSleep * 0.05f;
             GameManager.instance.GetActivePet().Food = 0.6f * GameManager.instance.GetActivePet().MaxFood;
             GameManager.instance.GetActivePet().Water = 0.6f * GameManager.instance.GetActivePet().MaxWater;
-        }
-        else if (GameManager.instance.myPlayer.questId == 6)
-        {
             delayTime = 5;
         }
         else if (GameManager.instance.myPlayer.questId == 7)

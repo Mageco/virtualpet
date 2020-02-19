@@ -10,6 +10,7 @@ public class Minigame1 : Minigame
     public Text chickenNumber;
     public Text timeText;
     public Text levelText;
+    
 
     public AnimalSpawner chickenSpawner;
     public AnimalSpawner foxSpawner;
@@ -119,8 +120,8 @@ public class Minigame1 : Minigame
     }
 
     protected override void Update(){
-        
-        
+
+        base.Update();
 
 
         if (state == GameState.Run)

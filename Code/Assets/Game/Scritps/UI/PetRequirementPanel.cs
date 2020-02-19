@@ -172,6 +172,8 @@ public class PetRequirementPanel : MonoBehaviour
             GameManager.instance.AddPet(petId);
             GameManager.instance.EquipPet(petId);
             isBuy = true;
+            if (ItemManager.instance.GetCharCollector(petId) != null)
+                ItemManager.instance.GetCharCollector(petId).DeActive();
             this.Close();
         }
 

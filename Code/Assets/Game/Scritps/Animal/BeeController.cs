@@ -188,7 +188,7 @@ public class BeeController : MonoBehaviour
 		}
 		else {
 			if (time > maxTimeSpawn) {
-                if(GameManager.instance.myPlayer.questId > 18)
+                if(GameManager.instance.myPlayer.questId > 9)
                     Spawn ();
 				time = 0;
 			} else

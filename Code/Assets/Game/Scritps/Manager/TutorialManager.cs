@@ -56,7 +56,7 @@ public class TutorialManager : MonoBehaviour
             if (step == 0)
             {
                 DrinkBowlItem item = FindObjectOfType<DrinkBowlItem>();
-                if (item != null && item.foodAmount < item.maxfoodAmount - 2)
+                if (item != null && item.foodAmount < item.maxfoodAmount - 1)
                 {
                     blackScreen.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, 0);
                     blackScreen.SetActive(true);
@@ -412,10 +412,14 @@ public class TutorialManager : MonoBehaviour
         blackScreen.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, 0);
         blackScreen.SetActive(true);
         CharController pet = GameManager.instance.GetPetObject(0);
-        //if (GameManager.instance.GetActivePet().enviromentType != EnviromentType.Bath)
-        //{
-            pet.OnControl();
+        while(pet.charInteract.interactType != InteractType.None)
+        {
             yield return new WaitForEndOfFrame();
+        }
+        yield return new WaitForEndOfFrame();
+        if (GameManager.instance.GetActivePet().enviromentType != EnviromentType.Bath)
+        {
+            pet.OnControl();
             handClick.SetActive(true);
             handClick.transform.position = pet.transform.position + new Vector3(0, 3, -10);
             handClick.GetComponent<Animator>().Play("Hold", 0);
@@ -430,7 +434,7 @@ public class TutorialManager : MonoBehaviour
             handClick.SetActive(false);
             yield return new WaitForEndOfFrame();
             pet.charInteract.interactType = InteractType.Drop;
-        //}
+        }
        
         if (pet.data.dirty > 50)
         {
@@ -454,22 +458,30 @@ public class TutorialManager : MonoBehaviour
         blackScreen.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, 0);
         blackScreen.SetActive(true);
         CharController pet = GameManager.instance.GetPetObject(0);
-        pet.OnControl();
-        handClick.SetActive(true);
-        handClick.transform.position = pet.transform.position + new Vector3(0, 3, -10);
-        handClick.GetComponent<Animator>().Play("Hold", 0);
-
-        pet.target = pet.transform.position;
-        Vector3 holdPosition = ItemManager.instance.GetItemChildObject(ItemType.Toilet).transform.position + new Vector3(0, 16, 0);
-        while (Vector2.Distance(pet.transform.position, holdPosition) > 2)
+        while (pet.charInteract.interactType != InteractType.None)
         {
-            pet.target = Vector3.Lerp(pet.target, holdPosition, Time.deltaTime);
-            handClick.transform.position = pet.transform.position + new Vector3(0, 3, -10);
             yield return new WaitForEndOfFrame();
         }
-        handClick.SetActive(false);
-        pet.charInteract.interactType = InteractType.Drop;
-        yield return new WaitForSeconds(3);
+        yield return new WaitForEndOfFrame();
+        if (GameManager.instance.GetActivePet().enviromentType != EnviromentType.Toilet)
+        {
+            pet.OnControl();
+            handClick.SetActive(true);
+            handClick.transform.position = pet.transform.position + new Vector3(0, 3, -10);
+            handClick.GetComponent<Animator>().Play("Hold", 0);
+
+            pet.target = pet.transform.position;
+            Vector3 holdPosition = ItemManager.instance.GetItemChildObject(ItemType.Toilet).transform.position + new Vector3(0, 15, 0);
+            while (Vector2.Distance(pet.transform.position, holdPosition) > 2)
+            {
+                pet.target = Vector3.Lerp(pet.target, holdPosition, Time.deltaTime);
+                handClick.transform.position = pet.transform.position + new Vector3(0, 3, -10);
+                yield return new WaitForEndOfFrame();
+            }
+            handClick.SetActive(false);
+            pet.charInteract.interactType = InteractType.Drop;
+            yield return new WaitForSeconds(3);
+        }
     }
 
     protected virtual IEnumerator HoldToSleep()
@@ -477,23 +489,31 @@ public class TutorialManager : MonoBehaviour
         blackScreen.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, 0);
         blackScreen.SetActive(true);
         CharController pet = GameManager.instance.GetPetObject(0);
-        pet.OnControl();
-        handClick.SetActive(true);
-        handClick.transform.position = pet.transform.position + new Vector3(0, 3, -10);
-        handClick.GetComponent<Animator>().Play("Hold", 0);
-
-        pet.target = pet.transform.position;
-        Vector3 holdPosition = ItemManager.instance.GetItemChildObject(ItemType.Bed).transform.position + new Vector3(0, 16f, 0);
-        while (Vector2.Distance(pet.transform.position, holdPosition) > 2)
+        while (pet.charInteract.interactType != InteractType.None)
         {
-            pet.target = Vector3.Lerp(pet.target, holdPosition, Time.deltaTime);
-            handClick.transform.position = pet.transform.position + new Vector3(0, 3, -10);
             yield return new WaitForEndOfFrame();
         }
+        yield return new WaitForEndOfFrame();
+        if (GameManager.instance.GetActivePet().enviromentType != EnviromentType.Bed)
+        {
+            pet.OnControl();
+            handClick.SetActive(true);
+            handClick.transform.position = pet.transform.position + new Vector3(0, 3, -10);
+            handClick.GetComponent<Animator>().Play("Hold", 0);
 
-        handClick.SetActive(false);
-        pet.charInteract.interactType = InteractType.Drop;
-        yield return new WaitForSeconds(3);
+            pet.target = pet.transform.position;
+            Vector3 holdPosition = ItemManager.instance.GetItemChildObject(ItemType.Bed).transform.position + new Vector3(0, 15f, 0);
+            while (Vector2.Distance(pet.transform.position, holdPosition) > 2)
+            {
+                pet.target = Vector3.Lerp(pet.target, holdPosition, Time.deltaTime);
+                handClick.transform.position = pet.transform.position + new Vector3(0, 3, -10);
+                yield return new WaitForEndOfFrame();
+            }
+
+            handClick.SetActive(false);
+            pet.charInteract.interactType = InteractType.Drop;
+            yield return new WaitForSeconds(3);
+        }
     }
 
 
@@ -544,16 +564,19 @@ public class TutorialManager : MonoBehaviour
         blackScreen.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, 0);
         blackScreen.SetActive(true);
         GameObject broom = ItemManager.instance.GetItemChildObject(ItemType.Clean);
-        ItemManager.instance.SetCameraTarget(broom);
+
+
         handClick.SetActive(true);
         handClick.transform.position = broom.transform.position + new Vector3(0, 3, -10);
-        handClick.GetComponent<Animator>().Play("Hold", 0);
-        broom.GetComponent<ItemDrag>().isDragable = false;
 
         ItemDirty dirty = FindObjectOfType<ItemDirty>();
 
-        if (dirty != null && !broom.GetComponent<ItemDrag>().isBusy)
+        if (!broom.GetComponent<ItemDrag>().isDrag && dirty != null && !broom.GetComponent<ItemDrag>().isBusy)
         {
+
+            handClick.GetComponent<Animator>().Play("Hold", 0);
+            broom.GetComponent<ItemDrag>().isDragable = false;
+            ItemManager.instance.SetCameraTarget(broom);
             Vector3 target = dirty.transform.position + new Vector3(0, 8, 0);
             while (Vector2.Distance(broom.transform.position, target) > 1 && !broom.GetComponent<ItemDrag>().isBusy)
             {
@@ -561,8 +584,8 @@ public class TutorialManager : MonoBehaviour
                 handClick.transform.position = broom.transform.position + new Vector3(0, 3, -10);
                 yield return new WaitForEndOfFrame();
             }
-            yield return new WaitForSeconds(2);
-            broom.GetComponent<ItemDrag>().Return();
+            yield return new WaitForSeconds(3);
+            broom.GetComponent<ItemDrag>().ReturnOriginal();
             yield return new WaitForSeconds(1);
             //broom.GetComponent<Animator>().Play("Tutorial", 0);
         }

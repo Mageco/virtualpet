@@ -120,7 +120,7 @@ public class Minigame2 : Minigame
 
     protected override void Update(){
 
-       
+        base.Update();
 
         if (state == GameState.Run)
         {
