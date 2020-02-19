@@ -588,9 +588,10 @@ public class TutorialManager : MonoBehaviour
             broom.GetComponent<ItemDrag>().ReturnOriginal();
             yield return new WaitForSeconds(1);
             //broom.GetComponent<Animator>().Play("Tutorial", 0);
+            ItemManager.instance.ResetCameraTarget();
         }
         handClick.SetActive(false);
-        ItemManager.instance.ResetCameraTarget();
+       
         broom.GetComponent<ItemDrag>().isDragable = true;
         blackScreen.SetActive(false);
     }
