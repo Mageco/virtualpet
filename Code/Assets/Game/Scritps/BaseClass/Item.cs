@@ -23,9 +23,6 @@ public class Item
 
 	//All item properties
 	public float value = 0; //Value can be food amount, cleaness 
-	public float health = 0;
-	public float happy = 0;
-    public float injured = 0;
 
 	public Item()
 	{

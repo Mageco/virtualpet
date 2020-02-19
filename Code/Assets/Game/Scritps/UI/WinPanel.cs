@@ -8,10 +8,11 @@ public class WinPanel : MonoBehaviour
 {
     public Text exp;
     public Text coin;
-    public Text diamon;
     int price = 5;
     int gameId = 0;
     public Text priceText;
+    int bonus = 0;
+    public Button watchAd;
 
     // Start is called before the first frame update
     void Start()
@@ -31,44 +32,39 @@ public class WinPanel : MonoBehaviour
         
     }
 
-    public void Load(int d, int c,int minigameId){
-        
+    public void Load(int c,int minigameId,bool isWin){
+        bonus = c;
         gameId = minigameId;
         price = GameManager.instance.myPlayer.minigameLevels[gameId] + 1;
         priceText.text = price.ToString();
         animator = this.GetComponent<Animator>();
         animator.Play("Win",0);
-        if(minigameId == 0)
-        {
-            if ((GameManager.instance.myPlayer.minigameLevels[0] + 1) % 5 == 0 || GameManager.instance.myPlayer.minigameLevels[0] == 0)
-            {
-                exp.transform.parent.gameObject.SetActive(true);
-                GameManager.instance.AddItem(72);
-                GameManager.instance.EquipItem(72);
-            }
-            else
-                exp.transform.parent.gameObject.SetActive(false);
-        }else if(minigameId == 1)
-        {
-            exp.transform.parent.gameObject.SetActive(false);
-        }
 
+
+        if (isWin)
+        {
+            if (minigameId == 0)
+            {
+                if ((GameManager.instance.myPlayer.minigameLevels[0] + 1) % 5 == 0 || GameManager.instance.myPlayer.minigameLevels[0] == 0)
+                {
+                    exp.transform.parent.gameObject.SetActive(true);
+                    GameManager.instance.AddItem(72);
+                    GameManager.instance.EquipItem(72);
+                }
+                else
+                    exp.transform.parent.gameObject.SetActive(false);
+            }
+            else if (minigameId == 1)
+            {
+                exp.transform.parent.gameObject.SetActive(false);
+            }
+        }
         
         if(c > 0){
-            coin.text = c.ToString();
-            GameManager.instance.AddCoin(c);
+            coin.text = c.ToString(); 
         }
         else
             coin.transform.parent.gameObject.SetActive(false);
-
-        if(d > 0){
-            diamon.text = d.ToString();
-            GameManager.instance.AddDiamond(d);
-        }
-        else
-            diamon.transform.parent.gameObject.SetActive(false);
-
-        
     }
 
     public void OnHome(){
@@ -90,10 +86,21 @@ public class WinPanel : MonoBehaviour
         }
     }
 
+    public void OnWatchedAd()
+    {
+        bonus = bonus * 2;
+        coin.text = bonus.ToString();
+        watchAd.interactable = false;
+    }
+
+    public void OnWatchAd()
+    {
+
+    }
+
     public void Close(){
+        GameManager.instance.AddCoin(bonus);
         Minigame.instance.OnHome();
         this.GetComponent<Popup>().Close();
     }
-
-
 }

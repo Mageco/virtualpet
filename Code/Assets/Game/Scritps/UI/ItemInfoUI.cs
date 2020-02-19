@@ -173,25 +173,14 @@ public class ItemInfoUI : MonoBehaviour
                 cleanText.text = d.value.ToString("F0");
             }
         }
-
-        if (d.happy > 0)
+        else if (d.itemType == ItemType.MedicineBox)
         {
-            happyIcon.gameObject.SetActive(true);
-            happyText.text = "+" + d.happy.ToString("F0");
+            if (d.value > 0)
+            {
+                sickIcon.gameObject.SetActive(true);
+                sickText.text = d.value.ToString("F0");
+            }
         }
-
-        if (d.health > 0)
-        {
-            sickIcon.gameObject.SetActive(true);
-            sickText.text = "+" + d.health.ToString("F0");
-        }
-
-        if (d.injured > 0)
-        {
-            injuredIcon.gameObject.SetActive(true);
-            injuredText.text = "+" + d.injured.ToString("F0");
-        }
-
     }
 
     void OffAllIcon()

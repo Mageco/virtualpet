@@ -36,10 +36,7 @@ public class HealthItem : ItemDrag
         base.Start();
         localPosition = this.transform.localPosition;
         item = this.transform.parent.parent.parent.GetComponent<ItemObject>();
-        if (sickType == SickType.Sick)
-            amounnt = DataHolder.GetItem(item.itemID).health;
-        else
-            amounnt = DataHolder.GetItem(item.itemID).injured;
+        amounnt = DataHolder.GetItem(item.itemID).value;
     }
 
     protected override void Update()

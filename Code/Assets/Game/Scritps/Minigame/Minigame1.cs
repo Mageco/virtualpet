@@ -24,6 +24,7 @@ public class Minigame1 : Minigame
     GuideUI guildUI;
     float timeHit = 0;
     
+    
     void Start(){
         timeText.text = "";
         chickenNumber.text = "";
@@ -235,7 +236,8 @@ public class Minigame1 : Minigame
         if(value > 0)
         {
             Minigame.instance.SpawnCoin(pos + new Vector3(0, 2, -1), value);
-            GameManager.instance.AddCoin(value);
+            bonus += value;
+            //GameManager.instance.AddCoin(value);
         }
 
     }

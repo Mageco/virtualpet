@@ -16,8 +16,6 @@ public class Minigame : MonoBehaviour
     public Vector2 boundX;
     public Vector2 boundY;
     public int exp = 1; 
-    public int coin = 10;
-    public int diamon = 0;
     int zIndex = 0;
     public int minigameId = 0;
     public GameObject coinPrefab;
@@ -26,6 +24,7 @@ public class Minigame : MonoBehaviour
 
     WinPanel winPanel;
     LosePanel losePanel;
+    protected int bonus = 0;
 
     void Awake(){
         if(instance == null){
@@ -64,10 +63,25 @@ public class Minigame : MonoBehaviour
             popup.transform.SetParent(GameObject.Find("Canvas").transform, false);
             popup.GetComponent<Popup>().Open();
             winPanel = popup.GetComponent<WinPanel>();
-            winPanel.Load((gameLevel+1)*diamon,(gameLevel+1)*coin,minigameId);
+            winPanel.Load(bonus,minigameId,true);
         }
     }
 
+    public virtual void OnLose()
+    {
+        if (winPanel == null)
+        {
+            var popup = Instantiate(winPrefab) as GameObject;
+            popup.SetActive(true);
+            popup.transform.localScale = Vector3.zero;
+            popup.transform.SetParent(GameObject.Find("Canvas").transform, false);
+            popup.GetComponent<Popup>().Open();
+            winPanel = popup.GetComponent<WinPanel>();
+            winPanel.Load(bonus, minigameId, false);
+        }
+    }
+
+    /*
     public virtual void OnLose(){
         if (losePanel == null)
         {
@@ -79,7 +93,7 @@ public class Minigame : MonoBehaviour
             losePanel = popup.GetComponent<LosePanel>();
             losePanel.Load(minigameId);
         }
-    }
+    }*/
 
     public bool IsInBound(Vector3 pos){
         if(pos.x > boundX.x && pos.x < boundX.y && pos.y > boundY.x && pos.y < boundY.y){

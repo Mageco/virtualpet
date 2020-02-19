@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class LosePanel : MonoBehaviour
 {
     public Text priceText;
+    public Text coin;
     int gameId = 0;
     int price = 5;
 
@@ -24,8 +25,10 @@ public class LosePanel : MonoBehaviour
         
     }
 
-    public void Load(int id){
-        gameId = id;
+    public void Load(int c, int minigameId)
+    {
+        coin.text = c.ToString();
+        gameId = minigameId;
         price = GameManager.instance.myPlayer.minigameLevels[gameId] + 1;
         priceText.text = price.ToString();
     }

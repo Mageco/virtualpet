@@ -246,7 +246,7 @@ public class CharController : MonoBehaviour
             data.Energy -= Time.deltaTime * 2;
             if (timeToy > 6)
             {
-                ItemManager.instance.SpawnHeart(1, this.transform.position);
+                ItemManager.instance.SpawnHeart((1+data.level/5), this.transform.position);
                 timeToy = 0;
             }
             else
@@ -1438,11 +1438,9 @@ public class CharController : MonoBehaviour
         {
             if (data.pee <= 1)
             {
-                ItemManager.instance.SpawnHeart(1, this.transform.position);
+                ItemManager.instance.SpawnHeart((1 + data.level / 5), this.transform.position);
                 GameManager.instance.LogAchivement(AchivementType.Do_Action, ActionType.OnToilet);
                 LevelUpSkill(SkillType.Toilet);
-                data.Health += ItemManager.instance.GetItemData(ItemType.Toilet).health;
-                data.Damage -= ItemManager.instance.GetItemData(ItemType.Toilet).injured;
             }
 
             yield return StartCoroutine(JumpDown(-7, 10, 30));
@@ -1501,11 +1499,9 @@ public class CharController : MonoBehaviour
         {
             if (data.shit <= 1)
             {
-                ItemManager.instance.SpawnHeart(1, this.transform.position);
+                ItemManager.instance.SpawnHeart((1 + data.level / 5), this.transform.position);
                 GameManager.instance.LogAchivement(AchivementType.Do_Action, ActionType.OnToilet);
                 LevelUpSkill(SkillType.Toilet);
-                data.Health += ItemManager.instance.GetItemData(ItemType.Toilet).health;
-                data.Damage -= ItemManager.instance.GetItemData(ItemType.Toilet).injured;
             }
             yield return StartCoroutine(JumpDown(-7, 10, 30));
         }
@@ -1545,10 +1541,7 @@ public class CharController : MonoBehaviour
                 if (data.Food >= data.MaxFood - 10)
                 {
                     GameManager.instance.LogAchivement(AchivementType.Do_Action, ActionType.Eat);
-                    ItemManager.instance.SpawnHeart(1, this.transform.position);
-                    ItemManager.instance.SpawnHeart((int)ItemManager.instance.GetItemData(ItemType.Food).happy, this.transform.position);
-                    data.Health += ItemManager.instance.GetItemData(ItemType.Food).health;
-                    data.Damage -= ItemManager.instance.GetItemData(ItemType.Food).injured;
+                    ItemManager.instance.SpawnHeart((1 + data.level / 5), this.transform.position);
                     if (GetFoodItem() != null && GetFoodItem().GetComponent<ItemObject>() != null)
                         GameManager.instance.LogAchivement(AchivementType.Eat, ActionType.None, GetFoodItem().GetComponent<ItemObject>().itemID);
                 }
@@ -1613,9 +1606,6 @@ public class CharController : MonoBehaviour
                 {
                     GameManager.instance.LogAchivement(AchivementType.Do_Action, ActionType.Drink);
                     ItemManager.instance.SpawnHeart(data.level, this.transform.position);
-                    ItemManager.instance.SpawnHeart((int)ItemManager.instance.GetItemData(ItemType.Drink).happy, this.transform.position);
-                    data.Health += ItemManager.instance.GetItemData(ItemType.Drink).health;
-                    data.Damage -= ItemManager.instance.GetItemData(ItemType.Drink).injured;
                     if (GetDrinkItem() != null && GetDrinkItem().GetComponent<ItemObject>() != null)
                         GameManager.instance.LogAchivement(AchivementType.Drink, ActionType.None, GetDrinkItem().GetComponent<ItemObject>().itemID);
                 }
@@ -1674,11 +1664,14 @@ public class CharController : MonoBehaviour
             }
         }*/
 
+        float value = 0;
+
         if (enviromentType == EnviromentType.Bed)
         {
             if (ItemManager.instance.GetItem(ItemType.Bed) != null)
             {
                 ItemManager.instance.GetItem(ItemType.Bed).GetComponentInChildren<ItemCollider>().pets.Add(this);
+                value = ItemManager.instance.GetItemData(ItemType.Bed).value;
             }
         }
 
@@ -1686,7 +1679,7 @@ public class CharController : MonoBehaviour
 
         while (data.Sleep < data.MaxSleep && !isAbort)
         {
-            data.Sleep += data.rateSleep * Time.deltaTime;
+            data.Sleep += (data.rateSleep + value) * Time.deltaTime;
             yield return new WaitForEndOfFrame();
         }
 
@@ -1694,13 +1687,9 @@ public class CharController : MonoBehaviour
         {
             if (data.Sleep > data.MaxSleep - 1)
             {
-                ItemManager.instance.SpawnHeart(1, this.transform.position);
+                ItemManager.instance.SpawnHeart((1 + data.level / 5), this.transform.position);
                 GameManager.instance.LogAchivement(AchivementType.Do_Action, ActionType.Sleep);
                 //LevelUpSkill(SkillType.Sleep);
-                //Debug.Log(ItemManager.instance.GetItemData(ItemType.Bed).GetName(0));
-                //ItemManager.instance.SpawnHeart((int)ItemManager.instance.GetItemData(ItemType.Bed).happy, this.transform.position);
-                data.Health += ItemManager.instance.GetItemData(ItemType.Bed).health;
-                data.Damage -= ItemManager.instance.GetItemData(ItemType.Bed).injured;
             }
             yield return StartCoroutine(JumpDown(-7, 10, 30));
         }
@@ -2051,7 +2040,7 @@ public class CharController : MonoBehaviour
             anim.speed = 1f;
             toyItem = null;
             yield return StartCoroutine(DoAnim("Love"));
-            ItemManager.instance.SpawnHeart(1, this.transform.position);
+            ItemManager.instance.SpawnHeart((1 + data.level / 5), this.transform.position);
 
         }
 
@@ -2167,7 +2156,7 @@ public class CharController : MonoBehaviour
     {
         MageManager.instance.PlaySoundName("Fall", false);
 
-        data.Damage += Random.Range(2, 10);
+        data.Damage += Random.Range(2, 10)/data.level;
         MageManager.instance.PlaySoundName("Drop", false, 1);
         yield return StartCoroutine(DoAnim("Fall_" + direction.ToString()));
 

@@ -141,37 +141,25 @@ public class ItemTab : BaseTab
                 DataHolder.Items().GetItem(selection,temcategory).value = EditorGUILayout.FloatField("Water Amount", DataHolder.Items().GetItem(selection,temcategory).value, GUILayout.Width(pw.mWidth));
             }else if(DataHolder.Items().GetItem(selection,temcategory).itemType == ItemType.Toilet){
                 DataHolder.Items().GetItem(selection,temcategory).value = EditorGUILayout.FloatField("Clean per 1 second", DataHolder.Items().GetItem(selection,temcategory).value, GUILayout.Width(pw.mWidth));
-                DataHolder.Items().GetItem(selection, temcategory).happy = EditorGUILayout.FloatField("+Happy", DataHolder.Items().GetItem(selection, temcategory).happy, GUILayout.Width(pw.mWidth));
             }
             else if(DataHolder.Items().GetItem(selection,temcategory).itemType == ItemType.Bath){
                 DataHolder.Items().GetItem(selection,temcategory).value = EditorGUILayout.FloatField("Clean after take bath", DataHolder.Items().GetItem(selection,temcategory).value, GUILayout.Width(pw.mWidth));
-                DataHolder.Items().GetItem(selection, temcategory).injured = EditorGUILayout.FloatField("+Injured", DataHolder.Items().GetItem(selection, temcategory).injured, GUILayout.Width(pw.mWidth));
             }
             else if(DataHolder.Items().GetItem(selection,temcategory).itemType == ItemType.Clean){
                 DataHolder.Items().GetItem(selection,temcategory).value = EditorGUILayout.FloatField("Clean per second", DataHolder.Items().GetItem(selection,temcategory).value, GUILayout.Width(pw.mWidth));
             }
             else if (DataHolder.Items().GetItem(selection, temcategory).itemType == ItemType.Bed)
             {
-                DataHolder.Items().GetItem(selection, temcategory).value = EditorGUILayout.FloatField("Clean per second", DataHolder.Items().GetItem(selection, temcategory).value, GUILayout.Width(pw.mWidth));
-                DataHolder.Items().GetItem(selection, temcategory).health = EditorGUILayout.FloatField("+Health", DataHolder.Items().GetItem(selection, temcategory).health, GUILayout.Width(pw.mWidth));
+                DataHolder.Items().GetItem(selection, temcategory).value = EditorGUILayout.FloatField("Sleep rate", DataHolder.Items().GetItem(selection, temcategory).value, GUILayout.Width(pw.mWidth));
             }
             else if (DataHolder.Items().GetItem(selection, temcategory).itemType == ItemType.MedicineBox)
             {
-                DataHolder.Items().GetItem(selection, temcategory).injured = EditorGUILayout.FloatField("+Injured", DataHolder.Items().GetItem(selection, temcategory).injured, GUILayout.Width(pw.mWidth));
-                DataHolder.Items().GetItem(selection, temcategory).health = EditorGUILayout.FloatField("+Health", DataHolder.Items().GetItem(selection, temcategory).health, GUILayout.Width(pw.mWidth));
+                DataHolder.Items().GetItem(selection, temcategory).value = EditorGUILayout.FloatField("+Health", DataHolder.Items().GetItem(selection, temcategory).value, GUILayout.Width(pw.mWidth));
             }
-
-            /*
-            DataHolder.Items().GetItem(selection, temcategory).value = EditorGUILayout.FloatField("Clean per second", DataHolder.Items().GetItem(selection, temcategory).value, GUILayout.Width(pw.mWidth));
-            DataHolder.Items().GetItem(selection, temcategory).happy = EditorGUILayout.FloatField("+Happy", DataHolder.Items().GetItem(selection, temcategory).happy, GUILayout.Width(pw.mWidth));
-            DataHolder.Items().GetItem(selection, temcategory).injured = EditorGUILayout.FloatField("+Injured", DataHolder.Items().GetItem(selection, temcategory).injured, GUILayout.Width(pw.mWidth));
-            DataHolder.Items().GetItem(selection, temcategory).health = EditorGUILayout.FloatField("+Health", DataHolder.Items().GetItem(selection, temcategory).health, GUILayout.Width(pw.mWidth));
-            */
 
             EditorGUILayout.EndHorizontal();
             EditorGUILayout.EndVertical();
-            
-            //EditorGUILayout.EndHorizontal();
+
 
 
         }

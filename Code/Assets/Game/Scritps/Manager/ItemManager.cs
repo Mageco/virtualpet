@@ -33,7 +33,7 @@ public class ItemManager : MonoBehaviour
     int fruitId = 0;
 
     float timeChest = 0;
-    float maxTimeChest = 100;
+    float maxTimeChest = 30;
 
     void Awake()
     {
@@ -114,7 +114,7 @@ public class ItemManager : MonoBehaviour
         {
             SpawnChest();
             timeChest = 0;
-            maxTimeChest = Random.Range(100, 300);
+            maxTimeChest = Random.Range(60, 100);
         }
         else
         {
@@ -567,6 +567,9 @@ public class ItemManager : MonoBehaviour
 
     public void SpawnChest()
     {
+        ChestItem[] chests = FindObjectsOfType<ChestItem>();
+        if (chests.Length > 5)
+            return;
         Vector3 pos = GetRandomPoint(PointType.Garden).position + new Vector3(Random.Range(-1, 1), Random.Range(-1, 1), 0);
         pos.z = pos.y * 10;
         GameObject go = Instantiate(chestPrefab, pos, Quaternion.identity);

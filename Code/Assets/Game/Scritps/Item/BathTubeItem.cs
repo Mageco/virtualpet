@@ -45,12 +45,9 @@ public class BathTubeItem : MonoBehaviour
 			foreach(CharController pet in GameManager.instance.petObjects){
 				if (pet.actionType == ActionType.OnBath && pet.data.dirty >= pet.data.MaxDirty * 0.3f) {
 					pet.data.dirty -= clean;
-					ItemManager.instance.SpawnHeart(1, this.transform.position);
+					//ItemManager.instance.SpawnHeart(1, this.transform.position);
 					GameManager.instance.LogAchivement(AchivementType.Do_Action,ActionType.OnBath);
 					pet.OnLearnSkill(SkillType.Bath);
-                    pet.data.Health += ItemManager.instance.GetItemData(ItemType.Bath).health;
-                    pet.data.Damage -= ItemManager.instance.GetItemData(ItemType.Bath).injured;
-
                 }
 			}
 		}

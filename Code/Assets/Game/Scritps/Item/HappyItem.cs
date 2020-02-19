@@ -28,7 +28,7 @@ public class HappyItem : MonoBehaviour
         pos.z = (this.transform.position.y - 2) * 10;
         this.transform.position = pos;
         yield return new WaitForSeconds(0.5f);
-        //OnPick();
+        OnPick();
     }
 
     // Update is called once per frame
@@ -39,7 +39,7 @@ public class HappyItem : MonoBehaviour
 
     void OnMouseUp(){
 
-        
+        /*
         if (IsPointerOverUIObject())
             return;
 
@@ -48,7 +48,7 @@ public class HappyItem : MonoBehaviour
             GameManager.instance.LogAchivement(AchivementType.CollectHeart);
             StartCoroutine(Pick());
         }
-        
+        */
     }
 
     public void OnPick()

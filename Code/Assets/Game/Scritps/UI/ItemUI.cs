@@ -25,6 +25,7 @@ public class ItemUI : MonoBehaviour
     public Image drinkIcon;
     public Image cleanIcon;
     public Image bathIcon;
+    public Image bedIcon;
 
     public Text happyText;
     public Text sickText;
@@ -33,6 +34,7 @@ public class ItemUI : MonoBehaviour
     public Text drinkText;
     public Text cleanText;
     public Text bathText;
+    public Text bedText;
 
     public Text buttonText;
     Animator animator;
@@ -181,27 +183,22 @@ public class ItemUI : MonoBehaviour
             }
         }
 
-        if (d.happy > 0)
+        else if (d.itemType == ItemType.Bed)
         {
-            
-            heartIcon.gameObject.SetActive(true);
-            happyText.text = "+" + d.happy.ToString("F0");
+            if (d.value > 0)
+            {
+                bedIcon.gameObject.SetActive(true);
+                bedText.text = d.value.ToString("F0");
+            }
         }
-
-        if (d.health > 0)
+        else if (d.itemType == ItemType.MedicineBox)
         {
-            
-            sickIcon.gameObject.SetActive(true);
-            sickText.text = "+" + d.health.ToString("F0");
+            if (d.value > 0)
+            {
+                sickIcon.gameObject.SetActive(true);
+                sickText.text = d.value.ToString("F0");
+            }
         }
-
-        if (d.injured > 0)
-        {
-            
-            injuredIcon.gameObject.SetActive(true);
-            injuredText.text = "+" + d.injured.ToString("F0");
-        }
-
     }
 
 
