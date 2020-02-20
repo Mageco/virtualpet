@@ -41,6 +41,9 @@ public class ChestItem : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Vector3 pos = this.transform.position;
+        pos.z = 10 * pos.y;
+        this.transform.position = pos;
     }
 
     public void Load()
