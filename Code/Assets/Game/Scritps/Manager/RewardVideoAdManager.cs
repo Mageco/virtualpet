@@ -157,6 +157,15 @@ public class RewardVideoAdManager : MonoBehaviour {
 	    }
 	}
 
+	IEnumerator OnMap()
+	{
+		yield return new WaitForEndOfFrame();
+		if (UIManager.instance != null)
+		{
+			UIManager.instance.mapRequirementPanel.OnWatchedAd();
+		}
+	}
+
 	public void HandleRewardBasedVideoLeftApplication(object sender, EventArgs args)
 	{
 
@@ -204,4 +213,3 @@ public class RewardVideoAdManager : MonoBehaviour {
 
 }
 
-public enum RewardType {Minigame,Chest,Sick,Injured};

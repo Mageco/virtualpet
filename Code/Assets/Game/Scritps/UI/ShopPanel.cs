@@ -145,7 +145,7 @@ public class ShopPanel : MonoBehaviour
         }
         if (currentTab != 1)
         {
-            items.Sort((p1, p2) => (p1.shopOrder).CompareTo(p2.shopOrder));
+            items.Sort((p1, p2) => (p1.levelRequire).CompareTo(p2.levelRequire));
             foreach (Item item in items)
             {
                 LoadItem(item);

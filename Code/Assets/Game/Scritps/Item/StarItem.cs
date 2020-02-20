@@ -7,11 +7,9 @@ public class StarItem : MonoBehaviour
 {
     Animator animator;
     public int value = 1;
-    bool isSound = true;
     public GameObject body;
-    public void Load(int e,bool isSound){
+    public void Load(int e){
         value = e;
-        this.isSound = isSound;
     }
 
     void Awake(){
@@ -21,8 +19,6 @@ public class StarItem : MonoBehaviour
     // Start is called before the first frame update
     IEnumerator Start()
     {
-        if(isSound)
-            MageManager.instance.PlaySoundName("Button",false);
         Vector3 pos = this.transform.position;
         pos.z = (this.transform.position.y - 2) * 10;
         this.transform.position = pos;

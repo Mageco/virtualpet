@@ -32,7 +32,7 @@ public class CleanItem : MonoBehaviour
 	{
 		if(dirtyItem != null){
 			if(item.itemType == ItemType.Clean && dirtyItem.dirty <= clean*Time.deltaTime){
-				ItemManager.instance.SpawnHeart(this.transform.position,Quaternion.identity,1,true);
+				ItemManager.instance.SpawnHeart(1,this.transform.position);
 				GameManager.instance.LogAchivement(AchivementType.Clean);
             }
 			

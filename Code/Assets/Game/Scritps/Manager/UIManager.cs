@@ -24,6 +24,7 @@ public class UIManager : MonoBehaviour
     public GameObject mapPanelPrefab;
     public GameObject petCollecPanelPrefab;
     public GameObject rewardItemPrefab;
+    public GameObject mapRequirementPrefab;
     public static UIManager instance;
 	public Text coinText;
 	public Text diamonText;
@@ -54,7 +55,10 @@ public class UIManager : MonoBehaviour
     public ConfirmBuyPetPopup confirmBuyPetPopup;
     [HideInInspector]
     public RewardItemPanel rewardItemPanel;
-    MapPanel mapPanel;
+    [HideInInspector]
+    public MapRequirementPanel mapRequirementPanel;
+    [HideInInspector]
+    public MapPanel mapPanel;
 
     public GameObject achivementNotification;
 
@@ -535,6 +539,21 @@ public class UIManager : MonoBehaviour
         }
     }
 
+
+    public void OnMapRequirement(MapType mapType)
+    {
+        if (mapRequirementPanel == null)
+        {
+            var popup = Instantiate(mapRequirementPrefab) as GameObject;
+            popup.SetActive(true);
+            popup.transform.localScale = Vector3.zero;
+            popup.transform.SetParent(GameObject.Find("Canvas").transform, false);
+            popup.GetComponent<Popup>().Open();
+            mapRequirementPanel = popup.GetComponent<MapRequirementPanel>();
+            mapRequirementPanel.Load(mapType);
+        }
+    }
+
     public void OnHome(){
         MageManager.instance.PlaySoundName("BubbleButton", false);
         MageManager.instance.LoadSceneWithLoading("House");
@@ -555,6 +574,22 @@ public class UIManager : MonoBehaviour
         }
         MageManager.instance.LoadSceneWithLoading("Minigame" + id.ToString());
         homeUI.SetActive(false);
+        GameManager.instance.petObjects.Clear();
+    }
+
+    public void OnMap(MapType type)
+    {
+        MageManager.instance.LoadSceneWithLoading(type.ToString());
+        if(type == MapType.House)
+        {
+            shopButton.gameObject.SetActive(true);
+        }
+        else
+        {
+            shopButton.gameObject.SetActive(false);
+        }
+        
+
         GameManager.instance.petObjects.Clear();
     }
 

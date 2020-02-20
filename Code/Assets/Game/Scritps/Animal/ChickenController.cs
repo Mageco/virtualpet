@@ -253,7 +253,7 @@ public class ChickenController : AnimalController
             rot = Quaternion.Euler(new Vector3(0, 180, -1));
         Vector3 pos = this.transform.position + new Vector3(Random.Range(-0.2f, 0.2f), Random.Range(-1, 1), 0);
         GameObject go = Instantiate(happyItem, pos, rot);
-        go.GetComponent<HappyItem>().Load(1, true);
+        go.GetComponent<HappyItem>().Load(1);
     }
 
 }
