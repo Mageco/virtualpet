@@ -538,6 +538,7 @@ public class ItemManager : MonoBehaviour
         {
             go.transform.parent = item.transform;
         }
+        SpawnStar(pos, Quaternion.identity, 1,true);
     }
 
     public GameObject SpawnGuideArrow(ItemType itemType)

@@ -1690,7 +1690,7 @@ public class CharController : MonoBehaviour
         {
             if (data.Sleep > data.MaxSleep - 1)
             {
-                ItemManager.instance.SpawnHeart((1 + data.level / 5), this.transform.position);
+                ItemManager.instance.SpawnHeart((1 + data.level / 5)*2, this.transform.position);
                 GameManager.instance.LogAchivement(AchivementType.Do_Action, ActionType.Sleep);
                 //LevelUpSkill(SkillType.Sleep);
             }

@@ -7,8 +7,7 @@ public class HappyItem : MonoBehaviour
 {
     public ItemSaveDataType itemSaveDataType = ItemSaveDataType.Happy;
     Animator animator;
-    public int value = 5;
-    bool isPick = false;
+    public int value = 1;
     bool isSound = true;
     public GameObject body;
     public void Load(int e,bool isSound){
@@ -40,31 +39,35 @@ public class HappyItem : MonoBehaviour
 
     public void OnPick()
     {
-        isPick = true;
         GameManager.instance.LogAchivement(AchivementType.CollectHeart);
-        StartCoroutine(Pick());
+        if(CheckPositionOutBound())
+            StartCoroutine(Pick());
+        else
+        {
+            GameManager.instance.AddHappy(value);
+            Destroy(this.gameObject);
+        }
     }
 
     IEnumerator Pick(){
         animator.enabled = false;
-        this.GetComponent<CircleCollider2D>().enabled = false;
-        Vector3 target = this.body.transform.position + new Vector3(0,10,0);
+        this.body.transform.parent = Camera.main.transform;
+        Vector3 target = Camera.main.ScreenToWorldPoint(UIManager.instance.heartIcon.transform.position) - Camera.main.transform.position;
         target.z = -100;
-        while(Vector2.Distance(this.body.transform.position,target) > 0.5)
+        while (Vector2.Distance(this.body.transform.localPosition,target) > 0.5)
         {
-            this.body.transform.position = Vector3.Lerp(this.body.transform.position, target, 5 * Time.deltaTime);
+            this.body.transform.localPosition = Vector3.Lerp(this.body.transform.localPosition, target, 5 * Time.deltaTime);
             yield return new WaitForEndOfFrame();
         }
         GameManager.instance.AddHappy(value);
+        Destroy(this.body.gameObject);
         Destroy(this.gameObject);
     }
 
-    private bool IsPointerOverUIObject()
+    bool CheckPositionOutBound()
     {
-        PointerEventData eventDataCurrentPosition = new PointerEventData(EventSystem.current);
-        eventDataCurrentPosition.position = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
-        List<RaycastResult> results = new List<RaycastResult>();
-        EventSystem.current.RaycastAll(eventDataCurrentPosition, results);
-        return results.Count > 0;
+        Vector3 screenPoint = Camera.main.WorldToViewportPoint(this.transform.position);
+        bool onScreen = screenPoint.x > 0 && screenPoint.x < 1 && screenPoint.y > 0 && screenPoint.y < 1;
+        return onScreen;
     }
 }

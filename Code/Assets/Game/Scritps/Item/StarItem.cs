@@ -27,21 +27,34 @@ public class StarItem : MonoBehaviour
         pos.z = (this.transform.position.y - 2) * 10;
         this.transform.position = pos;
         yield return new WaitForSeconds(0.5f);
-        StartCoroutine(Pick());
+        if (CheckPositionOutBound())
+            StartCoroutine(Pick());
+        else
+        {
+            GameManager.instance.AddHappy(value);
+            Destroy(this.gameObject);
+        }
     }
 
     IEnumerator Pick(){
         animator.enabled = false;
-        //MageManager.instance.PlaySoundName("happy_collect_item_01",false);
-        yield return new WaitForEndOfFrame();
-        Vector3 target = this.body.transform.position + new Vector3(0, 10, 0);
-        while (Vector2.Distance(this.body.transform.position,target) > 0.5)
+        this.body.transform.parent = Camera.main.transform;
+        Vector3 target = Camera.main.ScreenToWorldPoint(UIManager.instance.levelText.transform.position) - Camera.main.transform.position;
+        target.z = -100;
+        while (Vector2.Distance(this.body.transform.localPosition, target) > 0.5)
         {
-            this.body.transform.position = Vector3.Lerp(this.body.transform.position, target, 5 * Time.deltaTime);
+            this.body.transform.localPosition = Vector3.Lerp(this.body.transform.localPosition, target, 5 * Time.deltaTime);
             yield return new WaitForEndOfFrame();
         }
-
-        GameManager.instance.myPlayer.exp += value;
+        GameManager.instance.AddExp(value);
+        Destroy(this.body.gameObject);
         Destroy(this.gameObject);
+    }
+
+    bool CheckPositionOutBound()
+    {
+        Vector3 screenPoint = Camera.main.WorldToViewportPoint(this.transform.position);
+        bool onScreen = screenPoint.x > 0 && screenPoint.x < 1 && screenPoint.y > 0 && screenPoint.y < 1;
+        return onScreen;
     }
 }

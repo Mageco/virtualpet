@@ -599,20 +599,24 @@ public class GameManager : MonoBehaviour
         myPlayer.Happy += c;
         if (c > 0)
             myPlayer.collectedHappy += c;
-        int temp = myPlayer.level;
+
+        if (UIManager.instance != null)
+            UIManager.instance.heartText.transform.parent.GetComponent<Animator>().Play("Active", 0);
+        SavePlayer();
+    }
+
+    public void AddExp(int c)
+    {
+        myPlayer.exp += c;
         int l = 1;
         float e = 20 * l + 20 * l * l;
-        while (myPlayer.collectedHappy > e)
+        while (myPlayer.exp > e)
         {
             l++;
             e = 20 * l + 20 * l * l;
         }
-        //if (l > temp)
-        //{
-            myPlayer.level = l;
-        //}
-        if (UIManager.instance != null)
-            UIManager.instance.heartText.transform.parent.GetComponent<Animator>().Play("Active", 0);
+
+        myPlayer.level = l;
         SavePlayer();
     }
 

@@ -14,8 +14,7 @@ public class ChestItem : MonoBehaviour
     Animator animator;
     bool isActive = false;
     public TextMesh valueText;
-    float time = 0;
-    bool isMouseDown = false;
+    Vector3 clickPosition;
 
     void Awake()
     {
@@ -52,15 +51,13 @@ public class ChestItem : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (isMouseDown)
-            time += Time.deltaTime;
+        
 
     }
 
     private void OnMouseDown()
     {
-        isMouseDown = true;
-
+        clickPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
     }
 
     void OnMouseUp()
@@ -69,10 +66,8 @@ public class ChestItem : MonoBehaviour
         if (IsPointerOverUIObject())
             return;
 
-        if(!isActive && time < 0.3f)
+        if(!isActive && Vector3.Distance(clickPosition, Camera.main.ScreenToWorldPoint(Input.mousePosition)) < 0.1f)
             Pick();
-
-        time = 0;
     }
 
     void Pick()

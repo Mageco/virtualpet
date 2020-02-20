@@ -104,7 +104,7 @@ public class UIManager : MonoBehaviour
         coin = GameManager.instance.GetCoin();
         happy = GameManager.instance.GetHappy();
         diamond = GameManager.instance.GetDiamond();
-        
+
     }
 
     // Update is called once per frame
@@ -139,9 +139,9 @@ public class UIManager : MonoBehaviour
         int level = GameManager.instance.myPlayer.level;
         float e = 20 * level + 20 * level * level;
         float e1 = 20 * (level-1) + 20 * (level-1) * (level-1);
-        int n = GameManager.instance.myPlayer.collectedHappy;
-        exp.text = (n-e1).ToString("F0") + "/" + (e-e1).ToString("F0");
-        expProgress.fillAmount = (n - e1) / (e-e1);
+        int n = GameManager.instance.myPlayer.exp;
+        exp.text = (n - e1).ToString("F0") + "/" + (e - e1).ToString("F0");
+        expProgress.fillAmount = (n - e1) / (e - e1);
     }
 
 	public void BuyItem(int itemID){

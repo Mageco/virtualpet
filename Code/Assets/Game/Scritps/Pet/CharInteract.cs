@@ -14,7 +14,7 @@ public class CharInteract : MonoBehaviour
     public bool isDrag = false;
     Vector3 holdPosition = Vector3.zero;
     float touchTime = 0;
-    float maxClickTime = 0.2f;
+    float maxClickTime = 0.3f;
 
     void Awake()
     {
