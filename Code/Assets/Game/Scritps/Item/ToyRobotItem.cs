@@ -7,7 +7,7 @@ using PolyNav;
 public class ToyRobotItem : ToyItem
 {
 
-    public Vector3 target;
+    public CharController target;
     public PolyNavAgent agent;
     public bool isArrived = true;
     public bool isAbort = false;
@@ -60,7 +60,7 @@ public class ToyRobotItem : ToyItem
             Debug.Log("Turn on");
             state = EquipmentState.Active;
             agent.transform.position = this.transform.position;
-            target = GameManager.instance.GetRandomPetObject().transform.position + new Vector3(0,-2,0);
+            target = GameManager.instance.GetRandomPetObject();
             StartCoroutine(MoveToPoint());
             MageManager.instance.PlaySoundName("Item_Robot_TurnOn", false);
         }
@@ -88,7 +88,12 @@ public class ToyRobotItem : ToyItem
     {
         int soundId = MageManager.instance.PlaySoundName("Toy_Robot_Dance", false);
         agent.Stop();
-        yield return StartCoroutine(DoAnim("Dance_" + direction.ToString()));
+        if (target != null)
+            target.OnSupprised();
+        
+            yield return StartCoroutine(DoAnim("Dance_" + direction.ToString()));
+        if (target != null)
+            ItemManager.instance.SpawnHeart(1, target.transform.position);
         MageManager.instance.StopSound(soundId);
         animator.Play("Idle_" + direction.ToString(), 0);
         state = EquipmentState.Idle;
@@ -111,12 +116,22 @@ public class ToyRobotItem : ToyItem
     {
         isArrived = false;
 
-        agent.SetDestination(target);
-        while (!isArrived && !isAbort)
+
+        while (target != null && !isArrived && !isAbort)
         {
+            agent.SetDestination(target.transform.position);
             animator.Play("Walk_" + this.direction.ToString(), 0);
+            if (Vector2.Distance(this.transform.position, target.transform.position) < 2)
+            {
+                state = EquipmentState.Hold;
+                StartCoroutine(Hold());
+                isArrived = true;
+                agent.Stop();
+            }
+                
             yield return new WaitForEndOfFrame();
         }
+        
     }
 
 }

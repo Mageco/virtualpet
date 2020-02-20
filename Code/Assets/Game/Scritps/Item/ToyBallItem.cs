@@ -13,7 +13,7 @@ public class ToyBallItem : ToyItem
     public GameObject shadow;
     Vector3 originalShadowScale;
     float maxHeight = 20;
-
+    float intHeight = 1;
 
     protected override void Start()
     {
@@ -23,7 +23,7 @@ public class ToyBallItem : ToyItem
         rigid = this.GetComponent<Rigidbody2D>();
         originalShadowScale = shadow.transform.localScale;
         Stop();
-        
+        intHeight = col.radius; 
     }
 
     
@@ -68,9 +68,9 @@ public class ToyBallItem : ToyItem
             lastPosition.x = this.transform.position.x;
             float height = this.transform.position.y - lastPosition.y;
             shadow.transform.localScale = (1 - lastPosition.y * scaleFactor) * originalShadowScale * (1f - 0.5f * height / maxHeight);
-            shadow.transform.position = lastPosition + new Vector3(0, -1 * this.transform.localScale.x, 100);
+            shadow.transform.position = lastPosition + new Vector3(0, -intHeight * this.transform.localScale.x, 100);
             Vector3 pos1 = wall.transform.position;
-            pos1.y = lastPosition.y -1 * this.transform.localScale.x;
+            pos1.y = lastPosition.y - intHeight * this.transform.localScale.x;
             wall.transform.position = pos1;
             time += Time.deltaTime;
             if (time > 1)
@@ -90,7 +90,7 @@ public class ToyBallItem : ToyItem
             rigid.velocity = Vector2.zero;
             rigid.isKinematic = true;
 
-            shadow.transform.position = this.transform.position + new Vector3(0, -1*this.transform.localScale.x, 100);
+            shadow.transform.position = this.transform.position + new Vector3(0, -intHeight * this.transform.localScale.x, 100);
             Vector3 pos1 = wall.transform.position;
             pos1.y = this.transform.position.y - 1 * this.transform.localScale.x;
             wall.transform.position = pos1;
