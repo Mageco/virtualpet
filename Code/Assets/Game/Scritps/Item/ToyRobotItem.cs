@@ -123,7 +123,6 @@ public class ToyRobotItem : ToyItem
             animator.Play("Walk_" + this.direction.ToString(), 0);
             if (Vector2.Distance(this.transform.position, target.transform.position) < 2)
             {
-                state = EquipmentState.Hold;
                 StartCoroutine(Hold());
                 isArrived = true;
                 agent.Stop();
