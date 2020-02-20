@@ -8,7 +8,7 @@ public class BaseFloorItem : MonoBehaviour
 	protected Animator animator;
 	[HideInInspector]
 	public ItemObject item;
-	protected float scaleFactor = 0.05f;
+	protected float scaleFactor = 0.03f;
 	protected Vector3 dragOffset;
 	public EquipmentState state = EquipmentState.Idle;
 	protected Vector3 originalPosition;

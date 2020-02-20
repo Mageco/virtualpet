@@ -6,9 +6,9 @@ using System;
 public class EnviromentManager : MonoBehaviour
 {
     public static EnviromentManager instance;
-    public GameObject dayBG;
-    public GameObject nightBG;
-    public GameObject rainEffect;
+    //public GameObject dayBG;
+    //public GameObject nightBG;
+    //public GameObject rainEffect;
     public GameObject gardenDayBG;
     public GameObject gardenNightBG;
 
@@ -37,17 +37,18 @@ public class EnviromentManager : MonoBehaviour
         weatherType = WeatherType.None;
         //}
 
-        LoadWeather();
+        //LoadWeather();
         CheckDayNight();
         LoadMusic();
     }
 
+    /*
     void LoadWeather(){
         if(weatherType == WeatherType.Rain){
             rainEffect.SetActive(true);
         }else
             rainEffect.SetActive(false);
-    }
+    }*/
 
     // Update is called once per frame
     void Update()
@@ -65,14 +66,14 @@ public class EnviromentManager : MonoBehaviour
         if(DateTime.Now.Hour < 6 || DateTime.Now.Hour > 18)
         {
             gardenDayBG.SetActive(false);
-            dayBG.SetActive(false);
-            nightBG.SetActive(true);
+            //dayBG.SetActive(false);
+            //nightBG.SetActive(true);
             gardenNightBG.SetActive(true);
         } else{
             gardenNightBG.SetActive(false);
             gardenDayBG.SetActive(true);
-            dayBG.SetActive(true);
-            nightBG.SetActive(false);
+            //dayBG.SetActive(true);
+            //nightBG.SetActive(false);
         }
     }
 
