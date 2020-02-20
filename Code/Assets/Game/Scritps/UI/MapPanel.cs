@@ -29,7 +29,7 @@ public class MapPanel : MonoBehaviour
     {
         for(int i = 0; i < mapIcons.Length; i++)
         {
-            if(GameManager.instance.myPlayer.level > i*i + 2 * i)
+            if(GameManager.instance.myPlayer.level >= i*i + 2 * i)
             {
                 mapIcons[i].interactable = true;
                 mapIcons[i].GetComponentInChildren<Text>().gameObject.SetActive(false);

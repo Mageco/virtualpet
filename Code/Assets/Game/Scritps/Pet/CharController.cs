@@ -944,11 +944,7 @@ public class CharController : MonoBehaviour
 
         Debug.Log("1");
 
-        //if (!CanPlayToy(item.item.itemID))
-        //    return;
-
-        Debug.Log("2");
-
+ 
         if (item.state == EquipmentState.Drag || item.state == EquipmentState.Busy || item.state == EquipmentState.Active)
             return;
 
