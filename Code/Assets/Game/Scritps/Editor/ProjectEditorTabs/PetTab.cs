@@ -56,19 +56,19 @@ public class PetTab : BaseTab
 
             DataHolder.Pet(selection).shopOrder = EditorGUILayout.IntField("Shop Order", DataHolder.Pet(selection).shopOrder, GUILayout.Width(pw.mWidth));
 
-            EditorGUILayout.BeginVertical("box");
-            fold4 = EditorGUILayout.Foldout(fold4, "Pet Name");
-            if (fold4)
-            {
-                for (int i = 0; i < DataHolder.Languages().GetDataCount(); i++)
-                {
-                    EditorGUILayout.LabelField(DataHolder.Language(i));
-                    DataHolder.Pet(selection).languageItem[i].Name = EditorGUILayout.TextField("Name", DataHolder.Pet(selection).languageItem[i].Name, GUILayout.Width(pw.mWidth * 2));
-                    DataHolder.Pet(selection).languageItem[i].Description = EditorGUILayout.TextField("Description", DataHolder.Pet(selection).languageItem[i].Description, GUILayout.Width(pw.mWidth * 2));
+            //EditorGUILayout.BeginVertical("box");
+            //fold4 = EditorGUILayout.Foldout(fold4, "Pet Name");
+            //if (fold4)
+            //{
+            //    for (int i = 0; i < DataHolder.Languages().GetDataCount(); i++)
+            //    {
+                    EditorGUILayout.LabelField(DataHolder.Language(0));
+                    DataHolder.Pet(selection).languageItem[0].Name = EditorGUILayout.TextField("Name", DataHolder.Pet(selection).languageItem[0].Name, GUILayout.Width(pw.mWidth * 2));
+                    //DataHolder.Pet(selection).languageItem[i].Description = EditorGUILayout.TextField("Description", DataHolder.Pet(selection).languageItem[i].Description, GUILayout.Width(pw.mWidth * 2));
                     EditorGUILayout.Separator();
-                }
-            }
-            EditorGUILayout.EndVertical();
+             //   }
+            //}
+            //EditorGUILayout.EndVertical();
             
             
 
@@ -218,37 +218,7 @@ public class PetTab : BaseTab
             EditorGUILayout.EndVertical();
 
 
-            EditorGUILayout.BeginVertical("box");
-            fold2 = EditorGUILayout.Foldout(fold2, "Toy");
-            if (fold2)
-            {
-                if (GUILayout.Button("Add Favourite Toy", GUILayout.Width(pw.mWidth * 0.7f)))
-                {
-                    DataHolder.Pet(selection).favouriteToys = ArrayHelper.Add(1, DataHolder.Pet(selection).favouriteToys);
-                }
-
-
-                for (int i = 0; i < DataHolder.Pet(selection).favouriteToys.Length; i++)
-                {
-                    EditorGUILayout.BeginHorizontal();
-                    if (lastSellection != selection)
-                        tempToyId = DataHolder.Items().GetItemPosition(DataHolder.Pet(selection).favouriteToys[i],ItemType.Toy);
-
-                    if (tempToyId == -1)
-                        tempToyId = 0;
-
-                    tempToyId = EditorGUILayout.Popup("Item", tempToyId, DataHolder.Items().GetNameListFilter(ItemType.Toy), GUILayout.Width(pw.mWidth));
-
-                    if (DataHolder.Item(tempToyId) != null)
-                        DataHolder.Pet(selection).favouriteToys[i] = DataHolder.GetItem(tempToyId,ItemType.Toy).iD;
-                    if (GUILayout.Button("X", GUILayout.Width(pw.mWidth * 0.2f)))
-                    {
-                        DataHolder.Pet(selection).favouriteToys = ArrayHelper.Remove(i, DataHolder.Pet(selection).favouriteToys);
-                    }
-                    EditorGUILayout.EndHorizontal();
-                }
-            }
-            EditorGUILayout.EndVertical();
+            
 
             EditorGUILayout.EndHorizontal();
             EditorGUILayout.EndVertical();

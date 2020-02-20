@@ -55,19 +55,19 @@ public class ItemTab : BaseTab
             DataHolder.Items().GetItem(selection,temcategory).shopOrder = EditorGUILayout.IntField("Shop Order", DataHolder.Items().GetItem(selection,temcategory).shopOrder, GUILayout.Width(pw.mWidth));
 
 
-            EditorGUILayout.BeginVertical("box");
-            fold4 = EditorGUILayout.Foldout(fold4, "Item Name");
-            if (fold4)
-            {
-                for (int i = 0; i < DataHolder.Languages().GetDataCount(); i++)
-                {
-                    EditorGUILayout.LabelField(DataHolder.Language(i));
-                    DataHolder.Items().GetItem(selection, temcategory).languageItem[i].Name = EditorGUILayout.TextField("Name", DataHolder.Items().GetItem(selection, temcategory).languageItem[i].Name, GUILayout.Width(pw.mWidth * 2));
-                    DataHolder.Items().GetItem(selection, temcategory).languageItem[i].Description = EditorGUILayout.TextField("Description", DataHolder.Items().GetItem(selection, temcategory).languageItem[i].Description, GUILayout.Width(pw.mWidth * 2));
+            //EditorGUILayout.BeginVertical("box");
+            //fold4 = EditorGUILayout.Foldout(fold4, "Item Name");
+            //if (fold4)
+            //{
+            //    for (int i = 0; i < DataHolder.Languages().GetDataCount(); i++)
+            //    {
+                    EditorGUILayout.LabelField(DataHolder.Language(0));
+                    DataHolder.Items().GetItem(selection, temcategory).languageItem[0].Name = EditorGUILayout.TextField("Name", DataHolder.Items().GetItem(selection, temcategory).languageItem[0].Name, GUILayout.Width(pw.mWidth * 2));
+                    //DataHolder.Items().GetItem(selection, temcategory).languageItem[0].Description = EditorGUILayout.TextField("Description", DataHolder.Items().GetItem(selection, temcategory).languageItem[i].Description, GUILayout.Width(pw.mWidth * 2));
                     EditorGUILayout.Separator();
-                }
-            }
-            EditorGUILayout.EndVertical();
+            //    }
+            //}
+            //EditorGUILayout.EndVertical();
 
             
 

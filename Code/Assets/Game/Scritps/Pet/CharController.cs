@@ -981,16 +981,6 @@ public class CharController : MonoBehaviour
         }
     }
 
-    bool CanPlayToy(int toyId)
-    {
-        Pet p = DataHolder.GetPet(data.iD);
-        for(int i = 0; i < p.favouriteToys.Length; i++)
-        {
-            if (p.favouriteToys[i] == toyId)
-                return true;
-        }
-        return false;
-    }
 
     public virtual void OnArrived()
     {
