@@ -155,7 +155,7 @@ public class UIManager : MonoBehaviour
       ItemManager.instance.EquipItem();
       GameManager.instance.LogAchivement(AchivementType.Buy_Item);
         if (shopPanel != null)
-            shopPanel.Close();
+            shopPanel.ReLoad();
     }
 
     public void EquipItem(int itemId)
@@ -189,7 +189,7 @@ public class UIManager : MonoBehaviour
         GameManager.instance.BuyPet(itemID);
         GameManager.instance.EquipPet(itemID);
         if (shopPanel != null)
-            shopPanel.Close();
+            shopPanel.ReLoad();
 
         //OnPetCollectionPanel();
         //petCollectionPanel.OnActive(itemID);

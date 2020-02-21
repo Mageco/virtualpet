@@ -75,7 +75,22 @@ public class PurchaseManager : MonoBehaviour, IStoreListener
 
 	#region IN App action
 	void OnPurchaseComplete(int id){
-		isRemoveAd = true;
+		if (id == 0)
+		{ 
+			GameManager.instance.AddDiamond(DataHolder.GetItem(3).sellPrice);
+		}
+		else if (id == 1)
+        {
+			GameManager.instance.AddDiamond(DataHolder.GetItem(19).sellPrice);
+		}
+		else if (id == 2)
+		{
+			GameManager.instance.AddDiamond(DataHolder.GetItem(20).sellPrice);
+		}
+		else if (id == 3)
+		{
+			GameManager.instance.AddDiamond(DataHolder.GetItem(21).sellPrice);
+		}
 	}
 
 	void OnSuscriptionComplete(int id){

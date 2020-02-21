@@ -129,6 +129,8 @@ public class ItemUI : MonoBehaviour
                 else if (d.priceType == PriceType.Money)
                 {
                     moneyIcon.SetActive(true);
+                    moneyIcon.GetComponent<Text>().text = DataHolder.Dialog(64).GetName(MageManager.instance.GetLanguage());
+                    price.text = (d.buyPrice * (float.Parse(DataHolder.Dialog(64).GetDescription(MageManager.instance.GetLanguage())))).ToString(".00");
                 }
                 else if (d.priceType == PriceType.Happy)
                 {
@@ -328,7 +330,14 @@ public class ItemUI : MonoBehaviour
         {
             if (DataHolder.GetItem(itemId).itemType == ItemType.Diamond)
             {
-                MageManager.instance.OnNotificationPopup("You can not buy diamond now.");
+                if (itemId == 3)
+                    PurchaseManager.instance.BuyNonConsumable(0);
+                else if(itemId == 19)
+                    PurchaseManager.instance.BuyNonConsumable(1);
+                else if (itemId == 20)
+                    PurchaseManager.instance.BuyNonConsumable(2);
+                else if (itemId == 21)
+                    PurchaseManager.instance.BuyNonConsumable(3);
             }
             else if (DataHolder.GetItem(itemId).itemType == ItemType.Coin)
             {

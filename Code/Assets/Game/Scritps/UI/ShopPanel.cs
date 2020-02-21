@@ -143,15 +143,25 @@ public class ShopPanel : MonoBehaviour
                 }
             }
         }
-        if (currentTab != 1)
+
+
+        //Arrange
+        if (currentTab == 0)
+        {
+            items.Sort((p1, p2) => (p1.shopOrder).CompareTo(p2.shopOrder));
+            foreach (Item item in items)
+            {
+                LoadItem(item);
+            }
+        }
+        else if (currentTab != 1)
         {
             items.Sort((p1, p2) => (p1.levelRequire).CompareTo(p2.levelRequire));
             foreach (Item item in items)
             {
                 LoadItem(item);
             }
-        }
-        else
+        }else 
         {
             pets.Sort((p1, p2) => (p1.shopOrder).CompareTo(p2.shopOrder));
             foreach (Pet p in pets)
