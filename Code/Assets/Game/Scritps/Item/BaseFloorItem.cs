@@ -60,7 +60,7 @@ public class BaseFloorItem : MonoBehaviour
 			dragTime += Time.deltaTime;
 			if (dragTime > 0.2f)
 			{
-				if (Vector2.Distance(Camera.main.ScreenToWorldPoint(Input.mousePosition), clickPosition) < 0.1f)
+				if (Vector2.Distance(Camera.main.ScreenToWorldPoint(Input.mousePosition), clickPosition) < 0.3f)
 				{
 					if (arrow == null)
 					{
@@ -86,7 +86,7 @@ public class BaseFloorItem : MonoBehaviour
 				}
 			}
 
-			if (dragTime > 0.5f && Vector2.Distance(Camera.main.ScreenToWorldPoint(Input.mousePosition), clickPosition) < 0.1f)
+			if (dragTime > 0.5f && Vector2.Distance(Camera.main.ScreenToWorldPoint(Input.mousePosition), clickPosition) < 0.3f)
 			{
 				OnDrag();
 			}

@@ -129,6 +129,10 @@ public class RewardVideoAdManager : MonoBehaviour {
 		{
 			StartCoroutine(OnTreatment());
 		}
+		else if (rewardType == RewardType.Map)
+		{
+			StartCoroutine(OnMap());
+		}
 
 	}
 

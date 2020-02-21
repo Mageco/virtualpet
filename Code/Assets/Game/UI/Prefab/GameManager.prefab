@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 7629980631625239529}
   - component: {fileID: 7629980631625239534}
   - component: {fileID: 6429023365659312804}
+  - component: {fileID: 7629980632854792807}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -56,17 +57,21 @@ MonoBehaviour:
     coin: 0
     diamond: 0
     happy: 0
+    level: 1
     collectedHappy: 0
     collectedCoin: 0
     petCount: 1
     itemCount: 0
     playTime: 0
+    exp: 0
     items: []
     pets: []
     minigameLevels: 00000000
     questId: 0
     questValue: 0
+    petColors: []
     achivements: []
+    itemSaveDatas: []
     gameType: 0
   rateCount: 0
 --- !u!114 &6429023365659312804
@@ -82,3 +87,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rewardType: 2
+--- !u!114 &7629980632854792807
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7629980631625239535}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64af06678a0354f3199e5a08d2eaa879, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isRemoveAd: 0
+  isSubscripted: 0
+  nonConsumableIds:
+  - vn.mage.com.diamond1
+  - vn.mage.com.diamond2
+  - vn.mage.com.diamond3
+  - vn.mage.com.diamond4
+  subScriptionIds: []
+  currentLesson: 0
