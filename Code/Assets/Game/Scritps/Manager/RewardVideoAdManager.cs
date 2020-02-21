@@ -16,7 +16,7 @@ public class RewardVideoAdManager : MonoBehaviour {
 	#if UNITY_ANDROID
 	string appId = "ca-app-pub-6818802678275174~2905900525";
 #elif UNITY_IPHONE
-	string appId = "ca-app-pub-6818802678275174~9883498495";
+	string appId = "ca-app-pub-6818802678275174~2905900525";
 #else
 	string appId = "unexpected_platform";
 #endif
@@ -26,7 +26,7 @@ public class RewardVideoAdManager : MonoBehaviour {
     //Test unit
 	//string adUnitId = "ca-app-pub-3940256099942544/5224354917";
 	#elif UNITY_IPHONE
-	string adUnitId = "ca-app-pub-6818802678275174/1271203231";
+	string adUnitId = "ca-app-pub-6818802678275174/5961180954";
 	#else
 	string adUnitId = "unexpected_platform";
 	#endif

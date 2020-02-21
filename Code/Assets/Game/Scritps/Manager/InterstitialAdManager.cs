@@ -109,7 +109,7 @@ public class InterstitialAdManager : MonoBehaviour {
 
 	public void ShowAd()
 	{
-	if (interstitial != null && interstitial.IsLoaded () && !PurchaseManager.instance.IsRemoveAd ()) {
+	if (interstitial != null && interstitial.IsLoaded () && !PurchaseManager.instance.IsRemoveAd) {
 			#if !UNITY_EDITOR
 			fade.SetActive (true);
 			#endif

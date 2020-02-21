@@ -18,7 +18,7 @@ public class HappyItem : MonoBehaviour
         happyNumber.text = "+" + value.ToString();
         emissionModule = particle.emission;
         burst = emissionModule.GetBurst(0);
-        Debug.Log("Burst Count " + burst.count.constant);
+        //Debug.Log("Burst Count " + burst.count.constant);
         burst.minCount = (short)value;
         burst.maxCount = (short)value;
         var c = burst.count;

@@ -8,10 +8,8 @@ public class PurchaseManager : MonoBehaviour, IStoreListener
 {
 	public static PurchaseManager instance;
 	[HideInInspector]
-	public bool isRemoveAd = false;
-	[HideInInspector]
 	public bool isSubscripted = false;
-
+	public bool IsRemoveAd = false;
 
 	private static IStoreController m_StoreController;          // The Unity Purchasing system.
 	private static IExtensionProvider m_StoreExtensionProvider; // The store-specific Purchasing subsystems.
@@ -26,7 +24,7 @@ public class PurchaseManager : MonoBehaviour, IStoreListener
 	// when defining the Product Identifiers on the store. Except, for illustration purposes, the 
 	// kProductIDSubscription - it has custom Apple and Google identifiers. We declare their store-
 	// specific mapping to Unity Purchasing's AddProduct, below.
-	public static string kProductIDConsumable =    "consumable";   
+	public string[] consumableIds;
 	public string[] nonConsumableIds;
 	public string[] subScriptionIds;
 
@@ -60,21 +58,9 @@ public class PurchaseManager : MonoBehaviour, IStoreListener
         
     }
 
-	#region lock
-
-
-
-
-	public bool IsRemoveAd()
-	{
-		return isRemoveAd;
-	}
-
-
-	#endregion
 
 	#region IN App action
-	void OnPurchaseComplete(int id){
+	void OnPurchaseConsumableComplete(int id){
 		if (id == 0)
 		{ 
 			GameManager.instance.AddDiamond(DataHolder.GetItem(3).sellPrice);
@@ -91,6 +77,11 @@ public class PurchaseManager : MonoBehaviour, IStoreListener
 		{
 			GameManager.instance.AddDiamond(DataHolder.GetItem(21).sellPrice);
 		}
+	}
+
+	void OnPurchaseComplete(int id)
+	{
+
 	}
 
 	void OnSuscriptionComplete(int id){
@@ -123,6 +114,10 @@ public class PurchaseManager : MonoBehaviour, IStoreListener
 		// Add a product to sell / restore by way of its identifier, associating the general identifier
 		// with its store-specific identifiers.
 		//builder.AddProduct(kProductIDConsumable, ProductType.Consumable);
+		for (int i = 0; i < consumableIds.Length; i++)
+		{
+			builder.AddProduct(consumableIds[i], ProductType.Consumable);
+		}
 		// Continue adding the non-consumable product.
 		for (int i = 0; i < nonConsumableIds.Length; i++) {
 			builder.AddProduct (nonConsumableIds [i], ProductType.NonConsumable);
@@ -150,30 +145,14 @@ public class PurchaseManager : MonoBehaviour, IStoreListener
 	{
 		// Only say we are initialized if both the Purchasing references are set.
 		return m_StoreController != null && m_StoreExtensionProvider != null;
-
-		//Check Any subscription for this
-		bool isCheck = false;
-		for (int i = 0; i < subScriptionIds.Length; i++) {
-			if (IsProductPurchased (subScriptionIds [i]))
-				isCheck = true;
-		}
-
-		if (IsProductPurchased (nonConsumableIds [0]))
-			isCheck = true;
-
-		if (IsProductPurchased (nonConsumableIds [1]))
-			isCheck = true;
-
-		isSubscripted = isCheck;
-		ES2.Save (isSubscripted,"Subscription");
 	}
 
 
-	public void BuyConsumable()
+	public void BuyConsumable(int id)
 	{
 		// Buy the consumable product using its general identifier. Expect a response either 
 		// through ProcessPurchase or OnPurchaseFailed asynchronously.
-		BuyProductID(kProductIDConsumable);
+		BuyProductID(consumableIds[id]);
 	}
 
 
@@ -302,10 +281,16 @@ public class PurchaseManager : MonoBehaviour, IStoreListener
 	public PurchaseProcessingResult ProcessPurchase(PurchaseEventArgs args) 
 	{
 		// A consumable product has been purchased by this user.
-		if (String.Equals (args.purchasedProduct.definition.id, kProductIDConsumable, StringComparison.Ordinal)) {
-			Debug.Log (string.Format ("ProcessPurchase: PASS. Product: '{0}'", args.purchasedProduct.definition.id));
-			// The consumable item has been successfully purchased, add 100 coins to the player's in-game score.
+		for (int i = 0; i < consumableIds.Length; i++)
+		{
+			if (String.Equals(args.purchasedProduct.definition.id, consumableIds[i], StringComparison.Ordinal))
+			{
+				Debug.Log(string.Format("ProcessPurchase: PASS. Product: '{0}'", args.purchasedProduct.definition.id));
+				// TODO: The non-consumable item has been successfully purchased, grant this item to the player.
+				OnPurchaseConsumableComplete(i);
+			}
 		}
+
 		// Or ... a subscription product has been purchased by this user.
 
 		for (int i = 0; i < subScriptionIds.Length; i++) {
