@@ -6,23 +6,16 @@ using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
-
 	public GameObject questUIPrefab;
     public GameObject rateUsUIPrefab;
-    public GameObject questCompletePrefab;
     public GameObject shopUIPrefab;
     public GameObject eventUIPrefab;
-
-    public GameObject skillCompletePrefab;
     public GameObject achivementPrefab;
     public GameObject confirmBuyShopPrefab;
-    public GameObject itemInfoPrefab;
     public GameObject treatmentPopupPrefab;
-    public GameObject treatmentConfirmPrefab;
     public GameObject PetRequirementPanelPrefab;
     public GameObject confirmBuyPetPrefab;
     public GameObject mapPanelPrefab;
-    public GameObject petCollecPanelPrefab;
     public GameObject rewardItemPrefab;
     public GameObject mapRequirementPrefab;
     public GameObject levelUpPrefab;
@@ -44,8 +37,6 @@ public class UIManager : MonoBehaviour
     public ShopPanel shopPanel;
     [HideInInspector]
     public EventPanel eventPanel;
-    [HideInInspector]
-    public SkillCompletePanel skillCompletePanel;
     [HideInInspector]
     public ConfirmBuyShopPopup confirmBuyShopPopup;
     [HideInInspector]
@@ -72,18 +63,11 @@ public class UIManager : MonoBehaviour
 
     ItemInfoUI itemInfoUI;
     TreatmentPopup treatmentPopup;
-    TreatmentConfirmPopup treatmentConfirmPopup;
-    [HideInInspector]
-    public PetCollectionPanel petCollectionPanel;
 
     public GameObject homeUI;
-
     public GameObject profilePrefab;
     public GameObject notificationIcon;
     public List<string> notificationText = new List<string>();
-
-    public GameObject doubleClickEffect;
-	GameObject doubleClick;
 
     public GameObject eventButton;
     public GameObject achivementButton;
@@ -251,19 +235,6 @@ public class UIManager : MonoBehaviour
 		return questNotification;
 	}
 
-    public QuestPanel OnQuestCompletePopup()
-    {
-        if (questComplete == null)
-        {
-            var popup = Instantiate(questCompletePrefab) as GameObject;
-            popup.SetActive(true);
-            //popup.transform.localScale = Vector3.zero;
-            popup.transform.SetParent(GameObject.Find("Canvas").transform, false);
-            popup.GetComponent<Popup>().Open();
-            questComplete = popup.GetComponent<QuestPanel>();
-        }
-        return questComplete;
-    }
 
     public ShopPanel OnShopPanel()
     {
@@ -382,19 +353,6 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    public void OnSkillCompletePanel(SkillType t)
-    {
-        if (skillCompletePanel == null)
-        {
-            var popup = Instantiate(skillCompletePrefab) as GameObject;
-            popup.SetActive(true);
-            //popup.transform.localScale = Vector3.zero;
-            popup.transform.SetParent(GameObject.Find("Canvas").transform, false);
-            popup.GetComponent<Popup>().Open();
-            skillCompletePanel = popup.GetComponent<SkillCompletePanel>();
-            skillCompletePanel.Load(t);
-        }
-     }
 
     public AchivementPanel OnAchivementPanel()
     {
@@ -427,22 +385,6 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    public void OnItemInfoPanel(int itemId,bool isPet,int colorId = 0)
-    {
-        if (itemInfoUI == null)
-        {
-            var popup = Instantiate(itemInfoPrefab) as GameObject;
-            popup.SetActive(true);
-            popup.transform.localScale = Vector3.zero;
-            popup.transform.SetParent(GameObject.Find("Canvas").transform, false);
-            popup.GetComponent<Popup>().Open();
-            itemInfoUI = popup.GetComponent<ItemInfoUI>();
-            if(isPet)
-                itemInfoUI.Load(DataHolder.GetPet(itemId));
-            else
-                itemInfoUI.Load(DataHolder.GetItem(itemId));
-        }
-     }
 
     public void OnConfirmationShopPanel(int itemid,bool isCharacter,bool isBuy,int colorId = 0)
     {
@@ -475,19 +417,6 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    public void OnTreatmentConfirmPopup(Pet p, SickType sickType)
-    {
-        if (treatmentConfirmPopup == null)
-        {
-            var popup = Instantiate(treatmentConfirmPrefab) as GameObject;
-            popup.SetActive(true);
-            popup.transform.localScale = Vector3.zero;
-            popup.transform.SetParent(GameObject.Find("Canvas").transform, false);
-            popup.GetComponent<Popup>().Open();
-            treatmentConfirmPopup = popup.GetComponent<TreatmentConfirmPopup>();
-            treatmentConfirmPopup.Load(p, sickType);
-        }
-    }
 
     public void OnRatingPopup()
     {
@@ -502,18 +431,6 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    public void OnPetCollectionPanel()
-    {
-        if (petCollectionPanel == null)
-        {
-            var popup = Instantiate(petCollecPanelPrefab) as GameObject;
-            popup.SetActive(true);
-            popup.transform.SetParent(GameObject.Find("Canvas").transform, false);
-            popup.GetComponent<Popup>().Open();
-            petCollectionPanel = popup.GetComponent<PetCollectionPanel>();
-            petCollectionPanel.Load();
-        }
-    }
 
     public void OnRewardItemPanel(RewardType rewardType,ChestItem item)
     {

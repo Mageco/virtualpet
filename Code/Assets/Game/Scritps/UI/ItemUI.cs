@@ -330,6 +330,7 @@ public class ItemUI : MonoBehaviour
         {
             if (DataHolder.GetItem(itemId).itemType == ItemType.Diamond)
             {
+                
                 if (itemId == 3)
                     PurchaseManager.instance.BuyConsumable(0);
                 else if(itemId == 19)
@@ -338,6 +339,7 @@ public class ItemUI : MonoBehaviour
                     PurchaseManager.instance.BuyConsumable(2);
                 else if (itemId == 21)
                     PurchaseManager.instance.BuyConsumable(3);
+                    
             }
             else if (DataHolder.GetItem(itemId).itemType == ItemType.Coin)
             {

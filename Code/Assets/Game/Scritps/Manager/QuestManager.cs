@@ -180,19 +180,8 @@ public class QuestManager : MonoBehaviour
 
         if (TutorialManager.instance != null)
             TutorialManager.instance.EndQuest();
-        if (isReward)
-        {
-            if(questPanel == null && !isEndQuest){
-                questPanel = UIManager.instance.OnQuestCompletePopup();
-                questPanel.Load(GameManager.instance.myPlayer.questId);
-                Debug.Log("Quest Complete");
-            }
-        }
-        else
-        {
-            isEndQuest = true;
-            EndCompleteQuest();
-        }
+        isEndQuest = true;
+        EndCompleteQuest();
 
     }
 

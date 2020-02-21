@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.Purchasing;
 using System;
 
+
 public class PurchaseManager : MonoBehaviour, IStoreListener
 {
 	public static PurchaseManager instance;
@@ -332,3 +333,4 @@ public class PurchaseManager : MonoBehaviour, IStoreListener
 
 	#endregion
 }
+

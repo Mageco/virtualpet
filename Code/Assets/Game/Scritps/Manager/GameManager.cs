@@ -16,10 +16,6 @@ public class GameManager : MonoBehaviour
 
     //Testing
     public bool isLoad = false;
-    
-    public GameObject heartPrefab;
-    public GameObject expPrefab;
-
     public bool isTest = false;
 
     public PlayerData myPlayer = new PlayerData();

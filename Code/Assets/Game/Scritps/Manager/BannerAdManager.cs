@@ -73,7 +73,7 @@ public class BannerAdManager : MonoBehaviour {
 	{
 		Debug.Log ("Show Banner Ad");
 
-	if (bannerView != null && !PurchaseManager.instance.IsRemoveAd) {
+	if (bannerView != null) {
 			bannerView.Show ();
 		    MageEngine.instance.OnEvent (Mage.Models.Application.MageEventType.BannerAdOpened);
 		}

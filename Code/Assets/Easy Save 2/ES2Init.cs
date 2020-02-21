@@ -79,7 +79,6 @@ public class ES2Init : MonoBehaviour
 		ES2TypeManager.types[typeof(Mage.Models.Users.Message)] = new ES2UserType_MageModelsUsersMessage();
 		ES2TypeManager.types[typeof(Mage.Models.Users.User)] = new ES2UserType_MageModelsUsersUser();
 		ES2TypeManager.types[typeof(Mage.Models.Users.UserData)] = new ES2UserType_MageModelsUsersUserData();
-		ES2TypeManager.types[typeof(UnityEngine.Store.UserInfo)] = new ES2UserType_UnityEngineStoreUserInfo();
 		ES2TypeManager.types[typeof(Mage.Models.Application.EventCounter)] = new ES2UserType_MageModelsApplicationEventCounter();
 
 		ES2.initialised = true;
