@@ -563,7 +563,7 @@ public class UIManager : MonoBehaviour
         {
             var popup = Instantiate(levelUpPrefab) as GameObject;
             popup.SetActive(true);
-            popup.transform.localScale = Vector3.zero;
+            //popup.transform.localScale = Vector3.zero;
             popup.transform.SetParent(GameObject.Find("Canvas").transform, false);
             popup.GetComponent<Popup>().Open();
             levelUpPanel = popup.GetComponent<LevelUpPanel>();

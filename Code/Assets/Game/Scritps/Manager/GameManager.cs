@@ -607,6 +607,7 @@ public class GameManager : MonoBehaviour
 
     public void AddExp(int c)
     {
+        Debug.Log("Add exp " + c);
         myPlayer.exp += c;
         int l = 1;
         float e = 20 * l + 20 * l * l;
@@ -619,7 +620,8 @@ public class GameManager : MonoBehaviour
         if(l > myPlayer.level)
         {
             myPlayer.level = l;
-            UIManager.instance.OnLevelUpPanel();   
+            UIManager.instance.OnLevelUpPanel();
+            Debug.Log("Level Up");
         }
         
         SavePlayer();

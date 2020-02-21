@@ -1960,7 +1960,7 @@ public class CharController : MonoBehaviour
                     agent.transform.position = toyItem.endPoint.position;
                 }
             }
-            else if (toyItem.toyType == ToyType.Spring || toyItem.toyType == ToyType.Swing)
+            else if (toyItem.toyType == ToyType.Spring || toyItem.toyType == ToyType.Swing || toyItem.toyType == ToyType.Dance || toyItem.toyType == ToyType.Fun)
             {
                 if (toyItem.startPoint != null)
                 {
@@ -1985,15 +1985,6 @@ public class CharController : MonoBehaviour
                 if (toyItem.endPoint != null && !isAbort)
                 {
                     agent.transform.position = toyItem.endPoint.position;
-                }
-            }else if(toyItem.toyType == ToyType.Dance || toyItem.toyType == ToyType.Fun)
-            {
-                toyItem.OnActive();
-                while (toyItem != null && time < maxTime && !isAbort)
-                {
-                    anim.Play("Play_" + toyItem.toyType.ToString(), 0);
-                    time += Time.deltaTime;
-                    yield return new WaitForEndOfFrame();
                 }
             }
 
