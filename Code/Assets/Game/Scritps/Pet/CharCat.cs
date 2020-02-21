@@ -15,7 +15,7 @@ public class CharCat : CharController
             agent.SetDestination(GetMouse().transform.position);
             anim.Play("Run_Angry_" + this.direction.ToString(), 0);
             data.Energy -= 1.5f*Time.deltaTime;
-            if(Vector2.Distance(GetMouse().transform.position,this.transform.position) < 2){
+            if(Vector2.Distance(GetMouse().transform.position,this.transform.position) < 4){
                 if(!isLove){
                     GetMouse().OnActive();
                     isLove = true;

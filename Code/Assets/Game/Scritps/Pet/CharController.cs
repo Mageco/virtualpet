@@ -243,7 +243,7 @@ public class CharController : MonoBehaviour
             //Debug.Log(t);
         }else if(actionType == ActionType.Toy)
         {
-            data.Energy -= Time.deltaTime * 2;
+            data.Energy -= Time.deltaTime;
             if (timeToy > 6)
             {
                 ItemManager.instance.SpawnHeart((1+data.level/5), this.transform.position);
@@ -1833,7 +1833,7 @@ public class CharController : MonoBehaviour
     protected virtual IEnumerator Tired()
     {
         anim.Play("Tired", 0);
-        while (data.Food > 0 && data.Water > 0 && data.Sleep > 0 && data.energy < data.MaxEnergy * 0.7f && !isAbort)
+        while (data.Food > 0 && data.Water > 0 && data.Sleep > 0 && data.energy < data.MaxEnergy * 0.9f && !isAbort)
         {
             float delta = data.RecoveryEnergy * Time.deltaTime;
             data.Energy += delta;
@@ -1848,9 +1848,9 @@ public class CharController : MonoBehaviour
         {
             toyItem.pets.Add(this);
             float time = 0;
-            float maxTime = Random.Range(5, 10);
+            float maxTime = Random.Range(7, 15);
             int count = 0;
-            int maxCount = Random.Range(1, 6);
+            int maxCount = Random.Range(3, 6);
 
             if (toyItem.toyType == ToyType.Jump)
             {
@@ -1916,7 +1916,7 @@ public class CharController : MonoBehaviour
                         yield return StartCoroutine(RunToPoint());
                     }
                     
-                    if (Vector2.Distance(this.transform.position, toyItem.startPoint.position) < 2 && toyItem.state != EquipmentState.Active)
+                    if (Vector2.Distance(this.transform.position, toyItem.startPoint.position) < 4 && toyItem.state != EquipmentState.Active)
                     {
                         agent.Stop();
                         toyItem.OnActive();
@@ -1940,7 +1940,6 @@ public class CharController : MonoBehaviour
                     time += Time.deltaTime;
                     agent.transform.position = toyItem.anchorPoint.position;
                     anim.Play("Run_" + this.direction.ToString(), 0);
-                    data.Energy -= 2f * Time.deltaTime;
                     yield return new WaitForEndOfFrame();
                 }
                 charInteract.interactType = InteractType.None;
