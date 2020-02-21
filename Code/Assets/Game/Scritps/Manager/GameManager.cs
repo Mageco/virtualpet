@@ -616,7 +616,12 @@ public class GameManager : MonoBehaviour
             e = 20 * l + 20 * l * l;
         }
 
-        myPlayer.level = l;
+        if(l > myPlayer.level)
+        {
+            myPlayer.level = l;
+            UIManager.instance.OnLevelUpPanel();   
+        }
+        
         SavePlayer();
     }
 

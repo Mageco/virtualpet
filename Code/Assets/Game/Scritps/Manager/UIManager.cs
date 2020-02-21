@@ -25,6 +25,7 @@ public class UIManager : MonoBehaviour
     public GameObject petCollecPanelPrefab;
     public GameObject rewardItemPrefab;
     public GameObject mapRequirementPrefab;
+    public GameObject levelUpPrefab;
     public static UIManager instance;
 	public Text coinText;
 	public Text diamonText;
@@ -59,6 +60,8 @@ public class UIManager : MonoBehaviour
     public MapRequirementPanel mapRequirementPanel;
     [HideInInspector]
     public MapPanel mapPanel;
+    [HideInInspector]
+    public LevelUpPanel levelUpPanel;
 
     public GameObject achivementNotification;
 
@@ -551,6 +554,20 @@ public class UIManager : MonoBehaviour
             popup.GetComponent<Popup>().Open();
             mapRequirementPanel = popup.GetComponent<MapRequirementPanel>();
             mapRequirementPanel.Load(mapType);
+        }
+    }
+
+    public void OnLevelUpPanel()
+    {
+        if (levelUpPanel == null)
+        {
+            var popup = Instantiate(levelUpPrefab) as GameObject;
+            popup.SetActive(true);
+            popup.transform.localScale = Vector3.zero;
+            popup.transform.SetParent(GameObject.Find("Canvas").transform, false);
+            popup.GetComponent<Popup>().Open();
+            levelUpPanel = popup.GetComponent<LevelUpPanel>();
+            levelUpPanel.Load();
         }
     }
 

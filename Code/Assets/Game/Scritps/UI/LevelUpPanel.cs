@@ -7,8 +7,11 @@ public class LevelUpPanel : MonoBehaviour
 {
     public Transform anchor;
     public GameObject itemPrefab;
-    public Text coin;
-    public Text diamon;
+    public Text coinText;
+    public Text diamonText;
+    public Text levelText;
+    int coin = 0;
+    int diamond = 0;
     List<GameObject> icons = new List<GameObject>();
     Animator anim;
 
@@ -25,9 +28,25 @@ public class LevelUpPanel : MonoBehaviour
 
     public void Load()
     {
-       
+        int level = GameManager.instance.myPlayer.level;
+        levelText.text = level.ToString();
+        coin = level * 50;
+        diamond = level;
+        coinText.text = coin.ToString();
+        diamonText.text = diamond.ToString();
+        List<Item> items = new List<Item>();
 
-
+        for(int i = 0; i < DataHolder.Items().GetDataCount(); i++){
+            if(DataHolder.Item(i).isAvailable && DataHolder.Item(i).levelRequire == level)
+            {
+                GameObject go = GameObject.Instantiate(itemPrefab) as GameObject;
+                go.transform.SetParent(this.anchor);
+                go.transform.localScale = Vector3.one;
+                string url = DataHolder.Item(i).iconUrl.Replace("Assets/Game/Resources/", "");
+                url = url.Replace(".png", "");
+                go.transform.Find("Icon").GetComponent<Image>().sprite = Resources.Load<Sprite>(url) as Sprite;
+            }
+        }
     }
 
     // Update is called once per frame
@@ -36,8 +55,11 @@ public class LevelUpPanel : MonoBehaviour
 
     }
 
+
     public void Close()
     {
+        GameManager.instance.AddCoin(coin);
+        GameManager.instance.AddDiamond(diamond);
         this.GetComponent<Popup>().Close();
     }
 }
