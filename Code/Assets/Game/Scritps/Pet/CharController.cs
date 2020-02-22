@@ -1848,7 +1848,7 @@ public class CharController : MonoBehaviour
         {
             toyItem.pets.Add(this);
             float time = 0;
-            float maxTime = Random.Range(7, 15);
+            float maxTime = Random.Range(10, 15);
             int count = 0;
             int maxCount = Random.Range(3, 6);
 

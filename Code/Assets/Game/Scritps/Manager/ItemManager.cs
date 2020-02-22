@@ -521,7 +521,7 @@ public class ItemManager : MonoBehaviour
 
     public void SpawnStar(Vector3 pos,  int value)
     {
-        GameObject go = Instantiate(starPrefab, pos, Quaternion.identity);
+        GameObject go = Instantiate(starPrefab, pos + new Vector3(Random.Range(-1f,1f),Random.Range(-1f,1f),0), Quaternion.identity);
         go.GetComponent<StarItem>().Load(value);
     }
 
