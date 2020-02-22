@@ -113,7 +113,7 @@ public class PetData : BaseData
 			{
 				if(showIDs)
 				{
-					result[i] = i.ToString() + ":" + pets[i].languageItem[0].Name;
+					result[i] = pets[i].iD.ToString() + ":" + pets[i].languageItem[0].Name;
 				}
 				else
 				{

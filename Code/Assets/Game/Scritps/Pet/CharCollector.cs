@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
+
 public class CharCollector : MonoBehaviour
 {
     public int petId = 0;
@@ -41,11 +42,13 @@ public class CharCollector : MonoBehaviour
         {
             isActive = true;
             Pet p = DataHolder.GetPet(petId);
+            Debug.Log(p.GetName(0));
             petObject = Instantiate(petPrefab) as GameObject;
             petObject.transform.parent = this.transform;
             petObject.transform.localPosition = Vector3.zero;
             anim = petObject.GetComponent<Animator>();
-            anim.Play("Standby", 0);
+            if(anim != null)
+                anim.Play("Standby", 0);
         }
 
     }
@@ -57,27 +60,17 @@ public class CharCollector : MonoBehaviour
 
         if (!isClick && isActive)
         {
-            StartCoroutine(Speak());
             UIManager.instance.OnPetRequirementPanel(DataHolder.GetPet(petId));
         }
     }
 
-    IEnumerator Speak()
-    {
-        isClick = true;
-        if(anim != null)
-            anim.Play("Speak_L", 0);
-        yield return new WaitForEndOfFrame();
-        yield return new WaitForSeconds(anim.GetCurrentAnimatorStateInfo(0).length);
-        if (anim != null)
-            anim.Play("Standby", 0);
-        isClick = false;
-    }
-
-
     public void DeActive()
     {
-        Destroy(petObject);
+        if(petObject != null)
+        {
+            Destroy(petObject);
+        }
+        
         isActive = false;
     }
 
