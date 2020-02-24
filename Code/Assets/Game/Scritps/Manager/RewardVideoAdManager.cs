@@ -132,6 +132,9 @@ public class RewardVideoAdManager : MonoBehaviour {
 		else if (rewardType == RewardType.Map)
 		{
 			StartCoroutine(OnMap());
+		}else if (rewardType == RewardType.Welcome)
+		{
+			StartCoroutine(OnWelcome());
 		}
 
 	}
@@ -155,7 +158,7 @@ public class RewardVideoAdManager : MonoBehaviour {
     IEnumerator OnMinigame()
     {
 		yield return new WaitForEndOfFrame();
-		if (Minigame.instance != null)
+		if (Minigame.instance != null && Minigame.instance.winPanel != null)
 		{
 			Minigame.instance.winPanel.OnWatchedAd();
 	    }
@@ -164,9 +167,18 @@ public class RewardVideoAdManager : MonoBehaviour {
 	IEnumerator OnMap()
 	{
 		yield return new WaitForEndOfFrame();
-		if (UIManager.instance != null)
+		if (UIManager.instance != null && UIManager.instance.mapRequirementPanel != null)
 		{
 			UIManager.instance.mapRequirementPanel.OnWatchedAd();
+		}
+	}
+
+	IEnumerator OnWelcome()
+	{
+		yield return new WaitForEndOfFrame();
+		if (UIManager.instance != null && UIManager.instance.welcomeBackPanel != null)
+		{
+			UIManager.instance.welcomeBackPanel.WatchedAd();
 		}
 	}
 
