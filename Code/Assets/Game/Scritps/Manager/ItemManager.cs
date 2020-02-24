@@ -330,20 +330,36 @@ public class ItemManager : MonoBehaviour
             Destroy(item.gameObject);
     }
 
-    public GameObject GetItem(ItemType type){
-        foreach(ItemObject item in items){
-            if(DataHolder.GetItem(item.itemID).itemType == type){
-                return item.gameObject;
+    public ItemObject GetItem(ItemType type)
+    {
+        foreach (ItemObject item in items)
+        {
+            if (DataHolder.GetItem(item.itemID).itemType == type)
+            {
+                return item;
             }
         }
         return null;
     }
+
 
     public GameObject GetItemChildObject(ItemType type){
         foreach(ItemObject item in items){
             if(DataHolder.GetItem(item.itemID).itemType == type){
                 //Debug.Log(item.name);
                 return item.transform.GetChild(0).gameObject;
+            }
+        }
+        return null;
+    }
+
+    public ItemCollider GetEquipment(ItemType type)
+    {
+        foreach (ItemObject item in items)
+        {
+            if (DataHolder.GetItem(item.itemID).itemType == type)
+            {
+                return item.transform.GetComponentInChildren<ItemCollider>();
             }
         }
         return null;

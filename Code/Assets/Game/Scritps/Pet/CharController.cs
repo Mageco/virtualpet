@@ -1372,31 +1372,17 @@ public class CharController : MonoBehaviour
 
     protected virtual IEnumerator Pee()
     {
-        /*
-        if (enviromentType != EnviromentType.Toilet)
-        {
-            if (data.SkillLearned(SkillType.Toilet))
-            {
-                SetTarget(PointType.Toilet);
-                yield return StartCoroutine(RunToPoint());
-                ItemCollider col = ItemManager.instance.GetItemCollider(ItemType.Toilet);
-                yield return StartCoroutine(JumpUp(10, 5, col.transform.position + new Vector3(0, col.height, 0), col.height));
-                enviromentType = EnviromentType.Toilet;
-            }
-            else
-            {
-                OnLearnSkill(SkillType.Toilet);
-            }
-        }*/
+        ItemCollider itemCollider = ItemManager.instance.GetItemCollider(ItemType.Toilet);
 
         if (enviromentType == EnviromentType.Toilet)
         {
-            if (ItemManager.instance.GetItem(ItemType.Toilet) != null)
+            if (itemCollider != null)
             {
-                ItemManager.instance.GetItem(ItemType.Toilet).GetComponentInChildren<ItemCollider>().pets.Add(this);
+                itemCollider.pets.Add(this);
             }
         }
 
+        
         if (!isAbort)
         {
             anim.Play("Pee", 0);
@@ -1424,38 +1410,23 @@ public class CharController : MonoBehaviour
                 LevelUpSkill(SkillType.Toilet);
             }
 
+            
             yield return StartCoroutine(JumpDown(-7, 10, 30));
         }
-
-
 
         CheckAbort();
     }
 
     protected virtual IEnumerator Shit()
     {
-        /*
-        if (enviromentType != EnviromentType.Toilet)
-        {
-            if (data.SkillLearned(SkillType.Toilet))
-            {
-                SetTarget(PointType.Toilet);
-                yield return StartCoroutine(RunToPoint());
-                ItemCollider col = ItemManager.instance.GetItemCollider(ItemType.Toilet);
-                yield return StartCoroutine(JumpUp(10, 5, col.transform.position + new Vector3(0, col.height, 0), col.height));
-                enviromentType = EnviromentType.Toilet;
-            }
-            else
-            {
-                OnLearnSkill(SkillType.Toilet);
-            }
-        }*/
+
+        ItemCollider itemCollider = ItemManager.instance.GetItemCollider(ItemType.Toilet);
 
         if (enviromentType == EnviromentType.Toilet)
         {
-            if (ItemManager.instance.GetItem(ItemType.Toilet) != null)
+            if (itemCollider != null)
             {
-                ItemManager.instance.GetItem(ItemType.Toilet).GetComponentInChildren<ItemCollider>().pets.Add(this);
+                itemCollider.pets.Add(this);
             }
         }
 
@@ -1486,6 +1457,8 @@ public class CharController : MonoBehaviour
             }
             yield return StartCoroutine(JumpDown(-7, 10, 30));
         }
+
+
         CheckAbort();
     }
 
@@ -1628,35 +1601,21 @@ public class CharController : MonoBehaviour
 
     protected virtual IEnumerator Sleep()
     {
-        /*
-        if (enviromentType != EnviromentType.Bed)
-        {
-            if (data.SkillLearned(SkillType.Sleep))
-            {
-                SetTarget(PointType.Sleep);
-                yield return StartCoroutine(RunToPoint());
-                ItemCollider col = ItemManager.instance.GetItemCollider(ItemType.Bed);
-                yield return StartCoroutine(JumpUp(10, 5, col.transform.position, col.height));
-                enviromentType = EnviromentType.Bed;
-            }
-            else
-            {
-                OnLearnSkill(SkillType.Sleep);
-            }
-        }*/
-
+        ItemCollider itemCollider = ItemManager.instance.GetItemCollider(ItemType.Bed);
+    
         float value = 0;
 
         if (enviromentType == EnviromentType.Bed)
         {
-            if (ItemManager.instance.GetItem(ItemType.Bed) != null)
+            if (itemCollider != null)
             {
-                ItemManager.instance.GetItem(ItemType.Bed).GetComponentInChildren<ItemCollider>().pets.Add(this);
+                itemCollider.pets.Add(this);
                 value = ItemManager.instance.GetItemData(ItemType.Bed).value;
             }
         }
 
         anim.Play("Sleep", 0);
+
 
         while (data.Sleep < data.MaxSleep && !isAbort)
         {
@@ -1670,11 +1629,9 @@ public class CharController : MonoBehaviour
             {
                 ItemManager.instance.SpawnHeart((1 + data.level / 5)*2, this.transform.position);
                 GameManager.instance.LogAchivement(AchivementType.Do_Action, ActionType.Sleep);
-                //LevelUpSkill(SkillType.Sleep);
             }
             yield return StartCoroutine(JumpDown(-7, 10, 30));
         }
-
         CheckAbort();
     }
 

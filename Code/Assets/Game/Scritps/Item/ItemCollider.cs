@@ -16,6 +16,8 @@ public class ItemCollider : BaseFloorItem
 
 	Animator[] animParts;
 
+	bool isActive = false;
+
 	protected override void Awake()
 	{
 		base.Awake();
@@ -32,6 +34,8 @@ public class ItemCollider : BaseFloorItem
 		List<CharController> temp = new List<CharController>();
         if(pets.Count > 0)
         {
+			if (animator != null)
+				animator.Play("Active", 0);
             foreach(CharController pet in pets)
             {
                 if(pet != null && pet.enviromentType == EnviromentType.Room)
@@ -39,7 +43,19 @@ public class ItemCollider : BaseFloorItem
 					temp.Add(pet);
                 }
             }
+			isActive = true;
         }
+        else
+        {
+            if (isActive)
+            {
+				if (animator != null)
+					animator.Play("Idle", 0);
+				isActive = false;
+			}
+
+		}
+			
 
 		foreach (CharController pet in temp)
 		{
