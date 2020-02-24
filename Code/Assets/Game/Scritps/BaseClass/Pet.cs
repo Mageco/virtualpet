@@ -192,16 +192,16 @@ public class Pet : BaseModel
         Debug.Log(url);
         GameObject go = GameObject.Instantiate((Resources.Load(url) as GameObject), Vector3.zero, Quaternion.identity) as GameObject;
         character = go.GetComponent<CharController>();
-        if (this.position == Vector3.zero && ItemManager.instance != null)
-            go.transform.position = ItemManager.instance.GetRandomPoint(PointType.Spawn).position;
-        else
-            go.transform.position = this.position;
+        //if (this.position == Vector3.zero && ItemManager.instance != null)
+        go.transform.position = ItemManager.instance.GetRandomPoint(PointType.Spawn).position;
+        //else
+        //    go.transform.position = this.position;
         if (this.actionType != ActionType.Hold)
         {
-            character.actionType = this.actionType;
-            character.enviromentType = this.enviromentType;
-            character.GetComponent<CharScale>().scalePosition = this.scalePosition;
-            character.GetComponent<CharScale>().height = this.height;
+            //character.actionType = this.actionType;
+            //character.enviromentType = this.enviromentType;
+            //character.GetComponent<CharScale>().scalePosition = this.scalePosition;
+            //character.GetComponent<CharScale>().height = this.height;
         }
 
         character.data = this;
