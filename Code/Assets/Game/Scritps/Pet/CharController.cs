@@ -12,12 +12,10 @@ public class CharController : MonoBehaviour
     public Pet data;
     public GameObject petPrefab;
     public CharType charType = CharType.Dog;
-    public GameType gameType = GameType.House;
-    //[HideInInspector]
 
-    //[HideInInspector]
+    [HideInInspector]
     public EnviromentType enviromentType = EnviromentType.Room;
-    //[HideInInspector]
+    [HideInInspector]
     public Direction direction = Direction.L;
 
     //Think
@@ -30,13 +28,18 @@ public class CharController : MonoBehaviour
 
     [HideInInspector]
     public PolyNavAgent agent;
+    [HideInInspector]
     public bool isArrived = true;
+    [HideInInspector]
     public bool isAbort = false;
+    [HideInInspector]
     public bool isAction = false;
+    [HideInInspector]
     public bool isMoving = false;
 
     //Action
     public ActionType actionType = ActionType.None;
+    [HideInInspector]
     public Animator anim;
 
     //Interact
@@ -68,7 +71,7 @@ public class CharController : MonoBehaviour
     public Vector3 dropPosition = Vector3.zero;
 
     public SpriteRenderer iconStatusObject;
-    public TextMesh timeWait;
+    [HideInInspector]
     public IconStatus iconStatus = IconStatus.None;
     IconStatus lastIconStatus = IconStatus.None;
     Vector3 originalStatusScale;
@@ -124,10 +127,6 @@ public class CharController : MonoBehaviour
             iconStatusObject.gameObject.SetActive(false);
             originalStatusScale = iconStatusObject.transform.localScale;
         }
-
-        if (timeWait != null)
-            timeWait.gameObject.SetActive(false);
-
 
         //Load Dirty Effect
         //grab all the kids and only keep the ones with dirty tags
@@ -234,14 +233,7 @@ public class CharController : MonoBehaviour
             DoAction();
             LogAction();
         }
-        else if (actionType == ActionType.Sick || actionType == ActionType.Injured)
-        {
-            float t = data.MaxTimeSick - (float)(System.DateTime.Now - data.timeSick).TotalSeconds;
-            float m = (int)(t / 60);
-            float s = (int)(t - m * 60);
-            timeWait.text = m.ToString("00") + ":" + s.ToString("00");
-            //Debug.Log(t);
-        }else if(actionType == ActionType.Toy)
+        else if(actionType == ActionType.Toy)
         {
             data.Energy -= Time.deltaTime;
             if (timeToy > 6)
