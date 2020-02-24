@@ -68,13 +68,10 @@ public class ItemManager : MonoBehaviour
         if (ES2.Exists("PlayTime"))
         {
             playTime = ES2.Load<System.DateTime>("PlayTime");
-            //LoadPetData((float)(System.DateTime.Now - playTime).TotalSeconds);
+            LoadWelcome((float)(System.DateTime.Now - playTime).TotalSeconds);
         }
 
-        if (!ES2.Exists("RateUs") && GameManager.instance.gameTime > 720 && GameManager.instance.rateCount % 5 == 0)
-        {
-            UIManager.instance.OnRatingPopup();
-        }
+
         if (ES2.Exists("CameraPosition"))
         {
             GetActiveCamera().transform.position = ES2.Load<Vector3>("CameraPosition");
@@ -98,6 +95,12 @@ public class ItemManager : MonoBehaviour
                 UIManager.instance.achivementNotification.SetActive(true);
             }else
                 UIManager.instance.achivementNotification.SetActive(false);
+
+            Debug.Log((int)GameManager.instance.gameTime % 10);
+            if (GameManager.instance.gameTime > 300 && !ES2.Exists("RateUs") && (int)GameManager.instance.gameTime % 100 == 0)
+            {
+                UIManager.instance.OnRatingPopup();
+            }
         }
         else{
             time += Time.deltaTime;
@@ -708,26 +711,49 @@ public class ItemManager : MonoBehaviour
         }
     }
 
-    public void LoadPetData(float t)
+    public void LoadWelcome(float t)
     {
+        int c = 0;
+        int h = 0;
         #if UNITY_EDITOR
                 if (MageEngine.instance.resetUserDataOnStart)
                     return;
         #endif
         //Debug.Log(t);
-        if (t > 86400)
+        if (t > 10800)
         {
-            t = 7272 + (t - 86400) / 100;
+            c = 30;
+            h = 60;
         }
-        else if (t > 28800)
+        else if (t > 7200)
         {
-            t = 6120 + (t - 28800) / 50;
+            c = 20;
+            h = 40;
         }
         else if (t > 3600)
         {
-            t = 3600 + (t-3600)/10;
+            c = 10;
+            h = 20;
         }
- 
+        else if (t > 1800)
+        {
+            c = 5;
+            h = 10;
+        }
+        else if (t > 600)
+        {
+            c = 2;
+            h = 4;
+        }
+        else 
+        {
+            c = 1;
+            h = 2;
+        }
+
+        if (t >= 300)
+            UIManager.instance.OnWelcomeBack(c, h);
+
     }
 
     public int GetFruitId()

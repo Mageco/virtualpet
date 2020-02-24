@@ -9,7 +9,6 @@ public class ChickenController : AnimalController
     public GameObject[] bodies;
     public InteractType interactType;
     Vector3 dragOffset;
-    public GameObject happyItem;
 
     CircleCollider2D col2D;
 
@@ -124,12 +123,6 @@ public class ChickenController : AnimalController
                 direction = Direction.R;
             ran = Random.Range(0, 100);
             
-            //if (ran > 60 && isMinigame && Minigame.instance.time < Minigame.instance.maxTime - 2)
-            //{
-            //    SpawnHappy();
-            //}
-                
-            //Spawn happy in garden
             if (ran > 98 && !isMinigame)
                 SpawnHappy();
             yield return StartCoroutine(DoAnim("Eat_" + direction.ToString()));
@@ -247,13 +240,8 @@ public class ChickenController : AnimalController
 
     void SpawnHappy()
     {
-        int ran = Random.Range(0, 100);
-        Quaternion rot = Quaternion.identity;
-        if (ran > 50)
-            rot = Quaternion.Euler(new Vector3(0, 180, -1));
-        Vector3 pos = this.transform.position + new Vector3(Random.Range(-0.2f, 0.2f), Random.Range(-1, 1), 0);
-        GameObject go = Instantiate(happyItem, pos, rot);
-        go.GetComponent<HappyItem>().Load(1);
+        if(ItemManager.instance != null)
+            ItemManager.instance.SpawnHeart(1, this.transform.position);
     }
 
 }

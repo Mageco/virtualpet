@@ -400,6 +400,7 @@ public class GameManager : MonoBehaviour
                 PlayerItem item = new PlayerItem();
                 item.itemId = id;
                 item.state = ItemState.Have;
+                item.itemType = DataHolder.GetItem(id).itemType;
                 item.isConsumable = DataHolder.GetItem(id).consume;
                 item.number = 1;
                 Debug.Log("Not Exist " + id);
