@@ -153,6 +153,11 @@ public class PlayerService
 		isActive = true;
 		timeStart = System.DateTime.Now;
 	}
+
+	public void StopService()
+	{
+		isActive = false;
+    }
 }
 
 

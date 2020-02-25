@@ -104,13 +104,14 @@ public class QuestManager : MonoBehaviour
         }
         else if (GameManager.instance.myPlayer.questId == 6)
         {
-            GameManager.instance.GetActivePet().Sleep = GameManager.instance.GetActivePet().MaxSleep * 0.2f;
+            GameManager.instance.GetActivePet().Sleep = GameManager.instance.GetActivePet().MaxSleep * 0.05f;
             GameManager.instance.GetActivePet().Food = 0.6f * GameManager.instance.GetActivePet().MaxFood;
             GameManager.instance.GetActivePet().Water = 0.6f * GameManager.instance.GetActivePet().MaxWater;
+            delayTime = 5;
         }
         else if (GameManager.instance.myPlayer.questId == 7)
         {
-            delayTime = 5;
+
         }
         else if (GameManager.instance.myPlayer.questId == 8)
         {
@@ -265,7 +266,7 @@ public class QuestManager : MonoBehaviour
         }
         else if (GameManager.instance.myPlayer.questId == 6)
         {
-            if (GameManager.instance.GetActivePet().Sleep > 0.3f)
+            if (GameManager.instance.GetActivePet().enviromentType == EnviromentType.Bed && GameManager.instance.GetActivePet().actionType == ActionType.Sleep)
             {
                 isComplete = true;
             }
