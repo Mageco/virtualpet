@@ -774,6 +774,8 @@ GameObject:
   m_Component:
   - component: {fileID: 5071958856749406982}
   - component: {fileID: 5071958856749406977}
+  - component: {fileID: 3292913153446374361}
+  - component: {fileID: 1683420559719781977}
   m_Layer: 0
   m_Name: Mushroom
   m_TagString: Untagged
@@ -818,6 +820,35 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &3292913153446374361
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5071958856749406976}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f698d40142ab54d4d82213992d73b7eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  value: 2
+--- !u!58 &1683420559719781977
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5071958856749406976}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 1}
+  serializedVersion: 2
+  m_Radius: 3
 --- !u!1 &5071958856952090470
 GameObject:
   m_ObjectHideFlags: 0

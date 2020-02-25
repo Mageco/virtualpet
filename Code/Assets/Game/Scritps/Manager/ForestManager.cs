@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System;
+
 
 public class ForestManager : MonoBehaviour
 {
@@ -10,8 +10,15 @@ public class ForestManager : MonoBehaviour
     public GameObject nightBG;
     float time = 0;
     public float maxTimeCheck = 10;
-    DateTime today;
-   
+    System.DateTime today;
+    public GameObject coinPrefab;
+    public GameObject starPrefab;
+    public GameObject[] forestCoinPrefab;
+    public GameObject fishPrefab;
+    float timeCoin = 0;
+    float maxTimeCoin = 3;
+    float timeFish = 0;
+    float maxTimeFish = 5;
 
     void Awake()
     {
@@ -24,7 +31,7 @@ public class ForestManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        today = DateTime.Today;
+        today = System.DateTime.Today;
         CheckDayNight();
         LoadMusic();
     }
@@ -41,10 +48,28 @@ public class ForestManager : MonoBehaviour
         {
             time += Time.deltaTime;
         }
+
+        if (timeCoin > maxTimeCoin)
+        {
+            timeCoin = 0;
+            SpawnForestCoin();
+            maxTimeCoin = Random.Range(10, 30);
+        }
+        else
+            timeCoin += Time.deltaTime;
+
+        if (timeFish > maxTimeFish)
+        {
+            timeFish = 0;
+            SpawnFish();
+            maxTimeFish = Random.Range(3, 10);
+        }
+        else
+            timeFish += Time.deltaTime;
     }
 
     void CheckDayNight(){
-        if(DateTime.Now.Hour < 6 || DateTime.Now.Hour > 18)
+        if(System.DateTime.Now.Hour < 6 || System.DateTime.Now.Hour > 18)
         {
             dayBGG.SetActive(false);
             nightBG.SetActive(true);
@@ -56,7 +81,7 @@ public class ForestManager : MonoBehaviour
 
     public void LoadMusic()
     {
-        if (DateTime.Now.Hour < 6 || DateTime.Now.Hour > 18)
+        if (System.DateTime.Now.Hour < 6 || System.DateTime.Now.Hour > 18)
         {
             MageManager.instance.PlayMusicName("nightMusic", true);
         }
@@ -64,6 +89,82 @@ public class ForestManager : MonoBehaviour
         {
             MageManager.instance.PlayMusicName("dayMusic", true);
         }
+    }
 
+    public void SpawnStar(Vector3 pos, int value)
+    {
+        GameObject go = Instantiate(starPrefab, pos + new Vector3(Random.Range(-1f, 1f), Random.Range(-1f, 1f), 0), Quaternion.identity);
+        go.GetComponent<StarItem>().Load(value);
+    }
+
+    public void SpawnCoin(Vector3 pos, int value, GameObject item = null)
+    {
+        GameObject go = Instantiate(coinPrefab, pos, Quaternion.identity);
+        go.GetComponent<CoinItem>().Load(value);
+        if (item != null)
+        {
+            go.transform.parent = item.transform;
+        }
+        SpawnStar(pos, 1);
+    }
+
+    void SpawnForestCoin()
+    {
+        Vector3 pos = GetRandomPoint(PointType.Banana).position;
+        int n = Random.Range(0, 100);
+        GameObject go = Instantiate(forestCoinPrefab[n/10], pos, Quaternion.identity);
+    }
+
+    void SpawnFish()
+    {
+        Vector3 pos = GetRandomPoint(PointType.Fishing).position;
+        GameObject go = Instantiate(fishPrefab, pos, Quaternion.identity);
+    }
+
+    List<GizmoPoint> GetPoints(PointType type)
+    {
+        List<GizmoPoint> temp = new List<GizmoPoint>();
+        GizmoPoint[] points = FindObjectsOfType<GizmoPoint>();
+        for (int i = 0; i < points.Length; i++)
+        {
+            if (points[i].type == type)
+                temp.Add(points[i]);
+        }
+        return temp;
+    }
+
+    public Transform GetRandomPoint(PointType type)
+    {
+        List<GizmoPoint> points = GetPoints(type);
+        if (points != null && points.Count > 0)
+        {
+            int id = Random.Range(0, points.Count);
+            return points[id].transform;
+        }
+        else
+            return null;
+
+    }
+
+    public List<Transform> GetRandomPoints(PointType type)
+    {
+        List<GizmoPoint> points = GetPoints(type);
+        List<Transform> randomPoints = new List<Transform>();
+        for (int i = 0; i < points.Count; i++)
+        {
+            randomPoints.Add(points[i].transform);
+        }
+
+        for (int i = 0; i < randomPoints.Count; i++)
+        {
+            if (i < randomPoints.Count - 1)
+            {
+                int j = Random.Range(i, randomPoints.Count);
+                Transform temp = randomPoints[i];
+                randomPoints[i] = randomPoints[j];
+                randomPoints[j] = temp;
+            }
+        }
+        return randomPoints;
     }
 }
