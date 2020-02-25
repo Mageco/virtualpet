@@ -15,6 +15,7 @@ public class ForestManager : MonoBehaviour
     public GameObject starPrefab;
     public GameObject[] forestCoinPrefab;
     public GameObject fishPrefab;
+    public GameObject[] charCollectors;
     float timeCoin = 0;
     float maxTimeCoin = 3;
     float timeFish = 0;
@@ -34,8 +35,14 @@ public class ForestManager : MonoBehaviour
         today = System.DateTime.Today;
         CheckDayNight();
         LoadMusic();
+        LoadCollector();
     }
 
+    void LoadCollector()
+    {
+        int n = Random.Range(0, charCollectors.Length);
+        GameObject go = GameObject.Instantiate(charCollectors[n]) as GameObject;
+    }
    
 
     // Update is called once per frame

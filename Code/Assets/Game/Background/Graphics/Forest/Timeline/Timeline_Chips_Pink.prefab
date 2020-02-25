@@ -281,7 +281,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 685001406411467804}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0.26675057, w: 0.9637656}
   m_LocalPosition: {x: 0.89, y: 1.02, z: -0.001}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -6490,7 +6490,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2315843583573696865}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0.10313975, w: 0.99466693}
   m_LocalPosition: {x: 1.42, y: 0.54, z: -0.001}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -7051,7 +7051,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2905654334809478111}
-  m_LocalRotation: {x: -0, y: -0, z: 0.3922084, w: -0.91987646}
+  m_LocalRotation: {x: 0, y: 0, z: -0.20889314, w: 0.9779385}
   m_LocalPosition: {x: -0.01, y: -0.35, z: -0.001}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -7324,7 +7324,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3362536048275909599}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0.29899913, w: 0.95425344}
   m_LocalPosition: {x: -1.18, y: 1.41, z: -0.001}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -7597,7 +7597,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3564652443963359878}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0.645651, w: 0.7636327}
   m_LocalPosition: {x: -1.38, y: 0.29, z: -0.001}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -13899,7 +13899,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5404236292047891016}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0.50305, w: 0.86425734}
   m_LocalPosition: {x: -1.7, y: 0.42, z: -0.001}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -14033,7 +14033,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1.85, y: 2.11}
+  m_Size: {x: 0.76, y: 0.38}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -34729,6 +34729,8 @@ GameObject:
   m_Component:
   - component: {fileID: 6939445211045246960}
   - component: {fileID: 6298826876600782159}
+  - component: {fileID: 7250291728016844140}
+  - component: {fileID: 3017716092998430962}
   m_Layer: 0
   m_Name: Hamster_Pink
   m_TagString: Untagged
@@ -34771,6 +34773,35 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &7250291728016844140
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8483399008494761577}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 772f6a32ca16f483c8face951681aaac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  petId: 23
+--- !u!58 &3017716092998430962
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8483399008494761577}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 2}
+  serializedVersion: 2
+  m_Radius: 5
 --- !u!1 &8713696081915907211
 GameObject:
   m_ObjectHideFlags: 0
