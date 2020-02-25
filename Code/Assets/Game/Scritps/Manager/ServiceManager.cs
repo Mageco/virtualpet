@@ -5,7 +5,7 @@ using UnityEngine;
 public class ServiceManager : MonoBehaviour
 {
     public static ServiceManager instance;
-    
+   
     // Start is called before the first frame update
     void Start()
     {
@@ -20,14 +20,14 @@ public class ServiceManager : MonoBehaviour
 
     public void RegisterService(ServiceType type)
     {
+        foreach(PlayerService s in GameManager.instance.myPlayer.playerServices)
+        {
+            if(s.type == type)
+            {
 
+            }
+        }
     }
 }
 
-public class ServiceJob
-{
-    public ServiceType type;
-    public System.DateTime timeStart;
-    public bool isActive = false;
-    float time;
-}
+
