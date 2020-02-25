@@ -423,7 +423,7 @@ public class TutorialManager : MonoBehaviour
             handClick.SetActive(true);
             handClick.transform.position = pet.transform.position + new Vector3(0, 3, -10);
             handClick.GetComponent<Animator>().Play("Hold", 0);
-            Vector3 holdPosition = ItemManager.instance.GetItemChildObject(ItemType.Bath).transform.position + new Vector3(0, 16, 0);
+            Vector3 holdPosition = ItemManager.instance.GetItemChildObject(ItemType.Bath).transform.position + new Vector3(0, 17f, 0);
             pet.target = pet.transform.position;
             while (Vector2.Distance(pet.transform.position, holdPosition) > 2f)
             {
@@ -471,7 +471,7 @@ public class TutorialManager : MonoBehaviour
             handClick.GetComponent<Animator>().Play("Hold", 0);
 
             pet.target = pet.transform.position;
-            Vector3 holdPosition = ItemManager.instance.GetItemChildObject(ItemType.Toilet).transform.position + new Vector3(0, 15, 0);
+            Vector3 holdPosition = ItemManager.instance.GetItemChildObject(ItemType.Toilet).transform.position + new Vector3(0, 17f, 0);
             while (Vector2.Distance(pet.transform.position, holdPosition) > 2)
             {
                 pet.target = Vector3.Lerp(pet.target, holdPosition, Time.deltaTime);
@@ -502,7 +502,7 @@ public class TutorialManager : MonoBehaviour
             handClick.GetComponent<Animator>().Play("Hold", 0);
 
             pet.target = pet.transform.position;
-            Vector3 holdPosition = ItemManager.instance.GetItemChildObject(ItemType.Bed).transform.position + new Vector3(0, 15f, 0);
+            Vector3 holdPosition = ItemManager.instance.GetItemChildObject(ItemType.Bed).transform.position + new Vector3(0, 17f, 0);
             while (Vector2.Distance(pet.transform.position, holdPosition) > 2)
             {
                 pet.target = Vector3.Lerp(pet.target, holdPosition, Time.deltaTime);
