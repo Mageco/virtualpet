@@ -7,7 +7,7 @@ public class MapRequirementPanel : MonoBehaviour
 {
     public Sprite[] icons;
     public MapType mapType = MapType.Forest;
-    int price = 10;
+    int price = 20;
     public Text priceText;
     public Image icon;
 
@@ -32,9 +32,9 @@ public class MapRequirementPanel : MonoBehaviour
 
     public void Confirm()
     {
-        if(GameManager.instance.GetCoin() < price)
+        if(GameManager.instance.GetHappy() < price)
         {
-            MageManager.instance.OnNotificationPopup(DataHolder.Dialog(6).GetDescription(MageManager.instance.GetLanguage()));
+            MageManager.instance.OnNotificationPopup(DataHolder.Dialog(8).GetDescription(MageManager.instance.GetLanguage()));
             return;
         }
         else
