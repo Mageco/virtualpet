@@ -7,10 +7,46 @@ public class ServiceManager : MonoBehaviour
     public static ServiceManager instance;
     float time;
     float maxTimeCheck = 1;
-    // Start is called before the first frame update
-    void Start()
+    public ServiceUI[] serviceUIs;
+
+    private void Awake()
     {
-        
+        if (instance == null)
+            instance = this;
+    }
+    // Start is called before the first frame update
+    IEnumerator Start()
+    {
+        while (!GameManager.instance.isLoad)
+        {
+            yield return new WaitForEndOfFrame();
+        }
+
+        if(GameManager.instance.myPlayer.playerServices.Count == 0)
+        {
+            AddService();
+        }
+
+        LoadServiceUI();
+    }
+
+    void LoadServiceUI()
+    {
+        for (int i = 0; i < serviceUIs.Length; i++)
+        {
+            serviceUIs[i].Load();
+        }
+    }
+
+    void AddService()
+    {
+        for (int i = 0; i < 5; i++)
+        {
+            PlayerService s = new PlayerService();
+            s.type = (ServiceType)i;
+            s.isActive = false;
+            GameManager.instance.myPlayer.playerServices.Add(s);
+        }
     }
 
     // Update is called once per frame
@@ -36,6 +72,19 @@ public class ServiceManager : MonoBehaviour
         }
     }
 
+    public PlayerService GetService(ServiceType type)
+    {
+        foreach (PlayerService s in GameManager.instance.myPlayer.playerServices)
+        {
+            if (s.type == type)
+            {
+                return s;
+            }
+        }
+        return null;
+    }
+
+
     public void StartService(ServiceType type)
     {
         foreach(PlayerService s in GameManager.instance.myPlayer.playerServices)
@@ -43,8 +92,11 @@ public class ServiceManager : MonoBehaviour
             if(s.type == type)
             {
                 s.StartService();
+                Debug.Log(s.type + " " + s.isActive);
             }
         }
+        GameManager.instance.SavePlayer();
+        this.LoadServiceUI();
     }
 }
 

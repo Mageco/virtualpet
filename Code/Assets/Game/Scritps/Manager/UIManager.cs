@@ -512,7 +512,7 @@ public class UIManager : MonoBehaviour
     {
         if (servicePanel == null)
         {
-            var popup = Instantiate(welcomeBackPrefab) as GameObject;
+            var popup = Instantiate(servicePanelPrefab) as GameObject;
             popup.SetActive(true);
             popup.transform.localScale = Vector3.zero;
             popup.transform.SetParent(GameObject.Find("Canvas").transform, false);

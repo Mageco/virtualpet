@@ -12,6 +12,8 @@ public class ServicePanel : MonoBehaviour
     public Text priceText;
     public Image icon;
 
+
+
     public void Load(ServiceType type)
     {
         

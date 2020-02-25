@@ -158,6 +158,15 @@ public class PlayerService
 	{
 		isActive = false;
     }
+
+    public string GetTime()
+    {
+		double t = (timeStart.AddSeconds(1800) - System.DateTime.Now).TotalSeconds;
+		int m = (int)t / 60;
+		int s = (int)(t - m * 60);
+		string time = m.ToString("00") + ":" + s.ToString("00");
+		return time;
+    }
 }
 
 
