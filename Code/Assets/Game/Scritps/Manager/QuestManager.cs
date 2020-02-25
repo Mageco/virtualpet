@@ -259,7 +259,7 @@ public class QuestManager : MonoBehaviour
         }
         else if (GameManager.instance.myPlayer.questId == 5)
         {
-            if (GameManager.instance.GetActivePet().Shit < 0.2f)
+            if (GameManager.instance.GetAchivement(4) >= 1)
             {
                 isComplete = true;
             }

@@ -20,6 +20,7 @@ public class UIManager : MonoBehaviour
     public GameObject mapRequirementPrefab;
     public GameObject levelUpPrefab;
     public GameObject welcomeBackPrefab;
+    public GameObject servicePanelPrefab;
     public static UIManager instance;
 	public Text coinText;
 	public Text diamonText;
@@ -56,6 +57,8 @@ public class UIManager : MonoBehaviour
     public LevelUpPanel levelUpPanel;
     [HideInInspector]
     public WelcomeBackPanel welcomeBackPanel;
+    [HideInInspector]
+    public ServicePanel servicePanel;
 
     public GameObject achivementNotification;
 
@@ -502,6 +505,20 @@ public class UIManager : MonoBehaviour
             popup.GetComponent<Popup>().Open();
             welcomeBackPanel = popup.GetComponent<WelcomeBackPanel>();
             welcomeBackPanel.Load(c,h);
+        }
+    }
+
+    public void OnServicePanel(ServiceType type)
+    {
+        if (servicePanel == null)
+        {
+            var popup = Instantiate(welcomeBackPrefab) as GameObject;
+            popup.SetActive(true);
+            popup.transform.localScale = Vector3.zero;
+            popup.transform.SetParent(GameObject.Find("Canvas").transform, false);
+            popup.GetComponent<Popup>().Open();
+            servicePanel = popup.GetComponent<ServicePanel>();
+            servicePanel.Load(type);
         }
     }
 

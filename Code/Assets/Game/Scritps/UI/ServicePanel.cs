@@ -10,11 +10,14 @@ public class ServicePanel : MonoBehaviour
     ServiceType serviceType;
     int price = 1;
     public Text priceText;
+    public Image icon;
 
     public void Load(ServiceType type)
     {
+        
         this.serviceType = type;
-        if(serviceType == ServiceType.Chef)
+        icon.sprite = Resources.Load<Sprite>("Icons/NPC_Icon/" + serviceType.ToString());
+        if (serviceType == ServiceType.Chef)
         {
 
         }
@@ -38,7 +41,7 @@ public class ServicePanel : MonoBehaviour
     {
         if (GameManager.instance.GetDiamond() < price)
         {
-            MageManager.instance.OnNotificationPopup(DataHolder.Dialog(8).GetDescription(MageManager.instance.GetLanguage()));
+            MageManager.instance.OnNotificationPopup(DataHolder.Dialog(7).GetDescription(MageManager.instance.GetLanguage()));
             return;
         }
         else

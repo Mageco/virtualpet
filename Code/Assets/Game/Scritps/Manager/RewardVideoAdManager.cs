@@ -136,6 +136,10 @@ public class RewardVideoAdManager : MonoBehaviour {
 		{
 			StartCoroutine(OnWelcome());
 		}
+		else if (rewardType == RewardType.Service)
+		{
+			StartCoroutine(OnService());
+		}
 
 	}
 
@@ -179,6 +183,15 @@ public class RewardVideoAdManager : MonoBehaviour {
 		if (UIManager.instance != null && UIManager.instance.welcomeBackPanel != null)
 		{
 			UIManager.instance.welcomeBackPanel.WatchedAd();
+		}
+	}
+
+	IEnumerator OnService()
+	{
+		yield return new WaitForEndOfFrame();
+		if (UIManager.instance != null && UIManager.instance.servicePanel != null)
+		{
+			UIManager.instance.servicePanel.OnWatchedAd();
 		}
 	}
 
