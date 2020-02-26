@@ -118,6 +118,7 @@ public class WinPanel : MonoBehaviour
     }
 
     public void Close(){
+        MageManager.instance.PlaySoundName("Collect_Achivement", false);
         GameManager.instance.AddCoin(bonus);
         Minigame.instance.OnHome();
         this.GetComponent<Popup>().Close();

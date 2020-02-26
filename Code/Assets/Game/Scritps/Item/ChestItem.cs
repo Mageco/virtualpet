@@ -69,7 +69,7 @@ public class ChestItem : MonoBehaviour
         if (IsPointerOverUIObject())
             return;
 
-        if(!isActive && Vector3.Distance(clickPosition, Camera.main.ScreenToWorldPoint(Input.mousePosition)) < 0.3f)
+        if(!isActive && Vector3.Distance(clickPosition, Camera.main.ScreenToWorldPoint(Input.mousePosition)) < 1f)
             Pick();
     }
 

@@ -13,6 +13,7 @@ public class Popup : MonoBehaviour
     public Color backgroundColor = new Color(10.0f / 255.0f, 10.0f / 255.0f, 10.0f / 255.0f, 0.6f);
 
     private GameObject m_background;
+    bool isClose = false;
 
     public void Open()
     {
@@ -21,13 +22,19 @@ public class Popup : MonoBehaviour
 
     public void Close()
     {
-        //MageManager.instance.PlaySoundName("Close",false);
-        var animator = GetComponent<Animator>();
-        if (animator.GetCurrentAnimatorStateInfo(0).IsName("Open"))
-            animator.Play("Close");
+        if (!isClose)
+        {
+            RemoveBackground();
+            var animator = GetComponent<Animator>();
+            if (animator.GetCurrentAnimatorStateInfo(0).IsName("Open"))
+                animator.Play("Close");
 
-        RemoveBackground();
-        StartCoroutine(RunPopupDestroy());
+            
+            StartCoroutine(RunPopupDestroy());
+            isClose = true;
+        }
+        //MageManager.instance.PlaySoundName("Close",false);
+
     }
 
     // We destroy the popup automatically 0.5 seconds after closing it.

@@ -16,6 +16,7 @@ public class AchivementUI : MonoBehaviour
     public Sprite diamonIcon;
     public Text rewardValue;
     public Button collect;
+    public Animator rewardAnim;
     void Awake(){
 
     }
@@ -57,9 +58,17 @@ public class AchivementUI : MonoBehaviour
     }
 
     public void Collect(){
+        rewardAnim.Play("Active", 0);
         MageManager.instance.PlaySoundName("Collect_Achivement",false);
         GameManager.instance.CollectAchivementRewards(iD);
         collect.interactable = false;
+
+        StartCoroutine(CollectCoroutine());
+    }
+
+    IEnumerator CollectCoroutine()
+    {
+        yield return new WaitForSeconds(1f);
         UIManager.instance.achivementPanel.Load();
     }
 }

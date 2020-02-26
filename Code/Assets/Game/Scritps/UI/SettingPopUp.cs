@@ -9,6 +9,7 @@ public class SettingPopUp : MonoBehaviour {
 	public Slider music;
 	public Dropdown language;
 	Animator animator;
+	bool isClose = false;
 
 	void Awake(){
 		animator = this.GetComponent<Animator>();
@@ -18,7 +19,8 @@ public class SettingPopUp : MonoBehaviour {
 	IEnumerator Start () {
 		Load ();
 		yield return new WaitForSeconds(animator.GetCurrentAnimatorStateInfo(0).length);
-		Time.timeScale = 0;
+        if(!isClose)
+		    Time.timeScale = 0;
 	}
 
 	void Load()
@@ -87,6 +89,7 @@ public class SettingPopUp : MonoBehaviour {
 
 	public void Close()
 	{
+		isClose = true;
 		Time.timeScale = 1;
 		MageManager.instance.PlaySoundName ("BubbleButton", false);
 		this.GetComponent<Popup> ().Close ();

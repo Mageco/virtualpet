@@ -49,6 +49,7 @@ public class WelcomeBackPanel : MonoBehaviour
 
     public void Close()
     {
+        MageManager.instance.PlaySoundName("Collect_Achivement", false);
         GameManager.instance.AddCoin(coin);
         GameManager.instance.AddHappy(happy);
         this.GetComponent<Popup>().Close();
