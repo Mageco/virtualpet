@@ -28,6 +28,7 @@ public class LevelUpPanel : MonoBehaviour
 
     public void Load()
     {
+        MageManager.instance.PlaySoundName("Win", false);
         int level = GameManager.instance.myPlayer.level;
         levelText.text = level.ToString();
         coin = level * 50;

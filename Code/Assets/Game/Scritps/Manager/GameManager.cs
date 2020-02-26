@@ -635,6 +635,10 @@ public class GameManager : MonoBehaviour
     {
         if (GetPet(petId) != null)
         {
+            MageManager.instance.PlaySoundName("points_ticker_bonus_score_reward_single_06", false);
+            GameObject go = GameObject.Instantiate(Resources.Load("Prefabs/Effects/LevelUp") as GameObject);
+            go.transform.parent = GetPetObject(petId).transform;
+            go.transform.position = GetPetObject(petId).transform.position + new Vector3(0, 2, -1);
             AddHappy(-10 * 10 * GetPet(petId).level);
             GetPet(petId).level++;
             SavePlayer();

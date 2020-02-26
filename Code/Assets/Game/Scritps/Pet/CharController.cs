@@ -934,13 +934,10 @@ public class CharController : MonoBehaviour
         if (item == null)
             return;
 
-        Debug.Log("1");
-
  
         if (item.state == EquipmentState.Drag || item.state == EquipmentState.Busy || item.state == EquipmentState.Active)
             return;
 
-        Debug.Log("3");
 
         if (data.Energy < data.MaxEnergy * 0.1f)
         {
@@ -954,13 +951,10 @@ public class CharController : MonoBehaviour
                 return;
         }
 
-        Debug.Log("4");
-
         if (actionType != ActionType.Sick && actionType != ActionType.Injured && actionType != ActionType.OnControl && charInteract.interactType != InteractType.Drag //actionType != ActionType.Hold
          && actionType != ActionType.Toy && enviromentType == EnviromentType.Room && actionType != ActionType.Supprised)
         {
             timeToy = 0;
-            Debug.Log("5");
             actionType = ActionType.Toy;
             isAbort = true;
             lastToyItem = item;
