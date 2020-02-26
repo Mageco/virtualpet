@@ -615,7 +615,7 @@ public class GameManager : MonoBehaviour
         myPlayer.exp += c;
         int l = 1;
         float e = 20 * l + 20 * l * l;
-        while (myPlayer.exp > e)
+        while (myPlayer.exp >= e)
         {
             l++;
             e = 20 * l + 20 * l * l;

@@ -47,11 +47,18 @@ public class ForestAnimalItem : MonoBehaviour
         GameManager.instance.AddCoin(value);
         MageManager.instance.PlaySoundName("happy_collect_item_01", false);
         yield return new WaitForEndOfFrame();
-        this.gameObject.SetActive(false);
+        SpriteRenderer[] sprites = this.GetComponentsInChildren<SpriteRenderer>();
+        for(int i = 0; i < sprites.Length; i++)
+        {
+            sprites[i].enabled = false;
+        }
         if (shadow != null)
             shadow.SetActive(false);
         yield return new WaitForSeconds(Random.Range(10, 20));
-        this.gameObject.SetActive(true);
+        for (int i = 0; i < sprites.Length; i++)
+        {
+            sprites[i].enabled = true;
+        }
         isActive = true;
         if (shadow != null)
             shadow.SetActive(true);

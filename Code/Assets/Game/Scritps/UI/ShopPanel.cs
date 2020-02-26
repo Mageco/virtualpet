@@ -24,10 +24,6 @@ public class ShopPanel : MonoBehaviour
             currentTab = ES2.Load<int>("ShopToggle");
         }
 
-
-    }
-    void Start()
-    {
         for (int i = 0; i < toogleAnchor.childCount; i++)
         {
             int id = i;
@@ -38,6 +34,10 @@ public class ShopPanel : MonoBehaviour
 
         if (currentTab > toggles.Count)
             currentTab = 0;
+    }
+    void Start()
+    {
+
 
         if (toggles[currentTab].isOn)
         {
@@ -59,6 +59,7 @@ public class ShopPanel : MonoBehaviour
     {
         currentTab = id;
         toggles[currentTab].isOn = true;
+        Debug.Log(toggles[currentTab]);
         OnTab(currentTab);
     }
 

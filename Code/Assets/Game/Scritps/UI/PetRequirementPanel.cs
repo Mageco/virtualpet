@@ -154,6 +154,9 @@ public class PetRequirementPanel : MonoBehaviour
             isBuy = true;
             if (ItemManager.instance != null && ItemManager.instance.GetCharCollector(petId) != null)
                 ItemManager.instance.GetCharCollector(petId).DeActive();
+
+            if (ForestManager.instance != null)
+                ForestManager.instance.CheckCollector();
             this.Close();
         }
     }

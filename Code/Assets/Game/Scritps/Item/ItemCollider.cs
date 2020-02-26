@@ -34,7 +34,7 @@ public class ItemCollider : BaseFloorItem
 		List<CharController> temp = new List<CharController>();
         if(pets.Count > 0)
         {
-			if (animator != null)
+			if (!isActive && animator != null)
 				animator.Play("Active", 0);
             foreach(CharController pet in pets)
             {

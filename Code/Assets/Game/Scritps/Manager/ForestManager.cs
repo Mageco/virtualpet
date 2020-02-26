@@ -20,6 +20,7 @@ public class ForestManager : MonoBehaviour
     float maxTimeCoin = 3;
     float timeFish = 0;
     float maxTimeFish = 5;
+    GameObject collector;
 
     void Awake()
     {
@@ -41,7 +42,16 @@ public class ForestManager : MonoBehaviour
     void LoadCollector()
     {
         int n = Random.Range(0, charCollectors.Length);
-        GameObject go = GameObject.Instantiate(charCollectors[n]) as GameObject;
+        collector = GameObject.Instantiate(charCollectors[n]) as GameObject;
+        CharCollectorTimeline c = collector.GetComponentInChildren<CharCollectorTimeline>();
+        if (GameManager.instance.IsHavePet(c.petId))
+            GameObject.Destroy(collector);
+    }
+
+    public void CheckCollector()
+    {
+        if (collector != null)
+            GameObject.Destroy(collector);
     }
    
 

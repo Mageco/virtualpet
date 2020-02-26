@@ -115,7 +115,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a4b3dc348560f47c49a211bee8c23e3b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bubbleEffect: {fileID: 0}
+  bubbleEffect: {fileID: 6655550836513990772}
 --- !u!95 &201369580
 Animator:
   serializedVersion: 3
@@ -21043,6 +21043,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Bubble
       objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 6b6e12d9b4723af4aa5031e3a883adb6, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 6b6e12d9b4723af4aa5031e3a883adb6, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -21088,18 +21092,6 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 19800000, guid: 6b6e12d9b4723af4aa5031e3a883adb6, type: 3}
-      propertyPath: InitialModule.startColor.maxColor.r
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 19800000, guid: 6b6e12d9b4723af4aa5031e3a883adb6, type: 3}
-      propertyPath: InitialModule.startColor.maxColor.g
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 19800000, guid: 6b6e12d9b4723af4aa5031e3a883adb6, type: 3}
-      propertyPath: InitialModule.startColor.maxColor.b
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 19800000, guid: 6b6e12d9b4723af4aa5031e3a883adb6, type: 3}
       propertyPath: InitialModule.startColor.minColor.r
       value: 1
       objectReference: {fileID: 0}
@@ -21111,8 +21103,22 @@ PrefabInstance:
       propertyPath: InitialModule.startColor.minColor.b
       value: 0.4481132
       objectReference: {fileID: 0}
+    - target: {fileID: 19800000, guid: 6b6e12d9b4723af4aa5031e3a883adb6, type: 3}
+      propertyPath: InitialModule.startColor.maxColor.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 19800000, guid: 6b6e12d9b4723af4aa5031e3a883adb6, type: 3}
+      propertyPath: InitialModule.startColor.maxColor.b
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6b6e12d9b4723af4aa5031e3a883adb6, type: 3}
+--- !u!1 &6655550836513990772 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 100000, guid: 6b6e12d9b4723af4aa5031e3a883adb6,
+    type: 3}
+  m_PrefabInstance: {fileID: 6655550836514090708}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &6655550836514485332 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 400000, guid: 6b6e12d9b4723af4aa5031e3a883adb6,

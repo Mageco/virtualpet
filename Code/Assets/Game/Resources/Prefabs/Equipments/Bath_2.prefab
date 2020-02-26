@@ -17,7 +17,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &6874878708393955156
 Transform:
   m_ObjectHideFlags: 0
@@ -4820,6 +4820,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b554cbefb48494868a882fc8bfa192ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isDrag: 0
   isDragable: 1
   isBusy: 0
   isReturn: 1
@@ -10364,13 +10365,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d2367fc09d9c472090672a3e878fc4f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  height: 3
-  depth: 2
-  width: 20
-  edge: 10
-  anchorPoint: {fileID: 0}
-  startPoint: {fileID: 3986092671528988361}
-  endPoint: {fileID: 0}
   item: {fileID: 0}
   state: 0
   lastPosition: {x: 0, y: 0, z: 0}
@@ -10378,6 +10372,13 @@ MonoBehaviour:
   boundY: {x: -1, y: -1}
   pets: []
   movementType: 0
+  height: 3
+  depth: 2
+  width: 20
+  edge: 10
+  anchorPoint: {fileID: 0}
+  startPoint: {fileID: 3986092671528988361}
+  endPoint: {fileID: 0}
 --- !u!50 &6174950317240866847
 Rigidbody2D:
   serializedVersion: 4
