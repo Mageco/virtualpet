@@ -80,6 +80,11 @@ public class ServiceManager : MonoBehaviour
                 {
                     s.StopService();
                 }
+
+                if (s.isActive)
+                {
+                    RunService(s.type);
+                }
             }
         }else
             servicePanel.SetActive(false);
@@ -111,6 +116,68 @@ public class ServiceManager : MonoBehaviour
         }
         GameManager.instance.SavePlayer();
         this.LoadServiceUI();
+    }
+
+    void RunService(ServiceType type)
+    {
+        if(type == ServiceType.Chef)
+        {
+            foreach(Pet p in GameManager.instance.GetPets())
+            {
+                if(p.Food < p.MaxFood * 0.3f)
+                {
+                    p.Food = p.MaxFood;
+                    ItemManager.instance.SpawnHeart((1 + p.level / 5), p.character.transform.position);
+                }
+
+                if (p.Water < p.MaxWater * 0.3f)
+                {
+                    p.Water = p.MaxWater;
+                    ItemManager.instance.SpawnHeart((1 + p.level / 5), p.character.transform.position);
+                }
+
+
+            }
+        }else if(type == ServiceType.HouseKeeper)
+        {
+            ItemDirty[] dirties = GameObject.FindObjectsOfType<ItemDirty>();
+            for(int i = 0; i < dirties.Length; i++)
+            {
+                dirties[i].OnClean(dirties[i].dirty);
+            }
+        }
+        else if (type == ServiceType.PetSitter)
+        {
+            foreach (Pet p in GameManager.instance.GetPets())
+            {
+                if (p.Dirty > p.MaxDirty * 0.7f)
+                {
+                    p.Dirty = 0;
+                    ItemManager.instance.SpawnHeart((1 + p.level / 5), p.character.transform.position);
+                }
+
+                if (p.Sleep < p.MaxSleep * 0.3f)
+                {
+                    p.Sleep = p.MaxSleep;
+                    ItemManager.instance.SpawnHeart((1 + p.level / 5), p.character.transform.position);
+                }
+            }
+        }
+        else if (type == ServiceType.Doctor)
+        {
+            foreach (Pet p in GameManager.instance.GetPets())
+            {
+                if (p.Damage > p.MaxDamage * 0.7f)
+                {
+                    p.Damage = 0;
+                }
+
+                if (p.Health < p.MaxHealth * 0.3f)
+                {
+                    p.Health = p.MaxHealth;
+                }
+            }
+        }
     }
 }
 
