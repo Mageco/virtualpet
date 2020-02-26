@@ -29,7 +29,7 @@ public class ItemDirty : MonoBehaviour
 	public void OnClean(float clean)
 	{
 		dirty -= clean;
-		if (dirty < 0){
+		if (dirty <= 0){
 			Destroy(this.gameObject);
 		}
 			

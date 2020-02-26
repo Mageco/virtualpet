@@ -150,10 +150,13 @@ public class UIManager : MonoBehaviour
         MageEngine.instance.OnEvent(Mage.Models.Application.MageEventType.CheckOutItem ,DataHolder.GetItem(itemID).GetName(MageManager.instance.GetLanguage()));
         GameManager.instance.BuyItem(itemID);
       GameManager.instance.EquipItem(itemID);
-      ItemManager.instance.EquipItem();
+      if(ItemManager.instance != null)
+            ItemManager.instance.EquipItem();
       GameManager.instance.LogAchivement(AchivementType.Buy_Item);
         if (shopPanel != null)
             shopPanel.ReLoad();
+        if (petRequirementPanel != null)
+            petRequirementPanel.ReLoad();
     }
 
     public void EquipItem(int itemId)
@@ -161,6 +164,8 @@ public class UIManager : MonoBehaviour
         GameManager.instance.EquipItem(itemId);
         if (shopPanel != null)
             shopPanel.ReLoad();
+        if (petRequirementPanel != null)
+            petRequirementPanel.ReLoad();
     }
 
     public void UnEquipItem(int itemId)
@@ -168,31 +173,39 @@ public class UIManager : MonoBehaviour
         GameManager.instance.UnEquipItem(itemId);
         if (shopPanel != null)
             shopPanel.ReLoad();
+        if (petRequirementPanel != null)
+            petRequirementPanel.ReLoad();
     }
 
     public void SellItem(int itemID){
         GameManager.instance.SellItem(itemID);
         if (shopPanel != null)
             shopPanel.ReLoad();
-	}
+        if (petRequirementPanel != null)
+            petRequirementPanel.ReLoad();
+    }
 
 	public void UseItem(int itemID){
-       shopPanel.Close();
-	  GameManager.instance.EquipItem(itemID);
-       ItemManager.instance.EquipItem();
+        shopPanel.Close();
+	    GameManager.instance.EquipItem(itemID);
+        if(ItemManager.instance != null)
+            ItemManager.instance.EquipItem();
 	}
 
 	public void BuyPet(int itemID){
         MageEngine.instance.OnEvent(Mage.Models.Application.MageEventType.CheckOutItem, DataHolder.GetPet(itemID).GetName(MageManager.instance.GetLanguage()));
         GameManager.instance.BuyPet(itemID);
-        GameManager.instance.EquipPet(itemID);
+        if(ItemManager.instance != null)
+            GameManager.instance.EquipPet(itemID);
         if (shopPanel != null)
             shopPanel.ReLoad();
+        if (petRequirementPanel != null)
+            petRequirementPanel.ReLoad();
 
         //OnPetCollectionPanel();
         //petCollectionPanel.OnActive(itemID);
 
-        if(ItemManager.instance.GetCharCollector(itemID) != null)
+        if (ItemManager.instance != null && ItemManager.instance.GetCharCollector(itemID) != null)
             ItemManager.instance.GetCharCollector(itemID).DeActive();
       
 	}
@@ -203,13 +216,17 @@ public class UIManager : MonoBehaviour
 	  GameManager.instance.SellPet(itemID);
         if (shopPanel != null)
             shopPanel.ReLoad();
-	}
+        if (petRequirementPanel != null)
+            petRequirementPanel.ReLoad();
+    }
 
     public void UnEquipPet(int itemID)
     {
         GameManager.instance.UnEquipPet(itemID);
         if (shopPanel != null)
             shopPanel.ReLoad();
+        if (petRequirementPanel != null)
+            petRequirementPanel.ReLoad();
     }
 
     public void UsePet(int itemID){

@@ -145,13 +145,13 @@ public class PlayerAchivement : BaseModel{
 public class PlayerService
 {
 	public ServiceType type;
-	public System.DateTime timeStart;
+	public string timeStart;
 	public bool isActive = false;
 
 	public void StartService()
 	{
 		isActive = true;
-		timeStart = System.DateTime.Now;
+		timeStart = System.DateTime.Now.ToString();
 	}
 
 	public void StopService()
@@ -161,7 +161,7 @@ public class PlayerService
 
     public string GetTime()
     {
-		double t = (timeStart.AddSeconds(1800) - System.DateTime.Now).TotalSeconds;
+		double t = (System.DateTime.Parse(timeStart).AddSeconds(1800) - System.DateTime.Now).TotalSeconds;
 		int m = (int)t / 60;
 		int s = (int)(t - m * 60);
 		string time = m.ToString("00") + ":" + s.ToString("00");

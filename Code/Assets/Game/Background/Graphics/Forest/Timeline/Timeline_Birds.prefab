@@ -553,8 +553,8 @@ Transform:
   m_Children:
   - {fileID: 1506901156630233667}
   - {fileID: 3116182197888277131}
-  - {fileID: 3116182197459999548}
   - {fileID: 3116182197239072727}
+  - {fileID: 3116182197459999548}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -839,11 +839,11 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3116182197239072712}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -42.132248, y: 7.0376554, z: 0.34999847}
-  m_LocalScale: {x: -0.29, y: 0.05, z: 0.35}
+  m_LocalPosition: {x: -42.13224, y: 7.0376544, z: 0.34999976}
+  m_LocalScale: {x: -0.29000002, y: 0.049999997, z: 0.35}
   m_Children: []
   m_Father: {fileID: 3116182196495145575}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &3116182197239072726
 SpriteRenderer:
@@ -1101,11 +1101,11 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3116182197459999537}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -42.132248, y: 7.0376554, z: 0.34999847}
-  m_LocalScale: {x: -0.29, y: 0.05, z: 0.35}
+  m_LocalPosition: {x: -42.132248, y: 7.037656, z: 0.34999976}
+  m_LocalScale: {x: -0.29000002, y: 0.049999997, z: 0.35}
   m_Children: []
   m_Father: {fileID: 3116182196495145575}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &3116182197459999551
 SpriteRenderer:
@@ -1346,6 +1346,8 @@ GameObject:
   m_Component:
   - component: {fileID: 3116182197888277131}
   - component: {fileID: 3116182197888277130}
+  - component: {fileID: 6860647640837619601}
+  - component: {fileID: 477721878754129935}
   m_Layer: 0
   m_Name: Bird2
   m_TagString: Untagged
@@ -1389,6 +1391,35 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &6860647640837619601
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3116182197888277133}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d01a77d62cd24ec09597e083ae04344, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  value: 2
+--- !u!58 &477721878754129935
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3116182197888277133}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 1}
+  serializedVersion: 2
+  m_Radius: 2
 --- !u!1 &3116182197936767339
 GameObject:
   m_ObjectHideFlags: 0
@@ -1598,6 +1629,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1506901156630233667}
   - component: {fileID: 8674906761395268335}
+  - component: {fileID: 9210038734510918155}
+  - component: {fileID: 3406437630803764387}
   m_Layer: 0
   m_Name: Bird
   m_TagString: Untagged
@@ -1641,6 +1674,35 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &9210038734510918155
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6250739336577869103}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d01a77d62cd24ec09597e083ae04344, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  value: 2
+--- !u!58 &3406437630803764387
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6250739336577869103}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 1}
+  serializedVersion: 2
+  m_Radius: 2
 --- !u!1 &7823811789340559320
 GameObject:
   m_ObjectHideFlags: 0

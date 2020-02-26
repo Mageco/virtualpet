@@ -3,23 +3,19 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class ForestCoinItem : MonoBehaviour
+public class ForestAnimalItem : MonoBehaviour
 {
     public int value;
-    Animator animator;
+    bool isActive = true;
     Vector3 clickPosition;
+    public GameObject shadow;
 
     private void Awake()
     {
-        animator = this.GetComponent<Animator>();
     }
     // Start is called before the first frame update
     void Start()
     {
-        Vector3 pos = this.transform.position;
-        pos.z = pos.y * 10;
-        this.transform.position = pos;
-        this.transform.localScale = this.transform.localScale * (1 - this.transform.position.y * 0.1f);
     }
 
     // Update is called once per frame
@@ -28,33 +24,37 @@ public class ForestCoinItem : MonoBehaviour
         
     }
 
-
-    private void OnMouseDown()
-    {
-        clickPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-    }
-
     void OnMouseUp()
     {
 
         if (IsPointerOverUIObject())
             return;
 
-        if(Vector3.Distance(clickPosition, Camera.main.ScreenToWorldPoint(Input.mousePosition)) < 0.3f)
+        if(isActive && Vector3.Distance(clickPosition, Camera.main.ScreenToWorldPoint(Input.mousePosition)) < 0.3f)
             StartCoroutine(Pick());
 
     }
 
+    private void OnMouseDown()
+    {
+        clickPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+    }
+
     IEnumerator Pick()
     {
-        animator.Play("Active", 0);
-        ForestManager.instance.SpawnCoin(this.transform.position + new Vector3(0, 2, -1), value, this.gameObject);
+        isActive = false;
+        ForestManager.instance.SpawnCoin(this.transform.position + new Vector3(0, 2, -1), value);
         GameManager.instance.AddCoin(value);
         MageManager.instance.PlaySoundName("happy_collect_item_01", false);
-        GameManager.instance.LogAchivement(AchivementType.CollectFruit);
         yield return new WaitForEndOfFrame();
-        yield return new WaitForSeconds(animator.GetCurrentAnimatorStateInfo(0).length);
-        Destroy(this.gameObject);
+        this.gameObject.SetActive(false);
+        if (shadow != null)
+            shadow.SetActive(false);
+        yield return new WaitForSeconds(Random.Range(10, 20));
+        this.gameObject.SetActive(true);
+        isActive = true;
+        if (shadow != null)
+            shadow.SetActive(true);
     }
 
     private bool IsPointerOverUIObject()

@@ -93,6 +93,9 @@ public class GameManager : MonoBehaviour
 
     public void LoadPetObjects()
     {
+        if (ItemManager.instance == null)
+            return;
+
         for (int i = 0; i < myPlayer.pets.Count; i++)
         {
             if(myPlayer.pets[i].itemState == ItemState.Equiped){
@@ -132,7 +135,8 @@ public class GameManager : MonoBehaviour
         foreach(Pet p in myPlayer.pets){
             if(p.iD == itemId){
                 p.itemState = ItemState.Have;
-                petObjects.Remove(p.character);
+                if (ItemManager.instance != null)
+                    petObjects.Remove(p.character);
                 p.UnLoad();
             }
         }
@@ -161,6 +165,8 @@ public class GameManager : MonoBehaviour
 
 
     public void UpdatePetObjects(){
+        if (ItemManager.instance == null)
+            return;
         petObjects.Clear();
         for(int i=0;i<myPlayer.pets.Count;i++){
             if(myPlayer.pets[i].itemState == ItemState.Equiped && myPlayer.pets[i].character != null)
@@ -471,7 +477,8 @@ public class GameManager : MonoBehaviour
             if (item.itemId == itemId)
             {
                 item.state = ItemState.Have;
-                ItemManager.instance.RemoveItem(item.itemId);
+                if(ItemManager.instance != null)
+                    ItemManager.instance.RemoveItem(item.itemId);
                 SavePlayer();
                 return;
             }

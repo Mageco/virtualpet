@@ -61,7 +61,28 @@ public class PetRequirementPanel : MonoBehaviour
 
     }
 
+    public void ReLoad()
+    {
+        canBuy = true;
+        Pet pet = DataHolder.GetPet(petId);
+        ClearItems();
+        for (int i = 0; i < pet.requirePets.Length; i++)
+        {
+            LoadPet(pet.requirePets[i]);
+        }
 
+        for (int i = 0; i < pet.requireEquipments.Length; i++)
+        {
+            LoadEquipment(pet.requireEquipments[i]);
+        }
+
+        if (canBuy)
+        {
+            buyButton.interactable = true;
+        }
+        else
+            buyButton.interactable = false;
+    }
 
     void LoadEquipment(int id)
     {
@@ -69,15 +90,31 @@ public class PetRequirementPanel : MonoBehaviour
         go.transform.SetParent(this.anchor);
         go.transform.localScale = Vector3.one;
         PetRequirementUI item = go.GetComponent<PetRequirementUI>();
-        string url = DataHolder.GetItem(id).iconUrl.Replace("Assets/Game/Resources/", "");
+        Item i = DataHolder.GetItem(id);
+        string url = i.iconUrl.Replace("Assets/Game/Resources/", "");
         url = url.Replace(".png", "");
         if (GameManager.instance.IsHaveItem(id) || GameManager.instance.IsEquipItem(id))
         {
-            item.Load(url, 1, 1);
+            if(i.itemType == ItemType.Toy)
+                item.Load(url, 1, 1,4);
+            else if(i.itemType == ItemType.Food || i.itemType == ItemType.Drink)
+                item.Load(url, 1, 1, 2);
+            else if (i.itemType == ItemType.Fruit)
+                item.Load(url, 1, 1, 5);
+            else
+                item.Load(url, 1, 1, 3);
         }
         else
         {
-            item.Load(url, 0, 1);
+            if (i.itemType == ItemType.Toy)
+                item.Load(url, 0, 1, 4);
+            else if (i.itemType == ItemType.Food || i.itemType == ItemType.Drink)
+                item.Load(url, 0, 1, 2);
+            else if (i.itemType == ItemType.Fruit)
+                item.Load(url, 0, 1, 5);
+            else
+                item.Load(url, 0, 1, 3);
+
             canBuy = false;
         }
             
@@ -97,11 +134,11 @@ public class PetRequirementPanel : MonoBehaviour
         url = url.Replace(".png", "");
         if (GameManager.instance.IsEquipPet(id))
         {
-            item.Load(url, 1, 1);
+            item.Load(url, 1, 1,1);
         }
         else
         {
-            item.Load(url, 0, 1);
+            item.Load(url, 0, 1,1);
             canBuy = false;
         }
         items.Add(item);
@@ -115,11 +152,10 @@ public class PetRequirementPanel : MonoBehaviour
             GameManager.instance.AddPet(petId);
             GameManager.instance.EquipPet(petId);
             isBuy = true;
-            if (ItemManager.instance.GetCharCollector(petId) != null)
+            if (ItemManager.instance != null && ItemManager.instance.GetCharCollector(petId) != null)
                 ItemManager.instance.GetCharCollector(petId).DeActive();
             this.Close();
         }
-
     }
 
     void ClearItems()

@@ -8,9 +8,11 @@ public class PetRequirementUI : MonoBehaviour
     public Image icon;
     public Text number;
     public GameObject done;
+    int tabId = 0;
 
-    public void Load(string url,int num,int maxNum)
+    public void Load(string url,int num,int maxNum,int id)
     {
+        tabId = id;
         icon.sprite = Resources.Load<Sprite>(url) as Sprite;
         number.text = num.ToString() + "/" + maxNum.ToString();
         if (num >= maxNum)
@@ -20,5 +22,10 @@ public class PetRequirementUI : MonoBehaviour
         else
             done.SetActive(false);
         
+    }
+
+    public void OnClick()
+    {
+        UIManager.instance.OnShopPanel(tabId);
     }
 }

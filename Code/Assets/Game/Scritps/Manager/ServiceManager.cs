@@ -76,7 +76,7 @@ public class ServiceManager : MonoBehaviour
             servicePanel.SetActive(true);
             foreach (PlayerService s in GameManager.instance.myPlayer.playerServices)
             {
-                if (s.isActive && (System.DateTime.Now - s.timeStart).TotalSeconds > 1800)
+                if (s.isActive && (System.DateTime.Now - System.DateTime.Parse(s.timeStart)).TotalSeconds > 1800)
                 {
                     s.StopService();
                 }
