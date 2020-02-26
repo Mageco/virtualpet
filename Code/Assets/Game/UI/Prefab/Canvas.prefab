@@ -1455,26 +1455,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc4555d61a16648e88ae28f205f93077, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  questUIPrefab: {fileID: 8151612463901336215, guid: 13b043e5793374e809c74fb79c3b7b3e,
+  questUIPrefab: {fileID: 8151612463901336215, guid: dcb1957209eef114ca061da7e6c86bc4,
     type: 3}
   rateUsUIPrefab: {fileID: 5750703770928168468, guid: c8df11ddda92e304f892c8c951fdc717,
     type: 3}
-  questCompletePrefab: {fileID: 8960736323230882429, guid: 46536c6c9cc12a34e82f9d3d50f1c742,
-    type: 3}
   shopUIPrefab: {fileID: 1475602191, guid: 944810598c3091f45bd614bd218336e8, type: 3}
   eventUIPrefab: {fileID: 1362813985899350666, guid: a882331ef6b664e74b3144f9b6a033a1,
-    type: 3}
-  skillCompletePrefab: {fileID: 6092021802291730817, guid: cb9c4c8c69c60477da45ea7791ca3616,
     type: 3}
   achivementPrefab: {fileID: 3502109333287952501, guid: 7eeeaa71b12a017448463c87c4b16f6c,
     type: 3}
   confirmBuyShopPrefab: {fileID: 4039681933990909816, guid: 9aa96c88e7374984db2401080f21ec1b,
     type: 3}
-  itemInfoPrefab: {fileID: 4039681933990909816, guid: e9ff7585e45163b44aacd7f01fb99aa9,
-    type: 3}
   treatmentPopupPrefab: {fileID: 8151612463901336215, guid: 551a9f216088c2f4b94daf3e4cc1fdfa,
-    type: 3}
-  treatmentConfirmPrefab: {fileID: 4039681933990909816, guid: dd172e9196a844248842bae921ec0ee1,
     type: 3}
   PetRequirementPanelPrefab: {fileID: 9054348974022358374, guid: 05f0b7e481094476bb03bac81488a9b9,
     type: 3}
@@ -1482,13 +1474,16 @@ MonoBehaviour:
     type: 3}
   mapPanelPrefab: {fileID: 1025238860892942024, guid: 21d7a7764715f441ea3062d91d9ef533,
     type: 3}
-  petCollecPanelPrefab: {fileID: 3914153908782484504, guid: 83576c1d99318a54ba11866d004661b3,
-    type: 3}
   rewardItemPrefab: {fileID: 6268933054632022635, guid: 1354fa05859b7d349937438b31e304c9,
     type: 3}
   mapRequirementPrefab: {fileID: 8151612463901336215, guid: 6fb8ec2fed0df394dba4e5bca71d2056,
     type: 3}
-  levelUpPrefab: {fileID: 0}
+  levelUpPrefab: {fileID: 8960736323230882429, guid: e7fb030c09dc1e842ae84304065fa7a7,
+    type: 3}
+  welcomeBackPrefab: {fileID: 8960736323230882429, guid: fcc68cae84b8a6a4c9da301a89bb71c6,
+    type: 3}
+  servicePanelPrefab: {fileID: 9054348974022358374, guid: 1e0f4fd38e16a7c4ca46742d20c47b7c,
+    type: 3}
   coinText: {fileID: 3203464986495470203}
   diamonText: {fileID: 1473299005441390001}
   heartText: {fileID: 1473299005290861126}
@@ -1502,7 +1497,6 @@ MonoBehaviour:
   questComplete: {fileID: 0}
   shopPanel: {fileID: 0}
   eventPanel: {fileID: 0}
-  skillCompletePanel: {fileID: 0}
   confirmBuyShopPopup: {fileID: 0}
   ratingWindow: {fileID: 0}
   petRequirementPanel: {fileID: 0}
@@ -1511,16 +1505,15 @@ MonoBehaviour:
   mapRequirementPanel: {fileID: 0}
   mapPanel: {fileID: 0}
   levelUpPanel: {fileID: 0}
+  welcomeBackPanel: {fileID: 0}
+  servicePanel: {fileID: 0}
   achivementNotification: {fileID: 3095433865544955188}
   achivementPanel: {fileID: 0}
-  petCollectionPanel: {fileID: 0}
   homeUI: {fileID: 7754177028581235337}
   profilePrefab: {fileID: 5941297810894876714, guid: cb699f79786b34c1fbefcb1210b70dc0,
     type: 3}
   notificationIcon: {fileID: 678209747461644496}
   notificationText: []
-  doubleClickEffect: {fileID: 4894337678173227654, guid: 77b0a101719694ca8a48aa65aa6c84ce,
-    type: 3}
   eventButton: {fileID: 7938944695945672875}
   achivementButton: {fileID: 3729680224138356814}
   shopButton: {fileID: 7143332808655389021}
@@ -2154,7 +2147,7 @@ PrefabInstance:
     - target: {fileID: 4182445389618237631, guid: f6afadc64401cc943a30e0d211be60b3,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 131.40039
+      value: 131.40234
       objectReference: {fileID: 0}
     - target: {fileID: 4182445389618237631, guid: f6afadc64401cc943a30e0d211be60b3,
         type: 3}

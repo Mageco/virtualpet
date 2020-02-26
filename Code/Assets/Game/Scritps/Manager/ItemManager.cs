@@ -96,7 +96,6 @@ public class ItemManager : MonoBehaviour
             }else
                 UIManager.instance.achivementNotification.SetActive(false);
 
-            Debug.Log((int)GameManager.instance.gameTime % 10);
             if (GameManager.instance.gameTime > 300 && !ES2.Exists("RateUs") && (int)GameManager.instance.gameTime % 100 == 0)
             {
                 UIManager.instance.OnRatingPopup();

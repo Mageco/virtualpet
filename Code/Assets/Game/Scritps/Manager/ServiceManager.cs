@@ -8,6 +8,7 @@ public class ServiceManager : MonoBehaviour
     float time;
     float maxTimeCheck = 1;
     public ServiceUI[] serviceUIs;
+    public GameObject servicePanel;
 
     private void Awake()
     {
@@ -32,10 +33,17 @@ public class ServiceManager : MonoBehaviour
 
     void LoadServiceUI()
     {
-        for (int i = 0; i < serviceUIs.Length; i++)
+        if (GameManager.instance.GetPets().Count >= 2)
         {
-            serviceUIs[i].Load();
+            servicePanel.SetActive(true);
+            for (int i = 0; i < serviceUIs.Length; i++)
+            {
+                serviceUIs[i].Load();
+            }
         }
+        else
+            servicePanel.SetActive(false);
+
     }
 
     void AddService()
@@ -63,13 +71,19 @@ public class ServiceManager : MonoBehaviour
 
     void CheckService()
     {
-        foreach (PlayerService s in GameManager.instance.myPlayer.playerServices)
+        if (GameManager.instance.GetPets().Count >= 2)
         {
-            if (s.isActive && (System.DateTime.Now - s.timeStart).TotalSeconds > 1800)
+            servicePanel.SetActive(true);
+            foreach (PlayerService s in GameManager.instance.myPlayer.playerServices)
             {
-                s.StopService();
+                if (s.isActive && (System.DateTime.Now - s.timeStart).TotalSeconds > 1800)
+                {
+                    s.StopService();
+                }
             }
-        }
+        }else
+            servicePanel.SetActive(false);
+
     }
 
     public PlayerService GetService(ServiceType type)

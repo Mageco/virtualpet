@@ -98,8 +98,10 @@ public class QuestManager : MonoBehaviour
         }
         else if (GameManager.instance.myPlayer.questId == 5)
         {
-            GameManager.instance.GetActivePet().Shit = GameManager.instance.GetActivePet().MaxShit * 0.9f;
+            GameManager.instance.GetActivePet().Shit = GameManager.instance.GetActivePet().MaxShit * 0.8f;
             GameManager.instance.GetActivePet().Sleep = GameManager.instance.GetActivePet().MaxSleep * 0.7f;
+            GameManager.instance.GetActivePet().Food = 0.5f * GameManager.instance.GetActivePet().MaxFood;
+            GameManager.instance.GetActivePet().Water = 0.5f * GameManager.instance.GetActivePet().MaxWater;
 
         }
         else if (GameManager.instance.myPlayer.questId == 6)
@@ -118,6 +120,10 @@ public class QuestManager : MonoBehaviour
 
         }
         else if (GameManager.instance.myPlayer.questId == 9)
+        {
+
+        }
+        else if (GameManager.instance.myPlayer.questId == 10)
         {
             delayTime = 10;
         }
@@ -280,7 +286,7 @@ public class QuestManager : MonoBehaviour
         }
         else if (GameManager.instance.myPlayer.questId == 8)
         {
-            if (GameManager.instance.IsEquipItem(1) && GameManager.instance.IsEquipItem(8))
+            if (GameManager.instance.IsEquipItem(1))
             {
                 isComplete = true;
             }

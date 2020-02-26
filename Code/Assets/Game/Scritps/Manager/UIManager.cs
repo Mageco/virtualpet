@@ -114,31 +114,36 @@ public class UIManager : MonoBehaviour
         }
         if (GameManager.instance.myPlayer.questId >= DataHolder.Quests().GetDataCount() && notificationIcon != null)
             notificationIcon.SetActive(false);
+
+        
     }
 
 
 
 	public void UpdateUI()
 	{
-       coin = Mathf.Lerp(coin, GameManager.instance.GetCoin(), Time.deltaTime*5);
-       happy = Mathf.Lerp(happy, GameManager.instance.GetHappy(), Time.deltaTime*5);
-       diamond = Mathf.Lerp(diamond, GameManager.instance.GetDiamond(), Time.deltaTime*5);
+        if (GameManager.instance.isLoad)
+        {
+            coin = Mathf.Lerp(coin, GameManager.instance.GetCoin(), Time.deltaTime * 5);
+            happy = Mathf.Lerp(happy, GameManager.instance.GetHappy(), Time.deltaTime * 5);
+            diamond = Mathf.Lerp(diamond, GameManager.instance.GetDiamond(), Time.deltaTime * 5);
 
-        if (coinText != null)
-		    coinText.text = coin.ToString("F0");
-        if(diamonText != null)
-		    diamonText.text = diamond.ToString("F0");
-        if(heartText != null)
-            heartText.text = happy.ToString("F0");
-        if(levelText != null)
-            levelText.text = GameManager.instance.myPlayer.level.ToString();
+            if (coinText != null)
+                coinText.text = coin.ToString("F0");
+            if (diamonText != null)
+                diamonText.text = diamond.ToString("F0");
+            if (heartText != null)
+                heartText.text = happy.ToString("F0");
+            if (levelText != null)
+                levelText.text = GameManager.instance.myPlayer.level.ToString();
 
-        int level = GameManager.instance.myPlayer.level;
-        float e = 20 * level + 20 * level * level;
-        float e1 = 20 * (level-1) + 20 * (level-1) * (level-1);
-        int n = GameManager.instance.myPlayer.exp;
-        exp.text = (n - e1).ToString("F0") + "/" + (e - e1).ToString("F0");
-        expProgress.fillAmount = (n - e1) / (e - e1);
+            int level = GameManager.instance.myPlayer.level;
+            float e = 20 * level + 20 * level * level;
+            float e1 = 20 * (level - 1) + 20 * (level - 1) * (level - 1);
+            int n = GameManager.instance.myPlayer.exp;
+            exp.text = (n - e1).ToString("F0") + "/" + (e - e1).ToString("F0");
+            expProgress.fillAmount = (n - e1) / (e - e1);
+        }
     }
 
 	public void BuyItem(int itemID){
@@ -548,16 +553,6 @@ public class UIManager : MonoBehaviour
     public void OnMap(MapType type)
     {
         MageManager.instance.LoadSceneWithLoading(type.ToString());
-        if(type == MapType.House)
-        {
-            shopButton.gameObject.SetActive(true);
-        }
-        else
-        {
-            shopButton.gameObject.SetActive(false);
-        }
-        
-
         GameManager.instance.petObjects.Clear();
     }
 

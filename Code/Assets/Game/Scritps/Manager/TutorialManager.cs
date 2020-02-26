@@ -139,7 +139,8 @@ public class TutorialManager : MonoBehaviour
             {
                 cat.Load();
             }
-            StartCoroutine(BuyToys());
+            if(!GameManager.instance.IsEquipItem(1))
+                StartCoroutine(BuyToys());
         }
         //Get Cat
         else if (questId == 9)
@@ -211,7 +212,7 @@ public class TutorialManager : MonoBehaviour
         {
             UIManager.instance.petRequirementPanel.Close();
         }
-        if (step == 0)
+        if (step == 0 && !GameManager.instance.IsEquipItem(1))
         {
             if (UIManager.instance.shopPanel == null)
             {
@@ -503,7 +504,7 @@ public class TutorialManager : MonoBehaviour
 
             pet.target = pet.transform.position;
             Vector3 holdPosition = ItemManager.instance.GetItemChildObject(ItemType.Bed).transform.position + new Vector3(0, 16f, 0);
-            while (Vector2.Distance(pet.transform.position, holdPosition) > 2)
+            while (Vector2.Distance(pet.transform.position, holdPosition) > 2.5f)
             {
                 pet.target = Vector3.Lerp(pet.target, holdPosition, Time.deltaTime);
                 handClick.transform.position = pet.transform.position + new Vector3(0, 3, -10);
