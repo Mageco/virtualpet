@@ -940,7 +940,7 @@ public class CharController : MonoBehaviour
 
         if (toyItem != null)
             return;
-        Debug.Log("0");
+
         if (item == null)
             return;
 

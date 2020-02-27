@@ -98,14 +98,7 @@ public class ForestManager : MonoBehaviour
 
     public void LoadMusic()
     {
-        if (System.DateTime.Now.Hour < 6 || System.DateTime.Now.Hour > 18)
-        {
-            MageManager.instance.PlayMusicName("nightMusic", true);
-        }
-        else
-        {
-            MageManager.instance.PlayMusicName("dayMusic", true);
-        }
+        MageManager.instance.PlayMusicName("Forest", true);
     }
 
     public void SpawnStar(Vector3 pos, int value)
