@@ -651,7 +651,7 @@ public class GameManager : MonoBehaviour
             GameObject go = GameObject.Instantiate(Resources.Load("Prefabs/Effects/LevelUp") as GameObject);
             go.transform.parent = GetPetObject(petId).transform;
             go.transform.position = GetPetObject(petId).transform.position + new Vector3(0, 2, -1);
-            AddHappy(-10 * 10 * GetPet(petId).level);
+            AddHappy(-10 * GetPet(petId).level * GetPet(petId).level);
             GetPet(petId).level++;
             SavePlayer();
         }
@@ -744,7 +744,7 @@ public class GameManager : MonoBehaviour
         AddDiamond(1);
         
         AddItem(17);
-        AddItem(7);
+        //AddItem(7);
         AddItem(8);
         AddItem(4);
         AddItem(41);

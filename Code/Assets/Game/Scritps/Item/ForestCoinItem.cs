@@ -8,6 +8,7 @@ public class ForestCoinItem : MonoBehaviour
     public int value;
     Animator animator;
     Vector3 clickPosition;
+    bool isClick = false;
 
     private void Awake()
     {
@@ -40,13 +41,14 @@ public class ForestCoinItem : MonoBehaviour
         if (IsPointerOverUIObject())
             return;
 
-        if(Vector3.Distance(clickPosition, Camera.main.ScreenToWorldPoint(Input.mousePosition)) < 1f)
+        if(!isClick && Vector3.Distance(clickPosition, Camera.main.ScreenToWorldPoint(Input.mousePosition)) < 1f)
             StartCoroutine(Pick());
 
     }
 
     IEnumerator Pick()
     {
+        isClick = true;
         animator.Play("Active", 0);
         ForestManager.instance.SpawnCoin(this.transform.position + new Vector3(0, 2, -1), value, this.gameObject);
         GameManager.instance.AddCoin(value);

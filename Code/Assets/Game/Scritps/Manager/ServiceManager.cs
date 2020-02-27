@@ -28,6 +28,21 @@ public class ServiceManager : MonoBehaviour
             AddService();
         }
 
+        if(GameManager.instance.myPlayer.startGameTime == null || GameManager.instance.myPlayer.startGameTime == "")
+        {
+            GameManager.instance.myPlayer.startGameTime = System.DateTime.Now.ToString();
+
+        }
+
+        if(GameManager.instance.myPlayer.dailyBonus.Count == 0)
+        {
+            for (int i = 0; i < 7; i++)
+            {
+                PlayerBonus b = new PlayerBonus();
+                GameManager.instance.myPlayer.dailyBonus.Add(b);
+            }
+        }
+
         LoadServiceUI();
     }
 

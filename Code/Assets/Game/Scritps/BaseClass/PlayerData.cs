@@ -27,13 +27,16 @@ public class PlayerData : BaseModel
 	public List<ItemSaveData> itemSaveDatas = new List<ItemSaveData>();
 	public List<PlayerService> playerServices = new List<PlayerService>();
 	public GameType gameType = GameType.House;
-
+	public string startGameTime = System.DateTime.Now.ToString();
+	public List<PlayerBonus> dailyBonus = new List<PlayerBonus>();
 
 	public PlayerData(){
         for(int i = 0; i < minigameLevels.Length; i++)
         {
 			minigameLevels[i] = 0;
         }
+
+		startGameTime = System.DateTime.Now.ToString();
 	}
 
 	public void LoadData(){
@@ -142,7 +145,7 @@ public class PlayerAchivement : BaseModel{
 }
 
 [System.Serializable]
-public class PlayerService
+public class PlayerService : BaseModel
 {
 	public ServiceType type;
 	public string timeStart;
@@ -167,6 +170,19 @@ public class PlayerService
 		string time = m.ToString("00") + ":" + s.ToString("00");
 		return time;
     }
+}
+
+[System.Serializable]
+public class PlayerBonus : BaseModel
+{
+	public string timeReceived = "";
+	public bool isCollected = false;
+
+	public void Collect()
+	{
+		isCollected = true;
+		timeReceived = System.DateTime.Now.ToString();
+	}
 }
 
 

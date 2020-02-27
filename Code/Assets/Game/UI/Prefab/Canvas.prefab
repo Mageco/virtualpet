@@ -606,8 +606,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4427521398724843077}
-        m_MethodName: OpenPopup
+      - m_Target: {fileID: 7754177028686530190}
+        m_MethodName: OnSettingPanel
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -643,7 +643,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3539120836631060390}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2526e3f0c1fcd4e47a210f84cfe94ebd, type: 3}
   m_Name: 
@@ -1484,6 +1484,9 @@ MonoBehaviour:
     type: 3}
   servicePanelPrefab: {fileID: 9054348974022358374, guid: 1e0f4fd38e16a7c4ca46742d20c47b7c,
     type: 3}
+  settingPanelPrefab: {fileID: 8429012934439910386, guid: 593a5b0fc8a3d4f97ac6059920aa6ce3,
+    type: 3}
+  dailyBonusPanelPrefab: {fileID: 0}
   coinText: {fileID: 3203464986495470203}
   diamonText: {fileID: 1473299005441390001}
   heartText: {fileID: 1473299005290861126}
@@ -1507,6 +1510,8 @@ MonoBehaviour:
   levelUpPanel: {fileID: 0}
   welcomeBackPanel: {fileID: 0}
   servicePanel: {fileID: 0}
+  settingPanel: {fileID: 0}
+  dailyBonusPanel: {fileID: 0}
   achivementNotification: {fileID: 3095433865544955188}
   achivementPanel: {fileID: 0}
   homeUI: {fileID: 7754177028581235337}
@@ -1629,8 +1634,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -196, y: 0}
-  m_SizeDelta: {x: 340.4, y: 127.5}
+  m_AnchoredPosition: {x: -244.3, y: 0}
+  m_SizeDelta: {x: 484.6, y: 127.5}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &8877287499226282367
 MonoBehaviour:
@@ -1679,12 +1684,12 @@ GameObject:
   - component: {fileID: 7079659456839856468}
   - component: {fileID: 7079659456839856467}
   m_Layer: 5
-  m_Name: Collection
+  m_Name: Gift
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &5510917241356920627
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1701,9 +1706,9 @@ RectTransform:
   m_Father: {fileID: 6332302145372541514}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 65.05, y: -63.75}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7239580369553912084
@@ -1732,7 +1737,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 895efb0c5ced5ed408d8e964d0811407, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 296b7e4fc6bf43441a713e6e0d79ff96, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1

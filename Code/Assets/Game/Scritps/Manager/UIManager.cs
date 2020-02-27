@@ -22,6 +22,7 @@ public class UIManager : MonoBehaviour
     public GameObject welcomeBackPrefab;
     public GameObject servicePanelPrefab;
     public GameObject settingPanelPrefab;
+    public GameObject dailyBonusPanelPrefab;
     public static UIManager instance;
 	public Text coinText;
 	public Text diamonText;
@@ -62,6 +63,8 @@ public class UIManager : MonoBehaviour
     public ServicePanel servicePanel;
     [HideInInspector]
     public SettingPopUp settingPanel;
+    [HideInInspector]
+    public DailyBonusPanel dailyBonusPanel;
 
     public GameObject achivementNotification;
 
@@ -558,6 +561,19 @@ public class UIManager : MonoBehaviour
             popup.transform.SetParent(GameObject.Find("Canvas").transform, false);
             popup.GetComponent<Popup>().Open();
             settingPanel = popup.GetComponent<SettingPopUp>();
+        }
+    }
+
+    public void OnDailyBonusPanel()
+    {
+        if (dailyBonusPanel == null)
+        {
+            var popup = Instantiate(dailyBonusPanelPrefab) as GameObject;
+            popup.SetActive(true);
+            popup.transform.localScale = Vector3.zero;
+            popup.transform.SetParent(GameObject.Find("Canvas").transform, false);
+            popup.GetComponent<Popup>().Open();
+            dailyBonusPanel = popup.GetComponent<DailyBonusPanel>();
         }
     }
 
