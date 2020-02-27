@@ -79,6 +79,7 @@ public class ServiceManager : MonoBehaviour
                 if (s.isActive && (System.DateTime.Now - System.DateTime.Parse(s.timeStart)).TotalSeconds > 1800)
                 {
                     s.StopService();
+                    LoadServiceUI();
                 }
 
                 if (s.isActive)

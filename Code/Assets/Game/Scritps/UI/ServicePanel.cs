@@ -21,7 +21,23 @@ public class ServicePanel : MonoBehaviour
         icon.sprite = Resources.Load<Sprite>("Icons/NPC_Icon/" + serviceType.ToString());
         if (serviceType == ServiceType.Chef)
         {
-
+            charName.text = DataHolder.Dialog(69).GetName(MageManager.instance.GetLanguage());
+            charDescription.text = DataHolder.Dialog(87).GetName(MageManager.instance.GetLanguage());
+        }
+        else if (serviceType == ServiceType.Doctor)
+        {
+            charName.text = DataHolder.Dialog(71).GetName(MageManager.instance.GetLanguage());
+            charDescription.text = DataHolder.Dialog(84).GetName(MageManager.instance.GetLanguage());
+        }
+        else if (serviceType == ServiceType.HouseKeeper)
+        {
+            charName.text = DataHolder.Dialog(68).GetName(MageManager.instance.GetLanguage());
+            charDescription.text = DataHolder.Dialog(85).GetName(MageManager.instance.GetLanguage());
+        }
+        else if (serviceType == ServiceType.PetSitter)
+        {
+            charName.text = DataHolder.Dialog(70).GetName(MageManager.instance.GetLanguage());
+            charDescription.text = DataHolder.Dialog(86).GetName(MageManager.instance.GetLanguage());
         }
 
         priceText.text = price.ToString();

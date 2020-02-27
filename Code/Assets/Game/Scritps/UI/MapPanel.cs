@@ -32,7 +32,11 @@ public class MapPanel : MonoBehaviour
             if(GameManager.instance.myPlayer.level >= i*i + 2 * i)
             {
                 mapIcons[i].interactable = true;
-                mapIcons[i].GetComponentInChildren<Text>().gameObject.SetActive(false);
+
+                if(i == 1)
+                    mapIcons[i].GetComponentInChildren<Text>().text = DataHolder.Dialog(72).GetName(MageManager.instance.GetLanguage());
+                else
+                    mapIcons[i].GetComponentInChildren<Text>().gameObject.SetActive(false);
                 Image[] images = mapIcons[i].GetComponentsInChildren<Image>();
                 for(int j = 0; j < images.Length; j++)
                 {
@@ -68,6 +72,10 @@ public class MapPanel : MonoBehaviour
             else if(mapType == MapType.Forest)
             {
                 UIManager.instance.OnMapRequirement(mapType);
+            }
+            else
+            {
+                MageManager.instance.OnNotificationPopup(DataHolder.Dialog(53).GetName(MageManager.instance.GetLanguage()));
             }
 
         }

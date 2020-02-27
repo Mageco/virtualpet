@@ -49,6 +49,15 @@ public class SettingPopUp : MonoBehaviour {
 				go.gameObject.BroadcastMessage("ChangeVoice", SendMessageOptions.DontRequireReceiver);
 			}
 		}
+
+		AudioSource[] audios = FindObjectsOfType<AudioSource>();
+		foreach (AudioSource a in audios)
+		{
+			if (MageManager.instance.GetSoundVolume() < 0.1f)
+				a.enabled = false;
+			else
+				a.enabled = true;
+		}
 	}
 
 	public void OnChangeMusic(Slider s)

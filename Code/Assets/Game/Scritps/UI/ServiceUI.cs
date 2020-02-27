@@ -16,7 +16,6 @@ public class ServiceUI : MonoBehaviour
     private void Start()
     {
         icon.sprite = Resources.Load<Sprite>("Icons/NPC_Icon/" + serviceType.ToString());
-
     }
 
     public void Load()

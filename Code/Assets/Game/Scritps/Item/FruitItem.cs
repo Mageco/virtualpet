@@ -80,7 +80,7 @@ public class FruitItem : MonoBehaviour
         if (IsPointerOverUIObject())
             return;
 
-        if(step == steps.Length - 1 && Vector2.Distance(Camera.main.ScreenToWorldPoint(Input.mousePosition), clickPosition) < 0.1f)
+        if(step == steps.Length - 1 && Vector2.Distance(Camera.main.ScreenToWorldPoint(Input.mousePosition), clickPosition) < 1f)
         {
             Pick();
         }

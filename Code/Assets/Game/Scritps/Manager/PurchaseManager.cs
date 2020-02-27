@@ -62,6 +62,7 @@ public class PurchaseManager : MonoBehaviour, IStoreListener
 
 	#region IN App action
 	void OnPurchaseConsumableComplete(int id){
+		MageManager.instance.OnNotificationPopup(DataHolder.Dialog(76).GetName(MageManager.instance.GetLanguage()));
 		if (id == 0)
 		{ 
 			GameManager.instance.AddDiamond(DataHolder.GetItem(3).sellPrice);

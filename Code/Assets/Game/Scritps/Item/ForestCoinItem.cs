@@ -40,7 +40,7 @@ public class ForestCoinItem : MonoBehaviour
         if (IsPointerOverUIObject())
             return;
 
-        if(Vector3.Distance(clickPosition, Camera.main.ScreenToWorldPoint(Input.mousePosition)) < 0.3f)
+        if(Vector3.Distance(clickPosition, Camera.main.ScreenToWorldPoint(Input.mousePosition)) < 1f)
             StartCoroutine(Pick());
 
     }

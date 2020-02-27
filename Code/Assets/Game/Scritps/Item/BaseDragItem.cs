@@ -256,7 +256,7 @@ public class BaseDragItem : MonoBehaviour
     public virtual void EndDrag()
     {
         ItemManager.instance.ResetCameraTarget();
-        if (touchTime < 0.3f && Vector2.Distance(this.transform.position, lastPosition) < 0.3f)
+        if (touchTime < 0.3f && Vector2.Distance(this.transform.position, lastPosition) < 1f)
         {
             OnClick();
         }

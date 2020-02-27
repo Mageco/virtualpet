@@ -10,20 +10,18 @@ public class Mprogress : MonoBehaviour {
 	float progress = 0;
     public Image icon;
     public Image loadingImage;
+	public int[] tipIds;
 
 	// Use this for initialization
 	void OnEnable () {
 		progress = 0;
 		fill.fillAmount = 0;
-        //int id = Random.Range(0,DataHolder.Dialogs().GetDataCount());
-        //if(DataHolder.Instance() != null)
-        //    tip.text = DataHolder.Dialog(id).GetDescription(MageManager.instance.GetLanguage());
+        int id = Random.Range(0,tipIds.Length);
+        tip.text = DataHolder.Dialog(tipIds[id]).GetName(MageManager.instance.GetLanguage());
         int n = Random.Range(0, DataHolder.Pets().GetDataCount());
 		string url = DataHolder.Pet(n).iconUrl.Replace("Assets/Game/Resources/", "");
 		url = url.Replace(".png", "");
 		icon.sprite = Resources.Load<Sprite>(url) as Sprite;
-
-
 	}
 
 

@@ -127,9 +127,13 @@ public class ForestManager : MonoBehaviour
 
     void SpawnForestCoin()
     {
-        Vector3 pos = GetRandomPoint(PointType.Banana).position;
-        int n = Random.Range(0, 100);
-        GameObject go = Instantiate(forestCoinPrefab[n/10], pos, Quaternion.identity);
+        ForestCoinItem[] coins = FindObjectsOfType<ForestCoinItem>();
+        if(coins.Length < 6)
+        {
+            Vector3 pos = GetRandomPoint(PointType.Banana).position;
+            int n = Random.Range(0, 100);
+            GameObject go = Instantiate(forestCoinPrefab[n / 10], pos, Quaternion.identity);
+        }
     }
 
     void SpawnFish()
