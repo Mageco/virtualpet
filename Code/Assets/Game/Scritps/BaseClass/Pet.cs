@@ -41,6 +41,7 @@ public class Pet : BaseModel
     public float curious = 70;
     public System.DateTime timeSick;
     public float maxTimeSick = 3600;
+    public bool isNew = false;
 
 
     [HideInInspector]
@@ -172,80 +173,6 @@ public class Pet : BaseModel
             s.rewardState = RewardState.None;
             skills.Add(s);
         }
-    }
-
-    public CharController Load()
-    {
-
-        if (character != null)
-            return character;
-
-        Pet p = DataHolder.GetPet(this.iD);
-
-        if (p == null)
-            return null;
-
-        string url = "";
-        url = p.prefabName.Replace("Assets/Game/Resources/", "");
-        url = url.Replace(".prefab", "");
-        url = DataHolder.Pets().GetPrefabPath() + url;
-        Debug.Log(url);
-        GameObject go = GameObject.Instantiate((Resources.Load(url) as GameObject), Vector3.zero, Quaternion.identity) as GameObject;
-        character = go.GetComponent<CharController>();
-        //if (this.position == Vector3.zero && ItemManager.instance != null)
-        go.transform.position = ItemManager.instance.GetRandomPoint(PointType.Spawn).position;
-        //else
-        //    go.transform.position = this.position;
-        if (this.actionType != ActionType.Hold)
-        {
-            //character.actionType = this.actionType;
-            //character.enviromentType = this.enviromentType;
-            //character.GetComponent<CharScale>().scalePosition = this.scalePosition;
-            //character.GetComponent<CharScale>().height = this.height;
-        }
-
-        character.data = this;
-        character.LoadPrefab();
-
-        GameManager.instance.UpdatePetObjects();
-        return character;
-    }
-
-    public void ReLoad()
-    {
-        UnLoad();
-
-        string url = "";
-        url = prefabName.Replace("Assets/Game/Resources/", "");
-        url = url.Replace(".prefab", "");
-        url = DataHolder.Pets().GetPrefabPath() + url;
-        Debug.Log(url);
-        GameObject go = GameObject.Instantiate((Resources.Load(url) as GameObject), Vector3.zero, Quaternion.identity) as GameObject;
-        character = go.GetComponent<CharController>();
-        if (this.position == Vector3.zero && ItemManager.instance != null)
-            go.transform.position = ItemManager.instance.GetRandomPoint(PointType.Spawn).position;
-        else
-            go.transform.position = this.position;
-        if (this.actionType != ActionType.Hold)
-        {
-            character.actionType = this.actionType;
-            character.enviromentType = this.enviromentType;
-            character.GetComponent<CharScale>().scalePosition = this.scalePosition;
-            character.GetComponent<CharScale>().height = this.height;
-        }
-
-        character.data = this;
-        character.LoadPrefab();
-
-        GameManager.instance.UpdatePetObjects();
-    }
-
-    public void UnLoad()
-    {
-        if (agent != null)
-            GameObject.Destroy(this.agent.gameObject);
-        if (this.character != null)
-            GameObject.Destroy(this.character.gameObject);
     }
 
     public void AddLanguageItem()

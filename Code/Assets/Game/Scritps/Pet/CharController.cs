@@ -602,6 +602,10 @@ public class CharController : MonoBehaviour
         {
             StartCoroutine(Garden());
         }
+        else if (actionType == ActionType.OnGift)
+        {
+            StartCoroutine(Gift());
+        }
     }
 
     #endregion
@@ -732,7 +736,7 @@ public class CharController : MonoBehaviour
             return;
         }
 
-        if (charInteract.interactType == InteractType.Drop || charInteract.interactType == InteractType.Jump || actionType == ActionType.OnControl)
+        if (charInteract.interactType == InteractType.Drop || charInteract.interactType == InteractType.Jump || actionType == ActionType.OnControl || actionType == ActionType.OnGift)
             return;
 
         Abort();
@@ -798,6 +802,12 @@ public class CharController : MonoBehaviour
     {
         Abort();
         actionType = ActionType.OnBath;
+    }
+
+    public void OnGift()
+    {
+        Abort();
+        actionType = ActionType.OnGift;
     }
 
 
@@ -2052,6 +2062,13 @@ public class CharController : MonoBehaviour
         yield return StartCoroutine(DoAnim("Drop"));
 
 
+        CheckAbort();
+    }
+
+    protected virtual IEnumerator Gift()
+    {
+        yield return StartCoroutine(JumpDown(0, 20, 30));
+        yield return StartCoroutine(DoAnim("Love"));
         CheckAbort();
     }
 

@@ -197,11 +197,12 @@ public class UIManager : MonoBehaviour
 
 	public void BuyPet(int itemID){
         MageEngine.instance.OnEvent(Mage.Models.Application.MageEventType.CheckOutItem, DataHolder.GetPet(itemID).GetName(MageManager.instance.GetLanguage()));
+
         GameManager.instance.BuyPet(itemID);
         if(ItemManager.instance != null)
             GameManager.instance.EquipPet(itemID);
         if (shopPanel != null)
-            shopPanel.ReLoad();
+            shopPanel.Close();
         if (petRequirementPanel != null)
             petRequirementPanel.ReLoad();
 

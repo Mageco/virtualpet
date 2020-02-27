@@ -22,6 +22,7 @@ public class ItemManager : MonoBehaviour
     public GameObject chestPrefab;
     public GameObject healthEffectPrefab;
     public GameObject guidePrefab;
+    public GameObject petGiftPrefab;
     float time = 0;
     float maxTimeCheck = 1;
     System.DateTime playTime = System.DateTime.Now;
@@ -760,5 +761,69 @@ public class ItemManager : MonoBehaviour
         fruitId++;
         return fruitId;
     }
+
+    #region Pet
+    public void LoadPetObject(Pet pet)
+    {
+        if (pet.isNew)
+        {
+            StartCoroutine(SpawnGift(pet));
+
+        }
+        else
+        {
+            SpawnPet(pet);
+        }
+
+    }
+
+    IEnumerator SpawnGift(Pet pet)
+    {
+        GameObject gift = GameObject.Instantiate(petGiftPrefab);
+        Vector3 pos = new Vector3(Camera.main.transform.position.x, Random.Range(-20, -15), 0);
+        pos.z = pos.y * 10;
+        gift.transform.position = pos;
+        yield return new WaitForSeconds(5.4f);
+        CharController petObject = SpawnPet(pet);
+        petObject.agent.transform.position = pos;
+        petObject.transform.position = pos;
+        petObject.OnGift();
+        pet.isNew = false;
+    }
+
+    CharController SpawnPet(Pet pet)
+    {
+        if (pet.character != null)
+            return pet.character;
+
+        Pet p = DataHolder.GetPet(pet.iD);
+
+        if (p == null)
+            return null;
+
+        string url = "";
+        url = p.prefabName.Replace("Assets/Game/Resources/", "");
+        url = url.Replace(".prefab", "");
+        url = DataHolder.Pets().GetPrefabPath() + url;
+        Debug.Log(url);
+        GameObject go = GameObject.Instantiate((Resources.Load(url) as GameObject), Vector3.zero, Quaternion.identity) as GameObject;
+        pet.character = go.GetComponent<CharController>();
+        go.transform.position = ItemManager.instance.GetRandomPoint(PointType.Spawn).position;
+        pet.character.data = pet;
+        pet.character.LoadPrefab();
+        GameManager.instance.UpdatePetObjects();
+        return pet.character;
+    }
+
+    public void UnLoadPetObject(Pet p)
+    {
+        if (p.character.agent != null)
+            GameObject.Destroy(p.character.agent.gameObject);
+        if (p.character != null)
+            GameObject.Destroy(p.character.gameObject);
+    }
+
+
+    #endregion
 
 }

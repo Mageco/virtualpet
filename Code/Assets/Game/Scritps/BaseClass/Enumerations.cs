@@ -15,7 +15,7 @@ public enum CharAge{Small,Middle,Big};
 public enum EnviromentType { Room, Table, Bath,Bed, Toilet,Door,ToHouse};
 public enum GameType{House,Garden};
 public enum GameState{Prepare,Ready,Run,End};
-public enum ActionType { None, Mouse, Sleep, Eat, Drink, Patrol, Discover, Pee, Shit, Itchi, Sick, Fear, Happy, Tired, Hold, OnTable, OnBath,Fall,OnBed,OnToilet,Injured,Supprised,Stop,Toy,JumpOut,OnCall,OnControl,OnGarden};
+public enum ActionType { None, Mouse, Sleep, Eat, Drink, Patrol, Discover, Pee, Shit, Itchi, Sick, Fear, Happy, Tired, Hold, OnTable, OnBath,Fall,OnBed,OnToilet,Injured,Supprised,Stop,Toy,JumpOut,OnCall,OnControl,OnGarden,OnGift};
 public enum CharType{Dog,Cat,Rabbit,Turtle,Mouse,Parrot,Hamster,Chihuhu,Unicorn};
 public enum WeatherType{None,Sunny,Rain,Snow,Storm}
 public enum AnimalState {None,Idle,Seek,Eat,Run,Flee,Hit,Hit_Grab,Hold,Cached,InActive }

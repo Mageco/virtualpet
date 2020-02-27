@@ -99,8 +99,8 @@ public class GameManager : MonoBehaviour
         for (int i = 0; i < myPlayer.pets.Count; i++)
         {
             if(myPlayer.pets[i].itemState == ItemState.Equiped){
-                CharController c = myPlayer.pets[i].Load();
-                petObjects.Add(c);
+                ItemManager.instance.LoadPetObject(myPlayer.pets[i]);
+                UpdatePetObjects();
             }
         }
     }
@@ -136,8 +136,10 @@ public class GameManager : MonoBehaviour
             if(p.iD == itemId){
                 p.itemState = ItemState.Have;
                 if (ItemManager.instance != null)
+                {
                     petObjects.Remove(p.character);
-                p.UnLoad();
+                    ItemManager.instance.UnLoadPetObject(p);
+                }
             }
         }
     }
@@ -146,7 +148,11 @@ public class GameManager : MonoBehaviour
     {
         foreach(Pet p in myPlayer.pets){
             p.itemState = ItemState.Have;
-            p.UnLoad();
+            if (ItemManager.instance != null)
+            {
+                petObjects.Remove(p.character);
+                ItemManager.instance.UnLoadPetObject(p);
+            }
         }
         UpdatePetObjects();
     }
@@ -186,6 +192,7 @@ public class GameManager : MonoBehaviour
 			}
 			AddCoin (-price);
 			AddPet (petId);
+            GetPet(petId).isNew = true;
             Debug.Log("Buy pet " + petId);
 			return true;
 		}else if(type == PriceType.Diamond){
@@ -195,7 +202,8 @@ public class GameManager : MonoBehaviour
 			}
 			AddDiamond (-price);
 			AddPet (petId);
-			return true;
+            GetPet(petId).isNew = true;
+            return true;
 		}
         else if (type == PriceType.Happy)
         {
@@ -206,6 +214,7 @@ public class GameManager : MonoBehaviour
             }
             AddHappy(-price);
             AddPet(petId);
+            GetPet(petId).isNew = true;
             return true;
         }
         else
@@ -264,8 +273,11 @@ public class GameManager : MonoBehaviour
         foreach(Pet p in myPlayer.pets){
             if(p.iD == id){
                 myPlayer.pets.Remove(p);
-                UpdatePetObjects();
-                p.UnLoad();
+                if (ItemManager.instance != null)
+                {
+                    petObjects.Remove(p.character);
+                    ItemManager.instance.UnLoadPetObject(p);
+                }
                 return;
             }
         }     
