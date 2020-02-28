@@ -119,8 +119,8 @@ public class UIManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (timeUpdate > maxTimeUpdate)
-        {
+        //if (timeUpdate > maxTimeUpdate)
+        //{
             UpdateUI();
             timeUpdate = 0;
             if (notificationText.Count > 0)
@@ -129,9 +129,9 @@ public class UIManager : MonoBehaviour
             }
             if (GameManager.instance.myPlayer.questId >= DataHolder.Quests().GetDataCount() && notificationIcon != null)
                 notificationIcon.SetActive(false);
-        }
-        else
-            timeUpdate += Time.deltaTime;
+        //}
+        //else
+        //    timeUpdate += Time.deltaTime;
     }
 
 
