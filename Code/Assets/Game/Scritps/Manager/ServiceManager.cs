@@ -86,7 +86,7 @@ public class ServiceManager : MonoBehaviour
 
     void CheckService()
     {
-        if (GameManager.instance.GetPets().Count >= 2)
+        if (GameManager.instance.GetPets().Count >= 2 && GameManager.instance.myPlayer.level >=2)
         {
             servicePanel.SetActive(true);
             foreach (PlayerService s in GameManager.instance.myPlayer.playerServices)

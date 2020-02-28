@@ -59,7 +59,7 @@ public class SkillUI : MonoBehaviour
     }
 
     public void Collect(){
-        GameManager.instance.CollectSkillRewards(iD);
+        //GameManager.instance.CollectSkillRewards(iD);
         StartCoroutine(CollectCoroutine());
     }
 

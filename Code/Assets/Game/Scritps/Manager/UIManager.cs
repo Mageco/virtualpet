@@ -23,6 +23,7 @@ public class UIManager : MonoBehaviour
     public GameObject servicePanelPrefab;
     public GameObject settingPanelPrefab;
     public GameObject dailyBonusPanelPrefab;
+    public GameObject rewardDiamondPanelPrefab;
     public static UIManager instance;
 	public Text coinText;
 	public Text diamonText;
@@ -65,6 +66,8 @@ public class UIManager : MonoBehaviour
     public SettingPopUp settingPanel;
     [HideInInspector]
     public DailyBonusPanel dailyBonusPanel;
+    [HideInInspector]
+    public RewardDiamondPanel rewardDiamondPanel;
 
     public GameObject achivementNotification;
 
@@ -574,6 +577,20 @@ public class UIManager : MonoBehaviour
             popup.transform.SetParent(GameObject.Find("Canvas").transform, false);
             popup.GetComponent<Popup>().Open();
             dailyBonusPanel = popup.GetComponent<DailyBonusPanel>();
+        }
+    }
+
+    public void OnRewardDiamondPanel(ForestDiamondItem item)
+    {
+        if (rewardDiamondPanel == null)
+        {
+            var popup = Instantiate(rewardDiamondPanelPrefab) as GameObject;
+            popup.SetActive(true);
+            popup.transform.localScale = Vector3.zero;
+            popup.transform.SetParent(GameObject.Find("Canvas").transform, false);
+            popup.GetComponent<Popup>().Open();
+            rewardDiamondPanel = popup.GetComponent<RewardDiamondPanel>();
+            rewardDiamondPanel.Load(item);
         }
     }
 

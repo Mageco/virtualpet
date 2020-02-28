@@ -653,45 +653,23 @@ public class GameManager : MonoBehaviour
             go.transform.position = GetPetObject(petId).transform.position + new Vector3(0, 2, -1);
             AddHappy(-10 * GetPet(petId).level * GetPet(petId).level);
             GetPet(petId).level++;
+            OnTip();
             SavePlayer();
         }
             
     }
 
-    /*
-    public void AddExp(int e,int petId,bool happy = true){
-        if(GetPetObject(petId) != null){
-            if(happy){
-                GameObject go = GameObject.Instantiate(heartPrefab,GetPetObject(petId).transform.position,Quaternion.identity);
-                int n = (e + GetPet(petId).level)/5;
-                for(int i=0;i<n;i++){
-                    int ran = Random.Range(0,100);
-                    Quaternion rot = Quaternion.identity;
-                    if(ran > 50)
-                        rot = Quaternion.Euler(new Vector3(0,180,-1));
-                    Vector3 pos = GetPetObject(petId).charScale.scalePosition + new Vector3(Random.Range(-1,1),Random.Range(-1,1),0);
-                    ItemManager.instance.SpawnHeart(pos,rot,1,true);
-                }
-            }else{
-                GameObject go = GameObject.Instantiate(expPrefab,petObjects[0].transform.position,Quaternion.identity);
-                go.GetComponent<ExpItem>().Load(e);
-            }
 
+    void OnTip()
+    {
+        if(myPlayer.level == 2)
+        {
+            UIManager.instance.OnQuestNotificationPopup(DataHolder.Dialog(85).GetName(MageManager.instance.GetLanguage()));
+        }else if(myPlayer.level == 3)
+        {
+            UIManager.instance.OnQuestNotificationPopup(DataHolder.Dialog(77).GetName(MageManager.instance.GetLanguage()));
+            UIManager.instance.OnQuestNotificationPopup(DataHolder.Dialog(79).GetName(MageManager.instance.GetLanguage()));
         }
-    }*/
-
-
-    public void CollectSkillRewards(int skillId){
-/*         foreach(PetSkill s in GetActivePet().skills){
-            if(s.skillId == skillId){
-                AddCoin(DataHolder.Skills().GetSkill(skillId).coinValue);
-                AddDiamond(DataHolder.Skills().GetSkill(skillId).diamondValue);
-                AddExp(DataHolder.Skills().GetSkill(skillId).expValue);
-                s.rewardState = RewardState.Received;
-                SavePlayer();
-                return;
-            }
-        } */
     }
 
     public void CollectAchivementRewards(int achivementId){

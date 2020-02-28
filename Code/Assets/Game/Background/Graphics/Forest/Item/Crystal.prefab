@@ -170,8 +170,8 @@ GameObject:
   m_Component:
   - component: {fileID: 6990540259445840377}
   - component: {fileID: 6990540259445840382}
-  - component: {fileID: 4954986572682834733}
   - component: {fileID: 4230477945873890269}
+  - component: {fileID: 5033283117955825732}
   m_Layer: 0
   m_Name: Crystal
   m_TagString: Untagged
@@ -216,19 +216,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &4954986572682834733
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6990540259445840383}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f698d40142ab54d4d82213992d73b7eb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  value: 10
 --- !u!58 &4230477945873890269
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -245,6 +232,18 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 1}
   serializedVersion: 2
   m_Radius: 4
+--- !u!114 &5033283117955825732
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6990540259445840383}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b46a5051ec0e4373a88a14c65aa239e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6990540259494841423
 GameObject:
   m_ObjectHideFlags: 0

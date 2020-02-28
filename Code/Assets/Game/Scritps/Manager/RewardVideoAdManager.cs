@@ -140,6 +140,10 @@ public class RewardVideoAdManager : MonoBehaviour {
 		{
 			StartCoroutine(OnService());
 		}
+		else if (rewardType == RewardType.ForestDiamond)
+		{
+			StartCoroutine(OnForestDiamond());
+		}
 
 	}
 
@@ -192,6 +196,16 @@ public class RewardVideoAdManager : MonoBehaviour {
 		if (UIManager.instance != null && UIManager.instance.servicePanel != null)
 		{
 			UIManager.instance.servicePanel.OnWatchedAd();
+		}
+	}
+
+
+	IEnumerator OnForestDiamond()
+	{
+		yield return new WaitForEndOfFrame();
+		if (UIManager.instance != null && UIManager.instance.rewardDiamondPanel != null)
+		{
+			UIManager.instance.rewardDiamondPanel.WatchedAd();
 		}
 	}
 
