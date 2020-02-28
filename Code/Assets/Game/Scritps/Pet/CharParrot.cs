@@ -99,7 +99,7 @@ public class CharParrot : CharController
             if(ran < 20){
                 SetTarget(PointType.Patrol);
                 yield return StartCoroutine(RunToPoint());
-                MageManager.instance.PlaySoundName(charType.ToString() + "_Speak",false);
+                MageManager.instance.PlaySound3D(charType.ToString() + "_Speak",false,this.transform.position);
                 yield return DoAnim("Speak_" + direction.ToString());
             }if(ran < 40){
                 SetTarget(PointType.Patrol);

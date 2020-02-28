@@ -75,7 +75,7 @@ public class ChestItem : MonoBehaviour
 
     void Pick()
     {
-        MageManager.instance.PlaySoundName("collect_item_03", false);
+        MageManager.instance.PlaySound("collect_item_03", false);
         UIManager.instance.OnRewardItemPanel(rewardType, this);
     }
 
@@ -89,7 +89,7 @@ public class ChestItem : MonoBehaviour
     {
         isActive = true;
         valueText.text = "+" + value.ToString();
-        MageManager.instance.PlaySoundName("Tinerbell", false);
+        MageManager.instance.PlaySound3D("Tinerbell", false,this.transform.position);
         if (priceType == PriceType.Coin)
         {
             animator.Play("Active_Coin",0);

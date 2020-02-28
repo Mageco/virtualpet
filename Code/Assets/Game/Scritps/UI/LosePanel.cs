@@ -16,7 +16,7 @@ public class LosePanel : MonoBehaviour
     void Start()
     {
         priceText.text = price.ToString();
-        MageManager.instance.PlaySoundName("Lose", false);
+        MageManager.instance.PlaySound("Lose", false);
     }
 
     // Update is called once per frame

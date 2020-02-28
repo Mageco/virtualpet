@@ -29,7 +29,7 @@ public class GuideUI : MonoBehaviour
     }
 
     public void Next(){
-        MageManager.instance.PlaySoundName("BubbleButton", false);
+        MageManager.instance.PlaySound("BubbleButton", false);
         currentPage ++;
         if(currentPage > pages.Length - 1){
             Close(); 

@@ -22,7 +22,7 @@ public class WinPanel : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        MageManager.instance.PlaySoundName("Win", false);
+        MageManager.instance.PlaySound("Win", false);
     }
 
     Animator animator;
@@ -118,7 +118,7 @@ public class WinPanel : MonoBehaviour
     }
 
     public void Close(){
-        MageManager.instance.PlaySoundName("Collect_Achivement", false);
+        MageManager.instance.PlaySound("Collect_Achivement", false);
         GameManager.instance.AddCoin(bonus);
         Minigame.instance.OnHome();
         this.GetComponent<Popup>().Close();

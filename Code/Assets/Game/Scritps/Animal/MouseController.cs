@@ -177,8 +177,8 @@ public class MouseController : MonoBehaviour
 
         if (state == MouseState.Eat || state == MouseState.Seek || state == MouseState.Run)
         {
-            MageManager.instance.PlaySoundName("Punch1", false);
-            MageManager.instance.PlaySoundName("collect_item_02", false);
+            MageManager.instance.PlaySound("Punch1", false);
+            MageManager.instance.PlaySound("collect_item_02", false);
             anim.Play("Hit", 0);
 			int value = Random.Range(1, 3);
 			ItemManager.instance.SpawnCoin(this.transform.position + new Vector3(0,2,-1), value,this.gameObject);

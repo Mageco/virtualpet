@@ -37,7 +37,7 @@ public class CleanItem : MonoBehaviour
             }
 			
 			if(item.itemType == ItemType.Clean && time > maxTime){
-				MageManager.instance.PlaySoundName("Item_Broom", false);
+				MageManager.instance.PlaySound3D("Item_Broom", false,this.transform.position);
 				time  = 0;
 			}else{
 				time += Time.deltaTime;

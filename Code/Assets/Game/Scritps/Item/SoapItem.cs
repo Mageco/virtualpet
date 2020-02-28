@@ -48,7 +48,7 @@ public class SoapItem : MonoBehaviour
 				bubbleEffect.SetActive(true);
 				character.OnSoap();
                 GetBathTube().OnSoap ();
-				soundId = MageManager.instance.PlaySoundName("Soap",true);
+				soundId = MageManager.instance.PlaySound3D("Soap",true,this.transform.position);
 				isSoap = true;
 			}
 		}

@@ -75,7 +75,7 @@ public class BaseFloorItem : MonoBehaviour
 						pos.z = -500;
 						pos.y += 5;
 						arrow.transform.position = pos;
-						MageManager.instance.PlaySoundName("BubbleButton", false);
+						MageManager.instance.PlaySound("BubbleButton", false);
 						LoadSprite();
 					}
 				}
@@ -146,12 +146,12 @@ public class BaseFloorItem : MonoBehaviour
 				if ((obstructItem != null && obstructItem.itemCollides.Count > 0) || roomCollide != null)
 				{
 					StartCoroutine(ReturnPosition(lastPosition));
-					MageManager.instance.PlaySoundName("Drag", false);
+					MageManager.instance.PlaySound("Drag", false);
 				}
 
 				else
 				{
-					MageManager.instance.PlaySoundName("BubbleButton", false);
+					MageManager.instance.PlaySound("BubbleButton", false);
 					state = EquipmentState.Idle;
 				}
 

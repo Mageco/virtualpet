@@ -27,7 +27,7 @@ public class ToyCarItem : ToyItem
 		if (state == EquipmentState.Active)
 			return;
 		int round = Random.Range(3, 10);
-        MageManager.instance.PlaySoundName("Item_Car", false);
+        MageManager.instance.PlaySound3D("Item_Car", false,this.transform.position);
 		state = EquipmentState.Active;
         animator.speed = 2;
 		GameManager.instance.LogAchivement(AchivementType.Use_Item,ActionType.None,this.item.itemID);

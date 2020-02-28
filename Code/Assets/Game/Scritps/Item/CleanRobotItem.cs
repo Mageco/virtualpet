@@ -141,7 +141,7 @@ public class CleanRobotItem : MonoBehaviour
 	}
 
 	IEnumerator Hold(){
-        int soundId = MageManager.instance.PlaySoundName("Item_Robot_Clean", true);
+        int soundId = MageManager.instance.PlaySound3D("Item_Robot_Clean", true,this.transform.position);
         anim.Play("Clean_" + direction.ToString(),0);
 		float time = 0;
 		while(dirtyTarget != null && time < 10 && !isAbort){
@@ -204,11 +204,11 @@ public class CleanRobotItem : MonoBehaviour
         }
 
 		if(state == AnimalState.Idle){
-            MageManager.instance.PlaySoundName("Item_Robot_TurnOn", false);
+            MageManager.instance.PlaySound("Item_Robot_TurnOn", false);
             state = AnimalState.Seek;
 			isAbort = true;
 		}else{
-            MageManager.instance.PlaySoundName("Item_Robot_TurnOff", false);
+            MageManager.instance.PlaySound("Item_Robot_TurnOff", false);
 			state = AnimalState.Idle;
 			isAbort = true;
 		}

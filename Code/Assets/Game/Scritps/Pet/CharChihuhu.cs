@@ -34,7 +34,7 @@ public class CharChihuhu : CharController
             }
             else
             {
-                MageManager.instance.PlaySoundName(charType.ToString() + "_Speak", false);
+                MageManager.instance.PlaySound3D(charType.ToString() + "_Speak", false,this.transform.position);
                 yield return DoAnim("Speak_" + direction.ToString());
             }
 

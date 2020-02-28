@@ -28,7 +28,7 @@ public class LevelUpPanel : MonoBehaviour
 
     public void Load()
     {
-        MageManager.instance.PlaySoundName("Win", false);
+        MageManager.instance.PlaySound("Win", false);
         int level = GameManager.instance.myPlayer.level;
         levelText.text = level.ToString();
         coin = level * 50;
@@ -59,7 +59,7 @@ public class LevelUpPanel : MonoBehaviour
 
     public void Close()
     {
-        MageManager.instance.PlaySoundName("Collect_Achivement", false);
+        MageManager.instance.PlaySound("Collect_Achivement", false);
         GameManager.instance.AddCoin(coin);
         GameManager.instance.AddDiamond(diamond);
         this.GetComponent<Popup>().Close();

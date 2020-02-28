@@ -115,7 +115,7 @@ public class ItemManager : MonoBehaviour
             time += Time.deltaTime;
         }
 
-        if(timeDirty > maxTimeDirty && GameManager.instance.myPlayer.questId > 14){
+        if(timeDirty > maxTimeDirty){
             SpawnDirty();
             timeDirty = 0;
             maxTimeDirty = Random.Range(100,500);

@@ -61,7 +61,7 @@ public class JellyFishController : FishController
 
     public override void OnCached()
     {
-        MageManager.instance.PlaySoundName("Collect_Item", false);
+        MageManager.instance.PlaySound3D("Collect_Item", false, this.transform.position);
         state = FishState.Cached;
         anim.Play("Hit", 0);
         rigid.isKinematic = true;

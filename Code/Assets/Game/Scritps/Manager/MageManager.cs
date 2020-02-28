@@ -53,7 +53,7 @@ public class MageManager : MonoBehaviour {
 
 		Load ();
         Screen.sleepTimeout = SleepTimeout.NeverSleep;
-        Application.targetFrameRate = 50;
+        //Application.targetFrameRate = 50;
 
 	}
 
@@ -183,19 +183,45 @@ public class MageManager : MonoBehaviour {
 
 
 	#region Sound
-	public int PlaySoundName(string clipName,bool loop,ulong delay = 0)
+	public int PlaySound3D(string clipName,bool loop,Vector3 pos)
 	{
-		AudioClip clip = Resources.Load<AudioClip> ("Sound/" + clipName);
+		Vector3 screenPoint = Camera.main.WorldToViewportPoint(pos);
+		bool onScreen = screenPoint.x > 0 && screenPoint.x < 1 && screenPoint.y > 0 && screenPoint.y < 1;
+		if (!onScreen)
+			return -1;
+
+        AudioClip clip = Resources.Load<AudioClip> ("Sound/" + clipName);
 		if (clip != null) {
 			GameObject go = GameObject.Instantiate (soundPrefab);
 			go.transform.parent = this.transform;
 			go.name = "Sound";
 			Sound s = go.GetComponent<Sound> ();
 			currentID++;
-			s.Play (currentID, clip, loop, delay, soundVolume);
+			s.Play (currentID, clip, loop, 0, soundVolume);
 			audioSounds.Add (s);
 			if (!loop) {
-				StartCoroutine (StopSoundCouroutine (s, clip.length,delay));
+				StartCoroutine (StopSoundCouroutine (s, clip.length,0));
+			}
+			return currentID;
+		}
+		return -1;
+	}
+
+	public int PlaySound(string clipName, bool loop)
+	{
+		AudioClip clip = Resources.Load<AudioClip>("Sound/" + clipName);
+		if (clip != null)
+		{
+			GameObject go = GameObject.Instantiate(soundPrefab);
+			go.transform.parent = this.transform;
+			go.name = "Sound";
+			Sound s = go.GetComponent<Sound>();
+			currentID++;
+			s.Play(currentID, clip, loop, 0, soundVolume);
+			audioSounds.Add(s);
+			if (!loop)
+			{
+				StartCoroutine(StopSoundCouroutine(s, clip.length, 0));
 			}
 			return currentID;
 		}

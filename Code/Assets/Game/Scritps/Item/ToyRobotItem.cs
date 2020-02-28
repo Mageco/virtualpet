@@ -62,7 +62,7 @@ public class ToyRobotItem : ToyItem
             agent.transform.position = this.transform.position;
             target = GameManager.instance.GetRandomPetObject();
             StartCoroutine(MoveToPoint());
-            MageManager.instance.PlaySoundName("Item_Robot_TurnOn", false);
+            MageManager.instance.PlaySound3D("Item_Robot_TurnOn", false,this.transform.position);
         }
         else if(state == EquipmentState.Active)
         {
@@ -70,7 +70,7 @@ public class ToyRobotItem : ToyItem
             agent.Stop();
             Debug.Log("Turn off");
             state = EquipmentState.Idle;
-            MageManager.instance.PlaySoundName("Item_Robot_TurnOff", false);
+            MageManager.instance.PlaySound3D("Item_Robot_TurnOff", false,this.transform.position);
             animator.Play("Idle_" + direction.ToString(), 0);
         }
     }
@@ -90,7 +90,7 @@ public class ToyRobotItem : ToyItem
 
     IEnumerator Hold()
     {
-        int soundId = MageManager.instance.PlaySoundName("Toy_Robot_Dance", false);
+        int soundId = MageManager.instance.PlaySound3D("Toy_Robot_Dance", false,this.transform.position);
         agent.Stop();
         if (target != null)
             target.OnSupprised();

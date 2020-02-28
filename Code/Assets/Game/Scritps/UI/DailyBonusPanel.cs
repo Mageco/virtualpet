@@ -68,7 +68,7 @@ public class DailyBonusPanel : MonoBehaviour
 
     public void OnCollect(int id)
     {
-        MageManager.instance.PlaySoundName("Collect_Achivement", false);
+        MageManager.instance.PlaySound("Collect_Achivement", false);
 
         if (id == 0)
         {

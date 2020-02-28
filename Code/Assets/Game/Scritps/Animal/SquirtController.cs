@@ -49,7 +49,7 @@ public class SquirtController : FishController
 
     public override void OnCached()
     {
-        MageManager.instance.PlaySoundName("Collect_Item", false);
+        MageManager.instance.PlaySound("Collect_Item", false);
         state = FishState.Cached;
         anim.Play("Hit", 0);
         rigid.isKinematic = true;

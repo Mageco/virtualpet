@@ -304,7 +304,7 @@ public class ItemUI : MonoBehaviour
         if (isBusy)
             return;
 
-        MageManager.instance.PlaySoundName("BubbleButton", false);
+        MageManager.instance.PlaySound("BubbleButton", false);
         BuyCoroutine();
     }
 

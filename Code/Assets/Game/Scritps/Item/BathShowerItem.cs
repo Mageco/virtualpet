@@ -55,7 +55,7 @@ public class BathShowerItem : MonoBehaviour
 	void OnShower(){
 		isShower = true;
 		showerEffect.SetActive (true);
-		soundid =  MageManager.instance.PlaySoundName("Shower",true);
+		soundid =  MageManager.instance.PlaySound("Shower",true);
 		Debug.Log ("Shower");
 		foreach(CharController pet in GameManager.instance.petObjects){
 			if (pet.actionType == ActionType.OnBath) {

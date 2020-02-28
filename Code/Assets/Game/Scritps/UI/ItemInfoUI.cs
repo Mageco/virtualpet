@@ -297,7 +297,7 @@ public class ItemInfoUI : MonoBehaviour
             MageManager.instance.OnNotificationPopup("Item will be available soon!");
             return;
         }
-        MageManager.instance.PlaySoundName("BubbleButton", false);
+        MageManager.instance.PlaySound("BubbleButton", false);
         BuyCoroutine();
     }
 

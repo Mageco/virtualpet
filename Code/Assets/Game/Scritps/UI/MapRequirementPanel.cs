@@ -49,7 +49,7 @@ public class MapRequirementPanel : MonoBehaviour
 
     public void WatchAd()
     {
-        MageManager.instance.PlaySoundName("BubbleButton", false);
+        MageManager.instance.PlaySound("BubbleButton", false);
         RewardVideoAdManager.instance.ShowAd(RewardType.Map);
     }
 

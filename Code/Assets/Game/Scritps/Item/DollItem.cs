@@ -42,15 +42,15 @@ public class DollItem : MonoBehaviour
         }
         else if(toyType == ToyType.SpaceShip)
         {
-            MageManager.instance.PlaySoundName("Item_Space", false);
-            MageManager.instance.PlaySoundName("Whistle_slide_up_01", false);
+            MageManager.instance.PlaySound3D("Item_Space", false,this.transform.position);
+            MageManager.instance.PlaySound3D("Whistle_slide_up_01", false,this.transform.position);
         }
         animator.Play("Active");
         yield return new WaitForEndOfFrame();
         yield return new WaitForSeconds(animator.GetCurrentAnimatorStateInfo(0).length);
         isActive = false;
         animator.Play("Idle");
-        MageManager.instance.PlaySoundName("whoosh_swish_med_03", false);
+        MageManager.instance.PlaySound3D("whoosh_swish_med_03", false,this.transform.position);
     }
 
     private void OnDestroy()

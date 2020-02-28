@@ -59,7 +59,7 @@ public class AchivementUI : MonoBehaviour
 
     public void Collect(){
         rewardAnim.Play("Active", 0);
-        MageManager.instance.PlaySoundName("Collect_Achivement",false);
+        MageManager.instance.PlaySound("Collect_Achivement",false);
         GameManager.instance.CollectAchivementRewards(iD);
         collect.interactable = false;
 

@@ -51,7 +51,7 @@ public class EventUI : MonoBehaviour
 
     public void OnPlay()
     {
-        MageManager.instance.PlaySoundName("BubbleButton", false);
+        MageManager.instance.PlaySound("BubbleButton", false);
         if (GameManager.instance.GetHappy() < price)
         {
             MageManager.instance.OnNotificationPopup(DataHolder.Dialog(8).GetDescription(MageManager.instance.GetLanguage()));

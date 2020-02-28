@@ -93,6 +93,9 @@ public class UIManager : MonoBehaviour
     float happy = 0;
     float diamond = 0;
 
+    float timeUpdate;
+    float maxTimeUpdate = 0.4f;
+
 	void Awake()
 	{
 		if (instance == null)
@@ -116,15 +119,19 @@ public class UIManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        UpdateUI();
-        if (notificationText.Count > 0)
+        if (timeUpdate > maxTimeUpdate)
         {
-            OnQuestNotificationPopup(notificationText[0]);
+            UpdateUI();
+            timeUpdate = 0;
+            if (notificationText.Count > 0)
+            {
+                OnQuestNotificationPopup(notificationText[0]);
+            }
+            if (GameManager.instance.myPlayer.questId >= DataHolder.Quests().GetDataCount() && notificationIcon != null)
+                notificationIcon.SetActive(false);
         }
-        if (GameManager.instance.myPlayer.questId >= DataHolder.Quests().GetDataCount() && notificationIcon != null)
-            notificationIcon.SetActive(false);
-
-        
+        else
+            timeUpdate += Time.deltaTime;
     }
 
 
@@ -595,7 +602,7 @@ public class UIManager : MonoBehaviour
     }
 
     public void OnHome(){
-        MageManager.instance.PlaySoundName("BubbleButton", false);
+        MageManager.instance.PlaySound("BubbleButton", false);
         MageManager.instance.LoadSceneWithLoading("House");
         homeUI.SetActive(true);
      }

@@ -54,7 +54,7 @@ public class PetCollectionUI : MonoBehaviour
         int n = petId % 5 + 1;
         BG.sprite = Resources.Load<Sprite>("Icons/Background/BG_" + n.ToString() + "_Black") as Sprite;
         yield return new WaitForSeconds(1f);
-        MageManager.instance.PlaySoundName("collect_item_02", false);
+        MageManager.instance.PlaySound("collect_item_02", false);
         animator.Play("Active");
         yield return new WaitForSeconds(0.3f);
         petAvatar.color = Color.white;

@@ -7,7 +7,7 @@ public class ToyWaterItem : ToyItem
     public override void OnActive(){
         state = EquipmentState.Active;
         animator.Play("Active");
-        MageManager.instance.PlaySoundName("Item_WaterJet", false);
+        MageManager.instance.PlaySound3D("Item_WaterJet", false,this.transform.position);
         GameManager.instance.LogAchivement(AchivementType.Use_Item,ActionType.None,item.itemID);
     }
 

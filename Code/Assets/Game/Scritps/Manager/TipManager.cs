@@ -7,8 +7,7 @@ public class TipManager : MonoBehaviour
     public static TipManager instance;
     float time = 0;
     float maxTimeCheck = 1.3f;
-    float timeTip = 0;
-    float maxTimeTip = 20;
+
 
     private void Awake()
     {
@@ -36,15 +35,6 @@ public class TipManager : MonoBehaviour
         }
         else
             time += Time.deltaTime;
-
-        if (timeTip > maxTimeTip)
-        {
-            timeTip = 0;
-            CheckTip();
-
-        }
-        else
-            timeTip += Time.deltaTime;
     }
 
     void CheckUI()
@@ -53,10 +43,5 @@ public class TipManager : MonoBehaviour
             UIManager.instance.mapButton.gameObject.SetActive(true);
         else
             UIManager.instance.mapButton.gameObject.SetActive(false);
-    }
-
-    void CheckTip()
-    {
-
     }
 }

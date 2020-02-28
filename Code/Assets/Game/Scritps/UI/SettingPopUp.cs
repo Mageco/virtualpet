@@ -100,7 +100,7 @@ public class SettingPopUp : MonoBehaviour {
 	{
 		isClose = true;
 		Time.timeScale = 1;
-		MageManager.instance.PlaySoundName ("BubbleButton", false);
+		MageManager.instance.PlaySound ("BubbleButton", false);
 		this.GetComponent<Popup> ().Close ();
 	}
 

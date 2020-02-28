@@ -35,7 +35,7 @@ public class EventPanel : MonoBehaviour
 
     public void OnEvent(int id){
         this.Close();
-        MageManager.instance.PlaySoundName("BubbleButton",false);
+        MageManager.instance.PlaySound("BubbleButton",false);
         UIManager.instance.OnMinigame(id);
     }
 

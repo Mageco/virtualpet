@@ -30,7 +30,7 @@ public class FlowerJarItem : BaseDragItem
 
 		float l = Vector2.Distance(GameManager.instance.GetPetObject(0).transform.position,this.transform.position);
 		breakObject.SetActive(true);
-        MageManager.instance.PlaySoundName("Item_Vase", false);
+        MageManager.instance.PlaySound("Item_Vase", false);
 		yield return StartCoroutine(DoAnim("Break"));
         ItemManager.instance.ResetCameraTarget();
 		yield return new WaitForSeconds(2);

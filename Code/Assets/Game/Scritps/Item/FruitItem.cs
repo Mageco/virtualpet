@@ -95,7 +95,7 @@ public class FruitItem : MonoBehaviour
         int value = Random.Range(coin, coin*2);
         ItemManager.instance.SpawnCoin(this.transform.position + new Vector3(0, 2, -1), value, this.gameObject);
         GameManager.instance.AddCoin(value); 
-        MageManager.instance.PlaySoundName("happy_collect_item_01",false);
+        MageManager.instance.PlaySound("happy_collect_item_01",false);
         GameManager.instance.LogAchivement(AchivementType.CollectFruit);
     }
 

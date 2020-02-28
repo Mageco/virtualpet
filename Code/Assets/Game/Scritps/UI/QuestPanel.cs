@@ -22,7 +22,7 @@ public class QuestPanel : MonoBehaviour
     IEnumerator Start()
     {
         yield return new WaitForSeconds(0.5f);
-        MageManager.instance.PlaySoundName("Win",false);
+        MageManager.instance.PlaySound("Win",false);
         yield return new WaitForSeconds(1f);
        
         //MageManager.instance.PlaySoundName("Changing2",false);
@@ -91,7 +91,7 @@ public class QuestPanel : MonoBehaviour
         for(int i=0;i<itemEffects.Length;i++){
             if(itemEffects[i].transform.parent.gameObject.activeSelf){
                 itemEffects[i].SetActive(true);
-                MageManager.instance.PlaySoundName("Changing2",false);
+                MageManager.instance.PlaySound("Changing2",false);
                 yield return new WaitForSeconds(0.5f);
             }
         }

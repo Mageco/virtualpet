@@ -84,7 +84,7 @@ public class AnimatedButton : UIBehaviour, IPointerEnterHandler, IPointerExitHan
         if (!IsActive())
             return;
 
-        MageManager.instance.PlaySoundName("BubbleButton",false);
+        MageManager.instance.PlaySound("BubbleButton",false);
         if (m_animator.GetCurrentAnimatorStateInfo(0).IsName("Normal"))
             m_animator.Play("Pressed");
     }

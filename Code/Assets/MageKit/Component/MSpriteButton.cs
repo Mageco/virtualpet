@@ -55,7 +55,7 @@ public class MSpriteButton : MonoBehaviour {
 	{
 		if(anim != null)
 			anim.SetBool("Click",true);
-        MageManager.instance.PlaySoundName("ButtonLight", false);
+        MageManager.instance.PlaySound("ButtonLight", false);
 		Invoke("InvokeOnClickAction", 0.25f);
 	}
 

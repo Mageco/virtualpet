@@ -201,8 +201,8 @@ public class BeeController : MonoBehaviour
 
 
 	void OnMouseUp(){
-		MageManager.instance.PlaySoundName("Punch1",false);
-		MageManager.instance.PlaySoundName("collect_item_02",false);
+		MageManager.instance.PlaySound3D("Punch1",false, this.transform.position);
+		MageManager.instance.PlaySound3D("collect_item_02",false, this.transform.position);
 		anim.Play("Hit",0);
 		int value = Random.Range(2, 6);
 		ItemManager.instance.SpawnCoin(this.transform.position + new Vector3(0, 2, -1), value, this.gameObject);

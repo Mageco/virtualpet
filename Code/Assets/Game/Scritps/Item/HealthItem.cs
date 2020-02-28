@@ -68,7 +68,7 @@ public class HealthItem : ItemDrag
             isActive = true;
             anim.Play("Active");
             pet.OnHealth(sickType,amounnt);
-            MageManager.instance.PlaySoundName("Heal",false);
+            MageManager.instance.PlaySound3D("Heal",false,this.transform.position);
             if(effect == null){
                 effect = GameObject.Instantiate(effectPrefab,pet.transform.position,Quaternion.identity);
                 effect.transform.parent = pet.transform;
@@ -104,7 +104,7 @@ public class HealthItem : ItemDrag
 
     protected override IEnumerator ReturnPosition(Vector3 pos)
     {
-        MageManager.instance.PlaySoundName("Drag", false);
+        MageManager.instance.PlaySound3D("Drag", false,this.transform.position);
         isBusy = true;
         while (Vector2.Distance(this.transform.localPosition, pos) > 0.1f)
         {

@@ -895,7 +895,7 @@ public class CharController : MonoBehaviour
         if (actionType == ActionType.OnBath)
         {
             anim.Play("Shake", 0);
-            MageManager.instance.PlaySoundName("Shake", false);
+            MageManager.instance.PlaySound3D("Shake", false,this.transform.position);
         }
 
     }
@@ -1137,7 +1137,7 @@ public class CharController : MonoBehaviour
         float speed = ySpeed;
         //charScale.scalePosition = new Vector3(this.transform.position.x, this.transform.position.y - height, 0);
         charInteract.interactType = InteractType.Jump;
-        MageManager.instance.PlaySoundName("Drag", false);
+        MageManager.instance.PlaySound("Drag", false);
         while (charInteract.interactType == InteractType.Jump && !isAbort)
         {
             speed -= accelerator * Time.deltaTime;
@@ -1168,7 +1168,7 @@ public class CharController : MonoBehaviour
         {
             anim.Play("Hold", 0);
             charInteract.interactType = InteractType.Jump;
-            MageManager.instance.PlaySoundName("Drag", false);
+            MageManager.instance.PlaySound3D("Drag", false,this.transform.position);
             while (charInteract.interactType == InteractType.Jump && !isAbort)
             {
                 ySpeed -= 30 * Time.deltaTime;
@@ -1214,7 +1214,7 @@ public class CharController : MonoBehaviour
 
     protected virtual IEnumerator Hold()
     {
-        MageManager.instance.PlaySoundName("Drag", false);
+        MageManager.instance.PlaySound("Drag", false);
         if (charInteract.isDrag)
         {
             charInteract.interactType = InteractType.Drag;
@@ -1281,7 +1281,7 @@ public class CharController : MonoBehaviour
         charInteract.interactType = InteractType.None;
 
         CheckEnviroment();
-        MageManager.instance.PlaySoundName("whoosh_swish_med_03", false);
+        MageManager.instance.PlaySound3D("whoosh_swish_med_03", false,this.transform.position);
         yield return StartCoroutine(DoAnim("Drop"));
 
 
@@ -1311,7 +1311,7 @@ public class CharController : MonoBehaviour
         }
         else if (ran < 60)
         {
-            MageManager.instance.PlaySoundName(charType.ToString() + "_Speak", false);
+            MageManager.instance.PlaySound3D(charType.ToString() + "_Speak", false,this.transform.position);
             yield return DoAnim("Speak_" + direction.ToString());
         }
         else
@@ -1390,8 +1390,8 @@ public class CharController : MonoBehaviour
         if (!isAbort)
         {
             anim.Play("Pee", 0);
-            int soundid = MageManager.instance.PlaySoundName("Pee", true);
-            MageManager.instance.PlaySoundName("PeeDrop", false);
+            int soundid = MageManager.instance.PlaySound3D("Pee", true,this.transform.position);
+            MageManager.instance.PlaySound3D("PeeDrop", false,this.transform.position);
             Debug.Log("Pee");
             float value = data.Pee;
             Vector3 pos = peePosition.position;
@@ -1437,7 +1437,7 @@ public class CharController : MonoBehaviour
         if (!isAbort)
         {
             anim.Play("Shit", 0);
-            MageManager.instance.PlaySoundName("Shit", false);
+            MageManager.instance.PlaySound3D("Shit", false,this.transform.position);
             float value = data.Pee;
 
             while (data.Shit > 0 && !isAbort)
@@ -1481,7 +1481,7 @@ public class CharController : MonoBehaviour
             if (GetFoodItem().CanEat() && canEat)
             {
                 anim.Play("Eat", 0);
-                int soundid = MageManager.instance.PlaySoundName("Eat", false);
+                int soundid = MageManager.instance.PlaySound3D("Eat", false,this.transform.position);
                 yield return StartCoroutine(Wait(0.1f));
                 while (data.Food < data.MaxFood && !isAbort && canEat)
                 {
@@ -1510,7 +1510,7 @@ public class CharController : MonoBehaviour
                 int ran = Random.Range(0, 100);
                 if (ran < 30)
                 {
-                    MageManager.instance.PlaySoundName(charType.ToString() + "_Speak", false);
+                    MageManager.instance.PlaySound3D(charType.ToString() + "_Speak", false,this.transform.position);
                     yield return StartCoroutine(DoAnim("Speak_" + direction.ToString()));
                 }
                 else
@@ -1544,7 +1544,7 @@ public class CharController : MonoBehaviour
 
             if (GetDrinkItem().CanEat() && canDrink)
             {
-                int soundid = MageManager.instance.PlaySoundName("Drink", true);
+                int soundid = MageManager.instance.PlaySound3D("Drink", true,this.transform.position);
                 anim.Play("Drink", 0);
                 yield return StartCoroutine(Wait(0.1f));
                 while (data.Water < data.MaxWater && !isAbort && canDrink)
@@ -1573,7 +1573,7 @@ public class CharController : MonoBehaviour
                 int ran = Random.Range(0, 100);
                 if (ran < 30)
                 {
-                    MageManager.instance.PlaySoundName(charType.ToString() + "_Speak", false);
+                    MageManager.instance.PlaySound3D(charType.ToString() + "_Speak", false,this.transform.position);
                     yield return StartCoroutine(DoAnim("Speak_" + direction.ToString()));
                 }
                 else
@@ -1663,7 +1663,7 @@ public class CharController : MonoBehaviour
             }
             else
             {
-                MageManager.instance.PlaySoundName(charType.ToString() + "_Speak", false);
+                MageManager.instance.PlaySound3D(charType.ToString() + "_Speak", false,this.transform.position);
                 yield return DoAnim("Speak_" + direction.ToString());
             }
 
@@ -1698,7 +1698,7 @@ public class CharController : MonoBehaviour
             }
             else
             {
-                MageManager.instance.PlaySoundName(charType.ToString() + "_Speak", false);
+                MageManager.instance.PlaySound3D(charType.ToString() + "_Speak", false,this.transform.position);
                 yield return DoAnim("Speak_" + direction.ToString());
             }
 
@@ -1776,7 +1776,7 @@ public class CharController : MonoBehaviour
 
     protected virtual IEnumerator Fear()
     {
-        MageManager.instance.PlaySoundName(charType.ToString() + "_Supprised", false);
+        MageManager.instance.PlaySound3D(charType.ToString() + "_Supprised", false,this.transform.position);
         yield return StartCoroutine(DoAnim("Teased"));
         data.Energy -= 2;
         CheckAbort();
@@ -1814,8 +1814,8 @@ public class CharController : MonoBehaviour
                 while (toyItem != null && !isAbort && count < maxCount)
                 {
                     toyItem.OnActive();
-                    MageManager.instance.PlaySoundName(charType.ToString() + "_Supprised", false);
-                    MageManager.instance.PlaySoundName("Drag", false);
+                    MageManager.instance.PlaySound3D(charType.ToString() + "_Supprised", false,this.transform.position);
+                    MageManager.instance.PlaySound3D("Drag", false,this.transform.position);
                     anim.Play("Teased", 0);
                     shadow.SetActive(false);
                     yield return new WaitForEndOfFrame();
@@ -1842,7 +1842,7 @@ public class CharController : MonoBehaviour
                         {
                             if (count == maxCount - 1)
                             {
-                                MageManager.instance.PlaySoundName("whoosh_swish_med_03", false);
+                                MageManager.instance.PlaySound3D("whoosh_swish_med_03", false,this.transform.position);
                                 yield return StartCoroutine(DoAnim("Drop"));
 
                             }
@@ -1883,7 +1883,7 @@ public class CharController : MonoBehaviour
             else if (toyItem.toyType == ToyType.Wheel)
             {
                 charInteract.interactType = InteractType.Toy;
-                MageManager.instance.PlaySoundName("Wheel", false);
+                MageManager.instance.PlaySound3D("Wheel", false,this.transform.position);
                 charScale.speedFactor = 2f;
                 anim.speed = 2f;
                 SetDirection(Direction.L);
@@ -1984,7 +1984,7 @@ public class CharController : MonoBehaviour
         int ran = Random.Range(0, 100);
         if (ran > 50)
         {
-            MageManager.instance.PlaySoundName(charType.ToString() + "_Supprised", false);
+            MageManager.instance.PlaySound3D(charType.ToString() + "_Supprised", false,this.transform.position);
             yield return StartCoroutine(DoAnim("Teased"));
         }
         else
@@ -1996,7 +1996,7 @@ public class CharController : MonoBehaviour
 
     protected virtual IEnumerator Control()
     {
-        MageManager.instance.PlaySoundName("Drag", false);
+        MageManager.instance.PlaySound("Drag", false);
         charInteract.interactType = InteractType.Touch;
         enviromentType = EnviromentType.Room;
         ItemManager.instance.SetCameraTarget(this.gameObject);
@@ -2058,7 +2058,7 @@ public class CharController : MonoBehaviour
         charInteract.interactType = InteractType.None;
 
         CheckEnviroment();
-        MageManager.instance.PlaySoundName("whoosh_swish_med_03", false);
+        MageManager.instance.PlaySound3D("whoosh_swish_med_03", false,this.transform.position);
         yield return StartCoroutine(DoAnim("Drop"));
 
 
@@ -2074,10 +2074,10 @@ public class CharController : MonoBehaviour
 
     protected virtual IEnumerator Fall()
     {
-        MageManager.instance.PlaySoundName("Fall", false);
+        MageManager.instance.PlaySound3D("Fall", false,this.transform.position);
 
         data.Damage += Random.Range(2, 10)/data.level;
-        MageManager.instance.PlaySoundName("Drop", false, 1);
+        MageManager.instance.PlaySound3D("Drop", false, this.transform.position);
         yield return StartCoroutine(DoAnim("Fall_" + direction.ToString()));
 
         CheckAbort();

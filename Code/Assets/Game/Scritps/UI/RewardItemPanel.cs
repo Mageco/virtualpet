@@ -27,7 +27,7 @@ public class RewardItemPanel : MonoBehaviour
 
     public void ShowAd()
     {
-        MageManager.instance.PlaySoundName("BubbleButton", false);
+        MageManager.instance.PlaySound("BubbleButton", false);
         if (chestItem != null)
             RewardVideoAdManager.instance.ShowAd(rewardType,chestItem);
         this.Close();

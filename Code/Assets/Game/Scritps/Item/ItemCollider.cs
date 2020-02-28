@@ -31,9 +31,10 @@ public class ItemCollider : BaseFloorItem
 	{
 		base.Update();
 
-		List<CharController> temp = new List<CharController>();
+		
         if(pets.Count > 0)
         {
+			List<CharController> temp = new List<CharController>();
 			if (!isActive && animator != null)
 				animator.Play("Active", 0);
             foreach(CharController pet in pets)
@@ -44,7 +45,11 @@ public class ItemCollider : BaseFloorItem
                 }
             }
 			isActive = true;
-        }
+			foreach (CharController pet in temp)
+			{
+				pets.Remove(pet);
+			}
+		}
         else
         {
             if (isActive)
@@ -57,10 +62,7 @@ public class ItemCollider : BaseFloorItem
 		}
 			
 
-		foreach (CharController pet in temp)
-		{
-			pets.Remove(pet);
-		}
+
 	}
 
 	protected override void LateUpdate()

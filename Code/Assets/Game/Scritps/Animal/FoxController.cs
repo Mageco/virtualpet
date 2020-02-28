@@ -55,7 +55,7 @@ public class FoxController : AnimalController
 
 
     public void OnTap(){
-        MageManager.instance.PlaySoundName("Punch2", false);
+        MageManager.instance.PlaySound("Punch2", false);
         if(state == AnimalState.Seek){
             agent.Stop();
             Debug.Log("Hit");
@@ -91,14 +91,14 @@ public class FoxController : AnimalController
         col2D.enabled = false;
         if(animalType == AnimalType.Fox)
         {
-            MageManager.instance.PlaySoundName("Fox_Hurt", false);
+            MageManager.instance.PlaySound("Fox_Hurt", false);
         }else if(animalType == AnimalType.Snake)
         {
-            MageManager.instance.PlaySoundName("Snake_Hurt", false);
+            MageManager.instance.PlaySound("Snake_Hurt", false);
         }
         else if (animalType == AnimalType.Eagle)
         {
-            MageManager.instance.PlaySoundName("Eagle_Hurt", false);
+            MageManager.instance.PlaySound("Eagle_Hurt", false);
         }
         //Camera.main.GetComponent<CameraShake>().Shake();
 

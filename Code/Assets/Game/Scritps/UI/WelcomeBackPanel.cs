@@ -37,7 +37,7 @@ public class WelcomeBackPanel : MonoBehaviour
 
     public void WatchAd()
     {
-        MageManager.instance.PlaySoundName("BubbleButton", false);
+        MageManager.instance.PlaySound("BubbleButton", false);
         RewardVideoAdManager.instance.ShowAd(RewardType.Welcome);
     }
 
@@ -49,7 +49,7 @@ public class WelcomeBackPanel : MonoBehaviour
 
     public void Close()
     {
-        MageManager.instance.PlaySoundName("Collect_Achivement", false);
+        MageManager.instance.PlaySound("Collect_Achivement", false);
         GameManager.instance.AddCoin(coin);
         GameManager.instance.AddHappy(happy);
         this.GetComponent<Popup>().Close();

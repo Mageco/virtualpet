@@ -83,7 +83,7 @@ public class CharShiba : CharController
                 yield return StartCoroutine(DoAnim("Sit"));
             else if (r < 70)
             {
-                MageManager.instance.PlaySoundName(charType.ToString() + "_Speak", false);
+                MageManager.instance.PlaySound3D(charType.ToString() + "_Speak", false,this.transform.position);
                 yield return DoAnim("Speak_" + direction.ToString());
             }
             else
