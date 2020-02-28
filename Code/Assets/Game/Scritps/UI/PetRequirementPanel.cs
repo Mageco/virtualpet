@@ -150,6 +150,8 @@ public class PetRequirementPanel : MonoBehaviour
         if (!isBuy)
         {
             GameManager.instance.AddPet(petId);
+            Pet p = GameManager.instance.GetPet(petId);
+            p.isNew = true;
             GameManager.instance.EquipPet(petId);
             isBuy = true;
             if (ItemManager.instance != null && ItemManager.instance.GetCharCollector(petId) != null)

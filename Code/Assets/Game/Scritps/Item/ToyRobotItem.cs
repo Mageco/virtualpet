@@ -83,6 +83,10 @@ public class ToyRobotItem : ToyItem
             direction = Direction.R;
     }
 
+    public override void OnActive()
+    {
+        state = EquipmentState.Active;
+    }
 
     IEnumerator Hold()
     {

@@ -270,6 +270,7 @@ public class ItemManager : MonoBehaviour
                 }
                 else
                 {
+                    /*
                     for (int j = 0; j < item.transform.childCount; j++)
                     {
                         Animator anim = item.transform.GetChild(j).GetComponent<Animator>();
@@ -277,7 +278,7 @@ public class ItemManager : MonoBehaviour
                         {
                             anim.Play("Idle", 0);
                         }
-                    }
+                    }*/
                 }
             }
             Debug.Log(DataHolder.GetItem(playerItem.itemId).GetName(0));
