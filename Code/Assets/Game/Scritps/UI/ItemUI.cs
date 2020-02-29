@@ -26,6 +26,7 @@ public class ItemUI : MonoBehaviour
     public Image cleanIcon;
     public Image bathIcon;
     public Image bedIcon;
+    public Image strengthIcon;
 
     public Text happyText;
     public Text sickText;
@@ -35,13 +36,18 @@ public class ItemUI : MonoBehaviour
     public Text cleanText;
     public Text bathText;
     public Text bedText;
+    public Text strengthText;
 
+    public Text petLevelText;
     public Text buttonText;
+
     Animator animator;
     bool isBusy = false;
     bool isCharacter = false;
     bool isLevelRequire = false;
     public Material greyMaterial;
+
+    
 
     ItemState state = ItemState.OnShop;
 
@@ -233,11 +239,27 @@ public class ItemUI : MonoBehaviour
         }
         else if (state == ItemState.Equiped)
         {
+            statPanel.SetActive(true);
+            Pet p = GameManager.instance.GetPet(d.iD);
+            petLevelText.gameObject.SetActive(true);
+            petLevelText.text = DataHolder.Dialog(27).GetName(MageManager.instance.GetLanguage()) + " " + p.level.ToString();
+            heartIcon.gameObject.SetActive(true);
+            happyText.text = (1 + p.level/5).ToString();
+            strengthIcon.gameObject.SetActive(true);
+            strengthText.text = p.MaxHealth.ToString();
             unEquipButton.gameObject.SetActive(true);
             this.GetComponent<Image>().color = new Color(251f / 256, 134f / 256, 58f / 256);
         }
         else if (state == ItemState.Have)
         {
+            statPanel.SetActive(true);
+            Pet p = GameManager.instance.GetPet(d.iD);
+            petLevelText.gameObject.SetActive(true);
+            petLevelText.text = DataHolder.Dialog(27).GetName(MageManager.instance.GetLanguage()) + " " + p.level.ToString();
+            heartIcon.gameObject.SetActive(true);
+            happyText.text = (1 + p.level/ 5).ToString();
+            strengthIcon.gameObject.SetActive(true);
+            strengthText.text = p.MaxHealth.ToString();
             equipButton.gameObject.SetActive(true);
         }
 
@@ -288,6 +310,8 @@ public class ItemUI : MonoBehaviour
         diamonIcon.SetActive(false);
         moneyIcon.SetActive(false);
         happyIcon.SetActive(false);
+        petLevelText.gameObject.SetActive(false);
+        
 
         statPanel.SetActive(false);
         happyIcon.gameObject.SetActive(false);
@@ -297,6 +321,7 @@ public class ItemUI : MonoBehaviour
         drinkIcon.gameObject.SetActive(false);
         bathIcon.gameObject.SetActive(false);
         cleanIcon.gameObject.SetActive(false);
+        strengthIcon.gameObject.SetActive(false);
     }
 
     public void OnBuy()
@@ -367,6 +392,10 @@ public class ItemUI : MonoBehaviour
 
     public void OnItemInfo()
     {
+        if(isCharacter && (state == ItemState.Have || state == ItemState.Equiped))
+        {
+            UIManager.instance.OnProfilePanel(itemId);
+        }
         //MageManager.instance.PlaySoundName("BubbleButton", false);
         //UIManager.instance.OnItemInfoPanel(itemId, isCharacter);
     }

@@ -85,8 +85,11 @@ public class ProfileUI : MonoBehaviour
             MageManager.instance.OnNotificationPopup(DataHolder.Dialog(8).GetDescription(MageManager.instance.GetLanguage()));
         }else
         {
-
             GameManager.instance.LevelUp(data.iD);
+            if(UIManager.instance != null && UIManager.instance.shopPanel != null)
+            {
+                UIManager.instance.shopPanel.ReLoad();
+            }
         }
     }
 

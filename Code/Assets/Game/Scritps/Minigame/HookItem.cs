@@ -117,7 +117,6 @@ public class HookItem : MonoBehaviour
             }else if(fish.fishType == FishType.Squirt)
             {
                 MageManager.instance.PlaySound("whoosh_swish_med_03", false);
-                Minigame.instance.time -= 5;
                 GameObject go = GameObject.Instantiate(timeGainPrefab);
                 go.transform.position = fish.transform.position + new Vector3(0, -0.5f, -10);
             }
