@@ -80,7 +80,7 @@ public class CharInteract : MonoBehaviour
         }
 
 
-        if (touchTime < maxClickTime && Vector2.Distance(holdPosition, Camera.main.ScreenToWorldPoint(Input.mousePosition)) < 0.1f)
+        if (touchTime < maxClickTime && Vector2.Distance(holdPosition, Camera.main.ScreenToWorldPoint(Input.mousePosition)) < 1f)
         {
             if (character.actionType != ActionType.Sick && character.actionType != ActionType.Injured)
             {
