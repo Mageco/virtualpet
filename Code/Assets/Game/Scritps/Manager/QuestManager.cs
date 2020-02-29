@@ -61,6 +61,7 @@ public class QuestManager : MonoBehaviour
         delayTime = 2;
         if (GameManager.instance.myPlayer.questId == 0){
             delayTime = 0;
+            GameManager.instance.GetActivePet().character.agent.transform.position = new Vector3(0,- 10, 0);
             GameManager.instance.GetActivePet().Dirty = GameManager.instance.GetActivePet().MaxDirty * 0.7f;
             GameManager.instance.GetActivePet().Food = 0.05f * GameManager.instance.GetActivePet().MaxFood;
             GameManager.instance.GetActivePet().Water = 0.05f * GameManager.instance.GetActivePet().MaxWater;

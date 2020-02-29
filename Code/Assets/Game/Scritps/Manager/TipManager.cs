@@ -39,7 +39,7 @@ public class TipManager : MonoBehaviour
 
     void CheckUI()
     {
-        if (GameManager.instance.myPlayer.level >= 3)
+        if (GameManager.instance.myPlayer.level >= 2)
             UIManager.instance.mapButton.gameObject.SetActive(true);
         else
             UIManager.instance.mapButton.gameObject.SetActive(false);
