@@ -58,7 +58,7 @@ public class BaseFloorItem : MonoBehaviour
 		if (state == EquipmentState.Hold)
 		{
 			dragTime += Time.deltaTime;
-			if (dragTime > 0.2f)
+			if (dragTime > 0.3f)
 			{
 				if (Vector2.Distance(Camera.main.ScreenToWorldPoint(Input.mousePosition), clickPosition) < 1f)
 				{

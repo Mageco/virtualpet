@@ -9,8 +9,8 @@ public class ConfirmationPopup : MonoBehaviour {
 	public Text description;
 	[HideInInspector]
 	public string variable;
-	public TintedButton okButton;
-	public TintedButton cancelButton;
+	public Button okButton;
+	public Button cancelButton;
 
 	public void Load(string t,string d,string v = "")
 	{

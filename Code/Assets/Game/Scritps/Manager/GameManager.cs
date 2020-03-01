@@ -634,6 +634,7 @@ public class GameManager : MonoBehaviour
         {
             myPlayer.level = l;
             UIManager.instance.OnLevelUpPanel();
+            OnTip();
             Debug.Log("Level Up");
         }
         
@@ -650,7 +651,6 @@ public class GameManager : MonoBehaviour
             go.transform.position = GetPetObject(petId).transform.position + new Vector3(0, 2, -1);
             AddHappy(-10 * GetPet(petId).level * GetPet(petId).level);
             GetPet(petId).level++;
-            OnTip();
             SavePlayer();
         }
             
