@@ -116,7 +116,7 @@ public class QuestManager : MonoBehaviour
         }
         else if (GameManager.instance.myPlayer.questId == 10)
         {
-            delayTime = 10;
+            delayTime = 30;
         }
     }
 
