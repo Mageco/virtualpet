@@ -73,7 +73,7 @@ public class ItemUI : MonoBehaviour
             state = ItemState.OnShop;
         }
 
-        if (d.levelRequire > GameManager.instance.myPlayer.level)
+        if (d.levelRequire > GameManager.instance.myPlayer.level && state == ItemState.OnShop)
             isLevelRequire = true;
 
         OffAllIcon();

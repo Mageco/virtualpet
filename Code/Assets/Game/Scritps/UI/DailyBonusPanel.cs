@@ -25,7 +25,7 @@ public class DailyBonusPanel : MonoBehaviour
         int n = 0;
         for (int i=0;i< GameManager.instance.myPlayer.dailyBonus.Count;i++)
         {
-            dayText[i].text = "Day " + (i+1).ToString("00");
+            dayText[i].text = DataHolder.Dialog(94).GetName(MageManager.instance.GetLanguage()) + " " + (i+1).ToString("00");
             int id = i;
             if(i < 6)
             {
@@ -50,7 +50,10 @@ public class DailyBonusPanel : MonoBehaviour
         }
         else
         {
-            if(System.DateTime.Parse(GameManager.instance.myPlayer.dailyBonus[n-1].timeReceived).Day < System.DateTime.Now.Day)
+            Debug.Log(System.DateTime.Parse(GameManager.instance.myPlayer.dailyBonus[n - 1].timeReceived).Day);
+            Debug.Log(System.DateTime.Now.Day);
+            
+            if(System.DateTime.Parse(GameManager.instance.myPlayer.dailyBonus[n - 1].timeReceived).Year < System.DateTime.Now.Year || System.DateTime.Parse(GameManager.instance.myPlayer.dailyBonus[n - 1].timeReceived).Month < System.DateTime.Now.Month || System.DateTime.Parse(GameManager.instance.myPlayer.dailyBonus[n-1].timeReceived).Day < System.DateTime.Now.Day)
             {
                 collectButtons[n].interactable = true;
             }

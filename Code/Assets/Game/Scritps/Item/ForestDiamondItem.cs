@@ -61,7 +61,6 @@ public class ForestDiamondItem : MonoBehaviour
     IEnumerator ActiveCoroutine()
     {
         animator.Play("Active", 0);
-        ForestManager.instance.SpawnCoin(this.transform.position + new Vector3(0, 2, -1), value, this.gameObject);
         GameManager.instance.AddDiamond(value);
         MageManager.instance.PlaySoundName("happy_collect_item_01", false);
         GameManager.instance.LogAchivement(AchivementType.CollectFruit);

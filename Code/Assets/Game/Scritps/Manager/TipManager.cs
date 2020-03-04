@@ -6,7 +6,7 @@ public class TipManager : MonoBehaviour
 {
     public static TipManager instance;
     float time = 0;
-    float maxTimeCheck = 1;
+    float maxTimeCheck = 1.3f;
     float timeTip = 0;
     float maxTimeTip = 20;
 

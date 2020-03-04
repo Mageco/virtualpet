@@ -9,7 +9,7 @@ public class ForestManager : MonoBehaviour
     public GameObject dayBGG;
     public GameObject nightBG;
     float time = 0;
-    public float maxTimeCheck = 10;
+    public float maxTimeCheck = 20.1f;
     System.DateTime today;
     public GameObject coinPrefab;
     public GameObject starPrefab;

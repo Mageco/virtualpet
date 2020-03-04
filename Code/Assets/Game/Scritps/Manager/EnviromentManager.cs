@@ -15,7 +15,7 @@ public class EnviromentManager : MonoBehaviour
     WeatherType weatherType = WeatherType.None;
 
     float time = 0;
-    public float maxTimeCheck = 10;
+    public float maxTimeCheck = 20.3f;
     DateTime today;
    
 

@@ -6,7 +6,7 @@ public class ServiceManager : MonoBehaviour
 {
     public static ServiceManager instance;
     float time;
-    float maxTimeCheck = 1;
+    float maxTimeCheck = 1.2f;
     public ServiceUI[] serviceUIs;
     public GameObject servicePanel;
 

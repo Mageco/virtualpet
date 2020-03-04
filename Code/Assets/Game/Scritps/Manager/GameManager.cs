@@ -10,7 +10,6 @@ public class GameManager : MonoBehaviour
  	public static GameManager instance;
     public float gameTime = 0;
     public List<CharController> petObjects = new List<CharController>();
-    CameraController camera;
     
     //GameType lastGameType = GameType.House;
 
@@ -35,7 +34,6 @@ public class GameManager : MonoBehaviour
 		Screen.sleepTimeout = SleepTimeout.NeverSleep;
 		DataHolder.Instance();
 		DataHolder.Instance().Init();    
-        camera = Camera.main.GetComponent<CameraController>();
         if (ES2.Exists("GameTime"))
         {
             gameTime = ES2.Load<float>("GameTime");
@@ -623,7 +621,6 @@ public class GameManager : MonoBehaviour
 
     public void AddExp(int c)
     {
-        Debug.Log("Add exp " + c);
         myPlayer.exp += c;
         int l = 1;
         float e = 20 * l + 20 * l * l;

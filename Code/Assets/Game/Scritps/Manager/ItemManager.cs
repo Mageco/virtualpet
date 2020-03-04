@@ -23,8 +23,17 @@ public class ItemManager : MonoBehaviour
     public GameObject healthEffectPrefab;
     public GameObject guidePrefab;
     public GameObject petGiftPrefab;
+
+    List<GameObject> pees = new List<GameObject>();
+    List<GameObject> shits = new List<GameObject>();
+    List<GameObject> happies = new List<GameObject>();
+    List<GameObject> chests = new List<GameObject>();
+    List<GameObject> dirties = new List<GameObject>();
+    List<GameObject> coins = new List<GameObject>();
+    List<GameObject> stars = new List<GameObject>();
+
     float time = 0;
-    float maxTimeCheck = 1;
+    float maxTimeCheck = 1.1f;
     System.DateTime playTime = System.DateTime.Now;
 
     public CameraController activeCamera;
