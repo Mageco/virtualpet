@@ -9,6 +9,7 @@ public class ForestCoinItem : MonoBehaviour
     Animator animator;
     Vector3 clickPosition;
     bool isClick = false;
+    public bool isOrder = true;
 
     private void Awake()
     {
@@ -17,10 +18,14 @@ public class ForestCoinItem : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Vector3 pos = this.transform.position;
-        pos.z = pos.y * 10;
-        this.transform.position = pos;
-        this.transform.localScale = this.transform.localScale * (1 - this.transform.position.y * 0.1f);
+        if (isOrder)
+        {
+            Vector3 pos = this.transform.position;
+            pos.z = pos.y * 10;
+            this.transform.position = pos;
+            this.transform.localScale = this.transform.localScale * (1 - this.transform.position.y * 0.1f);
+
+        }
     }
 
     // Update is called once per frame

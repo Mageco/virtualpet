@@ -16,10 +16,13 @@ public class ForestManager : MonoBehaviour
     public GameObject[] forestCoinPrefab;
     public GameObject fishPrefab;
     public GameObject[] charCollectors;
+    public GameObject[] animalPrefabs;
     float timeCoin = 0;
     float maxTimeCoin = 3;
     float timeFish = 0;
     float maxTimeFish = 5;
+    float timeAnimal = 0;
+    float maxTimeAnimal = 10;
     GameObject collector;
 
     void Awake()
@@ -28,6 +31,8 @@ public class ForestManager : MonoBehaviour
             instance = this;
         else 
             GameObject.Destroy(this.gameObject);
+
+        maxTimeAnimal = Random.Range(20, 100);
 
     }
     // Start is called before the first frame update
@@ -83,6 +88,15 @@ public class ForestManager : MonoBehaviour
         }
         else
             timeFish += Time.deltaTime;
+
+        if (timeAnimal > maxTimeAnimal)
+        {
+            timeAnimal = 0;
+            SpawnAnimal();
+            maxTimeAnimal = Random.Range(20, 100);
+        }
+        else
+            timeAnimal += Time.deltaTime;
     }
 
     void CheckDayNight(){
@@ -126,6 +140,17 @@ public class ForestManager : MonoBehaviour
             Vector3 pos = GetRandomPoint(PointType.Banana).position;
             int n = Random.Range(0, 100);
             GameObject go = Instantiate(forestCoinPrefab[n / 10], pos, Quaternion.identity);
+        }
+    }
+
+    void SpawnAnimal()
+    {
+        GameObject[] animals = GameObject.FindGameObjectsWithTag("Animal");
+        if (animals.Length < 2)
+        {
+            Transform point = GetRandomPoint(PointType.ChickenDefence);
+            int n = Random.Range(0, animalPrefabs.Length);
+            GameObject go = Instantiate(animalPrefabs[n], point.position,point.rotation);
         }
     }
 
