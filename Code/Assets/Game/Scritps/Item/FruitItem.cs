@@ -19,6 +19,7 @@ public class FruitItem : MonoBehaviour
     float timeCaculated = 0;
     CircleCollider2D collider;
     Vector3 clickPosition;
+    public int coin = 1;
 
     void Awake(){
         collider = this.GetComponent<CircleCollider2D>();
@@ -91,7 +92,7 @@ public class FruitItem : MonoBehaviour
         step = 0;
         time = 0;
         OnStep();
-        int value = Random.Range(1, 3);
+        int value = Random.Range(coin, coin + 2);
         ItemManager.instance.SpawnCoin(this.transform.position + new Vector3(0, 2, -1), value, this.gameObject);
         GameManager.instance.AddCoin(value); 
         MageManager.instance.PlaySoundName("happy_collect_item_01",false);
