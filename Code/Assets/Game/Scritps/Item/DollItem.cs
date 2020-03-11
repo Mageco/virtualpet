@@ -4,12 +4,10 @@ using UnityEngine;
 
 public class DollItem : MonoBehaviour
 {
-    float activeTime = 0;
     bool isActive = false;
     Animator animator;
     public ToyType toyType;
     bool isOn = false;
-    int soundId = 0;
 
     void Awake(){
         animator = this.GetComponent<Animator>();

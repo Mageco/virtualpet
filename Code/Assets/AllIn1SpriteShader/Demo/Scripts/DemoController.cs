@@ -10,7 +10,6 @@ public class DemoController : MonoBehaviour
 
     private int currExpositor;
 
-    [SerializeField] private GameObject background;
     private Material backgroundMat;
     [SerializeField] private float colorLerpSpeed;
     private Color[] targetColors;
@@ -23,7 +22,6 @@ public class DemoController : MonoBehaviour
 
         for (int i = 0; i < expositors.Length; i++) expositors[i].transform.position = new Vector3(0, expositorDistance * i, 0);
 
-        backgroundMat = background.GetComponent<Image>().material;
         targetColors = new Color[4];
         targetColors[0] = backgroundMat.GetColor("_GradTopLeftCol");
         targetColors[1] = backgroundMat.GetColor("_GradTopRightCol");

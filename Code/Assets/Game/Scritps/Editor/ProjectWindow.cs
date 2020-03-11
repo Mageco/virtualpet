@@ -23,7 +23,7 @@ public class ProjectWindow : EditorWindow
 	// tabs
 	private LanguageTab langTab = null;
 	private ItemTab itemTab = null;
-	private SkillTab skillTab = null;
+	//private SkillTab skillTab = null;
 	private DialogTab dialogTab = null;
 	private QuestTab questTab = null;
 	private PetTab petTab = null;

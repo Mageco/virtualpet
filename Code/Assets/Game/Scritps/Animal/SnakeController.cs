@@ -6,11 +6,11 @@ public class SnakeController : AnimalController
 {
     public float maxTimeWait = 5;
     public ChickenController target;
-    BoxCollider2D collider2D;
+    BoxCollider2D col;
 
     protected override void Load(){
         speed = maxSpeed/2f;
-        collider2D = this.GetComponent<BoxCollider2D>();
+        col = this.GetComponent<BoxCollider2D>();
     }
 
     protected override void Think()
@@ -141,21 +141,7 @@ public class SnakeController : AnimalController
         }
     }
 
-    void OnTriggerEnter2D(Collider2D other)
-    {
-        if (other.tag == "Chicken")
-        {
-            if(other.transform.parent.GetComponent<ChickenController>() != null && state == AnimalState.Seek){
-                //other.transform.parent.GetComponent<ChickenController>().gameObject.SetActive(false);
-                //OnRun();
-            }            
-        }
-    }
 
-    void OnTriggerExit2D(Collider2D other)
-    {
-
-    }
 
  
 }

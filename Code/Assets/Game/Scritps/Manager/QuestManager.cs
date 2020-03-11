@@ -20,18 +20,10 @@ public class QuestManager : MonoBehaviour
 
     float replayTime = 0;
     float maxReplayTime = 60;
-
-    float fadeDuration = 1f;
-
+ 
     bool isReplay = true;
-    bool isReward = false;
-
-    QuestPanel questPanel;
-    float originalValue = 0;
 
     GameObject guideItem;
-    GameObject guideItem1;
-    GameObject guideItem2;
 
     void Awake()
     {
@@ -65,8 +57,6 @@ public class QuestManager : MonoBehaviour
 
     void LoadQuestObject()
     {
-        
-        isReward = false;
         isReplay = false;
         delayTime = 2;
         if (GameManager.instance.myPlayer.questId == 0){
@@ -206,10 +196,6 @@ public class QuestManager : MonoBehaviour
 
         if (guideItem != null)
             Destroy(guideItem);
-        if (guideItem1 != null)
-            Destroy(guideItem1);
-        if (guideItem2 != null)
-            Destroy(guideItem2);
 
         GameManager.instance.myPlayer.questId++;
         GameManager.instance.SavePlayer();

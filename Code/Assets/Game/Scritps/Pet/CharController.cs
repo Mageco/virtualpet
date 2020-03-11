@@ -2145,8 +2145,8 @@ public class CharController : MonoBehaviour
 
     protected void CheckEnviroment()
     {
-        Debug.Log("Check enviroment");
-        Debug.Log(isAbort);
+        //Debug.Log("Check enviroment");
+        //Debug.Log(isAbort);
         if (isAbort)
             return;
         if (enviromentType == EnviromentType.Bath)

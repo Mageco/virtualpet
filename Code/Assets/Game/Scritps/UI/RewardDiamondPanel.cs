@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class RewardDiamondPanel : MonoBehaviour
 {
-    RewardType rewardType = RewardType.Chest;
-    ChestItem chestItem;
     ForestDiamondItem item;
     bool isWatchAd = false;
     // Start is called before the first frame update
