@@ -1797,7 +1797,7 @@ public class CharController : MonoBehaviour
 
      protected virtual IEnumerator Toy()
     {
-        if (toyItem != null)
+        if (toyItem != null && toyItem.pets.Count == 0)
         {
             toyItem.pets.Add(this);
             float time = 0;

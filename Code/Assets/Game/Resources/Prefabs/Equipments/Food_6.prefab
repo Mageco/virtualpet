@@ -9639,6 +9639,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f28402dd3988141b6a38e2672737c4d3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  item: {fileID: 0}
+  state: 0
+  lastPosition: {x: 0, y: 0, z: 0}
+  boundX: {x: -270, y: 52}
+  boundY: {x: -24, y: -3}
+  pets: []
+  movementType: 1
   itemSaveDataType: 4
   foodAmount: 0
   maxfoodAmount: 200
@@ -9648,16 +9655,6 @@ MonoBehaviour:
   - {fileID: 7170267776361271179, guid: c7a6681d088b8be49b69211ba79a2ee3, type: 3}
   - {fileID: -6862715935731312148, guid: aa9d458cab37dd5499635faa3e0a14be, type: 3}
   anchor: {fileID: 4441679453747766629}
-  item: {fileID: 0}
-  initZ: -6
-  scaleFactor: 0.05
-  state: 0
-  lastPosition: {x: 0, y: 0, z: 0}
-  boundX: {x: -270, y: 52}
-  boundY: {x: -24, y: -3}
-  pets: []
-  sprites: []
-  movementType: 1
 --- !u!61 &981964013
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -9743,7 +9740,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6239718400380778422}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fc4f7f33d8fc7c0419b2308165807ce0, type: 3}
   m_Name: 
