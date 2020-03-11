@@ -38,8 +38,12 @@ public class DailyBonusPanel : MonoBehaviour
             if (GameManager.instance.myPlayer.dailyBonus[i].isCollected)
             {
                 n++;
-                covers[i].SetActive(true);
-                dones[i].SetActive(true);
+                if (i < 6)
+                {
+                    covers[i].SetActive(true);
+                    dones[i].SetActive(true);
+                }
+
             }
         }
 
@@ -114,6 +118,7 @@ public class DailyBonusPanel : MonoBehaviour
             if (!GameManager.instance.IsHavePet(34))
             {
                 GameManager.instance.AddPet(34);
+                GameManager.instance.GetPet(34).isNew = true;
                 GameManager.instance.EquipPet(34);
             }
             this.Close();
