@@ -67,7 +67,7 @@ public class ForestDiamondItem : MonoBehaviour
     {
         animator.Play("Active", 0);
         GameManager.instance.AddDiamond(value);
-        MageManager.instance.PlaySoundName("happy_collect_item_01", false);
+        MageManager.instance.PlaySoundName("Collect_Achivement", false);
         GameManager.instance.LogAchivement(AchivementType.CollectFruit);
         yield return new WaitForEndOfFrame();
         yield return new WaitForSeconds(animator.GetCurrentAnimatorStateInfo(0).length);

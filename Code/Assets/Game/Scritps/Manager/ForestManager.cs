@@ -75,7 +75,7 @@ public class ForestManager : MonoBehaviour
         {
             timeCoin = 0;
             SpawnForestCoin();
-            maxTimeCoin = Random.Range(10, 30);
+            maxTimeCoin = Random.Range(10, 50);
         }
         else
             timeCoin += Time.deltaTime;

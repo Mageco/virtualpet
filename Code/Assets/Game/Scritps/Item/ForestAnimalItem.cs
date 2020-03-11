@@ -45,7 +45,7 @@ public class ForestAnimalItem : MonoBehaviour
         isActive = false;
         ForestManager.instance.SpawnCoin(this.transform.position + new Vector3(0, 2, -1), value);
         GameManager.instance.AddCoin(value);
-        MageManager.instance.PlaySoundName("happy_collect_item_01", false);
+        MageManager.instance.PlaySoundName("collect_item_02", false);
         yield return new WaitForEndOfFrame();
         SpriteRenderer[] sprites = this.GetComponentsInChildren<SpriteRenderer>();
         for(int i = 0; i < sprites.Length; i++)
@@ -54,7 +54,7 @@ public class ForestAnimalItem : MonoBehaviour
         }
         if (shadow != null)
             shadow.SetActive(false);
-        yield return new WaitForSeconds(Random.Range(10, 20));
+        yield return new WaitForSeconds(Random.Range(10, 50));
         for (int i = 0; i < sprites.Length; i++)
         {
             sprites[i].enabled = true;

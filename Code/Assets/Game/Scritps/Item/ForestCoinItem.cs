@@ -57,7 +57,7 @@ public class ForestCoinItem : MonoBehaviour
         animator.Play("Active", 0);
         ForestManager.instance.SpawnCoin(this.transform.position + new Vector3(0, 2, -1), value, this.gameObject);
         GameManager.instance.AddCoin(value);
-        MageManager.instance.PlaySoundName("happy_collect_item_01", false);
+        MageManager.instance.PlaySoundName("collect_item_02", false);
         GameManager.instance.LogAchivement(AchivementType.CollectFruit);
         yield return new WaitForEndOfFrame();
         yield return new WaitForSeconds(animator.GetCurrentAnimatorStateInfo(0).length);
