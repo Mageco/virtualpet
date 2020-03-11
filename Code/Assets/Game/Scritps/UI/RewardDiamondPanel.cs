@@ -7,6 +7,7 @@ public class RewardDiamondPanel : MonoBehaviour
     RewardType rewardType = RewardType.Chest;
     ChestItem chestItem;
     ForestDiamondItem item;
+    bool isWatchAd = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -21,6 +22,8 @@ public class RewardDiamondPanel : MonoBehaviour
 
     public void Close()
     {
+        if (!isWatchAd && item != null)
+            item.DeActive();
         this.GetComponent<Popup>().Close();
     }
 
@@ -34,6 +37,7 @@ public class RewardDiamondPanel : MonoBehaviour
     {
         if (item != null)
             item.OnActive();
+        isWatchAd = true;
         this.Close();
     }
 }

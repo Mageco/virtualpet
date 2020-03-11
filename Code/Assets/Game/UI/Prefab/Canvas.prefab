@@ -1486,7 +1486,10 @@ MonoBehaviour:
     type: 3}
   settingPanelPrefab: {fileID: 8429012934439910386, guid: 593a5b0fc8a3d4f97ac6059920aa6ce3,
     type: 3}
-  dailyBonusPanelPrefab: {fileID: 0}
+  dailyBonusPanelPrefab: {fileID: 4005173313877835287, guid: 36b3d3a330b4d8741a0c79f0dd3052d7,
+    type: 3}
+  rewardDiamondPanelPrefab: {fileID: 6268933054632022635, guid: 9a0dc983a4c784caeb1faf2ba2cbe4fb,
+    type: 3}
   coinText: {fileID: 3203464986495470203}
   diamonText: {fileID: 1473299005441390001}
   heartText: {fileID: 1473299005290861126}
@@ -1512,6 +1515,7 @@ MonoBehaviour:
   servicePanel: {fileID: 0}
   settingPanel: {fileID: 0}
   dailyBonusPanel: {fileID: 0}
+  rewardDiamondPanel: {fileID: 0}
   achivementNotification: {fileID: 3095433865544955188}
   achivementPanel: {fileID: 0}
   homeUI: {fileID: 7754177028581235337}
@@ -1634,7 +1638,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -244.3, y: 0}
+  m_AnchoredPosition: {x: -244.30078, y: 0}
   m_SizeDelta: {x: 484.6, y: 127.5}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &8877287499226282367
@@ -1763,7 +1767,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 7754177028686530190}
-        m_MethodName: OnPetCollectionPanel
+        m_MethodName: OnDailyBonusPanel
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
