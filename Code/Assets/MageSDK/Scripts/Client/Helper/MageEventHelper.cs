@@ -73,7 +73,8 @@ namespace MageSDK.Client.Helper {
 			for (int i = 0; i < eventCounterList.Count; i++) {
 				if (eventCounterList[i].Key == eventName) {
 					found = true;
-					var newKvp = new EventCounter(eventCounterList[i].Key, eventCounterList[i].Value++);
+					eventCounterList[i].Value++;
+					var newKvp = new EventCounter(eventCounterList[i].Key, eventCounterList[i].Value);
 					eventCounterList.RemoveAt(i);
 					eventCounterList.Insert(i, newKvp);
 				}
