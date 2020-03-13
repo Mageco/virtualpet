@@ -156,6 +156,10 @@ public class ItemTab : BaseTab
             {
                 DataHolder.Items().GetItem(selection, temcategory).value = EditorGUILayout.FloatField("+Health", DataHolder.Items().GetItem(selection, temcategory).value, GUILayout.Width(pw.mWidth));
             }
+            else if (DataHolder.Items().GetItem(selection, temcategory).itemType == ItemType.Toy)
+            {
+                DataHolder.Items().GetItem(selection, temcategory).value = EditorGUILayout.FloatField("+Happy", DataHolder.Items().GetItem(selection, temcategory).value, GUILayout.Width(pw.mWidth));
+            }
 
             EditorGUILayout.EndHorizontal();
             EditorGUILayout.EndVertical();
