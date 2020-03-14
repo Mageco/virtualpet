@@ -68,6 +68,9 @@ namespace MageSDK.Client.Helper {
 
 			double timeToAdd = (lastScreen == currentScene) ? now.Subtract(lastScreenTime).TotalSeconds : 0;
 
+			// prevent user change local time, so rounding to 1s
+			timeToAdd = (timeToAdd > 1 ? 1 : timeToAdd);
+
 			bool found = false;
 			for (int i = 0; i < cachedSceneTime.Count; i++) {
 				if (cachedSceneTime[i].Key == currentScene) {

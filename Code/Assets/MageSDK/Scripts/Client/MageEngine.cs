@@ -53,6 +53,8 @@ namespace MageSDK.Client {
 
 		[HideInInspector]
 		public bool isAppActive = true;
+
+		private DateTime lastUserDataUpdate = DateTime.Now;
 		#endregion
 
 		void Awake() {
@@ -315,7 +317,15 @@ namespace MageSDK.Client {
             MageCacheHelper.GetInstance().SaveCacheData<User>(u, MageEngineSettings.GAME_ENGINE_USER);
 
             if (this.isWorkingOnline && IsLogin() && this.IsSendable("UpdateUserDataRequest")) {
-				SaveUserDataToServer(u);
+				/* decided when to send data */
+				DateTime now = DateTime.Now;
+				double timeToAdd = now.Subtract(this.lastUserDataUpdate).TotalSeconds;
+
+				/* for this we only send if the last update is more than 5 seconds ago */
+				if (u.GetUserDataInt(UserBasicData.Version) < 500 || timeToAdd > 10) {
+					SaveUserDataToServer(u);
+					this.lastUserDataUpdate = now;
+				}
 			}
 		}
 		private void SaveUserDataToServer(User u) {
