@@ -116,7 +116,7 @@ public class PetTab : BaseTab
                 EditorGUILayout.Separator();
                 EditorGUILayout.Separator();
                 EditorGUILayout.Separator();
-                DataHolder.Pet(selection).priceType = (PriceType)EditorTab.EnumToolbar("Price Type", (int)DataHolder.Pet(selection).priceType, typeof(PriceType));
+                DataHolder.Pet(selection).priceType = (PriceType)EditorTab.EnumToolbar("Buy Price Type", (int)DataHolder.Pet(selection).priceType, typeof(PriceType));
                 DataHolder.Pet(selection).buyPrice = EditorGUILayout.IntField("Buy price", DataHolder.Pet(selection).buyPrice, GUILayout.Width(pw.mWidth));
                 DataHolder.Pet(selection).isAvailable = EditorGUILayout.Toggle("Available", DataHolder.Pet(selection).isAvailable, GUILayout.Width(pw.mWidth));
 
@@ -127,7 +127,8 @@ public class PetTab : BaseTab
             fold2 = EditorGUILayout.Foldout(fold2, "Collection");
             if (fold2)
             {
-
+                DataHolder.Pet(selection).requireValueType = (PriceType)EditorTab.EnumToolbar("Collet Price Type", (int)DataHolder.Pet(selection).requireValueType, typeof(PriceType));
+                DataHolder.Pet(selection).requireValue = EditorGUILayout.IntField("Collect price", DataHolder.Pet(selection).requireValue, GUILayout.Width(pw.mWidth));
 
 
                 if (GUILayout.Button("Add Require Equipment", GUILayout.Width(pw.mWidth * 0.7f)))
