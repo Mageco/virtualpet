@@ -9,6 +9,7 @@ public class ServiceManager : MonoBehaviour
     float maxTimeCheck = 1.2f;
     public ServiceUI[] serviceUIs;
     public GameObject servicePanel;
+    public int expScale = 1;
 
     private void Awake()
     {
@@ -48,12 +49,23 @@ public class ServiceManager : MonoBehaviour
 
     void LoadServiceUI()
     {
-        if (GameManager.instance.GetPets().Count >= 2)
+        if (GameManager.instance.GetPets().Count >= 3)
         {
             servicePanel.SetActive(true);
             for (int i = 0; i < serviceUIs.Length; i++)
             {
                 serviceUIs[i].Load();
+            }
+        }
+        else if(GameManager.instance.myPlayer.level > 1)
+        {
+            servicePanel.SetActive(true);
+            for (int i = 0; i < serviceUIs.Length; i++)
+            {
+                if (i < serviceUIs.Length - 1)
+                    serviceUIs[i].gameObject.SetActive(false);
+                else
+                    serviceUIs[i].Load();
             }
         }
         else
@@ -68,6 +80,8 @@ public class ServiceManager : MonoBehaviour
             PlayerService s = new PlayerService();
             s.type = (ServiceType)i;
             s.isActive = false;
+            if (s.type == ServiceType.Instructor)
+                s.duration = 600;
             GameManager.instance.myPlayer.playerServices.Add(s);
         }
     }
@@ -86,19 +100,23 @@ public class ServiceManager : MonoBehaviour
 
     void CheckService()
     {
-        if (GameManager.instance.GetPets().Count >= 2 && GameManager.instance.myPlayer.level >=2)
+        if (GameManager.instance.GetPets().Count >= 3 || GameManager.instance.myPlayer.level >=2)
         {
             servicePanel.SetActive(true);
             foreach (PlayerService s in GameManager.instance.myPlayer.playerServices)
             {
-                if (s.isActive && (System.DateTime.Now - System.DateTime.Parse(s.timeStart)).TotalSeconds > 1800)
+                if (s.isActive && (System.DateTime.Now - System.DateTime.Parse(s.timeStart)).TotalSeconds > s.duration)
                 {
                     s.StopService();
+                    if (s.type == ServiceType.Instructor)
+                        expScale = 1;
                     LoadServiceUI();
                 }
 
                 if (s.isActive)
                 {
+                    if (s.type == ServiceType.Instructor)
+                        expScale = 2;
                     RunService(s.type);
                 }
             }
@@ -130,6 +148,8 @@ public class ServiceManager : MonoBehaviour
                 Debug.Log(s.type + " " + s.isActive);
             }
         }
+
+        
         GameManager.instance.SavePlayer();
         this.LoadServiceUI();
     }

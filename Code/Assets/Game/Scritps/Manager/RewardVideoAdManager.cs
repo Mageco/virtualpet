@@ -15,9 +15,13 @@ public class RewardVideoAdManager : MonoBehaviour , IUnityAdsListener
 	ChestItem chestItem;
 	int petId = 0;
 
-	string gameId = "f9bf863e-e7e9-492b-8bf9-1046af28f3a";
+#if UNITY_IOS
+    private string gameId = "3508454";
+#elif UNITY_ANDROID
+	private string gameId = "3508455";
+#endif
 	string myPlacementId = "rewardedVideo";
-	bool testMode = true;
+	bool testMode = false;
 	public AdDistribute adDistribute = AdDistribute.None;
 
 
@@ -369,11 +373,7 @@ public class RewardVideoAdManager : MonoBehaviour , IUnityAdsListener
 
 	public void OnUnityAdsReady(string placementId)
 	{
-		// If the ready Placement is rewarded, show the ad:
-		if (placementId == myPlacementId)
-		{
-			Advertisement.Show(myPlacementId);
-		}
+
 	}
 
 	public void OnUnityAdsDidError(string message)

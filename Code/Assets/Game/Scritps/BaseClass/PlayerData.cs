@@ -150,6 +150,7 @@ public class PlayerService : BaseModel
 	public ServiceType type;
 	public string timeStart;
 	public bool isActive = false;
+	public float duration = 1800;
 
 	public void StartService()
 	{
@@ -164,7 +165,7 @@ public class PlayerService : BaseModel
 
     public string GetTime()
     {
-		double t = (System.DateTime.Parse(timeStart).AddSeconds(1800) - System.DateTime.Now).TotalSeconds;
+		double t = (System.DateTime.Parse(timeStart).AddSeconds(duration) - System.DateTime.Now).TotalSeconds;
 		int m = (int)t / 60;
 		int s = (int)(t - m * 60);
 		string time = m.ToString("00") + ":" + s.ToString("00");

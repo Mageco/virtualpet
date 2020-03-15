@@ -79,7 +79,7 @@ public class ApiManager : MageEngine {
 	}
 
 	void Update() {
-		Debug.Log("ApiManger update ...");
+		//Debug.Log("ApiManger update ...");
 		if (MageEngine.instance.IsApplicationDataLoaded() && !MageEngine.instance.IsLogin()) {
 			DoLogin();
 		}

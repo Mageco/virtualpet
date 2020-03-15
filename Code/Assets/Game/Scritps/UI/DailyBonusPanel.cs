@@ -72,7 +72,7 @@ public class DailyBonusPanel : MonoBehaviour
 
         if (id == 0)
         {
-            GameManager.instance.AddCoin(30);
+            GameManager.instance.AddCoin(100);
         }else if(id == 1)
         {
             if (!GameManager.instance.IsHaveItem(42))

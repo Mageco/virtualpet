@@ -207,6 +207,15 @@ public class ItemUI : MonoBehaviour
                 sickText.text = d.value.ToString("F0");
             }
         }
+        /*
+        else if (d.itemType == ItemType.Toy)
+        {
+            if (d.value > 0)
+            {
+                heartIcon.gameObject.SetActive(true);
+                happyText.text = d.value.ToString("F0");
+            }
+        }*/
     }
 
 

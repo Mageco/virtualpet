@@ -238,6 +238,9 @@ public class CharController : MonoBehaviour
             data.Energy -= Time.deltaTime;
             if (timeToy > 6)
             {
+                //int toyHeart = 1;
+                //if (toyItem != null)
+                //    toyHeart = (int)DataHolder.GetItem(toyItem.item.itemID).value;
                 ItemManager.instance.SpawnHeart((1+data.level/5), this.transform.position);
                 timeToy = 0;
             }

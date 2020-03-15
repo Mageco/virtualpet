@@ -9,7 +9,7 @@ public class StarItem : MonoBehaviour
     public int value = 1;
     public GameObject body;
     public void Load(int e){
-        value = e;
+        value = e * ServiceManager.instance.expScale;
     }
 
     void Awake(){
@@ -27,7 +27,7 @@ public class StarItem : MonoBehaviour
             StartCoroutine(Pick());
         else
         {
-            GameManager.instance.AddHappy(value);
+            GameManager.instance.AddExp(value);
             Destroy(this.gameObject);
         }
     }

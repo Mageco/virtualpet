@@ -101,7 +101,12 @@ public class BaseDragItem : MonoBehaviour
 				this.transform.position = p;
 				height = minHeight;
 			}
-		}
+
+           // Debug.Log(this.transform.position);
+            Vector3 pos = this.transform.position;
+            pos.z = scalePosition.y * 10;
+            this.transform.position = pos;
+        }
 
         
 
@@ -115,10 +120,7 @@ public class BaseDragItem : MonoBehaviour
             shadow.transform.position = scalePosition + new Vector3(0, 0, 100);
         }
 
-        Vector3 pos = this.transform.position;
-		pos.z = scalePosition.y * 10;
-		this.transform.position = pos;
-
+        
 		lastPosition = this.transform.position;
 
     }

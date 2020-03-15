@@ -39,6 +39,11 @@ public class ServicePanel : MonoBehaviour
             charName.text = DataHolder.Dialog(70).GetName(MageManager.instance.GetLanguage());
             charDescription.text = DataHolder.Dialog(86).GetName(MageManager.instance.GetLanguage());
         }
+        else if (serviceType == ServiceType.Instructor)
+        {
+            charName.text = DataHolder.Dialog(91).GetName(MageManager.instance.GetLanguage());
+            charDescription.text = DataHolder.Dialog(96).GetName(MageManager.instance.GetLanguage());
+        }
 
         priceText.text = price.ToString();
     }
