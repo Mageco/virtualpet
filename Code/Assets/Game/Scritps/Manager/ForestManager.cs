@@ -49,6 +49,7 @@ public class ForestManager : MonoBehaviour
         int n = Random.Range(0, charCollectors.Length);
         collector = GameObject.Instantiate(charCollectors[n]) as GameObject;
         CharCollectorTimeline c = collector.GetComponentInChildren<CharCollectorTimeline>();
+        collector.transform.parent = this.transform;
         if (GameManager.instance.IsHavePet(c.petId))
             GameObject.Destroy(collector);
     }
@@ -140,13 +141,14 @@ public class ForestManager : MonoBehaviour
             Vector3 pos = GetRandomPoint(PointType.Banana).position;
             int n = Random.Range(0, 100);
             GameObject go = Instantiate(forestCoinPrefab[n / 10], pos, Quaternion.identity);
+            go.transform.parent = this.transform;
         }
     }
 
     void SpawnAnimal()
     {
         GameObject[] animals = GameObject.FindGameObjectsWithTag("Animal");
-        if (animals.Length < 2)
+        if (animals.Length < 2 && animals.Length > 0)
         {
             Transform point = GetRandomPoint(PointType.ChickenDefence);
             int n = Random.Range(0, animalPrefabs.Length);
@@ -156,8 +158,12 @@ public class ForestManager : MonoBehaviour
 
     void SpawnFish()
     {
-        Vector3 pos = GetRandomPoint(PointType.Fishing).position;
-        GameObject go = Instantiate(fishPrefab, pos, Quaternion.identity);
+        if(fishPrefab != null)
+        {
+            Vector3 pos = GetRandomPoint(PointType.Fishing).position;
+            GameObject go = Instantiate(fishPrefab, pos, Quaternion.identity);
+
+        }
     }
 
     List<GizmoPoint> GetPoints(PointType type)

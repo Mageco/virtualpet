@@ -196,6 +196,18 @@ public class PetRequirementPanel : MonoBehaviour
  
         if (!isBuy)
         {
+            if (pet.requireValueType == PriceType.Coin)
+            {
+                GameManager.instance.AddCoin(-pet.requireValue);
+            }
+            else if (pet.requireValueType == PriceType.Happy)
+            {
+                GameManager.instance.AddHappy(-pet.requireValue);
+            }
+            else if (pet.requireValueType == PriceType.Diamond)
+            {
+                GameManager.instance.AddDiamond(-pet.requireValue);
+            }
             GameManager.instance.AddPet(petId);
             Pet p = GameManager.instance.GetPet(petId);
             p.isNew = true;

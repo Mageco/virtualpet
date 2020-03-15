@@ -9,7 +9,6 @@ public class ServiceManager : MonoBehaviour
     float maxTimeCheck = 1.2f;
     public ServiceUI[] serviceUIs;
     public GameObject servicePanel;
-    public int expScale = 1;
 
     private void Awake()
     {
@@ -109,14 +108,14 @@ public class ServiceManager : MonoBehaviour
                 {
                     s.StopService();
                     if (s.type == ServiceType.Instructor)
-                        expScale = 1;
+                        GameManager.instance.expScale = 1;
                     LoadServiceUI();
                 }
 
                 if (s.isActive)
                 {
                     if (s.type == ServiceType.Instructor)
-                        expScale = 2;
+                        GameManager.instance.expScale = 2;
                     RunService(s.type);
                 }
             }
