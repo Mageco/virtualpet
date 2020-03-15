@@ -4,8 +4,10 @@ using UnityEngine;
 using GoogleMobileAds.Api;
 using System;
 using MageSDK.Client;
+using UnityEngine.Advertisements;
 
-public class RewardVideoAdManager : MonoBehaviour {
+public class RewardVideoAdManager : MonoBehaviour , IUnityAdsListener
+{
 
 	public static RewardVideoAdManager instance;
 	public RewardType rewardType = RewardType.Minigame;
@@ -13,7 +15,13 @@ public class RewardVideoAdManager : MonoBehaviour {
 	ChestItem chestItem;
 	int petId = 0;
 
-	#if UNITY_ANDROID
+	string gameId = "f9bf863e-e7e9-492b-8bf9-1046af28f3a";
+	string myPlacementId = "rewardedVideo";
+	bool testMode = true;
+	public AdDistribute adDistribute = AdDistribute.None;
+
+
+#if UNITY_ANDROID
 	string appId = "ca-app-pub-6818802678275174~2905900525";
 #elif UNITY_IPHONE
 	string appId = "ca-app-pub-6818802678275174~2905900525";
@@ -43,30 +51,51 @@ public class RewardVideoAdManager : MonoBehaviour {
 	}
 
 	// Use this for initialization
-	void Start () {
-		// Initialize the Google Mobile Ads SDK.
-		MobileAds.Initialize(appId);
+	IEnumerator Start () {
+        while (!MageEngine.instance.IsApplicationDataLoaded())
+        {
+			yield return new WaitForEndOfFrame();
+        }
+		Debug.Log(MageEngine.instance.GetApplicationDataItem("CurrentAdDistrubution"));
+		if (MageEngine.instance.GetApplicationDataItem("CurrentAdDistrubution") == "Unity")
+		{
+			adDistribute = AdDistribute.Unity;
+		}
+		else if (MageEngine.instance.GetApplicationDataItem("CurrentAdDistrubution") == "Admob")
+			adDistribute = AdDistribute.Admob;
 
-		// Get singleton reward based video ad reference.
-		// Get singleton reward based video ad reference.
-		this.rewardBasedVideo = RewardBasedVideoAd.Instance;
 
-		// Called when an ad request has successfully loaded.
-		rewardBasedVideo.OnAdLoaded += HandleRewardBasedVideoLoaded;
-		// Called when an ad request failed to load.
-		rewardBasedVideo.OnAdFailedToLoad += HandleRewardBasedVideoFailedToLoad;
-		// Called when an ad is shown.
-		rewardBasedVideo.OnAdOpening += HandleRewardBasedVideoOpened;
-		// Called when the ad starts to play.
-		rewardBasedVideo.OnAdStarted += HandleRewardBasedVideoStarted;
-		// Called when the user should be rewarded for watching a video.
-		rewardBasedVideo.OnAdRewarded += HandleRewardBasedVideoRewarded;
-		// Called when the ad is closed.
-		rewardBasedVideo.OnAdClosed += HandleRewardBasedVideoClosed;
-		// Called when the ad click caused the user to leave the application.
-		rewardBasedVideo.OnAdLeavingApplication += HandleRewardBasedVideoLeftApplication;
+        if(adDistribute == AdDistribute.Admob)
+        {
 
-		this.RequestRewardBasedVideo();
+			// Initialize the Google Mobile Ads SDK.
+			MobileAds.Initialize(appId);
+
+			// Get singleton reward based video ad reference.
+			// Get singleton reward based video ad reference.
+			this.rewardBasedVideo = RewardBasedVideoAd.Instance;
+
+			// Called when an ad request has successfully loaded.
+			rewardBasedVideo.OnAdLoaded += HandleRewardBasedVideoLoaded;
+			// Called when an ad request failed to load.
+			rewardBasedVideo.OnAdFailedToLoad += HandleRewardBasedVideoFailedToLoad;
+			// Called when an ad is shown.
+			rewardBasedVideo.OnAdOpening += HandleRewardBasedVideoOpened;
+			// Called when the ad starts to play.
+			rewardBasedVideo.OnAdStarted += HandleRewardBasedVideoStarted;
+			// Called when the user should be rewarded for watching a video.
+			rewardBasedVideo.OnAdRewarded += HandleRewardBasedVideoRewarded;
+			// Called when the ad is closed.
+			rewardBasedVideo.OnAdClosed += HandleRewardBasedVideoClosed;
+			// Called when the ad click caused the user to leave the application.
+			rewardBasedVideo.OnAdLeavingApplication += HandleRewardBasedVideoLeftApplication;
+
+			this.RequestRewardBasedVideo();
+		}else if(adDistribute == AdDistribute.Unity)
+        {
+			Advertisement.AddListener(this);
+			Advertisement.Initialize(gameId, testMode);
+		}
 	}
 
 	private void RequestRewardBasedVideo()
@@ -217,42 +246,146 @@ public class RewardVideoAdManager : MonoBehaviour {
 
 	public void ShowAd()
 	{
-		if (rewardBasedVideo.IsLoaded()) {
-			rewardBasedVideo.Show();
+        if(adDistribute == AdDistribute.Admob)
+        {
+			if (rewardBasedVideo.IsLoaded())
+			{
+				rewardBasedVideo.Show();
+			}
 		}
+		else if(adDistribute == AdDistribute.Unity)
+        {
+			Advertisement.Show(myPlacementId);
+		}
+
 	}
 
 	public void ShowAd(RewardType type)
 	{
-		//MageManager.instance.OnNotificationPopup("Ad requested");
-		if (rewardBasedVideo.IsLoaded())
+		if (adDistribute == AdDistribute.Admob)
+		{
+			if (rewardBasedVideo.IsLoaded())
+			{
+				rewardType = type;
+				rewardBasedVideo.Show();
+			}
+		}
+		else if (adDistribute == AdDistribute.Unity)
 		{
 			rewardType = type;
-			rewardBasedVideo.Show();
+			Advertisement.Show(myPlacementId);
 		}
 	}
 
 	public void ShowAd(RewardType type,int petId)
 	{
-		//MageManager.instance.OnNotificationPopup("Ad requested");
-		if (rewardBasedVideo.IsLoaded())
+		if (adDistribute == AdDistribute.Admob)
+		{
+			if (rewardBasedVideo.IsLoaded())
+			{
+				rewardType = type;
+				rewardBasedVideo.Show();
+				this.petId = petId;
+			}
+		}
+		else if (adDistribute == AdDistribute.Unity)
 		{
 			rewardType = type;
-			rewardBasedVideo.Show();
 			this.petId = petId;
+			Advertisement.Show(myPlacementId);
 		}
+
+
 	}
 
 	public void ShowAd(RewardType type,ChestItem item)
 	{
-		//MageManager.instance.OnNotificationPopup("Ad requested");
-		if (rewardBasedVideo.IsLoaded())
+		if (adDistribute == AdDistribute.Admob)
+		{
+			if (rewardBasedVideo.IsLoaded())
+			{
+				rewardType = type;
+				rewardBasedVideo.Show();
+				chestItem = item;
+			}
+		}
+		else if (adDistribute == AdDistribute.Unity)
 		{
 			rewardType = type;
-			rewardBasedVideo.Show();
 			chestItem = item;
+			Advertisement.Show(myPlacementId);
 		}
 	}
 
+
+    #region Unity Ad
+    
+    // Implement IUnityAdsListener interface methods:
+    public void OnUnityAdsDidFinish(string placementId, ShowResult showResult)
+	{
+		// Define conditional logic for each ad completion status:
+		if (showResult == ShowResult.Finished)
+		{
+			// Reward the user for watching the ad to completion.
+			MageEngine.instance.OnEvent(Mage.Models.Application.MageEventType.VideoAdRewarded, rewardType.ToString());
+			if (rewardType == RewardType.Minigame)
+			{
+				StartCoroutine(OnMinigame());
+			}
+			else if (rewardType == RewardType.Chest)
+			{
+				StartCoroutine(OnRewardChest());
+			}
+			else if (rewardType == RewardType.Sick)
+			{
+				StartCoroutine(OnTreatment());
+			}
+			else if (rewardType == RewardType.Map)
+			{
+				StartCoroutine(OnMap());
+			}
+			else if (rewardType == RewardType.Welcome)
+			{
+				StartCoroutine(OnWelcome());
+			}
+			else if (rewardType == RewardType.Service)
+			{
+				StartCoroutine(OnService());
+			}
+			else if (rewardType == RewardType.ForestDiamond)
+			{
+				StartCoroutine(OnForestDiamond());
+			}
+		}
+		else if (showResult == ShowResult.Skipped)
+		{
+			// Do not reward the user for skipping the ad.
+		}
+		else if (showResult == ShowResult.Failed)
+		{
+			Debug.LogWarning("The ad did not finish due to an error.");
+		}
+	}
+
+	public void OnUnityAdsReady(string placementId)
+	{
+		// If the ready Placement is rewarded, show the ad:
+		if (placementId == myPlacementId)
+		{
+			Advertisement.Show(myPlacementId);
+		}
+	}
+
+	public void OnUnityAdsDidError(string message)
+	{
+		// Log the error.
+	}
+
+	public void OnUnityAdsDidStart(string placementId)
+	{
+		// Optional actions to take when the end-users triggers an ad.
+	}
+    #endregion
+    
 }
 

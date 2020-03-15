@@ -58,12 +58,7 @@ public class ApiManager : MageEngine {
             }
         }
 
-		
 		SetupFirebaseMessaging();
-
-
-		
-
     }
 
 	public void ExampleOfGetRandomFriend() {
@@ -106,8 +101,7 @@ public class ApiManager : MageEngine {
 
 
 
-
-    void OnClick(string url)
+	void OnClick(string url)
     {
 	    Application.OpenURL(url);
     }
