@@ -88,10 +88,6 @@ namespace MageSDK.Client {
 			
 		}
 
-		private void OnCompleteApplicationDataLoaded() {
-
-		}
-
 		void Update() {
 			Debug.Log("Mage Engine update...");
 			SceneTrackerHelper.GetInstance().AddScreenTime(SceneManager.GetActiveScene().name);
@@ -617,7 +613,6 @@ namespace MageSDK.Client {
 					RuntimeParameters.GetInstance().SetParam(MageEngineSettings.GAME_ENGINE_APPLICATION_DATA, result.ApplicationDatas);
 					ES2.Save(result.ApplicationDatas, MageEngineSettings.GAME_ENGINE_APPLICATION_DATA);
 					this._isApplicationDataLoaded = true;
-					OnCompleteApplicationDataLoaded();
 				},
 				(errorStatus) => {
 					Debug.Log("Error: " + errorStatus);
