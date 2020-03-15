@@ -197,6 +197,8 @@ namespace MageSDK.Client {
 					SetUser(defaultUser);
 				}
 			#endif
+
+			Debug.Log("User data after default load: " + GetUser().ToJson());
 		}
 
 		///<summary>On completed logged in</summary>

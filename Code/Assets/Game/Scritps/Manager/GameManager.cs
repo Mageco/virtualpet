@@ -42,11 +42,18 @@ public class GameManager : MonoBehaviour
 
 
     private void Start() {
-        LoadPlayer();
-        isLoad = true;
+        if (MageEngine.instance.GetUser() != null && !isLoad) {
+            LoadPlayer();
+            isLoad = true;
+        }
+        
     }
 
     void Update(){
+        if (MageEngine.instance.GetUser() != null && !isLoad) {
+            LoadPlayer();
+            isLoad = true;
+        }
 		gameTime += Time.deltaTime;
 	}
 
@@ -693,6 +700,7 @@ public class GameManager : MonoBehaviour
     }
 
     public void LoadPlayer(){
+        Debug.Log("Call Load Player: " + MageEngine.instance.GetUser().ToJson());
         if(MageEngine.instance.GetUserData<PlayerData>() != null){
             Debug.Log("Load data from local");
             Debug.Log(MageEngine.instance.GetUser().ToJson());
