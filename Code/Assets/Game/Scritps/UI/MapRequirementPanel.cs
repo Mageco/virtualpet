@@ -9,6 +9,7 @@ public class MapRequirementPanel : MonoBehaviour
     public MapType mapType = MapType.Forest;
     int price = 20;
     public Text priceText;
+    public Text mapName;
     public Image icon;
     public GameObject buttonGo;
     public GameObject buttonAd;
@@ -35,10 +36,12 @@ public class MapRequirementPanel : MonoBehaviour
 
         if (mapType == MapType.Forest)
         {
+            mapName.text = DataHolder.Dialog(72).GetName(MageManager.instance.GetLanguage());
             levelRequire = 3;
         }
         else if (mapType == MapType.Lake)
         {
+            mapName.text = DataHolder.Dialog(97).GetName(MageManager.instance.GetLanguage());
             levelRequire = 8;
         }
         else

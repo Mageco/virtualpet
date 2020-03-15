@@ -75,11 +75,7 @@ public class DailyBonusPanel : MonoBehaviour
             GameManager.instance.AddCoin(100);
         }else if(id == 1)
         {
-            if (!GameManager.instance.IsHaveItem(42))
-            {
-                GameManager.instance.AddItem(42);
-                GameManager.instance.EquipItem(42);
-            }
+            GameManager.instance.AddDiamond(5);
         }
         else if (id == 2)
         {
@@ -91,19 +87,11 @@ public class DailyBonusPanel : MonoBehaviour
         }
         else if (id == 3)
         {
-            if (!GameManager.instance.IsHaveItem(15))
-            {
-                GameManager.instance.AddItem(15);
-                GameManager.instance.EquipItem(15);
-            }
+            GameManager.instance.AddCoin(300);
         }
         else if (id == 4)
         {
-            if (!GameManager.instance.IsHaveItem(77))
-            {
-                GameManager.instance.AddItem(77);
-                GameManager.instance.EquipItem(77);
-            }
+            GameManager.instance.AddDiamond(15);
         }
         else if (id == 5)
         {
