@@ -89,7 +89,7 @@ namespace MageSDK.Client {
 		}
 
 		void Update() {
-			Debug.Log("Mage Engine update...");
+			//Debug.Log("Mage Engine update...");
 			SceneTrackerHelper.GetInstance().AddScreenTime(SceneManager.GetActiveScene().name);
 		}
 

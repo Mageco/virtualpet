@@ -9,6 +9,7 @@ public class WelcomeBackPanel : MonoBehaviour
     public Text happyText;
     int coin = 1;
     int happy = 1;
+    public AnimatedButton AdButton;
     // Start is called before the first frame update
 
     public void Load(int c,int h)
@@ -37,6 +38,7 @@ public class WelcomeBackPanel : MonoBehaviour
 
     public void WatchAd()
     {
+        AdButton.gameObject.SetActive(false);
         MageManager.instance.PlaySound("BubbleButton", false);
         RewardVideoAdManager.instance.ShowAd(RewardType.Welcome);
     }
@@ -45,6 +47,7 @@ public class WelcomeBackPanel : MonoBehaviour
     {
         coin = coin * 2;
         happy = happy * 2;
+        
     }
 
     public void Close()
