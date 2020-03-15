@@ -73,18 +73,9 @@ public class ApiManager : MageEngine {
 	//}
 
 	protected void Start() {
-		if (MageEngine.instance.IsApplicationDataLoaded()) {
-			DoLogin();
-		}
+		DoLogin();
 	}
 
-	void Update() {
-		//Debug.Log("ApiManger update ...");
-		if (MageEngine.instance.IsApplicationDataLoaded() && !MageEngine.instance.IsLogin()) {
-			DoLogin();
-		}
-	}
-	
 
 	protected override void OnHasNewUserMessagesCallback(List<Message> newMessages) {
        //sample only

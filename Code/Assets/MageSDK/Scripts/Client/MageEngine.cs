@@ -76,18 +76,20 @@ namespace MageSDK.Client {
 
 				// get application data from server
 				GetApplicationData();
+
+				// at start initiate Default user
+				InitDefaultUser();
+
+				// init api cache
+				InitApiCache();
+
+				LoadEngineCache();
 			}
 			
 		}
 
 		private void OnCompleteApplicationDataLoaded() {
-			// at start initiate Default user
-			InitDefaultUser();
 
-			// init api cache
-			InitApiCache();
-
-			LoadEngineCache();
 		}
 
 		void Update() {
@@ -563,10 +565,14 @@ namespace MageSDK.Client {
 					// in unity and test mode application data can be retrieved from local Resources
 					LoadApplicationDataFromResources();
 				} else {
+					// load from local first and then overwrite with value from server
+					LoadApplicationDataFromResources();
 					// load application data from server
 					LoadApplicationDataFromServer();
 				}
 			#else
+				// load from local first and then overwrite with value from server
+				LoadApplicationDataFromResources();
 				// load application data from server
 				LoadApplicationDataFromServer();
 			#endif
@@ -597,8 +603,6 @@ namespace MageSDK.Client {
 			}
 			
 			RuntimeParameters.GetInstance().SetParam (MageEngineSettings.GAME_ENGINE_APPLICATION_DATA, localResources);
-			this._isApplicationDataLoaded = true;
-			OnCompleteApplicationDataLoaded();
 		}
 
 		///<summary>Get Application Data configured in Server</summary>
@@ -618,10 +622,6 @@ namespace MageSDK.Client {
 				(errorStatus) => {
 					Debug.Log("Error: " + errorStatus);
 					//do some other processing here
-					if (ES2.Exists (MageEngineSettings.GAME_ENGINE_APPLICATION_DATA)) {
-						RuntimeParameters.GetInstance().SetParam (MageEngineSettings.GAME_ENGINE_APPLICATION_DATA, ES2.Load<List<ApplicationData>> (MageEngineSettings.GAME_ENGINE_APPLICATION_DATA));
-						OnCompleteApplicationDataLoaded();
-					}
 				},
 				() => {
 					TimeoutHandler();

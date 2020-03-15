@@ -42,18 +42,11 @@ public class GameManager : MonoBehaviour
 
 
     private void Start() {
-        if (MageEngine.instance.GetUser() != null && !isLoad) {
-            LoadPlayer();
-            isLoad = true;
-        }
-        
+        LoadPlayer();
+        isLoad = true;
     }
 
     void Update(){
-        if (MageEngine.instance.GetUser() != null && !isLoad) {
-            LoadPlayer();
-            isLoad = true;
-        }
 		gameTime += Time.deltaTime;
 	}
 
