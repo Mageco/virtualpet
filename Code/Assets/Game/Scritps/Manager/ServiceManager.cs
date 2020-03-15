@@ -99,9 +99,10 @@ public class ServiceManager : MonoBehaviour
 
     void CheckService()
     {
-        if (GameManager.instance.GetPets().Count >= 3 || GameManager.instance.myPlayer.level >=2)
-        {
-            servicePanel.SetActive(true);
+        LoadServiceUI();
+        //if (GameManager.instance.GetPets().Count >= 3 || GameManager.instance.myPlayer.level >=2)
+        //{
+        //    servicePanel.SetActive(true);
             foreach (PlayerService s in GameManager.instance.myPlayer.playerServices)
             {
                 if (s.isActive && (System.DateTime.Now - System.DateTime.Parse(s.timeStart)).TotalSeconds > s.duration)
@@ -119,8 +120,8 @@ public class ServiceManager : MonoBehaviour
                     RunService(s.type);
                 }
             }
-        }else
-            servicePanel.SetActive(false);
+        //}else
+        //    servicePanel.SetActive(false);
 
     }
 
