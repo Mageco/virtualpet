@@ -257,6 +257,8 @@ namespace MageSDK.Client {
 			tmp.last_run_app_version = u.last_run_app_version;
 			//}
 
+			Debug.Log("Local version: " + tmp.GetUserDataInt(UserBasicData.Version) + " server version; " + u.GetUserDataInt(UserBasicData.Version));
+
 			// check and swap version
 			if (tmp.GetUserDataInt(UserBasicData.Version) >= u.GetUserDataInt(UserBasicData.Version)) {
 				// in case local is newer, then it requires to update server with local
@@ -380,7 +382,7 @@ namespace MageSDK.Client {
 			if (null != GetUser() && "" != GetUser().GetUserData(key)) {
 				return BaseModel.CreateFromJSON<T>(GetUser().GetUserData(key));
 			} else {
-				return default(T);
+				return null;
 			}
 			
 		}
