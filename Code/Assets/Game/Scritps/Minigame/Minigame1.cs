@@ -76,7 +76,7 @@ public class Minigame1 : Minigame
         }
         else
         {
-            foxSpawner.maxNumber = initNumber + 9 + (gameLevel - 30) / 20;
+            foxSpawner.maxNumber = Random.Range(10,15);
         }
 
 
@@ -86,6 +86,10 @@ public class Minigame1 : Minigame
             int n = gameLevel - 5;
             snakeSpawner.maxNumber = 1 + n/5;
             snakeSpawner.speed = initSpeed + addSpeed;
+            if(gameLevel > 30)
+            {
+                snakeSpawner.maxNumber = Random.Range(5,10);
+            }
         }else
             snakeSpawner.maxNumber = 0;
 
@@ -93,7 +97,12 @@ public class Minigame1 : Minigame
             int n = gameLevel - 10;
             eagleSpawner.maxNumber = 1 + n/10;
             eagleSpawner.speed = initSpeed + addSpeed;
-        }else
+            if (gameLevel > 30)
+            {
+                snakeSpawner.maxNumber = Random.Range(1, 5);
+            }
+        }
+        else
             eagleSpawner.maxNumber = 0;
 
         chickenSpawner.Spawn();

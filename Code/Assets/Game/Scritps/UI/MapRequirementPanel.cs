@@ -10,6 +10,9 @@ public class MapRequirementPanel : MonoBehaviour
     int price = 20;
     public Text priceText;
     public Image icon;
+    public GameObject buttonGo;
+    public GameObject buttonAd;
+    public Text requirement;
 
     // Start is called before the first frame update
     void Start()
@@ -25,9 +28,35 @@ public class MapRequirementPanel : MonoBehaviour
 
     public void Load(MapType type)
     {
+        int levelRequire = 1;
         mapType = type;
         icon.sprite = icons[(int)mapType];
         priceText.text = price.ToString();
+
+        if (mapType == MapType.Forest)
+        {
+            levelRequire = 3;
+        }
+        else if (mapType == MapType.Lake)
+        {
+            levelRequire = 8;
+        }
+        else
+            levelRequire = 99;
+
+        if (GameManager.instance.myPlayer.level >= levelRequire)
+        {
+            requirement.gameObject.SetActive(false);
+            buttonAd.SetActive(true);
+            buttonGo.SetActive(true);
+        }
+        else
+        {
+            requirement.gameObject.SetActive(true);
+            requirement.text = DataHolder.Dialog(27).GetName(MageManager.instance.GetLanguage()) + " " + levelRequire.ToString() + " " + DataHolder.Dialog(52).GetName(MageManager.instance.GetLanguage());
+            buttonAd.SetActive(false);
+            buttonGo.SetActive(false);
+        }
     }
 
     public void Confirm()

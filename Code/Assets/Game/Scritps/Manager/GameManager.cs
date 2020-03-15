@@ -6,11 +6,11 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    
- 	public static GameManager instance;
+
+    public static GameManager instance;
     public float gameTime = 0;
     public List<CharController> petObjects = new List<CharController>();
-    
+
     //GameType lastGameType = GameType.House;
 
     //Testing
@@ -20,20 +20,22 @@ public class GameManager : MonoBehaviour
     public PlayerData myPlayer = new PlayerData();
 
     public int rateCount = 0;
+    [HideInInspector]
+    public int expScale = 1;
 
     void Awake()
     {
         if (instance == null)
             instance = this;
-        else 
+        else
             GameObject.Destroy(this.gameObject);
 
         DontDestroyOnLoad(this.gameObject);
 
         //Application.targetFrameRate = 50;
-		Screen.sleepTimeout = SleepTimeout.NeverSleep;
-		DataHolder.Instance();
-		DataHolder.Instance().Init();    
+        Screen.sleepTimeout = SleepTimeout.NeverSleep;
+        DataHolder.Instance();
+        DataHolder.Instance().Init();
         if (ES2.Exists("GameTime"))
         {
             gameTime = ES2.Load<float>("GameTime");
@@ -41,18 +43,22 @@ public class GameManager : MonoBehaviour
     }
 
 
-    private void Start() {
+    private void Start()
+    {
         LoadPlayer();
         isLoad = true;
     }
 
-    void Update(){
-		gameTime += Time.deltaTime;
-	}
+    void Update()
+    {
+        gameTime += Time.deltaTime;
+    }
 
-    void LateUpdate(){
-        foreach(CharController c in petObjects){
-            if(c.charInteract.interactType != InteractType.Toy)
+    void LateUpdate()
+    {
+        foreach (CharController c in petObjects)
+        {
+            if (c.charInteract.interactType != InteractType.Toy)
             {
                 Vector3 pos = c.transform.position;
                 pos.z = (int)(c.charScale.scalePosition.y * 10);
@@ -60,32 +66,40 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        
+
         bool isDone = false;
-        while(!isDone){
+        while (!isDone)
+        {
             isDone = true;
 
-            foreach(CharController c in petObjects){
-                foreach(CharController c1 in petObjects){
-                    if(c != c1 && c.transform.position.z == c1.transform.position.z && c.charInteract.interactType == InteractType.None && c1.charInteract.interactType == InteractType.None){
-                        if(c.transform.position.y >= c1.transform.position.y){
+            foreach (CharController c in petObjects)
+            {
+                foreach (CharController c1 in petObjects)
+                {
+                    if (c != c1 && c.transform.position.z == c1.transform.position.z && c.charInteract.interactType == InteractType.None && c1.charInteract.interactType == InteractType.None)
+                    {
+                        if (c.transform.position.y >= c1.transform.position.y)
+                        {
                             Vector3 pos = c.transform.position;
                             pos.z -= 1;
                             c.transform.position = pos;
                             isDone = false;
-                        }else{
+                        }
+                        else
+                        {
                             Vector3 pos = c1.transform.position;
-                            pos.z -=1;
-                            c1.transform.position =pos;
+                            pos.z -= 1;
+                            c1.transform.position = pos;
                             isDone = false;
                         }
                     }
                 }
             }
-        } 
+        }
     }
 
-    public PlayerData GetPlayer(){
+    public PlayerData GetPlayer()
+    {
         return myPlayer;
     }
 
@@ -96,7 +110,8 @@ public class GameManager : MonoBehaviour
 
         for (int i = 0; i < myPlayer.pets.Count; i++)
         {
-            if(myPlayer.pets[i].itemState == ItemState.Equiped){
+            if (myPlayer.pets[i].itemState == ItemState.Equiped)
+            {
                 ItemManager.instance.LoadPetObject(myPlayer.pets[i]);
                 UpdatePetObjects();
             }
@@ -113,8 +128,10 @@ public class GameManager : MonoBehaviour
 
     public void EquipPet(int itemId)
     {
-        foreach(Pet p in myPlayer.pets){
-            if(p.iD == itemId){
+        foreach (Pet p in myPlayer.pets)
+        {
+            if (p.iD == itemId)
+            {
                 p.itemState = ItemState.Equiped;
             }
         }
@@ -123,15 +140,18 @@ public class GameManager : MonoBehaviour
 
     public void EquipPets()
     {
-        foreach(Pet p in myPlayer.pets){
+        foreach (Pet p in myPlayer.pets)
+        {
             p.itemState = ItemState.Equiped;
         }
     }
 
     public void UnEquipPet(int itemId)
     {
-        foreach(Pet p in myPlayer.pets){
-            if(p.iD == itemId){
+        foreach (Pet p in myPlayer.pets)
+        {
+            if (p.iD == itemId)
+            {
                 p.itemState = ItemState.Have;
                 if (ItemManager.instance != null)
                 {
@@ -144,7 +164,8 @@ public class GameManager : MonoBehaviour
 
     public void UnEquipPets()
     {
-        foreach(Pet p in myPlayer.pets){
+        foreach (Pet p in myPlayer.pets)
+        {
             p.itemState = ItemState.Have;
             if (ItemManager.instance != null)
             {
@@ -168,41 +189,48 @@ public class GameManager : MonoBehaviour
 
 
 
-    public void UpdatePetObjects(){
+    public void UpdatePetObjects()
+    {
         if (ItemManager.instance == null)
             return;
         petObjects.Clear();
-        for(int i=0;i<myPlayer.pets.Count;i++){
-            if(myPlayer.pets[i].itemState == ItemState.Equiped && myPlayer.pets[i].character != null)
+        for (int i = 0; i < myPlayer.pets.Count; i++)
+        {
+            if (myPlayer.pets[i].itemState == ItemState.Equiped && myPlayer.pets[i].character != null)
                 petObjects.Add(myPlayer.pets[i].character);
         }
     }
 
     public bool BuyPet(int petId)
-	{
+    {
         Debug.Log("Buy pet " + petId);
-		PriceType type = DataHolder.GetPet(petId).priceType;
-		int price = DataHolder.GetPet(petId).buyPrice;
-		if(type == PriceType.Coin){
-			if (price > GetCoin ()) {
-                MageManager.instance.OnNotificationPopup (DataHolder.Dialog(6).GetDescription(MageManager.instance.GetLanguage()));
-				return false;
-			}
-			AddCoin (-price);
-			AddPet (petId);
+        PriceType type = DataHolder.GetPet(petId).priceType;
+        int price = DataHolder.GetPet(petId).buyPrice;
+        if (type == PriceType.Coin)
+        {
+            if (price > GetCoin())
+            {
+                MageManager.instance.OnNotificationPopup(DataHolder.Dialog(6).GetDescription(MageManager.instance.GetLanguage()));
+                return false;
+            }
+            AddCoin(-price);
+            AddPet(petId);
             GetPet(petId).isNew = true;
             Debug.Log("Buy pet " + petId);
-			return true;
-		}else if(type == PriceType.Diamond){
-			if (price > GetDiamond ()) {
-                MageManager.instance.OnNotificationPopup (DataHolder.GetDialog(7).GetDescription(MageManager.instance.GetLanguage()));
-				return false;
-			}
-			AddDiamond (-price);
-			AddPet (petId);
+            return true;
+        }
+        else if (type == PriceType.Diamond)
+        {
+            if (price > GetDiamond())
+            {
+                MageManager.instance.OnNotificationPopup(DataHolder.GetDialog(7).GetDescription(MageManager.instance.GetLanguage()));
+                return false;
+            }
+            AddDiamond(-price);
+            AddPet(petId);
             GetPet(petId).isNew = true;
             return true;
-		}
+        }
         else if (type == PriceType.Happy)
         {
             if (price > GetHappy())
@@ -216,60 +244,73 @@ public class GameManager : MonoBehaviour
             return true;
         }
         else
-		{
-			return false;
-		}
-	}
+        {
+            return false;
+        }
+    }
 
     public void SellPet(int petId)
-	{
-		PriceType type = DataHolder.GetPet(petId).priceType;
-		int price = DataHolder.GetPet(petId).buyPrice/2;
-		if(type == PriceType.Coin){
-			AddCoin (price);
-		}else if(type == PriceType.Diamond){
-			AddDiamond (price);
-		}
+    {
+        PriceType type = DataHolder.GetPet(petId).priceType;
+        int price = DataHolder.GetPet(petId).buyPrice / 2;
+        if (type == PriceType.Coin)
+        {
+            AddCoin(price);
+        }
+        else if (type == PriceType.Diamond)
+        {
+            AddDiamond(price);
+        }
         else if (type == PriceType.Happy)
         {
             AddHappy(price);
         }
-        RemovePet (petId);
-	}
-   
+        RemovePet(petId);
+    }
 
-    public Pet GetPet(int id){
-        foreach(Pet p in myPlayer.pets){
-            if(p.iD == id)
+
+    public Pet GetPet(int id)
+    {
+        foreach (Pet p in myPlayer.pets)
+        {
+            if (p.iD == id)
                 return p;
         }
         return null;
     }
 
-    public List<Pet> GetPets(){
+    public List<Pet> GetPets()
+    {
         return myPlayer.pets;
     }
 
-    public List<CharController> GetPetObjects(){
+    public List<CharController> GetPetObjects()
+    {
         return petObjects;
     }
 
-    public CharController GetPetObject(int id){
-        foreach(Pet p in myPlayer.pets){
-            if(p.iD == id)
+    public CharController GetPetObject(int id)
+    {
+        foreach (Pet p in myPlayer.pets)
+        {
+            if (p.iD == id)
                 return p.character;
         }
         return null;
     }
 
-    public CharController GetRandomPetObject(){
-        int n = Random.Range(0,petObjects.Count);
+    public CharController GetRandomPetObject()
+    {
+        int n = Random.Range(0, petObjects.Count);
         return petObjects[n];
     }
- 
-    void RemovePet(int id){
-        foreach(Pet p in myPlayer.pets){
-            if(p.iD == id){
+
+    void RemovePet(int id)
+    {
+        foreach (Pet p in myPlayer.pets)
+        {
+            if (p.iD == id)
+            {
                 myPlayer.pets.Remove(p);
                 if (ItemManager.instance != null)
                 {
@@ -278,79 +319,95 @@ public class GameManager : MonoBehaviour
                 }
                 return;
             }
-        }     
+        }
     }
 
-    public Pet GetActivePet(){
+    public Pet GetActivePet()
+    {
         return myPlayer.pets[0];
     }
 
 
     public bool IsHavePet(int petId)
-	{
-        foreach(Pet p in myPlayer.pets){
-            if(p.iD == petId){
+    {
+        foreach (Pet p in myPlayer.pets)
+        {
+            if (p.iD == petId)
+            {
                 return true;
             }
         }
         return false;
-	}
+    }
 
-	public bool IsEquipPet(int petId)
-	{
-        foreach(Pet p in myPlayer.pets){
-            if(p.iD == petId && p.itemState == ItemState.Equiped){
+    public bool IsEquipPet(int petId)
+    {
+        foreach (Pet p in myPlayer.pets)
+        {
+            if (p.iD == petId && p.itemState == ItemState.Equiped)
+            {
                 return true;
             }
         }
         return false;
-	}
+    }
 
-	public List<int> GetBuyPets(){
-		List<int> pets = new List<int>();
-		for(int i=0;i<DataHolder.Pets().GetDataCount();i++){
-			if(IsHavePet(DataHolder.Pet(i).iD)){
-				pets.Add(DataHolder.Pet(i).iD);
-			}
-		}
-		return pets;
-	}
+    public List<int> GetBuyPets()
+    {
+        List<int> pets = new List<int>();
+        for (int i = 0; i < DataHolder.Pets().GetDataCount(); i++)
+        {
+            if (IsHavePet(DataHolder.Pet(i).iD))
+            {
+                pets.Add(DataHolder.Pet(i).iD);
+            }
+        }
+        return pets;
+    }
 
-	public List<int> GetEquipedPets(){
-		List<int> pets = new List<int>();
-		for(int i=0;i<DataHolder.Pets().GetDataCount();i++){
-			if(IsEquipPet(DataHolder.Pet(i).iD)){
-				pets.Add(DataHolder.Pet(i).iD);
-			}
-		}
-		return pets;
-	}
+    public List<int> GetEquipedPets()
+    {
+        List<int> pets = new List<int>();
+        for (int i = 0; i < DataHolder.Pets().GetDataCount(); i++)
+        {
+            if (IsEquipPet(DataHolder.Pet(i).iD))
+            {
+                pets.Add(DataHolder.Pet(i).iD);
+            }
+        }
+        return pets;
+    }
 
-    
-     
+
+
 
     //Items
     public bool BuyItem(int itemId)
-	{
-		PriceType type = DataHolder.GetItem(itemId).priceType;
-		int price = DataHolder.GetItem(itemId).buyPrice;
-		if(type == PriceType.Coin){
-			if (price > GetCoin ()) {
-				MageManager.instance.OnNotificationPopup (DataHolder.Dialog(6).GetDescription(MageManager.instance.GetLanguage()));
-				return false;
-			}
-			AddCoin (-price);
-			AddItem (itemId);
-			return true;
-		}else if(type == PriceType.Diamond){
-			if (price > GetDiamond ()) {
-				MageManager.instance.OnNotificationPopup (DataHolder.Dialog(7).GetDescription(MageManager.instance.GetLanguage()));
-				return false;
-			}
-			AddDiamond (-price);
-			AddItem (itemId);
-			return true;
-		}
+    {
+        PriceType type = DataHolder.GetItem(itemId).priceType;
+        int price = DataHolder.GetItem(itemId).buyPrice;
+        if (type == PriceType.Coin)
+        {
+            if (price > GetCoin())
+            {
+                MageManager.instance.OnNotificationPopup(DataHolder.Dialog(6).GetDescription(MageManager.instance.GetLanguage()));
+                return false;
+            }
+            AddCoin(-price);
+            AddItem(itemId);
+            return true;
+        }
+        else if (type == PriceType.Diamond)
+        {
+            if (price > GetDiamond())
+            {
+                MageManager.instance.OnNotificationPopup(DataHolder.Dialog(7).GetDescription(MageManager.instance.GetLanguage()));
+                return false;
+            }
+            AddDiamond(-price);
+            AddItem(itemId);
+            return true;
+        }
         else if (type == PriceType.Happy)
         {
             if (price > GetHappy())
@@ -363,20 +420,24 @@ public class GameManager : MonoBehaviour
             return true;
         }
         else
-		{
-			return false;
-		}
-        
+        {
+            return false;
+        }
+
     }
 
-    public void SellItem(int itemId){
+    public void SellItem(int itemId)
+    {
         PriceType type = DataHolder.GetItem(itemId).priceType;
-		int price = DataHolder.GetItem(itemId).buyPrice/2;
-		if(type == PriceType.Coin){
-			AddCoin (price);
-		}else if(type == PriceType.Diamond){
-			AddDiamond (price);
-		}
+        int price = DataHolder.GetItem(itemId).buyPrice / 2;
+        if (type == PriceType.Coin)
+        {
+            AddCoin(price);
+        }
+        else if (type == PriceType.Diamond)
+        {
+            AddDiamond(price);
+        }
         else if (type == PriceType.Happy)
         {
             AddHappy(price);
@@ -384,17 +445,23 @@ public class GameManager : MonoBehaviour
         RemoveItem(itemId);
     }
 
-    public void AddItem(int id){
-        if(DataHolder.GetItem(id).itemType == ItemType.Diamond){
+    public void AddItem(int id)
+    {
+        if (DataHolder.GetItem(id).itemType == ItemType.Diamond)
+        {
             AddDiamond(DataHolder.GetItem(id).sellPrice);
-        }else if(DataHolder.GetItem(id).itemType == ItemType.Coin){
+        }
+        else if (DataHolder.GetItem(id).itemType == ItemType.Coin)
+        {
             AddCoin(DataHolder.GetItem(id).sellPrice);
-        }else{
+        }
+        else
+        {
 
             bool isExist = false;
-            foreach(PlayerItem item in myPlayer.items)
+            foreach (PlayerItem item in myPlayer.items)
             {
-                if(item.itemId == id)
+                if (item.itemId == id)
                 {
                     if (DataHolder.GetItem(id).consume)
                     {
@@ -407,7 +474,7 @@ public class GameManager : MonoBehaviour
                         item.state = ItemState.Have;
                         item.number = 1;
                         isExist = true;
-                        Debug.Log( " Exist " + id);
+                        Debug.Log(" Exist " + id);
                     }
                 }
             }
@@ -422,59 +489,66 @@ public class GameManager : MonoBehaviour
                 Debug.Log("Not Exist " + id);
                 myPlayer.items.Add(item);
             }
-            
+
         }
         SavePlayer();
     }
 
     public void RemoveItem(int itemId)
-	{
-		foreach(PlayerItem item in myPlayer.items){
-            if(item.itemId == itemId){
+    {
+        foreach (PlayerItem item in myPlayer.items)
+        {
+            if (item.itemId == itemId)
+            {
                 myPlayer.items.Remove(item);
-                if(item.state == ItemState.Equiped){
+                if (item.state == ItemState.Equiped)
+                {
                     ItemManager.instance.RemoveItem(item.itemId);
                 }
                 SavePlayer();
                 return;
             }
         }
-	}
+    }
 
-    public void EquipItem(int id){
+    public void EquipItem(int id)
+    {
 
         //Fix all item that same id
         List<PlayerItem> temp = new List<PlayerItem>();
-        foreach(PlayerItem item1 in myPlayer.items)
+        foreach (PlayerItem item1 in myPlayer.items)
         {
-            foreach(PlayerItem item2 in myPlayer.items)
+            foreach (PlayerItem item2 in myPlayer.items)
             {
-                if(item1 != item2 && item1.itemId == item2.itemId)
+                if (item1 != item2 && item1.itemId == item2.itemId)
                 {
                     temp.Add(item2);
                 }
             }
         }
 
-        foreach(PlayerItem item in temp)
+        foreach (PlayerItem item in temp)
         {
             myPlayer.items.Remove(item);
         }
 
-        foreach(PlayerItem item in myPlayer.items){
-            if(item.itemId == id){
+        foreach (PlayerItem item in myPlayer.items)
+        {
+            if (item.itemId == id)
+            {
                 item.state = ItemState.Equiped;
-            }else if(DataHolder.GetItem(item.itemId) != null && DataHolder.GetItem(id).itemType == DataHolder.GetItem(item.itemId).itemType
-                && DataHolder.GetItem(id).itemType != ItemType.Toy && DataHolder.GetItem(id).itemType != ItemType.Fruit)
+            }
+            else if (DataHolder.GetItem(item.itemId) != null && DataHolder.GetItem(id).itemType == DataHolder.GetItem(item.itemId).itemType
+               && DataHolder.GetItem(id).itemType != ItemType.Toy && DataHolder.GetItem(id).itemType != ItemType.Fruit)
             {
                 item.state = ItemState.Have;
             }
         }
 
-        
-        
-        
-        if(ItemManager.instance != null && DataHolder.GetItem(id).itemType != ItemType.Coin && DataHolder.GetItem(id).itemType != ItemType.Diamond)
+
+
+
+        if (ItemManager.instance != null && DataHolder.GetItem(id).itemType != ItemType.Coin && DataHolder.GetItem(id).itemType != ItemType.Diamond)
             ItemManager.instance.EquipItem();
 
         SavePlayer();
@@ -487,7 +561,7 @@ public class GameManager : MonoBehaviour
             if (item.itemId == itemId)
             {
                 item.state = ItemState.Have;
-                if(ItemManager.instance != null)
+                if (ItemManager.instance != null)
                     ItemManager.instance.RemoveItem(item.itemId);
                 SavePlayer();
                 return;
@@ -496,33 +570,40 @@ public class GameManager : MonoBehaviour
     }
 
     public bool IsHaveItem(int itemId)
-	{
-       foreach(PlayerItem item in myPlayer.items){
-            if(item.itemId == itemId){
+    {
+        foreach (PlayerItem item in myPlayer.items)
+        {
+            if (item.itemId == itemId)
+            {
                 return true;
             }
         }
         return false;
-	}
-
-    public Item GetEquipedItem(ItemType type){
-        foreach(PlayerItem item in myPlayer.items){   
-            if(item.state == ItemState.Equiped && DataHolder.GetItem(item.itemId).itemType == type){
-                return DataHolder.GetItem(item.itemId);
-            }
-        }    
-        return  null;    
     }
 
-	public bool IsEquipItem(int itemId)
-	{
-        foreach(PlayerItem item in myPlayer.items){
-            if(item.itemId == itemId && item.state == ItemState.Equiped){
+    public Item GetEquipedItem(ItemType type)
+    {
+        foreach (PlayerItem item in myPlayer.items)
+        {
+            if (item.state == ItemState.Equiped && DataHolder.GetItem(item.itemId).itemType == type)
+            {
+                return DataHolder.GetItem(item.itemId);
+            }
+        }
+        return null;
+    }
+
+    public bool IsEquipItem(int itemId)
+    {
+        foreach (PlayerItem item in myPlayer.items)
+        {
+            if (item.itemId == itemId && item.state == ItemState.Equiped)
+            {
                 return true;
             }
         }
         return false;
-	}
+    }
 
     public bool IsEquipItem(ItemType itemType)
     {
@@ -536,80 +617,99 @@ public class GameManager : MonoBehaviour
         return false;
     }
 
-    public List<int> GetBuyItems(){
-		List<int> items = new List<int>();
-		for(int i=0;i<DataHolder.Items().GetDataCount();i++){
-			if(IsHaveItem(DataHolder.Item(i).iD)){
-				items.Add(DataHolder.Item(i).iD);
-			}
-		}
-		return items;
-	}
+    public List<int> GetBuyItems()
+    {
+        List<int> items = new List<int>();
+        for (int i = 0; i < DataHolder.Items().GetDataCount(); i++)
+        {
+            if (IsHaveItem(DataHolder.Item(i).iD))
+            {
+                items.Add(DataHolder.Item(i).iD);
+            }
+        }
+        return items;
+    }
 
-    public List<int> GetBuyItems(ItemType type){
-		List<int> items = new List<int>();
-		for(int i=0;i<DataHolder.Items().GetDataCount();i++){
-			if(IsHaveItem(DataHolder.Item(i).iD) && DataHolder.Item(i).itemType == type){
-				items.Add(DataHolder.Item(i).iD);
-			}
-		}
-		return items;
-	}
+    public List<int> GetBuyItems(ItemType type)
+    {
+        List<int> items = new List<int>();
+        for (int i = 0; i < DataHolder.Items().GetDataCount(); i++)
+        {
+            if (IsHaveItem(DataHolder.Item(i).iD) && DataHolder.Item(i).itemType == type)
+            {
+                items.Add(DataHolder.Item(i).iD);
+            }
+        }
+        return items;
+    }
 
-    public List<int> GetEquipedItems(){
+    public List<int> GetEquipedItems()
+    {
         List<int> temp = new List<int>();
-        foreach(PlayerItem item in myPlayer.items){   
-            if(item.state == ItemState.Equiped){
+        foreach (PlayerItem item in myPlayer.items)
+        {
+            if (item.state == ItemState.Equiped)
+            {
                 temp.Add(item.itemId);
             }
         }
         return temp;
     }
 
-    public List<PlayerItem> GetEquipedPLayerItems(){
+    public List<PlayerItem> GetEquipedPLayerItems()
+    {
         List<PlayerItem> temp = new List<PlayerItem>();
-        foreach(PlayerItem item in myPlayer.items){   
-            if(item.state == ItemState.Equiped){
+        foreach (PlayerItem item in myPlayer.items)
+        {
+            if (item.state == ItemState.Equiped)
+            {
                 temp.Add(item);
             }
         }
         return temp;
     }
 
-    public int GetDiamond(){
+    public int GetDiamond()
+    {
         return myPlayer.Diamond;
     }
 
-    public int GetCoin(){
+    public int GetCoin()
+    {
         return myPlayer.Coin;
     }
 
-    public int GetHappy(){
+    public int GetHappy()
+    {
         return myPlayer.Happy;
     }
 
 
-    public int GetExp(int id){
+    public int GetExp(int id)
+    {
         return GetPet(id).Exp;
     }
 
-    public void AddDiamond(int d){
+    public void AddDiamond(int d)
+    {
         myPlayer.Diamond += d;
         if (UIManager.instance != null)
             UIManager.instance.diamonText.transform.parent.GetComponent<Animator>().Play("Active", 0);
         SavePlayer();
     }
 
-    public void AddCoin(int c){
+    public void AddCoin(int c)
+    {
         myPlayer.Coin += c;
-        if(c > 0)
+        if (c > 0)
             myPlayer.collectedCoin += c;
-        if(UIManager.instance != null)
+        if (UIManager.instance != null)
             UIManager.instance.coinText.transform.parent.GetComponent<Animator>().Play("Active", 0);
         SavePlayer();
     }
 
-    public void AddHappy(int c){
+    public void AddHappy(int c)
+    {
         myPlayer.Happy += c;
         if (c > 0)
             myPlayer.collectedHappy += c;
@@ -630,14 +730,14 @@ public class GameManager : MonoBehaviour
             e = 20 * l + 20 * l * l;
         }
 
-        if(l > myPlayer.level)
+        if (l > myPlayer.level)
         {
             myPlayer.level = l;
             UIManager.instance.OnLevelUpPanel();
             OnTip();
             Debug.Log("Level Up");
         }
-        
+
         SavePlayer();
     }
 
@@ -653,29 +753,33 @@ public class GameManager : MonoBehaviour
             GetPet(petId).level++;
             SavePlayer();
         }
-            
+
     }
 
 
     void OnTip()
     {
-        if(myPlayer.level == 2)
+        if (myPlayer.level == 2)
         {
             UIManager.instance.OnQuestNotificationPopup(DataHolder.Dialog(85).GetName(MageManager.instance.GetLanguage()));
-        }else if(myPlayer.level == 3)
+        }
+        else if (myPlayer.level == 3)
         {
             UIManager.instance.OnQuestNotificationPopup(DataHolder.Dialog(77).GetName(MageManager.instance.GetLanguage()));
             UIManager.instance.OnQuestNotificationPopup(DataHolder.Dialog(79).GetName(MageManager.instance.GetLanguage()));
         }
     }
 
-    public void CollectAchivementRewards(int achivementId){
-        foreach(PlayerAchivement a in myPlayer.achivements){
-            if(a.achivementId == achivementId){
+    public void CollectAchivementRewards(int achivementId)
+    {
+        foreach (PlayerAchivement a in myPlayer.achivements)
+        {
+            if (a.achivementId == achivementId)
+            {
                 AddCoin(DataHolder.GetAchivement(achivementId).coinValue[a.level]);
                 AddDiamond(DataHolder.GetAchivement(achivementId).diamondValue[a.level]);
                 a.rewardState = RewardState.Received;
-                a.level ++;
+                a.level++;
                 a.Check();
                 SavePlayer();
                 return;
@@ -684,56 +788,63 @@ public class GameManager : MonoBehaviour
     }
 
 
-    public void SavePlayer(){
+    public void SavePlayer()
+    {
         myPlayer.petCount = myPlayer.pets.Count;
         myPlayer.itemCount = myPlayer.items.Count;
         myPlayer.playTime = gameTime;
         ES2.Save(gameTime, "GameTime");
-        MageEngine.instance.UpdateUserData<PlayerData>(myPlayer); 
+        MageEngine.instance.UpdateUserData<PlayerData>(myPlayer);
     }
 
-    public void LoadPlayer(){
-        Debug.Log("Call Load Player: " + MageEngine.instance.GetUser().ToJson());
-        if(MageEngine.instance.GetUserData<PlayerData>() != null){
+    public void LoadPlayer()
+    {
+        if (MageEngine.instance.GetUserData<PlayerData>() != null)
+        {
             Debug.Log("Load data from local");
             Debug.Log(MageEngine.instance.GetUser().ToJson());
             myPlayer = MageEngine.instance.GetUserData<PlayerData>();
-            if(myPlayer.minigameLevels.Length == 1)
+            if (myPlayer.minigameLevels.Length == 1)
             {
-                for(int i = 0; i < 20; i++)
+                for (int i = 0; i < 20; i++)
                 {
                     myPlayer.minigameLevels = ArrayHelper.Add(0, myPlayer.minigameLevels);
                 }
             }
-        }else{
+        }
+        else
+        {
             Debug.Log("Create New Data");
             LoadNewUser();
         }
     }
 
-    void LoadNewUser(){
+    void LoadNewUser()
+    {
 
         myPlayer = new PlayerData();
         myPlayer.LoadData();
 
-        AddCoin(0);
+        AddCoin(200);
         AddDiamond(1);
-        
+
         AddItem(17);
         //AddItem(7);
-        AddItem(8);
-        AddItem(4);
+        //AddItem(8);
+        //AddItem(4);
         AddItem(41);
         AddItem(58);
         AddItem(59);
-        AddItem(11);
+        //AddItem(11);
         AddItem(2);
-        AddItem(13);
+        //AddItem(13);
 
         AddPet(0);
-        
+        GetPet(0).isNew = true;
+
         //#if UNITY_EDITOR
-        if(isTest){
+        if (isTest)
+        {
             AddCoin(10000);
             AddDiamond(10000);
             AddPet(1);
@@ -744,8 +855,9 @@ public class GameManager : MonoBehaviour
         }
         //#endif
 
-        foreach(PlayerItem item in myPlayer.items){
-                item.state = ItemState.Equiped;
+        foreach (PlayerItem item in myPlayer.items)
+        {
+            item.state = ItemState.Equiped;
         }
 
         EquipPets();
@@ -753,59 +865,76 @@ public class GameManager : MonoBehaviour
         isLoad = true;
     }
 
-    public void LogAchivement(AchivementType achivementType = AchivementType.Do_Action, ActionType actionType = ActionType.None,int itemId = -1,AnimalType animalType = AnimalType.Mouse){
-        foreach(PlayerAchivement a in myPlayer.achivements){
+    public void LogAchivement(AchivementType achivementType = AchivementType.Do_Action, ActionType actionType = ActionType.None, int itemId = -1, AnimalType animalType = AnimalType.Mouse)
+    {
+        foreach (PlayerAchivement a in myPlayer.achivements)
+        {
             Achivement achivement = DataHolder.GetAchivement(a.achivementId);
-            if(achivement.achivementType == achivementType){
-                if(achivement.achivementType == AchivementType.Do_Action){
-                    if(achivement.actionType == actionType){
-                        a.Amount ++;
-                    }
-                }else if(achivement.achivementType == AchivementType.Buy_Item){                   
-                    a.Amount ++;
-                }else if(achivement.achivementType == AchivementType.Use_Item || achivement.achivementType == AchivementType.Drink
-                || achivement.achivementType == AchivementType.Eat){
-                    if(achivement.itemId == itemId){
-                            a.Amount ++;
+            if (achivement.achivementType == achivementType)
+            {
+                if (achivement.achivementType == AchivementType.Do_Action)
+                {
+                    if (achivement.actionType == actionType)
+                    {
+                        a.Amount++;
                     }
                 }
-                else if(achivement.achivementType == AchivementType.Tap_Animal || achivement.achivementType == AchivementType.Dissmiss_Animal){
-                    if(achivement.animalType == animalType){
-                            a.Amount ++;
-                    }
-                }else if(achivement.achivementType == AchivementType.Minigame_Level || achivement.achivementType == AchivementType.Play_MiniGame)
+                else if (achivement.achivementType == AchivementType.Buy_Item)
+                {
+                    a.Amount++;
+                }
+                else if (achivement.achivementType == AchivementType.Use_Item || achivement.achivementType == AchivementType.Drink
+               || achivement.achivementType == AchivementType.Eat)
                 {
                     if (achivement.itemId == itemId)
                     {
                         a.Amount++;
                     }
                 }
-                 else{
-                    a.Amount ++;
+                else if (achivement.achivementType == AchivementType.Tap_Animal || achivement.achivementType == AchivementType.Dissmiss_Animal)
+                {
+                    if (achivement.animalType == animalType)
+                    {
+                        a.Amount++;
+                    }
+                }
+                else if (achivement.achivementType == AchivementType.Minigame_Level || achivement.achivementType == AchivementType.Play_MiniGame)
+                {
+                    if (achivement.itemId == itemId)
+                    {
+                        a.Amount++;
+                    }
+                }
+                else
+                {
+                    a.Amount++;
                 }
             }
         }
     }
 
-    public int GetAchivement(AchivementType type){
+    public int GetAchivement(AchivementType type)
+    {
         foreach (var item in myPlayer.achivements)
         {
-            if(item.achivementType == type)
+            if (item.achivementType == type)
                 return item.Amount;
         }
         return 0;
     }
 
-    public int GetAchivement(int id){
+    public int GetAchivement(int id)
+    {
         foreach (var item in myPlayer.achivements)
         {
-            if(item.achivementId == id)
+            if (item.achivementId == id)
                 return item.Amount;
         }
         return 0;
     }
 
-    public int GetAchivementCollectTime(){
+    public int GetAchivementCollectTime()
+    {
         int count = 0;
         foreach (var item in myPlayer.achivements)
         {
@@ -824,7 +953,7 @@ public class GameManager : MonoBehaviour
         return false;
     }
 
-    public void OnTreatment(Pet p,SickType sickType,int coin)
+    public void OnTreatment(Pet p, SickType sickType, int coin)
     {
         AddCoin(-coin);
         if (sickType == SickType.Sick)

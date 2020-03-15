@@ -7,8 +7,12 @@ public class BoatItem : MonoBehaviour
 
     public GameObject[] levelSprites;
     // Start is called before the first frame update
-    void Start()
+    IEnumerator Start()
     {
+        while (!GameManager.instance.isLoad)
+        {
+            yield return new WaitForEndOfFrame();
+        }
         int n = GameManager.instance.myPlayer.minigameLevels[1] / 5;
         for(int i = 0; i < levelSprites.Length; i++)
         {
