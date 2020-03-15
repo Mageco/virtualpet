@@ -46,6 +46,7 @@ namespace MageSDK.Client {
 		#region private variables
 		private bool _isLogin = false;
 		private bool _isReloadRequired = false;
+		private bool _isApplicationDataLoaded = false;
 		private static bool _isLoaded = false;
 
 		[HideInInspector]
@@ -569,6 +570,7 @@ namespace MageSDK.Client {
 			}
 			
 			RuntimeParameters.GetInstance().SetParam (MageEngineSettings.GAME_ENGINE_APPLICATION_DATA, localResources);
+			this._isApplicationDataLoaded = true;
 		}
 
 		///<summary>Get Application Data configured in Server</summary>
@@ -582,7 +584,7 @@ namespace MageSDK.Client {
 					// store application data
 					RuntimeParameters.GetInstance().SetParam(MageEngineSettings.GAME_ENGINE_APPLICATION_DATA, result.ApplicationDatas);
 					ES2.Save<List<ApplicationData>>( result.ApplicationDatas, MageEngineSettings.GAME_ENGINE_APPLICATION_DATA);
-					
+					this._isApplicationDataLoaded = true;
 				},
 				(errorStatus) => {
 					Debug.Log("Error: " + errorStatus);
@@ -595,6 +597,10 @@ namespace MageSDK.Client {
 					TimeoutHandler();
 				}
 			);
+		}
+
+		public bool IsApplicationDataLoaded() {
+			return this._isApplicationDataLoaded;
 		}
 
 		///<summary>Get Application Data item store locally - value as string</summary>
