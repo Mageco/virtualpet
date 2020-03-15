@@ -45,6 +45,9 @@ namespace MageSDK.Client {
 
 		#region private variables
 		private bool _isLogin = false;
+
+		private bool _isLoginRequestSent = false;
+
 		private bool _isReloadRequired = false;
 		private bool _isApplicationDataLoaded = false;
 		private static bool _isLoaded = false;
@@ -73,19 +76,22 @@ namespace MageSDK.Client {
 
 				// get application data from server
 				GetApplicationData();
-
-				// at start initiate Default user
-				InitDefaultUser();
-
-				// init api cache
-				InitApiCache();
-
-				LoadEngineCache();
 			}
 			
 		}
 
+		private void OnCompleteApplicationDataLoaded() {
+			// at start initiate Default user
+			InitDefaultUser();
+
+			// init api cache
+			InitApiCache();
+
+			LoadEngineCache();
+		}
+
 		void Update() {
+			Debug.Log("Mage Engine update...");
 			SceneTrackerHelper.GetInstance().AddScreenTime(SceneManager.GetActiveScene().name);
 		}
 
@@ -98,6 +104,11 @@ namespace MageSDK.Client {
 		}
 
 		public void DoLogin() {
+			// if there is one login request sent, then wait for that request completes
+			if (this._isLoginRequestSent) {
+				return;
+			}
+			this._isLoginRequestSent = true;
 			#if PLATFORM_TEST
 				if (this.resetUserDataOnStart || !this.isWorkingOnline) {
 					// in unity and test mode don't reuse user saved previously, always initate new user
@@ -266,6 +277,12 @@ namespace MageSDK.Client {
 
 		///<summary>Update user data to current user. Once complete, save data to cache</summary>
 		public void UpdateUserData(UserData data) {
+			User u = GetUser();
+
+			// if user is not setup then don't update anything
+			if (null == u) {
+				return;
+			}
 			// check to increase version
 			int currentVersion = GetUser().GetUserDataInt(UserBasicData.Version);
 			if (data.attr_name != UserBasicData.Version.ToString()) {
@@ -359,7 +376,13 @@ namespace MageSDK.Client {
 		///<summary>Update user data to current user. Once complete, save data to cache</summary>
 		public T GetUserData<T>() where T:BaseModel {
 			string key = ApiHandler.instance.ApplicationKey + "_" + typeof(T).Name;
-			return BaseModel.CreateFromJSON<T>(GetUser().GetUserData(key));
+
+			if (null != GetUser() && "" != GetUser().GetUserData(key)) {
+				return BaseModel.CreateFromJSON<T>(GetUser().GetUserData(key));
+			} else {
+				return default(T);
+			}
+			
 		}
 
 		///<summary>Update user profile</summary>
@@ -571,6 +594,7 @@ namespace MageSDK.Client {
 			
 			RuntimeParameters.GetInstance().SetParam (MageEngineSettings.GAME_ENGINE_APPLICATION_DATA, localResources);
 			this._isApplicationDataLoaded = true;
+			OnCompleteApplicationDataLoaded();
 		}
 
 		///<summary>Get Application Data configured in Server</summary>
@@ -583,14 +607,16 @@ namespace MageSDK.Client {
 				(result) => {
 					// store application data
 					RuntimeParameters.GetInstance().SetParam(MageEngineSettings.GAME_ENGINE_APPLICATION_DATA, result.ApplicationDatas);
-					ES2.Save<List<ApplicationData>>( result.ApplicationDatas, MageEngineSettings.GAME_ENGINE_APPLICATION_DATA);
+					ES2.Save(result.ApplicationDatas, MageEngineSettings.GAME_ENGINE_APPLICATION_DATA);
 					this._isApplicationDataLoaded = true;
+					OnCompleteApplicationDataLoaded();
 				},
 				(errorStatus) => {
 					Debug.Log("Error: " + errorStatus);
 					//do some other processing here
 					if (ES2.Exists (MageEngineSettings.GAME_ENGINE_APPLICATION_DATA)) {
 						RuntimeParameters.GetInstance().SetParam (MageEngineSettings.GAME_ENGINE_APPLICATION_DATA, ES2.Load<List<ApplicationData>> (MageEngineSettings.GAME_ENGINE_APPLICATION_DATA));
+						OnCompleteApplicationDataLoaded();
 					}
 				},
 				() => {

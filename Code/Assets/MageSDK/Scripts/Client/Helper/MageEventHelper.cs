@@ -63,11 +63,18 @@ namespace MageSDK.Client.Helper {
 		}
 
 		private List<EventCounter> GetEventCounterList() {
-			return RuntimeParameters.GetInstance().GetParam<List<EventCounter>>(MageEngineSettings.GAME_ENGINE_EVENT_COUNTER_CACHE);
+			List<EventCounter> eventCounterList = RuntimeParameters.GetInstance().GetParam<List<EventCounter>>(MageEngineSettings.GAME_ENGINE_EVENT_COUNTER_CACHE);
+			if (null ==eventCounterList) {
+				eventCounterList = new List<EventCounter>();
+				SaveEventCounterList(eventCounterList);
+			}
+
+			return eventCounterList;
 		}
 
 		private void AddEventCounter(string eventName) {
 			List<EventCounter> eventCounterList = GetEventCounterList();
+
 			bool found = false;
 			//search for eventName
 			for (int i = 0; i < eventCounterList.Count; i++) {
