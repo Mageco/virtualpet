@@ -70,6 +70,7 @@ public class UIManager : MonoBehaviour
     public RewardDiamondPanel rewardDiamondPanel;
 
     public GameObject achivementNotification;
+    public GameObject giftNotification;
 
     [HideInInspector]
     public AchivementPanel achivementPanel;

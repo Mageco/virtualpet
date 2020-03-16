@@ -99,12 +99,20 @@ public class ItemManager : MonoBehaviour
             playTime = System.DateTime.Now;
             ES2.Save(playTime, "PlayTime");
 
-            //Check Notification
+            //Check Achivement Notification
             if (GameManager.instance.IsCollectAchivement())
             {
                 UIManager.instance.achivementNotification.SetActive(true);
             }else
                 UIManager.instance.achivementNotification.SetActive(false);
+
+            //Check Gift Notification
+            if (GameManager.instance.IsCollectDailyGift())
+            {
+                UIManager.instance.giftNotification.SetActive(true);
+            }
+            else
+                UIManager.instance.giftNotification.SetActive(false);
 
             if (GameManager.instance.gameTime > 400 && !ES2.Exists("RateUs") && (int)GameManager.instance.gameTime % 400 == 0)
             {

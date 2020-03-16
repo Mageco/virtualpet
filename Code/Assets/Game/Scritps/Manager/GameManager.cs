@@ -963,6 +963,31 @@ public class GameManager : MonoBehaviour
         p.character.OnTreatment(sickType);
     }
 
+    public bool IsCollectDailyGift()
+    {
+        bool isCollect = false;
+        int n = 0;
+        for (int i = 0; i < myPlayer.dailyBonus.Count; i++)
+        {
+            if (GameManager.instance.myPlayer.dailyBonus[i].isCollected)
+            {
+                n++;
+            }
+        }
 
+        if (n == 0)
+        {
+            isCollect = true;
+        }
+        else
+        {
+           if (System.DateTime.Parse(GameManager.instance.myPlayer.dailyBonus[n - 1].timeReceived).Year < System.DateTime.Now.Year || System.DateTime.Parse(GameManager.instance.myPlayer.dailyBonus[n - 1].timeReceived).Month < System.DateTime.Now.Month || System.DateTime.Parse(GameManager.instance.myPlayer.dailyBonus[n - 1].timeReceived).Day < System.DateTime.Now.Day)
+            {
+                isCollect = true;
+            }
+        }
+
+        return isCollect;
+    }
 
 }
