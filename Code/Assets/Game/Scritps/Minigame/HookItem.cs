@@ -33,13 +33,14 @@ public class HookItem : MonoBehaviour
     {
         originalPosition = this.transform.position;
         originalRotation = this.transform.rotation;
-        line.startWidth = 0.07f;
-        line.endWidth = 0.07f;
+
     }
 
     // Start is called before the first frame update
     void Start()
     {
+        line.startWidth = 0.07f;
+        line.endWidth = 0.07f;
         cat.Play("Idle", 0);
         this.body.SetActive(false);
     }

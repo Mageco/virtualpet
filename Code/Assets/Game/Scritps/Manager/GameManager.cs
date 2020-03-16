@@ -820,6 +820,7 @@ public class GameManager : MonoBehaviour
                     myPlayer.minigameLevels = ArrayHelper.Add(0, myPlayer.minigameLevels);
                 }
             }
+            
         }
         else
         {
@@ -934,6 +935,8 @@ public class GameManager : MonoBehaviour
 
     public int GetAchivement(int id)
     {
+        if (myPlayer.achivements == null)
+            myPlayer.achivements = new List<PlayerAchivement>();
         foreach (var item in myPlayer.achivements)
         {
             if (item.achivementId == id)
