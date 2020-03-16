@@ -19,6 +19,8 @@ public class RewardVideoAdManager : MonoBehaviour , IUnityAdsListener
     private string gameId = "3508454";
 #elif UNITY_ANDROID
 	private string gameId = "3508455";
+#else
+    private string gameId = "3508454";
 #endif
 	string myPlacementId = "rewardedVideo";
 	bool testMode = false;
