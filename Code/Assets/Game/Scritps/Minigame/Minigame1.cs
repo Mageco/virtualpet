@@ -55,7 +55,7 @@ public class Minigame1 : Minigame
     void Load(){
         int initNumber = 5;
         float initSpeed = 30;
-        maxTime = 15 + gameLevel/5*5;
+        maxTime = Mathf.Clamp(15 + gameLevel/5*5,15,45);
         chickenSpawner.maxNumber = 3 + gameLevel / 5 ;
         chickenSpawner.speed = 5;
 

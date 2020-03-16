@@ -63,8 +63,7 @@ public class Minigame2 : Minigame
     void Load(){
 
         int initNumber = 5;
-        
-        maxTime = 60 + gameLevel / 5 * 5;
+        maxTime = Mathf.Clamp(60 + gameLevel / 5 * 5, 60, 90);
         fishSpawner.maxNumber = initNumber + gameLevel/2;
         if(gameLevel > 10)
         {

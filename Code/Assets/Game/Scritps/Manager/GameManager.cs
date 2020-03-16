@@ -148,6 +148,13 @@ public class GameManager : MonoBehaviour
 
     public void UnEquipPet(int itemId)
     {
+        if(GetPetObject(itemId).actionType == ActionType.Toy || GetPetObject(itemId).enviromentType != EnviromentType.Room)
+        {
+            MageManager.instance.OnNotificationPopup(DataHolder.Dialog(107).GetName(MageManager.instance.GetLanguage()));
+            return;
+        }
+
+        
         foreach (Pet p in myPlayer.pets)
         {
             if (p.iD == itemId)
@@ -160,6 +167,8 @@ public class GameManager : MonoBehaviour
                 }
             }
         }
+        
+
     }
 
     public void UnEquipPets()

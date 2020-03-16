@@ -260,6 +260,7 @@ public class TutorialManager : MonoBehaviour
             blackScreenButton.SetActive(false);
             Pet pet = DataHolder.GetPet(1);
             UIManager.instance.OnPetRequirementPanel(pet);
+            ItemManager.instance.ResetCameraTarget();
         }
         else if (questId == 8)
         {
