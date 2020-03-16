@@ -9,8 +9,9 @@ public class LanguageMeshInspector : Editor
 	public override void OnInspectorGUI()
 	{
 		Undo.RecordObject(target, "Changed");
-		if (((LanguageMesh)target).dialogId != -1)
+		if (((LanguageMesh)target).dialogId != 100)
 		{
+            //Debug.Log(((LanguageMesh)target).dialogId);
 			id = DataHolder.Dialogs().GetDialogPosition(((LanguageMesh)target).dialogId);
 		}
 		id = EditorGUILayout.Popup("Dialog", id, DataHolder.Dialogs().GetNameList(true), GUILayout.Width(300));

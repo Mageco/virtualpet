@@ -25,7 +25,7 @@ public class PetRequirementPanel : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        MageManager.instance.PlaySound("happy_collect_item_01", false);
     }
 
     public void Load(Pet pet)

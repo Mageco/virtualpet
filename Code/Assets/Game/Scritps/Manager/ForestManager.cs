@@ -17,6 +17,7 @@ public class ForestManager : MonoBehaviour
     public GameObject fishPrefab;
     public GameObject[] charCollectors;
     public GameObject[] animalPrefabs;
+    public string music = "Forest";
     float timeCoin = 0;
     float maxTimeCoin = 3;
     float timeFish = 0;
@@ -113,7 +114,7 @@ public class ForestManager : MonoBehaviour
 
     public void LoadMusic()
     {
-        MageManager.instance.PlayMusicName("Forest", true);
+        MageManager.instance.PlayMusicName(music, true);
     }
 
     public void SpawnStar(Vector3 pos, int value)
