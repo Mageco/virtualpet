@@ -167,7 +167,7 @@ public class GameManager : MonoBehaviour
                 }
             }
         }
-        
+        SavePlayer();
 
     }
 

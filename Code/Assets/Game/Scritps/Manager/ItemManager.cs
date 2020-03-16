@@ -64,7 +64,7 @@ public class ItemManager : MonoBehaviour
         while(!isLoad){
             if(GameManager.instance.isLoad){
                 LoadItems(false);
-                GameManager.instance.EquipPets();
+                //GameManager.instance.EquipPets();
                 GameManager.instance.LoadPetObjects();
                 isLoad = true;
             }
