@@ -126,24 +126,24 @@ public class PetRequirementPanel : MonoBehaviour
         if (GameManager.instance.IsHaveItem(id) || GameManager.instance.IsEquipItem(id))
         {
             if(i.itemType == ItemType.Toy)
-                item.Load(url, 1, 1,4);
+                item.Load(id,url, 1, 1,4);
             else if(i.itemType == ItemType.Food || i.itemType == ItemType.Drink)
-                item.Load(url, 1, 1, 2);
+                item.Load(id, url, 1, 1, 2);
             else if (i.itemType == ItemType.Fruit)
-                item.Load(url, 1, 1, 5);
+                item.Load(id, url, 1, 1, 5);
             else
-                item.Load(url, 1, 1, 3);
+                item.Load(id, url, 1, 1, 3);
         }
         else
         {
             if (i.itemType == ItemType.Toy)
-                item.Load(url, 0, 1, 4);
+                item.Load(id, url, 0, 1, 4);
             else if (i.itemType == ItemType.Food || i.itemType == ItemType.Drink)
-                item.Load(url, 0, 1, 2);
+                item.Load(id, url, 0, 1, 2);
             else if (i.itemType == ItemType.Fruit)
-                item.Load(url, 0, 1, 5);
+                item.Load(id, url, 0, 1, 5);
             else
-                item.Load(url, 0, 1, 3);
+                item.Load(id, url, 0, 1, 3);
 
             canBuy = false;
         }
@@ -164,11 +164,11 @@ public class PetRequirementPanel : MonoBehaviour
         url = url.Replace(".png", "");
         if (GameManager.instance.IsEquipPet(id))
         {
-            item.Load(url, 1, 1,1);
+            item.Load(id,url, 1, 1,1);
         }
         else
         {
-            item.Load(url, 0, 1,1);
+            item.Load(id,url, 0, 1,1);
             canBuy = false;
         }
         items.Add(item);

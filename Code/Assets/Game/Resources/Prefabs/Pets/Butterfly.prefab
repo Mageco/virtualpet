@@ -43,7 +43,7 @@ GameObject:
   - component: {fileID: 7167892414397784866}
   - component: {fileID: 7167892414397784865}
   - component: {fileID: 5040026468189022465}
-  - component: {fileID: 7770314101947120951}
+  - component: {fileID: 5955066316672380146}
   m_Layer: 0
   m_Name: Butterfly
   m_TagString: Player
@@ -138,7 +138,7 @@ MonoBehaviour:
   interactType: 0
   dragOffset: {x: 0, y: 0, z: 0}
   isDrag: 0
---- !u!114 &7770314101947120951
+--- !u!114 &5955066316672380146
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -147,7 +147,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1207566469808353354}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2080aa40f9a1f4997861e5299619c346, type: 3}
+  m_Script: {fileID: 11500000, guid: 6752bcb268be74d428ce2f1b1368a1b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   data:
@@ -161,27 +161,29 @@ MonoBehaviour:
     isAvailable: 1
     requireEquipments: 
     requirePets: 
+    requireValue: 0
+    requireValueType: 3
     skills: []
     petName: 
     shopOrder: 0
     speed: 20
     level: 1
     exp: 0
-    intelligent: 10
+    intelligent: 0
     happy: 0
     food: 50
     water: 50
     sleep: 60
     energy: 50
-    health: 50
+    health: 100
     damage: 0
     shit: 0
     pee: 0
-    dirty: 50
-    itchi: 50
+    dirty: 10
+    itchi: 10
     fear: 0
     curious: 70
-    maxTimeSick: 1800
+    maxTimeSick: 3600
     isNew: 0
     rateFood: 10
     rateWater: 10
@@ -191,7 +193,7 @@ MonoBehaviour:
     rateShit: 10
     recoverDirty: 0.1
     recoverHealth: 0
-    recoverEnergy: 0
+    recoverEnergy: 5
     maxFood: 100
     maxWater: 100
     maxShit: 100
@@ -211,9 +213,9 @@ MonoBehaviour:
     enviromentType: 0
   petPrefab: {fileID: 2484898923534478495, guid: 2e8da3ae27b2445d78823855ece61406,
     type: 3}
-  charType: 5
+  charType: 0
   enviromentType: 0
-  direction: 1
+  direction: 2
   target: {x: 0, y: 0, z: 0}
   agent: {fileID: 0}
   isArrived: 1

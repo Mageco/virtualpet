@@ -521,6 +521,7 @@ GameObject:
   - component: {fileID: 2298427492250510127}
   - component: {fileID: 4137993124201490703}
   - component: {fileID: 2632597809960631220}
+  - component: {fileID: 8586309296564830397}
   m_Layer: 0
   m_Name: Persian_Cat_Brown
   m_TagString: Player
@@ -642,6 +643,8 @@ MonoBehaviour:
     isAvailable: 1
     requireEquipments: 
     requirePets: 
+    requireValue: 0
+    requireValueType: 3
     skills: []
     petName: 
     shopOrder: 0
@@ -712,6 +715,104 @@ MonoBehaviour:
   currentSkill: 0
   dropPosition: {x: 0, y: 0, z: 0}
   iconStatusObject: {fileID: 5467160713770211520}
+  iconStatus: 0
+  dirties: []
+  dirties_L: []
+  dirties_LD: []
+--- !u!114 &8586309296564830397
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7808956716181729348}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6752bcb268be74d428ce2f1b1368a1b2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  data:
+    iD: 0
+    iconUrl: 
+    languageItem: []
+    buyPrice: 0
+    priceType: 1
+    itemState: 0
+    prefabName: 
+    isAvailable: 1
+    requireEquipments: 
+    requirePets: 
+    requireValue: 0
+    requireValueType: 3
+    skills: []
+    petName: 
+    shopOrder: 0
+    speed: 20
+    level: 1
+    exp: 0
+    intelligent: 0
+    happy: 0
+    food: 50
+    water: 50
+    sleep: 60
+    energy: 50
+    health: 100
+    damage: 0
+    shit: 0
+    pee: 0
+    dirty: 10
+    itchi: 10
+    fear: 0
+    curious: 70
+    maxTimeSick: 3600
+    isNew: 0
+    rateFood: 10
+    rateWater: 10
+    rateSleep: 0.5
+    recoverSleep: 0.1
+    ratePee: 10
+    rateShit: 10
+    recoverDirty: 0.1
+    recoverHealth: 0
+    recoverEnergy: 5
+    maxFood: 100
+    maxWater: 100
+    maxShit: 100
+    maxPee: 100
+    maxSleep: 100
+    maxEnergy: 100
+    maxHealth: 100
+    maxDamage: 100
+    maxDirty: 100
+    maxItchi: 100
+    maxCurious: 100
+    character: {fileID: 0}
+    actionType: 0
+    position: {x: 0, y: 0, z: 0}
+    scalePosition: {x: 0, y: 0, z: 0}
+    height: 0
+    enviromentType: 0
+  petPrefab: {fileID: 0}
+  charType: 0
+  enviromentType: 0
+  direction: 2
+  target: {x: 0, y: 0, z: 0}
+  agent: {fileID: 0}
+  isArrived: 1
+  isAbort: 0
+  isAction: 0
+  isMoving: 0
+  actionType: 0
+  anim: {fileID: 0}
+  charInteract: {fileID: 0}
+  charScale: {fileID: 0}
+  peePosition: {fileID: 0}
+  shitPosition: {fileID: 0}
+  shadow: {fileID: 0}
+  originalShadowScale: {x: 0, y: 0, z: 0}
+  currentSkill: 0
+  dropPosition: {x: 0, y: 0, z: 0}
+  iconStatusObject: {fileID: 0}
   iconStatus: 0
   dirties: []
   dirties_L: []

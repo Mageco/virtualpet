@@ -369,7 +369,7 @@ GameObject:
   - component: {fileID: 6069416419954332818}
   - component: {fileID: 6069416419954332817}
   - component: {fileID: 8264768739620265649}
-  - component: {fileID: 494781705592010213}
+  - component: {fileID: 5394301598765598346}
   m_Layer: 0
   m_Name: Shamoyed_Party
   m_TagString: Player
@@ -464,7 +464,7 @@ MonoBehaviour:
   interactType: 0
   dragOffset: {x: 0, y: 0, z: 0}
   isDrag: 0
---- !u!114 &494781705592010213
+--- !u!114 &5394301598765598346
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -473,7 +473,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2846764735703140346}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 927ae5f57c8b445c3beac52e0f98e757, type: 3}
+  m_Script: {fileID: 11500000, guid: 6752bcb268be74d428ce2f1b1368a1b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   data:
@@ -487,27 +487,29 @@ MonoBehaviour:
     isAvailable: 1
     requireEquipments: 
     requirePets: 
+    requireValue: 0
+    requireValueType: 3
     skills: []
     petName: 
     shopOrder: 0
-    speed: 0
-    level: 0
+    speed: 20
+    level: 1
     exp: 0
-    intelligent: 10
+    intelligent: 0
     happy: 0
     food: 50
     water: 50
-    sleep: 50
+    sleep: 60
     energy: 50
-    health: 50
+    health: 100
     damage: 0
     shit: 0
     pee: 0
-    dirty: 50
-    itchi: 50
+    dirty: 10
+    itchi: 10
     fear: 0
-    curious: 0
-    maxTimeSick: 1800
+    curious: 70
+    maxTimeSick: 3600
     isNew: 0
     rateFood: 10
     rateWater: 10
@@ -517,7 +519,7 @@ MonoBehaviour:
     rateShit: 10
     recoverDirty: 0.1
     recoverHealth: 0
-    recoverEnergy: 0
+    recoverEnergy: 5
     maxFood: 100
     maxWater: 100
     maxShit: 100
@@ -539,7 +541,7 @@ MonoBehaviour:
     type: 3}
   charType: 0
   enviromentType: 0
-  direction: 1
+  direction: 2
   target: {x: 0, y: 0, z: 0}
   agent: {fileID: 0}
   isArrived: 1

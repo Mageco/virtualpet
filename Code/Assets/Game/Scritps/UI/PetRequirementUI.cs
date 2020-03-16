@@ -9,9 +9,11 @@ public class PetRequirementUI : MonoBehaviour
     public Text number;
     public GameObject done;
     int tabId = 0;
+    int petId = 0;
 
-    public void Load(string url,int num,int maxNum,int id)
+    public void Load(int petId,string url,int num,int maxNum,int id)
     {
+        this.petId = petId;
         tabId = id;
         icon.sprite = Resources.Load<Sprite>(url) as Sprite;
         number.text = num.ToString() + "/" + maxNum.ToString();
@@ -27,5 +29,6 @@ public class PetRequirementUI : MonoBehaviour
     public void OnClick()
     {
         UIManager.instance.OnShopPanel(tabId);
+        UIManager.instance.shopPanel.ScrollToItem(petId);
     }
 }
