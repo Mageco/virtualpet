@@ -1358,20 +1358,42 @@ public class CharController : MonoBehaviour
 
     protected virtual IEnumerator Toilet()
     {
-        if (data.shit > 0.7 * data.MaxShit)
+        while (!isAbort)
         {
-            actionType = ActionType.Shit;
-            isAbort = true;
-        }
-        else if (data.pee > 0.7f * data.MaxPee)
-        {
-            actionType = ActionType.Pee;
-            isAbort = true;
-        }
-        else
-        {
-            yield return StartCoroutine(Wait(Random.Range(1f, 2f)));
-            yield return StartCoroutine(JumpDown(-7, 10, 30));
+            if (data.shit > 0.7 * data.MaxShit)
+            {
+                actionType = ActionType.Shit;
+                isAbort = true;
+            }
+            else if (data.pee > 0.7f * data.MaxPee)
+            {
+                actionType = ActionType.Pee;
+                isAbort = true;
+            }
+            else
+            {
+                int n = Random.Range(0, 100);
+                if (n < 30)
+                    SetDirection(Direction.L);
+                else if (n < 60)
+                    SetDirection(Direction.R);
+
+                int n1 = Random.Range(0, 100);
+                if (n1 < 30)
+                {
+                    MageManager.instance.PlaySound3D(charType.ToString() + "_Speak", false, this.transform.position);
+                    yield return StartCoroutine(DoAnim("Speak_" + direction.ToString()));
+                    anim.Play("Idle_" + direction.ToString(), 0);
+                }
+                else if (n1 < 60)
+                    anim.Play("Idle_" + direction.ToString(), 0);
+                else
+                {
+                    yield return StartCoroutine(DoAnim("Tired"));
+                    anim.Play("Idle_" + direction.ToString(), 0);
+                }
+                yield return StartCoroutine(Wait(Random.Range(2, 7)));
+            }
         }
 
         CheckAbort();
@@ -1590,18 +1612,41 @@ public class CharController : MonoBehaviour
 
     protected virtual IEnumerator Bed()
     {
-        int ran = Random.Range(0, 100);
-        if (data.sleep < 0.3f * data.MaxSleep || data.Health < 0.3f * data.MaxHealth)
+        
+        while (!isAbort) 
         {
-            actionType = ActionType.Sleep;
-            Abort();
+            if(data.sleep < 0.3f * data.MaxSleep || data.Health < 0.3f * data.MaxHealth)
+            {
+                actionType = ActionType.Sleep;
+                Abort();
+            }
+            else
+            {
+                int n = Random.Range(0,100);
+                if (n < 30)
+                    SetDirection(Direction.L);
+                else if (n < 60)
+                    SetDirection(Direction.R);
+
+                int n1 = Random.Range(0, 100);
+                if(n1 < 30)
+                {
+                    MageManager.instance.PlaySound3D(charType.ToString() + "_Speak", false, this.transform.position);
+                    yield return StartCoroutine(DoAnim("Speak_" + direction.ToString()));
+                    anim.Play("Idle_" + direction.ToString(), 0);
+                }
+                else if(n1 < 60)
+                    anim.Play("Idle_" + direction.ToString(), 0);
+                else
+                {
+                    yield return StartCoroutine(DoAnim("Love"));
+                    anim.Play("Idle_" + direction.ToString(), 0);
+                }
+                yield return StartCoroutine(Wait(Random.Range(2, 7)));
+            }
         }
-        else
-        {
-            anim.Play("Idle_" + direction.ToString(), 0);
-            yield return StartCoroutine(Wait(Random.Range(2, 4)));
-            yield return StartCoroutine(JumpDown(-7, 10, 30));
-        }
+
+        
 
         CheckAbort();
     }
@@ -1902,18 +1947,21 @@ public class CharController : MonoBehaviour
             }
             else if (toyItem.toyType == ToyType.Slider || toyItem.toyType == ToyType.Circle)
             {
+                
                 toyItem.OnActive();
                 if (toyItem.startPoint != null)
                 {
                     target = toyItem.startPoint.position;
                     yield return StartCoroutine(RunToPoint());
                 }
+                charInteract.interactType = InteractType.Toy;
                 agent.transform.position = toyItem.startPoint.position;
                 yield return StartCoroutine(DoAnim("Play_" + toyItem.toyType.ToString()));
                 if (toyItem.endPoint != null && !isAbort)
                 {
                     agent.transform.position = toyItem.endPoint.position;
                 }
+                charInteract.interactType = InteractType.None;
             }
             else if (toyItem.toyType == ToyType.Spring || toyItem.toyType == ToyType.Swing || toyItem.toyType == ToyType.Dance || toyItem.toyType == ToyType.Fun)
             {
