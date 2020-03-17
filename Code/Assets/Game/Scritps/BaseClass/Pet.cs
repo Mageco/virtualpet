@@ -44,7 +44,7 @@ public class Pet : BaseModel
     public System.DateTime timeSick;
     public float maxTimeSick = 3600;
     public bool isNew = false;
-
+    public RareType rareType = RareType.Commom;
 
     [HideInInspector]
     public float rateFood = 10f;

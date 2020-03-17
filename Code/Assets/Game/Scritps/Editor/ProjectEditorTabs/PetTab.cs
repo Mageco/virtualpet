@@ -116,6 +116,7 @@ public class PetTab : BaseTab
                 EditorGUILayout.Separator();
                 EditorGUILayout.Separator();
                 EditorGUILayout.Separator();
+                DataHolder.Pet(selection).rareType = (RareType)EditorTab.EnumToolbar("Rare Type", (int)DataHolder.Pet(selection).rareType, typeof(RareType));
                 DataHolder.Pet(selection).priceType = (PriceType)EditorTab.EnumToolbar("Buy Price Type", (int)DataHolder.Pet(selection).priceType, typeof(PriceType));
                 DataHolder.Pet(selection).buyPrice = EditorGUILayout.IntField("Buy price", DataHolder.Pet(selection).buyPrice, GUILayout.Width(pw.mWidth));
                 DataHolder.Pet(selection).isAvailable = EditorGUILayout.Toggle("Available", DataHolder.Pet(selection).isAvailable, GUILayout.Width(pw.mWidth));

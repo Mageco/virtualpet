@@ -78,6 +78,18 @@ public class PurchaseManager : MonoBehaviour, IStoreListener
 		else if (id == 3)
 		{
 			GameManager.instance.AddDiamond(DataHolder.GetItem(21).sellPrice);
+		}else if(id == 4)
+        {
+			GameManager.instance.AddDiamond(100);
+            
+		}
+		else if (id == 5)
+		{
+			GameManager.instance.AddDiamond(300);
+		}
+		else if (id == 6)
+		{
+			GameManager.instance.AddDiamond(1200);
 		}
 	}
 
