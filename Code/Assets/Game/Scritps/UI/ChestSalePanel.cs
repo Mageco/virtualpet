@@ -23,11 +23,28 @@ public class ChestSalePanel : MonoBehaviour
     public void Load(RareType rareType)
     {
         this.rareType = rareType;
+        
+        if(rareType == RareType.Common)
+        {
+            Item item = DataHolder.GetItem(128);
+            priceText.text = (item.buyPrice * (float.Parse(DataHolder.Dialog(64).GetDescription(MageManager.instance.GetLanguage())))).ToString(".00");
+        }
+        else if (rareType == RareType.Rare)
+        {
+            Item item = DataHolder.GetItem(129);
+            priceText.text = (item.buyPrice * (float.Parse(DataHolder.Dialog(64).GetDescription(MageManager.instance.GetLanguage())))).ToString(".00");
+        }
+        if (rareType == RareType.Epic)
+        {
+            Item item = DataHolder.GetItem(130);
+            priceText.text = (item.buyPrice * (float.Parse(DataHolder.Dialog(64).GetDescription(MageManager.instance.GetLanguage())))).ToString(".00");
+        }
+
     }
 
     public void OnBuy()
     {
-        if(rareType == RareType.Common)
+        if (rareType == RareType.Common)
         {
             PurchaseManager.instance.BuyConsumable(4);
         }else if(rareType == RareType.Rare)
