@@ -310,8 +310,14 @@ public class GameManager : MonoBehaviour
 
     public CharController GetRandomPetObject()
     {
-        int n = Random.Range(0, petObjects.Count);
-        return petObjects[n];
+        if (petObjects.Count > 0)
+        {
+            int n = Random.Range(0, petObjects.Count);
+            return petObjects[n];
+        }
+        else
+            return null;
+
     }
 
     void RemovePet(int id)

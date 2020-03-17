@@ -56,13 +56,17 @@ public class ToyRobotItem : ToyItem
         Debug.Log("Click");
         if(state == EquipmentState.Drag || state == EquipmentState.Hold)
         {
-            isAbort = false;
-            Debug.Log("Turn on");
-            state = EquipmentState.Active;
-            agent.transform.position = this.transform.position;
-            target = GameManager.instance.GetRandomPetObject();
-            StartCoroutine(MoveToPoint());
-            MageManager.instance.PlaySound3D("Item_Robot_TurnOn", false,this.transform.position);
+            if (GameManager.instance.GetRandomPetObject() != null)
+            {
+                isAbort = false;
+                Debug.Log("Turn on");
+                state = EquipmentState.Active;
+                agent.transform.position = this.transform.position;
+
+                target = GameManager.instance.GetRandomPetObject();
+                StartCoroutine(MoveToPoint());
+                MageManager.instance.PlaySound3D("Item_Robot_TurnOn", false, this.transform.position);
+            }
         }
         else if(state == EquipmentState.Active)
         {
