@@ -185,7 +185,7 @@ public class UIManager : MonoBehaviour
     }
 
 	public void BuyItem(int itemID){
-        MageEngine.instance.OnEvent(Mage.Models.Application.MageEventType.CheckOutItem ,DataHolder.GetItem(itemID).GetName(MageManager.instance.GetLanguage()));
+        MageEngine.instance.OnEvent(Mage.Models.Application.MageEventType.CheckoutIAPWindow ,DataHolder.GetItem(itemID).GetName(MageManager.instance.GetLanguage()));
         GameManager.instance.BuyItem(itemID);
       GameManager.instance.EquipItem(itemID);
       if(ItemManager.instance != null)

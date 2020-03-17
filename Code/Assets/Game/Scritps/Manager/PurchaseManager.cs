@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Purchasing;
 using System;
-
+using MageSDK.Client;
 
 public class PurchaseManager : MonoBehaviour, IStoreListener
 {
@@ -96,6 +96,7 @@ public class PurchaseManager : MonoBehaviour, IStoreListener
 			GameManager.instance.AddRandomPet(RareType.Epic);
 			GameManager.instance.AddItem(130);
 		}
+		MageEngine.instance.OnEvent(Mage.Models.Application.MageEventType.ConfirmPaymentItem, nonConsumableIds[id]);
 	}
 
 	void OnPurchaseComplete(int id)
@@ -172,6 +173,7 @@ public class PurchaseManager : MonoBehaviour, IStoreListener
 		// Buy the consumable product using its general identifier. Expect a response either 
 		// through ProcessPurchase or OnPurchaseFailed asynchronously.
 		BuyProductID(consumableIds[id]);
+        
 	}
 
 
@@ -180,6 +182,7 @@ public class PurchaseManager : MonoBehaviour, IStoreListener
 		// Buy the non-consumable product using its general identifier. Expect a response either 
 		// through ProcessPurchase or OnPurchaseFailed asynchronously.
 		BuyProductID(nonConsumableIds[id]);
+		MageEngine.instance.OnEvent(Mage.Models.Application.MageEventType.CheckOutItem, nonConsumableIds[id]);
 	}
 
 
