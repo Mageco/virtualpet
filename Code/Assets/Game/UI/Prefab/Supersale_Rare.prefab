@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 3914437804176068668}
   - component: {fileID: 649266961998470586}
   m_Layer: 5
-  m_Name: Time_Text
+  m_Name: Number_Time
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -920,6 +920,7 @@ GameObject:
   - component: {fileID: 8492299520145959224}
   - component: {fileID: 503039761781292483}
   - component: {fileID: 2634449509308579998}
+  - component: {fileID: 7841098327636486222}
   m_Layer: 5
   m_Name: Time_Text (1)
   m_TagString: Untagged
@@ -985,7 +986,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: time left
+  m_Text: 'Time left '
 --- !u!114 &2634449509308579998
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1006,6 +1007,20 @@ MonoBehaviour:
   glintVertex: 0
   glintWidth: 0
   glintColor: {r: 0, g: 0, b: 0, a: 0}
+--- !u!114 &7841098327636486222
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4545980328557103264}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 06040c762767d48eabdcb7a46129cad1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  text: {fileID: 0}
+  dialogId: 115
 --- !u!1 &4573210606077062607
 GameObject:
   m_ObjectHideFlags: 0
@@ -1527,7 +1542,7 @@ GameObject:
   - component: {fileID: 6446112012429988252}
   - component: {fileID: 5747571710096483810}
   - component: {fileID: 5035784171887596119}
-  - component: {fileID: 3927113034668275152}
+  - component: {fileID: 4212196409611313988}
   m_Layer: 5
   m_Name: Text
   m_TagString: Untagged
@@ -1593,7 +1608,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: quest8
+  m_Text: 'Rare pet '
 --- !u!114 &5035784171887596119
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1614,7 +1629,7 @@ MonoBehaviour:
   glintVertex: 0
   glintWidth: 0
   glintColor: {r: 0, g: 0, b: 0, a: 0}
---- !u!114 &3927113034668275152
+--- !u!114 &4212196409611313988
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1627,7 +1642,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   text: {fileID: 0}
-  dialogId: -1
+  dialogId: 114
 --- !u!1 &6001654569410111062
 GameObject:
   m_ObjectHideFlags: 0
