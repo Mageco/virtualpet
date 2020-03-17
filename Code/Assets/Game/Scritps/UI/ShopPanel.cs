@@ -94,7 +94,7 @@ public class ShopPanel : MonoBehaviour
         {
             for (int i = 0; i < DataHolder.Items().GetDataCount(); i++)
             {
-                if ((int)DataHolder.Item(i).itemType == 0 || (int)DataHolder.Item(i).itemType == 1)
+                if ((int)DataHolder.Item(i).itemType == 0 || (int)DataHolder.Item(i).itemType == 1 || (int)DataHolder.Item(i).itemType == 17)
                 {
                     items.Add(DataHolder.Item(i));
                 }

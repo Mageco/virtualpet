@@ -227,8 +227,8 @@ public class ItemUI : MonoBehaviour
         url = url.Replace(".png", "");
         icon.sprite = Resources.Load<Sprite>(url) as Sprite;
         price.text = d.buyPrice.ToString();
-        iconType.sprite = Resources.Load<Sprite>("Icons/ItemType/Pet");
-
+        iconType.sprite = Resources.Load<Sprite>("Icons/ItemType/Pet_" + d.rareType.ToString());
+        Debug.Log("Icons/ItemType/Pet_" + d.rareType.ToString());
         state = ItemState.OnShop;
         foreach(Pet p in GameManager.instance.myPlayer.pets)
         {
@@ -404,6 +404,21 @@ public class ItemUI : MonoBehaviour
         if(isCharacter && (state == ItemState.Have || state == ItemState.Equiped))
         {
             UIManager.instance.OnProfilePanel(itemId);
+        }
+
+        if(!isCharacter && !isLevelRequire)
+        {
+            if(itemId == 128)
+            {
+                UIManager.instance.OnChestSalePanel(RareType.Common);
+            }else if(itemId == 129)
+            {
+                UIManager.instance.OnChestSalePanel(RareType.Rare);
+            }
+            else if (itemId == 130)
+            {
+                UIManager.instance.OnChestSalePanel(RareType.Epic);
+            }
         }
         //MageManager.instance.PlaySoundName("BubbleButton", false);
         //UIManager.instance.OnItemInfoPanel(itemId, isCharacter);

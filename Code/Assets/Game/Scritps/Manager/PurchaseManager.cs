@@ -81,15 +81,17 @@ public class PurchaseManager : MonoBehaviour, IStoreListener
 		}else if(id == 4)
         {
 			GameManager.instance.AddDiamond(100);
-            
+			GameManager.instance.AddRandomPet(RareType.Common);
 		}
 		else if (id == 5)
 		{
 			GameManager.instance.AddDiamond(300);
+			GameManager.instance.AddRandomPet(RareType.Rare);
 		}
 		else if (id == 6)
 		{
 			GameManager.instance.AddDiamond(1200);
+			GameManager.instance.AddRandomPet(RareType.Epic);
 		}
 	}
 

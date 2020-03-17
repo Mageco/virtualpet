@@ -126,6 +126,40 @@ public class GameManager : MonoBehaviour
         SavePlayer();
     }
 
+    public void AddRandomPet(RareType rareType)
+    {
+        List<Pet> pets = new List<Pet>();
+        for(int i = 0; i < DataHolder.Pets().GetDataCount(); i++)
+        {
+            if(DataHolder.Pet(i).isAvailable && !IsHavePet(DataHolder.Pet(i).iD) && DataHolder.Pet(i).rareType == rareType)
+            {
+                pets.Add(DataHolder.Pet(i));
+            }
+        }
+
+        if(pets.Count > 0)
+        {
+            int itemId = Random.Range(0, pets.Count);
+            Pet p = new Pet(itemId);
+            p.itemState = ItemState.Equiped;
+            p.isNew = true;
+            myPlayer.pets.Add(p);
+            
+        }
+        else
+        {
+            if(rareType == RareType.Common)
+                AddDiamond(99);
+            else if(rareType == RareType.Rare)
+                AddDiamond(299);
+            else if (rareType == RareType.Epic)
+                AddDiamond(999);
+        }
+
+        SavePlayer();
+
+    }
+
     public void EquipPet(int itemId)
     {
         foreach (Pet p in myPlayer.pets)
@@ -750,6 +784,7 @@ public class GameManager : MonoBehaviour
             myPlayer.level = l;
             UIManager.instance.OnLevelUpPanel();
             OnTip();
+            UIManager.instance.OnSale();
             Debug.Log("Level Up");
         }
 

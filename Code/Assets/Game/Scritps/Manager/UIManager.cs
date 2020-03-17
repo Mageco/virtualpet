@@ -24,6 +24,9 @@ public class UIManager : MonoBehaviour
     public GameObject settingPanelPrefab;
     public GameObject dailyBonusPanelPrefab;
     public GameObject rewardDiamondPanelPrefab;
+    public GameObject commomChestPanelPrefab;
+    public GameObject rareChestPanelPrefab;
+    public GameObject epicChestPanelPrefab;
     public static UIManager instance;
 	public Text coinText;
 	public Text diamonText;
@@ -69,6 +72,9 @@ public class UIManager : MonoBehaviour
     [HideInInspector]
     public RewardDiamondPanel rewardDiamondPanel;
 
+    [HideInInspector]
+    public ChestSalePanel chestSalePanel;
+
     public GameObject achivementNotification;
     public GameObject giftNotification;
 
@@ -97,7 +103,14 @@ public class UIManager : MonoBehaviour
     float timeUpdate;
     float maxTimeUpdate = 0.4f;
 
-	void Awake()
+    //Sale
+    public GameObject saleButton;
+    RareType rareType = RareType.Common;
+    float timeSale = 0;
+    float maxTimeSale = 15;
+    bool isSale = false;
+
+    void Awake()
 	{
 		if (instance == null)
 			instance = this;
@@ -120,19 +133,27 @@ public class UIManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //if (timeUpdate > maxTimeUpdate)
-        //{
-            UpdateUI();
-            timeUpdate = 0;
-            if (notificationText.Count > 0)
+        UpdateUI();
+        timeUpdate = 0;
+        if (notificationText.Count > 0)
+        {
+            OnQuestNotificationPopup(notificationText[0]);
+        }
+        if (GameManager.instance.myPlayer.questId >= DataHolder.Quests().GetDataCount() && notificationIcon != null)
+            notificationIcon.SetActive(false);
+
+
+
+        if (isSale)
+        {
+            if (timeSale > maxTimeSale)
             {
-                OnQuestNotificationPopup(notificationText[0]);
+                OffSale();
+                timeSale = 0;
             }
-            if (GameManager.instance.myPlayer.questId >= DataHolder.Quests().GetDataCount() && notificationIcon != null)
-                notificationIcon.SetActive(false);
-        //}
-        //else
-        //    timeUpdate += Time.deltaTime;
+            else
+                timeSale += Time.deltaTime;
+        }
     }
 
 
@@ -602,6 +623,43 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    public void OnChestSalePanel(RareType rareType)
+    {
+        if (chestSalePanel == null)
+        {
+            if(rareType == RareType.Common)
+            {
+                var popup = Instantiate(commomChestPanelPrefab) as GameObject;
+                popup.SetActive(true);
+                popup.transform.localScale = Vector3.zero;
+                popup.transform.SetParent(GameObject.Find("Canvas").transform, false);
+                popup.GetComponent<Popup>().Open();
+                chestSalePanel = popup.GetComponent<ChestSalePanel>();
+                chestSalePanel.Load(rareType);
+            }
+            else if (rareType == RareType.Rare)
+            {
+                var popup = Instantiate(rareChestPanelPrefab) as GameObject;
+                popup.SetActive(true);
+                popup.transform.localScale = Vector3.zero;
+                popup.transform.SetParent(GameObject.Find("Canvas").transform, false);
+                popup.GetComponent<Popup>().Open();
+                chestSalePanel = popup.GetComponent<ChestSalePanel>();
+                chestSalePanel.Load(rareType);
+            }
+            else if (rareType == RareType.Epic)
+            {
+                var popup = Instantiate(epicChestPanelPrefab) as GameObject;
+                popup.SetActive(true);
+                popup.transform.localScale = Vector3.zero;
+                popup.transform.SetParent(GameObject.Find("Canvas").transform, false);
+                popup.GetComponent<Popup>().Open();
+                chestSalePanel = popup.GetComponent<ChestSalePanel>();
+                chestSalePanel.Load(rareType);
+            }
+        }
+    }
+
     public void OnHome(){
         MageManager.instance.PlaySound("BubbleButton", false);
         MageManager.instance.LoadSceneWithLoading("House");
@@ -630,6 +688,33 @@ public class UIManager : MonoBehaviour
         MageManager.instance.LoadSceneWithLoading(type.ToString());
         GameManager.instance.petObjects.Clear();
     }
+
+    #region Sale
+    public void OnSale()
+    {
+        if(GameManager.instance.myPlayer.level > 7)
+            this.rareType = RareType.Epic;
+        else if (GameManager.instance.myPlayer.level > 5)
+            this.rareType = RareType.Rare;
+        else if (GameManager.instance.myPlayer.level > 5)
+            this.rareType = RareType.Common;
+        isSale = true;
+        saleButton.SetActive(true);
+    }
+
+    void OffSale()
+    {
+        isSale = false;
+        saleButton.SetActive(false);
+    }
+
+    public void OnOpenSale()
+    {
+        UIManager.instance.OnChestSalePanel(rareType);
+    }
+
+
+    #endregion
 
 }
 

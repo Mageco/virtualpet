@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ServiceManager : MonoBehaviour
 {
@@ -9,6 +10,7 @@ public class ServiceManager : MonoBehaviour
     float maxTimeCheck = 1.2f;
     public ServiceUI[] serviceUIs;
     public GameObject servicePanel;
+
 
     private void Awake()
     {
@@ -100,28 +102,25 @@ public class ServiceManager : MonoBehaviour
     void CheckService()
     {
         LoadServiceUI();
-        //if (GameManager.instance.GetPets().Count >= 3 || GameManager.instance.myPlayer.level >=2)
-        //{
-        //    servicePanel.SetActive(true);
-            foreach (PlayerService s in GameManager.instance.myPlayer.playerServices)
-            {
-                if (s.isActive && (System.DateTime.Now - System.DateTime.Parse(s.timeStart)).TotalSeconds > s.duration)
-                {
-                    s.StopService();
-                    if (s.type == ServiceType.Instructor)
-                        GameManager.instance.expScale = 1;
-                    LoadServiceUI();
-                }
 
-                if (s.isActive)
-                {
-                    if (s.type == ServiceType.Instructor)
-                        GameManager.instance.expScale = 2;
-                    RunService(s.type);
-                }
+        foreach (PlayerService s in GameManager.instance.myPlayer.playerServices)
+        {
+            if (s.isActive && (System.DateTime.Now - System.DateTime.Parse(s.timeStart)).TotalSeconds > s.duration)
+            {
+                s.StopService();
+                if (s.type == ServiceType.Instructor)
+                    GameManager.instance.expScale = 1;
+                LoadServiceUI();
             }
-        //}else
-        //    servicePanel.SetActive(false);
+
+            if (s.isActive)
+            {
+                if (s.type == ServiceType.Instructor)
+                    GameManager.instance.expScale = 2;
+                RunService(s.type);
+            }
+        }
+
 
     }
 
@@ -215,6 +214,11 @@ public class ServiceManager : MonoBehaviour
             }
         }
     }
+
+
+
+
+
 }
 
 
