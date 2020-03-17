@@ -82,8 +82,12 @@ public class ItemUI : MonoBehaviour
         if (d.levelRequire > GameManager.instance.myPlayer.level && state == ItemState.OnShop)
             isLevelRequire = true;
 
+
+
+
         OffAllIcon();
 
+        
 
         if (isLevelRequire)
         {
@@ -109,7 +113,7 @@ public class ItemUI : MonoBehaviour
                     unEquipButton.interactable = true;
                 this.GetComponent<Image>().color = new Color(251f / 256, 134f / 256, 58f / 256);
             }
-            else if (state == ItemState.Have)
+            else if (state == ItemState.Have && d.itemType != ItemType.Chest)
             {
                 equipButton.gameObject.SetActive(true);
             }
@@ -216,6 +220,73 @@ public class ItemUI : MonoBehaviour
                 happyText.text = d.value.ToString("F0");
             }
         }*/
+
+        //SuperSale
+        if (!isLevelRequire)
+        {
+            if (d.iD == 128)
+            {
+                if (GameManager.instance.GetItemNumber(128) > 3)
+                {
+                    icon.material = greyMaterial;
+                    price.gameObject.SetActive(false);
+                    moneyIcon.SetActive(false);
+                    buyButton.interactable = false;
+                    isLevelRequire = true;
+                }
+                else
+                {
+                    price.gameObject.SetActive(true);
+                    buyButton.gameObject.SetActive(true);
+                    buyButton.interactable = true;
+                    moneyIcon.SetActive(true);
+                    moneyIcon.GetComponent<Text>().text = DataHolder.Dialog(64).GetName(MageManager.instance.GetLanguage());
+                    price.text = (d.buyPrice * (float.Parse(DataHolder.Dialog(64).GetDescription(MageManager.instance.GetLanguage())))).ToString(".00");
+                }
+            }
+            else if (d.iD == 129)
+            {
+                if (GameManager.instance.GetItemNumber(129) > 0)
+                {
+                    icon.material = greyMaterial;
+                    price.gameObject.SetActive(false);
+                    moneyIcon.SetActive(false);
+                    buyButton.interactable = false;
+                    isLevelRequire = true;
+                }
+                else
+                {
+                    price.gameObject.SetActive(true);
+                    buyButton.gameObject.SetActive(true);
+                    buyButton.interactable = true;
+                    moneyIcon.SetActive(true);
+                    moneyIcon.GetComponent<Text>().text = DataHolder.Dialog(64).GetName(MageManager.instance.GetLanguage());
+                    price.text = (d.buyPrice * (float.Parse(DataHolder.Dialog(64).GetDescription(MageManager.instance.GetLanguage())))).ToString(".00");
+                }
+            }
+            if (d.iD == 130)
+            {
+                if (GameManager.instance.GetItemNumber(130) > 0)
+                {
+                    icon.material = greyMaterial;
+
+                    price.gameObject.SetActive(false);
+                    moneyIcon.SetActive(false);
+                    buyButton.interactable = false;
+                    isLevelRequire = true;
+                }
+                else
+                {
+                    price.gameObject.SetActive(true);
+                    buyButton.gameObject.SetActive(true);
+                    buyButton.interactable = true;
+                    moneyIcon.SetActive(true);
+                    moneyIcon.GetComponent<Text>().text = DataHolder.Dialog(64).GetName(MageManager.instance.GetLanguage());
+                    price.text = (d.buyPrice * (float.Parse(DataHolder.Dialog(64).GetDescription(MageManager.instance.GetLanguage())))).ToString(".00");
+                }
+            }
+        }
+        
     }
 
 
@@ -378,6 +449,21 @@ public class ItemUI : MonoBehaviour
             else if (DataHolder.GetItem(itemId).itemType == ItemType.Coin)
             {
                 UIManager.instance.OnConfirmationShopPanel(itemId, false, true);
+            }
+            else if (DataHolder.GetItem(itemId).itemType == ItemType.Chest)
+            {
+                if (itemId == 128)
+                {
+                    PurchaseManager.instance.BuyConsumable(4);
+                }
+                else if (itemId == 129)
+                {
+                    PurchaseManager.instance.BuyConsumable(5);
+                }
+                else if (itemId == 130)
+                {
+                    PurchaseManager.instance.BuyConsumable(6);
+                }
             }
             else
             {

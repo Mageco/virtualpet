@@ -127,7 +127,7 @@ public class UIManager : MonoBehaviour
         coin = GameManager.instance.GetCoin();
         happy = GameManager.instance.GetHappy();
         diamond = GameManager.instance.GetDiamond();
-
+        OnSale();
     }
 
     // Update is called once per frame
@@ -631,7 +631,7 @@ public class UIManager : MonoBehaviour
             {
                 var popup = Instantiate(commomChestPanelPrefab) as GameObject;
                 popup.SetActive(true);
-                popup.transform.localScale = Vector3.zero;
+                //popup.transform.localScale = Vector3.zero;
                 popup.transform.SetParent(GameObject.Find("Canvas").transform, false);
                 popup.GetComponent<Popup>().Open();
                 chestSalePanel = popup.GetComponent<ChestSalePanel>();
@@ -641,7 +641,7 @@ public class UIManager : MonoBehaviour
             {
                 var popup = Instantiate(rareChestPanelPrefab) as GameObject;
                 popup.SetActive(true);
-                popup.transform.localScale = Vector3.zero;
+                //popup.transform.localScale = Vector3.zero;
                 popup.transform.SetParent(GameObject.Find("Canvas").transform, false);
                 popup.GetComponent<Popup>().Open();
                 chestSalePanel = popup.GetComponent<ChestSalePanel>();
@@ -651,7 +651,7 @@ public class UIManager : MonoBehaviour
             {
                 var popup = Instantiate(epicChestPanelPrefab) as GameObject;
                 popup.SetActive(true);
-                popup.transform.localScale = Vector3.zero;
+                //popup.transform.localScale = Vector3.zero;
                 popup.transform.SetParent(GameObject.Find("Canvas").transform, false);
                 popup.GetComponent<Popup>().Open();
                 chestSalePanel = popup.GetComponent<ChestSalePanel>();
@@ -692,14 +692,15 @@ public class UIManager : MonoBehaviour
     #region Sale
     public void OnSale()
     {
-        if(GameManager.instance.myPlayer.level > 7)
+        if(GameManager.instance.myPlayer.level >= 7 && GameManager.instance.GetItemNumber(130) == 0)
             this.rareType = RareType.Epic;
-        else if (GameManager.instance.myPlayer.level > 5)
+        else if (GameManager.instance.myPlayer.level >= 5 && GameManager.instance.GetItemNumber(129) == 0)
             this.rareType = RareType.Rare;
-        else if (GameManager.instance.myPlayer.level > 5)
+        else if (GameManager.instance.myPlayer.level >= 3 && GameManager.instance.GetItemNumber(128) < 3)
             this.rareType = RareType.Common;
         isSale = true;
         saleButton.SetActive(true);
+        Debug.Log(rareType);
     }
 
     void OffSale()

@@ -137,14 +137,17 @@ public class GameManager : MonoBehaviour
             }
         }
 
+        Debug.Log(pets.Count);
+
         if(pets.Count > 0)
         {
             int itemId = Random.Range(0, pets.Count);
-            Pet p = new Pet(itemId);
+            Pet p = new Pet(pets[itemId].iD);
             p.itemState = ItemState.Equiped;
             p.isNew = true;
             myPlayer.pets.Add(p);
-            
+            if (ItemManager.instance != null)
+                GameManager.instance.EquipPet(itemId);
         }
         else
         {
@@ -155,6 +158,11 @@ public class GameManager : MonoBehaviour
             else if (rareType == RareType.Epic)
                 AddDiamond(999);
         }
+        if (UIManager.instance.shopPanel != null)
+            UIManager.instance.shopPanel.Close();
+
+        if (UIManager.instance.chestSalePanel != null)
+            UIManager.instance.chestSalePanel.Close();
 
         SavePlayer();
 
@@ -381,7 +389,7 @@ public class GameManager : MonoBehaviour
     {
         foreach (Pet p in myPlayer.pets)
         {
-            if (p.iD == petId)
+            if (p.iD == petId && (p.itemState == ItemState.Have || p.itemState == ItemState.Equiped))
             {
                 return true;
             }
@@ -716,6 +724,23 @@ public class GameManager : MonoBehaviour
             }
         }
         return temp;
+    }
+
+    public int GetItemNumber(int id)
+    {
+        foreach(PlayerItem item in myPlayer.items)
+        {
+            if(item.itemId == id && (item.state == ItemState.Have || item.state == ItemState.Equiped))
+            {
+                if (item.isConsumable)
+                    return item.number;
+                else
+                    return 1;
+            }
+
+        }
+
+        return 0;
     }
 
     public int GetDiamond()

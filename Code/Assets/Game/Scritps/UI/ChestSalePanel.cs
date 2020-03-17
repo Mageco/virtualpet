@@ -5,9 +5,8 @@ using UnityEngine.UI;
 
 public class ChestSalePanel : MonoBehaviour
 {
-    float price;
+
     public Text priceText;
-    public Text diamondText;
     RareType rareType;
     // Start is called before the first frame update
     void Start()
@@ -39,5 +38,10 @@ public class ChestSalePanel : MonoBehaviour
         {
             PurchaseManager.instance.BuyConsumable(6);
         }
+    }
+
+    public void Close()
+    {
+        this.GetComponent<Popup>().Close();
     }
 }
