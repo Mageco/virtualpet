@@ -96,7 +96,7 @@ public class PurchaseManager : MonoBehaviour, IStoreListener
 			GameManager.instance.AddRandomPet(RareType.Epic);
 			GameManager.instance.AddItem(130);
 		}
-		MageEngine.instance.OnEvent(Mage.Models.Application.MageEventType.ConfirmPaymentItem, nonConsumableIds[id]);
+		MageEngine.instance.OnEvent(Mage.Models.Application.MageEventType.ConfirmPaymentItem, consumableIds[id]);
 	}
 
 	void OnPurchaseComplete(int id)
