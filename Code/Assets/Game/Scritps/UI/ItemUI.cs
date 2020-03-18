@@ -233,6 +233,9 @@ public class ItemUI : MonoBehaviour
                     moneyIcon.SetActive(false);
                     buyButton.interactable = false;
                     isLevelRequire = true;
+                    levelText.gameObject.SetActive(true);
+                    levelText.text = DataHolder.Dialog(115).GetName(MageManager.instance.GetLanguage());
+
                 }
                 else
                 {
@@ -253,6 +256,8 @@ public class ItemUI : MonoBehaviour
                     moneyIcon.SetActive(false);
                     buyButton.interactable = false;
                     isLevelRequire = true;
+                    levelText.gameObject.SetActive(true);
+                    levelText.text = DataHolder.Dialog(115).GetName(MageManager.instance.GetLanguage());
                 }
                 else
                 {
@@ -274,6 +279,8 @@ public class ItemUI : MonoBehaviour
                     moneyIcon.SetActive(false);
                     buyButton.interactable = false;
                     isLevelRequire = true;
+                    levelText.gameObject.SetActive(true);
+                    levelText.text = DataHolder.Dialog(115).GetName(MageManager.instance.GetLanguage());
                 }
                 else
                 {
