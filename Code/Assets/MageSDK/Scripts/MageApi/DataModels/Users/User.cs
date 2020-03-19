@@ -130,6 +130,17 @@ namespace Mage.Models.Users{
 		public void RemoveCharacterItem(CharacterData data) {
 			var item = character_items.RemoveAll(x => x.id == data.id);
 		}
+		
+		public T GetUserData<T>() where T:BaseModel {
+			string key = ApiHandler.instance.ApplicationKey + "_" + typeof(T).Name;
+
+			if ("" != this.GetUserData(key)) {
+				return BaseModel.CreateFromJSON<T>(this.GetUserData(key));
+			} else {
+				return null;
+			}
+			
+		}
 	}
 
 	public enum UserStatus {
