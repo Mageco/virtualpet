@@ -22,11 +22,17 @@ public class OnMapButton : MonoBehaviour
 
 	private void OnMouseDown()
 	{
+		if (GameManager.instance.myPlayer.gameType == GameType.Guest)
+			return;
+
 		clickPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 	}
 
 	void OnMouseUp()
 	{
+		if (GameManager.instance.myPlayer.gameType == GameType.Guest)
+			return;
+
 		if (IsPointerOverUIObject())
 		{
 			return;

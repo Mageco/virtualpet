@@ -43,6 +43,10 @@ public class CharInteract : MonoBehaviour
         if (IsPointerOverUIObject ()) {
             return;
         }
+
+        if (GameManager.instance.myPlayer.gameType == GameType.Guest)
+            return;
+
         OnDrag();
         isMouseDown = true;
         holdPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -65,8 +69,10 @@ public class CharInteract : MonoBehaviour
 
     void OnMouseUp()
     {
-        
-        dragOffset = Vector3.zero;
+        if (GameManager.instance.myPlayer.gameType == GameType.Guest)
+            return;
+
+        dragOffset = Vector3.zero;
         if (interactType == InteractType.Touch)
         {
 

@@ -23,11 +23,17 @@ public class MinigameOpen : MonoBehaviour
 
     private void OnMouseDown()
     {
+        if (GameManager.instance.myPlayer.gameType == GameType.Guest)
+            return;
+
         isMouseDown = true;
     }
 
     void OnMouseUp()
 	{
+        if (GameManager.instance.myPlayer.gameType == GameType.Guest)
+            return;
+
         if (IsPointerOverUIObject())
             return;
         if(time < 0.3f)

@@ -13,7 +13,7 @@ public enum AchivementType {Do_Action,Buy_Item,Use_Item,Tap_Animal,Dissmiss_Anim
 public enum Direction {R =0, D = 1, L = 2, U = 3, RU = 4,RD = 5,LU = 6,LD = 7};
 public enum CharAge{Small,Middle,Big};
 public enum EnviromentType { Room, Table, Bath,Bed, Toilet,Door,ToHouse};
-public enum GameType{House,Garden};
+public enum GameType{Home,Guest};
 public enum GameState{Prepare,Ready,Run,End};
 public enum ActionType { None, Mouse, Sleep, Eat, Drink, Patrol, Discover, Pee, Shit, Itchi, Sick, Fear, Happy, Tired, Hold, OnTable, OnBath,Fall,OnBed,OnToilet,Injured,Supprised,Stop,Toy,JumpOut,OnCall,OnControl,OnGarden,OnGift};
 public enum CharType{Dog,Cat,Rabbit,Turtle,Mouse,Parrot,Hamster,Chihuhu,Unicorn,Boar,ButterFly,Shamoyed,PersianCat};

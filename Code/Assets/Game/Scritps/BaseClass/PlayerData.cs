@@ -26,7 +26,7 @@ public class PlayerData : BaseModel
 	public List<PlayerAchivement> achivements = new List<PlayerAchivement>();
 	public List<ItemSaveData> itemSaveDatas = new List<ItemSaveData>();
 	public List<PlayerService> playerServices = new List<PlayerService>();
-	public GameType gameType = GameType.House;
+	public GameType gameType = GameType.Home;
 	public string startGameTime = System.DateTime.Now.ToString();
 	public List<PlayerBonus> dailyBonus = new List<PlayerBonus>();
 

@@ -766,6 +766,9 @@ public class GameManager : MonoBehaviour
 
     public void AddDiamond(int d)
     {
+        if (myPlayer.gameType == GameType.Guest)
+            return;
+
         myPlayer.Diamond += d;
         if (UIManager.instance != null)
             UIManager.instance.diamonText.transform.parent.GetComponent<Animator>().Play("Active", 0);
@@ -774,6 +777,9 @@ public class GameManager : MonoBehaviour
 
     public void AddCoin(int c)
     {
+        if (myPlayer.gameType == GameType.Guest)
+            return;
+
         myPlayer.Coin += c;
         if (c > 0)
             myPlayer.collectedCoin += c;
@@ -784,6 +790,9 @@ public class GameManager : MonoBehaviour
 
     public void AddHappy(int c)
     {
+        if (myPlayer.gameType == GameType.Guest)
+            return;
+
         myPlayer.Happy += c;
         if (c > 0)
             myPlayer.collectedHappy += c;
@@ -795,6 +804,10 @@ public class GameManager : MonoBehaviour
 
     public void AddExp(int c)
     {
+        if (myPlayer.gameType == GameType.Guest)
+            return;
+
+
         myPlayer.exp += c;
         int l = 1;
         float e = 20 * l + 20 * l * l;

@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Mage.Models.Users;
 using MageSDK.Client;
 using UnityEngine;
 using UnityEngine.UI;
@@ -687,6 +688,15 @@ public class UIManager : MonoBehaviour
     {
         MageManager.instance.LoadSceneWithLoading(type.ToString());
         GameManager.instance.petObjects.Clear();
+    }
+
+    public void OnFriendHouse()
+    {
+        GameManager.instance.myPlayer.gameType = GameType.Guest;
+        MageEngine.instance.GetRandomFriend((User u) => {
+            Debug.Log("Friend: " + u.ToJson());
+        });
+
     }
 
     #region Sale
