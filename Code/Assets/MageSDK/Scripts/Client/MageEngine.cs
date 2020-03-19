@@ -924,8 +924,11 @@ namespace MageSDK.Client {
 
 		#region friends
 
-		public void GetRandomFriend(Action<User> getRandomFriendCallback) {
+		public void GetRandomFriend(Action<User> getRandomFriendCallback, string friendId = "") {
 			GetUserProfileRequest r = new GetUserProfileRequest ();
+			if (friendId != "") {
+				r.ProfileId = friendId;
+			}
 
 			//call to login api
 			ApiHandler.instance.SendApi<GetUserProfileResponse>(
