@@ -44,7 +44,7 @@ public class CharInteract : MonoBehaviour
             return;
         }
 
-        if (GameManager.instance.myPlayer.gameType == GameType.Guest)
+        if (GameManager.instance.isGuest)
             return;
 
         OnDrag();
@@ -69,7 +69,7 @@ public class CharInteract : MonoBehaviour
 
     void OnMouseUp()
     {
-        if (GameManager.instance.myPlayer.gameType == GameType.Guest)
+        if (GameManager.instance.isGuest)
             return;
 
         dragOffset = Vector3.zero;

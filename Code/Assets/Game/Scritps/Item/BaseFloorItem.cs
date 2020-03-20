@@ -135,7 +135,7 @@ public class BaseFloorItem : MonoBehaviour
 
 	protected virtual void OnMouseUp()
 	{
-		if (GameManager.instance.myPlayer.gameType == GameType.Guest)
+		if (GameManager.instance.isGuest)
 			return;
 
 		if (state == EquipmentState.Drag || state == EquipmentState.Hold)
@@ -185,7 +185,7 @@ public class BaseFloorItem : MonoBehaviour
 
 	protected virtual void OnMouseDown()
 	{
-		if (GameManager.instance.myPlayer.gameType == GameType.Guest)
+		if (GameManager.instance.isGuest)
 			return;
 
 		if (IsPointerOverUIObject())

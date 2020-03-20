@@ -64,16 +64,16 @@ public class ItemManager : MonoBehaviour
         while(!isLoad){
             if(GameManager.instance.isLoad){
                 LoadItems(false);
-                //GameManager.instance.EquipPets();
                 GameManager.instance.LoadPetObjects();
+                if(GameManager.instance.isGuest)
+                    LoadItemData();
                 isLoad = true;
             }
             t += Time.deltaTime;
             MageManager.instance.loadingBar.UpdateProgress(t);
             yield return new WaitForEndOfFrame();
         }
-        LoadItemData();
-        
+
 
         if (ES2.Exists("PlayTime"))
         {
@@ -93,6 +93,9 @@ public class ItemManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (GameManager.instance.isGuest)
+            return;
+
         if(time > maxTimeCheck){
             CheckItemData();
             time = 0;
@@ -180,6 +183,7 @@ public class ItemManager : MonoBehaviour
 
     public void LoadItems(bool isAnimated)
     {
+        
         List<PlayerItem> data = GameManager.instance.GetEquipedPLayerItems();
         Debug.Log("Data " + data.Count);
         List<ItemObject> removes = new List<ItemObject>();
@@ -558,7 +562,7 @@ public class ItemManager : MonoBehaviour
 
     public void SpawnStar(Vector3 pos,  int value)
     {
-        if (GameManager.instance.myPlayer.gameType == GameType.Guest)
+        if (GameManager.instance.isGuest)
             return;
 
         GameObject go = Instantiate(starPrefab, pos + new Vector3(Random.Range(-1f,1f),Random.Range(-1f,1f),0), Quaternion.identity);

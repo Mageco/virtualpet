@@ -124,11 +124,23 @@ public class UIManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        UpdateUI();
-        coin = GameManager.instance.GetCoin();
-        happy = GameManager.instance.GetHappy();
-        diamond = GameManager.instance.GetDiamond();
-        OnSale();
+        Load();
+    }
+
+    public void Load()
+    {
+        if(GameManager.instance.isGuest)
+        {
+            UpdateUI();
+            coin = GameManager.instance.GetCoin();
+            happy = GameManager.instance.GetHappy();
+            diamond = GameManager.instance.GetDiamond();
+            OnSale();
+        }
+        else
+        {
+
+        }
     }
 
     // Update is called once per frame
@@ -692,8 +704,11 @@ public class UIManager : MonoBehaviour
 
     public void OnFriendHouse()
     {
-        GameManager.instance.myPlayer.gameType = GameType.Guest;
+        
         MageEngine.instance.GetRandomFriend((User u) => {
+            GameManager.instance.isGuest = true;
+            GameManager.instance.guest = u.GetUserData<PlayerData>();
+            MageManager.instance.LoadSceneWithLoading("House");
             Debug.Log("Friend: " + u.ToJson());
         });
 

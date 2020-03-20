@@ -22,7 +22,7 @@ public class OnMapButton : MonoBehaviour
 
 	private void OnMouseDown()
 	{
-		if (GameManager.instance.myPlayer.gameType == GameType.Guest)
+		if (GameManager.instance.isGuest)
 			return;
 
 		clickPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -30,7 +30,7 @@ public class OnMapButton : MonoBehaviour
 
 	void OnMouseUp()
 	{
-		if (GameManager.instance.myPlayer.gameType == GameType.Guest)
+		if (GameManager.instance.isGuest)
 			return;
 
 		if (IsPointerOverUIObject())

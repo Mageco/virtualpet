@@ -6,6 +6,7 @@ using System.Reflection;
 using System;
 using Mage.Models;
 using Mage.Models.Game;
+using MageApi;
 
 namespace Mage.Models.Users{
 	[Serializable]

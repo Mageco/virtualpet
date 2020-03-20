@@ -23,7 +23,7 @@ public class MinigameOpen : MonoBehaviour
 
     private void OnMouseDown()
     {
-        if (GameManager.instance.myPlayer.gameType == GameType.Guest)
+        if (GameManager.instance.isGuest)
             return;
 
         isMouseDown = true;
@@ -31,7 +31,7 @@ public class MinigameOpen : MonoBehaviour
 
     void OnMouseUp()
 	{
-        if (GameManager.instance.myPlayer.gameType == GameType.Guest)
+        if (GameManager.instance.isGuest)
             return;
 
         if (IsPointerOverUIObject())

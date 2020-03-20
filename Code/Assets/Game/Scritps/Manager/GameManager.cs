@@ -10,7 +10,7 @@ public class GameManager : MonoBehaviour
     public static GameManager instance;
     public float gameTime = 0;
     public List<CharController> petObjects = new List<CharController>();
-
+    public bool isGuest = false;
     //GameType lastGameType = GameType.House;
 
     //Testing
@@ -18,6 +18,7 @@ public class GameManager : MonoBehaviour
     public bool isTest = false;
 
     public PlayerData myPlayer = new PlayerData();
+    public PlayerData guest = new PlayerData();
 
     public int rateCount = 0;
     [HideInInspector]
@@ -108,14 +109,29 @@ public class GameManager : MonoBehaviour
         if (ItemManager.instance == null)
             return;
 
-        for (int i = 0; i < myPlayer.pets.Count; i++)
+        if (!isGuest)
         {
-            if (myPlayer.pets[i].itemState == ItemState.Equiped)
+            for (int i = 0; i < myPlayer.pets.Count; i++)
             {
-                ItemManager.instance.LoadPetObject(myPlayer.pets[i]);
-                UpdatePetObjects();
+                if (myPlayer.pets[i].itemState == ItemState.Equiped)
+                {
+                    ItemManager.instance.LoadPetObject(myPlayer.pets[i]);
+                    UpdatePetObjects();
+                }
             }
         }
+        else
+        {
+            for (int i = 0; i < guest.pets.Count; i++)
+            {
+                if (guest.pets[i].itemState == ItemState.Equiped)
+                {
+                    ItemManager.instance.LoadPetObject(guest.pets[i]);
+                    UpdatePetObjects();
+                }
+            }
+        }
+
     }
 
     public void AddPet(int itemId)
@@ -245,10 +261,21 @@ public class GameManager : MonoBehaviour
         if (ItemManager.instance == null)
             return;
         petObjects.Clear();
-        for (int i = 0; i < myPlayer.pets.Count; i++)
+        if (!isGuest)
         {
-            if (myPlayer.pets[i].itemState == ItemState.Equiped && myPlayer.pets[i].character != null)
-                petObjects.Add(myPlayer.pets[i].character);
+            for (int i = 0; i < myPlayer.pets.Count; i++)
+            {
+                if (myPlayer.pets[i].itemState == ItemState.Equiped && myPlayer.pets[i].character != null)
+                    petObjects.Add(myPlayer.pets[i].character);
+            }
+        }
+        else
+        {
+            for (int i = 0; i < guest.pets.Count; i++)
+            {
+                if (guest.pets[i].itemState == ItemState.Equiped && guest.pets[i].character != null)
+                    petObjects.Add(guest.pets[i].character);
+            }
         }
     }
 
@@ -716,13 +743,27 @@ public class GameManager : MonoBehaviour
     public List<PlayerItem> GetEquipedPLayerItems()
     {
         List<PlayerItem> temp = new List<PlayerItem>();
-        foreach (PlayerItem item in myPlayer.items)
+        if (isGuest)
         {
-            if (item.state == ItemState.Equiped)
+            foreach (PlayerItem item in guest.items)
             {
-                temp.Add(item);
+                if (item.state == ItemState.Equiped)
+                {
+                    temp.Add(item);
+                }
             }
         }
+        else
+        {
+            foreach (PlayerItem item in myPlayer.items)
+            {
+                if (item.state == ItemState.Equiped)
+                {
+                    temp.Add(item);
+                }
+            }
+        }
+
         return temp;
     }
 
@@ -766,7 +807,7 @@ public class GameManager : MonoBehaviour
 
     public void AddDiamond(int d)
     {
-        if (myPlayer.gameType == GameType.Guest)
+        if (GameManager.instance.isGuest)
             return;
 
         myPlayer.Diamond += d;
@@ -777,7 +818,7 @@ public class GameManager : MonoBehaviour
 
     public void AddCoin(int c)
     {
-        if (myPlayer.gameType == GameType.Guest)
+        if (GameManager.instance.isGuest)
             return;
 
         myPlayer.Coin += c;
@@ -790,7 +831,7 @@ public class GameManager : MonoBehaviour
 
     public void AddHappy(int c)
     {
-        if (myPlayer.gameType == GameType.Guest)
+        if (GameManager.instance.isGuest)
             return;
 
         myPlayer.Happy += c;
@@ -804,7 +845,7 @@ public class GameManager : MonoBehaviour
 
     public void AddExp(int c)
     {
-        if (myPlayer.gameType == GameType.Guest)
+        if (GameManager.instance.isGuest)
             return;
 
 
