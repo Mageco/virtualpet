@@ -307,8 +307,21 @@ namespace MageSDK.Client {
 				attr_type = className
 			};
 
+			// do background enrich data first
+			BackgroundEnrichData(d.ExtractFields<T>(obj));
 			UpdateUserData(d);
 
+
+		}
+
+		private void BackgroundEnrichData(List<UserData> userDatas) {
+			User u = GetUser();
+			if (null != u && null != userDatas && userDatas.Count > 0) {
+				Debug.Log("Backround update");
+				foreach(UserData d in userDatas) {
+					u.SetUserData(d);
+				}
+			}
 		}
 
 		///<summary>Update user data to current user. Once complete, save data to cache</summary>

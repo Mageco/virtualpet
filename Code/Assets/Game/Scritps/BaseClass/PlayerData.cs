@@ -7,6 +7,7 @@ using UnityEngine;
 public class PlayerData : BaseModel
 {
     public int coin = 0;
+	[ExtractField]
     public int diamond = 0;
 	public int happy = 0;
 	public int level = 1;

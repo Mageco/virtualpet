@@ -6,7 +6,7 @@ using MageApi;
 
 namespace Mage.Models {
 	[Serializable]
-	public class BaseModel {
+	public class BaseModel : ExtractFieldAttribute {
 
 		public BaseModel() {
 		}
@@ -21,6 +21,16 @@ namespace Mage.Models {
 				return JsonUtility.FromJson<TResult>(jsonString);
 			} catch (Exception e) {
 				return default(TResult);
+			}
+			
+		}
+
+		public static T Clone<T>(T obj) where T: BaseModel
+		{
+			try {
+				return JsonUtility.FromJson<T>(obj.ToJson());
+			} catch (Exception e) {
+				return default(T);
 			}
 			
 		}
