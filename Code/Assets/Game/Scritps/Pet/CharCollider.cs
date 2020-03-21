@@ -31,8 +31,10 @@ public class CharCollider : MonoBehaviour
                 character.OnFall();
             }
         }else if(other.tag == "Pet"){
-            pets.Add(other.transform.parent.GetComponent<CharController>());
-            if(character.enviromentType == EnviromentType.Room && character.isMoving){
+            CharController p = other.transform.parent.GetComponent<CharController>();
+            pets.Add(p);
+            if(p.actionType != ActionType.Hold && p.actionType != ActionType.Toy && character.enviromentType == EnviromentType.Room && character.isMoving)
+            {
                 character.OnStop();
             }
         }else if(other.tag == "Car"){

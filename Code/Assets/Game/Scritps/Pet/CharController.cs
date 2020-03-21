@@ -236,7 +236,7 @@ public class CharController : MonoBehaviour
         else if(actionType == ActionType.Toy)
         {
             data.Energy -= Time.deltaTime;
-            if (timeToy > 6)
+            if (timeToy > 6 && toyItem != null && toyItem.IsActive())
             {
                 //int toyHeart = 1;
                 //if (toyItem != null)
@@ -1845,17 +1845,18 @@ public class CharController : MonoBehaviour
 
      protected virtual IEnumerator Toy()
     {
-        if (toyItem != null && toyItem.pets.Count == 0)
+        if (toyItem != null && toyItem.pets.Count < toyItem.anchorPoints.Length)
         {
             toyItem.pets.Add(this);
             float time = 0;
             float maxTime = Random.Range(10, 15);
             int count = 0;
             int maxCount = Random.Range(3, 6);
+            toyItem.maxTime = maxTime;
 
             if (toyItem.toyType == ToyType.Jump)
             {
-                dropPosition = toyItem.anchorPoint.position + new Vector3(0, Random.Range(-1f, 1f), 0);
+                dropPosition = toyItem.anchorPoints[0].position + new Vector3(0, Random.Range(-1f, 1f), 0);
                 agent.transform.position = dropPosition;
                 maxCount = Random.Range(6, 10);
                 yield return new WaitForEndOfFrame();
@@ -1936,10 +1937,10 @@ public class CharController : MonoBehaviour
                 anim.speed = 2f;
                 SetDirection(Direction.L);
                 toyItem.OnActive();
-                while (toyItem != null && data.Energy > data.MaxEnergy * 0.1f && !isAbort && time < maxTime)
+                while (toyItem != null && data.Energy > data.MaxEnergy * 0.1f && !isAbort && time < toyItem.maxTime)
                 {
                     time += Time.deltaTime;
-                    agent.transform.position = toyItem.anchorPoint.position;
+                    agent.transform.position = toyItem.anchorPoints[0].position;
                     anim.Play("Run_" + this.direction.ToString(), 0);
                     yield return new WaitForEndOfFrame();
                 }
@@ -1973,11 +1974,11 @@ public class CharController : MonoBehaviour
                 }
                 toyItem.OnActive();
                 charInteract.interactType = InteractType.Toy;
-                while (toyItem != null && time < maxTime && !isAbort)
+                while (toyItem != null && time < toyItem.maxTime && !isAbort)
                 {
-                    if (toyItem.anchorPoint != null)
+                    if (toyItem.anchorPoints[0] != null)
                     {
-                        agent.transform.position = toyItem.anchorPoint.position;
+                        agent.transform.position = toyItem.anchorPoints[0].position;
                     }
                     anim.Play("Play_" + toyItem.toyType.ToString(), 0);
 
@@ -1990,8 +1991,55 @@ public class CharController : MonoBehaviour
                     agent.transform.position = toyItem.endPoint.position;
                 }
             }
+            else if (toyItem.toyType == ToyType.GroupFun)
+            {
+                
+                if (toyItem.startPoint != null)
+                {
+                    target = toyItem.startPoint.position + new Vector3(Random.Range(-1,1),Random.Range(-1,1),0);
+                    yield return StartCoroutine(RunToPoint());
+                }
+                int index = toyItem.GetPetIndex(this);
 
+                if (!isAbort)
+                {
+                    charInteract.interactType = InteractType.Toy;
+                    
+                    if (index != -1)
+                    {
+                        agent.transform.position = toyItem.anchorPoints[index].position;
+                        agent.transform.rotation = toyItem.anchorPoints[index].rotation;
+                    }
+                    toyItem.count++;
+                    anim.Play("Standby", 0);
+                }
+
+                while (toyItem != null && !isAbort && toyItem.count < toyItem.anchorPoints.Length)
+                {
+                    agent.transform.position = toyItem.anchorPoints[index].position;
+                    agent.transform.rotation = toyItem.anchorPoints[index].rotation;
+                    yield return new WaitForEndOfFrame();
+                }
+
+                if(!isAbort)
+                    toyItem.OnActive();
+
+                while (toyItem != null && time < toyItem.maxTime && !isAbort)
+                {
+                    toyItem.OnActive();
+                    agent.transform.position = toyItem.anchorPoints[index].position;
+                    agent.transform.rotation = toyItem.anchorPoints[index].rotation;
+                    //anim.Play("Play_" + toyItem.toyType.ToString(), 0);
+                    time += Time.deltaTime;
+                    yield return new WaitForEndOfFrame();
+                }
             
+                charInteract.interactType = InteractType.None;
+                if (toyItem.endPoint != null && !isAbort)
+                {
+                    agent.transform.position = toyItem.endPoint.position + new Vector3(Random.Range(-1, 1), Random.Range(-1, 1), 0);
+                }
+            }
 
             if (toyItem != null)
             {
