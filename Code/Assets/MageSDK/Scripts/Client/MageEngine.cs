@@ -354,8 +354,8 @@ namespace MageSDK.Client {
 				DateTime now = DateTime.Now;
 				double timeToAdd = now.Subtract(this.lastUserDataUpdate).TotalSeconds;
 
-				/* for this we only send if the last update is more than 5 seconds ago */
-				if (u.GetUserDataInt(UserBasicData.Version) < 500 || timeToAdd > 10) {
+				/* for this we only send if the last update is more than X seconds ago */
+				if (u.GetUserDataInt(UserBasicData.Version) < 500 || timeToAdd > GetApplicationDataItemInt(MageEngineSettings.GAME_ENGINE_MIN_USER_DATA_UPDATE_DURATION)) {
 					SaveUserDataToServer(u);
 					this.lastUserDataUpdate = now;
 				}
@@ -623,9 +623,7 @@ namespace MageSDK.Client {
 				r, 
 				(result) => {
 					// store application data
-					RuntimeParameters.GetInstance().SetParam(MageEngineSettings.GAME_ENGINE_APPLICATION_DATA, result.ApplicationDatas);
-					ES2.Save(result.ApplicationDatas, MageEngineSettings.GAME_ENGINE_APPLICATION_DATA);
-					this._isApplicationDataLoaded = true;
+					MergeApplicationDataFromServer(result.ApplicationDatas);
 				},
 				(errorStatus) => {
 					Debug.Log("Error: " + errorStatus);
@@ -635,6 +633,41 @@ namespace MageSDK.Client {
 					TimeoutHandler();
 				}
 			);
+		}
+
+		private void MergeApplicationDataFromServer(List<ApplicationData> serverList) {
+			List<ApplicationData> localList = RuntimeParameters.GetInstance().GetParam<List<ApplicationData>>(MageEngineSettings.GAME_ENGINE_APPLICATION_DATA);
+
+			if (null == localList) {
+				// store application data
+				RuntimeParameters.GetInstance().SetParam(MageEngineSettings.GAME_ENGINE_APPLICATION_DATA, serverList);
+				ES2.Save(serverList, MageEngineSettings.GAME_ENGINE_APPLICATION_DATA);
+				this._isApplicationDataLoaded = true;
+			} else {
+				List<ApplicationData> mergedList = serverList;
+				foreach (ApplicationData data in localList) {
+					bool found = false;
+					foreach(ApplicationData check in serverList) {
+						if(data.attr_name == check.attr_name && (check.attr_type == "" || data.attr_type == check.attr_type)) {
+							found = true;	
+						} 
+					}
+
+					if (!found) {
+						mergedList.Add(data);
+					}
+				}
+
+				// save merged list
+				RuntimeParameters.GetInstance().SetParam(MageEngineSettings.GAME_ENGINE_APPLICATION_DATA, mergedList);
+				ES2.Save(mergedList, MageEngineSettings.GAME_ENGINE_APPLICATION_DATA);
+				this._isApplicationDataLoaded = true;
+
+				// test data
+				foreach(ApplicationData data in mergedList) {
+					Debug.Log("Data item: " + data.ToJson());		
+				}
+			}
 		}
 
 		public bool IsApplicationDataLoaded() {
@@ -653,6 +686,19 @@ namespace MageSDK.Client {
 				}
 			}
 			return "";		
+		}
+
+		public int GetApplicationDataItemInt(string attributeName, string attributeType = "") {
+			List<ApplicationData> applicationDatas = RuntimeParameters.GetInstance().GetParam<List<ApplicationData>>(MageEngineSettings.GAME_ENGINE_APPLICATION_DATA);
+			if (null != applicationDatas) {
+				foreach(ApplicationData data in applicationDatas)
+				{
+					if(data.attr_name == attributeName && (attributeType == "" || data.attr_type == attributeType)) {
+						return int.Parse(data.attr_value);
+					}
+				}
+			}
+			return 0;		
 		}
 
 		///<summary>Get Application Data item store locally - value as object</summary>

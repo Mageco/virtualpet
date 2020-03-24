@@ -126,16 +126,23 @@ namespace MageApi {
 				if (www.text != null) {
 					//Debug.Log ("Response: " + www.text);
 					//File.AppendAllText (Application.dataPath + "/Images/result.txt", "\r\n" + www.text);
-					GenericResponse<TResult> result = BaseResponse.CreateFromJSON<GenericResponse<TResult>>(www.text);
-					if (result != null && result.status == 0) {
-						//save cache to runtime
-						Debug.Log(result.cache.ToJson());
-						RuntimeParameters.GetInstance().SetParam (ApiSettings.API_CACHE, result.cache);
-						callback ((TResult)result.data);
-					} else {
-						Debug.Log ("Error message: " + result.error);
-						errorCallback (result.status);
-					} 
+					// handle error in response
+					try {
+						GenericResponse<TResult> result = BaseResponse.CreateFromJSON<GenericResponse<TResult>>(www.text);
+						if (result != null && result.status == 0) {
+							//save cache to runtime
+							Debug.Log(result.cache.ToJson());
+							RuntimeParameters.GetInstance().SetParam (ApiSettings.API_CACHE, result.cache);
+							callback ((TResult)result.data);
+						} else {
+							Debug.Log ("Error message: " + result.error);
+							errorCallback (result.status);
+						} 
+					} catch (Exception e) {
+						Debug.Log("Invalid server response: " + www.text);
+						errorCallback (-1);
+					}
+					
 				} 
 				else {
 					Debug.Log ("Error message: Response is null");
