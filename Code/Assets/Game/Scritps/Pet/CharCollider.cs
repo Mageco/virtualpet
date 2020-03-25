@@ -33,7 +33,7 @@ public class CharCollider : MonoBehaviour
         }else if(other.tag == "Pet"){
             CharController p = other.transform.parent.GetComponent<CharController>();
             pets.Add(p);
-            if(p.actionType != ActionType.Hold && p.actionType != ActionType.Toy && character.enviromentType == EnviromentType.Room && character.isMoving)
+            if(p.actionType != ActionType.Hold && p.actionType != ActionType.Toy && character.enviromentType == EnviromentType.Room && character.isMoving && character.actionType != ActionType.Toy)
             {
                 character.OnStop();
             }

@@ -236,6 +236,7 @@ public class CharController : MonoBehaviour
         else if(actionType == ActionType.Toy)
         {
             data.Energy -= Time.deltaTime;
+            /*
             if (timeToy > 6 && toyItem != null && toyItem.IsActive())
             {
                 //int toyHeart = 1;
@@ -247,7 +248,7 @@ public class CharController : MonoBehaviour
             else
             {
                 timeToy += Time.deltaTime;
-            }
+            }*/
         }
 
 
@@ -1991,7 +1992,7 @@ public class CharController : MonoBehaviour
                     agent.transform.position = toyItem.endPoint.position;
                 }
             }
-            else if (toyItem.toyType == ToyType.GroupFun)
+            else if (toyItem.toyType == ToyType.Seesaw || toyItem.toyType == ToyType.Sprinkler || toyItem.toyType == ToyType.Carrier )
             {
                 
                 if (toyItem.startPoint != null)
@@ -2011,7 +2012,8 @@ public class CharController : MonoBehaviour
                         agent.transform.rotation = toyItem.anchorPoints[index].rotation;
                     }
                     toyItem.count++;
-                    anim.Play("Standby", 0);
+                    //anim.Play("Wait_" + toyItem.toyType.ToString(), 0);
+                   anim.Play("Standby", 0);
                 }
 
                 while (toyItem != null && !isAbort && toyItem.count < toyItem.anchorPoints.Length)
@@ -2029,7 +2031,7 @@ public class CharController : MonoBehaviour
                     toyItem.OnActive();
                     agent.transform.position = toyItem.anchorPoints[index].position;
                     agent.transform.rotation = toyItem.anchorPoints[index].rotation;
-                    //anim.Play("Play_" + toyItem.toyType.ToString(), 0);
+                    anim.Play("Play_" + toyItem.toyType.ToString(), 0);
                     time += Time.deltaTime;
                     yield return new WaitForEndOfFrame();
                 }
@@ -2051,8 +2053,12 @@ public class CharController : MonoBehaviour
             charScale.speedFactor = 1f;
             anim.speed = 1f;
             toyItem = null;
-            yield return StartCoroutine(DoAnim("Love"));
-            ItemManager.instance.SpawnHeart((1 + data.level / 5), this.transform.position);
+            if (!isAbort)
+            {
+                yield return StartCoroutine(DoAnim("Love"));
+                ItemManager.instance.SpawnHeart((1 + data.level / 5), this.transform.position);
+
+            }
 
         }
 
