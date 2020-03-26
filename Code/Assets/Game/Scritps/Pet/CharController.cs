@@ -750,17 +750,17 @@ public class CharController : MonoBehaviour
 
     public virtual void OnCall()
     {
-        if (actionType == ActionType.Sick || actionType == ActionType.Injured)
+        if (actionType == ActionType.Sick || actionType == ActionType.Injured || actionType == ActionType.Hold)
         {
             return;
         }
 
+        if (enviromentType != EnviromentType.Room)
+            return;
 
-        if (actionType == ActionType.Patrol || actionType == ActionType.Discover || actionType == ActionType.OnGarden)
-        {
-            Abort();
-            actionType = ActionType.OnCall;
-        }
+        Abort();
+        actionType = ActionType.OnCall;
+        
     }
 
     public virtual void OnSupprised()
@@ -924,10 +924,14 @@ public class CharController : MonoBehaviour
     {
         if (charInteract.interactType != InteractType.None)
             return;
+
         if (actionType == ActionType.Patrol || actionType == ActionType.Discover || actionType == ActionType.Drink || actionType == ActionType.Eat)
         {
-            Abort();
-            actionType = ActionType.Mouse;
+            if (charType == CharType.Cat || charType == CharType.Dog || charType == CharType.Shamoyed || charType == CharType.Chihuhu)
+            {
+                Abort();
+                actionType = ActionType.Mouse;
+            }
         }
     }
 
@@ -935,7 +939,6 @@ public class CharController : MonoBehaviour
     public virtual void OnJumpOut()
     {
         isAbort = true;
-        //if(charType != CharType.Cat)
         actionType = ActionType.JumpOut;
     }
 
@@ -980,12 +983,9 @@ public class CharController : MonoBehaviour
 
     public virtual void OnArrived()
     {
-        //Debug.Log("Arrived");
-
         if (actionType == ActionType.Mouse)
         {
             actionType = ActionType.None;
-            //agent.speed = 30;
             anim.speed = 1;
         }
 
@@ -1304,8 +1304,9 @@ public class CharController : MonoBehaviour
 
     protected virtual IEnumerator Call()
     {
-        Vector3 pos = ItemManager.instance.GetActiveCamera().transform.position;
-        pos.y = -22;
+        Vector3 pos = Camera.main.transform.position;
+        pos.y = -22 + Random.Range (-5f,2f);
+        pos.x += Random.Range(-8f, 8f);
         target = pos;
         yield return StartCoroutine(RunToPoint());
         int ran = Random.Range(0, 100);
@@ -1322,7 +1323,7 @@ public class CharController : MonoBehaviour
         {
             yield return StartCoroutine(DoAnim("Love"));
         }
-
+        yield return new WaitForEndOfFrame();
         CheckAbort();
     }
 
@@ -2040,8 +2041,10 @@ public class CharController : MonoBehaviour
                 if (toyItem.endPoint != null && !isAbort)
                 {
                     agent.transform.position = toyItem.endPoint.position + new Vector3(Random.Range(-1, 1), Random.Range(-1, 1), 0);
-                    this.transform.rotation = Quaternion.identity;
+                    
                 }
+
+                this.transform.rotation = Quaternion.identity;
             }
 
             if (toyItem != null)

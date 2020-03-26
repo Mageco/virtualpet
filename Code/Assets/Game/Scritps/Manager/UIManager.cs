@@ -714,6 +714,14 @@ public class UIManager : MonoBehaviour
 
     }
 
+    public void OnCall()
+    {
+        foreach(CharController pet in GameManager.instance.GetPetObjects())
+        {
+            pet.OnCall();
+        }
+    }
+
     #region Sale
     public void OnSale()
     {
