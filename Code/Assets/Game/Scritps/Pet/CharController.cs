@@ -2009,7 +2009,7 @@ public class CharController : MonoBehaviour
                     if (index != -1)
                     {
                         agent.transform.position = toyItem.anchorPoints[index].position;
-                        agent.transform.rotation = toyItem.anchorPoints[index].rotation;
+                        this.transform.rotation = toyItem.anchorPoints[index].rotation;
                     }
                     toyItem.count++;
                     anim.Play("Wait_" + toyItem.toyType.ToString(), 0);
@@ -2019,7 +2019,7 @@ public class CharController : MonoBehaviour
                 while (toyItem != null && !isAbort && toyItem.count < toyItem.anchorPoints.Length)
                 {
                     agent.transform.position = toyItem.anchorPoints[index].position;
-                    agent.transform.rotation = toyItem.anchorPoints[index].rotation;
+                    this.transform.rotation = toyItem.anchorPoints[index].rotation;
                     yield return new WaitForEndOfFrame();
                 }
 
@@ -2030,7 +2030,7 @@ public class CharController : MonoBehaviour
                 {
                     toyItem.OnActive();
                     agent.transform.position = toyItem.anchorPoints[index].position;
-                    agent.transform.rotation = toyItem.anchorPoints[index].rotation;
+                    this.transform.rotation = toyItem.anchorPoints[index].rotation;
                     anim.Play("Play_" + toyItem.toyType.ToString(), 0);
                     time += Time.deltaTime;
                     yield return new WaitForEndOfFrame();
@@ -2040,6 +2040,7 @@ public class CharController : MonoBehaviour
                 if (toyItem.endPoint != null && !isAbort)
                 {
                     agent.transform.position = toyItem.endPoint.position + new Vector3(Random.Range(-1, 1), Random.Range(-1, 1), 0);
+                    this.transform.rotation = Quaternion.identity;
                 }
             }
 
