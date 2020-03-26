@@ -2012,8 +2012,8 @@ public class CharController : MonoBehaviour
                         agent.transform.rotation = toyItem.anchorPoints[index].rotation;
                     }
                     toyItem.count++;
-                    //anim.Play("Wait_" + toyItem.toyType.ToString(), 0);
-                   anim.Play("Standby", 0);
+                    anim.Play("Wait_" + toyItem.toyType.ToString(), 0);
+                    //anim.Play("Standby", 0);
                 }
 
                 while (toyItem != null && !isAbort && toyItem.count < toyItem.anchorPoints.Length)
