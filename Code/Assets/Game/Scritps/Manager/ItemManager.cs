@@ -58,8 +58,8 @@ public class ItemManager : MonoBehaviour
             if(GameManager.instance.isLoad){
                 LoadItems(false);
                 GameManager.instance.LoadPetObjects();
-                if(GameManager.instance.isGuest)
-                    LoadItemData();
+                //if(GameManager.instance.isGuest)
+                LoadItemData();
                 isLoad = true;
             }
             t += Time.deltaTime;
