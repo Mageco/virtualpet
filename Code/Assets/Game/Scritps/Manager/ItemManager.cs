@@ -383,6 +383,19 @@ public class ItemManager : MonoBehaviour
         return null;
     }
 
+    public int GetItemCount(ItemType type)
+    {
+        int count = 0;
+        foreach (ItemObject item in items)
+        {
+            if (DataHolder.GetItem(item.itemID).itemType == type)
+            {
+                count++;
+            }
+        }
+        return count;
+    }
+
     public ToyItem GetRandomToyItem()
     {
         List<ItemObject> temp = new List<ItemObject>();

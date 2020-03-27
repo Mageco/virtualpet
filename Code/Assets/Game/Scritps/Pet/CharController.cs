@@ -964,8 +964,13 @@ public class CharController : MonoBehaviour
         if(lastToyItem != null && item == lastToyItem)
         {
             int n = Random.Range(0, 100);
-            if (n > 50)
+            
+            if (n > 50 && ItemManager.instance.GetItemCount(ItemType.Toy) > 5)
                 return;
+            else if (n > 20 && ItemManager.instance.GetItemCount(ItemType.Toy) <= 5)
+            {
+                return;
+            }
         }
 
         if (actionType != ActionType.Sick && actionType != ActionType.Injured && actionType != ActionType.OnControl && charInteract.interactType != InteractType.Drag //actionType != ActionType.Hold
