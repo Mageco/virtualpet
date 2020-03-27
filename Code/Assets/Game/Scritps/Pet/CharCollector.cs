@@ -17,7 +17,7 @@ public class CharCollector : MonoBehaviour
     // Start is called before the first frame update
     IEnumerator Start()
     {
-        while (!GameManager.instance.isLoad)
+        while (!ItemManager.instance.isLoad)
         {
             yield return new WaitForEndOfFrame();
         }
@@ -26,7 +26,7 @@ public class CharCollector : MonoBehaviour
 
     public void Load()
     {
-        if (!GameManager.instance.IsEquipPet(petId) && GameManager.instance.myPlayer.questId > quesId)
+        if (!GameManager.instance.IsHavePet(petId) && GameManager.instance.myPlayer.questId > quesId)
             Active();
     }
 

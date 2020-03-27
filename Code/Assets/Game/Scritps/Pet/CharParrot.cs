@@ -5,19 +5,7 @@ using UnityEngine;
 public class CharParrot : CharController
 {
     Vector3[] paths;
-    float targetHeight = 0;
-    protected override IEnumerator Mouse()
-    {
-        while(GetMouse() != null && GetMouse().state != MouseState.Idle && !isAbort){
-            LookToTarget(GetMouse().transform.position);
-            anim.Play("Idle_" + this.direction.ToString(), 0);
-            if(Vector2.Distance(GetMouse().transform.position,this.transform.position) < 5){
-                OnSupprised();
-            }
-            yield return new WaitForEndOfFrame();
-        }
-        CheckAbort();
-    }
+
 
     protected override IEnumerator RunToPoint()
     {
@@ -46,7 +34,8 @@ public class CharParrot : CharController
             paths[1] = (this.transform.position + target) / 2 + new Vector3(0, Random.Range(10,20), 0);
             paths[2] = target;
             Vector3 startPoint = this.transform.position;
-            iTween.MoveTo(this.gameObject, iTween.Hash("name", "Bee_Patrol", "path", paths, "speed", data.Speed * 5, "orienttopath", false, "easetype", "linear", "oncomplete", "CompleteFly"));
+            //iTween.StopByName("Parrot" + this.gameObject.name);
+            iTween.MoveTo(this.gameObject, iTween.Hash("name", "Parrot" + this.gameObject.name, "path", paths, "speed", data.Speed * 5, "orienttopath", false, "easetype", "linear", "oncomplete", "CompleteFly"));
             anim.Play("Run_" + this.direction.ToString(),0);
             while (charInteract.interactType == InteractType.Fly)
             {

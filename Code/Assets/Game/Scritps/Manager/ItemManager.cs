@@ -39,6 +39,9 @@ public class ItemManager : MonoBehaviour
     [HideInInspector]
     public HouseItem houseItem;
 
+    [HideInInspector]
+    public bool isLoad = false;
+
     void Awake()
     {
         if (instance == null)
@@ -53,7 +56,6 @@ public class ItemManager : MonoBehaviour
     {
         float t = 0;
         MageManager.instance.loadingBar.gameObject.SetActive(true);
-        bool isLoad = false;
         while(!isLoad){
             if(GameManager.instance.isLoad){
                 LoadItems(false);

@@ -58,7 +58,7 @@ public class CharCat : CharController
             ItemObject item = ItemManager.instance.GetItem(ItemType.Table);
             if (item != null)
             {
-                target = item.GetComponent<ItemCollider>().anchorPoint.position;
+                target = item.GetComponentInChildren<ItemCollider>().anchorPoint.position;
                 yield return StartCoroutine(RunToPoint());
                 if (Vector2.Distance(this.transform.position, target) < 1)
                 {

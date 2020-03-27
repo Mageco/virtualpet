@@ -755,7 +755,7 @@ public class CharController : MonoBehaviour
             return;
         }
 
-        if (enviromentType != EnviromentType.Room)
+        if (enviromentType != EnviromentType.Room || isMoving)
             return;
 
         Abort();
