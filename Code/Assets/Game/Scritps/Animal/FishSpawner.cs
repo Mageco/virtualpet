@@ -58,6 +58,7 @@ public class FishSpawner : MonoBehaviour
 
         spawnPoints.RemoveAt(id1);
         FishController a = go.GetComponent<FishController>();
+        a.speed = (1 + GameManager.instance.myPlayer.minigameLevels[1] / 20f) * a.speed;
         a.isMinigame = true;            
     }
 }
