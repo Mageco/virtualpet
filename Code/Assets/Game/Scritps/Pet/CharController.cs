@@ -39,6 +39,7 @@ public class CharController : MonoBehaviour
 
     //Action
     public ActionType actionType = ActionType.None;
+    public ActionType lastActionType = ActionType.None;
     [HideInInspector]
     public Animator anim;
 
@@ -487,6 +488,7 @@ public class CharController : MonoBehaviour
 
     protected virtual void DoAction()
     {
+        lastActionType = actionType;
         if (isAction)
         {
             Debug.Log("Action is doing " + actionType);
@@ -944,35 +946,34 @@ public class CharController : MonoBehaviour
 
     public virtual void OnToy(ToyItem item)
     {
-
+        Debug.Log("Toy1");
         if (toyItem != null)
             return;
 
         if (item == null)
             return;
 
- 
+        Debug.Log("Toy2");
         if (item.state == EquipmentState.Drag || item.state == EquipmentState.Busy || item.state == EquipmentState.Active)
             return;
 
-
+        Debug.Log("Toy3");
         if (data.Energy < data.MaxEnergy * 0.1f)
         {
             return;
         }
 
-        if(lastToyItem != null && item == lastToyItem)
+        Debug.Log("Toy4");
+        if (lastToyItem != null && item == lastToyItem)
         {
             int n = Random.Range(0, 100);
             
-            if (n > 50 && ItemManager.instance.GetItemCount(ItemType.Toy) > 5)
+            if (n > 50 && lastActionType != ActionType.Hold)
                 return;
-            else if (n > 20 && ItemManager.instance.GetItemCount(ItemType.Toy) <= 5)
-            {
-                return;
-            }
+
         }
 
+        Debug.Log("Toy5");
         if (actionType != ActionType.Sick && actionType != ActionType.Injured && actionType != ActionType.OnControl && charInteract.interactType != InteractType.Drag //actionType != ActionType.Hold
          && actionType != ActionType.Toy && enviromentType == EnviromentType.Room && actionType != ActionType.Supprised)
         {

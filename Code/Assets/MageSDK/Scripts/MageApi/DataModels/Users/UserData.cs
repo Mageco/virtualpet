@@ -47,7 +47,7 @@ namespace Mage.Models.Users{
 					if (myAttributes.Length > 0)
 					{
 						for (int j = 0; j < myAttributes.Length; j++) {
-							Debug.Log("Extracted atrributes: " + myAttributes[j].ToString());
+							//Debug.Log("Extracted atrributes: " + myAttributes[j].ToString());
 							if (myAttributes[j].ToString().Contains("Mage.Models.ExtractFieldAttribute")) {
 								//Debug.Log("Extracted member: " + myMembers[i].ToString());
 								string value = ExtractFieldAttribute.GetMemberValue(obj, myMembers[i].ToString());
@@ -60,7 +60,7 @@ namespace Mage.Models.Users{
 								};
 
 								extractFields.Add(d);
-								Debug.Log("Added extracted: " + d.ToJson());
+								//sDebug.Log("Added extracted: " + d.ToJson());
 							}
 							//Debug.Log("The type of the attribute is " + myAttributes[j].ToString());
 						}
