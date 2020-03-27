@@ -162,13 +162,15 @@ public class ServiceManager : MonoBehaviour
                 if(p.Food < p.MaxFood * 0.3f)
                 {
                     p.Food = p.MaxFood;
-                    ItemManager.instance.SpawnHeart((1 + p.level / 5), p.character.transform.position);
+                    if(ItemManager.instance != null && p.character != null)
+                           ItemManager.instance.SpawnHeart((1 + p.level / 5), p.character.transform.position);
                 }
 
                 if (p.Water < p.MaxWater * 0.3f)
                 {
                     p.Water = p.MaxWater;
-                    ItemManager.instance.SpawnHeart((1 + p.level / 5), p.character.transform.position);
+                    if (ItemManager.instance != null && p.character != null)
+                        ItemManager.instance.SpawnHeart((1 + p.level / 5), p.character.transform.position);
                 }
 
 
@@ -188,13 +190,15 @@ public class ServiceManager : MonoBehaviour
                 if (p.Dirty > p.MaxDirty * 0.7f)
                 {
                     p.Dirty = 0;
-                    ItemManager.instance.SpawnHeart((1 + p.level / 5), p.character.transform.position);
+                    if (ItemManager.instance != null)
+                        ItemManager.instance.SpawnHeart((1 + p.level / 5), p.character.transform.position);
                 }
 
                 if (p.Sleep < p.MaxSleep * 0.3f)
                 {
                     p.Sleep = p.MaxSleep;
-                    ItemManager.instance.SpawnHeart((1 + p.level / 5), p.character.transform.position);
+                    if (ItemManager.instance != null)
+                        ItemManager.instance.SpawnHeart((1 + p.level / 5), p.character.transform.position);
                 }
             }
         }
