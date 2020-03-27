@@ -13,7 +13,7 @@ public class CharChihuhu : CharController
             int ran = Random.Range(0, 100);
             if (ran < 30)
             {
-                SetTarget(PointType.Patrol);
+                SetTarget(AreaType.All);
                 yield return StartCoroutine(RunToPoint());
             }
             else if (ran < 50)

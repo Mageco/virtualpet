@@ -47,7 +47,6 @@ public class BathTubeItem : MonoBehaviour
 					pet.data.dirty -= clean;
 					ItemManager.instance.SpawnHeart((1 + pet.data.level / 5), this.transform.position);
 					GameManager.instance.LogAchivement(AchivementType.Do_Action,ActionType.OnBath);
-					pet.OnLearnSkill(SkillType.Bath);
                 }
 			}
 		}

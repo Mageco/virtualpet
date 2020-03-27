@@ -31,7 +31,7 @@ public class ToyCarItem : ToyItem
 		state = EquipmentState.Active;
         animator.speed = 2;
 		GameManager.instance.LogAchivement(AchivementType.Use_Item,ActionType.None,this.item.itemID);
-		List<Transform> pointRandoms = ItemManager.instance.GetRandomPoints (PointType.Patrol);
+		List<Vector3> pointRandoms = ItemManager.instance.GetRandomPoints (AreaType.Garden,round);
 
 		if(pointRandoms == null || pointRandoms.Count == 0){
 			return;
@@ -39,7 +39,7 @@ public class ToyCarItem : ToyItem
 		Debug.Log(round);
 		paths = new Vector3[round];
 		for (int i=0;i< round;i++){
-			paths [i] = pointRandoms[Random.Range(0,pointRandoms.Count)].position;
+			paths [i] = pointRandoms[Random.Range(0,pointRandoms.Count)];
 		}
 
 		iTween.MoveTo (this.gameObject, iTween.Hash ("name","car","path", paths, "speed", speed, "orienttopath", false,"oncomplete", "CompleteSeek"));

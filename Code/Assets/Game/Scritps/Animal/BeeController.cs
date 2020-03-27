@@ -64,8 +64,8 @@ public class BeeController : MonoBehaviour
 		state = BeeState.Enter;
 		paths = new Vector3[3];
 		paths [0] = originalPosition;
-		paths [1] = ItemManager.instance.GetRandomPoint(PointType.Bee).position;
-		paths [2] = ItemManager.instance.GetRandomPoint(PointType.Bee).position;
+		paths [1] = ItemManager.instance.GetRandomPoint(AreaType.Fly);
+		paths [2] = ItemManager.instance.GetRandomPoint(AreaType.Fly);
 
 		iTween.MoveTo (this.gameObject, iTween.Hash ("name","Bee_Enter","path", paths, "speed", speed, "orienttopath", false, "easetype", "linear","oncomplete", "CompleteEnter"));
 		maxTimeSpawn = Random.Range (200, 600);
@@ -84,7 +84,7 @@ public class BeeController : MonoBehaviour
 		int n = Random.Range(3,4);
 		paths = new Vector3[n];
 		for(int i=0;i<n;i++){
-			paths [i] = ItemManager.instance.GetRandomPoint(PointType.Bee).position;
+			paths [i] = ItemManager.instance.GetRandomPoint(AreaType.Fly);
 		}
 
 		iTween.MoveTo (this.gameObject, iTween.Hash ("name","Bee_Patrol","path", paths, "speed", speed, "orienttopath", false, "easetype", "linear","oncomplete", "CompletePatrol"));
@@ -102,7 +102,7 @@ public class BeeController : MonoBehaviour
 		if(target != null){
 			paths = new Vector3[3];
 			paths [0] = this.transform.position;
-			paths [1] = ItemManager.instance.GetRandomPoint(PointType.Bee).position;
+			paths [1] = ItemManager.instance.GetRandomPoint(AreaType.Fly);
 			paths [2] = target.transform.position;
 
 			iTween.MoveTo (this.gameObject, iTween.Hash ("name","Bee_Seek","path", paths, "speed", speed, "orienttopath", false, "easetype", "linear","oncomplete", "CompleteSeek"));
@@ -133,7 +133,7 @@ public class BeeController : MonoBehaviour
 		state = BeeState.Run;
 		paths = new Vector3[3];
 		paths [0] = this.transform.position;
-		paths [1] = ItemManager.instance.GetRandomPoint(PointType.Bee).position;
+		paths [1] = ItemManager.instance.GetRandomPoint(AreaType.Fly);
 		paths [2] = originalPosition;
 		iTween.MoveTo (this.gameObject, iTween.Hash ("path", paths, "speed", speed, "orienttopath", false, "easetype", "linear","oncomplete", "CompleteRun"));
 	}

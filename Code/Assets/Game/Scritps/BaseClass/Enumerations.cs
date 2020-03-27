@@ -31,3 +31,4 @@ public enum RewardType { Minigame, Chest, Sick, Injured, Map,Welcome,Service,For
 public enum ServiceType {Instructor,Doctor,Chef,HouseKeeper,PetSitter,Exp};
 public enum AdDistribute {None,Unity,Admob};
 public enum RareType { Common, Rare,Epic,Legend};
+public enum AreaType {Room,Garden,Lake,All,Camera,Fly};
