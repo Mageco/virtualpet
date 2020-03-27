@@ -31,8 +31,8 @@ public class LevelUpPanel : MonoBehaviour
         MageManager.instance.PlaySound("Win", false);
         int level = GameManager.instance.myPlayer.level;
         levelText.text = level.ToString();
-        coin = level * 50;
-        diamond = level;
+        coin = 100;
+        diamond = 5;
         coinText.text = coin.ToString();
         diamonText.text = diamond.ToString();
         List<Item> items = new List<Item>();

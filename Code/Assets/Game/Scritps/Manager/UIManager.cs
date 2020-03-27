@@ -90,7 +90,7 @@ public class UIManager : MonoBehaviour
     public GameObject homeUI;
     public GameObject profilePrefab;
     public GameObject notificationIcon;
-    public List<string> notificationText = new List<string>();
+    //public List<string> notificationText = new List<string>();
 
     public GameObject eventButton;
     public GameObject achivementButton;
@@ -148,10 +148,10 @@ public class UIManager : MonoBehaviour
     {
         UpdateUI();
         timeUpdate = 0;
-        if (notificationText.Count > 0)
-        {
-            OnQuestNotificationPopup(notificationText[0]);
-        }
+       // if (notificationText.Count > 0)
+       // {
+       //     OnQuestNotificationPopup(notificationText[0]);
+       // }
         if (GameManager.instance.myPlayer.questId >= DataHolder.Quests().GetDataCount() && notificationIcon != null)
             notificationIcon.SetActive(false);
 
@@ -301,17 +301,20 @@ public class UIManager : MonoBehaviour
 
 	public NotificationPopup OnQuestNotificationPopup(string description)
 	{
-        if(!notificationText.Contains(description))
-            notificationText.Add(description);
-		if (questNotification == null) {
-			var popup = Instantiate (questUIPrefab) as GameObject;
-			popup.SetActive (true);
-			popup.transform.SetParent (GameObject.Find ("Canvas").transform, false);
+        //if(!notificationText.Contains(description))
+        //    notificationText.Add(description);
+        if (questNotification == null)
+        {
+            var popup = Instantiate(questUIPrefab) as GameObject;
+            popup.SetActive(true);
+            popup.transform.SetParent(GameObject.Find("Canvas").transform, false);
             popup.transform.localScale = Vector3.one;
-			//popup.GetComponent<Popup> ().Open ();
-			questNotification = popup.GetComponent<NotificationPopup> ();
-			questNotification.Load("",description);
-		}
+            //popup.GetComponent<Popup> ().Open ();
+            questNotification = popup.GetComponent<NotificationPopup>();
+            questNotification.Load("", description);
+        }
+        else
+            questNotification.description.text = description;
 		return questNotification;
 	}
 

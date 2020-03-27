@@ -75,45 +75,31 @@ public class DailyBonusPanel : MonoBehaviour
             GameManager.instance.AddCoin(100);
         }else if(id == 1)
         {
-            GameManager.instance.AddDiamond(5);
+            GameManager.instance.AddDiamond(10);
         }
         else if (id == 2)
         {
-            if (!GameManager.instance.IsHaveItem(7))
-            {
-                GameManager.instance.AddItem(7);
-                GameManager.instance.EquipItem(7);
-            }
+            GameManager.instance.AddCoin(500);
         }
         else if (id == 3)
         {
-            GameManager.instance.AddCoin(300);
+            GameManager.instance.AddDiamond(20);
         }
         else if (id == 4)
         {
-            GameManager.instance.AddDiamond(15);
+            GameManager.instance.AddCoin(1000);
         }
         else if (id == 5)
         {
-            if (!GameManager.instance.IsHaveItem(91))
-            {
-                GameManager.instance.AddItem(91);
-                GameManager.instance.EquipItem(91);
-            }
+            GameManager.instance.AddDiamond(50);
         }
         else if (id == 6)
         {
-            if (!GameManager.instance.IsHavePet(34))
-            {
-                GameManager.instance.AddPet(34);
-                GameManager.instance.GetPet(34).isNew = true;
-                GameManager.instance.EquipPet(34);
-            }
+            GameManager.instance.AddRandomPet(RareType.Common);
             this.Close();
         }
         GameManager.instance.myPlayer.dailyBonus[id].Collect();
         this.Load();
-
     }
 
 

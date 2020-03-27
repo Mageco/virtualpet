@@ -955,20 +955,24 @@ public class GameManager : MonoBehaviour
         myPlayer = new PlayerData();
         myPlayer.LoadData();
 
-        AddCoin(200);
+        AddCoin(100);
         AddDiamond(1);
+        AddHappy(10);
 
         AddItem(17);
-        //AddItem(7);
-        //AddItem(8);
-        //AddItem(4);
+        AddItem(7);
+        AddItem(8);
+        AddItem(4);
         AddItem(41);
         AddItem(58);
         AddItem(59);
-        //AddItem(11);
+        AddItem(11);
         AddItem(2);
-        //AddItem(13);
-
+        AddItem(13);
+        AddItem(1);
+        //AddItem(131);
+        AddItem(81);
+        AddItem(87);
         AddPet(0);
         GetPet(0).isNew = true;
 

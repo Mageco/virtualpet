@@ -20,6 +20,7 @@ public class PetRequirementPanel : MonoBehaviour
     public Transform anchor;
     List<PetRequirementUI> items = new List<PetRequirementUI>();
     public GameObject petRequirementUIPrefab;
+    int price = 0;
 
 
     // Start is called before the first frame update
@@ -37,6 +38,8 @@ public class PetRequirementPanel : MonoBehaviour
         petAvatar.sprite = Resources.Load<Sprite>(url) as Sprite;
 
         OffAllIcon();
+
+        /*
         if(pet.requireValue > 0)
         {
             petPrice.gameObject.SetActive(true);
@@ -52,12 +55,16 @@ public class PetRequirementPanel : MonoBehaviour
             {
                 diamonIcon.SetActive(true);
             }
-        }
+        }*/
         
         petName.text = pet.GetName(0);
         //petDescription.text = pet.GetDescription(MageManager.instance.GetLanguage(0));
         requireText.text = DataHolder.Dialog(15).GetDescription(MageManager.instance.GetLanguage());
+        int petNumber = GameManager.instance.GetPets().Count;
+        price  = (petNumber * petNumber * petNumber * 10);
+        petPrice.text = price.ToString();
 
+        /*
         for (int i = 0; i < pet.requirePets.Length; i++)
         {
             LoadPet(pet.requirePets[i]);
@@ -66,7 +73,7 @@ public class PetRequirementPanel : MonoBehaviour
         for (int i = 0; i < pet.requireEquipments.Length; i++)
         {
             LoadEquipment(pet.requireEquipments[i]);
-        }
+        }*/
 
         if (canBuy)
         {
@@ -85,7 +92,7 @@ public class PetRequirementPanel : MonoBehaviour
 
     void OffAllIcon()
     {
-        petPrice.gameObject.SetActive(false);
+        //petPrice.gameObject.SetActive(false);
         happyIcon.SetActive(false);
         diamonIcon.SetActive(false);
         coinIcon.SetActive(false);
@@ -93,8 +100,11 @@ public class PetRequirementPanel : MonoBehaviour
 
     public void ReLoad()
     {
+        
         canBuy = true;
         Pet pet = DataHolder.GetPet(petId);
+        Load(pet);
+        /*
         ClearItems();
         for (int i = 0; i < pet.requirePets.Length; i++)
         {
@@ -112,6 +122,7 @@ public class PetRequirementPanel : MonoBehaviour
         }
         else
             buyButton.interactable = false;
+            */
     }
 
     void LoadEquipment(int id)
@@ -178,6 +189,8 @@ public class PetRequirementPanel : MonoBehaviour
     public void OnCollect()
     {
         Pet pet = DataHolder.GetPet(petId);
+
+        /*
         if(pet.requireValueType == PriceType.Coin && pet.requireValue > GameManager.instance.GetCoin())
         {
             MageManager.instance.OnNotificationPopup(DataHolder.Dialog(6).GetDescription(MageManager.instance.GetLanguage()));
@@ -191,11 +204,17 @@ public class PetRequirementPanel : MonoBehaviour
         {
             MageManager.instance.OnNotificationPopup(DataHolder.Dialog(7).GetDescription(MageManager.instance.GetLanguage()));
             return;
+        }*/
+
+        if (price > GameManager.instance.GetHappy())
+        {
+            MageManager.instance.OnNotificationPopup(DataHolder.Dialog(8).GetDescription(MageManager.instance.GetLanguage()));
+            return;
         }
 
- 
         if (!isBuy)
         {
+            /*
             if (pet.requireValueType == PriceType.Coin)
             {
                 GameManager.instance.AddCoin(-pet.requireValue);
@@ -207,7 +226,8 @@ public class PetRequirementPanel : MonoBehaviour
             else if (pet.requireValueType == PriceType.Diamond)
             {
                 GameManager.instance.AddDiamond(-pet.requireValue);
-            }
+            }*/
+            GameManager.instance.AddHappy(-price);
             GameManager.instance.AddPet(petId);
             Pet p = GameManager.instance.GetPet(petId);
             p.isNew = true;

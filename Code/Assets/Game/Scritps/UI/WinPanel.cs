@@ -40,8 +40,8 @@ public class WinPanel : MonoBehaviour
     public void Load(int c,int minigameId,bool isWin){
         bonus = c;
         gameId = minigameId;
-        price = GameManager.instance.myPlayer.minigameLevels[gameId] + 1;
-        priceText.text = price.ToString();
+        //price = GameManager.instance.myPlayer.minigameLevels[gameId] + 1;
+        //priceText.text = price.ToString();
         animator = this.GetComponent<Animator>();
         animator.Play("Win",0);
 
@@ -92,17 +92,17 @@ public class WinPanel : MonoBehaviour
 
     public void Replay(){
 
-        if (GameManager.instance.GetHappy() < price)
-        {
-            MageManager.instance.OnNotificationPopup(DataHolder.Dialog(8).GetDescription(MageManager.instance.GetLanguage()));
-        }
-        else
-        {
-            GameManager.instance.AddCoin(bonus);
+        //if (GameManager.instance.GetHappy() < price)
+        //{
+        //    MageManager.instance.OnNotificationPopup(DataHolder.Dialog(8).GetDescription(MageManager.instance.GetLanguage()));
+        //}
+        //else
+        //{
+        //    GameManager.instance.AddCoin(bonus);
             GameManager.instance.AddHappy(-price);
             MageManager.instance.LoadScene(SceneManager.GetActiveScene().name, 0.5f);
             this.GetComponent<Popup>().Close();
-        }
+        //}
     }
 
     public void OnWatchedAd()

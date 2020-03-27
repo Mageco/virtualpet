@@ -17,8 +17,8 @@ public class EventUI : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
-        price = GameManager.instance.myPlayer.minigameLevels[gameId] + 1;
-        priceText.text = price.ToString();
+        //price = GameManager.instance.myPlayer.minigameLevels[gameId] + 1;
+        //priceText.text = price.ToString();
         levelText.text = DataHolder.Dialog(27).GetName(MageManager.instance.GetLanguage()) +  " " + (GameManager.instance.myPlayer.minigameLevels[gameId] + 1).ToString();
         int n = (GameManager.instance.myPlayer.minigameLevels[gameId]+1) % 5;
 
@@ -52,17 +52,17 @@ public class EventUI : MonoBehaviour
     public void OnPlay()
     {
         MageManager.instance.PlaySound("BubbleButton", false);
-        if (GameManager.instance.GetHappy() < price)
-        {
-            MageManager.instance.OnNotificationPopup(DataHolder.Dialog(8).GetDescription(MageManager.instance.GetLanguage()));
-        }else
-        {
-            GameManager.instance.AddHappy(-price);
+        //if (GameManager.instance.GetHappy() < price)
+        //{
+        //    MageManager.instance.OnNotificationPopup(DataHolder.Dialog(8).GetDescription(MageManager.instance.GetLanguage()));
+        //}else
+        //{
+        //    GameManager.instance.AddHappy(-price);
             UIManager.instance.OnMinigame(gameId);
             if (UIManager.instance.eventPanel != null)
             {
                 UIManager.instance.eventPanel.Close();
             }
-        }
+        //}
     }
 }

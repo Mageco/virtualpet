@@ -61,27 +61,23 @@ public class QuestManager : MonoBehaviour
         delayTime = 2;
         if (GameManager.instance.myPlayer.questId == 0){
             delayTime = 2;
-            //GameManager.instance.GetActivePet().character.agent.transform.position = new Vector3(0,- 10, 0);
-            //GameManager.instance.GetActivePet().Dirty = GameManager.instance.GetActivePet().MaxDirty * 0.7f;
             GameManager.instance.GetActivePet().Food = 0.05f * GameManager.instance.GetActivePet().MaxFood;
-            //GameManager.instance.GetActivePet().Water = 0.05f * GameManager.instance.GetActivePet().MaxWater;
             ItemManager.instance.GetItemChildObject(ItemType.Food).GetComponent<FoodBowlItem>().foodAmount = 0;
+            GameManager.instance.GetActivePet().Dirty = GameManager.instance.GetActivePet().MaxDirty * 0.3f;
         }
         else if(GameManager.instance.myPlayer.questId == 1){
             GameManager.instance.GetActivePet().Water = 0.05f * GameManager.instance.GetActivePet().MaxWater;
-            //GameManager.instance.GetActivePet().Dirty = GameManager.instance.GetActivePet().MaxDirty * 0.7f;
             delayTime = 5;
         }
         else if(GameManager.instance.myPlayer.questId == 2){
-            //GameManager.instance.GetActivePet().Dirty = GameManager.instance.GetActivePet().MaxDirty * 0.8f;
-            //GameManager.instance.GetActivePet().Pee = GameManager.instance.GetActivePet().MaxPee * 0.65f;
-            //GameManager.instance.GetActivePet().Shit = GameManager.instance.GetActivePet().MaxShit * 0.1f;
-            isReplay = true;
-            delayTime = 5;
+            GameManager.instance.GetActivePet().Dirty = GameManager.instance.GetActivePet().MaxDirty * 0.7f;
+            //isReplay = true;
+            delayTime = 3;
         }
         else if (GameManager.instance.myPlayer.questId == 3)
         {
-            delayTime = 5;
+            GameManager.instance.GetActivePet().Water = 0.95f * GameManager.instance.GetActivePet().MaxWater;
+            delayTime = 1;
             
         }
         else if (GameManager.instance.myPlayer.questId == 4)
@@ -134,15 +130,16 @@ public class QuestManager : MonoBehaviour
 
        // if(!isComplete)
         OnQuestNotification();
-        if(GameManager.instance.myPlayer.questId != 0)
-            yield return new WaitForSeconds(2);
+        //if(GameManager.instance.myPlayer.questId != 0)
+        yield return new WaitForSeconds(2);
         if (TutorialManager.instance != null)
             TutorialManager.instance.StartQuest();
         if(GameManager.instance.myPlayer.questId == 0)
         {
             yield return new WaitForSeconds(1);
             ItemManager.instance.SetCameraTarget(ItemManager.instance.GetItemChildObject(ItemType.Food));
-           // GameManager.instance.GetActivePet().character.OnEat();
+            yield return new WaitForSeconds(1);
+            // GameManager.instance.GetActivePet().character.OnEat();
             ItemManager.instance.ResetCameraTarget();
         }
         else if(GameManager.instance.myPlayer.questId == 1){
@@ -206,12 +203,14 @@ public class QuestManager : MonoBehaviour
         if(GameManager.instance.myPlayer.questId == 4)
         {
             GameManager.instance.myPlayer.questId = 7;
-        }else if(GameManager.instance.myPlayer.questId == 1)
-        {
-            GameManager.instance.myPlayer.questId = 4;
         }
         else
             GameManager.instance.myPlayer.questId++;
+        //else if(GameManager.instance.myPlayer.questId == 3)
+        //{
+        //    GameManager.instance.myPlayer.questId = 4;
+        //}
+
         GameManager.instance.SavePlayer();
         isTimeline = false;
         isStartQuest = false;
@@ -226,6 +225,7 @@ public class QuestManager : MonoBehaviour
 
     public void CheckQuest()
     {
+        Debug.Log("CheckQuest");
 
         if (isTimeline)
             return;
@@ -244,14 +244,14 @@ public class QuestManager : MonoBehaviour
         } 
         else if (GameManager.instance.myPlayer.questId == 2)
         {
-            if (GameManager.instance.GetActivePet().dirty < 30)
+            if (GameManager.instance.GetActivePet().dirty < 10)
             {
                 isComplete = true;
             }
         }
         else if (GameManager.instance.myPlayer.questId == 3)
         {
-            if (GameManager.instance.GetActivePet().enviromentType == EnviromentType.Room && FindObjectOfType<ItemDirty>() != null)
+            if (GameManager.instance.GetActivePet().enviromentType == EnviromentType.Room)
             {
                 isComplete = true;
             }
@@ -286,14 +286,14 @@ public class QuestManager : MonoBehaviour
         }
         else if (GameManager.instance.myPlayer.questId == 8)
         {
-            if (GameManager.instance.IsEquipItem(1))
+            if (GameManager.instance.IsHaveItem(1))
             {
                 isComplete = true;
             }
 
         }
         else if (GameManager.instance.myPlayer.questId == 9) { 
-            if (GameManager.instance.IsEquipPet(1))
+            if (GameManager.instance.IsHavePet(1))
             {
                 isComplete = true;
             }
@@ -320,13 +320,15 @@ public class QuestManager : MonoBehaviour
         if(!isActive)
             return;
 
+ 
+
         if (!isStartQuest)
         {
-            if(GameManager.instance.myPlayer.questId >= DataHolder.Quests().GetDataCount()){
+            if (GameManager.instance.myPlayer.questId >= DataHolder.Quests().GetDataCount())
+            {
                 isActive = false;
                 return;
             }
- 
             StartQuest();
         }
         else

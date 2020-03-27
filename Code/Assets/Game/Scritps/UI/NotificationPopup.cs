@@ -7,7 +7,7 @@ public class NotificationPopup : MonoBehaviour {
 
 	public Text title;
 	public Text description;
-	public float delay = 10f;
+	public float delay = 4f;
 	float time = 0;
 
 	// Use this for initialization
@@ -37,8 +37,8 @@ public class NotificationPopup : MonoBehaviour {
 	}
 
 	public void Close(){
-		if(UIManager.instance != null && UIManager.instance.notificationText.Contains(this.description.text))
-			UIManager.instance.notificationText.Remove(this.description.text);
+		//if(UIManager.instance != null && UIManager.instance.notificationText.Contains(this.description.text))
+		//	UIManager.instance.notificationText.Remove(this.description.text);
 		GameObject.Destroy(this.gameObject);
 	}
 }

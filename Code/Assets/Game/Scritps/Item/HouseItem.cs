@@ -18,7 +18,7 @@ public class HouseItem : MonoBehaviour
 	void Start()
     {
         item = this.transform.parent.GetComponent<ItemObject>();
-        petNumber = (int)DataHolder.GetItem(item.itemID).value;
+        //petNumber = (int)DataHolder.GetItem(item.itemID).value;
     }
 
     // Update is called once per frame

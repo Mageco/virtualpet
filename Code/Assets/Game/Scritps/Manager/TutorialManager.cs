@@ -391,11 +391,14 @@ public class TutorialManager : MonoBehaviour
 
     IEnumerator Quest0()
     {
+        
+        yield return new WaitForSeconds(4);
+        if(GameManager.instance.GetPetObject(0) != null)
+            GameManager.instance.GetPetObject(0).OnEat();
         blackScreen.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, 0);
         blackScreen.SetActive(true);
-        yield return new WaitForSeconds(4);
         UIManager.instance.OnQuestNotificationPopup(DataHolder.Dialog(0).GetDescription(MageManager.instance.GetLanguage()));
-
+        yield return new WaitForSeconds(3);
         FoodBowlItem item = FindObjectOfType<FoodBowlItem>();
         if (GameManager.instance.myPlayer.questId == 0 && item != null && item.foodAmount < item.maxfoodAmount - 2)
         {
@@ -414,11 +417,6 @@ public class TutorialManager : MonoBehaviour
         blackScreen.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, 0);
         blackScreen.SetActive(true);
         CharController pet = GameManager.instance.GetPetObject(0);
-        while(pet.charInteract.interactType != InteractType.None)
-        {
-            yield return new WaitForEndOfFrame();
-        }
-        yield return new WaitForEndOfFrame();
         if (GameManager.instance.GetActivePet().enviromentType != EnviromentType.Bath)
         {
             pet.OnControl();
@@ -444,12 +442,14 @@ public class TutorialManager : MonoBehaviour
             ItemManager.instance.GetItem(ItemType.Bath).GetComponent<Animator>().Play("Tutorial", 0);
             yield return new WaitForSeconds(6);
             ItemManager.instance.GetItem(ItemType.Bath).GetComponent<Animator>().enabled = false;
-            UIManager.instance.OnQuestNotificationPopup(DataHolder.Dialog(1).GetDescription(MageManager.instance.GetLanguage()));
-            if (FindObjectOfType<SoapItem>() != null && FindObjectOfType<BathShowerItem>() != null)
-            {
-                FindObjectOfType<SoapItem>().GetComponent<Animator>().Play("Tutorial", 0);
-                FindObjectOfType<BathShowerItem>().GetComponent<Animator>().Play("Tutorial", 0);
-            }
+            //UIManager.instance.OnQuestNotificationPopup(DataHolder.Dialog(1).GetDescription(MageManager.instance.GetLanguage()));
+
+            //if (FindObjectOfType<SoapItem>() != null && FindObjectOfType<BathShowerItem>() != null)
+            //{
+            //    FindObjectOfType<SoapItem>().GetComponent<Animator>().Play("Tutorial", 0);
+            //    FindObjectOfType<BathShowerItem>().GetComponent<Animator>().Play("Tutorial", 0);
+            //}
+            pet.data.dirty = 0;
         }
         blackScreen.SetActive(false);
 

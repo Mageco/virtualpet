@@ -774,7 +774,7 @@ public class ItemManager : MonoBehaviour
     IEnumerator SpawnGift(Pet pet)
     {
         GameObject gift = GameObject.Instantiate(petGiftPrefab);
-        Vector3 pos = new Vector3(Camera.main.transform.position.x, Random.Range(-20, -15), 0);
+        Vector3 pos = new Vector3(Camera.main.transform.position.x, Random.Range(-15, -10), 0);
         pos.z = pos.y * 10;
         gift.transform.position = pos;
         yield return new WaitForSeconds(5.4f);

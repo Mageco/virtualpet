@@ -236,7 +236,7 @@ public class CharController : MonoBehaviour
         else if(actionType == ActionType.Toy)
         {
             data.Energy -= Time.deltaTime;
-            /*
+            
             if (timeToy > 6 && toyItem != null && toyItem.IsActive())
             {
                 //int toyHeart = 1;
@@ -248,7 +248,7 @@ public class CharController : MonoBehaviour
             else
             {
                 timeToy += Time.deltaTime;
-            }*/
+            }
         }
 
 
@@ -1305,7 +1305,7 @@ public class CharController : MonoBehaviour
     protected virtual IEnumerator Call()
     {
         Vector3 pos = Camera.main.transform.position;
-        pos.y = -22 + Random.Range (-5f,2f);
+        pos.y = ItemManager.instance.houseItem.roomBoundY.x + Random.Range (3,6f);
         pos.x += Random.Range(-8f, 8f);
         target = pos;
         yield return StartCoroutine(RunToPoint());
