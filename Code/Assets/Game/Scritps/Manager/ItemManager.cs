@@ -36,7 +36,8 @@ public class ItemManager : MonoBehaviour
     float timeChest = 0;
     float maxTimeChest = 30;
 
-    HouseItem houseItem;
+    [HideInInspector]
+    public HouseItem houseItem;
 
     void Awake()
     {

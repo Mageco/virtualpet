@@ -44,11 +44,13 @@ public class BaseFloorItem : MonoBehaviour
 		{
 			colors.Add(sprites[i].color);
 		}
+		
 	}
 
 	protected virtual void Start()
 	{
 		item = this.transform.parent.GetComponent<ItemObject>();
+		boundX = ItemManager.instance.houseItem.gardenBoundX;
 	}
 
 
