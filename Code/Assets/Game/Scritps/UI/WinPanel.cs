@@ -98,8 +98,8 @@ public class WinPanel : MonoBehaviour
         //}
         //else
         //{
-        //    GameManager.instance.AddCoin(bonus);
-            GameManager.instance.AddHappy(-price);
+            GameManager.instance.AddCoin(bonus);
+        //    GameManager.instance.AddHappy(-price);
             MageManager.instance.LoadScene(SceneManager.GetActiveScene().name, 0.5f);
             this.GetComponent<Popup>().Close();
         //}
