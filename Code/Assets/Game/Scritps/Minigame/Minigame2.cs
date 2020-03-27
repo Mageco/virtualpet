@@ -73,7 +73,11 @@ public class Minigame2 : Minigame
             fishSpawner.maxNumber = Random.Range(10,20);
         }
         squirtSpawner.maxNumber = 1 + gameLevel / 6;
+        if (squirtSpawner.maxNumber > 7)
+            squirtSpawner.maxNumber = 7;
         jellyFishSpawner.maxNumber = 1 + gameLevel / 3;
+        if (jellyFishSpawner.maxNumber > 5)
+            jellyFishSpawner.maxNumber = 5;
         yellowFishSpawner.maxNumber = 0;
         specialFishSpawner.maxNumber = 0;
         rusbishFishSpawner.maxNumber = 1 + gameLevel / 10;

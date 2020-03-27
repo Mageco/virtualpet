@@ -61,7 +61,7 @@ public class Minigame : MonoBehaviour
             popup.GetComponent<Popup>().Open();
             winPanel = popup.GetComponent<WinPanel>();
             if (isWin)
-                bonus += GameManager.instance.myPlayer.minigameLevels[minigameId];
+                bonus += 10;
             winPanel.Load(bonus,minigameId, isWin);
         }
     }

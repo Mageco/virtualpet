@@ -7,7 +7,7 @@ public class MapRequirementPanel : MonoBehaviour
 {
     public Sprite[] icons;
     public MapType mapType = MapType.Forest;
-    int price = 20;
+    int price = 30;
     public Text priceText;
     public Text mapName;
     public Image icon;
