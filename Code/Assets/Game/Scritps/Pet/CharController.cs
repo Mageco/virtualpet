@@ -1438,7 +1438,6 @@ public class CharController : MonoBehaviour
             {
                 ItemManager.instance.SpawnHeart((1 + data.level / 5), this.transform.position);
                 GameManager.instance.LogAchivement(AchivementType.Do_Action, ActionType.OnToilet);
-                LevelUpSkill(SkillType.Toilet);
             }
 
             
@@ -1484,7 +1483,6 @@ public class CharController : MonoBehaviour
             {
                 ItemManager.instance.SpawnHeart((1 + data.level / 5), this.transform.position);
                 GameManager.instance.LogAchivement(AchivementType.Do_Action, ActionType.OnToilet);
-                LevelUpSkill(SkillType.Toilet);
             }
             yield return StartCoroutine(JumpDown(-7, 10, 30));
         }
@@ -1495,11 +1493,12 @@ public class CharController : MonoBehaviour
 
     protected virtual IEnumerator Eat()
     {
-        if (GetFoodItem() != null)
+        FoodBowlItem food = GetFoodItem();
+        if (food != null)
         {
-            if (Vector2.Distance(this.transform.position, GetFoodItem().anchor.position) > 0.5f)
+            if (Vector2.Distance(this.transform.position, food.anchor.position) > 0.5f)
             {
-                SetTarget(PointType.Eat);
+                target = food.anchor.position;
                 yield return StartCoroutine(RunToPoint());
             }
             bool canEat = true;
@@ -1553,17 +1552,16 @@ public class CharController : MonoBehaviour
 
     protected virtual IEnumerator Drink()
     {
-        if (GetDrinkItem() != null)
+        DrinkBowlItem drink = GetDrinkItem();
+        if (drink != null)
         {
             //Debug.Log("Drink");
 
-            if (Vector2.Distance(this.transform.position, GetDrinkItem().anchor.position) > 0.5f)
+            if (Vector2.Distance(this.transform.position, drink.anchor.position) > 0.5f)
             {
-                SetTarget(PointType.Drink);
+                target = drink.anchor.position;
                 yield return StartCoroutine(RunToPoint());
             }
-
-
 
             bool canDrink = true;
             if (Vector2.Distance(this.transform.position, GetDrinkItem().anchor.position) > 1f)
@@ -1698,7 +1696,7 @@ public class CharController : MonoBehaviour
             int ran = Random.Range(0, 100);
             if (ran < 40)
             {
-                SetTarget(PointType.Patrol);
+                SetTarget(AreaType.All);
                 yield return StartCoroutine(RunToPoint());
             }
             else if (ran < 60)
@@ -1726,14 +1724,14 @@ public class CharController : MonoBehaviour
     {
         int n = 0;
         int maxCount = Random.Range(2, 5);
-        SetTarget(PointType.Garden);
+        SetTarget(AreaType.Garden);
         yield return StartCoroutine(RunToPoint());
         while (!isAbort && n < maxCount)
         {
             int ran = Random.Range(0, 100);
             if (ran < 40)
             {
-                SetTarget(PointType.Garden);
+                SetTarget(AreaType.Garden);
                 yield return StartCoroutine(RunToPoint());
             }
             else if (ran < 60)
@@ -2278,51 +2276,6 @@ public class CharController : MonoBehaviour
 
     #endregion
 
-    #region Skill
-
-    public void OnLearnSkill(SkillType type)
-    {
-        currentSkill = type;
-        //skillLearnEffect.SetActive(true);
-        ItemManager.instance.ActivateSkillItems(type);
-    }
-
-    public void OffLearnSkill()
-    {
-        ItemManager.instance.DeActivateSkillItems(currentSkill);
-        currentSkill = SkillType.NONE;
-    }
-    public void LevelUpSkill(SkillType type)
-    {
-        data.LevelUpSkill(type);
-        OffLearnSkill();
-    }
-
-    protected IEnumerator SkillUp()
-    {
-        yield return StartCoroutine(DoAnim("SkillUp"));
-
-        if (enviromentType == EnviromentType.Bath)
-        {
-            OnBath();
-        }
-        else if (enviromentType == EnviromentType.Table)
-        {
-            OnTable();
-        }
-        else if (enviromentType == EnviromentType.Bed)
-        {
-            OnBed();
-        }
-        else if (enviromentType == EnviromentType.Toilet)
-        {
-            OnToilet();
-        }
-        CheckAbort();
-    }
-
-    #endregion
-
     #region Effect
 
 
@@ -2353,70 +2306,12 @@ public class CharController : MonoBehaviour
     #region  getpoint
 
 
-    public void SetTarget(PointType type)
+    public void SetTarget(AreaType type)
     {
-        int n = 0;
-        Vector3 pos = GetRandomPoint(type).position;
-        while (pos == target && n < 10)
-        {
-            pos = GetRandomPoint(type).position;
-            n++;
-        }
-        if (type == PointType.Patrol)
-        {
-            target = pos + new Vector3(Random.Range(-2f, 2f), Random.Range(-2f, 2f), 0);
-        }
-        else
-            target = pos + new Vector3(Random.Range(-0.5f, 0.5f), Random.Range(-0.5f, 0.5f), 0);
-
+        target = ItemManager.instance.GetRandomPoint(type);       
     }
 
-    List<GizmoPoint> GetPoints(PointType type)
-    {
-        List<GizmoPoint> temp = new List<GizmoPoint>();
-        GizmoPoint[] points = GameObject.FindObjectsOfType<GizmoPoint>();
-        for (int i = 0; i < points.Length; i++)
-        {
-            if (points[i].type == type)
-                temp.Add(points[i]);
-        }
-        return temp;
-    }
-
-    public Transform GetRandomPoint(PointType type)
-    {
-        List<GizmoPoint> points = GetPoints(type);
-        if (points != null && points.Count > 0)
-        {
-            int id = Random.Range(0, points.Count);
-            return points[id].transform;
-        }
-        else
-            return null;
-
-    }
-
-    public List<Transform> GetRandomPoints(PointType type)
-    {
-        List<GizmoPoint> points = GetPoints(type);
-        List<Transform> randomPoints = new List<Transform>();
-        for (int i = 0; i < points.Count; i++)
-        {
-            randomPoints.Add(points[i].transform);
-        }
-
-        for (int i = 0; i < randomPoints.Count; i++)
-        {
-            if (i < randomPoints.Count - 1)
-            {
-                int j = Random.Range(i, randomPoints.Count);
-                Transform temp = randomPoints[i];
-                randomPoints[i] = randomPoints[j];
-                randomPoints[j] = temp;
-            }
-        }
-        return randomPoints;
-    }
+    
     #endregion
 
     void OnDestroy()

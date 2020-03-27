@@ -14,7 +14,7 @@ public class CharBunny : CharController
         {
             int ran = Random.Range(0, 100);
             if(ran < 40){
-                SetTarget(PointType.Patrol);
+                SetTarget(AreaType.All);
                 yield return StartCoroutine(RunToPoint());
             }else if (ran < 60)
             {

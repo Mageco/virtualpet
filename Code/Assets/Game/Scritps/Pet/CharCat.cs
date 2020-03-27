@@ -33,7 +33,7 @@ public class CharCat : CharController
     {
        int ran = Random.Range(0, 100);
         if(ran < 20){
-            SetTarget(PointType.Patrol);
+            SetTarget(AreaType.All);
             yield return StartCoroutine(RunToPoint());
         }else if (ran < 30)
         {
@@ -45,7 +45,7 @@ public class CharCat : CharController
             yield return StartCoroutine(Wait(Random.Range(1, 5)));
         }else if(ran < 70)
         {
-            SetTarget(PointType.Sunny);
+            SetTarget(AreaType.Room);
             yield return StartCoroutine(RunToPoint());
             anim.Play("Sleep", 0);
             while (data.Sleep < data.MaxSleep && !isAbort)
@@ -55,9 +55,10 @@ public class CharCat : CharController
             }
         }
         else{
-            if(GetRandomPoint(PointType.Table) != null)
+            ItemObject item = ItemManager.instance.GetItem(ItemType.Table);
+            if (item != null)
             {
-                SetTarget(PointType.Table);
+                target = item.GetComponent<ItemCollider>().anchorPoint.position;
                 yield return StartCoroutine(RunToPoint());
                 if (Vector2.Distance(this.transform.position, target) < 1)
                 {

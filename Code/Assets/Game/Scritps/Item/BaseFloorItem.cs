@@ -34,6 +34,7 @@ public class BaseFloorItem : MonoBehaviour
 		lastPosition = this.transform.position;
 		LoadSprite();
 		obstructItem = this.GetComponentInChildren<ObstructItem>(true);
+        
 	}
 
 	void LoadSprite()
@@ -44,11 +45,16 @@ public class BaseFloorItem : MonoBehaviour
 		{
 			colors.Add(sprites[i].color);
 		}
+		
 	}
 
 	protected virtual void Start()
 	{
 		item = this.transform.parent.GetComponent<ItemObject>();
+		boundX = ItemManager.instance.houseItem.gardenBoundX;
+		Vector3 pos = this.transform.position;
+		pos.z = pos.y * 10;
+		this.transform.position = pos;
 	}
 
 

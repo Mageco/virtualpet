@@ -10,7 +10,6 @@ public class ItemManager : MonoBehaviour
 
     public List<ItemObject> items = new List<ItemObject>();
     public ItemCollider[] itemColliders;
-    public float expireTime = 10;
 
     public GameObject peePrefab;
     public GameObject shitPrefab;
@@ -24,20 +23,11 @@ public class ItemManager : MonoBehaviour
     public GameObject guidePrefab;
     public GameObject petGiftPrefab;
 
-    List<GameObject> pees = new List<GameObject>();
-    List<GameObject> shits = new List<GameObject>();
-    List<GameObject> happies = new List<GameObject>();
-    List<GameObject> chests = new List<GameObject>();
-    List<GameObject> dirties = new List<GameObject>();
-    List<GameObject> coins = new List<GameObject>();
-    List<GameObject> stars = new List<GameObject>();
-
     float time = 0;
     float maxTimeCheck = 1.1f;
     System.DateTime playTime = System.DateTime.Now;
 
     public CameraController activeCamera;
-    Vector3 CameraPosition;
 
     float timeDirty = 0;
     float maxTimeDirty = 200;
@@ -45,6 +35,9 @@ public class ItemManager : MonoBehaviour
 
     float timeChest = 0;
     float maxTimeChest = 30;
+
+    [HideInInspector]
+    public HouseItem houseItem;
 
     void Awake()
     {
@@ -412,6 +405,7 @@ public class ItemManager : MonoBehaviour
 
     void UpdateItemColliders(){
         itemColliders = this.GetComponentsInChildren<ItemCollider>();
+        houseItem = this.GetComponentInChildren<HouseItem>();
     }
 
     public ItemCollider GetItemCollider(ItemType type){
@@ -451,86 +445,61 @@ public class ItemManager : MonoBehaviour
     }
 
 
-    #region Skill
-
-    public void ActivateSkillItems(SkillType type){
-        Debug.Log(type);
-        List<ItemSkill> itemSkills = GetSkillItem(type);
-        foreach(ItemSkill s in itemSkills){
-            
-            s.OnActive(expireTime);
-        }
-    }
-
-    public void DeActivateSkillItems(SkillType type){
-        List<ItemSkill> itemSkills = GetSkillItem(type);
-        foreach(ItemSkill s in itemSkills){
-            s.DeActive();
-        }
-    }
-
-    List<ItemSkill> GetSkillItem(SkillType type){
-        List<ItemSkill> itemSkills = new List<ItemSkill>();
-        ItemSkill[] skills = FindObjectsOfType<ItemSkill>();
-        for(int i=0;i<skills.Length;i++){
-            if(skills[i].skillType == type){
-                itemSkills.Add(skills[i]);
-            }
-        }
-        return itemSkills;
-    }
-
-    public void SetExpireSkillTime(float t){
-        expireTime = t;
-    }
-
-    public void ResetExpireSkillTime(){
-        expireTime = 10;
-    }
-
-    #endregion
-
-    List<GizmoPoint> GetPoints(PointType type)
+	public List<Vector3> GetRandomPoints(AreaType type,int n)
 	{
-		List<GizmoPoint> temp = new List<GizmoPoint>();
-		GizmoPoint[] points = FindObjectsOfType <GizmoPoint> ();
-		for(int i=0;i<points.Length;i++)
-		{
-			if(points[i].type == type)
-				temp.Add(points[i]);
-		}
-		return temp;
-	}
-
-	public Transform GetRandomPoint(PointType type)
-	{
-		List<GizmoPoint> points = GetPoints (type);
-		if(points != null && points.Count > 0){
-			int id = Random.Range (0, points.Count);
-			return points [id].transform;
-		}else
-			return null;
-
-	}
-
-	public List<Transform> GetRandomPoints(PointType type)
-	{
-		List<GizmoPoint> points = GetPoints (type);
-		List<Transform> randomPoints = new List<Transform> ();
-		for (int i = 0; i < points.Count; i++) {
-			randomPoints.Add (points [i].transform);
-		}
-
-		for (int i = 0; i < randomPoints.Count; i++) {
-			if (i < randomPoints.Count - 1) {
-				int j = Random.Range (i, randomPoints.Count);
-				Transform temp = randomPoints [i];
-				randomPoints [i] = randomPoints [j];
-				randomPoints [j] = temp;
-			}
+		List<Vector3> randomPoints = new List<Vector3> ();
+		for (int i = 0; i < n; i++) {
+			randomPoints.Add (GetRandomPoint(type));
 		}
 		return randomPoints;
 	}
+
+
+    public Vector3 GetRandomPoint(AreaType type)
+    {
+        Vector3 r = Vector3.zero;
+        if (type == AreaType.All)
+        {
+
+            float x = Random.Range(houseItem.gardenBoundX.x, houseItem.gardenBoundX.y);
+            float y = Random.Range(houseItem.gardenBoundY.x, houseItem.gardenBoundY.y);
+            r = new Vector3(x, y, 0);
+        }
+        else if (type == AreaType.Garden)
+        {
+            bool isDone = false;
+            float x = Random.Range(houseItem.gardenBoundX.x, houseItem.gardenBoundX.y);
+            float y = Random.Range(houseItem.gardenBoundY.x, houseItem.gardenBoundY.y);
+            while (!isDone)
+            {
+                x = Random.Range(houseItem.gardenBoundX.x, houseItem.gardenBoundX.y);
+                y = Random.Range(houseItem.gardenBoundY.x, houseItem.gardenBoundY.y);
+                if (x < houseItem.roomBoundX.x || x > houseItem.roomBoundX.y)
+                {
+                    isDone = true;
+                }
+            }
+            r = new Vector3(x, y, 0);
+        }else if(type == AreaType.Room)
+        {
+            float x = Random.Range(houseItem.roomBoundX.x, houseItem.roomBoundX.y);
+            float y = Random.Range(houseItem.roomBoundY.x, houseItem.roomBoundY.y);
+            r = new Vector3(x, y, 0);
+        }
+        else if (type == AreaType.Camera)
+        {
+            float x = Random.Range(houseItem.cameraBoundX.x, houseItem.cameraBoundX.y);
+            float y = Random.Range(houseItem.cameraBoundY.x, houseItem.cameraBoundY.y);
+            r = new Vector3(x, y, 0);
+        }
+        else if (type == AreaType.Fly)
+        {
+            float x = Random.Range(houseItem.gardenBoundX.x, houseItem.gardenBoundX.y);
+            float y = Random.Range(houseItem.gardenBoundX.x + 15, houseItem.gardenBoundX.y + 15);
+            r = new Vector3(x, y, 0);
+        }
+        return r;
+    }
 
     public CharCollector GetCharCollector(int id)
     {
@@ -608,7 +577,7 @@ public class ItemManager : MonoBehaviour
 
     public void SpawnDirty()
     {
-        Vector3 pos = GetRandomPoint(PointType.Patrol).position + new Vector3(Random.Range(-1, 1), Random.Range(-1, 1), 0);
+        Vector3 pos = GetRandomPoint(AreaType.All) + new Vector3(Random.Range(-1, 1), Random.Range(-1, 1), 0);
         pos.z = 990;
         GameObject go = Instantiate(dirtyPrefab, pos, Quaternion.identity);
     }
@@ -618,7 +587,7 @@ public class ItemManager : MonoBehaviour
         ChestItem[] chests = FindObjectsOfType<ChestItem>();
         if (chests.Length > 2)
             return;
-        Vector3 pos = GetRandomPoint(PointType.Garden).position + new Vector3(Random.Range(-1, 1), Random.Range(-1, 1), 0);
+        Vector3 pos = GetRandomPoint(AreaType.Garden) + new Vector3(Random.Range(-1, 1), Random.Range(-1, 1), 0);
         pos.z = pos.y * 10;
         GameObject go = Instantiate(chestPrefab, pos, Quaternion.identity);
     }
@@ -833,7 +802,7 @@ public class ItemManager : MonoBehaviour
         Debug.Log(url);
         GameObject go = GameObject.Instantiate((Resources.Load(url) as GameObject), Vector3.zero, Quaternion.identity) as GameObject;
         pet.character = go.GetComponent<CharController>();
-        go.transform.position = ItemManager.instance.GetRandomPoint(PointType.Spawn).position;
+        go.transform.position = ItemManager.instance.GetRandomPoint(AreaType.All);
         pet.character.data = pet;
         pet.character.LoadPrefab();
         GameManager.instance.UpdatePetObjects();

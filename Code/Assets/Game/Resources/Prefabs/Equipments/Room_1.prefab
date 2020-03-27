@@ -1677,6 +1677,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4593962749579971110}
+  - component: {fileID: 6086409160258632178}
   m_Layer: 0
   m_Name: Room_1
   m_TagString: Untagged
@@ -1706,6 +1707,26 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6086409160258632178
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4593962749579971111}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4f530efafdcd4d5bbb23005d1a617bb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  item: {fileID: 0}
+  roomBoundX: {x: -50, y: 70}
+  roomBoundY: {x: -26, y: -4}
+  gardenBoundX: {x: -265, y: 70}
+  gardenBoundY: {x: -26, y: -4}
+  cameraBoundX: {x: -50, y: 70}
+  cameraBoundY: {x: -26, y: 40}
+  petNumber: 2
 --- !u!1 &4593962749722402217
 GameObject:
   m_ObjectHideFlags: 0
@@ -1891,7 +1912,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5139721596499993685}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 1020}
+  m_LocalPosition: {x: 0, y: 0, z: 3}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4455865011297159563}
@@ -2024,7 +2045,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5756831427127682319}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 1010}
+  m_LocalPosition: {x: 0, y: 0, z: 2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 3723578249350036048}

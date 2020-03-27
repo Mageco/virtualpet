@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class CharParrot : CharController
 {
+    Vector3[] paths;
     float targetHeight = 0;
     protected override IEnumerator Mouse()
     {
@@ -22,7 +23,6 @@ public class CharParrot : CharController
     {
         isMoving = true;
         isArrived = false;
-
         int ran = Random.Range(0,100);
         if(ran < 50){
             
@@ -33,9 +33,75 @@ public class CharParrot : CharController
                 data.Energy -= Time.deltaTime;
                 yield return new WaitForEndOfFrame();
             }
-
         }else{
-            float length = Vector2.Distance(this.transform.position,target);
+            charInteract.interactType = InteractType.Fly;
+            if (target.x > this.transform.position.x)
+            {
+                SetDirection(Direction.R);
+            }
+            else
+                SetDirection(Direction.L);
+            paths = new Vector3[3];
+            paths[0] = this.transform.position;
+            paths[1] = (this.transform.position + target) / 2 + new Vector3(0, Random.Range(10,20), 0);
+            paths[2] = target;
+            Vector3 startPoint = this.transform.position;
+            iTween.MoveTo(this.gameObject, iTween.Hash("name", "Bee_Patrol", "path", paths, "speed", data.Speed * 5, "orienttopath", false, "easetype", "linear", "oncomplete", "CompleteFly"));
+            anim.Play("Run_" + this.direction.ToString(),0);
+            while (charInteract.interactType == InteractType.Fly)
+            {
+                float x0 = startPoint.x;
+                float y0 = startPoint.y;
+                float x2 = target.x;
+                float y2 = target.y;
+                float x1 = this.transform.position.x;
+                float y1 = (x1 - x0)*(y2 - y0) / (x2 - x0) + y0;
+                charScale.scalePosition = new Vector3(x1, y1, this.transform.position.z);
+                charScale.height = this.transform.position.y - y1;
+                agent.transform.position = this.transform.position;
+                yield return new WaitForEndOfFrame();
+            }
+
+        }
+    }
+
+
+    void CompleteFly()
+    {
+        charInteract.interactType = InteractType.None;
+        isMoving = false;
+    }
+
+    protected override IEnumerator Patrol()
+    {
+        //int n = 0;
+        //int maxCount = Random.Range(2, 5);
+
+            int ran = Random.Range(0, 100);
+            if(ran < 20){
+                SetTarget(AreaType.All);
+                yield return StartCoroutine(RunToPoint());
+                MageManager.instance.PlaySound3D(charType.ToString() + "_Speak",false,this.transform.position);
+                yield return DoAnim("Speak_" + direction.ToString());
+            }if(ran < 40){
+                SetTarget(AreaType.All);
+                yield return StartCoroutine(WalkToPoint());
+            }else if (ran < 60)
+            {
+                anim.Play("Standby", 0);
+                yield return StartCoroutine(Wait(Random.Range(1, 10)));
+            }
+            else {
+                anim.Play("Idle_" + this.direction.ToString(), 0);
+                yield return StartCoroutine(Wait(Random.Range(1, 10)));
+            }
+            
+        CheckAbort();
+    }
+}
+
+    /*
+     float length = Vector2.Distance(this.transform.position,target);
             float t = 0;
             charInteract.interactType = InteractType.Fly;
             if(target.x > this.transform.position.x){
@@ -79,41 +145,4 @@ public class CharParrot : CharController
                 }
                 t+=Time.deltaTime;
                 yield return new WaitForEndOfFrame();
-            }
-        }
-
-        charInteract.interactType = InteractType.None;
-       
-        
-       
-
-        isMoving = false;
-    }
-
-    protected override IEnumerator Patrol()
-    {
-        //int n = 0;
-        //int maxCount = Random.Range(2, 5);
-
-            int ran = Random.Range(0, 100);
-            if(ran < 20){
-                SetTarget(PointType.Patrol);
-                yield return StartCoroutine(RunToPoint());
-                MageManager.instance.PlaySound3D(charType.ToString() + "_Speak",false,this.transform.position);
-                yield return DoAnim("Speak_" + direction.ToString());
-            }if(ran < 40){
-                SetTarget(PointType.Patrol);
-                yield return StartCoroutine(WalkToPoint());
-            }else if (ran < 60)
-            {
-                anim.Play("Standby", 0);
-                yield return StartCoroutine(Wait(Random.Range(1, 10)));
-            }
-            else {
-                anim.Play("Idle_" + this.direction.ToString(), 0);
-                yield return StartCoroutine(Wait(Random.Range(1, 10)));
-            }
-            
-        CheckAbort();
-    }
-}
+                                                     */

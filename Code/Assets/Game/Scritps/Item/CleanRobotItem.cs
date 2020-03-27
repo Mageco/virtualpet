@@ -178,7 +178,7 @@ public class CleanRobotItem : MonoBehaviour
 		}else{
 			int ran  = Random.Range(0,100);
 			if(ran > 50 || count == 0){
-				SetTarget(PointType.Patrol);
+				SetTarget(AreaType.All);
 				count = 1;
 				yield return StartCoroutine(MoveToPoint());
 				if(!isAbort){
@@ -271,13 +271,13 @@ public class CleanRobotItem : MonoBehaviour
         return dirtyTarget;
     }
 
-	public void SetTarget(PointType type)
+	public void SetTarget(AreaType type)
 	{
         int n = 0;
-        Vector3 pos = ItemManager.instance.GetRandomPoint (type).position;
+        Vector3 pos = ItemManager.instance.GetRandomPoint (type);
         while(pos == target && n<10)
         {
-            pos = ItemManager.instance.GetRandomPoint (type).position;
+            pos = ItemManager.instance.GetRandomPoint (type);
             n++;
         }
         target = pos;

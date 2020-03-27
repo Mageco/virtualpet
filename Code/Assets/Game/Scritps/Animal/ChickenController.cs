@@ -151,7 +151,7 @@ public class ChickenController : AnimalController
     IEnumerator Flee()
     {
         MageManager.instance.PlaySound3D("Chicken_Flee", false, this.transform.position);
-        Vector3 target = ItemManager.instance.GetRandomPoint(PointType.Garden).position;
+        Vector3 target = ItemManager.instance.GetRandomPoint(AreaType.Garden);
         speed = maxSpeed * 3;
         if (target.x > this.transform.position.x)
         {
