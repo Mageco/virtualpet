@@ -64,7 +64,8 @@ public class Pet : BaseModel
     public float recoverHealth = 0;
     [HideInInspector]
     public float recoverEnergy = 5;
-
+    [HideInInspector]
+    public int rateHappy = 1;
 
 
     [HideInInspector]
@@ -123,6 +124,7 @@ public class Pet : BaseModel
         Pet p = DataHolder.GetPet(id);
         iD = p.iD;
         iconUrl = p.iconUrl;
+        rareType = p.rareType;
         petName = p.GetName(MageManager.instance.GetLanguage());
         languageItem = new LanguageItem[p.languageItem.Length];
         for (int i = 0; i < p.languageItem.Length; i++)

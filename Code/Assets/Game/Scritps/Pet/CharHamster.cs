@@ -51,7 +51,7 @@ public class CharHamster : CharController
                             {
                                 yield return StartCoroutine(DoAnim("Love"));
                                 MageManager.instance.PlaySound3D(charType.ToString() + "_Speak", false, this.transform.position);
-                                ItemManager.instance.SpawnHeart((1 + data.level / 5), this.transform.position);
+                                ItemManager.instance.SpawnHeart(data.rateHappy, this.transform.position);
                             }
 
                             isSpeak = true;

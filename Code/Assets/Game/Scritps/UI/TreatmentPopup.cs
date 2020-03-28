@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class TreatmentPopup : MonoBehaviour
 {
-    float coin;
+    int coin = 200;
     public Text price;
     SickType sickType;
     public Sprite[] sickTypes;
@@ -18,7 +18,7 @@ public class TreatmentPopup : MonoBehaviour
     {
         pet = p;
         sickType = type;
-        price.text = "100";
+        price.text = coin.ToString();
         if(sickType == SickType.Sick)
         {
             sickTypeIcon.sprite = sickTypes[0];
@@ -47,7 +47,7 @@ public class TreatmentPopup : MonoBehaviour
     {
         if (GameManager.instance.GetCoin() >= coin)
         {
-            GameManager.instance.OnTreatment(pet, sickType, 100);
+            GameManager.instance.OnTreatment(pet, sickType, coin);
             this.Close();
         }
         else

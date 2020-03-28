@@ -316,7 +316,24 @@ public class ItemUI : MonoBehaviour
             }
         }
 
-        OffAllIcon();        
+        OffAllIcon();
+
+        statPanel.SetActive(true);
+        if (d.rareType == RareType.Rare)
+        {
+            heartIcon.gameObject.SetActive(true);
+            happyText.text = "+2";
+        }
+        else if (d.rareType == RareType.Epic)
+        {
+            heartIcon.gameObject.SetActive(true);
+            happyText.text = "+4";
+        }
+        else if (d.rareType == RareType.Legend)
+        {
+            heartIcon.gameObject.SetActive(true);
+            happyText.text = "+9";
+        }
 
         if (state == ItemState.OnShop)
         {
@@ -326,27 +343,11 @@ public class ItemUI : MonoBehaviour
         }
         else if (state == ItemState.Equiped)
         {
-            statPanel.SetActive(true);
-            Pet p = GameManager.instance.GetPet(d.iD);
-            petLevelText.gameObject.SetActive(true);
-            petLevelText.text = DataHolder.Dialog(27).GetName(MageManager.instance.GetLanguage()) + " " + p.level.ToString();
-            heartIcon.gameObject.SetActive(true);
-            happyText.text = (1 + p.level/5).ToString();
-            strengthIcon.gameObject.SetActive(true);
-            strengthText.text = p.MaxHealth.ToString();
             unEquipButton.gameObject.SetActive(true);
             this.GetComponent<Image>().color = new Color(251f / 256, 134f / 256, 58f / 256);
         }
         else if (state == ItemState.Have)
         {
-            statPanel.SetActive(true);
-            Pet p = GameManager.instance.GetPet(d.iD);
-            petLevelText.gameObject.SetActive(true);
-            petLevelText.text = DataHolder.Dialog(27).GetName(MageManager.instance.GetLanguage()) + " " + p.level.ToString();
-            heartIcon.gameObject.SetActive(true);
-            happyText.text = (1 + p.level/ 5).ToString();
-            strengthIcon.gameObject.SetActive(true);
-            strengthText.text = p.MaxHealth.ToString();
             equipButton.gameObject.SetActive(true);
         }
 
@@ -496,7 +497,7 @@ public class ItemUI : MonoBehaviour
     {
         if(isCharacter && (state == ItemState.Have || state == ItemState.Equiped))
         {
-            UIManager.instance.OnProfilePanel(itemId);
+            //UIManager.instance.OnProfilePanel(itemId);
         }
 
         if(!isCharacter && !isLevelRequire)

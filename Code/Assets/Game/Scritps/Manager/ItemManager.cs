@@ -810,6 +810,16 @@ public class ItemManager : MonoBehaviour
         if (p == null)
             return null;
 
+        pet.rareType = p.rareType;
+        if (pet.rareType == RareType.Rare)
+            pet.rateHappy = 3;
+        else if (pet.rareType == RareType.Epic)
+            pet.rateHappy = 5;
+        else if (pet.rareType == RareType.Legend)
+            pet.rateHappy = 10;
+        else if (pet.rareType == RareType.Common)
+            pet.rateHappy = 1;
+
         string url = "";
         url = p.prefabName.Replace("Assets/Game/Resources/", "");
         url = url.Replace(".prefab", "");

@@ -45,7 +45,7 @@ public class BathTubeItem : MonoBehaviour
 			foreach(CharController pet in GameManager.instance.petObjects){
 				if (pet.actionType == ActionType.OnBath && pet.data.dirty >= pet.data.MaxDirty * 0.3f) {
 					pet.data.dirty -= clean;
-					ItemManager.instance.SpawnHeart((1 + pet.data.level / 5), this.transform.position);
+					ItemManager.instance.SpawnHeart((pet.data.rateHappy), this.transform.position);
 					GameManager.instance.LogAchivement(AchivementType.Do_Action,ActionType.OnBath);
                 }
 			}

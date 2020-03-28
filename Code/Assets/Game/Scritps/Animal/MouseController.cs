@@ -71,7 +71,7 @@ public class MouseController : MonoBehaviour
 		paths [2] = points[0].position;
 
 		iTween.MoveTo (this.gameObject, iTween.Hash ("path", paths, "speed", speed, "orienttopath", false, "easetype", "linear","oncomplete", "CompleteSeek"));
-		maxTimeSpawn = Random.Range (200, 600);
+		maxTimeSpawn = Random.Range (100, 200);
 		this.body.gameObject.SetActive (true);
 		col.enabled = true;
 		anim.Play("Run",0);
@@ -155,7 +155,7 @@ public class MouseController : MonoBehaviour
 		}
 		else {
 			if (time > maxTimeSpawn) {
-                if(GameManager.instance.myPlayer.questId > 9)
+                if(GameManager.instance.myPlayer.questId > 7)
                     Spawn ();
 				time = 0;
 			} else
