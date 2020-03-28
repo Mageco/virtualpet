@@ -1325,11 +1325,16 @@ public class CharController : MonoBehaviour
             MageManager.instance.PlaySound3D(charType.ToString() + "_Speak", false,this.transform.position);
             yield return DoAnim("Speak_" + direction.ToString());
         }
-        else
+
+        float t = 0;
+        float maxTime = 10;
+        while (t < maxTime)
         {
-            yield return StartCoroutine(DoAnim("Love"));
+            
+            yield return new WaitForEndOfFrame();
         }
-        yield return new WaitForEndOfFrame();
+
+        
         CheckAbort();
     }
 

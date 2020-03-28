@@ -47,10 +47,23 @@ public class CharInteract : MonoBehaviour
         if (GameManager.instance.isGuest)
             return;
 
-        OnDrag();
+        if (character.actionType != ActionType.OnCall)
+            OnDrag();
+        else
+            OnTouch();
         isMouseDown = true;
         holdPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
     }
+
+    void OnTouch()
+    {
+
+    }
+
+    void EndTouch()
+    {
+
+    }
 
     void OnDrag()
     {
@@ -85,14 +98,14 @@ public class CharInteract : MonoBehaviour
             character.actionType = ActionType.None;
         }
 
-
+        /*
         if (touchTime < maxClickTime && Vector2.Distance(holdPosition, Camera.main.ScreenToWorldPoint(Input.mousePosition)) < 1f)
         {
             if (character.actionType != ActionType.Sick && character.actionType != ActionType.Injured)
             {
                 OnClick();
             }
-        }
+        }*/
 
         touchTime = 0;
         isDrag = false;
@@ -102,7 +115,7 @@ public class CharInteract : MonoBehaviour
 
     void OnClick()
     {
-        UIManager.instance.OnProfilePanel(character.data.iD);
+        //UIManager.instance.OnProfilePanel(character.data.iD);
     }
 
 
