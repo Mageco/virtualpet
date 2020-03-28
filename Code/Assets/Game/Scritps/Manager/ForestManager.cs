@@ -42,17 +42,21 @@ public class ForestManager : MonoBehaviour
         today = System.DateTime.Today;
         CheckDayNight();
         LoadMusic();
-        Invoke("LoadCollector", Random.Range(5, 20));
+        StartCoroutine(LoadCollector());
     }
 
-    void LoadCollector()
+    IEnumerator LoadCollector()
     {
-        int n = Random.Range(0, charCollectors.Length);
-        collector = GameObject.Instantiate(charCollectors[n]) as GameObject;
-        CharCollectorTimeline c = collector.GetComponentInChildren<CharCollectorTimeline>();
-        collector.transform.parent = this.transform;
-        if (GameManager.instance.IsHavePet(c.petId))
-            GameObject.Destroy(collector);
+        for(int i = 0; i < 3; i++)
+        {
+            int n = Random.Range(0, 5);
+            collector = GameObject.Instantiate(charCollectors[i*5+n]) as GameObject;
+            CharCollectorTimeline c = collector.GetComponentInChildren<CharCollectorTimeline>();
+            collector.transform.parent = this.transform;
+            if (GameManager.instance.IsHavePet(c.petId))
+                GameObject.Destroy(collector);
+            yield return new WaitForSeconds(Random.Range(5, 15));
+        }
     }
 
     public void CheckCollector()

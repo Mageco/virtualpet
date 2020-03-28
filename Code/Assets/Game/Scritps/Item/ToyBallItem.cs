@@ -102,6 +102,9 @@ public class ToyBallItem : ToyItem
             pos1.y = this.transform.position.y - 1 * this.transform.localScale.x;
             wall.transform.position = pos1;
             lastPosition = this.transform.position;
+            Vector3 pos2 = this.transform.position;
+            pos2.z = 10 * pos1.y;
+            this.transform.position = pos2;
         }
     }
 
@@ -109,11 +112,15 @@ public class ToyBallItem : ToyItem
     {
         if(state == EquipmentState.Active)
         {
-
+            
+            
         }
         else
         {
-            base.LateUpdate();
+            transform.localScale = originalScale * (1 + (-transform.position.y) * scaleFactor);
+            Vector3 pos = this.transform.position;
+            pos.z = (this.transform.position.y - 1 * this.transform.localScale.x) * 10;
+            this.transform.position = pos;
         }
 
     }

@@ -57,12 +57,14 @@ public class CharInteract : MonoBehaviour
 
     void OnTouch()
     {
-
+        ItemManager.instance.SetCameraTarget(this.gameObject);
+        interactType = InteractType.Love;
     }
 
     void EndTouch()
     {
-
+        ItemManager.instance.ResetCameraTarget();
+        interactType = InteractType.None;
     }
 
     void OnDrag()
@@ -89,6 +91,9 @@ public class CharInteract : MonoBehaviour
         if (interactType == InteractType.Touch)
         {
 
+        }else if(interactType == InteractType.Love)
+        {
+            EndTouch();
         }
         else if (interactType == InteractType.Drag) {
             interactType = InteractType.Drop;

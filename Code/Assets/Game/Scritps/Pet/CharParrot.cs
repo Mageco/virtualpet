@@ -50,7 +50,6 @@ public class CharParrot : CharController
                 agent.transform.position = this.transform.position;
                 yield return new WaitForEndOfFrame();
             }
-
         }
     }
 

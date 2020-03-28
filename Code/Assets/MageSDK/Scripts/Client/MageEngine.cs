@@ -317,7 +317,7 @@ namespace MageSDK.Client {
 		private void BackgroundEnrichData(List<UserData> userDatas) {
 			User u = GetUser();
 			if (null != u && null != userDatas && userDatas.Count > 0) {
-				Debug.Log("Backround update");
+				//Debug.Log("Backround update");
 				foreach(UserData d in userDatas) {
 					u.SetUserData(d);
 				}

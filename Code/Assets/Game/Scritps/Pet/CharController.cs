@@ -37,9 +37,11 @@ public class CharController : MonoBehaviour
     [HideInInspector]
     public bool isMoving = false;
 
+
     //Action
     public ActionType actionType = ActionType.None;
     public ActionType lastActionType = ActionType.None;
+    
     [HideInInspector]
     public Animator anim;
 
@@ -80,13 +82,15 @@ public class CharController : MonoBehaviour
     protected ToyItem toyItem;
     protected ToyItem lastToyItem;
     float timeToy = 0;
-
+    float timeLove = 0;
     [HideInInspector]
     public List<GameObject> dirties = new List<GameObject>();
     [HideInInspector]
     public List<GameObject> dirties_L = new List<GameObject>();
     [HideInInspector]
     public List<GameObject> dirties_LD = new List<GameObject>();
+
+    Vector3 callPosition;
 
     #region Load
 
@@ -754,12 +758,16 @@ public class CharController : MonoBehaviour
             return;
         }
 
-        if (enviromentType != EnviromentType.Room || isMoving)
+
+        //if (callPosition != null && actionType == ActionType.OnCall && Mathf.Abs(ItemManager.instance.GetActiveCamera().transform.position.x - callPosition.x) < 5)
+        //    return;
+
+        if (enviromentType != EnviromentType.Room)
             return;
 
         Abort();
         actionType = ActionType.OnCall;
-        
+        callPosition.x = ItemManager.instance.GetActiveCamera().transform.position.x;
     }
 
     public virtual void OnSupprised()
@@ -913,6 +921,7 @@ public class CharController : MonoBehaviour
     {
         if (actionType != ActionType.Stop && !isArrived)
         {
+            Debug.Log(lastActionType);
             agent.Stop();
             actionType = ActionType.Stop;
             isAbort = true;
@@ -943,24 +952,24 @@ public class CharController : MonoBehaviour
 
     public virtual void OnToy(ToyItem item)
     {
-        Debug.Log("Toy1");
+        //Debug.Log("Toy1");
         if (toyItem != null)
             return;
 
         if (item == null)
             return;
 
-        Debug.Log("Toy2");
+        //Debug.Log("Toy2");
         if (item.state == EquipmentState.Drag || item.state == EquipmentState.Busy || item.state == EquipmentState.Active)
             return;
 
-        Debug.Log("Toy3");
+        //Debug.Log("Toy3");
         if (data.Energy < data.MaxEnergy * 0.1f)
         {
             return;
         }
 
-        Debug.Log("Toy4");
+        //Debug.Log("Toy4");
         if (lastToyItem != null && item == lastToyItem)
         {
             int n = Random.Range(0, 100);
@@ -970,9 +979,9 @@ public class CharController : MonoBehaviour
 
         }
 
-        Debug.Log("Toy5");
+        //Debug.Log("Toy5");
         if (actionType != ActionType.Sick && actionType != ActionType.Injured && actionType != ActionType.OnControl && charInteract.interactType != InteractType.Drag //actionType != ActionType.Hold
-         && actionType != ActionType.Toy && enviromentType == EnviromentType.Room && actionType != ActionType.Supprised)
+         && actionType != ActionType.Toy && enviromentType == EnviromentType.Room && actionType != ActionType.Supprised && actionType != ActionType.OnCall)
         {
             timeToy = 0;
             actionType = ActionType.Toy;
@@ -1302,14 +1311,15 @@ public class CharController : MonoBehaviour
         {
             yield return new WaitForEndOfFrame();
         }
+        
         CheckAbort();
     }
 
     protected virtual IEnumerator Call()
     {
         Vector3 pos = Camera.main.transform.position;
-        pos.y = ItemManager.instance.houseItem.roomBoundY.x + Random.Range (3,6f);
-        pos.x += Random.Range(-8f, 8f);
+        pos.y = ItemManager.instance.houseItem.roomBoundY.x + Random.Range (2,8f);
+        pos.x += Random.Range(-15f, 15f);
         target = pos;
         yield return StartCoroutine(RunToPoint());
         int ran = Random.Range(0, 100);
@@ -1317,21 +1327,32 @@ public class CharController : MonoBehaviour
         {
             yield return StartCoroutine(DoAnim("Standby"));
         }
-        else if (ran < 60)
+        else
         {
             MageManager.instance.PlaySound3D(charType.ToString() + "_Speak", false,this.transform.position);
             yield return DoAnim("Speak_" + direction.ToString());
         }
 
         float t = 0;
-        float maxTime = 10;
-        while (t < maxTime)
+        float maxTime = 20;
+        while (t < maxTime && !isAbort)
         {
-            
+            if (charInteract.interactType == InteractType.Love)
+            {
+                anim.Play("Love", 0);
+                timeLove += Time.deltaTime;
+                t = 0;
+            }
+            else
+                anim.Play("Idle_" + direction.ToString(), 0);
+            t += Time.deltaTime;
+            if(timeLove > 5)
+            {
+                ItemManager.instance.SpawnHeart(data.rateHappy, this.transform.position);
+                timeLove = 0;
+            }
             yield return new WaitForEndOfFrame();
         }
-
-        
         CheckAbort();
     }
 
@@ -1442,7 +1463,7 @@ public class CharController : MonoBehaviour
 
         if (enviromentType == EnviromentType.Toilet)
         {
-            if (data.pee <= 1)
+            if (data.pee <= 1 && !isAbort)
             {
                 ItemManager.instance.SpawnHeart(data.rateHappy, this.transform.position);
                 GameManager.instance.LogAchivement(AchivementType.Do_Action, ActionType.OnToilet);
@@ -1487,7 +1508,7 @@ public class CharController : MonoBehaviour
 
         if (enviromentType == EnviromentType.Toilet)
         {
-            if (data.shit <= 1)
+            if (data.shit <= 1 && !isAbort)
             {
                 ItemManager.instance.SpawnHeart(data.rateHappy, this.transform.position);
                 GameManager.instance.LogAchivement(AchivementType.Do_Action, ActionType.OnToilet);
