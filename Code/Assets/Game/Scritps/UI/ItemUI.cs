@@ -234,17 +234,19 @@ public class ItemUI : MonoBehaviour
                     buyButton.interactable = false;
                     isLevelRequire = true;
                     levelText.gameObject.SetActive(true);
-                    levelText.text = DataHolder.Dialog(115).GetName(MageManager.instance.GetLanguage());
+                    levelText.text = DataHolder.Dialog(115).GetName(MageManager.instance.GetLanguage()) + " " + GameManager.instance.GetItemNumber(129).ToString() + "/3"; ;
 
                 }
                 else
                 {
                     price.gameObject.SetActive(true);
-                    buyButton.gameObject.SetActive(true);
-                    buyButton.interactable = true;
+                    //buyButton.gameObject.SetActive(true);
+                    //buyButton.interactable = true;
                     moneyIcon.SetActive(true);
                     moneyIcon.GetComponent<Text>().text = DataHolder.Dialog(64).GetName(MageManager.instance.GetLanguage());
-                    price.text = (d.buyPrice * (float.Parse(DataHolder.Dialog(64).GetDescription(MageManager.instance.GetLanguage())))).ToString(".00");
+                    price.text = (d.buyPrice * (float.Parse(DataHolder.Dialog(64).GetDescription(MageManager.instance.GetLanguage())))).ToString(".00") ;
+                    levelText.gameObject.SetActive(true);
+                    levelText.text = DataHolder.Dialog(115).GetName(MageManager.instance.GetLanguage()) + " " + GameManager.instance.GetItemNumber(129).ToString() + "/3"; ;
                 }
             }
             else if (d.iD == 129)
@@ -257,16 +259,18 @@ public class ItemUI : MonoBehaviour
                     buyButton.interactable = false;
                     isLevelRequire = true;
                     levelText.gameObject.SetActive(true);
-                    levelText.text = DataHolder.Dialog(115).GetName(MageManager.instance.GetLanguage());
+                    levelText.text = DataHolder.Dialog(115).GetName(MageManager.instance.GetLanguage()) + " " + GameManager.instance.GetItemNumber(129).ToString() + "/1";
                 }
                 else
                 {
                     price.gameObject.SetActive(true);
-                    buyButton.gameObject.SetActive(true);
-                    buyButton.interactable = true;
+                    //buyButton.gameObject.SetActive(true);
+                    //buyButton.interactable = true;
                     moneyIcon.SetActive(true);
                     moneyIcon.GetComponent<Text>().text = DataHolder.Dialog(64).GetName(MageManager.instance.GetLanguage());
                     price.text = (d.buyPrice * (float.Parse(DataHolder.Dialog(64).GetDescription(MageManager.instance.GetLanguage())))).ToString(".00");
+                    levelText.gameObject.SetActive(true);
+                    levelText.text = DataHolder.Dialog(115).GetName(MageManager.instance.GetLanguage()) + " " + GameManager.instance.GetItemNumber(129).ToString() + "/1";
                 }
             }
             if (d.iD == 130)
@@ -280,16 +284,19 @@ public class ItemUI : MonoBehaviour
                     buyButton.interactable = false;
                     isLevelRequire = true;
                     levelText.gameObject.SetActive(true);
-                    levelText.text = DataHolder.Dialog(115).GetName(MageManager.instance.GetLanguage());
+                    levelText.text = DataHolder.Dialog(115).GetName(MageManager.instance.GetLanguage()) + " " + GameManager.instance.GetItemNumber(129).ToString() + "/1";
                 }
                 else
                 {
                     price.gameObject.SetActive(true);
-                    buyButton.gameObject.SetActive(true);
-                    buyButton.interactable = true;
+                    //buyButton.gameObject.SetActive(true);
+                    //buyButton.interactable = true;
                     moneyIcon.SetActive(true);
                     moneyIcon.GetComponent<Text>().text = DataHolder.Dialog(64).GetName(MageManager.instance.GetLanguage());
                     price.text = (d.buyPrice * (float.Parse(DataHolder.Dialog(64).GetDescription(MageManager.instance.GetLanguage())))).ToString(".00");
+                    levelText.gameObject.SetActive(true);
+                    levelText.text = DataHolder.Dialog(115).GetName(MageManager.instance.GetLanguage()) + " " + GameManager.instance.GetItemNumber(129).ToString() + "/1";
+
                 }
             }
         }

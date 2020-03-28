@@ -509,8 +509,8 @@ public class ItemManager : MonoBehaviour
         }
         else if (type == AreaType.Fly)
         {
-            float x = Random.Range(houseItem.gardenBoundX.x, houseItem.gardenBoundX.y);
-            float y = Random.Range(houseItem.gardenBoundX.x + 15, houseItem.gardenBoundX.y + 15);
+            float x = Random.Range(houseItem.roomBoundX.x, houseItem.roomBoundX.y);
+            float y = Random.Range(houseItem.roomBoundY.x + 15, houseItem.roomBoundY.y + 15);
             r = new Vector3(x, y, 0);
         }
         return r;

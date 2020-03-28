@@ -59,16 +59,14 @@ public class MouseController : MonoBehaviour
 		
 		lastPosition = this.transform.position;
 
-		List<Transform> points = GetRandomPoints (PointType.MouseEat);
-		List<Transform> pointRandoms = GetRandomPoints (PointType.Mouse);
-
-		if(points == null || pointRandoms == null || points.Count == 0 || pointRandoms.Count == 0){
+		if (ItemManager.instance.GetItem(ItemType.Food) == null)
 			return;
-		}
+
+		Vector3 foodPoint = ItemManager.instance.GetItem(ItemType.Food).transform.position;
 		paths = new Vector3[3];
 		paths [0] = originalPosition;
-		paths [1] = pointRandoms[Random.Range(0,pointRandoms.Count)].position;
-		paths [2] = points[0].position;
+		paths [1] = ItemManager.instance.GetRandomPoint(AreaType.Room);
+		paths [2] = foodPoint;
 
 		iTween.MoveTo (this.gameObject, iTween.Hash ("path", paths, "speed", speed, "orienttopath", false, "easetype", "linear","oncomplete", "CompleteSeek"));
 		maxTimeSpawn = Random.Range (100, 200);
@@ -95,12 +93,12 @@ public class MouseController : MonoBehaviour
 		anim.Play("Run",0);
 		state = MouseState.Run;
 		lastPosition = this.transform.position;
-		List<Transform> points = GetRandomPoints (PointType.Mouse);
-		int max = Random.Range (3, points.Count);
+		int max = Random.Range (3, 10);
+		List<Vector3> points = ItemManager.instance.GetRandomPoints(AreaType.Room, max);
 		paths = new Vector3[max + 1];
 		paths [max] = originalPosition;
 		for (int i = 0; i < paths.Length - 1; i++) {
-			paths [i] = points [i].position;
+			paths [i] = points [i];
 		}
 		iTween.MoveTo (this.gameObject, iTween.Hash ("path", paths, "speed", speed, "orienttopath", false, "easetype", "linear","oncomplete", "CompleteRun"));
 
@@ -148,7 +146,7 @@ public class MouseController : MonoBehaviour
 		}
 		else if(state == MouseState.Eat){
 			
-			if(GetFoodItem().CanEat() && Vector2.Distance(this.transform.position,GetRandomPoint (PointType.MouseEat).position) < 1)
+			if(GetFoodItem().CanEat() && Vector2.Distance(this.transform.position,GetFoodItem().transform.position) < 1)
                 GetFoodItem().Eat(0.3f);
 			else 
 				Run();
@@ -206,56 +204,13 @@ public class MouseController : MonoBehaviour
         return drinkItem;
     }
 
-	#region  getpoint
-    List<GizmoPoint> GetPoints(PointType type)
-	{
-		List<GizmoPoint> temp = new List<GizmoPoint>();
-		GizmoPoint[] points = GameObject.FindObjectsOfType <GizmoPoint> ();
-		for(int i=0;i<points.Length;i++)
-		{
-			if(points[i].type == type)
-				temp.Add(points[i]);
-		}
-		return temp;
-	}
-
-	public Transform GetRandomPoint(PointType type)
-	{
-		List<GizmoPoint> points = GetPoints (type);
-		if(points != null){
-			int id = Random.Range (0, points.Count);
-			return points [id].transform;
-		}else
-			return null;
-
-	}
-
-	public List<Transform> GetRandomPoints(PointType type)
-	{
-		List<GizmoPoint> points = GetPoints (type);
-		List<Transform> randomPoints = new List<Transform> ();
-		for (int i = 0; i < points.Count; i++) {
-			randomPoints.Add (points [i].transform);
-		}
-
-		for (int i = 0; i < randomPoints.Count; i++) {
-			if (i < randomPoints.Count - 1) {
-				int j = Random.Range (i, randomPoints.Count);
-				Transform temp = randomPoints [i];
-				randomPoints [i] = randomPoints [j];
-				randomPoints [j] = temp;
-			}
-		}
-		return randomPoints;
-	}
-
+	
 	
     protected void SpawnShit(Vector3 pos)
     {
         GameObject go = Instantiate(shitPrefab, pos, Quaternion.identity);
     }
 
-    #endregion
 
     void OnTriggerEnter2D(Collider2D other) {
         if (other.tag == "Player") {
