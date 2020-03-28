@@ -19,7 +19,7 @@ public class QuestManager : MonoBehaviour
     bool isActive = true;
 
     float replayTime = 0;
-    float maxReplayTime = 60;
+    float maxReplayTime = 30;
  
     bool isReplay = true;
 
@@ -66,12 +66,13 @@ public class QuestManager : MonoBehaviour
             GameManager.instance.GetActivePet().Dirty = GameManager.instance.GetActivePet().MaxDirty * 0.3f;
         }
         else if(GameManager.instance.myPlayer.questId == 1){
+            GameManager.instance.GetActivePet().Dirty = GameManager.instance.GetActivePet().MaxDirty * 0.6f;
             GameManager.instance.GetActivePet().Water = 0.05f * GameManager.instance.GetActivePet().MaxWater;
             delayTime = 5;
         }
         else if(GameManager.instance.myPlayer.questId == 2){
             GameManager.instance.GetActivePet().Dirty = GameManager.instance.GetActivePet().MaxDirty * 0.7f;
-            //isReplay = true;
+            isReplay = true;
             delayTime = 3;
         }
         else if (GameManager.instance.myPlayer.questId == 3)
@@ -153,9 +154,6 @@ public class QuestManager : MonoBehaviour
         {
             if (guideItem == null)
                 guideItem = ItemManager.instance.SpawnGuideArrow(ItemType.Bath);
-            ItemManager.instance.SetCameraTarget(ItemManager.instance.GetItemChildObject(ItemType.Bath));
-            yield return new WaitForSeconds(0.1f);
-            ItemManager.instance.ResetCameraTarget();
         }else if(GameManager.instance.myPlayer.questId == 4)
         {
             GameManager.instance.GetActivePet().Pee = GameManager.instance.GetActivePet().MaxPee * 0.9f;
@@ -245,7 +243,7 @@ public class QuestManager : MonoBehaviour
         } 
         else if (GameManager.instance.myPlayer.questId == 2)
         {
-            if (GameManager.instance.GetActivePet().dirty < 10)
+            if (GameManager.instance.GetActivePet().dirty < 50)
             {
                 isComplete = true;
             }

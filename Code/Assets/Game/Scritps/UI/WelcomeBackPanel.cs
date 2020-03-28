@@ -18,7 +18,7 @@ public class WelcomeBackPanel : MonoBehaviour
         {
             if(item.itemType == ItemType.Fruit)
             {
-                coin += c;
+                coin += c * 10;
             }
         }
 

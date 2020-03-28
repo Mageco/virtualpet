@@ -50,15 +50,16 @@ public class ServiceManager : MonoBehaviour
 
     void LoadServiceUI()
     {
-        if (GameManager.instance.GetPets().Count >= 3)
+        if (GameManager.instance.myPlayer.petCount >= 4)
         {
             servicePanel.SetActive(true);
             for (int i = 0; i < serviceUIs.Length; i++)
             {
+                serviceUIs[i].gameObject.SetActive(true);
                 serviceUIs[i].Load();
             }
         }
-        else if(GameManager.instance.myPlayer.level > 1)
+        else if(GameManager.instance.myPlayer.petCount >= 2)
         {
             servicePanel.SetActive(true);
             for (int i = 0; i < serviceUIs.Length; i++)

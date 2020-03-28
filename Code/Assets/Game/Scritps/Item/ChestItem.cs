@@ -9,8 +9,10 @@ public class ChestItem : MonoBehaviour
     public ItemSaveDataType itemSaveDataType = ItemSaveDataType.Chest;
     public int id = 0;
     RewardType rewardType = RewardType.Chest;
-    PriceType priceType = PriceType.Coin;
-    int value = 0;
+    [HideInInspector]
+    public PriceType priceType = PriceType.Coin;
+    [HideInInspector]
+    public int value = 0;
     Animator animator;
     bool isActive = false;
     public TextMesh valueText;
@@ -20,19 +22,19 @@ public class ChestItem : MonoBehaviour
     {
         int n = Random.Range(0, 100);
 
-        if (n < 70)
+        if (n < 30)
         {
             priceType = PriceType.Coin;
-            value = Random.Range(20, 30);
-        }else if(n < 90)
+            value = 200;
+        }else if(n < 60)
         {
-            priceType = PriceType.Coin;
-            value = Random.Range(30, 50);
+            priceType = PriceType.Happy;
+            value = GameManager.instance.myPlayer.petCount * 10;
         }
         else
         {
             priceType = PriceType.Diamond;
-            value = Random.Range(1, 3);
+            value = 2;
         }
 
         animator = this.GetComponent<Animator>();

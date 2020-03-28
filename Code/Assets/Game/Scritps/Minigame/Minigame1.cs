@@ -217,28 +217,28 @@ public class Minigame1 : Minigame
         int value = 0;
         if (number == 1)
         {
-            value = 1;
+            value = 2;
             GameObject bonus = Instantiate(bonuses[0]);
             bonus.transform.position = pos + new Vector3(0, 2, -100);
             bonus.transform.localScale = new Vector3(3, 3, 1);
         }
         else if (number == 2)
         {
-            value = 2;
+            value = 6;
             GameObject bonus = Instantiate(bonuses[1]);
             bonus.transform.position = pos + new Vector3(0, 2, -100);
             bonus.transform.localScale = new Vector3(3, 3, 1);
         }
         else if (number == 3)
         {
-            value = 5;
+            value = 10;
             GameObject bonus = Instantiate(bonuses[2]);
             bonus.transform.position = pos + new Vector3(0, 2, -100);
             bonus.transform.localScale = new Vector3(3, 3, 1);
         }
         else if (number > 3)
         {
-            value = 10;
+            value = 20;
             GameObject bonus = Instantiate(bonuses[3]);
             bonus.transform.position = pos + new Vector3(0, 2, -100);
             bonus.transform.localScale = new Vector3(3, 3, 1);

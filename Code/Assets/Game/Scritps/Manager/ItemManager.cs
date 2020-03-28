@@ -133,14 +133,12 @@ public class ItemManager : MonoBehaviour
         {
             SpawnChest();
             timeChest = 0;
-            maxTimeChest = Random.Range(60, 100);
+            maxTimeChest = Random.Range(30, 70);
         }
         else
         {
             timeChest += Time.deltaTime;
         }
-
-
     }
 
     #region  Camera
@@ -602,7 +600,7 @@ public class ItemManager : MonoBehaviour
         ChestItem[] chests = FindObjectsOfType<ChestItem>();
         if (chests.Length > 2)
             return;
-        Vector3 pos = GetRandomPoint(AreaType.Garden) + new Vector3(Random.Range(-1, 1), Random.Range(-1, 1), 0);
+        Vector3 pos = GetRandomPoint(AreaType.Garden);
         pos.z = pos.y * 10;
         GameObject go = Instantiate(chestPrefab, pos, Quaternion.identity);
     }

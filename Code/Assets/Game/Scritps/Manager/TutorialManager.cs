@@ -417,6 +417,10 @@ public class TutorialManager : MonoBehaviour
         blackScreen.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, 0);
         blackScreen.SetActive(true);
         CharController pet = GameManager.instance.GetPetObject(0);
+        while(pet.charInteract.interactType != InteractType.None)
+        {
+            yield return new WaitForEndOfFrame();
+        }
         if (GameManager.instance.GetActivePet().enviromentType != EnviromentType.Bath)
         {
             pet.OnControl();
@@ -442,14 +446,14 @@ public class TutorialManager : MonoBehaviour
             ItemManager.instance.GetItem(ItemType.Bath).GetComponent<Animator>().Play("Tutorial", 0);
             yield return new WaitForSeconds(6);
             ItemManager.instance.GetItem(ItemType.Bath).GetComponent<Animator>().enabled = false;
-            //UIManager.instance.OnQuestNotificationPopup(DataHolder.Dialog(1).GetDescription(MageManager.instance.GetLanguage()));
+            UIManager.instance.OnQuestNotificationPopup(DataHolder.Dialog(1).GetDescription(MageManager.instance.GetLanguage()));
 
-            //if (FindObjectOfType<SoapItem>() != null && FindObjectOfType<BathShowerItem>() != null)
-            //{
-            //    FindObjectOfType<SoapItem>().GetComponent<Animator>().Play("Tutorial", 0);
-            //    FindObjectOfType<BathShowerItem>().GetComponent<Animator>().Play("Tutorial", 0);
-            //}
-            pet.data.dirty = 0;
+            if (FindObjectOfType<SoapItem>() != null && FindObjectOfType<BathShowerItem>() != null)
+            {
+                FindObjectOfType<SoapItem>().GetComponent<Animator>().Play("Tutorial", 0);
+                FindObjectOfType<BathShowerItem>().GetComponent<Animator>().Play("Tutorial", 0);
+            }
+            //pet.data.dirty = 0;
         }
         blackScreen.SetActive(false);
 

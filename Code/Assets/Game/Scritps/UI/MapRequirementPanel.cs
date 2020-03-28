@@ -9,6 +9,7 @@ public class MapRequirementPanel : MonoBehaviour
     public MapType mapType = MapType.Forest;
     int price = 30;
     public Text priceText;
+    public GameObject description;
     public Text mapName;
     public Image icon;
     public GameObject buttonGo;
@@ -29,7 +30,9 @@ public class MapRequirementPanel : MonoBehaviour
 
     public void Load(MapType type)
     {
+        
         int levelRequire = 1;
+        int price = GameManager.instance.myPlayer.petCount * 10;
         mapType = type;
         icon.sprite = icons[(int)mapType];
         priceText.text = price.ToString();
@@ -49,12 +52,14 @@ public class MapRequirementPanel : MonoBehaviour
 
         if (GameManager.instance.myPlayer.level >= levelRequire)
         {
+            description.SetActive(true);
             requirement.gameObject.SetActive(false);
             buttonAd.SetActive(true);
             buttonGo.SetActive(true);
         }
         else
         {
+            description.SetActive(false);
             requirement.gameObject.SetActive(true);
             requirement.text = DataHolder.Dialog(27).GetName(MageManager.instance.GetLanguage()) + " " + levelRequire.ToString() + " " + DataHolder.Dialog(52).GetName(MageManager.instance.GetLanguage());
             buttonAd.SetActive(false);

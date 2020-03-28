@@ -90,12 +90,14 @@ public class UIManager : MonoBehaviour
     public GameObject homeUI;
     public GameObject profilePrefab;
     public GameObject notificationIcon;
+    
     //public List<string> notificationText = new List<string>();
 
     public GameObject eventButton;
     public GameObject achivementButton;
     public GameObject shopButton;
     public GameObject mapButton;
+    public GameObject callButton;
 
     float coin = 0;
     float happy = 0;
@@ -155,7 +157,10 @@ public class UIManager : MonoBehaviour
         if (GameManager.instance.myPlayer.questId >= DataHolder.Quests().GetDataCount() && notificationIcon != null)
             notificationIcon.SetActive(false);
 
-
+        if (GameManager.instance.myPlayer.questId > 7)
+            callButton.SetActive(true);
+        else
+            callButton.SetActive(false);
 
         if (isSale)
         {

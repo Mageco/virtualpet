@@ -970,7 +970,7 @@ public class GameManager : MonoBehaviour
         AddItem(2);
         AddItem(13);
         AddItem(1);
-        //AddItem(131);
+        AddItem(69);
         AddItem(81);
         AddItem(87);
         AddPet(0);

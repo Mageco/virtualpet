@@ -1,9 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class RewardItemPanel : MonoBehaviour
 {
+    public GameObject happyIcon;
+    public GameObject coinIcon;
+    public GameObject diamondIcon;
+    public Text priceText;
     RewardType rewardType = RewardType.Chest;
     ChestItem chestItem;
     int price = 20;
@@ -21,8 +26,23 @@ public class RewardItemPanel : MonoBehaviour
 
     public void Load(RewardType type,ChestItem item)
     {
+        coinIcon.SetActive(false);
+        happyIcon.SetActive(false);
+        diamondIcon.SetActive(false);
         rewardType = type;
         chestItem = item;
+        if(item.priceType == PriceType.Coin)
+        {
+            coinIcon.SetActive(true);
+        }else if(item.priceType == PriceType.Happy)
+        {
+            happyIcon.SetActive(true);
+        }
+        else if (item.priceType == PriceType.Diamond)
+        {
+            diamondIcon.SetActive(true);
+        }
+        priceText.text = chestItem.value.ToString();
     }
 
     public void ShowAd()
