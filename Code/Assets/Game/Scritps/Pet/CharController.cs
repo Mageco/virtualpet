@@ -240,10 +240,7 @@ public class CharController : MonoBehaviour
             
             if (timeToy > 6 && toyItem != null && toyItem.IsActive())
             {
-                //int toyHeart = 1;
-                //if (toyItem != null)
-                //    toyHeart = (int)DataHolder.GetItem(toyItem.item.itemID).value;
-                ItemManager.instance.SpawnHeart((1+data.level/5), this.transform.position);
+                ItemManager.instance.SpawnHeart(data.rateHappy, this.transform.position);
                 timeToy = 0;
             }
             else
@@ -1447,7 +1444,7 @@ public class CharController : MonoBehaviour
         {
             if (data.pee <= 1)
             {
-                ItemManager.instance.SpawnHeart((1 + data.level / 5), this.transform.position);
+                ItemManager.instance.SpawnHeart(data.rateHappy, this.transform.position);
                 GameManager.instance.LogAchivement(AchivementType.Do_Action, ActionType.OnToilet);
             }
 
@@ -1492,7 +1489,7 @@ public class CharController : MonoBehaviour
         {
             if (data.shit <= 1)
             {
-                ItemManager.instance.SpawnHeart((1 + data.level / 5), this.transform.position);
+                ItemManager.instance.SpawnHeart(data.rateHappy, this.transform.position);
                 GameManager.instance.LogAchivement(AchivementType.Do_Action, ActionType.OnToilet);
             }
             yield return StartCoroutine(JumpDown(-7, 10, 30));
@@ -1536,7 +1533,7 @@ public class CharController : MonoBehaviour
                 if (data.Food >= data.MaxFood - 10)
                 {
                     GameManager.instance.LogAchivement(AchivementType.Do_Action, ActionType.Eat);
-                    ItemManager.instance.SpawnHeart((1 + data.level / 5), this.transform.position);
+                    ItemManager.instance.SpawnHeart(data.rateHappy, this.transform.position);
                     if (GetFoodItem() != null && GetFoodItem().GetComponent<ItemObject>() != null)
                         GameManager.instance.LogAchivement(AchivementType.Eat, ActionType.None, GetFoodItem().GetComponent<ItemObject>().itemID);
                 }
@@ -1690,7 +1687,7 @@ public class CharController : MonoBehaviour
         {
             if (data.Sleep > data.MaxSleep - 1)
             {
-                ItemManager.instance.SpawnHeart((1 + data.level / 5)*2, this.transform.position);
+                ItemManager.instance.SpawnHeart(data.rateHappy*2, this.transform.position);
                 GameManager.instance.LogAchivement(AchivementType.Do_Action, ActionType.Sleep);
             }
             yield return StartCoroutine(JumpDown(-7, 10, 30));
@@ -2069,7 +2066,7 @@ public class CharController : MonoBehaviour
             if (!isAbort)
             {
                 yield return StartCoroutine(DoAnim("Love"));
-                ItemManager.instance.SpawnHeart((1 + data.level / 5), this.transform.position);
+                ItemManager.instance.SpawnHeart(data.rateHappy, this.transform.position);
 
             }
 
