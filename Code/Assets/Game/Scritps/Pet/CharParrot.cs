@@ -43,7 +43,7 @@ public class CharParrot : CharController
             paths[1] = (this.transform.position + target) / 2 + new Vector3(0, h, 0);
             paths[2] = target;
             Vector3 startPoint = this.transform.position;
-            iTween.StopByName("RunToPoint" + this.gameObject.name);
+            //iTween.StopByName("RunToPoint" + this.gameObject.name);
             iTween.MoveTo(this.gameObject, iTween.Hash("name", "RunToPoint" + this.gameObject.name, "path", paths, "speed", data.Speed * 5, "orienttopath", false, "easetype", "linear", "oncomplete", "CompleteFly"));
             anim.Play("Run_" + this.direction.ToString(), 0);
             //Debug.Log("Start Fly " + data.Speed);

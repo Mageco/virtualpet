@@ -157,10 +157,14 @@ public class UIManager : MonoBehaviour
         if (GameManager.instance.myPlayer.questId >= DataHolder.Quests().GetDataCount() && notificationIcon != null)
             notificationIcon.SetActive(false);
 
-        if (GameManager.instance.myPlayer.questId > 7)
-            callButton.SetActive(true);
-        else
-            callButton.SetActive(false);
+        if(callButton != null)
+        {
+            if (GameManager.instance.myPlayer.questId > 7)
+                callButton.SetActive(true);
+            else
+                callButton.SetActive(false);
+        }
+
 
         if (isSale)
         {

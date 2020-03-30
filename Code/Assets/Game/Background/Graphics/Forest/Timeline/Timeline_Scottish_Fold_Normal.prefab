@@ -1,5 +1,34 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!58 &1354377633892341200
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1891434806231965006}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 4}
+  serializedVersion: 2
+  m_Radius: 7
+--- !u!114 &1607164969182540398
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1891434806231965006}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 772f6a32ca16f483c8face951681aaac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  petId: 49
 --- !u!1 &3743454300391600590
 GameObject:
   m_ObjectHideFlags: 0
@@ -64,6 +93,26 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Scottish_Fold
+      objectReference: {fileID: 0}
+    - target: {fileID: 1961552492968244546, guid: a447fb1d0bfa042ebbce72ad0521594e,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.63838506
+      objectReference: {fileID: 0}
+    - target: {fileID: 1961552492968244546, guid: a447fb1d0bfa042ebbce72ad0521594e,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7697172
+      objectReference: {fileID: 0}
+    - target: {fileID: 2623531336206961292, guid: a447fb1d0bfa042ebbce72ad0521594e,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.54049736
+      objectReference: {fileID: 0}
+    - target: {fileID: 2623531336206961292, guid: a447fb1d0bfa042ebbce72ad0521594e,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.8413458
       objectReference: {fileID: 0}
     - target: {fileID: 2778002551395269986, guid: a447fb1d0bfa042ebbce72ad0521594e,
         type: 3}
@@ -135,18 +184,44 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6100665018250555796, guid: a447fb1d0bfa042ebbce72ad0521594e,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.4979883
+      objectReference: {fileID: 0}
+    - target: {fileID: 6100665018250555796, guid: a447fb1d0bfa042ebbce72ad0521594e,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.86718374
+      objectReference: {fileID: 0}
+    - target: {fileID: 8168985918560438196, guid: a447fb1d0bfa042ebbce72ad0521594e,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.46352798
+      objectReference: {fileID: 0}
+    - target: {fileID: 8168985918560438196, guid: a447fb1d0bfa042ebbce72ad0521594e,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.8860823
+      objectReference: {fileID: 0}
     - target: {fileID: 8983418799083294286, guid: a447fb1d0bfa042ebbce72ad0521594e,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.07192652
+      value: 0.26197857
       objectReference: {fileID: 0}
     - target: {fileID: 8983418799083294286, guid: a447fb1d0bfa042ebbce72ad0521594e,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.99740994
+      value: 0.96507365
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a447fb1d0bfa042ebbce72ad0521594e, type: 3}
+--- !u!1 &1891434806231965006 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 770759039182785973, guid: a447fb1d0bfa042ebbce72ad0521594e,
+    type: 3}
+  m_PrefabInstance: {fileID: 1192874099671388411}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &3891253248394685849 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2778002551395269986, guid: a447fb1d0bfa042ebbce72ad0521594e,
