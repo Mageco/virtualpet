@@ -32,3 +32,4 @@ public enum ServiceType {Instructor,Doctor,Chef,HouseKeeper,PetSitter,Exp};
 public enum AdDistribute {None,Unity,Admob};
 public enum RareType { Common, Rare,Epic,Legend};
 public enum AreaType {Room,Garden,Lake,All,Camera,Fly};
+public enum ItemTag {None,Hot,Sale,New};

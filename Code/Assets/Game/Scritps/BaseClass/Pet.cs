@@ -14,6 +14,7 @@ public class Pet : BaseModel
     public ItemState itemState = ItemState.OnShop;
     public string prefabName = "";
     public bool isAvailable = true;
+    public ItemTag itemTag = ItemTag.None;
     public int[] requireEquipments = new int[0];
     public int[] requirePets = new int[0];
     public int requireValue = 0;

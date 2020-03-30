@@ -120,6 +120,7 @@ public class PetTab : BaseTab
                 DataHolder.Pet(selection).priceType = (PriceType)EditorTab.EnumToolbar("Buy Price Type", (int)DataHolder.Pet(selection).priceType, typeof(PriceType));
                 DataHolder.Pet(selection).buyPrice = EditorGUILayout.IntField("Buy price", DataHolder.Pet(selection).buyPrice, GUILayout.Width(pw.mWidth));
                 DataHolder.Pet(selection).isAvailable = EditorGUILayout.Toggle("Available", DataHolder.Pet(selection).isAvailable, GUILayout.Width(pw.mWidth));
+                DataHolder.Pet(selection).itemTag = (ItemTag)EditorTab.EnumToolbar("Tag", (int)DataHolder.Pet(selection).itemTag, typeof(ItemTag));
 
             }
             EditorGUILayout.EndVertical();

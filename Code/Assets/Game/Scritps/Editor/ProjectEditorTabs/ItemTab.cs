@@ -127,6 +127,7 @@ public class ItemTab : BaseTab
                     DataHolder.Items().GetItem(selection,temcategory).sellPrice = EditorGUILayout.IntField("Coin Amount", DataHolder.Items().GetItem(selection,temcategory).sellPrice, GUILayout.Width(pw.mWidth));
                 }
                 DataHolder.Items().GetItem(selection,temcategory).isAvailable = EditorGUILayout.Toggle("Available", DataHolder.Items().GetItem(selection,temcategory).isAvailable, GUILayout.Width(pw.mWidth));
+                DataHolder.Items().GetItem(selection, temcategory).itemTag = (ItemTag)EditorTab.EnumToolbar("Tag", (int)DataHolder.Items().GetItem(selection, temcategory).itemTag, typeof(ItemTag));
                 DataHolder.Items().GetItem(selection,temcategory).consume = EditorGUILayout.Toggle("Consume", DataHolder.Items().GetItem(selection,temcategory).consume, GUILayout.Width(pw.mWidth));
 
 			}

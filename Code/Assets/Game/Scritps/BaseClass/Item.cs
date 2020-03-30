@@ -18,6 +18,7 @@ public class Item
 	public int sellPrice = 0;
 	public bool consume = true;
 	public bool isAvailable = true;
+	public ItemTag itemTag = ItemTag.None;
 	public int shopOrder = 0;
 	public int levelRequire = 0;
 

@@ -41,6 +41,8 @@ public class ItemUI : MonoBehaviour
     public Text petLevelText;
     public Text buttonText;
 
+    public GameObject[] tags;
+
     Animator animator;
     bool isBusy = false;
     bool isCharacter = false;
@@ -82,13 +84,7 @@ public class ItemUI : MonoBehaviour
         if (d.levelRequire > GameManager.instance.myPlayer.level && state == ItemState.OnShop)
             isLevelRequire = true;
 
-
-
-
         OffAllIcon();
-
-        
-
         if (isLevelRequire)
         {
             icon.material = greyMaterial;
