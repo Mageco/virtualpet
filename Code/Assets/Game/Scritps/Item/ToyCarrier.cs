@@ -72,11 +72,21 @@ public class ToyCarrier : ToyItem
         {
             this.transform.rotation = Quaternion.Euler(new Vector3(0, 180, 0));
             this.transform.localScale = new Vector3(this.transform.localScale.x, this.transform.localScale.y, -1);
+            foreach(Transform anchor in anchorPoints)
+            {
+                anchor.transform.rotation = Quaternion.Euler(new Vector3(0, 180, 0));
+                anchor.transform.localScale = new Vector3(anchor.transform.localScale.x, anchor.transform.localScale.y, -1);
+            }
         }
         else
         {
             this.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
             this.transform.localScale = new Vector3(this.transform.localScale.x, this.transform.localScale.y, 1);
+            foreach (Transform anchor in anchorPoints)
+            {
+                anchor.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
+                anchor.transform.localScale = new Vector3(anchor.transform.localScale.x, anchor.transform.localScale.y, 1);
+            }
         }
     }
 

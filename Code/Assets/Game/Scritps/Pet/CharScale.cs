@@ -94,8 +94,12 @@ public class CharScale : MonoBehaviour
 			height = 0;
 		}
 
-        dragScale = originalScale * (1 - scalePosition.y * scaleFactor);
-		character.transform.localScale = dragScale;
+        if(interact.interactType != InteractType.Toy)
+        {
+			dragScale = originalScale * (1 - scalePosition.y * scaleFactor);
+			character.transform.localScale = dragScale;
+		}
+
 		character.agent.maxSpeed = 0.3f * character.data.speed * speedFactor *(1 - scalePosition.y * scaleFactor);
 
 		lastPosition = this.transform.position;

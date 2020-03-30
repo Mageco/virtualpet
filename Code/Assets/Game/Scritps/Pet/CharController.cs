@@ -2043,6 +2043,7 @@ public class CharController : MonoBehaviour
                     {
                         agent.transform.position = toyItem.anchorPoints[index].position;
                         this.transform.rotation = toyItem.anchorPoints[index].rotation;
+                        this.transform.localScale = new Vector3(this.transform.localScale.x, this.transform.localScale.y, toyItem.anchorPoints[index].localScale.z);
                     }
                     toyItem.count++;
                     anim.Play("Wait_" + toyItem.toyType.ToString(), 0);
@@ -2053,6 +2054,7 @@ public class CharController : MonoBehaviour
                 {
                     agent.transform.position = toyItem.anchorPoints[index].position;
                     this.transform.rotation = toyItem.anchorPoints[index].rotation;
+                    this.transform.localScale = new Vector3(this.transform.localScale.x, this.transform.localScale.y, toyItem.anchorPoints[index].localScale.z);
                     yield return new WaitForEndOfFrame();
                 }
 
@@ -2064,6 +2066,7 @@ public class CharController : MonoBehaviour
                     toyItem.OnActive();
                     agent.transform.position = toyItem.anchorPoints[index].position;
                     this.transform.rotation = toyItem.anchorPoints[index].rotation;
+                    this.transform.localScale = new Vector3(this.transform.localScale.x, this.transform.localScale.y, toyItem.anchorPoints[index].localScale.z);
                     anim.Play("Play_" + toyItem.toyType.ToString(), 0);
                     time += Time.deltaTime;
                     yield return new WaitForEndOfFrame();
@@ -2077,6 +2080,7 @@ public class CharController : MonoBehaviour
                 }
 
                 this.transform.rotation = Quaternion.identity;
+               
             }
 
             if (toyItem != null)
