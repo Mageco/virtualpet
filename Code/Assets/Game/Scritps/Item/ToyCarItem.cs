@@ -36,7 +36,7 @@ public class ToyCarItem : ToyItem
 		if(pointRandoms == null || pointRandoms.Count == 0){
 			return;
 		}
-		Debug.Log(round);
+		//Debug.Log(round);
 		paths = new Vector3[round];
 		for (int i=0;i< round;i++){
 			paths [i] = pointRandoms[Random.Range(0,pointRandoms.Count)];

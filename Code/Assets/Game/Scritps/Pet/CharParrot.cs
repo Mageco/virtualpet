@@ -36,15 +36,17 @@ public class CharParrot : CharController
             }
             else
                 SetDirection(Direction.L);
+
+            float h = Mathf.Clamp(Vector2.Distance(target, this.transform.position)/3, 2, 15);
             paths = new Vector3[3];
             paths[0] = this.transform.position;
-            paths[1] = (this.transform.position + target) / 2 + new Vector3(0, Random.Range(10, 20), 0);
+            paths[1] = (this.transform.position + target) / 2 + new Vector3(0, h, 0);
             paths[2] = target;
             Vector3 startPoint = this.transform.position;
             iTween.StopByName("RunToPoint" + this.gameObject.name);
             iTween.MoveTo(this.gameObject, iTween.Hash("name", "RunToPoint" + this.gameObject.name, "path", paths, "speed", data.Speed * 5, "orienttopath", false, "easetype", "linear", "oncomplete", "CompleteFly"));
             anim.Play("Run_" + this.direction.ToString(), 0);
-            Debug.Log("Start Fly " + data.Speed);
+            //Debug.Log("Start Fly " + data.Speed);
             while (charInteract.interactType == InteractType.Fly)
                     {
                 //Debug.Log(this.transform.position);
@@ -68,7 +70,7 @@ public class CharParrot : CharController
 
     void CompleteFly()
     {
-        Debug.Log("Complete Fly " + data.Speed);
+        //Debug.Log("Complete Fly " + data.Speed);
         isArrived = true;
         charInteract.interactType = InteractType.None;
         isMoving = false;

@@ -5396,7 +5396,7 @@ GameObject:
   - component: {fileID: 210169230277415325}
   - component: {fileID: 1718453323}
   - component: {fileID: 1950776176608897479}
-  - component: {fileID: 8837419816023760714}
+  - component: {fileID: 8344585185085250033}
   m_Layer: 0
   m_Name: Toy_Carrier
   m_TagString: Untagged
@@ -5513,7 +5513,7 @@ PolygonCollider2D:
       - {x: 8.660324, y: -2.1142354}
       - {x: 8.077835, y: -1.4698963}
       - {x: 8.256332, y: 0.50804615}
---- !u!114 &8837419816023760714
+--- !u!114 &8344585185085250033
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -5522,13 +5522,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 5125706920226080324}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ed0acb80e51854de489f8d87aefc099f, type: 3}
+  m_Script: {fileID: 11500000, guid: d3fa2c64e7f4b41ad82fa63d67d114d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   item: {fileID: 0}
   state: 0
   lastPosition: {x: 0, y: 0, z: 0}
-  boundX: {x: -270, y: -80}
+  boundX: {x: -270, y: 52}
   boundY: {x: -24, y: -3}
   pets: []
   movementType: 1
@@ -5540,6 +5540,11 @@ MonoBehaviour:
   - {fileID: 5595361299263482731}
   maxTime: 1
   count: 0
+  agent: {fileID: 0}
+  isArrived: 1
+  isAbort: 0
+  speed: 20
+  target: {x: 0, y: 0, z: 0}
 --- !u!1 &6750402749069930404
 GameObject:
   m_ObjectHideFlags: 0
