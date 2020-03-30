@@ -13,7 +13,7 @@ public class ForestDiamondItem : MonoBehaviour
     private void Awake()
     {
         animator = this.GetComponent<Animator>();
-        value = Random.Range(2,6);
+        value = Random.Range(2,5);
     }
     // Start is called before the first frame update
     void Start()

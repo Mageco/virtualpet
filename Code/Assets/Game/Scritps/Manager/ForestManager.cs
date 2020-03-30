@@ -25,6 +25,7 @@ public class ForestManager : MonoBehaviour
     float timeAnimal = 0;
     float maxTimeAnimal = 10;
     GameObject collector;
+    public bool isForest = true;
 
     void Awake()
     {
@@ -42,25 +43,55 @@ public class ForestManager : MonoBehaviour
         today = System.DateTime.Today;
         CheckDayNight();
         LoadMusic();
-        StartCoroutine(LoadCollector());
+        LoadCollectors();
     }
 
-    IEnumerator LoadCollector()
+    void LoadCollectors()
     {
-        for(int i = 0; i < charCollectors.Length/5; i++)
+        if (isForest)
         {
-            int ran = Random.Range(0, 100);
-            if(ran > 50)
+            int cave = Random.Range(0, 100);
+            int tree = Random.Range(0, 100);
+            int board = Random.Range(0, 100);
+            for (int i = 0; i < charCollectors.Length / 5; i++)
             {
                 int n = Random.Range(0, 5);
-                collector = GameObject.Instantiate(charCollectors[i * 5 + n]) as GameObject;
-                CharCollectorTimeline c = collector.GetComponentInChildren<CharCollectorTimeline>();
-                collector.transform.parent = this.transform;
-                if (GameManager.instance.IsHavePet(c.petId))
-                    GameObject.Destroy(collector);
-                yield return new WaitForSeconds(Random.Range(5, 15));
+                if (cave > 50 && i == 2)
+                    StartCoroutine(LoadCollector(i * 5 + n));
+                else if (cave <= 50 && i == 3)
+                    StartCoroutine(LoadCollector(i * 5 + n));
+                else if (i == 0 && tree > 50)
+                    StartCoroutine(LoadCollector(i * 5 + n));
+                else if (i == 4 && tree <= 50)
+                    StartCoroutine(LoadCollector(i * 5 + n));
+                else if (i == 1 && board > 50)
+                    StartCoroutine(LoadCollector(i * 5 + n));
+
             }
         }
+        else
+        {
+            for (int i = 0; i < charCollectors.Length / 5; i++)
+            {
+                int r = Random.Range(0, 100);
+                int n = Random.Range(0, 5);
+                if (r > 50)
+                {
+                    StartCoroutine(LoadCollector(i * 5 + n));
+                }
+            }
+        }
+
+    }
+
+    IEnumerator LoadCollector(int id)
+    {
+        yield return new WaitForSeconds(Random.Range(0, 15));
+        collector = GameObject.Instantiate(charCollectors[id]) as GameObject;
+        CharCollectorTimeline c = collector.GetComponentInChildren<CharCollectorTimeline>();
+        collector.transform.parent = this.transform;
+        if (GameManager.instance.IsHavePet(c.petId))
+            GameObject.Destroy(collector);   
     }
 
     public void CheckCollector()

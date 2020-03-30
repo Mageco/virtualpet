@@ -1,5 +1,34 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!58 &2186689647037303313
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5373524388270896880}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 3}
+  serializedVersion: 2
+  m_Radius: 7
+--- !u!114 &5383184921835142762
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5373524388270896880}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 772f6a32ca16f483c8face951681aaac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  petId: 63
 --- !u!1 &8958686952884953549
 GameObject:
   m_ObjectHideFlags: 0
@@ -44,7 +73,7 @@ PlayableDirector:
   serializedVersion: 3
   m_PlayableAsset: {fileID: 11400000, guid: d4c5112c3325a4b5eab8cca08857b9f0, type: 2}
   m_InitialState: 1
-  m_WrapMode: 2
+  m_WrapMode: 1
   m_DirectorUpdateMode: 1
   m_InitialTime: 0
   m_SceneBindings:
@@ -276,11 +305,6 @@ PrefabInstance:
       propertyPath: m_LocalScale.y
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 1945003627590644064, guid: b891425a8f4fd43d3b21bce88c14aae8,
-        type: 3}
-      propertyPath: m_LocalScale.z
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 2823922657625060025, guid: b891425a8f4fd43d3b21bce88c14aae8,
         type: 3}
       propertyPath: m_LocalRotation.z
@@ -315,16 +339,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Corgi
-      objectReference: {fileID: 0}
-    - target: {fileID: 3973277334152300705, guid: b891425a8f4fd43d3b21bce88c14aae8,
-        type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3973277334152300705, guid: b891425a8f4fd43d3b21bce88c14aae8,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4672760769786724940, guid: b891425a8f4fd43d3b21bce88c14aae8,
         type: 3}
@@ -428,6 +442,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b891425a8f4fd43d3b21bce88c14aae8, type: 3}
+--- !u!1 &5373524388270896880 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3945489344726335927, guid: b891425a8f4fd43d3b21bce88c14aae8,
+    type: 3}
+  m_PrefabInstance: {fileID: 8958686953466263367}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &7398759081477572135 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1945003627590644064, guid: b891425a8f4fd43d3b21bce88c14aae8,
