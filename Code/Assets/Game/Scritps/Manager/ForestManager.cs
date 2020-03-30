@@ -47,15 +47,19 @@ public class ForestManager : MonoBehaviour
 
     IEnumerator LoadCollector()
     {
-        for(int i = 0; i < 3; i++)
+        for(int i = 0; i < charCollectors.Length/5; i++)
         {
-            int n = Random.Range(0, 5);
-            collector = GameObject.Instantiate(charCollectors[i*5+n]) as GameObject;
-            CharCollectorTimeline c = collector.GetComponentInChildren<CharCollectorTimeline>();
-            collector.transform.parent = this.transform;
-            if (GameManager.instance.IsHavePet(c.petId))
-                GameObject.Destroy(collector);
-            yield return new WaitForSeconds(Random.Range(5, 15));
+            int ran = Random.Range(0, 100);
+            if(ran > 50)
+            {
+                int n = Random.Range(0, 5);
+                collector = GameObject.Instantiate(charCollectors[i * 5 + n]) as GameObject;
+                CharCollectorTimeline c = collector.GetComponentInChildren<CharCollectorTimeline>();
+                collector.transform.parent = this.transform;
+                if (GameManager.instance.IsHavePet(c.petId))
+                    GameObject.Destroy(collector);
+                yield return new WaitForSeconds(Random.Range(5, 15));
+            }
         }
     }
 
