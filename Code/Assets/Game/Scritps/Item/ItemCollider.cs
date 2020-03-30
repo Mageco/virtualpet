@@ -25,6 +25,11 @@ public class ItemCollider : BaseFloorItem
 	}
 
 
+	protected override void Start()
+	{
+		item = this.transform.parent.GetComponent<ItemObject>();
+		boundX = ItemManager.instance.houseItem.gardenBoundX;
+	}
 
 	// Update is called once per frame
 	protected override void Update()

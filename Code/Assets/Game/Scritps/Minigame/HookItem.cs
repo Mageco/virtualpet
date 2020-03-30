@@ -160,21 +160,21 @@ public class HookItem : MonoBehaviour
             else if (number == 2)
             {
                 MageManager.instance.PlaySound("points_ticker_bonus_score_reward_single_02", false);
-                value += 1;
+                value += 2;
                 GameObject bonus = Instantiate(bonuses[1]);
                 bonus.transform.position = hookAnchor.position + new Vector3(0, 0, -10);
             }
             else if (number == 3)
             {
                 MageManager.instance.PlaySound("points_ticker_bonus_score_reward_single_04", false);
-                value += 3;
+                value += 4;
                 GameObject bonus = Instantiate(bonuses[2]);
                 bonus.transform.position = hookAnchor.position + new Vector3(0, 0, -10);
             }
             else if (number > 3)
             {
                 MageManager.instance.PlaySound("points_ticker_bonus_score_reward_single_06", false);
-                value += 5;
+                value += 8;
                 GameObject bonus = Instantiate(bonuses[3]);
                 bonus.transform.position = hookAnchor.position + new Vector3(0, 0, -10);
             }
