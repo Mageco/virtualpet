@@ -256,6 +256,7 @@ public class CharController : MonoBehaviour
 
         CalculateDirection();
 
+        //if(charInteract.interactType == InteractType.None)
         this.transform.position = agent.transform.position;
 
         //Calculate Attribue Data
@@ -492,6 +493,7 @@ public class CharController : MonoBehaviour
         lastActionType = actionType;
         if (isAction)
         {
+           
             Debug.Log("Action is doing " + actionType);
             StopAllCoroutines();
             isAction = false;
@@ -1111,7 +1113,7 @@ public class CharController : MonoBehaviour
         while (!isArrived && !isAbort)
         {
             anim.Play("Run_" + this.direction.ToString(), 0);
-            data.Energy -= Time.deltaTime;
+            //data.Energy -= Time.deltaTime;
             yield return new WaitForEndOfFrame();
         }
         isMoving = false;
@@ -1127,7 +1129,7 @@ public class CharController : MonoBehaviour
         while (!isArrived && !isAbort)
         {
             anim.Play("Walk_" + this.direction.ToString(), 0);
-            data.Energy -= 0.3f * Time.deltaTime;
+            //data.Energy -= 0.3f * Time.deltaTime;
             yield return new WaitForEndOfFrame();
         }
         isMoving = false;
@@ -1321,7 +1323,10 @@ public class CharController : MonoBehaviour
         pos.y = ItemManager.instance.houseItem.roomBoundY.x + Random.Range (2,8f);
         pos.x += Random.Range(-15f, 15f);
         target = pos;
-        yield return StartCoroutine(RunToPoint());
+        if(charType == CharType.Parrot)
+            yield return StartCoroutine(WalkToPoint());
+        else
+            yield return StartCoroutine(RunToPoint());
         int ran = Random.Range(0, 100);
         if (ran < 30)
         {

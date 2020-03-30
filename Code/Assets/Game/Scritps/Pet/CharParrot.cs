@@ -4,24 +4,31 @@ using UnityEngine;
 
 public class CharParrot : CharController
 {
-    Vector3[] paths;
+    public Vector3[] paths;
 
 
     protected override IEnumerator RunToPoint()
     {
+
         isMoving = true;
         isArrived = false;
-        int ran = Random.Range(0,100);
-        if(ran < 50){
-            
+        
+        int ran = Random.Range(0, 100);
+        if (ran < 30)
+        {
+
             agent.SetDestination(target);
             while (!isArrived && !isAbort)
             {
                 anim.Play("Walk_" + this.direction.ToString(), 0);
-                data.Energy -= Time.deltaTime;
+                //data.Energy -= Time.deltaTime;
                 yield return new WaitForEndOfFrame();
             }
-        }else{
+        }
+        else
+        {
+
+
             charInteract.interactType = InteractType.Fly;
             if (target.x > this.transform.position.x)
             {
@@ -31,31 +38,38 @@ public class CharParrot : CharController
                 SetDirection(Direction.L);
             paths = new Vector3[3];
             paths[0] = this.transform.position;
-            paths[1] = (this.transform.position + target) / 2 + new Vector3(0, Random.Range(10,20), 0);
+            paths[1] = (this.transform.position + target) / 2 + new Vector3(0, Random.Range(10, 20), 0);
             paths[2] = target;
             Vector3 startPoint = this.transform.position;
-            //iTween.StopByName("Parrot" + this.gameObject.name);
-            iTween.MoveTo(this.gameObject, iTween.Hash("name", "Parrot" + this.gameObject.name, "path", paths, "speed", data.Speed * 5, "orienttopath", false, "easetype", "linear", "oncomplete", "CompleteFly"));
-            anim.Play("Run_" + this.direction.ToString(),0);
+            iTween.StopByName("RunToPoint" + this.gameObject.name);
+            iTween.MoveTo(this.gameObject, iTween.Hash("name", "RunToPoint" + this.gameObject.name, "path", paths, "speed", data.Speed * 5, "orienttopath", false, "easetype", "linear", "oncomplete", "CompleteFly"));
+            anim.Play("Run_" + this.direction.ToString(), 0);
+            Debug.Log("Start Fly " + data.Speed);
             while (charInteract.interactType == InteractType.Fly)
-            {
+                    {
+                //Debug.Log(this.transform.position);
+                agent.transform.position = this.transform.position;
                 float x0 = startPoint.x;
                 float y0 = startPoint.y;
                 float x2 = target.x;
                 float y2 = target.y;
                 float x1 = this.transform.position.x;
-                float y1 = (x1 - x0)*(y2 - y0) / (x2 - x0) + y0;
+                float y1 = (x1 - x0) * (y2 - y0) / (x2 - x0) + y0;
+
                 charScale.scalePosition = new Vector3(x1, y1, this.transform.position.z);
                 charScale.height = this.transform.position.y - y1;
-                agent.transform.position = this.transform.position;
+                //agent.transform.position = this.transform.position;
                 yield return new WaitForEndOfFrame();
             }
         }
+
     }
 
 
     void CompleteFly()
     {
+        Debug.Log("Complete Fly " + data.Speed);
+        isArrived = true;
         charInteract.interactType = InteractType.None;
         isMoving = false;
     }
