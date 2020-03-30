@@ -53,10 +53,10 @@ public class ToyCarrier : ToyItem
     protected override void LateUpdate()
     {
         base.LateUpdate();
-        if (state == EquipmentState.Active)
-        {
+        //if (state == EquipmentState.Active)
+        //{
             CalculateDirection();
-        }
+        //}
     }
 
 

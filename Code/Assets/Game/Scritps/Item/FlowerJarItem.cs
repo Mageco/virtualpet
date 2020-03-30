@@ -36,7 +36,7 @@ public class FlowerJarItem : BaseDragItem
 		pos.z = pos.y * 10 + 2;
 		this.transform.position = pos;
 
-		float l = Vector2.Distance(GameManager.instance.GetPetObject(0).transform.position,this.transform.position);
+		//float l = Vector2.Distance(GameManager.instance.GetPetObject(0).transform.position,this.transform.position);
 		breakObject.SetActive(true);
         MageManager.instance.PlaySound("Item_Vase", false);
 		yield return StartCoroutine(DoAnim("Break"));
