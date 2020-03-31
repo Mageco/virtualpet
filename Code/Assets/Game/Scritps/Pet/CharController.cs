@@ -2052,7 +2052,8 @@ public class CharController : MonoBehaviour
                 if (!isAbort)
                 {
                     charInteract.interactType = InteractType.Toy;
-                    shadow.GetComponent<SpriteRenderer>().enabled = false;
+                    if(toyItem.toyType != ToyType.Sprinkler)
+                        shadow.GetComponent<SpriteRenderer>().enabled = false;
                     if (index != -1)
                     {
                         agent.transform.position = toyItem.anchorPoints[index].position;
