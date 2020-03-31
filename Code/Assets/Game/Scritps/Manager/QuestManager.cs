@@ -224,7 +224,7 @@ public class QuestManager : MonoBehaviour
 
     public void CheckQuest()
     {
-        Debug.Log("CheckQuest");
+        //Debug.Log("CheckQuest");
 
         if (isTimeline)
             return;

@@ -33,7 +33,8 @@ public class ChickenController : AnimalController
         for(int i=0;i<bodies.Length;i++){
             bodies[i].SetActive(false);
         }
-        col2D.enabled = false;
+        if(col2D != null)
+            col2D.enabled = false;
         state = AnimalState.Cached;
         isAbort = true;
         MageManager.instance.PlaySound3D("Chicken_Catched", false,this.transform.position);
@@ -43,7 +44,8 @@ public class ChickenController : AnimalController
         for(int i=0;i<bodies.Length;i++){
             bodies[i].SetActive(true);
         }
-        col2D.enabled = true;
+        if (col2D != null)
+            col2D.enabled = true;
         state = AnimalState.None;
         isAbort = true;
         MageManager.instance.PlaySound3D("Chicken_Idle", false, this.transform.position);

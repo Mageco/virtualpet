@@ -1877,7 +1877,7 @@ public class CharController : MonoBehaviour
         CheckAbort();
     }
 
-     protected virtual IEnumerator Toy()
+    protected virtual IEnumerator Toy()
     {
         if (toyItem != null && toyItem.pets.Count < toyItem.anchorPoints.Length)
         {
@@ -2004,7 +2004,6 @@ public class CharController : MonoBehaviour
                 {
                     target = toyItem.startPoint.position;
                     yield return StartCoroutine(RunToPoint());
-
                 }
                 toyItem.OnActive();
                 charInteract.interactType = InteractType.Toy;
@@ -2027,13 +2026,20 @@ public class CharController : MonoBehaviour
             }
             else if (toyItem.toyType == ToyType.Seesaw || toyItem.toyType == ToyType.Sprinkler || toyItem.toyType == ToyType.Carrier )
             {
-                
-                if (toyItem.startPoint != null)
-                {
-                    target = toyItem.startPoint.position + new Vector3(Random.Range(-1,1),Random.Range(-1,1),0);
-                    yield return StartCoroutine(RunToPoint());
-                }
+               
                 int index = toyItem.GetPetIndex(this);
+                
+                if (toyItem.anchorPoints[index] != null)
+                {
+                    target.x = toyItem.anchorPoints[index].position.x;
+                    target.y = toyItem.transform.position.y;
+                    Debug.Log(target);
+                    yield return StartCoroutine(RunToPoint());
+                    Debug.Log(target);
+                }
+
+                
+                Vector3 lastStartPosition = toyItem.anchorPoints[index].position - this.transform.position;
 
                 if (!isAbort)
                 {
@@ -2071,12 +2077,13 @@ public class CharController : MonoBehaviour
                     time += Time.deltaTime;
                     yield return new WaitForEndOfFrame();
                 }
-            
+                
                 charInteract.interactType = InteractType.None;
-                if (toyItem.endPoint != null && !isAbort)
+                if (!isAbort)
                 {
-                    agent.transform.position = toyItem.endPoint.position + new Vector3(Random.Range(-1, 1), Random.Range(-1, 1), 0);
-                    
+                    toyItem.DeActive();
+                    yield return new WaitForEndOfFrame();
+                    agent.transform.position = toyItem.anchorPoints[index].position - lastStartPosition;
                 }
 
                 this.transform.rotation = Quaternion.identity;

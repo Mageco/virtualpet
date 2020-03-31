@@ -237,7 +237,7 @@ public class PetRequirementPanel : MonoBehaviour
                 ItemManager.instance.GetCharCollector(petId).DeActive();
 
             if (ForestManager.instance != null)
-                ForestManager.instance.CheckCollector();
+                ForestManager.instance.CheckCollector(p.iD);
             this.Close();
         }
     }

@@ -26,6 +26,7 @@ public class ForestManager : MonoBehaviour
     float maxTimeAnimal = 10;
     GameObject collector;
     public bool isForest = true;
+    List<CharCollectorTimeline> collectorTimelines = new List<CharCollectorTimeline>();
 
     void Awake()
     {
@@ -91,13 +92,22 @@ public class ForestManager : MonoBehaviour
         CharCollectorTimeline c = collector.GetComponentInChildren<CharCollectorTimeline>();
         collector.transform.parent = this.transform;
         if (GameManager.instance.IsHavePet(c.petId))
-            GameObject.Destroy(collector);   
+            GameObject.Destroy(collector);
+        if (collector != null)
+            collectorTimelines.Add(collector.GetComponentInChildren<CharCollectorTimeline>());
     }
 
-    public void CheckCollector()
+    public void CheckCollector(int id)
     {
-        if (collector != null)
-            GameObject.Destroy(collector);
+        foreach(CharCollectorTimeline c in collectorTimelines)
+        {
+            if(c.petId == id)
+            {
+                GameObject.Destroy(c.transform.parent.gameObject);
+                collectorTimelines.Remove(c);
+                return;
+            }
+        }
     }
    
 
