@@ -728,7 +728,8 @@ public class UIManager : MonoBehaviour
 
     public void OnCall()
     {
-        foreach(CharController pet in GameManager.instance.GetPetObjects())
+        MageManager.instance.PlaySound("whistle_slide_straight_tone_short_04", false);
+        foreach (CharController pet in GameManager.instance.GetPetObjects())
         {
             pet.OnCall();
         }
