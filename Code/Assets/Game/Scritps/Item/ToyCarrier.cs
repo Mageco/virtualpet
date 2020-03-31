@@ -92,6 +92,9 @@ public class ToyCarrier : ToyItem
 
     public override void OnActive()
     {
+        if (state == EquipmentState.Active)
+            return;
+        agent.transform.position = this.transform.position;
         obstructItem.gameObject.SetActive(false);
         state = EquipmentState.Active;
         animator.Play("Active", 0);

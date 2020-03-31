@@ -17,6 +17,9 @@ public class CharCollector : MonoBehaviour
     // Start is called before the first frame update
     IEnumerator Start()
     {
+        Vector3 pos = this.transform.position;
+        pos.z = pos.y * 10;
+        this.transform.position = pos;
         while (!ItemManager.instance.isLoad)
         {
             yield return new WaitForEndOfFrame();

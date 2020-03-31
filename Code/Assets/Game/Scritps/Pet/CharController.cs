@@ -2026,15 +2026,19 @@ public class CharController : MonoBehaviour
                     agent.transform.position = toyItem.endPoint.position;
                 }
             }
-            else if (toyItem.toyType == ToyType.Seesaw || toyItem.toyType == ToyType.Sprinkler || toyItem.toyType == ToyType.Carrier )
+            else if (toyItem.toyType == ToyType.Seesaw || toyItem.toyType == ToyType.Sprinkler || toyItem.toyType == ToyType.Carrier || toyItem.toyType == ToyType.Flying)
             {
                
                 int index = toyItem.GetPetIndex(this);
                 
                 if (toyItem.anchorPoints[index] != null)
                 {
+                    
                     target.x = toyItem.anchorPoints[index].position.x;
-                    target.y = toyItem.transform.position.y;
+                    if (toyItem.toyType == ToyType.Carrier)
+                        target.y = toyItem.transform.position.y + 5;
+                    else
+                        target.y = toyItem.transform.position.y;
                     Debug.Log(target);
                     yield return StartCoroutine(RunToPoint());
                     Debug.Log(target);
@@ -2046,7 +2050,7 @@ public class CharController : MonoBehaviour
                 if (!isAbort)
                 {
                     charInteract.interactType = InteractType.Toy;
-                    
+                    shadow.GetComponent<SpriteRenderer>().enabled = false;
                     if (index != -1)
                     {
                         agent.transform.position = toyItem.anchorPoints[index].position;
@@ -2087,7 +2091,7 @@ public class CharController : MonoBehaviour
                     yield return new WaitForEndOfFrame();
                     agent.transform.position = toyItem.anchorPoints[index].position - lastStartPosition;
                 }
-
+                shadow.GetComponent<SpriteRenderer>().enabled = true;
                 this.transform.rotation = Quaternion.identity;
                
             }
