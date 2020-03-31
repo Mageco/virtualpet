@@ -960,7 +960,7 @@ public class GameManager : MonoBehaviour
         AddHappy(10);
 
         AddItem(17);
-        AddItem(7);
+        //AddItem(7);
         AddItem(8);
         AddItem(4);
         AddItem(41);
@@ -968,7 +968,7 @@ public class GameManager : MonoBehaviour
         AddItem(59);
         AddItem(11);
         AddItem(2);
-        AddItem(13);
+        //AddItem(13);
         AddItem(1);
         AddItem(69);
         AddItem(81);
