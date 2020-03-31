@@ -50,17 +50,27 @@ namespace MageSDK.Client.Helper {
 			if (ES2.Exists(MageEngineSettings.GAME_ENGINE_EVENT_COUNTER_CACHE)) {
 				List<EventCounter> t = ES2.LoadList<EventCounter>(MageEngineSettings.GAME_ENGINE_EVENT_COUNTER_CACHE);
 				if (t == null) {
-					t = new List<EventCounter>();
+					t = InitDefaultEventCounter();
 				}
 				RuntimeParameters.GetInstance().SetParam(MageEngineSettings.GAME_ENGINE_EVENT_COUNTER_CACHE, t);
 				return t;
 				
 			} else {
-				List<EventCounter> t = new List<EventCounter>();
+				List<EventCounter> t = InitDefaultEventCounter();
 				RuntimeParameters.GetInstance().SetParam(MageEngineSettings.GAME_ENGINE_EVENT_COUNTER_CACHE, t);
 				return t;
 			}
 		}
+
+		private List<EventCounter> InitDefaultEventCounter() {
+			List<EventCounter> tmp = new List<EventCounter>();
+			foreach(MageEventType t in Enum.GetValues(typeof(MageEventType))) {
+				tmp.Add(new EventCounter(t.ToString(), 0));
+			}
+
+			return tmp;
+		}
+
 
 		private List<EventCounter> GetEventCounterList() {
 			List<EventCounter> eventCounterList = RuntimeParameters.GetInstance().GetParam<List<EventCounter>>(MageEngineSettings.GAME_ENGINE_EVENT_COUNTER_CACHE);
@@ -131,6 +141,7 @@ namespace MageSDK.Client.Helper {
 				return t;
 			}
 		}
+
 
 		public List<MageEvent> GetMageEventsList() {
 			return RuntimeParameters.GetInstance().GetParam<List<MageEvent>>(MageEngineSettings.GAME_ENGINE_EVENT_CACHE);
