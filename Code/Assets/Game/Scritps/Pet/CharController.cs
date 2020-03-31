@@ -2030,6 +2030,7 @@ public class CharController : MonoBehaviour
             {
                
                 int index = toyItem.GetPetIndex(this);
+                bool isAnchor = false;
                 
                 if (toyItem.anchorPoints[index] != null)
                 {
@@ -2047,6 +2048,7 @@ public class CharController : MonoBehaviour
                 
                 Vector3 lastStartPosition = toyItem.anchorPoints[index].position - this.transform.position;
 
+                
                 if (!isAbort)
                 {
                     charInteract.interactType = InteractType.Toy;
@@ -2059,14 +2061,18 @@ public class CharController : MonoBehaviour
                     }
                     toyItem.count++;
                     anim.Play("Wait_" + toyItem.toyType.ToString(), 0);
-                    //anim.Play("Standby", 0);
+                    isAnchor = true;
                 }
 
+                float timeWait = 0;
                 while (toyItem != null && !isAbort && toyItem.count < toyItem.anchorPoints.Length)
                 {
+                    timeWait += Time.deltaTime;
                     agent.transform.position = toyItem.anchorPoints[index].position;
                     this.transform.rotation = toyItem.anchorPoints[index].rotation;
                     this.transform.localScale = new Vector3(this.transform.localScale.x, this.transform.localScale.y, toyItem.anchorPoints[index].localScale.z);
+                    if (timeWait > 30)
+                        isAbort = true;
                     yield return new WaitForEndOfFrame();
                 }
 
@@ -2089,8 +2095,9 @@ public class CharController : MonoBehaviour
                 {
                     toyItem.DeActive();
                     yield return new WaitForEndOfFrame();
-                    agent.transform.position = toyItem.anchorPoints[index].position - lastStartPosition;
                 }
+                if(isAnchor)
+                    agent.transform.position = toyItem.anchorPoints[index].position - lastStartPosition;
                 shadow.GetComponent<SpriteRenderer>().enabled = true;
                 this.transform.rotation = Quaternion.identity;
                
