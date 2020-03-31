@@ -56,7 +56,7 @@ public class CharController : MonoBehaviour
     public Transform shitPosition;
 
 
-    [HideInInspector]
+    //[HideInInspector]
     public GameObject shadow;
     [HideInInspector]
     public Vector3 originalShadowScale;
@@ -1900,7 +1900,7 @@ public class CharController : MonoBehaviour
                     MageManager.instance.PlaySound3D(charType.ToString() + "_Supprised", false,this.transform.position);
                     MageManager.instance.PlaySound3D("Drag", false,this.transform.position);
                     anim.Play("Teased", 0);
-                    shadow.SetActive(false);
+                    shadow.GetComponent<SpriteRenderer>().enabled = false;
                     yield return new WaitForEndOfFrame();
                     float ySpeed = 30 * anim.GetCurrentAnimatorStateInfo(0).length / 2;
                     if (anim.GetCurrentAnimatorStateInfo(0).length < 2)
@@ -1911,6 +1911,7 @@ public class CharController : MonoBehaviour
                     charInteract.interactType = InteractType.Toy;
                     while (charInteract.interactType == InteractType.Toy && !isAbort)
                     {
+                        
                         ySpeed -= 30 * Time.deltaTime;
                         Vector3 pos1 = agent.transform.position;
                         pos1.y += ySpeed * Time.deltaTime;
@@ -1939,6 +1940,7 @@ public class CharController : MonoBehaviour
                     }
                     count++;
                 }
+                shadow.GetComponent<SpriteRenderer>().enabled = true;
             }
             else if (toyItem.toyType == ToyType.Ball || toyItem.toyType == ToyType.Car)
             {
