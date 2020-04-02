@@ -13,6 +13,8 @@ namespace MageApi.Models.Response {
 		public string error = "";
 		public TResponse data;
 
+		public DateTime timestamp = new DateTime();
+
 		public ApiCache cache = new ApiCache();
 
 		public GenericResponse() : base() {

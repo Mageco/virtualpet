@@ -924,6 +924,10 @@ namespace MageSDK.Client {
 			} 
 		}
 
+		public DateTime GetServerTimeStamp() {
+			return RuntimeParameters.GetInstance().GetParam<DateTime>(ApiSettings.API_SERVER_TIMESTAMP);
+		}
+
 		#endregion
 
 
@@ -954,6 +958,10 @@ namespace MageSDK.Client {
 
 		}
 
+		protected virtual void OnNewFirebaseMessageCallback(object sender, Firebase.Messaging.MessageReceivedEventArgs e) {
+
+		}
+
 		
 		public void SetupFirebaseMessaging() {
 			Firebase.Messaging.FirebaseMessaging.TokenReceived += OnTokenReceived;
@@ -972,6 +980,7 @@ namespace MageSDK.Client {
 
 		public void OnMessageReceived(object sender, Firebase.Messaging.MessageReceivedEventArgs e) {
 			UnityEngine.Debug.Log("Received a new message from: " + e.Message.From);
+			OnNewFirebaseMessageCallback(sender, e);
 		}
 
 		public void UpdateMessageStatus(string msgId, MessageStatus status) {

@@ -32,6 +32,7 @@ namespace MageApi {
 		public const string SYSTEM_LANGUAGE = "SYSTEM_LANGUAGE";
 
 		public const string API_CACHE = "API_CACHE";
+		public const string API_SERVER_TIMESTAMP = "API_SERVER_TIMESTAMP";
 
 		//defines api names
 		public const string RESPONSE_DATA = "data";

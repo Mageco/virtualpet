@@ -133,6 +133,11 @@ namespace MageApi {
 							//save cache to runtime
 							Debug.Log(result.cache.ToJson());
 							RuntimeParameters.GetInstance().SetParam (ApiSettings.API_CACHE, result.cache);
+							if (null != result.timestamp) {
+								RuntimeParameters.GetInstance().SetParam (ApiSettings.API_SERVER_TIMESTAMP, result.timestamp);
+							} else {
+								RuntimeParameters.GetInstance().SetParam (ApiSettings.API_SERVER_TIMESTAMP, DateTime.Now);
+							}
 							callback ((TResult)result.data);
 						} else {
 							Debug.Log ("Error message: " + result.error);
