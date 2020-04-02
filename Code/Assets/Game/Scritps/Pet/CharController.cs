@@ -244,7 +244,7 @@ public class CharController : MonoBehaviour
             
             if (timeToy > 6 && toyItem != null && toyItem.IsActive())
             {
-                ItemManager.instance.SpawnHeart(data.rateHappy, this.transform.position);
+                ItemManager.instance.SpawnHeart(data.rateHappy + data.level/5, this.transform.position);
                 timeToy = 0;
             }
             else
@@ -1353,7 +1353,7 @@ public class CharController : MonoBehaviour
             t += Time.deltaTime;
             if(timeLove > 5)
             {
-                ItemManager.instance.SpawnHeart(data.rateHappy, this.transform.position);
+                ItemManager.instance.SpawnHeart(data.rateHappy + data.level / 5, this.transform.position);
                 timeLove = 0;
             }
             yield return new WaitForEndOfFrame();
@@ -1470,7 +1470,7 @@ public class CharController : MonoBehaviour
         {
             if (data.pee <= 1 && !isAbort)
             {
-                ItemManager.instance.SpawnHeart(data.rateHappy, this.transform.position);
+                ItemManager.instance.SpawnHeart(data.rateHappy + data.level / 5, this.transform.position);
                 GameManager.instance.LogAchivement(AchivementType.Do_Action, ActionType.OnToilet);
             }
 
@@ -1515,7 +1515,7 @@ public class CharController : MonoBehaviour
         {
             if (data.shit <= 1 && !isAbort)
             {
-                ItemManager.instance.SpawnHeart(data.rateHappy, this.transform.position);
+                ItemManager.instance.SpawnHeart(data.rateHappy + data.level / 5, this.transform.position);
                 GameManager.instance.LogAchivement(AchivementType.Do_Action, ActionType.OnToilet);
             }
             yield return StartCoroutine(JumpDown(-7, 10, 30));
@@ -1559,7 +1559,7 @@ public class CharController : MonoBehaviour
                 if (data.Food >= data.MaxFood - 10)
                 {
                     GameManager.instance.LogAchivement(AchivementType.Do_Action, ActionType.Eat);
-                    ItemManager.instance.SpawnHeart(data.rateHappy, this.transform.position);
+                    ItemManager.instance.SpawnHeart(data.rateHappy + data.level / 5, this.transform.position);
                     if (GetFoodItem() != null && GetFoodItem().GetComponent<ItemObject>() != null)
                         GameManager.instance.LogAchivement(AchivementType.Eat, ActionType.None, GetFoodItem().GetComponent<ItemObject>().itemID);
                 }
@@ -1622,7 +1622,7 @@ public class CharController : MonoBehaviour
                 if (data.Water >= data.MaxWater - 10)
                 {
                     GameManager.instance.LogAchivement(AchivementType.Do_Action, ActionType.Drink);
-                    ItemManager.instance.SpawnHeart(data.level, this.transform.position);
+                    ItemManager.instance.SpawnHeart(data.level + data.level / 5, this.transform.position);
                     if (GetDrinkItem() != null && GetDrinkItem().GetComponent<ItemObject>() != null)
                         GameManager.instance.LogAchivement(AchivementType.Drink, ActionType.None, GetDrinkItem().GetComponent<ItemObject>().itemID);
                 }
@@ -1713,7 +1713,7 @@ public class CharController : MonoBehaviour
         {
             if (data.Sleep > data.MaxSleep - 1)
             {
-                ItemManager.instance.SpawnHeart(data.rateHappy*2, this.transform.position);
+                ItemManager.instance.SpawnHeart((data.rateHappy + data.level / 5)*2, this.transform.position);
                 GameManager.instance.LogAchivement(AchivementType.Do_Action, ActionType.Sleep);
             }
             yield return StartCoroutine(JumpDown(-7, 10, 30));
@@ -2117,7 +2117,7 @@ public class CharController : MonoBehaviour
             if (!isAbort)
             {
                 yield return StartCoroutine(DoAnim("Love"));
-                ItemManager.instance.SpawnHeart(data.rateHappy, this.transform.position);
+                ItemManager.instance.SpawnHeart(data.rateHappy + data.level / 5, this.transform.position);
 
             }
 

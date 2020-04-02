@@ -34,7 +34,7 @@ public class ItemManager : MonoBehaviour
     int fruitId = 0;
 
     float timeChest = 0;
-    float maxTimeChest = 30;
+    float maxTimeChest = 10;
 
     [HideInInspector]
     public HouseItem houseItem;
@@ -133,7 +133,7 @@ public class ItemManager : MonoBehaviour
         {
             SpawnChest();
             timeChest = 0;
-            maxTimeChest = Random.Range(30, 70);
+            maxTimeChest = Random.Range(20, 40);
         }
         else
         {
@@ -598,9 +598,20 @@ public class ItemManager : MonoBehaviour
     public void SpawnChest()
     {
         ChestItem[] chests = FindObjectsOfType<ChestItem>();
-        if (chests.Length > 2)
+        if (chests.Length > 3)
             return;
         Vector3 pos = GetRandomPoint(AreaType.Garden);
+        bool isOk = false;
+        while (!isOk)
+        {
+            pos = GetRandomPoint(AreaType.Garden);
+            isOk = true;
+            for(int i = 0; i < chests.Length; i++)
+            {
+                if (Vector2.Distance(chests[i].transform.position, pos) < 10)
+                    isOk = false;
+            }
+        }
         pos.z = pos.y * 10;
         GameObject go = Instantiate(chestPrefab, pos, Quaternion.identity);
     }
