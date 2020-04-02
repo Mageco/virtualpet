@@ -6,7 +6,7 @@ using UnityEngine;
 [System.Serializable]
 public class PlayerData : BaseModel
 {
-	public string playerName = "";
+	public string playerName = "House's ...";
     public int coin = 0;
 	[ExtractField]
     public int diamond = 0;
