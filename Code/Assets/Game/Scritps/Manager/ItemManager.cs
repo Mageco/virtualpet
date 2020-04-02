@@ -73,6 +73,8 @@ public class ItemManager : MonoBehaviour
         if (ES2.Exists("PlayTime"))
         {
             playTime = ES2.Load<System.DateTime>("PlayTime");
+            Debug.Log(playTime);
+            Debug.Log(MageEngine.instance.GetServerTimeStamp());
             LoadWelcome((float)(MageEngine.instance.GetServerTimeStamp() - playTime).TotalSeconds);
         }
 

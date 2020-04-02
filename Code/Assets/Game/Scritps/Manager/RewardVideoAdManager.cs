@@ -325,7 +325,7 @@ public class RewardVideoAdManager : MonoBehaviour , IUnityAdsListener
 
 	public void ShowIntetestial()
 	{
-		Advertisement.Show();
+		Advertisement.Show("Interstitial");
 	}
 
 
