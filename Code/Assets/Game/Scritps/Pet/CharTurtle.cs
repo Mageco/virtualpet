@@ -9,7 +9,7 @@ public class CharTurtle : CharController
         while(!isAbort){
             yield return new WaitForEndOfFrame();
         }
-        ItemManager.instance.SpawnHeart(data.rateHappy, this.transform.position);
+        ItemManager.instance.SpawnHeart(data.rateHappy + data.level / 5, this.transform.position);
         CheckAbort();
     }
 

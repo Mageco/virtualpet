@@ -13,6 +13,7 @@ public class ToyItem : BaseFloorItem
     public float maxTime = 1;
     [HideInInspector]
     public int count = 0;
+
     public bool IsActive()
     {
         if (state == EquipmentState.Active)

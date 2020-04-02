@@ -28,6 +28,7 @@ public class UIManager : MonoBehaviour
     public GameObject commomChestPanelPrefab;
     public GameObject rareChestPanelPrefab;
     public GameObject epicChestPanelPrefab;
+    public GameObject profilePanelPrefab;
     public static UIManager instance;
 	public Text coinText;
 	public Text diamonText;
@@ -72,6 +73,8 @@ public class UIManager : MonoBehaviour
     public DailyBonusPanel dailyBonusPanel;
     [HideInInspector]
     public RewardDiamondPanel rewardDiamondPanel;
+    [HideInInspector]
+    public ProfilePanel profilePanel;
 
     [HideInInspector]
     public ChestSalePanel chestSalePanel;
@@ -82,7 +85,6 @@ public class UIManager : MonoBehaviour
     [HideInInspector]
     public AchivementPanel achivementPanel;
 
-    ProfileUI profilePanel;
 
     ItemInfoUI itemInfoUI;
     TreatmentPopup treatmentPopup;
@@ -402,20 +404,6 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    public void OnProfilePanel(int petId)
-    {
-        if (profilePanel == null)
-        {
-            var popup = Instantiate(profilePrefab) as GameObject;
-            popup.SetActive(true);
-            popup.transform.localScale = Vector3.zero;
-            popup.transform.SetParent(GameObject.Find("Canvas").transform, false);
-            popup.GetComponent<Popup>().Open();
-            profilePanel = popup.GetComponent<ProfileUI>();
-            profilePanel.Load(petId);
-            MageEngine.instance.OnEvent(Mage.Models.Application.MageEventType.OpenStore, "Profile");
-        }
-     }
 
     public void OnPetRequirementPanel(Pet pet)
     {
@@ -645,6 +633,19 @@ public class UIManager : MonoBehaviour
             popup.GetComponent<Popup>().Open();
             rewardDiamondPanel = popup.GetComponent<RewardDiamondPanel>();
             rewardDiamondPanel.Load(item);
+        }
+    }
+
+    public void OnProfilePanel()
+    {
+        if (profilePanel == null)
+        {
+            var popup = Instantiate(profilePanelPrefab) as GameObject;
+            popup.SetActive(true);
+            popup.transform.localScale = Vector3.zero;
+            popup.transform.SetParent(GameObject.Find("Canvas").transform, false);
+            popup.GetComponent<Popup>().Open();
+            profilePanel = popup.GetComponent<ProfilePanel>();
         }
     }
 

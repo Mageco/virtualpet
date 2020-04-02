@@ -79,17 +79,17 @@ public class GameManager : MonoBehaviour
                 {
                     if (c != c1 && c.transform.position.z == c1.transform.position.z && c.charInteract.interactType == InteractType.None && c1.charInteract.interactType == InteractType.None)
                     {
-                        if (c.transform.position.y >= c1.transform.position.y)
+                        if (c.transform.position.y <= c1.transform.position.y)
                         {
                             Vector3 pos = c.transform.position;
-                            pos.z -= 10;
+                            pos.z += 5;
                             c.transform.position = pos;
                             isDone = false;
                         }
                         else
                         {
                             Vector3 pos = c1.transform.position;
-                            pos.z -= 10;
+                            pos.z += 5;
                             c1.transform.position = pos;
                             isDone = false;
                         }

@@ -252,8 +252,8 @@ public class ItemUI : MonoBehaviour
                 else
                 {
                     price.gameObject.SetActive(true);
-                    //buyButton.gameObject.SetActive(true);
-                    //buyButton.interactable = true;
+                    buyButton.GetComponentInChildren<Text>().gameObject.SetActive(false);
+                    buyButton.interactable = true;
                     moneyIcon.SetActive(true);
                     moneyIcon.GetComponent<Text>().text = DataHolder.Dialog(64).GetName(MageManager.instance.GetLanguage());
                     price.text = (d.buyPrice * (float.Parse(DataHolder.Dialog(64).GetDescription(MageManager.instance.GetLanguage())))).ToString(".00") ;
@@ -276,8 +276,8 @@ public class ItemUI : MonoBehaviour
                 else
                 {
                     price.gameObject.SetActive(true);
-                    //buyButton.gameObject.SetActive(true);
-                    //buyButton.interactable = true;
+                    buyButton.GetComponentInChildren<Text>().gameObject.SetActive(false);
+                    buyButton.interactable = true;
                     moneyIcon.SetActive(true);
                     moneyIcon.GetComponent<Text>().text = DataHolder.Dialog(64).GetName(MageManager.instance.GetLanguage());
                     price.text = (d.buyPrice * (float.Parse(DataHolder.Dialog(64).GetDescription(MageManager.instance.GetLanguage())))).ToString(".00");
@@ -301,8 +301,8 @@ public class ItemUI : MonoBehaviour
                 else
                 {
                     price.gameObject.SetActive(true);
-                    //buyButton.gameObject.SetActive(true);
-                    //buyButton.interactable = true;
+                    buyButton.GetComponentInChildren<Text>().gameObject.SetActive(false);
+                  buyButton.interactable = true;
                     moneyIcon.SetActive(true);
                     moneyIcon.GetComponent<Text>().text = DataHolder.Dialog(64).GetName(MageManager.instance.GetLanguage());
                     price.text = (d.buyPrice * (float.Parse(DataHolder.Dialog(64).GetDescription(MageManager.instance.GetLanguage())))).ToString(".00");
@@ -377,11 +377,17 @@ public class ItemUI : MonoBehaviour
         }
         else if (state == ItemState.Equiped)
         {
+            Pet p = GameManager.instance.GetPet(d.iD);
+            petLevelText.gameObject.SetActive(true);
+            petLevelText.text = DataHolder.Dialog(27).GetName(MageManager.instance.GetLanguage()) + " " + p.level.ToString();
             unEquipButton.gameObject.SetActive(true);
             this.GetComponent<Image>().color = new Color(251f / 256, 134f / 256, 58f / 256);
         }
         else if (state == ItemState.Have)
         {
+            Pet p = GameManager.instance.GetPet(d.iD);
+            petLevelText.gameObject.SetActive(true);
+            petLevelText.text = DataHolder.Dialog(27).GetName(MageManager.instance.GetLanguage()) + " " + p.level.ToString();
             equipButton.gameObject.SetActive(true);
         }
 

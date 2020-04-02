@@ -7,6 +7,7 @@ public class ProfileUI : MonoBehaviour
 {
     public Image icon;
     public Text level;
+    public Text petName;
     public Image sick;
     public Image ịnjury;
     public Image sleep;
@@ -30,6 +31,7 @@ public class ProfileUI : MonoBehaviour
     public void Load(int id){
         data = GameManager.instance.GetPet(id);
         level.text = DataHolder.Dialog(27).GetName(MageManager.instance.GetLanguage()) + " " + data.level.ToString();
+        petName.text = DataHolder.GetPet(id).GetName(0);
         sick.fillAmount = (data.MaxHealth - data.Health)/data.MaxHealth;
         ịnjury.fillAmount = data.Damage/data.MaxDamage;
         sleep.fillAmount = (data.MaxSleep - data.Sleep)/data.MaxSleep;
@@ -52,7 +54,7 @@ public class ProfileUI : MonoBehaviour
         price = data.level * data.level * 10;
         priceText.text = price.ToString();
         strengthText.text = data.MaxHealth.ToString();
-        heartText.text = "+" + data.level.ToString();
+        heartText.text = "+" + (data.rateHappy + data.level / 5).ToString();
     }
 
     void Update(){
@@ -75,7 +77,7 @@ public class ProfileUI : MonoBehaviour
         price = data.level * data.level * 10;
         priceText.text = price.ToString();
         strengthText.text = data.MaxHealth.ToString();
-        heartText.text = "+" + (1 + data.level/5).ToString();
+        heartText.text = "+" + (data.rateHappy + data.level/5).ToString();
     }
 
     public void Upgrade()
@@ -91,10 +93,5 @@ public class ProfileUI : MonoBehaviour
                 UIManager.instance.shopPanel.ReLoad();
             }
         }
-    }
-
-    public void Close()
-    {
-        this.GetComponent<Popup>().Close();
     }
 }
