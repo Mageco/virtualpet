@@ -24,7 +24,7 @@ public class RewardVideoAdManager : MonoBehaviour , IUnityAdsListener
 #endif
 	string myPlacementId = "rewardedVideo";
 	bool testMode = false;
-	public AdDistribute adDistribute = AdDistribute.None;
+	public AdDistribute adDistribute = AdDistribute.Unity;
 
 
 #if UNITY_ANDROID
@@ -321,6 +321,11 @@ public class RewardVideoAdManager : MonoBehaviour , IUnityAdsListener
 			chestItem = item;
 			Advertisement.Show(myPlacementId);
 		}
+	}
+
+	public void ShowIntetestial()
+	{
+		Advertisement.Show();
 	}
 
 

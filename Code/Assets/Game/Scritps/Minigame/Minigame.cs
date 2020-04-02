@@ -20,7 +20,7 @@ public class Minigame : MonoBehaviour
 
     public Text coinText;
     public WinPanel winPanel;
-    public int bonus = 0;
+    public int bonus = 1;
 
     void Awake(){
         if(instance == null){
@@ -62,6 +62,9 @@ public class Minigame : MonoBehaviour
             winPanel = popup.GetComponent<WinPanel>();
             if (isWin)
                 bonus += 20 * (1 + gameLevel/5);
+
+            if (bonus == 0)
+                bonus = 1;
             winPanel.Load(bonus,minigameId, isWin);
         }
     }

@@ -20,9 +20,9 @@ public class RatingWindow : MonoBehaviour {
                 Application.OpenURL("https://play.google.com/store/apps/details?id=vn.com.mage.virtualpet");
 
 #elif UNITY_IOS
-        Application.OpenURL("https://apps.apple.com/us/app/child-abuse-prevention/id1499945488?ls=1");
+        Application.OpenURL("https://apps.apple.com/us/app/pet-house-little-friends/id1499945488?ls=1");
 #endif
-        ES2.Save(true, "RateUs");
+		ES2.Save(true, "RateUs");
         Close();
         
     }

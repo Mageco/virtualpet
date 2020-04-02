@@ -11,6 +11,7 @@ using Mage.Models.Game;
 using System.IO;
 using Mage.Models.Application;
 using MageSDK.Client;
+using Firebase.Messaging;
 
 public class ApiManager : MageEngine {
 
@@ -99,11 +100,34 @@ public class ApiManager : MageEngine {
 	}
 
 
+    protected override void OnNewFirebaseMessageCallback(object sender, MessageReceivedEventArgs e)
+    {
+		ConfirmationPopup confirm = MageManager.instance.OnConfirmationPopup("",e.Message.Notification.Body);
+        if(e.Message.Notification.Title == "Update")
+        {
+			confirm.okButton.onClick.AddListener(delegate {
+				OnUpdate();
+			});
+		}
 
-	void OnClick(string url)
+		Debug.Log(e.Message.RawData);
+    }
+
+
+    void OnClick(string url)
     {
 	    Application.OpenURL(url);
     }
+
+    void OnUpdate()
+    {
+#if UNITY_ANDROID
+		Application.OpenURL("https://play.google.com/store/apps/details?id=vn.com.mage.virtualpet");
+
+#elif UNITY_IOS
+        Application.OpenURL("https://apps.apple.com/us/app/pet-house-little-friends/id1499945488?ls=1");
+#endif
+	}
 
 }
 

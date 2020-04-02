@@ -10,6 +10,7 @@ public class WinPanel : MonoBehaviour
     public Sprite[] headerSprites;
     public Text exp;
     public Text coin;
+    public Text item;
     int price = 5;
     int gameId = 0;
     public Text priceText;
@@ -40,8 +41,6 @@ public class WinPanel : MonoBehaviour
     public void Load(int c,int minigameId,bool isWin){
         bonus = c;
         gameId = minigameId;
-        //price = GameManager.instance.myPlayer.minigameLevels[gameId] + 1;
-        //priceText.text = price.ToString();
         animator = this.GetComponent<Animator>();
         animator.Play("Win",0);
 
@@ -56,21 +55,21 @@ public class WinPanel : MonoBehaviour
             {
                 if ((GameManager.instance.myPlayer.minigameLevels[0] + 1) % 5 == 0 || GameManager.instance.myPlayer.minigameLevels[0] == 0)
                 {
-                    exp.transform.parent.gameObject.SetActive(true);
+                    item.transform.parent.gameObject.SetActive(true);
                     GameManager.instance.AddItem(72);
                     GameManager.instance.EquipItem(72);
                 }
                 else
-                    exp.transform.parent.gameObject.SetActive(false);
+                    item.transform.parent.gameObject.SetActive(false);
             }
             else if (minigameId == 1)
             {
-                exp.transform.parent.gameObject.SetActive(false);
+                item.transform.parent.gameObject.SetActive(false);
             }
         }
         else
         {
-            exp.transform.parent.gameObject.SetActive(false);
+            item.transform.parent.gameObject.SetActive(false);
             header.sprite = headerSprites[1];
             completeText.gameObject.SetActive(false);
             replayText.gameObject.SetActive(true);
@@ -79,10 +78,22 @@ public class WinPanel : MonoBehaviour
             
 
         if (c > 0){
-            coin.text = c.ToString(); 
+            coin.text = c.ToString();
+            exp.text = (c/10).ToString();
         }
         else
+        {
             coin.transform.parent.gameObject.SetActive(false);
+            exp.transform.parent.gameObject.SetActive(false);
+        }
+
+        if (!isWin)
+        {
+            int r = Random.Range(0, 100);
+            if(r > 50)
+                RewardVideoAdManager.instance.ShowIntetestial();
+        }
+            
     }
 
     public void OnHome(){
@@ -109,6 +120,7 @@ public class WinPanel : MonoBehaviour
     {
         bonus = bonus * 2;
         coin.text = bonus.ToString();
+        exp.text = (bonus / 10).ToString();
         watchAd.interactable = false;
     }
 
@@ -120,6 +132,7 @@ public class WinPanel : MonoBehaviour
     public void Close(){
         MageManager.instance.PlaySound("Collect_Achivement", false);
         GameManager.instance.AddCoin(bonus);
+        GameManager.instance.AddExp(bonus/10);
         Minigame.instance.OnHome();
         this.GetComponent<Popup>().Close();
     }

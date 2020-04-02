@@ -2283,6 +2283,7 @@ public class CharController : MonoBehaviour
 
 
             dropPosition.y = charScale.scalePosition.y + col.height;
+
             if (this.transform.position.x > col.transform.position.x + col.width / 2 - col.edge)
             {
                 dropPosition.x = col.transform.position.x + col.width / 2 - col.edge;

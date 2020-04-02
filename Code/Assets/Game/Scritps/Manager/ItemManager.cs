@@ -73,7 +73,7 @@ public class ItemManager : MonoBehaviour
         if (ES2.Exists("PlayTime"))
         {
             playTime = ES2.Load<System.DateTime>("PlayTime");
-            LoadWelcome((float)(System.DateTime.Now - playTime).TotalSeconds);
+            LoadWelcome((float)(MageEngine.instance.GetServerTimeStamp() - playTime).TotalSeconds);
         }
 
 
@@ -94,7 +94,7 @@ public class ItemManager : MonoBehaviour
         if(time > maxTimeCheck){
             CheckItemData();
             time = 0;
-            playTime = System.DateTime.Now;
+            playTime = MageEngine.instance.GetServerTimeStamp();
             ES2.Save(playTime, "PlayTime");
 
             //Check Achivement Notification
