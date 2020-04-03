@@ -10,6 +10,7 @@ public class BoardItem : BaseFloorItem
     {
         base.OnClick();
         UIManager.instance.OnHouseNamePanel();
+        animator.Play("Active", 0);
     }
 
     protected override void Update()

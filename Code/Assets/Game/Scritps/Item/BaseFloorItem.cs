@@ -250,6 +250,7 @@ public class BaseFloorItem : MonoBehaviour
 	protected virtual void OnClick()
 	{
 		state = EquipmentState.Idle;
+        
 	}
 
 	public virtual void OnActive()
