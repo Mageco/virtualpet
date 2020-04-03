@@ -623,7 +623,9 @@ public class GameManager : MonoBehaviour
                 item.state = ItemState.Equiped;
             }
             else if (DataHolder.GetItem(item.itemId) != null && DataHolder.GetItem(id).itemType == DataHolder.GetItem(item.itemId).itemType
-               && DataHolder.GetItem(id).itemType != ItemType.Toy && DataHolder.GetItem(id).itemType != ItemType.Fruit)
+               && DataHolder.GetItem(id).itemType != ItemType.Toy && DataHolder.GetItem(id).itemType != ItemType.Fruit
+               && DataHolder.GetItem(id).itemType != ItemType.Picture && DataHolder.GetItem(id).itemType != ItemType.Deco
+               && DataHolder.GetItem(id).itemType != ItemType.Table)
             {
                 item.state = ItemState.Have;
             }

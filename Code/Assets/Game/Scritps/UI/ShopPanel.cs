@@ -116,8 +116,8 @@ public class ShopPanel : MonoBehaviour
             {
                 if ((int)DataHolder.Item(i).itemType == (int)ItemType.Bath || (int)DataHolder.Item(i).itemType == (int)ItemType.Bed
                 || (int)DataHolder.Item(i).itemType == (int)ItemType.Clean || (int)DataHolder.Item(i).itemType == (int)ItemType.Clock
-                || (int)DataHolder.Item(i).itemType == (int)ItemType.MedicineBox || (int)DataHolder.Item(i).itemType == (int)ItemType.Picture
-                || (int)DataHolder.Item(i).itemType == (int)ItemType.Table || (int)DataHolder.Item(i).itemType == (int)ItemType.Toilet
+                || (int)DataHolder.Item(i).itemType == (int)ItemType.MedicineBox || (int)DataHolder.Item(i).itemType == (int)ItemType.Board
+                || (int)DataHolder.Item(i).itemType == (int)ItemType.Toilet 
                 || (int)DataHolder.Item(i).itemType == (int)ItemType.Room)
                 {
                     items.Add(DataHolder.Item(i));
@@ -139,6 +139,17 @@ public class ShopPanel : MonoBehaviour
             for (int i = 0; i < DataHolder.Items().GetDataCount(); i++)
             {
                 if ((int)DataHolder.Item(i).itemType == (int)ItemType.Fruit)
+                {
+                    items.Add(DataHolder.Item(i));
+                }
+            }
+        }
+        else if (currentTab == 6)
+        {
+            for (int i = 0; i < DataHolder.Items().GetDataCount(); i++)
+            {
+                if ((int)DataHolder.Item(i).itemType == (int)ItemType.Picture || (int)DataHolder.Item(i).itemType == (int)ItemType.Table
+                    || (int)DataHolder.Item(i).itemType == (int)ItemType.Deco)
                 {
                     items.Add(DataHolder.Item(i));
                 }
