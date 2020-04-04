@@ -9391,7 +9391,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2998835521176249842}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.871521, y: 0.4397421, z: 0}
+  m_LocalPosition: {x: -0.059988976, y: -0.03979969, z: 0}
   m_LocalScale: {x: 2.25, y: 2.25, z: 1}
   m_Children: []
   m_Father: {fileID: 6003731782865994948}
@@ -9519,7 +9519,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 14.665657, y: 2.4920673}
+  m_Size: {x: 10, y: 2}
   m_EdgeRadius: 0
 --- !u!114 &1951478111643783381
 MonoBehaviour:
@@ -9576,8 +9576,8 @@ GameObject:
   - component: {fileID: 6003731782865994948}
   - component: {fileID: 7937806589666590560}
   - component: {fileID: 7454050735882494011}
-  - component: {fileID: 1855302058096244708}
   - component: {fileID: 4682591087168672123}
+  - component: {fileID: 744857656}
   m_Layer: 15
   m_Name: Tree
   m_TagString: Table
@@ -9593,7 +9593,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6003731782865994949}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 19.351631, y: -12.626595, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 2087689075872171758}
@@ -9650,32 +9650,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 14.573275, y: 9.808634}
   m_EdgeRadius: 0
---- !u!114 &1855302058096244708
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6003731782865994949}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5d2367fc09d9c472090672a3e878fc4f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  item: {fileID: 0}
-  state: 0
-  lastPosition: {x: 0, y: 0, z: 0}
-  boundX: {x: -40, y: 60}
-  boundY: {x: -0.8, y: -0.8}
-  pets: []
-  movementType: 0
-  height: 10
-  depth: 3
-  width: 15
-  edge: 5
-  anchorPoint: {fileID: 6198407264310491779}
-  startPoint: {fileID: 0}
-  endPoint: {fileID: 0}
 --- !u!50 &4682591087168672123
 Rigidbody2D:
   serializedVersion: 4
@@ -9697,6 +9671,25 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &744857656
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6003731782865994949}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8c1a876cd294b45118cdc23a0e3f6d9e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  item: {fileID: 0}
+  state: 0
+  lastPosition: {x: 0, y: 0, z: 0}
+  boundX: {x: -270, y: 52}
+  boundY: {x: -24, y: -3}
+  pets: []
+  movementType: 1
 --- !u!1 &7514092850314851579
 GameObject:
   m_ObjectHideFlags: 0
