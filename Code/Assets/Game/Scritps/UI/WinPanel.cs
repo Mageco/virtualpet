@@ -6,8 +6,6 @@ using UnityEngine.SceneManagement;
 
 public class WinPanel : MonoBehaviour
 {
-    public Image header;
-    public Sprite[] headerSprites;
     public Text exp;
     public Text coin;
     public Text item;
@@ -20,6 +18,7 @@ public class WinPanel : MonoBehaviour
     public Text replayText;
     public Text completeText;
 
+
     // Start is called before the first frame update
     void Start()
     {
@@ -29,7 +28,7 @@ public class WinPanel : MonoBehaviour
     Animator animator;
 
     void Awake(){
-
+        
     }
 
     // Update is called once per frame
@@ -42,12 +41,12 @@ public class WinPanel : MonoBehaviour
         bonus = c;
         gameId = minigameId;
         animator = this.GetComponent<Animator>();
-        animator.Play("Win",0);
+       
 
 
         if (isWin)
         {
-            header.sprite = headerSprites[0];
+            animator.Play("Minigame_Win_Open", 0);
             completeText.gameObject.SetActive(true);
             replayText.gameObject.SetActive(false);
             nextText.gameObject.SetActive(true);
@@ -69,9 +68,9 @@ public class WinPanel : MonoBehaviour
         }
         else
         {
+            animator.Play("Minigame_Lose_Open", 0);
             item.transform.parent.gameObject.SetActive(false);
-            header.sprite = headerSprites[1];
-            completeText.gameObject.SetActive(false);
+           completeText.gameObject.SetActive(false);
             replayText.gameObject.SetActive(true);
             nextText.gameObject.SetActive(false);
         }

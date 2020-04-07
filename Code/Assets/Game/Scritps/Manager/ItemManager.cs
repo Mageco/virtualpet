@@ -421,6 +421,7 @@ public class ItemManager : MonoBehaviour
     void UpdateItemColliders(){
         itemColliders = this.GetComponentsInChildren<ItemCollider>();
         houseItem = this.GetComponentInChildren<HouseItem>();
+        GetActiveCamera().boundX = houseItem.cameraBoundX;
     }
 
     public ItemCollider GetItemCollider(ItemType type){

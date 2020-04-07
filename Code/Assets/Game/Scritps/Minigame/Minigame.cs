@@ -19,6 +19,7 @@ public class Minigame : MonoBehaviour
     public GameState state = GameState.Ready;
 
     public Text coinText;
+    [HideInInspector]
     public WinPanel winPanel;
     public int bonus = 1;
 
@@ -56,7 +57,7 @@ public class Minigame : MonoBehaviour
         {
             var popup = Instantiate(endGamePrefab) as GameObject;
             popup.SetActive(true);
-            popup.transform.localScale = Vector3.zero;
+            //popup.transform.localScale = Vector3.zero;
             popup.transform.SetParent(GameObject.Find("Canvas").transform, false);
             popup.GetComponent<Popup>().Open();
             winPanel = popup.GetComponent<WinPanel>();
