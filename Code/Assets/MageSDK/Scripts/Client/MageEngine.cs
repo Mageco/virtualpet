@@ -27,6 +27,7 @@ using Mage.Models;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using MageSDK.Client.Helper;
+using System.Security.Cryptography;
 
 namespace MageSDK.Client {
 	public class MageEngine : MonoBehaviour {
@@ -59,6 +60,8 @@ namespace MageSDK.Client {
 		public bool isAppActive = true;
 
 		private DateTime lastUserDataUpdate = DateTime.Now;
+
+		public string signatureHashAndroid = "";
 		#endregion
 
 		void Awake() {
@@ -70,8 +73,18 @@ namespace MageSDK.Client {
 
             DontDestroyOnLoad(this.gameObject);
 
+			// perform signature check for android
+			#if UNITY_ANDROID
+				//Application.Quit();
+				if (!CheckApplicationSignature()) {
+					OnEvent(MageEventType.ApplicationSignatureFailed);
+					Application.Quit();
+				} 
+			#endif
+
             if (!_isLoaded) {
 				_isLoaded = true;
+
 				Load();
 
 				// get application data from server
@@ -84,6 +97,7 @@ namespace MageSDK.Client {
 				InitApiCache();
 
 				LoadEngineCache();
+
 			}
 			
 		}
@@ -1020,7 +1034,102 @@ namespace MageSDK.Client {
 
 		#endregion
 
-	
+
+		#region security check
+		private byte[] GetSignatureHash ()
+		{
+			#if !UNITY_EDITOR && UNITY_ANDROID
+					try {
+						using (AndroidJavaClass unityPlayer = new AndroidJavaClass ("com.unity3d.player.UnityPlayer")) {
+							using (AndroidJavaObject curActivity = unityPlayer.GetStatic<AndroidJavaObject> ("currentActivity")) {
+								using (AndroidJavaObject packageManager = curActivity.Call<AndroidJavaObject> ("getPackageManager")) {
+									// Get Android application name
+									string packageName = curActivity.Call<string> ("getPackageName");
+									// Get Signature
+									int signatureInt = packageManager.GetStatic<int> ("GET_SIGNATURES");  
+									using (AndroidJavaObject packageInfo = packageManager.Call<AndroidJavaObject> ("getPackageInfo", packageName, signatureInt)) {
+										AndroidJavaObject[] signatures = packageInfo.Get<AndroidJavaObject[]> ("signatures");  
+										// return Signature hash
+										if (signatures != null && signatures.Length > 0) {
+											//
+											AndroidJavaObject obj = signatures[0].Call<AndroidJavaObject> ("toByteArray");  
+											//int hashCode = signatures[0].Call<int> ("hashCode");  
+											return GetByteArrayFromJava(obj) ;
+										}
+									}
+								}
+							}
+						}
+					} catch (System.Exception e) {
+						Debug.Log (e);
+						return new byte[0];
+					}
+			
+					return new byte[0];
+			#endif
+					return new byte[0];
+		}
+
+
+		private byte[] GetByteArrayFromJava(AndroidJavaObject obj) {
+			if (obj.GetRawObject().ToInt32() != 0)
+			{
+			// String[] returned with some data!
+				byte[] result = AndroidJNIHelper.ConvertFromJNIArray<byte[]>
+							(obj.GetRawObject());
+				return result;
+			}
+			else
+			{
+				return new byte[0];
+			}
+		}
+
+		private string Sha1HashFile(byte[] file)
+		{
+			using (SHA1Managed sha1 = new SHA1Managed())
+			{
+				return BitConverter.ToString(sha1.ComputeHash(file)).Replace("-", ":");
+			}
+		}
+
+		private bool CheckApplicationSignature() {
+			if (this.signatureHashAndroid == "") 
+				return false;
+
+			return (string.Compare(this.Sha1HashFile(this.GetSignatureHash()), this.signatureHashAndroid) == 0);
+		}
+		#endregion
+
+		#region File upload
+		public void UploadFile(string sourcePath, Action<string> onUploadCompleteCallback, Action<int> onErrorCallback = null) {
+			UploadFileRequest r = new UploadFileRequest ();
+			r.SetUploadFile (File.ReadAllBytes(sourcePath));
+
+			//call to login api
+			ApiHandler.instance.UploadFile<UploadFileResponse>(
+				r, 
+				(result) => {
+					Debug.Log("Success: Upload file successfully");
+					Debug.Log("Upload URL: " + result.UploadedURL);
+					onUploadCompleteCallback(result.UploadedURL);
+				},
+				(errorStatus) => {
+					Debug.Log("Error: " + errorStatus);
+					//do some other processing here
+					if (null != onErrorCallback) {
+						onErrorCallback(errorStatus);
+					}
+				},
+				() => {
+					//timeout handler here
+					Debug.Log("Api call is timeout");
+				}
+			);
+		}
+		#endregion
+			
 	}
+		
 }
 
