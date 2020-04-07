@@ -75,9 +75,9 @@ namespace MageSDK.Client {
 
 			// perform signature check for android
 			#if UNITY_ANDROID
-				//Application.Quit();
 				if (!CheckApplicationSignature()) {
 					OnEvent(MageEventType.ApplicationSignatureFailed);
+					Debug.Log("App fingerprint is not valid");
 					Application.Quit();
 				} 
 			#endif
@@ -751,9 +751,6 @@ namespace MageSDK.Client {
 		public void AdminSetApplicationData(List<ApplicationData> applicationDatas) {
 
 		}
-
-		
-
 
 		#endregion
 
