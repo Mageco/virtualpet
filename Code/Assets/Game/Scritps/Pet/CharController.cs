@@ -244,7 +244,8 @@ public class CharController : MonoBehaviour
             
             if (timeToy > 6 && toyItem != null && toyItem.IsActive())
             {
-                ItemManager.instance.SpawnHeart(data.rateHappy + data.level/5, this.transform.position);
+                int value = (int)DataHolder.GetItem(toyItem.item.itemID).value;
+                ItemManager.instance.SpawnHeart(data.rateHappy + data.level/5 + value, this.transform.position);
                 timeToy = 0;
             }
             else
@@ -2111,15 +2112,18 @@ public class CharController : MonoBehaviour
                 toyItem.DeActive();
             }
 
-            charScale.speedFactor = 1f;
-            anim.speed = 1f;
-            toyItem = null;
+
             if (!isAbort)
             {
                 yield return StartCoroutine(DoAnim("Love"));
-                ItemManager.instance.SpawnHeart(data.rateHappy + data.level / 5, this.transform.position);
+                int value = (int)DataHolder.GetItem(toyItem.item.itemID).value;
+                ItemManager.instance.SpawnHeart(data.rateHappy + data.level / 5 + value, this.transform.position);
 
             }
+
+            charScale.speedFactor = 1f;
+            anim.speed = 1f;
+            toyItem = null;
 
         }
 

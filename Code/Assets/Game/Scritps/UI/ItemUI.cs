@@ -90,7 +90,22 @@ public class ItemUI : MonoBehaviour
             icon.material = greyMaterial;
             price.gameObject.SetActive(false);
             levelText.gameObject.SetActive(true);
-            levelText.text = DataHolder.Dialog(27).GetName(MageManager.instance.GetLanguage()) + " " + d.levelRequire.ToString(); 
+            levelText.text = DataHolder.Dialog(27).GetName(MageManager.instance.GetLanguage()) + " " + d.levelRequire.ToString();
+            if (d.itemTag == ItemTag.Hot)
+            {
+                tags[0].transform.parent.gameObject.SetActive(true);
+                tags[0].SetActive(true);
+            }
+            else if (d.itemTag == ItemTag.Sale)
+            {
+                tags[0].transform.parent.gameObject.SetActive(true);
+                tags[1].SetActive(true);
+            }
+            else if (d.itemTag == ItemTag.New)
+            {
+                tags[0].transform.parent.gameObject.SetActive(true);
+                tags[2].SetActive(true);
+            }
         }
         else
         {
@@ -223,15 +238,23 @@ public class ItemUI : MonoBehaviour
                 sickText.text = d.value.ToString("F0");
             }
         }
-        /*
+        
         else if (d.itemType == ItemType.Toy)
         {
             if (d.value > 0)
             {
                 heartIcon.gameObject.SetActive(true);
-                happyText.text = d.value.ToString("F0");
+                happyText.text = "+" + d.value.ToString("F0");
             }
-        }*/
+        }
+        else if (d.itemType == ItemType.Toilet)
+        {
+            if (d.value > 0)
+            {
+                cleanIcon.gameObject.SetActive(true);
+                cleanText.text = d.value.ToString("F0");
+            }
+        }
 
         //SuperSale
         if (!isLevelRequire)
