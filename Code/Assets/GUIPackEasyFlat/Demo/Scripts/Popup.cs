@@ -74,8 +74,12 @@ public class Popup : MonoBehaviour
 
     private void RemoveBackground()
     {
-        var image = m_background.GetComponent<Image>();
-        if (image != null)
-            image.CrossFadeAlpha(0.0f, 0.2f, false);
+        if(m_background != null)
+        {
+            var image = m_background.GetComponent<Image>();
+            if (image != null)
+                image.CrossFadeAlpha(0.0f, 0.2f, false);
+        }
+
     }
 }

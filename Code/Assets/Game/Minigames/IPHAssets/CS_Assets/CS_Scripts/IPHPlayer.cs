@@ -10,7 +10,9 @@ namespace InfiniteHopper
 	public class IPHPlayer:MonoBehaviour 
 	{
 		internal Transform thisTransform;
+		Vector3 originalScale;
 		internal GameObject gameController;
+		Animator animator;
 		
 		//How fast the player's jump power increases when we are holding the jump button
 		public float jumpChargeSpeed = 30;
@@ -36,11 +38,6 @@ namespace InfiniteHopper
 		public ParticleSystem perfectEffect;
 		
 		//Various animations for the player
-		public AnimationClip animationJumpStart;
-		public AnimationClip animationJumpEnd;
-		public AnimationClip animationFullPower;
-		public AnimationClip animationFalling;
-		public AnimationClip animationLanded;
 
 		//Various sounds and their source
 		public AudioClip soundStartJump;
@@ -65,11 +62,16 @@ namespace InfiniteHopper
 
 		// Is the player dead?
 		internal bool isDead = false;
-		
-		void  Start()
+
+        private void Awake()
+        {
+			animator = this.GetComponent<Animator>();
+        }
+
+        void  Start()
 		{
 			thisTransform = transform;
-			
+			originalScale = this.transform.localScale;
 			//Assign the game controller for easier access
 			gameController = GameObject.FindGameObjectWithTag("GameController");
 
@@ -108,8 +110,9 @@ namespace InfiniteHopper
 					}
 					else
 					{
+						animator.Play("FullPower", 0);
 						//Play the full power animation
-						if ( GetComponent<Animation>() && animationFullPower )    GetComponent<Animation>().Play(animationFullPower.name);
+						//if ( GetComponent<Animation>() && animationFullPower )    GetComponent<Animation>().Play(animationFullPower.name);
 					}
 				}
 				
@@ -117,13 +120,13 @@ namespace InfiniteHopper
 				if ( isFalling == false && GetComponent<Rigidbody2D>().velocity.y < 0 )
 				{
 					isFalling = true;
-					
+					animator.Play("Falling", 0);
 					//Play the falling animation
-					if ( GetComponent<Animation>() && animationFalling )
-					{
+					//if ( GetComponent<Animation>() && animationFalling )
+					//{
 						//Play the animation
-						GetComponent<Animation>().PlayQueued(animationFalling.name, QueueMode.CompleteOthers);
-					}
+					//	GetComponent<Animation>().PlayQueued(animationFalling.name, QueueMode.CompleteOthers);
+					//}
 				}
 			}
 		}
@@ -177,16 +180,17 @@ namespace InfiniteHopper
 					
 					//Reset the jump power
 					jumpPower = 0;
-					
+
 					//Play the jump start animation ( charging up the jump power )
-					if ( GetComponent<Animation>() && animationJumpStart )
-					{
-						//Stop the animation
-						GetComponent<Animation>().Stop();
-						
-						//Play the animation
-						GetComponent<Animation>().Play(animationJumpStart.name);
-					}
+					//if ( GetComponent<Animation>() && animationJumpStart )
+					//{
+					//Stop the animation
+					//	GetComponent<Animation>().Stop();
+
+					//Play the animation
+					//	GetComponent<Animation>().Play(animationJumpStart.name);
+					//}
+					animator.Play("JumpStart", 0);
 
 					//Align the power bar to the player and activate it
 					if ( powerBar )
@@ -224,6 +228,8 @@ namespace InfiniteHopper
 					GetComponent<Rigidbody2D>().velocity = new Vector2( moveSpeed, jumpPower);
 
 					//Play the jump ( launch ) animation
+					animator.Play("JumpEnd", 0);
+                    /*
 					if ( GetComponent<Animation>() && animationJumpEnd )
 					{
 						//Stop the animation
@@ -231,7 +237,7 @@ namespace InfiniteHopper
 						
 						//Play the animation
 						GetComponent<Animation>().Play(animationJumpEnd.name);
-					}
+					}*/
 
 					//Deactivate the power bar
 					if ( powerBar )    powerBar.gameObject.SetActive(false);
@@ -258,8 +264,10 @@ namespace InfiniteHopper
 		void  PlayerLanded()
 		{
 			isLanded = true;
-			
+
 			//Play the landing animation
+			animator.Play("Landed", 0);
+            /*
 			if ( GetComponent<Animation>() && animationLanded )
 			{
 				//Stop the animation
@@ -267,7 +275,7 @@ namespace InfiniteHopper
 				
 				//Play the animation
 				GetComponent<Animation>().Play(animationLanded.name);
-			}
+			}*/
 			
 			//Play the landing particle effect
 			if ( landEffect )    landEffect.Play();
@@ -300,22 +308,13 @@ namespace InfiniteHopper
 			
 			while ( scaleTime > 0 )
 			{
-				//Count down the scaling time
+				thisTransform.localScale = Vector3.Lerp(thisTransform.localScale, originalScale * targetScale, Time.deltaTime);
 				scaleTime -= Time.deltaTime;
-				
-				//Wait for the fixed update so we can animate the scaling
 				yield return new WaitForFixedUpdate();
-
-				float tempScale = thisTransform.localScale.x;
-
-				//Scale the object up or down until we reach the target scale
-				tempScale -= ( thisTransform.localScale.x - targetScale ) * 5 * Time.deltaTime;
-				
-				thisTransform.localScale = Vector3.one * tempScale;
 			}
 			
 			//Rescale the object to the target scale instantly, so we make sure that we got the the target
-			thisTransform.localScale = Vector3.one * targetScale;
+			thisTransform.localScale = originalScale * targetScale;
 		}
 	}
 }

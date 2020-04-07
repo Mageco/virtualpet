@@ -41,14 +41,13 @@ public class OnMapButton : MonoBehaviour
 		Vector3 upPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 		if (Vector3.Distance(upPos, clickPos) < 0.5f)
 		{
-			UIManager.instance.OnMap(mapType);
-            /*
+
             if (mapType == MapType.House)
             {
 				UIManager.instance.OnMap(mapType);
 			}else
 			    UIManager.instance.OnMapRequirement(mapType);
-                */
+                
 		}
 
 	}

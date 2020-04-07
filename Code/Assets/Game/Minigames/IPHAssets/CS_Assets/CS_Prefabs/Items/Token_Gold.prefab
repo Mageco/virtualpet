@@ -90,7 +90,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1808026495076365953}
   - component: {fileID: 1808026495063479425}
-  - component: {fileID: 1808026495070573061}
   m_Layer: 0
   m_Name: Part1
   m_TagString: Untagged
@@ -163,27 +162,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &1808026495070573061
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1808026495076197025}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 873d6f69a00e4d44ea742a02d35adf3b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  colors:
-  - {r: 1, g: 0, b: 0, a: 1}
-  - {r: 1, g: 0.6827586, b: 0, a: 1}
-  - {r: 1, g: 0.9724138, b: 0, a: 1}
-  - {r: 0, g: 1, b: 0.37931037, a: 1}
-  - {r: 0, g: 1, b: 0.8758621, a: 1}
-  - {r: 0, g: 0.42068958, b: 1, a: 1}
-  - {r: 0.3241377, g: 0, b: 1, a: 1}
-  - {r: 1, g: 0, b: 0.93103456, a: 1}
 --- !u!1 &1808026495076197027
 GameObject:
   m_ObjectHideFlags: 0
@@ -232,11 +210,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hitTargetTag: Player
   touchFunctions: []
-  playerPrefsName: Tokens
-  playerPrefsValue: 1
-  hitEffect: {fileID: 0}
-  soundHit: {fileID: 8300000, guid: 491e9bdba81b36f48aef9cd3d7ebb597, type: 3}
-  soundSourceTag: GameController
+  soundHit: {fileID: 8300000, guid: 877fd3ceb44de4cc1948d50132895f44, type: 3}
+  coin: 1
 --- !u!58 &1808026495082025393
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -250,9 +225,9 @@ CircleCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0, y: 0.55}
   serializedVersion: 2
-  m_Radius: 0.5
+  m_Radius: 0.4
 --- !u!95 &3546488640249914023
 Animator:
   serializedVersion: 3
@@ -296,8 +271,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1808026495076199185}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.4, y: 0.1, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 0.018090129, y: 0.5434294, z: 0}
+  m_LocalScale: {x: 0.7, y: 0.7, z: 0.7}
   m_Children:
   - {fileID: 1808026495076365953}
   m_Father: {fileID: 1808026495076365955}

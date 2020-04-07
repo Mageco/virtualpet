@@ -105,21 +105,13 @@ namespace InfiniteHopper
 		
 		//Is the game over?
 		internal bool  isGameOver = false;
-		
-		//The level of the main menu that can be loaded after the game ends
-		public string mainMenuLevelName = "MainMenu";
+
+		public GameObject fallEffect;
 		
 		//Various sounds and their source
 		public AudioClip soundLevelUp;
 		public AudioClip soundGameOver;
-		public string soundSourceTag = "GameController";
 		internal GameObject soundSource;
-		
-		//The button that will restart the game after game over
-		public string confirmButton = "Submit";
-		
-		//The button that pauses the game. Clicking on the pause button in the UI also pauses the game
-		public string pauseButton = "Cancel";
 		internal bool  isPaused = false;
 		
 		internal int index = 0;
@@ -143,26 +135,10 @@ namespace InfiniteHopper
 		{
 			//Update the score
 			UpdateScore();
+			gameOverCanvas.gameObject.SetActive(false);
 			
-			//Hide the game over canvas
-			if ( gameOverCanvas )    gameOverCanvas.gameObject.SetActive(false);
-			
-			//Get the highscore for the player
-			#if UNITY_5_3 || UNITY_5_3_OR_NEWER
-			highScore = PlayerPrefs.GetInt(SceneManager.GetActiveScene().name + "HighScore", 0);
-			#else
-			highScore = PlayerPrefs.GetInt(Application.loadedLevelName + "HighScore", 0);
-			#endif
+			gameCanvas.gameObject.SetActive(false);
 
-			//Get the currently selected player from PlayerPrefs
-			currentPlayer = PlayerPrefs.GetInt("CurrentPlayer", currentPlayer);
-
-			// Get the current number of powerups from PlayerPrefs
-			totalPowerups = PlayerPrefs.GetInt("TotalPowerups", totalPowerups);
-			
-			//Set the current player object
-			SetPlayer(currentPlayer);
-			
 			//If the player object is not already assigned, Assign it from the "Player" tag
 			if ( cameraObject == null )    cameraObject = GameObject.FindGameObjectWithTag("MainCamera").transform;
 			
@@ -202,11 +178,28 @@ namespace InfiniteHopper
 				powerups[index].icon.gameObject.SetActive(false);
 			}
 			
-			//Assign the sound source for easier access
-			if ( GameObject.FindGameObjectWithTag(soundSourceTag) )    soundSource = GameObject.FindGameObjectWithTag(soundSourceTag);
+			for (index = 0; index < playerObjects.Length; index++)
+			{
+				playerObjects[index].gameObject.SetActive(false);
+			}
 
-			//Pause the game at the start
-			Pause();
+			if (GameManager.instance.myPlayer.minigameLevels[Minigame.instance.minigameId] == 0)
+				pauseCanvas.gameObject.SetActive(true);
+			else
+				StartGame();
+		}
+
+        public void StartGame()
+        {
+			gameOverCanvas.gameObject.SetActive(false);
+			pauseCanvas.gameObject.SetActive(false);
+			gameCanvas.gameObject.SetActive(true);
+
+			//Get the currently selected player from PlayerPrefs
+			currentPlayer = Random.Range(0, playerObjects.Length);
+
+			//Set the current player object
+			SetPlayer(currentPlayer);
 		}
 
 		/// <summary>
@@ -215,48 +208,34 @@ namespace InfiniteHopper
 		void  Update()
 		{
 			//If the game is over, listen for the Restart and MainMenu buttons
-			if ( isGameOver == true )
-			{
-				//The jump button restarts the game
-				if ( Input.GetButtonDown(confirmButton) )
-				{
-					Restart();
-				}
-				
-				//The pause button goes to the main menu
-				if ( Input.GetButtonDown(pauseButton) )
-				{
-					MainMenu();
-				}
-			}
-			else
-			{
+
+                /*
 				//Toggle pause/unpause in the game
 				if ( Input.GetButtonDown(pauseButton) )
 				{
 					if ( isPaused == true )    Unpause();
 					else    Pause();
-				}
+				}*/
 				
 				//If there is a player object, you can make it jump, the background moves in a loop.
-				if ( playerObjects[currentPlayer] )
+			if ( playerObjects[currentPlayer] )
+			{
+				if ( cameraObject )
 				{
-					if ( cameraObject )
-					{
-						//Make the camera chase the player in all directions
-						cameraObject.GetComponent<Rigidbody2D>().velocity = new Vector2((playerObjects[currentPlayer].position.x - cameraObject.position.x) * cameraSpeed, cameraObject.GetComponent<Rigidbody2D>().velocity.y);
-					}
-					
-					//If we press the jump buttons, start the jump sequence, charging up the jump power
-					if ( Input.GetButtonDown(jumpButton) )    StartJump();
-					
-					//If we release the jump buttons, end the jump sequence, and make the player jump
-					if ( Input.GetButtonUp(jumpButton) )    EndJump();
-					
-					//If the player object moves below the death line, kill it.
-					if ( playerObjects[currentPlayer].position.y < deathLineHeight )     playerObjects[currentPlayer].SendMessage("Die");
+					//Make the camera chase the player in all directions
+					cameraObject.GetComponent<Rigidbody2D>().velocity = new Vector2((playerObjects[currentPlayer].position.x - cameraObject.position.x) * cameraSpeed, cameraObject.GetComponent<Rigidbody2D>().velocity.y);
 				}
+					
+				//If we press the jump buttons, start the jump sequence, charging up the jump power
+				if ( Input.GetButtonDown(jumpButton) )    StartJump();
+					
+				//If we release the jump buttons, end the jump sequence, and make the player jump
+				if ( Input.GetButtonUp(jumpButton) )    EndJump();
+					
+				//If the player object moves below the death line, kill it.
+				if ( playerObjects[currentPlayer].position.y < deathLineHeight )     playerObjects[currentPlayer].SendMessage("Die");
 			}
+			
 			
 			//Set the speed of the looping background based on the horizontal speed of the player
 			for ( index = 0 ; index < loopingBackground.Length ; index++ )
@@ -445,7 +424,8 @@ namespace InfiniteHopper
 			// Set the score multiplier
 			scoreMultiplier = setValue;
 		}
-		
+
+        /*
 		//This function pauses the game
 		void  Pause()
 		{
@@ -460,7 +440,7 @@ namespace InfiniteHopper
 		}
 		
 		//This function resume the game
-		void  Unpause()
+		public void  Unpause()
 		{
 			isPaused = false;
 			
@@ -470,7 +450,7 @@ namespace InfiniteHopper
 			//Hide the pause screen and show the game screen
 			if ( pauseCanvas )    pauseCanvas.gameObject.SetActive(false);
 			if ( gameCanvas )    gameCanvas.gameObject.SetActive(true);
-		}
+		}*/
 		
 		//This function handles the game over event
 		IEnumerator GameOver(float delay)
@@ -486,63 +466,24 @@ namespace InfiniteHopper
 			SaveStats();
 
 			yield return new WaitForSeconds(delay);
-
+			Vector3 pos = playerObjects[currentPlayer].transform.position;
+			pos.y = -7;
+			Instantiate(fallEffect,pos, Quaternion.identity);
 			//If there is a source and a sound, play it from the source
-			if ( soundSource && soundGameOver )    soundSource.GetComponent<AudioSource>().PlayOneShot(soundGameOver);
-			
+			MageManager.instance.PlaySoundClip(soundGameOver);
+
 			isGameOver = true;
-			
-			//Hide the pause screen and the game screen
-			if ( pauseCanvas )    pauseCanvas.gameObject.SetActive(false);
-			if ( gameCanvas )    gameCanvas.gameObject.SetActive(false);
-			
-			//Show the game over screen
-			if ( gameOverCanvas )    
+
+			yield return new WaitForSeconds(1);
+			Minigame.instance.OnEndGame(score);
+
+			if (score > highScore)
 			{
-				//Show the game over screen
-				gameOverCanvas.gameObject.SetActive(true);
-				
-				//Write the score text
-				gameOverCanvas.Find("TextScore").GetComponent<Text>().text = "SCORE " + score.ToString();
-				
-				//Check if we got a high score
-				if ( score > highScore )    
-				{
-					highScore = score;
-					
-					//Register the new high score
-					#if UNITY_5_3 || UNITY_5_3_OR_NEWER
-					PlayerPrefs.SetInt(SceneManager.GetActiveScene().name + "HighScore", score);
-					#else
-					PlayerPrefs.SetInt(Application.loadedLevelName + "HighScore", score);
-					#endif
-				}
-				
-				//Write the high sscore text
-				gameOverCanvas.Find("TextHighScore").GetComponent<Text>().text = "HIGH SCORE " + highScore.ToString();
+				highScore = score;
 			}
 		}
 		
-		//This function restarts the current level
-		void  Restart ()
-		{
-			#if UNITY_5_3 || UNITY_5_3_OR_NEWER
-			SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-			#else
-			Application.LoadLevel(Application.loadedLevelName);
-			#endif
-		}
-
-		//This function returns to the Main Menu
-		void  MainMenu()
-		{
-			#if UNITY_5_3 || UNITY_5_3_OR_NEWER
-			SceneManager.LoadScene(mainMenuLevelName);
-			#else
-			Application.LoadLevel(mainMenuLevelName);
-			#endif
-		}
-
+        /*
 		//This function continues the game from your last point
 		public void Continue()
 		{
@@ -563,8 +504,9 @@ namespace InfiniteHopper
 
 				ChangeContinues(-1);
 			}
-		}
+		}*/
 
+            /*
 		// This function changes the number of continues we have
 		public void ChangeContinues( int changeValue )
 		{
@@ -581,7 +523,7 @@ namespace InfiniteHopper
 				// Activate the continues object if we have no more continues
 				if ( gameOverCanvas )    gameOverCanvas.Find("ButtonContinue").gameObject.SetActive(false);
 			}
-		}
+		}*/
 		
 		//This function activates the selected player, while deactivating all the others
 		void  SetPlayer( int playerNumber )

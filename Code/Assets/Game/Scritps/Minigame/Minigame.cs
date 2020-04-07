@@ -67,6 +67,32 @@ public class Minigame : MonoBehaviour
             if (bonus == 0)
                 bonus = 1;
             winPanel.Load(bonus,minigameId, isWin);
+            GameManager.instance.LogAchivement(AchivementType.Play_MiniGame, ActionType.None, minigameId);
+        }
+
+        if (isWin)
+        {
+            GameManager.instance.GetPlayer().minigameLevels[minigameId]++;
+        }
+    }
+
+    public virtual void OnEndGame(int score)
+    {
+        if (winPanel == null)
+        {
+            var popup = Instantiate(endGamePrefab) as GameObject;
+            popup.SetActive(true);
+            //popup.transform.localScale = Vector3.zero;
+            popup.transform.SetParent(GameObject.Find("Canvas").transform, false);
+            popup.GetComponent<Popup>().Open();
+            winPanel = popup.GetComponent<WinPanel>();
+            bonus += score/50;
+            if(GameManager.instance.GetPlayer().minigameLevels[minigameId] < score)
+                GameManager.instance.GetPlayer().minigameLevels[minigameId] = score;
+            if (bonus == 0)
+                bonus = 1;
+            winPanel.Load(bonus, minigameId, true);
+            GameManager.instance.LogAchivement(AchivementType.Play_MiniGame, ActionType.None, minigameId);
         }
     }
 
@@ -93,7 +119,7 @@ public class Minigame : MonoBehaviour
     }
 
     public virtual void EndGame(){
-        GameManager.instance.LogAchivement(AchivementType.Play_MiniGame, ActionType.None, minigameId);
+        
     }
 
     public int GetZindex()

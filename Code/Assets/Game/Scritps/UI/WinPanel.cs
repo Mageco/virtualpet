@@ -61,7 +61,7 @@ public class WinPanel : MonoBehaviour
                 else
                     item.transform.parent.gameObject.SetActive(false);
             }
-            else if (minigameId == 1)
+            else
             {
                 item.transform.parent.gameObject.SetActive(false);
             }
