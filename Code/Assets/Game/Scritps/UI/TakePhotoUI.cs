@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using MageSDK.Client;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -113,7 +114,7 @@ public class TakePhotoUI : MonoBehaviour
 			texture = Utils.instance.Resize(cropSize, texture);
 		UIManager.instance.avatarUI.LoadAvatar(Utils.instance.CreateSprite(texture));
 
-
+		MageEngine.instance.UploadAvatar(texture);
         //Reactive
 		//ServerManager.instance.UploadCustomerAvatar(editTexture);
 		crop.gameObject.SetActive(true);

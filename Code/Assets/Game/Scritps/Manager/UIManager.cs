@@ -150,7 +150,12 @@ public class UIManager : MonoBehaviour
         }
         else
         {
-
+            MageEngine.instance.LoadImage(MageEngine.instance.GetUser().avatar,
+                (texture2D) =>
+                {
+                    UIManager.instance.avatarUI.LoadAvatar(Utils.instance.CreateSprite(texture2D));
+                });
+                
         }
     }
 
