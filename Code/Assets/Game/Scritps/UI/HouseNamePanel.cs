@@ -1,5 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Mage.Models.Users;
+using MageSDK.Client;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -22,6 +24,9 @@ public class HouseNamePanel : MonoBehaviour
     public void OnSubmit()
     {
         GameManager.instance.myPlayer.playerName = input.text;
+        User u = MageEngine.instance.GetUser();
+        u.fullname = GameManager.instance.myPlayer.playerName;
+        MageEngine.instance.UpdateUserProfile(u);
         Close();
     }
 
