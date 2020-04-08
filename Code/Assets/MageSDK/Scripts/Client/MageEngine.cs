@@ -1181,6 +1181,10 @@ namespace MageSDK.Client {
 		public void LoadImage(string avatarUrl, Action<Texture2D> onLoadCompleteCallback) {
 			StartCoroutine(LoadImageCoroutine(avatarUrl, onLoadCompleteCallback));
 		}
+
+		public void LoadAvatar(Action<Texture2D> onLoadCompleteCallback) {
+			LoadImage(GetUser().avatar, onLoadCompleteCallback);
+		}
 		#endregion
 			
 	}
