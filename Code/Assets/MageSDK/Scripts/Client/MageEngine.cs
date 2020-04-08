@@ -1124,6 +1124,39 @@ namespace MageSDK.Client {
 				}
 			);
 		}
+
+		public void UploadAvatar(Texture2D image, Action<string> onUploadCompleteCallback = null) {
+			UploadFileRequest r = new UploadFileRequest ();
+			r.SetUploadFile (image.EncodeToPNG());
+
+			//call to login api
+			ApiHandler.instance.UploadFile<UploadFileResponse>(
+				r, 
+				(result) => {
+					Debug.Log("Success: Upload file successfully");
+					Debug.Log("Upload URL: " + result.UploadedURL);
+
+					User u = GetUser();
+					u.avatar = result.UploadedURL;
+					string[] keys = result.UploadedURL.Split ('/');
+					string path = keys [keys.Length - 1];
+					ES2.SaveImage(image,path);
+					UpdateUserProfile(u);
+					if (onUploadCompleteCallback != null) {
+						onUploadCompleteCallback(result.UploadedURL);
+					}
+				},
+				(errorStatus) => {
+					Debug.Log("Error: " + errorStatus);
+					//do some other processing here
+				},
+				() => {
+					//timeout handler here
+					Debug.Log("Api call is timeout");
+				}
+			);
+
+		}
 		#endregion
 			
 	}
