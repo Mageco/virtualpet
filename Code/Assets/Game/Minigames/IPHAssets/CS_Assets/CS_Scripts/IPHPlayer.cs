@@ -45,8 +45,6 @@ namespace InfiniteHopper
 		public AudioClip soundLand;
 		public AudioClip soundCrash;
 		public AudioClip soundPerfect;
-		public string soundSourceTag = "GameController";
-		internal GameObject soundSource;
 		
 		//Did the player start the jump process ( powering up and then releasing )
 		internal bool  startJump = false;
@@ -80,8 +78,6 @@ namespace InfiniteHopper
 			if ( landEffect )    landEffect.GetComponent<Renderer>().sortingLayerName = "RenderInFront";
 			if ( perfectEffect )    perfectEffect.GetComponent<Renderer>().sortingLayerName = "RenderInFront";
 			
-			//Assign the sound source for easier access
-			if ( GameObject.FindGameObjectWithTag(soundSourceTag) )    soundSource = GameObject.FindGameObjectWithTag(soundSourceTag);
 		}
 		
 		void  Update()
@@ -101,7 +97,8 @@ namespace InfiniteHopper
 						powerBar.Find("Base/FillAmount").GetComponent<Image>().fillAmount = jumpPower/jumpChargeMax;
 						
 						//Play the charge sound and change the pitch based on the jump power
-						if ( soundSource )    soundSource.GetComponent<AudioSource>().pitch = 0.3f + jumpPower * 0.1f;
+
+						//if ( soundSource )    soundSource.GetComponent<AudioSource>().pitch = 0.3f + jumpPower * 0.1f;
 					}
 					else if ( autoJump == true )
 					{
@@ -111,8 +108,6 @@ namespace InfiniteHopper
 					else
 					{
 						animator.Play("FullPower", 0);
-						//Play the full power animation
-						//if ( GetComponent<Animation>() && animationFullPower )    GetComponent<Animation>().Play(animationFullPower.name);
 					}
 				}
 				
@@ -121,12 +116,6 @@ namespace InfiniteHopper
 				{
 					isFalling = true;
 					animator.Play("Falling", 0);
-					//Play the falling animation
-					//if ( GetComponent<Animation>() && animationFalling )
-					//{
-						//Play the animation
-					//	GetComponent<Animation>().PlayQueued(animationFalling.name, QueueMode.CompleteOthers);
-					//}
 				}
 			}
 		}
@@ -146,13 +135,7 @@ namespace InfiniteHopper
 				gameController.SendMessage("GameOver", 0.5f);
 				
 				//Play the death sound
-				if ( soundSource )
-				{
-					soundSource.GetComponent<AudioSource>().pitch = 1;
-					
-					//If there is a sound source and a sound assigned, play it from the source
-					if ( soundCrash )    soundSource.GetComponent<AudioSource>().PlayOneShot(soundCrash);
-				}
+				MageManager.instance.PlaySoundClip(soundCrash);
 				
 				// The player is dead
 				isDead = true;
@@ -181,15 +164,6 @@ namespace InfiniteHopper
 					//Reset the jump power
 					jumpPower = 0;
 
-					//Play the jump start animation ( charging up the jump power )
-					//if ( GetComponent<Animation>() && animationJumpStart )
-					//{
-					//Stop the animation
-					//	GetComponent<Animation>().Stop();
-
-					//Play the animation
-					//	GetComponent<Animation>().Play(animationJumpStart.name);
-					//}
 					animator.Play("JumpStart", 0);
 
 					//Align the power bar to the player and activate it
@@ -199,12 +173,8 @@ namespace InfiniteHopper
 
 						powerBar.gameObject.SetActive(true);
 					}
-					
-					if ( soundSource )
-					{
-						//If there is a sound source and a sound assigned, play it from the source
-						if ( soundStartJump )    soundSource.GetComponent<AudioSource>().PlayOneShot(soundStartJump);
-					}
+
+					MageManager.instance.PlaySoundClip(soundStartJump);
 				}
 			}
 		}
@@ -229,15 +199,7 @@ namespace InfiniteHopper
 
 					//Play the jump ( launch ) animation
 					animator.Play("JumpEnd", 0);
-                    /*
-					if ( GetComponent<Animation>() && animationJumpEnd )
-					{
-						//Stop the animation
-						GetComponent<Animation>().Stop();
-						
-						//Play the animation
-						GetComponent<Animation>().Play(animationJumpEnd.name);
-					}*/
+                    
 
 					//Deactivate the power bar
 					if ( powerBar )    powerBar.gameObject.SetActive(false);
@@ -246,16 +208,8 @@ namespace InfiniteHopper
 					if ( jumpEffect )   jumpEffect.Play(); 
 
 					//Play the jump sound ( launch )
-					if ( soundSource )
-					{
-						soundSource.GetComponent<AudioSource>().Stop();
-						
-						soundSource.GetComponent<AudioSource>().pitch = 0.6f + jumpPower * 0.05f;
-						
-						//If there is a sound source and a sound assigned, play it from the source
-						if ( soundEndJump )    soundSource.GetComponent<AudioSource>().PlayOneShot(soundEndJump);
-					}
-					
+					MageManager.instance.PlaySoundClip(soundEndJump);
+
 				}
 			}
 		}
@@ -267,27 +221,13 @@ namespace InfiniteHopper
 
 			//Play the landing animation
 			animator.Play("Landed", 0);
-            /*
-			if ( GetComponent<Animation>() && animationLanded )
-			{
-				//Stop the animation
-				GetComponent<Animation>().Stop();
-				
-				//Play the animation
-				GetComponent<Animation>().Play(animationLanded.name);
-			}*/
 			
 			//Play the landing particle effect
 			if ( landEffect )    landEffect.Play();
-			
+
 			//Play the landing sound
-			if ( soundSource )
-			{
-				soundSource.GetComponent<AudioSource>().pitch = 1;
-				
-				//If there is a sound source and a sound assigned, play it from the source
-				if ( soundLand )    soundSource.GetComponent<AudioSource>().PlayOneShot(soundLand);
-			}
+			MageManager.instance.PlaySoundClip(soundLand);
+
 		}
 		
 		//This function runs when the player executes a perfect landing ( closest to the middle )
@@ -295,9 +235,9 @@ namespace InfiniteHopper
 		{
 			//Play the perfect landing particle effect
 			if ( perfectEffect )    perfectEffect.Play();
-			
+
 			//If there is a sound source and a sound assigned, play it from the source
-			if ( soundSource && soundPerfect )    soundSource.GetComponent<AudioSource>().PlayOneShot(soundPerfect);
+			MageManager.instance.PlaySoundClip(soundPerfect);
 		}
 
 		//This function rescales this object over time

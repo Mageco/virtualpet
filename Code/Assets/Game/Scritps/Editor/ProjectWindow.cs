@@ -77,6 +77,8 @@ public class ProjectWindow : EditorWindow
 		DataHolder.Achivements().SaveData();
 	}
 
+
+
 	void OnGUI()
 	{
 		if (this.langTab == null)
@@ -111,12 +113,14 @@ public class ProjectWindow : EditorWindow
 
 		EditorGUILayout.Separator ();
 		EditorGUILayout.BeginHorizontal ();
-		//GUI.SetNextControlName ("Reload");
-		//if (GUILayout.Button ("Reload Settings")) {
-		//	GUI.FocusControl ("Reload");
-		//	this.Reload ();
-		//}
-		
+		GUI.SetNextControlName("Import");
+		if (GUILayout.Button("Import Items"))
+		{
+			DataHolder.Dialogs().ImportData();
+			GUI.FocusControl("Import");
+		}
+
+
 		GUI.SetNextControlName ("Save");
 		if (GUILayout.Button ("Save Settings")) {
 			GUI.FocusControl ("Save");

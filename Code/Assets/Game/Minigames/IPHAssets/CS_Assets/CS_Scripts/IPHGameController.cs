@@ -100,7 +100,6 @@ namespace InfiniteHopper
 		//Various canvases for the UI
 		public Transform gameCanvas;
 		public Transform pauseCanvas;
-		public Transform gameOverCanvas;
 		
 		//Is the game over?
 		internal bool  isGameOver = false;
@@ -110,12 +109,14 @@ namespace InfiniteHopper
 		//Various sounds and their source
 		public AudioClip soundLevelUp;
 		public AudioClip soundGameOver;
+		public AudioClip music;
 		internal GameObject soundSource;
 		internal bool  isPaused = false;
 		
 		internal int index = 0;
 
 		// A list of records that keep track of various game stats
+
 		internal int currentDistance = 0;
 		internal int longestDistance = 0;
 		internal int longestStreak = 0;
@@ -134,7 +135,7 @@ namespace InfiniteHopper
 		{
 			//Update the score
 			UpdateScore();
-			gameOverCanvas.gameObject.SetActive(false);
+			MageManager.instance.PlayMusic(music, 0, true);
 			
 			gameCanvas.gameObject.SetActive(false);
 
@@ -190,7 +191,6 @@ namespace InfiniteHopper
 
         public void StartGame()
         {
-			gameOverCanvas.gameObject.SetActive(false);
 			pauseCanvas.gameObject.SetActive(false);
 			gameCanvas.gameObject.SetActive(true);
 
@@ -340,6 +340,7 @@ namespace InfiniteHopper
 
 						//Call the perfect landing function, which plays a sound and particle effect based on the player's streak
 						playerObjects[currentPlayer].gameObject.SendMessage("PerfectLanding", currentStreak);
+
 					}
 					else    
 					{
@@ -411,9 +412,9 @@ namespace InfiniteHopper
 			
 			// Increase the chance of a moving column appearing
 			movingColumnChance += increaseMovingColumnChance;
-			
+
 			// If there is a source and a sound, play it from the source
-			if ( soundSource && soundLevelUp )    soundSource.GetComponent<AudioSource>().PlayOneShot(soundLevelUp);
+			MageManager.instance.PlaySoundClip(soundLevelUp);
 		}
 
 

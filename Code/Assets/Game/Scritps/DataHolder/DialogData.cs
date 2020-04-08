@@ -40,7 +40,65 @@ public class DialogData : BaseData
 		SaveFile (fileName, text);
 	}
 
-	
+	public void ImportData()
+	{
+    #if UNITY_EDITOR
+		string loadPath = EditorUtility.OpenFilePanel("Load import file", Application.dataPath + "/Data/ImportData/", "csv,txt");
+		string text = File.ReadAllText(loadPath);
+		string[] lines = text.Split('\n');
+		int count = 0;
+		Debug.Log(SplitCsvLine(lines[0]).Length);
+		for (int i = 1; i < lines.Length; i++)
+		{
+			string[] fields = SplitCsvLine(lines[i]);
+			bool isExist = false;
+			Debug.Log(fields[0]);
+			for (int j = 0; j < dialogs.Length; j++)
+			{
+
+				if (dialogs[j].iD.ToString() == fields[0])
+				{
+
+					int n = DataHolder.Languages().GetDataCount();
+					for (int k = 0; k < n; k++)
+					{
+						Debug.Log(k);
+						dialogs[j].SetDescription(k, fields[1 + k]);
+					}
+					isExist = true;
+					break;
+				}
+			}
+
+			if (!isExist)
+			{
+				//	int n = fields.Length - 8;
+				Dialog item = new Dialog();
+				for (int j = 0; j < DataHolder.Languages().GetDataCount(); j++)
+				{
+					item.AddLanguageItem();
+					item.SetName(j, fields[1 + j]);
+                    
+				}
+				this.dialogs = ArrayHelper.Add(item, dialogs);
+				count++;
+			}
+		}
+
+
+		SaveData();
+		EditorUtility.DisplayDialog("Import", "Import Items Completed, There are " + count.ToString() + " new item added", "Ok");
+#endif
+	}
+
+	public string[] SplitCsvLine(string line)
+	{
+		return (from System.Text.RegularExpressions.Match m in System.Text.RegularExpressions.Regex.Matches(line,
+			@"(((?<x>(?=[,\r\n]+))|""(?<x>([^""]|"""")+)""|(?<x>[^,\r\n]+)),?)",
+			System.Text.RegularExpressions.RegexOptions.ExplicitCapture)
+				select m.Groups[1].Value).ToArray();
+	}
+
 	public void AddDialog()
 	{
 		dialogs = ArrayHelper.Add(new Dialog(), dialogs);

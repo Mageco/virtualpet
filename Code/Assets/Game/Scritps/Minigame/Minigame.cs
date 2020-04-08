@@ -91,7 +91,7 @@ public class Minigame : MonoBehaviour
                 GameManager.instance.GetPlayer().minigameLevels[minigameId] = score;
             if (bonus == 0)
                 bonus = 1;
-            winPanel.Load(bonus, minigameId, true);
+            winPanel.Load(bonus, minigameId, false);
             GameManager.instance.LogAchivement(AchivementType.Play_MiniGame, ActionType.None, minigameId);
         }
     }
