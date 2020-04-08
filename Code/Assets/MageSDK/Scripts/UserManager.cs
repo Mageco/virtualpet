@@ -231,6 +231,7 @@ public class UserManager : MonoBehaviour
 			(result) => {
 				Debug.Log("Success: get leaderboard successfully");
 				Debug.Log("Leaderboard result: " + result.ToJson());
+                
 			},
 			(errorStatus) => {
 				Debug.Log("Error: " + errorStatus);
