@@ -30,6 +30,7 @@ public class UIManager : MonoBehaviour
     public GameObject epicChestPanelPrefab;
     public GameObject profilePanelPrefab;
     public GameObject houseNamePanelPrefab;
+    public GameObject takePhotoUIPrefab;
     public static UIManager instance;
 	public Text coinText;
 	public Text diamonText;
@@ -78,7 +79,8 @@ public class UIManager : MonoBehaviour
     public ProfilePanel profilePanel;
     [HideInInspector]
     public HouseNamePanel houseNamePanel;
-
+    [HideInInspector]
+    public TakePhotoUI takePhotoUI;
     [HideInInspector]
     public ChestSalePanel chestSalePanel;
 
@@ -103,6 +105,8 @@ public class UIManager : MonoBehaviour
     public GameObject shopButton;
     public GameObject mapButton;
     public GameObject callButton;
+
+    public AvatarUI avatarUI;
 
     float coin = 0;
     float happy = 0;
@@ -663,6 +667,25 @@ public class UIManager : MonoBehaviour
             popup.GetComponent<Popup>().Open();
             houseNamePanel = popup.GetComponent<HouseNamePanel>();
         }
+    }
+
+    public void OnTakePhotoPanel()
+    {
+        if (takePhotoUI == null)
+        {
+            var popup = Instantiate(takePhotoUIPrefab) as GameObject;
+            popup.SetActive(true);
+            popup.transform.SetParent(GameObject.Find("Canvas").transform, false);
+            takePhotoUI = popup.GetComponent<TakePhotoUI>();
+            homeUI.gameObject.SetActive(false);
+        }
+    }
+
+    public void OffTakePhotoPanel()
+    {
+        if (takePhotoUI != null)
+            Destroy(takePhotoUI.gameObject);
+        homeUI.gameObject.SetActive(true);
     }
 
     public void OnChestSalePanel(RareType rareType)
