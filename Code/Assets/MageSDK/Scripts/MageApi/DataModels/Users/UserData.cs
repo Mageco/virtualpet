@@ -53,13 +53,31 @@ namespace Mage.Models.Users{
 								string value = ExtractFieldAttribute.GetMemberValue(obj, myMembers[i].ToString());
 								string name = ExtractFieldAttribute.FieldLabel(myType.Name, myMembers[i].ToString());
 
-								UserData d = new UserData() {
-									attr_name = name,
-									attr_value = value,
-									attr_type = "ExtractField"
-								};
+								if (ExtractFieldAttribute.IsArrayMember(obj, myMembers[i].ToString())) {
+									string[] val = value.Split(',');
 
-								extractFields.Add(d);
+									for (int k = 0; k < val.Length; k++) {
+										if (val[k] != "" && val[k] != "0") {
+											UserData d = new UserData() {
+											attr_name = name+"_"+k,
+											attr_value = val[k],
+											attr_type = "ExtractField"
+										};
+
+										extractFields.Add(d);
+										}
+									}
+
+								} else {
+									UserData d = new UserData() {
+										attr_name = name,
+										attr_value = value,
+										attr_type = "ExtractField"
+									};
+
+									extractFields.Add(d);
+								}
+								
 								//sDebug.Log("Added extracted: " + d.ToJson());
 							}
 							//Debug.Log("The type of the attribute is " + myAttributes[j].ToString());

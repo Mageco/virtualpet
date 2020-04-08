@@ -73,15 +73,6 @@ namespace MageSDK.Client {
 
             DontDestroyOnLoad(this.gameObject);
 
-			// perform signature check for android
-			#if UNITY_ANDROID
-				if (!CheckApplicationSignature()) {
-					OnEvent(MageEventType.ApplicationSignatureFailed);
-					Debug.Log("App fingerprint is not valid");
-					Application.Quit();
-				} 
-			#endif
-
             if (!_isLoaded) {
 				_isLoaded = true;
 
@@ -442,40 +433,6 @@ namespace MageSDK.Client {
 
 			if ("" != user.notification_token && user.notification_token != u.notification_token) {
 				u.notification_token = user.notification_token;
-			}
-
-			UpdateUserProfileToServer(u);
-
-		}
-
-
-		///<summary>Update user notification token</summary>
-		public void UpdateNotificationToken(string notificationToken) {
-
-			User u = GetUser();
-
-			if (notificationToken != "" && notificationToken != u.notification_token) {
-				u.notification_token = notificationToken;
-			} else {
-				return;
-			}
-
-			UpdateUserProfileToServer(u);
-
-		}
-
-		///<summary>Update user avatar</summary>
-		public void UpdateUserAvatar(string avatarImage) {
-
-			// upload image 
-			string avatarUrl = UploadFile(avatarImage);
-
-			User u = GetUser();
-
-			if (avatarUrl != "" && avatarUrl != u.avatar) {
-				u.avatar = avatarUrl;
-			} else {
-				return;
 			}
 
 			UpdateUserProfileToServer(u);
@@ -1175,18 +1132,64 @@ namespace MageSDK.Client {
 				Debug.Log ("saved");
 			}
 
-			onLoadCompleteCallback(tex);
+			if (tex != null) {
+				onLoadCompleteCallback(tex);
+			}
 		}
 
 		public void LoadImage(string avatarUrl, Action<Texture2D> onLoadCompleteCallback) {
-			StartCoroutine(LoadImageCoroutine(avatarUrl, onLoadCompleteCallback));
+			if (avatarUrl != "") {
+				StartCoroutine(LoadImageCoroutine(avatarUrl, onLoadCompleteCallback));
+			}
+			
 		}
 
 		public void LoadAvatar(Action<Texture2D> onLoadCompleteCallback) {
 			LoadImage(GetUser().avatar, onLoadCompleteCallback);
 		}
 		#endregion
+		
+
+		#region Leaderboard
+
+		public void GetLeaderBoardFromObject(object t, string fieldName, int index = -1, Action<List<LeaderBoardItem>> onCompleteCallback = null) {
 			
+			string name = "Field_" + t.GetType().Name + "_" + fieldName + (index >= 0 ? "_" + index : "");
+			if (null != onCompleteCallback) {
+				GetLeaderBoardFromServer(name, onCompleteCallback);
+			} else {
+				GetLeaderBoardFromServer(name);
+			}
+			
+		}
+
+		public void GetLeaderBoardFromServer(string fieldName, Action<List<LeaderBoardItem>> onCompleteCallback = null) {
+			GetLeaderBoardRequest r = new GetLeaderBoardRequest (fieldName);
+
+			//call to login api
+			ApiHandler.instance.SendApi<GetLeaderBoardResponse>(
+				ApiSettings.API_GET_LEADER_BOARD,
+				r, 
+				(result) => {
+					Debug.Log("Success: get leaderboard successfully");
+					Debug.Log("Leaderboard result: " + result.ToJson());
+
+					if (null != onCompleteCallback) {
+						onCompleteCallback(result.Leaders);
+					}
+				},
+				(errorStatus) => {
+					Debug.Log("Error: " + errorStatus);
+					//do some other processing here
+				},
+				() => {
+					//timeout handler here
+					Debug.Log("Api call is timeout");
+				}
+			);
+		}
+
+		#endregion
 	}
 		
 }

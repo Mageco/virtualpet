@@ -21,6 +21,7 @@ public class PlayerData : BaseModel
 	public int exp = 0;
     public List<PlayerItem> items = new List<PlayerItem>();
     public List<Pet> pets = new List<Pet>();
+	[ExtractField]
 	public int[] minigameLevels = new int[20];
 
 	public int questId = 0;
