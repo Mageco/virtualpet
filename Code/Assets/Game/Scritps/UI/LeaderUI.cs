@@ -27,6 +27,6 @@ public class LeaderUI : MonoBehaviour
 
     public void Load(LeaderBoardItem data)
     {
-        score.text = data.attr_value.ToString();
+        score.text = data.score.ToString();
     }
 }

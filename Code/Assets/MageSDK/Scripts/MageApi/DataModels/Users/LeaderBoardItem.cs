@@ -10,12 +10,16 @@ namespace Mage.Models.Users{
 	[Serializable]
 	public class LeaderBoardItem : BaseModel
 	{
-		public string attr_name = "";
-		public int attr_value = 0;
-		public User user = new User();
+		public int rank = 0;
+		public string board_name = "";
+		public int score = 0;
+		public string user_id = "";
+
+		public string fullname = "";
+
+		public string avatar = "";
 
 		public LeaderBoardItem() : base () {
-			user = new User ();
 		}
 	}
 

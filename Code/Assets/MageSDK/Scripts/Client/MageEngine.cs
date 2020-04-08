@@ -240,6 +240,7 @@ namespace MageSDK.Client {
 
 			//test callback
 			OnLoginCompleteCallback();
+		
 		}
 
 		///<summary>If this is new user then it will need to create a default profile</summary>

@@ -57,14 +57,14 @@ namespace Mage.Models.Users{
 									string[] val = value.Split(',');
 
 									for (int k = 0; k < val.Length; k++) {
-										if (val[k] != "" && val[k] != "0") {
+										if (val[k].Trim() != "" && val[k].Trim() != "0") {
 											UserData d = new UserData() {
-											attr_name = name+"_"+k,
-											attr_value = val[k],
-											attr_type = "ExtractField"
-										};
+												attr_name = name+"_"+k,
+												attr_value = val[k],
+												attr_type = "ExtractField"
+											};
 
-										extractFields.Add(d);
+											extractFields.Add(d);
 										}
 									}
 
