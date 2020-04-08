@@ -31,6 +31,7 @@ public class UIManager : MonoBehaviour
     public GameObject profilePanelPrefab;
     public GameObject houseNamePanelPrefab;
     public GameObject takePhotoUIPrefab;
+    public GameObject leaderBoardPanelPrefab;
     public static UIManager instance;
 	public Text coinText;
 	public Text diamonText;
@@ -83,6 +84,8 @@ public class UIManager : MonoBehaviour
     public TakePhotoUI takePhotoUI;
     [HideInInspector]
     public ChestSalePanel chestSalePanel;
+    [HideInInspector]
+    public LeaderBoardPanel leaderBoardPanel;
 
     public GameObject achivementNotification;
     public GameObject giftNotification;
@@ -691,6 +694,19 @@ public class UIManager : MonoBehaviour
         if (takePhotoUI != null)
             Destroy(takePhotoUI.gameObject);
         homeUI.gameObject.SetActive(true);
+    }
+
+    public void OnLeaderBoardPanel()
+    {
+        if (leaderBoardPanel == null)
+        {
+            var popup = Instantiate(leaderBoardPanelPrefab) as GameObject;
+            popup.SetActive(true);
+            popup.transform.localScale = Vector3.zero;
+            popup.transform.SetParent(GameObject.Find("Canvas").transform, false);
+            popup.GetComponent<Popup>().Open();
+            leaderBoardPanel = popup.GetComponent<LeaderBoardPanel>();
+        }
     }
 
     public void OnChestSalePanel(RareType rareType)

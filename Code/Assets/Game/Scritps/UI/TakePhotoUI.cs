@@ -95,7 +95,7 @@ public class TakePhotoUI : MonoBehaviour
 		crop.gameObject.SetActive(false);
 		slide.gameObject.SetActive(false);
 		takePhoto.gameObject.SetActive(false);
-
+		MageManager.instance.PlaySound("BubbleButton", false);
 
 		int resWidth = Screen.width;
 		int resHeight = Screen.height;

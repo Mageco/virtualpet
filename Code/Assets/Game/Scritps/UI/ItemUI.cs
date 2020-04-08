@@ -134,7 +134,7 @@ public class ItemUI : MonoBehaviour
             else if (state == ItemState.Equiped)
             {
                 unEquipButton.gameObject.SetActive(true);
-                if(d.itemType == ItemType.Room || d.itemType == ItemType.Food || d.itemType == ItemType.Drink)
+                if(d.itemType == ItemType.Room || d.itemType == ItemType.Food || d.itemType == ItemType.Drink || d.itemType == ItemType.Gate)
                     unEquipButton.interactable = false;
                 else
                     unEquipButton.interactable = true;
