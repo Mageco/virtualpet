@@ -1158,7 +1158,7 @@ namespace MageSDK.Client {
 
 		}
 
-		IEnumerator LoadImageCoroutine(string avatarUrl, Action<Texture2D> onLoadCompleteCallback)
+		public IEnumerator LoadImageCoroutine(string avatarUrl, Action<Texture2D> onLoadCompleteCallback)
 		{
 			string[] keys = avatarUrl.Split ('/');
 			string path = keys [keys.Length - 1];
@@ -1175,7 +1175,7 @@ namespace MageSDK.Client {
 				ES3.SaveImage (tex, path);
 				Debug.Log ("saved");
 			}
-			
+
 			onLoadCompleteCallback(tex);
 		}
 		#endregion
