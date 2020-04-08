@@ -1152,7 +1152,7 @@ namespace MageSDK.Client {
 
 		#region Leaderboard
 
-		public void GetLeaderBoardFromObject(object t, string fieldName, int index = -1, Action<List<LeaderBoardItem>> onCompleteCallback = null) {
+		public void GetLeaderBoardFromObject(object t, string fieldName, Action<List<LeaderBoardItem>> onCompleteCallback = null, int index = -1) {
 			
 			string name = "Field_" + t.GetType().Name + "_" + fieldName + (index >= 0 ? "_" + index : "");
 			if (null != onCompleteCallback) {
