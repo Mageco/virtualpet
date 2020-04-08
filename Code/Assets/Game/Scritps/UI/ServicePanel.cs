@@ -8,7 +8,7 @@ public class ServicePanel : MonoBehaviour
     public Text charName;
     public Text charDescription;
     ServiceType serviceType;
-    int price = 1;
+    int price = 2;
     public Text priceText;
     public Image icon;
 
