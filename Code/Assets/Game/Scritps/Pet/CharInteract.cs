@@ -47,10 +47,10 @@ public class CharInteract : MonoBehaviour
         if (GameManager.instance.isGuest)
             return;
 
-        if (character.actionType != ActionType.OnCall)
+        //if (character.actionType != ActionType.OnCall)
             OnDrag();
-        else
-            OnTouch();
+        //else
+        //    OnTouch();
         isMouseDown = true;
         holdPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
     }

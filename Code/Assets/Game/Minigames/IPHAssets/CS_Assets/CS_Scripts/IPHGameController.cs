@@ -72,7 +72,6 @@ namespace InfiniteHopper
 		//The score and score text of the player
 		public int score = 0;
 		public Transform scoreText;
-		internal int highScore = 0;
 		internal int scoreMultiplier = 1;
 
 		//The overall game speed
@@ -462,9 +461,6 @@ namespace InfiniteHopper
 				powerups[index].duration = 0;
 			}
 
-			// Save the longest distance statistic in the PlayerPrefs record
-			SaveStats();
-
 			yield return new WaitForSeconds(delay);
 			Vector3 pos = playerObjects[currentPlayer].transform.position;
 			pos.y = -7;
@@ -476,54 +472,9 @@ namespace InfiniteHopper
 
 			yield return new WaitForSeconds(1);
 			Minigame.instance.OnEndGame(score);
-
-			if (score > highScore)
-			{
-				highScore = score;
-			}
 		}
 		
-        /*
-		//This function continues the game from your last point
-		public void Continue()
-		{
-			if ( continues > 0 )
-			{
-				// Reset the player to its last position
-				playerObjects[currentPlayer].position = lastLandedObject.position;
 
-				// Reset the player's dead status
-				playerObjects[currentPlayer].SendMessage("NotDead");
-
-				// Continue the game
-				isGameOver = false;
-				
-				// Show the game screen and hide the game over screen
-				if ( gameCanvas )    gameCanvas.gameObject.SetActive(true);
-				if ( gameOverCanvas )    gameOverCanvas.gameObject.SetActive(false);
-
-				ChangeContinues(-1);
-			}
-		}*/
-
-            /*
-		// This function changes the number of continues we have
-		public void ChangeContinues( int changeValue )
-		{
-			continues += changeValue;
-
-			// Limit the minimum number of continues to 0
-			if ( continues > 0 ) 
-			{
-				// Deactivate the continues object if we have no more continues
-				if ( gameOverCanvas )    gameOverCanvas.Find("ButtonContinue").gameObject.SetActive(true);
-			}
-			else
-			{
-				// Activate the continues object if we have no more continues
-				if ( gameOverCanvas )    gameOverCanvas.Find("ButtonContinue").gameObject.SetActive(false);
-			}
-		}*/
 		
 		//This function activates the selected player, while deactivating all the others
 		void  SetPlayer( int playerNumber )
@@ -613,30 +564,6 @@ namespace InfiniteHopper
 			}
 		}
 
-		/// <summary>
-		/// Saves the statistics to the PlayerPrefs value
-		/// </summary>
-		void SaveStats()
-		{
-			// Get the longest distance value from PlayerPrefs
-			longestDistance = PlayerPrefs.GetInt( "LongestDistance", longestDistance);
 
-			// If the distance we passed is longer than the longest distance we passed, record it in the PlayerPrefs
-			if ( currentDistance > longestDistance )    PlayerPrefs.SetInt( "LongestDistance", currentDistance);
-
-			// Set the current number of powerups in PlayerPrefs
-			PlayerPrefs.SetInt("TotalPowerups", totalPowerups);
-		}
-		
-		void OnDrawGizmos()
-		{
-			Gizmos.color = Color.red;
-			
-			//Draw the position of the next column
-			Gizmos.DrawSphere( nextColumnPosition,0.2f);
-
-			//Draw the death line. Falling off it will kill the player
-			Gizmos.DrawLine( new Vector3(-10,deathLineHeight,0), new Vector3(10,deathLineHeight,0));
-		}
 	}
 }

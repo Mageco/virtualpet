@@ -92,6 +92,11 @@ public class ToyBallItem : ToyItem
                 pos.y = boundY.y;
                 this.transform.position = pos;
 
+            }else if(this.transform.position.y < boundY.x)
+            {
+                Vector3 pos = this.transform.position;
+                pos.y = boundY.x;
+                this.transform.position = pos;
             }
             rigid.angularVelocity = 0;
             rigid.velocity = Vector2.zero;
