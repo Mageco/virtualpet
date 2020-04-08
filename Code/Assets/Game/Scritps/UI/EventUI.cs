@@ -19,7 +19,10 @@ public class EventUI : MonoBehaviour
     {
         //price = GameManager.instance.myPlayer.minigameLevels[gameId] + 1;
         //priceText.text = price.ToString();
-        levelText.text = DataHolder.Dialog(27).GetName(MageManager.instance.GetLanguage()) +  " " + (GameManager.instance.myPlayer.minigameLevels[gameId] + 1).ToString();
+        if(gameId <= 1)
+            levelText.text = DataHolder.Dialog(27).GetName(MageManager.instance.GetLanguage()) +  " " + (GameManager.instance.myPlayer.minigameLevels[gameId] + 1).ToString();
+        else if(gameId == 2)
+            levelText.text = (GameManager.instance.myPlayer.minigameLevels[gameId] + 1).ToString();
         int n = (GameManager.instance.myPlayer.minigameLevels[gameId]+1) % 5;
 
         for (int i = 0; i < stars.Length; i++)
