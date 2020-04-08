@@ -1158,14 +1158,13 @@ namespace MageSDK.Client {
 
 		}
 
-		public IEnumerator LoadImageCoroutine(string avatarUrl, Action<Texture2D> onLoadCompleteCallback)
+		IEnumerator LoadImageCoroutine(string avatarUrl, Action<Texture2D> onLoadCompleteCallback)
 		{
 			string[] keys = avatarUrl.Split ('/');
 			string path = keys [keys.Length - 1];
 			Texture2D tex = new Texture2D(128, 128,TextureFormat.ARGB32,false);
 			if (ES3.FileExists (path)) {
 				tex = ES3.LoadImage (path);
-				yield return null;
 			} else {
 				WWW url = new WWW (avatarUrl);
 				Debug.Log ("start Download");
@@ -1177,6 +1176,10 @@ namespace MageSDK.Client {
 			}
 
 			onLoadCompleteCallback(tex);
+		}
+
+		public void LoadImage(string avatarUrl, Action<Texture2D> onLoadCompleteCallback) {
+			StartCoroutine(LoadImageCoroutine(avatarUrl, onLoadCompleteCallback));
 		}
 		#endregion
 			
