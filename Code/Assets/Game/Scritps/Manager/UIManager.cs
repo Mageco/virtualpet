@@ -156,7 +156,8 @@ public class UIManager : MonoBehaviour
             MageEngine.instance.LoadAvatar(
                 (texture2D) =>
                 {
-                    UIManager.instance.avatarUI.LoadAvatar(Utils.instance.CreateSprite(texture2D));
+                    if(texture2D != null)
+                        UIManager.instance.avatarUI.LoadAvatar(Utils.instance.CreateSprite(texture2D));
                 });
                 
         }

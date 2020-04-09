@@ -81,14 +81,27 @@ public class LeaderBoardPanel : MonoBehaviour
 
         MageEngine.instance.GetLeaderBoardFromObject(
         GameManager.instance.myPlayer,
+        "diamond",
+        (leaderboardItems) => {
+            foreach (LeaderBoardItem i in leaderboardItems)
+            {
+                Debug.Log(i.ToJson());
+                LoadItem(i, id);
+            }
+        });
+
+        /*
+        MageEngine.instance.GetLeaderBoardFromObject(
+        GameManager.instance.myPlayer,
         "minigameLevels",
         (leaderboardItems) => {
             foreach (LeaderBoardItem i in leaderboardItems)
             {
                 Debug.Log(i.ToJson());
+                LoadItem(i,id);
             }
         },
-        0);
+        0);*/
     }
 
     public void ScrollToItem(int id)
@@ -112,15 +125,14 @@ public class LeaderBoardPanel : MonoBehaviour
 
     }
 
-    void LoadItem(LeaderBoardItem data)
+    void LoadItem(LeaderBoardItem data,int tabId)
     {
         GameObject go = Instantiate(itemUIPrefab);
         go.transform.SetParent(this.anchor);
         go.transform.localScale = Vector3.one;
         LeaderUI item = go.GetComponent<LeaderUI>();
-        item.Load(data);
+        item.Load(data, tabId);
         items.Add(item);
-        
     }
 
     void ClearItems()
