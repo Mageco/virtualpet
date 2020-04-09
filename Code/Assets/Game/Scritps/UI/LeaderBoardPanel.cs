@@ -236,7 +236,8 @@ public class LeaderBoardPanel : MonoBehaviour
     {
         foreach (LeaderUI item in items)
         {
-            Destroy(item.gameObject);
+            if(item != null)
+                Destroy(item.gameObject);
         }
         items.Clear();
     }
