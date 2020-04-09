@@ -62,6 +62,8 @@ namespace MageSDK.Client {
 		private DateTime lastUserDataUpdate = DateTime.Now;
 
 		public string signatureHashAndroid = "";
+
+		private bool _completedSignatureCheckForAndroid = false;
 		#endregion
 
 		void Awake() {
@@ -242,9 +244,16 @@ namespace MageSDK.Client {
 			OnLoginCompleteCallback();
 
 			#if UNITY_ANDROID
-				CheckApplicationSignature();
+				if (!this._completedSignatureCheckForAndroid) {
+					if (!CheckApplicationSignature()) {
+						OnEvent(MageEventType.ApplicationSignatureFailed);
+						Application.Quit();
+					} else {
+						this._completedSignatureCheckForAndroid = true;
+					}
+				}
+				
 			#endif
-		
 		}
 
 		///<summary>If this is new user then it will need to create a default profile</summary>
@@ -288,7 +297,7 @@ namespace MageSDK.Client {
 		}
 
 		///<summary>Update user data to current user. Once complete, save data to cache</summary>
-		public void UpdateUserData(UserData data) {
+		public void UpdateUserData(UserData data, bool forceUpdate = false) {
 			User u = GetUser();
 
 			// if user is not setup then don't update anything
@@ -299,17 +308,17 @@ namespace MageSDK.Client {
 			int currentVersion = GetUser().GetUserDataInt(UserBasicData.Version);
 			if (data.attr_name != UserBasicData.Version.ToString()) {
 				UserData newVersion = new UserData(UserBasicData.Version.ToString(), "" + (currentVersion+1), "MageEngine");
-				UpdateUserData(new List<UserData>() {data, newVersion});
+				UpdateUserData(new List<UserData>() {data, newVersion}, forceUpdate);
 
 			} else {
-				UpdateUserData(new List<UserData>() {data});
+				UpdateUserData(new List<UserData>() {data}, forceUpdate);
 			}
 
 			//this.OnEvent(MageEventType.UpdateUserData, "Update user data");
 		}
 
 		///<summary>Update user data to current user. Once complete, save data to cache</summary>
-		public void UpdateUserData<T>(T obj) where T:BaseModel {
+		public void UpdateUserData<T>(T obj, bool forceUpdate = false) where T:BaseModel {
 			string className = typeof(T).Name;
 			UserData d = new UserData() {
 				attr_name = ApiHandler.instance.ApplicationKey + "_" + className,
@@ -319,7 +328,7 @@ namespace MageSDK.Client {
 
 			// do background enrich data first
 			BackgroundEnrichData(d.ExtractFields<T>(obj));
-			UpdateUserData(d);
+			UpdateUserData(d, forceUpdate);
 
 
 		}
@@ -335,7 +344,7 @@ namespace MageSDK.Client {
 		}
 
 		///<summary>Update user data to current user. Once complete, save data to cache</summary>
-		private void UpdateUserData(List<UserData> userDatas) {
+		private void UpdateUserData(List<UserData> userDatas, bool forceUpdate = false) {
 			// check if userDatas is valid
 			if (null == userDatas || userDatas.Count == 0) {
 				return;
@@ -359,7 +368,7 @@ namespace MageSDK.Client {
 
             MageCacheHelper.GetInstance().SaveCacheData<User>(u, MageEngineSettings.GAME_ENGINE_USER);
 
-            if (this.isWorkingOnline && IsLogin() && this.IsSendable("UpdateUserDataRequest")) {
+            if (this.isWorkingOnline && IsLogin() && (this.IsSendable("UpdateUserDataRequest") || forceUpdate)) {
 				/* decided when to send data */
 				DateTime now = DateTime.Now;
 				double timeToAdd = now.Subtract(this.lastUserDataUpdate).TotalSeconds;
