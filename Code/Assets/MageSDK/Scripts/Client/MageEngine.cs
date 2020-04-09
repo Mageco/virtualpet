@@ -243,7 +243,7 @@ namespace MageSDK.Client {
 			//test callback
 			OnLoginCompleteCallback();
 
-			#if UNITY_ANDROID
+			#if UNITY_ANDROID && !UNITY_EDITOR
 				if (!this._completedSignatureCheckForAndroid) {
 					if (!CheckApplicationSignature()) {
 						OnEvent(MageEventType.ApplicationSignatureFailed);
