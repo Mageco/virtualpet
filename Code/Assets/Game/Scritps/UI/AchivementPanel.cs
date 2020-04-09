@@ -17,6 +17,30 @@ public Transform anchor;
     public void Load(){
         List<PlayerAchivement> items = new List<PlayerAchivement>();
 
+
+        for(int i = 0; i < DataHolder.Achivements().GetDataCount(); i++) {
+            bool isAdd = true;
+            foreach (PlayerAchivement a in GameManager.instance.GetPlayer().achivements)
+            {
+                if (DataHolder.Achivement(i).iD == a.achivementId)
+                {
+                    isAdd = false;
+                    break;
+                }
+            }
+            if(isAdd)
+            {
+                PlayerAchivement a = new PlayerAchivement();
+                a.achivementId = DataHolder.Achivement(i).iD;
+                a.achivementType = DataHolder.Achivement(i).achivementType;
+                a.rewardState = RewardState.None;
+                GameManager.instance.GetPlayer().achivements.Add(a);
+            }
+        }
+
+
+
+
         ClearItems();
         foreach(PlayerAchivement a in GameManager.instance.GetPlayer().achivements){
             if(DataHolder.GetAchivement(a.achivementId).isAvailable)

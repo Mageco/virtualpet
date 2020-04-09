@@ -27,7 +27,7 @@ public enum ItemSaveDataType{None,Pee,Shit,Rubbish,Food,Drink,Happy,Fruit,Chest,
 public enum EquipmentState { Idle,Hold, Drag, Busy, Active }
 public enum MovementType {TwoDirection,FourDirection};
 public enum MapType {House = 0,Forest=1,Lake=2,Habor=3,Mountain=4,Village=5,Cave=6,SunkenShip=7};
-public enum RewardType { Minigame, Chest, Sick, Injured, Map,Welcome,Service,ForestDiamond};
+public enum RewardType {None, Minigame, Chest, Sick, Injured, Map,Welcome,Service,ForestDiamond};
 public enum ServiceType {Instructor,Doctor,Chef,HouseKeeper,PetSitter,Exp};
 public enum AdDistribute {None,Unity,Admob};
 public enum RareType { Common, Rare,Epic,Legend};
