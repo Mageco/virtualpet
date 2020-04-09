@@ -374,7 +374,7 @@ namespace MageSDK.Client {
 				double timeToAdd = now.Subtract(this.lastUserDataUpdate).TotalSeconds;
 
 				/* for this we only send if the last update is more than X seconds ago */
-				if (u.GetUserDataInt(UserBasicData.Version) < 500 || timeToAdd > GetApplicationDataItemInt(MageEngineSettings.GAME_ENGINE_MIN_USER_DATA_UPDATE_DURATION)) {
+				if (u.GetUserDataInt(UserBasicData.Version) < 500 || timeToAdd > GetApplicationDataItemInt(MageEngineSettings.GAME_ENGINE_MIN_USER_DATA_UPDATE_DURATION) || forceUpdate) {
 					SaveUserDataToServer(u);
 					this.lastUserDataUpdate = now;
 				}
