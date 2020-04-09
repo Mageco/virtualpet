@@ -241,6 +241,7 @@ public class GameManager : MonoBehaviour
             }
         }
         UpdatePetObjects();
+        SavePlayer();
     }
 
     public void UnLoadPets()
@@ -252,6 +253,7 @@ public class GameManager : MonoBehaviour
 
         }
         petObjects.Clear();
+        SavePlayer();
     }
 
 
@@ -295,6 +297,7 @@ public class GameManager : MonoBehaviour
             AddPet(petId);
             GetPet(petId).isNew = true;
             Debug.Log("Buy pet " + petId);
+            SavePlayer();
             return true;
         }
         else if (type == PriceType.Diamond)
@@ -307,6 +310,7 @@ public class GameManager : MonoBehaviour
             AddDiamond(-price);
             AddPet(petId);
             GetPet(petId).isNew = true;
+            SavePlayer();
             return true;
         }
         else if (type == PriceType.Happy)
@@ -319,12 +323,14 @@ public class GameManager : MonoBehaviour
             AddHappy(-price);
             AddPet(petId);
             GetPet(petId).isNew = true;
+            SavePlayer();
             return true;
         }
         else
         {
             return false;
         }
+        
     }
 
     public void SellPet(int petId)
@@ -344,6 +350,7 @@ public class GameManager : MonoBehaviour
             AddHappy(price);
         }
         RemovePet(petId);
+        SavePlayer();
     }
 
 
@@ -479,6 +486,7 @@ public class GameManager : MonoBehaviour
             }
             AddCoin(-price);
             AddItem(itemId);
+            SavePlayer();
             return true;
         }
         else if (type == PriceType.Diamond)
@@ -490,6 +498,7 @@ public class GameManager : MonoBehaviour
             }
             AddDiamond(-price);
             AddItem(itemId);
+            SavePlayer();
             return true;
         }
         else if (type == PriceType.Happy)
@@ -501,6 +510,7 @@ public class GameManager : MonoBehaviour
             }
             AddHappy(-price);
             AddItem(itemId);
+            SavePlayer();
             return true;
         }
         else
@@ -870,6 +880,7 @@ public class GameManager : MonoBehaviour
         }
 
         SavePlayer();
+        ForceSavePlayer();
     }
 
     public void LevelUp(int petId)
@@ -926,6 +937,16 @@ public class GameManager : MonoBehaviour
         myPlayer.playTime = gameTime;
         ES2.Save(gameTime, "GameTime");
         MageEngine.instance.UpdateUserData<PlayerData>(myPlayer);
+    }
+
+    public void ForceSavePlayer()
+    {
+        myPlayer.petCount = myPlayer.pets.Count;
+        myPlayer.itemCount = myPlayer.items.Count;
+        myPlayer.playTime = gameTime;
+        ES2.Save(gameTime, "GameTime");
+        Debug.Log("Force Update");
+        MageEngine.instance.UpdateUserData<PlayerData>(myPlayer,true);
     }
 
     public void LoadPlayer()

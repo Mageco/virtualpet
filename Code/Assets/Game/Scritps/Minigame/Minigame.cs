@@ -73,6 +73,7 @@ public class Minigame : MonoBehaviour
         if (isWin)
         {
             GameManager.instance.GetPlayer().minigameLevels[minigameId]++;
+            GameManager.instance.ForceSavePlayer();
         }
     }
 
@@ -88,7 +89,11 @@ public class Minigame : MonoBehaviour
             winPanel = popup.GetComponent<WinPanel>();
             //bonus += score/50;
             if(GameManager.instance.GetPlayer().minigameLevels[minigameId] < score)
+            {
                 GameManager.instance.GetPlayer().minigameLevels[minigameId] = score;
+                GameManager.instance.ForceSavePlayer();
+            }
+                
             if (bonus == 0)
                 bonus = 1;
             winPanel.Load(bonus, minigameId, false);

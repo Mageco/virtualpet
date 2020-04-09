@@ -134,7 +134,7 @@ public class WinPanel : MonoBehaviour
 
     public void OnLeaderBoard()
     {
-        UIManager.instance.OnLeaderBoardPanel(this.minigameId);
+        UIManager.instance.OnLeaderBoardPanel(this.minigameId+1);
     }
 
     public void Close(){
