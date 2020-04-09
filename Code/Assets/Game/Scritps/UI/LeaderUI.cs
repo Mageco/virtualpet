@@ -40,7 +40,7 @@ public class LeaderUI : MonoBehaviour
             MageEngine.instance.LoadAvatar(
             (texture2D) =>
             {
-                if (texture2D != null)
+                if (texture2D != null && avatar != null)
                     avatar.sprite = Utils.instance.CreateSprite(texture2D);
             });
         }

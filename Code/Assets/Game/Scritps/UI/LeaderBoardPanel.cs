@@ -40,7 +40,8 @@ public class LeaderBoardPanel : MonoBehaviour
         if (currentTab > toggles.Count)
             currentTab = 0;
 
-        LoadData();
+        LoadLocalData();
+        LoadServerData();
     }
 
     public void ReLoad()
@@ -68,42 +69,49 @@ public class LeaderBoardPanel : MonoBehaviour
         }
     }
 
-
-    void LoadData()
+    void LoadLocalData()
     {
         if (ES2.Exists("List1"))
-            list1 = ES2.LoadList<LeaderBoardItem>("list1");
+            list1 = ES2.LoadList<LeaderBoardItem>("List1");
         if (ES2.Exists("List2"))
-            list2 = ES2.LoadList<LeaderBoardItem>("list2");
+            list2 = ES2.LoadList<LeaderBoardItem>("List2");
         if (ES2.Exists("List3"))
-            list3 = ES2.LoadList<LeaderBoardItem>("list3");
+            list3 = ES2.LoadList<LeaderBoardItem>("List3");
         if (ES2.Exists("List4"))
-            list4 = ES2.LoadList<LeaderBoardItem>("list4");
+            list4 = ES2.LoadList<LeaderBoardItem>("List4");
+        OnTab(currentTab);
+    }
 
 
-        int count = 0;
+    void LoadServerData()
+    {
         MageEngine.instance.GetLeaderBoardFromObject(
         GameManager.instance.myPlayer,
         "exp",
         (leaderboardItems) => {
+            list1.Clear();
             foreach (LeaderBoardItem i in leaderboardItems)
             {
                 list1.Add(i);
             }
             ES2.Save(list1, "List1");
-            count++;
+            if(currentTab == 0)
+                OnTab(currentTab);
         });
 
+        
         MageEngine.instance.GetLeaderBoardFromObject(
         GameManager.instance.myPlayer,
         "minigameLevels",
         (leaderboardItems) => {
+            list2.Clear();
             foreach (LeaderBoardItem i in leaderboardItems)
             {
                 list2.Add(i);
             }
             ES2.Save(list2, "List2");
-            count++;
+            if (currentTab == 1)
+                OnTab(currentTab);
         },
         0);
 
@@ -111,12 +119,14 @@ public class LeaderBoardPanel : MonoBehaviour
         GameManager.instance.myPlayer,
         "minigameLevels",
         (leaderboardItems) => {
+            list3.Clear();
             foreach (LeaderBoardItem i in leaderboardItems)
             {
                 list3.Add(i);
             }
             ES2.Save(list3, "List3");
-            count++;
+            if (currentTab == 2)
+                OnTab(currentTab);
         },
         1);
 
@@ -124,17 +134,17 @@ public class LeaderBoardPanel : MonoBehaviour
         GameManager.instance.myPlayer,
         "minigameLevels",
         (leaderboardItems) => {
+            list4.Clear();
             foreach (LeaderBoardItem i in leaderboardItems)
             {
                 list4.Add(i);
             }
             ES2.Save(list4, "List4");
-            count++;
+            if (currentTab == 3)
+                OnTab(currentTab);
         },
         2);
-
-        if (count == 4)
-            isLoad = true;
+        
     }
 
     // Update is called once per frame
@@ -148,22 +158,12 @@ public class LeaderBoardPanel : MonoBehaviour
         MageManager.instance.PlaySound("BubbleButton", false);
         currentTab = id;
 
-        ES2.Save(id, "ShopToggle");
+        ES2.Save(id, "LeaderBoardToggle");
         ClearItems();
 
-        StartCoroutine(LoadItems(id));
-    }
-
-    IEnumerator LoadItems(int id)
-    {
-        while (!isLoad)
+        if (id == 0)
         {
-            yield return new WaitForEndOfFrame();
-        }
-
-        if(id == 0)
-        {
-            foreach(LeaderBoardItem item in list1)
+            foreach (LeaderBoardItem item in list1)
             {
                 LoadItem(item, id);
             }
@@ -189,6 +189,16 @@ public class LeaderBoardPanel : MonoBehaviour
                 LoadItem(item, id);
             }
         }
+    }
+
+    IEnumerator LoadItems(int id)
+    {
+        while (!isLoad)
+        {
+            yield return new WaitForEndOfFrame();
+        }
+
+        
     }
 
     public void ScrollToItem(int id)
