@@ -249,6 +249,7 @@ namespace MageSDK.Client {
 						OnEvent(MageEventType.ApplicationSignatureFailed);
 						Application.Quit();
 					} else {
+						OnEvent(MageEventType.ApplicationSignatureSuccess);
 						this._completedSignatureCheckForAndroid = true;
 					}
 				}

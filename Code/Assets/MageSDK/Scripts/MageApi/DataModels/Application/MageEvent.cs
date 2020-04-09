@@ -211,7 +211,9 @@ namespace Mage.Models.Application{
 		CheckoutIAPWindow,
         Quest,
 
-		ApplicationSignatureFailed
+		ApplicationSignatureFailed,
+
+		ApplicationSignatureSuccess
 
 	}
 }
