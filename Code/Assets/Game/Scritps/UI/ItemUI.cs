@@ -370,7 +370,7 @@ public class ItemUI : MonoBehaviour
         iconType.sprite = Resources.Load<Sprite>("Icons/ItemType/Pet_" + d.rareType.ToString());
         Debug.Log("Icons/ItemType/Pet_" + d.rareType.ToString());
         state = ItemState.OnShop;
-        foreach(Pet p in GameManager.instance.myPlayer.pets)
+        foreach(PlayerPet p in GameManager.instance.myPlayer.petDatas)
         {
             if(p.iD == d.iD)
             {
@@ -420,7 +420,7 @@ public class ItemUI : MonoBehaviour
         }
         else if (state == ItemState.Equiped)
         {
-            Pet p = GameManager.instance.GetPet(d.iD);
+            PlayerPet p = GameManager.instance.GetPet(d.iD);
             petLevelText.gameObject.SetActive(true);
             petLevelText.text = DataHolder.Dialog(27).GetName(MageManager.instance.GetLanguage()) + " " + p.level.ToString();
             unEquipButton.gameObject.SetActive(true);
@@ -428,7 +428,7 @@ public class ItemUI : MonoBehaviour
         }
         else if (state == ItemState.Have)
         {
-            Pet p = GameManager.instance.GetPet(d.iD);
+            PlayerPet p = GameManager.instance.GetPet(d.iD);
             petLevelText.gameObject.SetActive(true);
             petLevelText.text = DataHolder.Dialog(27).GetName(MageManager.instance.GetLanguage()) + " " + p.level.ToString();
             equipButton.gameObject.SetActive(true);

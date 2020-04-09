@@ -22,7 +22,7 @@ public class WelcomeBackPanel : MonoBehaviour
             }
         }
 
-        foreach (Pet p in GameManager.instance.myPlayer.pets)
+        foreach (PlayerPet p in GameManager.instance.myPlayer.petDatas)
         {
             happy += h;
         }

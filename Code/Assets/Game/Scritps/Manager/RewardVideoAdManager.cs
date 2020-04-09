@@ -193,9 +193,9 @@ public class RewardVideoAdManager : MonoBehaviour , IUnityAdsListener
     {
 		yield return new WaitForSeconds(0.5f);
 		if (rewardType == RewardType.Sick)
-			GameManager.instance.OnTreatment(GameManager.instance.GetPet(petId), SickType.Sick, 0);
+			GameManager.instance.OnTreatment(GameManager.instance.GetPetObject(petId), SickType.Sick, 0);
         else if(rewardType == RewardType.Injured)
-			GameManager.instance.OnTreatment(GameManager.instance.GetPet(petId), SickType.Injured, 0);
+			GameManager.instance.OnTreatment(GameManager.instance.GetPetObject(petId), SickType.Injured, 0);
 	}
 
     IEnumerator OnMinigame()

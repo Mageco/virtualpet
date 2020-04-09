@@ -104,6 +104,12 @@ public class GameManager : MonoBehaviour
         return myPlayer;
     }
 
+    public void AddPetObject(CharController petObject)
+    {
+        if (!petObjects.Contains(petObject))
+            petObjects.Add(petObject);
+    }
+
     public void LoadPetObjects()
     {
         if (ItemManager.instance == null)
@@ -111,23 +117,21 @@ public class GameManager : MonoBehaviour
 
         if (!isGuest)
         {
-            for (int i = 0; i < myPlayer.pets.Count; i++)
+            for (int i = 0; i < myPlayer.petDatas.Count; i++)
             {
-                if (myPlayer.pets[i].itemState == ItemState.Equiped)
+                if (myPlayer.petDatas[i].itemState == ItemState.Equiped)
                 {
-                    ItemManager.instance.LoadPetObject(myPlayer.pets[i]);
-                    UpdatePetObjects();
+                    ItemManager.instance.LoadPetObject(myPlayer.petDatas[i]);
                 }
             }
         }
         else
         {
-            for (int i = 0; i < guest.pets.Count; i++)
+            for (int i = 0; i < guest.petDatas.Count; i++)
             {
-                if (guest.pets[i].itemState == ItemState.Equiped)
+                if (guest.petDatas[i].itemState == ItemState.Equiped)
                 {
-                    ItemManager.instance.LoadPetObject(guest.pets[i]);
-                    UpdatePetObjects();
+                    ItemManager.instance.LoadPetObject(guest.petDatas[i]);
                 }
             }
         }
@@ -136,9 +140,9 @@ public class GameManager : MonoBehaviour
 
     public void AddPet(int itemId)
     {
-        Pet p = new Pet(itemId);
+        PlayerPet p = new PlayerPet(itemId);
         p.itemState = ItemState.Have;
-        myPlayer.pets.Add(p);
+        myPlayer.petDatas.Add(p);
         SavePlayer();
     }
 
@@ -158,10 +162,10 @@ public class GameManager : MonoBehaviour
         if(pets.Count > 0)
         {
             int itemId = Random.Range(0, pets.Count);
-            Pet p = new Pet(pets[itemId].iD);
+            PlayerPet p = new PlayerPet(pets[itemId].iD);
             p.itemState = ItemState.Equiped;
             p.isNew = true;
-            myPlayer.pets.Add(p);
+            myPlayer.petDatas.Add(p);
             if (ItemManager.instance != null)
                 GameManager.instance.EquipPet(itemId);
         }
@@ -186,7 +190,7 @@ public class GameManager : MonoBehaviour
 
     public void EquipPet(int itemId)
     {
-        foreach (Pet p in myPlayer.pets)
+        foreach (PlayerPet p in myPlayer.petDatas)
         {
             if (p.iD == itemId)
             {
@@ -198,7 +202,7 @@ public class GameManager : MonoBehaviour
 
     public void EquipPets()
     {
-        foreach (Pet p in myPlayer.pets)
+        foreach (PlayerPet p in myPlayer.petDatas)
         {
             p.itemState = ItemState.Equiped;
         }
@@ -213,15 +217,15 @@ public class GameManager : MonoBehaviour
         }
 
         
-        foreach (Pet p in myPlayer.pets)
+        foreach (PlayerPet p in myPlayer.petDatas)
         {
             if (p.iD == itemId)
             {
                 p.itemState = ItemState.Have;
                 if (ItemManager.instance != null)
                 {
-                    petObjects.Remove(p.character);
-                    ItemManager.instance.UnLoadPetObject(p);
+                    petObjects.Remove(GetPetObject(p.iD));
+                    ItemManager.instance.UnLoadPetObject(GetPetObject(p.iD));
                 }
             }
         }
@@ -231,16 +235,15 @@ public class GameManager : MonoBehaviour
 
     public void UnEquipPets()
     {
-        foreach (Pet p in myPlayer.pets)
+        foreach (PlayerPet p in myPlayer.petDatas)
         {
             p.itemState = ItemState.Have;
             if (ItemManager.instance != null)
             {
-                petObjects.Remove(p.character);
-                ItemManager.instance.UnLoadPetObject(p);
+                petObjects.Remove(GetPetObject(p.iD));
+                ItemManager.instance.UnLoadPetObject(GetPetObject(p.iD));
             }
         }
-        UpdatePetObjects();
         SavePlayer();
     }
 
@@ -257,7 +260,7 @@ public class GameManager : MonoBehaviour
     }
 
 
-
+    /*
     public void UpdatePetObjects()
     {
         if (ItemManager.instance == null)
@@ -265,7 +268,7 @@ public class GameManager : MonoBehaviour
         petObjects.Clear();
         if (!isGuest)
         {
-            for (int i = 0; i < myPlayer.pets.Count; i++)
+            for (int i = 0; i < myPlayer.petDatas.Count; i++)
             {
                 if (myPlayer.pets[i].itemState == ItemState.Equiped && myPlayer.pets[i].character != null)
                     petObjects.Add(myPlayer.pets[i].character);
@@ -279,7 +282,7 @@ public class GameManager : MonoBehaviour
                     petObjects.Add(guest.pets[i].character);
             }
         }
-    }
+    }*/
 
     public bool BuyPet(int petId)
     {
@@ -354,9 +357,9 @@ public class GameManager : MonoBehaviour
     }
 
 
-    public Pet GetPet(int id)
+    public PlayerPet GetPet(int id)
     {
-        foreach (Pet p in myPlayer.pets)
+        foreach (PlayerPet p in this.myPlayer.petDatas)
         {
             if (p.iD == id)
                 return p;
@@ -364,9 +367,9 @@ public class GameManager : MonoBehaviour
         return null;
     }
 
-    public List<Pet> GetPets()
+    public List<PlayerPet> GetPets()
     {
-        return myPlayer.pets;
+        return myPlayer.petDatas;
     }
 
     public List<CharController> GetPetObjects()
@@ -376,10 +379,10 @@ public class GameManager : MonoBehaviour
 
     public CharController GetPetObject(int id)
     {
-        foreach (Pet p in myPlayer.pets)
+        foreach (CharController p in this.petObjects)
         {
-            if (p.iD == id)
-                return p.character;
+            if (p.data.iD == id)
+                return p;
         }
         return null;
     }
@@ -398,30 +401,37 @@ public class GameManager : MonoBehaviour
 
     void RemovePet(int id)
     {
-        foreach (Pet p in myPlayer.pets)
+        foreach (PlayerPet p in myPlayer.petDatas)
         {
             if (p.iD == id)
             {
-                myPlayer.pets.Remove(p);
+                myPlayer.petDatas.Remove(p);
                 if (ItemManager.instance != null)
                 {
-                    petObjects.Remove(p.character);
-                    ItemManager.instance.UnLoadPetObject(p);
+                    petObjects.Remove(GetPetObject(id));
+                    ItemManager.instance.UnLoadPetObject(GetPetObject(id));
                 }
                 return;
             }
         }
     }
 
-    public Pet GetActivePet()
+    public PlayerPet GetActivePet()
     {
-        return myPlayer.pets[0];
+        return myPlayer.petDatas[0];
     }
 
+    public CharController GetActivePetObject()
+    {
+        if (petObjects.Count > 0)
+            return petObjects[0];
+        else
+            return null;
+    }
 
     public bool IsHavePet(int petId)
     {
-        foreach (Pet p in myPlayer.pets)
+        foreach (PlayerPet p in myPlayer.petDatas)
         {
             if (p.iD == petId && (p.itemState == ItemState.Have || p.itemState == ItemState.Equiped))
             {
@@ -433,7 +443,7 @@ public class GameManager : MonoBehaviour
 
     public bool IsEquipPet(int petId)
     {
-        foreach (Pet p in myPlayer.pets)
+        foreach (PlayerPet p in myPlayer.petDatas)
         {
             if (p.iD == petId && p.itemState == ItemState.Equiped)
             {
@@ -812,11 +822,6 @@ public class GameManager : MonoBehaviour
     }
 
 
-    public int GetExp(int id)
-    {
-        return GetPet(id).Exp;
-    }
-
     public void AddDiamond(int d)
     {
         if (GameManager.instance.isGuest)
@@ -932,7 +937,7 @@ public class GameManager : MonoBehaviour
 
     public void SavePlayer()
     {
-        myPlayer.petCount = myPlayer.pets.Count;
+        myPlayer.petCount = myPlayer.petDatas.Count;
         myPlayer.itemCount = myPlayer.items.Count;
         myPlayer.playTime = gameTime;
         ES2.Save(gameTime, "GameTime");
@@ -941,7 +946,7 @@ public class GameManager : MonoBehaviour
 
     public void ForceSavePlayer()
     {
-        myPlayer.petCount = myPlayer.pets.Count;
+        myPlayer.petCount = myPlayer.petDatas.Count;
         myPlayer.itemCount = myPlayer.items.Count;
         myPlayer.playTime = gameTime;
         ES2.Save(gameTime, "GameTime");
@@ -956,6 +961,20 @@ public class GameManager : MonoBehaviour
             Debug.Log("Load data from local");
             Debug.Log(MageEngine.instance.GetUser().ToJson());
             myPlayer = MageEngine.instance.GetUserData<PlayerData>();
+
+            if(myPlayer.pets.Count > 0)
+            {
+                foreach(Pet p in myPlayer.pets)
+                {
+                    PlayerPet pet = new PlayerPet(p.iD);
+                    pet.level = p.level;
+                    pet.itemState = p.itemState;
+                    pet.isNew = p.isNew;
+                    myPlayer.petDatas.Add(pet);
+                }
+                myPlayer.pets.Clear();
+            }
+
             if (myPlayer.minigameLevels.Length == 1)
             {
                 for (int i = 0; i < 20; i++)
@@ -985,6 +1004,7 @@ public class GameManager : MonoBehaviour
 
         myPlayer = new PlayerData();
         myPlayer.LoadData();
+
 
         AddCoin(100);
         AddDiamond(1);
@@ -1122,14 +1142,14 @@ public class GameManager : MonoBehaviour
         return false;
     }
 
-    public void OnTreatment(Pet p, SickType sickType, int coin)
+    public void OnTreatment(CharController p, SickType sickType, int coin)
     {
         AddCoin(-coin);
         if (sickType == SickType.Sick)
             LogAchivement(AchivementType.Sick);
         else if (sickType == SickType.Injured)
             LogAchivement(AchivementType.Injured);
-        p.character.OnTreatment(sickType);
+        p.OnTreatment(sickType);
     }
 
     public bool IsCollectDailyGift()

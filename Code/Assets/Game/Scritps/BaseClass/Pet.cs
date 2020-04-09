@@ -95,8 +95,8 @@ public class Pet : BaseModel
     int levelRate = 10;
 
 
-    public CharController character;
-    PolyNavAgent agent;
+    //public CharController character;
+    //PolyNavAgent agent;
 
     public ActionType actionType = ActionType.None;
     public Vector3 position = Vector3.zero;
@@ -164,7 +164,6 @@ public class Pet : BaseModel
         sleep = Random.Range(maxSleep / 2, maxSleep);
         energy = Random.Range(maxEnergy / 2, maxEnergy);
         health = maxHealth;
-
 
         LoadSkill();
     }
@@ -449,9 +448,9 @@ public class Pet : BaseModel
             }
             if (level > temp)
             {
-                if (character != null)
+                if (GameManager.instance.GetPetObject(this.iD) != null)
                 {
-                    character.OnLevelUp();
+                    GameManager.instance.GetPetObject(this.iD).OnLevelUp();
                 }
             }
         }

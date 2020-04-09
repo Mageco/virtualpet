@@ -41,7 +41,7 @@ public class TreatmentConfirmPopup : MonoBehaviour
 
     public void OnConfirm()
     {
-        GameManager.instance.OnTreatment(pet, sickType,coin);
+        GameManager.instance.OnTreatment(GameManager.instance.GetPetObject(pet.iD), sickType,coin);
         this.Close();
         //UIManager.instance.On
     }

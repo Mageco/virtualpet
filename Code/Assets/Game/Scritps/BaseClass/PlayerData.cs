@@ -24,6 +24,7 @@ public class PlayerData : BaseModel
 	public int exp = 0;
     public List<PlayerItem> items = new List<PlayerItem>();
     public List<Pet> pets = new List<Pet>();
+	public List<PlayerPet> petDatas = new List<PlayerPet>();
 	[ExtractField]
 	public int[] minigameLevels = new int[20];
 
@@ -99,6 +100,20 @@ public class PlayerData : BaseModel
 		}
 	}
 
+}
+
+[System.Serializable]
+public class PlayerPet : BaseModel
+{
+
+	public int iD = 0;
+	public int level = 1;
+	public bool isNew = false;
+	public ItemState itemState = ItemState.OnShop;
+	public PlayerPet(int id)
+	{
+		iD = id;
+	}
 }
 
 [System.Serializable]

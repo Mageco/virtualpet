@@ -58,7 +58,7 @@ public class MouseController : MonoBehaviour
 	void Seek(){
 		
 		lastPosition = this.transform.position;
-
+        
 		if (ItemManager.instance.GetItem(ItemType.Food) == null)
 			return;
 

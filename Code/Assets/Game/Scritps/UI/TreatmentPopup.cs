@@ -47,7 +47,7 @@ public class TreatmentPopup : MonoBehaviour
     {
         if (GameManager.instance.GetCoin() >= coin)
         {
-            GameManager.instance.OnTreatment(pet, sickType, coin);
+            GameManager.instance.OnTreatment(GameManager.instance.GetPetObject(pet.iD), sickType, coin);
             this.Close();
         }
         else

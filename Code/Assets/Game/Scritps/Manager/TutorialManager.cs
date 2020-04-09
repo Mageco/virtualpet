@@ -101,7 +101,7 @@ public class TutorialManager : MonoBehaviour
         {
             if (step == 0)
             {
-                if (GameManager.instance.GetActivePet().enviromentType != EnviromentType.Toilet)
+                if (GameManager.instance.GetActivePetObject().data.enviromentType != EnviromentType.Toilet)
                     StartCoroutine(HoldToToilet());
             }
         }
@@ -110,7 +110,7 @@ public class TutorialManager : MonoBehaviour
         {
             if (step == 0)
             {
-                if (GameManager.instance.GetActivePet().enviromentType != EnviromentType.Bed)
+                if (GameManager.instance.GetActivePetObject().data.enviromentType != EnviromentType.Bed)
                     StartCoroutine(HoldToSleep());
             }
         }
@@ -421,7 +421,7 @@ public class TutorialManager : MonoBehaviour
         {
             yield return new WaitForEndOfFrame();
         }
-        if (GameManager.instance.GetActivePet().enviromentType != EnviromentType.Bath)
+        if (GameManager.instance.GetActivePetObject().data.enviromentType != EnviromentType.Bath)
         {
             pet.OnControl();
             handClick.SetActive(true);
@@ -469,7 +469,7 @@ public class TutorialManager : MonoBehaviour
             yield return new WaitForEndOfFrame();
         }
         yield return new WaitForEndOfFrame();
-        if (GameManager.instance.GetActivePet().enviromentType != EnviromentType.Toilet)
+        if (GameManager.instance.GetActivePetObject().data.enviromentType != EnviromentType.Toilet)
         {
             pet.OnControl();
             handClick.SetActive(true);
@@ -500,7 +500,7 @@ public class TutorialManager : MonoBehaviour
             yield return new WaitForEndOfFrame();
         }
         yield return new WaitForEndOfFrame();
-        if (GameManager.instance.GetActivePet().enviromentType != EnviromentType.Bed)
+        if (GameManager.instance.GetActivePetObject().data.enviromentType != EnviromentType.Bed)
         {
             pet.OnControl();
             handClick.SetActive(true);

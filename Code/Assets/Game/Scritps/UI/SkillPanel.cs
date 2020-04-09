@@ -18,7 +18,7 @@ public class SkillPanel : MonoBehaviour
         List<PetSkill> items = new List<PetSkill>();
 
         ClearItems();
-        foreach(PetSkill a in GameManager.instance.GetActivePet().skills){
+        foreach(PetSkill a in GameManager.instance.GetActivePetObject().data.skills){
             Debug.Log(a.skillId);
             items.Add(a);
         }  

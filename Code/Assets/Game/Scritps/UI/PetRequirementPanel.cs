@@ -229,7 +229,7 @@ public class PetRequirementPanel : MonoBehaviour
             }*/
             GameManager.instance.AddHappy(-price);
             GameManager.instance.AddPet(petId);
-            Pet p = GameManager.instance.GetPet(petId);
+            PlayerPet p = GameManager.instance.GetPet(petId);
             p.isNew = true;
             GameManager.instance.EquipPet(petId);
             isBuy = true;

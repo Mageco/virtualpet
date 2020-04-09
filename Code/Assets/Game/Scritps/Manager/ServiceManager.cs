@@ -158,20 +158,20 @@ public class ServiceManager : MonoBehaviour
     {
         if(type == ServiceType.Chef)
         {
-            foreach(Pet p in GameManager.instance.GetPets())
+            foreach(CharController p in GameManager.instance.GetPetObjects())
             {
-                if(p.Food < p.MaxFood * 0.3f)
+                if(p.data.Food < p.data.MaxFood * 0.3f)
                 {
-                    p.Food = p.MaxFood;
-                    if(ItemManager.instance != null && p.character != null)
-                           ItemManager.instance.SpawnHeart(p.rateHappy, p.character.transform.position);
+                    p.data.Food = p.data.MaxFood;
+                    if(ItemManager.instance != null && p != null)
+                           ItemManager.instance.SpawnHeart(p.data.rateHappy, p.transform.position);
                 }
 
-                if (p.Water < p.MaxWater * 0.3f)
+                if (p.data.Water < p.data.MaxWater * 0.3f)
                 {
-                    p.Water = p.MaxWater;
-                    if (ItemManager.instance != null && p.character != null)
-                        ItemManager.instance.SpawnHeart(p.rateHappy, p.character.transform.position);
+                    p.data.Water = p.data.MaxWater;
+                    if (ItemManager.instance != null && p != null)
+                        ItemManager.instance.SpawnHeart(p.data.rateHappy, p.transform.position);
                 }
 
 
@@ -186,35 +186,35 @@ public class ServiceManager : MonoBehaviour
         }
         else if (type == ServiceType.PetSitter)
         {
-            foreach (Pet p in GameManager.instance.GetPets())
+            foreach (CharController p in GameManager.instance.GetPetObjects())
             {
-                if (p.Dirty > p.MaxDirty * 0.7f)
+                if (p.data.Dirty > p.data.MaxDirty * 0.7f)
                 {
-                    p.Dirty = 0;
+                    p.data.Dirty = 0;
                     if (ItemManager.instance != null)
-                        ItemManager.instance.SpawnHeart(p.rateHappy, p.character.transform.position);
+                        ItemManager.instance.SpawnHeart(p.data.rateHappy, p.transform.position);
                 }
 
-                if (p.Sleep < p.MaxSleep * 0.3f)
+                if (p.data.Sleep < p.data.MaxSleep * 0.3f)
                 {
-                    p.Sleep = p.MaxSleep;
+                    p.data.Sleep = p.data.MaxSleep;
                     if (ItemManager.instance != null)
-                        ItemManager.instance.SpawnHeart(p.rateHappy, p.character.transform.position);
+                        ItemManager.instance.SpawnHeart(p.data.rateHappy, p.transform.position);
                 }
             }
         }
         else if (type == ServiceType.Doctor)
         {
-            foreach (Pet p in GameManager.instance.GetPets())
+            foreach (CharController p in GameManager.instance.GetPetObjects())
             {
-                if (p.Damage > p.MaxDamage * 0.7f)
+                if (p.data.Damage > p.data.MaxDamage * 0.7f)
                 {
-                    p.Damage = 0;
+                    p.data.Damage = 0;
                 }
 
-                if (p.Health < p.MaxHealth * 0.3f)
+                if (p.data.Health < p.data.MaxHealth * 0.3f)
                 {
-                    p.Health = p.MaxHealth;
+                    p.data.Health = p.data.MaxHealth;
                 }
             }
         }

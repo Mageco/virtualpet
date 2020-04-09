@@ -78,10 +78,11 @@ public class ES2Init : MonoBehaviour
 		ES2TypeManager.types[typeof(Mage.Models.Game.CharacterData)] = new ES2UserType_MageModelsGameCharacterData();
 		ES2TypeManager.types[typeof(Mage.Models.Game.CharacterItem)] = new ES2UserType_MageModelsGameCharacterItem();
 		ES2TypeManager.types[typeof(Mage.Models.Game.PetLog)] = new ES2UserType_MageModelsGamePetLog();
+		ES2TypeManager.types[typeof(Mage.Models.Users.LeaderBoardItem)] = new ES2UserType_MageModelsUsersLeaderBoardItem();
 		ES2TypeManager.types[typeof(Mage.Models.Users.Message)] = new ES2UserType_MageModelsUsersMessage();
 		ES2TypeManager.types[typeof(Mage.Models.Users.User)] = new ES2UserType_MageModelsUsersUser();
 		ES2TypeManager.types[typeof(Mage.Models.Users.UserData)] = new ES2UserType_MageModelsUsersUserData();
-		ES2TypeManager.types[typeof(Mage.Models.Users.LeaderBoardItem)] = new ES2UserType_MageModelsUsersLeaderBoardItem();
+		ES2TypeManager.types[typeof(Pet)] = new ES2UserType_Pet();
 
 		ES2.initialised = true;
 	}

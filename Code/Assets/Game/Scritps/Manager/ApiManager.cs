@@ -46,6 +46,19 @@ public class ApiManager : MageEngine {
 			
             GameManager.instance.myPlayer = GetUserData<PlayerData>();
 
+			if (GameManager.instance.myPlayer.pets.Count > 0)
+			{
+				foreach (Pet p in GameManager.instance.myPlayer.pets)
+				{
+					PlayerPet pet = new PlayerPet(p.iD);
+					pet.level = p.level;
+					pet.itemState = p.itemState;
+					pet.isNew = p.isNew;
+					GameManager.instance.myPlayer.petDatas.Add(pet);
+				}
+				GameManager.instance.myPlayer.pets.Clear();
+			}
+
 			if (GetUser().last_run_app_version != ""  && string.Compare(GetUser().last_run_app_version, "1.08") <= 0) {
 				Debug.Log("Set quest id 100");
 				GameManager.instance.myPlayer.questId = 100;

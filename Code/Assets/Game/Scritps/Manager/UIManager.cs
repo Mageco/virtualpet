@@ -138,7 +138,7 @@ public class UIManager : MonoBehaviour
     // Start is called before the first frame update
     IEnumerator Start()
     {
-        while (!GameManager.instance.isLoad)
+        while (!ItemManager.instance.isLoad)
         {
             yield return new WaitForEndOfFrame();
         }

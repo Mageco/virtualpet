@@ -804,12 +804,11 @@ public class ItemManager : MonoBehaviour
     }
 
     #region Pet
-    public void LoadPetObject(Pet pet)
+    public void LoadPetObject(PlayerPet pet)
     {
         if (pet.isNew)
         {
             StartCoroutine(SpawnGift(pet));
-
         }
         else
         {
@@ -818,39 +817,31 @@ public class ItemManager : MonoBehaviour
 
     }
 
-    IEnumerator SpawnGift(Pet pet)
+    IEnumerator SpawnGift(PlayerPet pet)
     {
+        CharController petObject = SpawnPet(pet);
+        petObject.agent.transform.position = new Vector3(10000,00,0);
         GameObject gift = GameObject.Instantiate(petGiftPrefab);
         Vector3 pos = new Vector3(Camera.main.transform.position.x, Random.Range(-15, -10), 0);
         pos.z = pos.y * 10;
         gift.transform.position = pos;
         yield return new WaitForSeconds(5.4f);
-        CharController petObject = SpawnPet(pet);
         petObject.agent.transform.position = pos;
         petObject.transform.position = pos;
         petObject.OnGift();
         pet.isNew = false;
     }
 
-    CharController SpawnPet(Pet pet)
+    CharController SpawnPet(PlayerPet pet)
     {
-        if (pet.character != null)
-            return pet.character;
+        
+        if (GameManager.instance.GetPetObject(pet.iD) != null)
+            return GameManager.instance.GetPetObject(pet.iD);
 
         Pet p = DataHolder.GetPet(pet.iD);
 
         if (p == null)
             return null;
-
-        pet.rareType = p.rareType;
-        if (pet.rareType == RareType.Rare)
-            pet.rateHappy = 3;
-        else if (pet.rareType == RareType.Epic)
-            pet.rateHappy = 5;
-        else if (pet.rareType == RareType.Legend)
-            pet.rateHappy = 10;
-        else if (pet.rareType == RareType.Common)
-            pet.rateHappy = 1;
 
         string url = "";
         url = p.prefabName.Replace("Assets/Game/Resources/", "");
@@ -858,20 +849,20 @@ public class ItemManager : MonoBehaviour
         url = DataHolder.Pets().GetPrefabPath() + url;
         //Debug.Log(url);
         GameObject go = GameObject.Instantiate((Resources.Load(url) as GameObject), Vector3.zero, Quaternion.identity) as GameObject;
-        pet.character = go.GetComponent<CharController>();
+        CharController character = go.GetComponent<CharController>();
         go.transform.position = ItemManager.instance.GetRandomPoint(AreaType.All);
-        pet.character.data = pet;
-        pet.character.LoadPrefab();
-        GameManager.instance.UpdatePetObjects();
-        return pet.character;
+        character.LoadData(pet);
+        character.LoadPrefab();
+        GameManager.instance.AddPetObject(character);
+        return character;
     }
 
-    public void UnLoadPetObject(Pet p)
+    public void UnLoadPetObject(CharController p)
     {
-        if (p.character.agent != null)
-            GameObject.Destroy(p.character.agent.gameObject);
-        if (p.character != null)
-            GameObject.Destroy(p.character.gameObject);
+        if (p.agent != null)
+            GameObject.Destroy(p.agent.gameObject);
+        if (p != null)
+            GameObject.Destroy(p.gameObject);
     }
 
 

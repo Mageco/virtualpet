@@ -105,6 +105,31 @@ public class CharController : MonoBehaviour
             DoAction();
     }
 
+    public void LoadData(PlayerPet pet)
+    {
+
+        if (!GameManager.instance.isGuest && ES2.Exists(DataHolder.GetPet(pet.iD).GetName(0)))
+        {
+            Pet p = ES2.Load<Pet>(DataHolder.GetPet(pet.iD).GetName(0));
+            this.data = p;
+        }
+        else
+        {
+            Pet p = new Pet(pet.iD);
+            this.data = p;
+        }
+
+        if (this.data.rareType == RareType.Rare)
+            this.data.rateHappy = 3;
+        else if (this.data.rareType == RareType.Epic)
+            this.data.rateHappy = 5;
+        else if (this.data.rareType == RareType.Legend)
+            this.data.rateHappy = 10;
+        else if (this.data.rareType == RareType.Common)
+            this.data.rateHappy = 1;
+
+
+    }
 
     public void LoadPrefab()
     {
@@ -266,7 +291,7 @@ public class CharController : MonoBehaviour
             CalculateData();
             CalculateStatus();
             dataTime = 0;
-            //            Debug.Log((System.DateTime.Now - playTime).Seconds);
+            ES2.Save(this.data, DataHolder.GetPet(data.iD).GetName(0));
 
         }
         else

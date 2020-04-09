@@ -29,7 +29,7 @@ public class ProfileUI : MonoBehaviour
     Pet data;
 
     public void Load(int id){
-        data = GameManager.instance.GetPet(id);
+        data = GameManager.instance.GetPetObject(id).data;
         level.text = DataHolder.Dialog(27).GetName(MageManager.instance.GetLanguage()) + " " + data.level.ToString();
         petName.text = DataHolder.GetPet(id).GetName(0);
         sick.fillAmount = (data.MaxHealth - data.Health)/data.MaxHealth;
@@ -58,26 +58,30 @@ public class ProfileUI : MonoBehaviour
     }
 
     void Update(){
-        level.text = DataHolder.Dialog(27).GetName(MageManager.instance.GetLanguage()) + " " + data.level.ToString();
-        sick.fillAmount = (data.MaxHealth - data.Health) / data.MaxHealth;
-        ịnjury.fillAmount = data.Damage / data.MaxDamage;
-        sleep.fillAmount = (data.MaxSleep - data.Sleep) / data.MaxSleep;
-        food.fillAmount = (data.MaxFood - data.Food) / data.MaxFood;
-        drink.fillAmount = (data.MaxWater - data.Water) / data.MaxWater;
-        dirty.fillAmount = data.Dirty / data.MaxDirty;
-        toilet.fillAmount = (Mathf.Max(data.Shit / data.MaxShit, data.Pee / data.MaxPee));
+        if(data != null)
+        {
+            level.text = DataHolder.Dialog(27).GetName(MageManager.instance.GetLanguage()) + " " + data.level.ToString();
+            sick.fillAmount = (data.MaxHealth - data.Health) / data.MaxHealth;
+            ịnjury.fillAmount = data.Damage / data.MaxDamage;
+            sleep.fillAmount = (data.MaxSleep - data.Sleep) / data.MaxSleep;
+            food.fillAmount = (data.MaxFood - data.Food) / data.MaxFood;
+            drink.fillAmount = (data.MaxWater - data.Water) / data.MaxWater;
+            dirty.fillAmount = data.Dirty / data.MaxDirty;
+            toilet.fillAmount = (Mathf.Max(data.Shit / data.MaxShit, data.Pee / data.MaxPee));
 
-        sickText.text = data.MaxHealth.ToString();
-        injuryText.text = data.MaxDamage.ToString();
-        sleepText.text = data.MaxSleep.ToString();
-        foodText.text = data.MaxFood.ToString();
-        drinkText.text = data.MaxWater.ToString();
-        toiletText.text = data.MaxPee.ToString();
-        dirtyText.text = data.MaxDirty.ToString();
-        price = data.level * data.level * 10;
-        priceText.text = price.ToString();
-        strengthText.text = data.MaxHealth.ToString();
-        heartText.text = "+" + (data.rateHappy + data.level/5).ToString();
+            sickText.text = data.MaxHealth.ToString();
+            injuryText.text = data.MaxDamage.ToString();
+            sleepText.text = data.MaxSleep.ToString();
+            foodText.text = data.MaxFood.ToString();
+            drinkText.text = data.MaxWater.ToString();
+            toiletText.text = data.MaxPee.ToString();
+            dirtyText.text = data.MaxDirty.ToString();
+            price = data.level * data.level * 10;
+            priceText.text = price.ToString();
+            strengthText.text = data.MaxHealth.ToString();
+            heartText.text = "+" + (data.rateHappy + data.level / 5).ToString();
+        }
+
     }
 
     public void Upgrade()
