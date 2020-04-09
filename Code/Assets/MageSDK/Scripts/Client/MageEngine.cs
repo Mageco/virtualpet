@@ -637,7 +637,7 @@ namespace MageSDK.Client {
 
 				// test data
 				foreach(ApplicationData data in mergedList) {
-					Debug.Log("Data item: " + data.ToJson());		
+					//Debug.Log("Data item: " + data.ToJson());		
 				}
 			}
 		}

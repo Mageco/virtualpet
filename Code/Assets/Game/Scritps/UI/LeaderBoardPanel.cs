@@ -79,29 +79,32 @@ public class LeaderBoardPanel : MonoBehaviour
         ES2.Save(id, "ShopToggle");
         ClearItems();
 
-        MageEngine.instance.GetLeaderBoardFromObject(
-        GameManager.instance.myPlayer,
-        "diamond",
-        (leaderboardItems) => {
-            foreach (LeaderBoardItem i in leaderboardItems)
-            {
-                Debug.Log(i.ToJson());
-                LoadItem(i, id);
-            }
-        });
 
-        /*
-        MageEngine.instance.GetLeaderBoardFromObject(
-        GameManager.instance.myPlayer,
-        "minigameLevels",
-        (leaderboardItems) => {
-            foreach (LeaderBoardItem i in leaderboardItems)
-            {
-                Debug.Log(i.ToJson());
-                LoadItem(i,id);
-            }
-        },
-        0);*/
+        if(id == 0)
+        {
+            MageEngine.instance.GetLeaderBoardFromObject(
+            GameManager.instance.myPlayer,
+            "exp",
+            (leaderboardItems) => {
+                foreach (LeaderBoardItem i in leaderboardItems)
+                {
+                    Debug.Log(i.ToJson());
+                    LoadItem(i, id);
+                }
+            });
+        }else
+        {
+            MageEngine.instance.GetLeaderBoardFromObject(
+            GameManager.instance.myPlayer,
+            "minigameLevels",
+            (leaderboardItems) => {
+                foreach (LeaderBoardItem i in leaderboardItems)
+                {
+                    Debug.Log(i.ToJson());
+                }
+            },
+            id-1);
+        }
     }
 
     public void ScrollToItem(int id)

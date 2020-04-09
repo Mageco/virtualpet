@@ -63,6 +63,17 @@ public class LeaderUI : MonoBehaviour
             rankIcons[3].SetActive(true);
             rankIcons[3].GetComponent<Text>().text = data.rank.ToString();
         }
+
+        if(tabId == 0)
+        {
+            scoreIcons[0].SetActive(true);
+        }else if(tabId == 1 || tabId == 2)
+        {
+            scoreIcons[1].SetActive(true);
+        }else if(tabId == 3)
+        {
+            scoreIcons[2].SetActive(true);
+        }
     }
 
     void OffAllIcon()

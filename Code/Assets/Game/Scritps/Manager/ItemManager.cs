@@ -73,8 +73,8 @@ public class ItemManager : MonoBehaviour
         if (ES2.Exists("PlayTime"))
         {
             playTime = ES2.Load<System.DateTime>("PlayTime");
-            Debug.Log(playTime);
-            Debug.Log(MageEngine.instance.GetServerTimeStamp());
+            //Debug.Log(playTime);
+            //Debug.Log(MageEngine.instance.GetServerTimeStamp());
             LoadWelcome((float)(MageEngine.instance.GetServerTimeStamp() - playTime).TotalSeconds);
         }
 
@@ -288,7 +288,7 @@ public class ItemManager : MonoBehaviour
                     }*/
                 }
             }
-            Debug.Log(DataHolder.GetItem(playerItem.itemId).GetName(0));
+            //Debug.Log(DataHolder.GetItem(playerItem.itemId).GetName(0));
         }       
         
     }
@@ -836,7 +836,7 @@ public class ItemManager : MonoBehaviour
         url = p.prefabName.Replace("Assets/Game/Resources/", "");
         url = url.Replace(".prefab", "");
         url = DataHolder.Pets().GetPrefabPath() + url;
-        Debug.Log(url);
+        //Debug.Log(url);
         GameObject go = GameObject.Instantiate((Resources.Load(url) as GameObject), Vector3.zero, Quaternion.identity) as GameObject;
         pet.character = go.GetComponent<CharController>();
         go.transform.position = ItemManager.instance.GetRandomPoint(AreaType.All);

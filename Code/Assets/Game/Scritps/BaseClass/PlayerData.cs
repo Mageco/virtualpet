@@ -8,16 +8,18 @@ public class PlayerData : BaseModel
 {
 	public string playerName = "House's ...";
     public int coin = 0;
-	[ExtractField]
+	
     public int diamond = 0;
 	public int happy = 0;
-	[ExtractField]
 	public int level = 1;
     public int collectedHappy = 0;
     public int collectedCoin = 0;
-    public int petCount = 1;
-    public int itemCount = 0;
+	[ExtractField]
+	public int petCount = 1;
+	[ExtractField]
+	public int itemCount = 0;
     public float playTime = 0;
+	[ExtractField]
 	public int exp = 0;
     public List<PlayerItem> items = new List<PlayerItem>();
     public List<Pet> pets = new List<Pet>();

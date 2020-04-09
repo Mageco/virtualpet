@@ -924,7 +924,7 @@ public class CharController : MonoBehaviour
     {
         if (actionType != ActionType.Stop && !isArrived)
         {
-            Debug.Log(lastActionType);
+            //Debug.Log(lastActionType);
             agent.Stop();
             actionType = ActionType.Stop;
             isAbort = true;
@@ -991,7 +991,7 @@ public class CharController : MonoBehaviour
             isAbort = true;
             lastToyItem = item;
             toyItem = item;
-            Debug.Log(item.toyType);            
+            //Debug.Log(item.toyType);            
         }
     }
 
@@ -2041,9 +2041,9 @@ public class CharController : MonoBehaviour
                         target.y = toyItem.transform.position.y + 5;
                     else
                         target.y = toyItem.transform.position.y;
-                    Debug.Log(target);
+                    //Debug.Log(target);
                     yield return StartCoroutine(RunToPoint());
-                    Debug.Log(target);
+                    //Debug.Log(target);
                 }
 
                 

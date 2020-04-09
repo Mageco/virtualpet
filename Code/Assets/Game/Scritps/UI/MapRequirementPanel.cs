@@ -32,7 +32,8 @@ public class MapRequirementPanel : MonoBehaviour
     {
         
         int levelRequire = 1;
-        int price = GameManager.instance.myPlayer.petCount * 10;
+        //int price = GameManager.instance.myPlayer.petCount * 10;
+        price = 0;
         mapType = type;
         icon.sprite = icons[(int)mapType];
         priceText.text = price.ToString();
@@ -54,7 +55,7 @@ public class MapRequirementPanel : MonoBehaviour
         {
             description.SetActive(true);
             requirement.gameObject.SetActive(false);
-            buttonAd.SetActive(true);
+            //buttonAd.SetActive(true);
             buttonGo.SetActive(true);
         }
         else
