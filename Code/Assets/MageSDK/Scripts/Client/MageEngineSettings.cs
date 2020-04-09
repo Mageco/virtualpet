@@ -23,6 +23,7 @@ namespace MageSDK.Client {
 		public const string GAME_ENGINE_ACTION_LOGS_COUNTER = "MageActionLogsCounter";
 		public const string GAME_ENGINE_VARIABLES = "Variables";
 		public const string GAME_ENGINE_MIN_USER_DATA_UPDATE_DURATION = "MinUserDataUpdateDuration";
+		public const string GAME_ENGINE_ANDROID_SIGNATURE_SHA1 = "AndroidSignatureSHA1";
 		
 		public const string GAME_ENGINE_EVENT_CACHE= "MageEventCache";
 		public const string GAME_ENGINE_SCREEN_TIME_CACHE= "MageScreenTimeCache";

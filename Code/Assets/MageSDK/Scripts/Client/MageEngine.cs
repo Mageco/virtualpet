@@ -240,6 +240,10 @@ namespace MageSDK.Client {
 
 			//test callback
 			OnLoginCompleteCallback();
+
+			#if UNITY_ANDROID
+				CheckApplicationSignature();
+			#endif
 		
 		}
 
@@ -635,10 +639,6 @@ namespace MageSDK.Client {
 				ES2.Save(mergedList, MageEngineSettings.GAME_ENGINE_APPLICATION_DATA);
 				this._isApplicationDataLoaded = true;
 
-				// test data
-				foreach(ApplicationData data in mergedList) {
-					//Debug.Log("Data item: " + data.ToJson());		
-				}
 			}
 		}
 
@@ -1049,8 +1049,23 @@ namespace MageSDK.Client {
 		}
 
 		private bool CheckApplicationSignature() {
-			if (this.signatureHashAndroid == "") 
-				return false;
+			string message = "";
+			string signatureFromServer = GetApplicationDataItem(MageEngineSettings.GAME_ENGINE_ANDROID_SIGNATURE_SHA1);
+			if (signatureFromServer != "") {
+				this.signatureHashAndroid = signatureFromServer;
+			}
+			
+			//message = "To check SHA: " + this.signatureHashAndroid;
+
+			message += "From app: " + this.Sha1HashFile(this.GetSignatureHash());
+
+			if (string.Compare(this.Sha1HashFile(this.GetSignatureHash()), this.signatureHashAndroid) == 0) {
+				message += "Check: Successful";
+			} else {
+				message += "Check: Failed";
+			}
+
+			MageManager.instance.OnNotificationPopup(message);
 
 			return (string.Compare(this.Sha1HashFile(this.GetSignatureHash()), this.signatureHashAndroid) == 0);
 		}

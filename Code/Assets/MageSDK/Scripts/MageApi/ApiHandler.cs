@@ -127,27 +127,31 @@ namespace MageApi {
 					//Debug.Log ("Response: " + www.text);
 					//File.AppendAllText (Application.dataPath + "/Images/result.txt", "\r\n" + www.text);
 					// handle error in response
+					GenericResponse<TResult> result = new GenericResponse<TResult>();
 					try {
-						GenericResponse<TResult> result = BaseResponse.CreateFromJSON<GenericResponse<TResult>>(www.text);
-						if (result != null && result.status == 0) {
-							//save cache to runtime
-							Debug.Log(result.cache.ToJson());
-							RuntimeParameters.GetInstance().SetParam (ApiSettings.API_CACHE, result.cache);
-							Debug.Log("Server time: " + (DateTime.Parse(result.timestamp)).ToString("yyyy-MM-dd hh:mm:ss"));
-							if (null != result.timestamp) {
-								RuntimeParameters.GetInstance().SetParam (ApiSettings.API_SERVER_TIMESTAMP, DateTime.Parse(result.timestamp));
-							} else {
-								RuntimeParameters.GetInstance().SetParam (ApiSettings.API_SERVER_TIMESTAMP, DateTime.Now);
-							}
-							callback ((TResult)result.data);
-						} else {
-							Debug.Log ("Error message: " + result.error);
-							errorCallback (result.status);
-						} 
+						result = BaseResponse.CreateFromJSON<GenericResponse<TResult>>(www.text);
 					} catch (Exception e) {
 						Debug.Log("Invalid server response: " + www.text);
-						errorCallback (-1);
+						//errorCallback (-1);
+						result.status = -1;
 					}
+
+					if (result != null && result.status == 0) {
+						//save cache to runtime
+						Debug.Log(result.cache.ToJson());
+						RuntimeParameters.GetInstance().SetParam (ApiSettings.API_CACHE, result.cache);
+						Debug.Log("Server time: " + (DateTime.Parse(result.timestamp)).ToString("yyyy-MM-dd hh:mm:ss"));
+						if (null != result.timestamp) {
+							RuntimeParameters.GetInstance().SetParam (ApiSettings.API_SERVER_TIMESTAMP, DateTime.Parse(result.timestamp));
+						} else {
+							RuntimeParameters.GetInstance().SetParam (ApiSettings.API_SERVER_TIMESTAMP, DateTime.Now);
+						}
+						callback ((TResult)result.data);
+					} else {
+						Debug.Log ("Error message: " + result.error);
+						errorCallback (result.status);
+					} 
+					
 					
 				} 
 				else {
