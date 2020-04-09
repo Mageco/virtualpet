@@ -57,6 +57,14 @@ public class ApiManager : MageEngine {
             {
                 MageManager.instance.LoadSceneWithLoading("House");
             }
+
+            if(GameManager.instance.myPlayer.playerName == "")
+            {
+				GameManager.instance.myPlayer.playerName = "Player" + Random.Range(100000, 1000000).ToString();
+				User u = MageEngine.instance.GetUser();
+				u.fullname = GameManager.instance.myPlayer.playerName;
+				MageEngine.instance.UpdateUserProfile(u);
+			}
         }
 
 		SetupFirebaseMessaging();
