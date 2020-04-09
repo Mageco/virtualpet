@@ -87,7 +87,7 @@ public class LeaderBoardPanel : MonoBehaviour
     {
         MageEngine.instance.GetLeaderBoardFromObject(
         GameManager.instance.myPlayer,
-        "exp",
+        "collectedHappy",
         (leaderboardItems) => {
             list1.Clear();
             foreach (LeaderBoardItem i in leaderboardItems)

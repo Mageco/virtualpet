@@ -880,7 +880,7 @@ public class GameManager : MonoBehaviour
         }
 
         SavePlayer();
-        ForceSavePlayer();
+        //ForceSavePlayer();
     }
 
     public void LevelUp(int petId)
