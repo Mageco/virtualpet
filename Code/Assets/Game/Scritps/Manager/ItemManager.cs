@@ -84,6 +84,9 @@ public class ItemManager : MonoBehaviour
             GetActiveCamera().transform.position = ES2.Load<Vector3>("CameraPosition");
         }
         GameManager.instance.rateCount++;
+        t += Time.deltaTime;
+        MageManager.instance.loadingBar.UpdateProgress(t);
+        yield return new WaitForEndOfFrame();
         MageManager.instance.loadingBar.gameObject.SetActive(false);
     }
 

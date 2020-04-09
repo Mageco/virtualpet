@@ -14,6 +14,7 @@ public class LeaderUI : MonoBehaviour
     public Text playerName;
     public GameObject[] scoreIcons;
     public Text score;
+    public Color highlightColor = Color.white;
     int tabId;
     string userId = "";
     // Start is called before the first frame update
@@ -33,6 +34,11 @@ public class LeaderUI : MonoBehaviour
         OffAllIcon();
         tabId = id;
         userId = data.user_id;
+
+        if(userId == MageEngine.instance.GetUser().id)
+        {
+            this.GetComponent<Image>().color = highlightColor;
+        }
         score.text = data.score.ToString();
         playerName.text = data.fullname;
         if(data.avatar != "")
