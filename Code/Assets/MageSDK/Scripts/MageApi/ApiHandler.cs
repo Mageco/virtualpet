@@ -8,6 +8,7 @@ using SimpleJSON;
 using MageApi.Models;
 using MageApi.Models.Request;
 using MageApi.Models.Response;
+using Mage.Models.Application;
 
 namespace MageApi {
 	public class ApiHandler : MonoBehaviour {
@@ -139,17 +140,33 @@ namespace MageApi {
 					if (result != null && result.status == 0) {
 						//save cache to runtime
 						Debug.Log(result.cache.ToJson());
-						RuntimeParameters.GetInstance().SetParam (ApiSettings.API_CACHE, result.cache);
+						if (null != result.cache) {
+							RuntimeParameters.GetInstance().SetParam (ApiSettings.API_CACHE, result.cache);
+						} else {
+							RuntimeParameters.GetInstance().SetParam (ApiSettings.API_CACHE, new ApiCache());
+						}
+						
 						Debug.Log("Server time: " + (DateTime.Parse(result.timestamp)).ToString("yyyy-MM-dd hh:mm:ss"));
 						if (null != result.timestamp) {
 							RuntimeParameters.GetInstance().SetParam (ApiSettings.API_SERVER_TIMESTAMP, DateTime.Parse(result.timestamp));
 						} else {
 							RuntimeParameters.GetInstance().SetParam (ApiSettings.API_SERVER_TIMESTAMP, DateTime.Now);
 						}
-						callback ((TResult)result.data);
+
+						if (null != result.data) {
+							callback ((TResult)result.data);
+						} else {
+							errorCallback(-1);
+						}
+						
 					} else {
 						Debug.Log ("Error message: " + result.error);
-						errorCallback (result.status);
+						if (null != result) {
+							errorCallback (result.status);
+						} else {
+							errorCallback(-1);
+						}
+						
 					} 
 					
 					

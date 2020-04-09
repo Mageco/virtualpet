@@ -1058,24 +1058,19 @@ namespace MageSDK.Client {
 		}
 
 		private bool CheckApplicationSignature() {
-			string message = "";
+			string enforedAndroidSignature = GetApplicationDataItem(MageEngineSettings.GAME_ENGINE_ENFORECED_ANDROID_SIGNATURE);
+
+			// if not enforced from server then always return true
+			if (enforedAndroidSignature != "true") {
+				return true;
+			}
+
+			// if enforeced is set, then check signature
 			string signatureFromServer = GetApplicationDataItem(MageEngineSettings.GAME_ENGINE_ANDROID_SIGNATURE_SHA1);
 			if (signatureFromServer != "") {
 				this.signatureHashAndroid = signatureFromServer;
 			}
 			
-			//message = "To check SHA: " + this.signatureHashAndroid;
-
-			message += "From app: " + this.Sha1HashFile(this.GetSignatureHash());
-
-			if (string.Compare(this.Sha1HashFile(this.GetSignatureHash()), this.signatureHashAndroid) == 0) {
-				message += "Check: Successful";
-			} else {
-				message += "Check: Failed";
-			}
-
-			MageManager.instance.OnNotificationPopup(message);
-
 			return (string.Compare(this.Sha1HashFile(this.GetSignatureHash()), this.signatureHashAndroid) == 0);
 		}
 		#endregion
