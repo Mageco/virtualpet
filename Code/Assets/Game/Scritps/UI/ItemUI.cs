@@ -27,6 +27,7 @@ public class ItemUI : MonoBehaviour
     public Image bathIcon;
     public Image bedIcon;
     public Image strengthIcon;
+    public Image plusCoinIcon;
 
     public Text happyText;
     public Text sickText;
@@ -37,6 +38,7 @@ public class ItemUI : MonoBehaviour
     public Text bathText;
     public Text bedText;
     public Text strengthText;
+    public Text plusCoinText;
 
     public Text petLevelText;
     public Text buttonText;
@@ -255,6 +257,24 @@ public class ItemUI : MonoBehaviour
                 cleanText.text = d.value.ToString("F0");
             }
         }
+        else if (d.itemType == ItemType.Fruit)
+        {
+
+            
+            int v = 0;
+            if (d.priceType == PriceType.Coin)
+                v = d.buyPrice / 50;
+            else if(d.priceType == PriceType.Diamond)
+                v = d.buyPrice * 2;
+
+            if(v > 0)
+            {
+                plusCoinIcon.gameObject.SetActive(true);
+                plusCoinText.text = "+" + v.ToString("F0");
+            }
+
+            
+        }
 
         //SuperSale
         if (!isLevelRequire)
@@ -461,6 +481,7 @@ public class ItemUI : MonoBehaviour
         diamonIcon.SetActive(false);
         moneyIcon.SetActive(false);
         happyIcon.SetActive(false);
+       
         petLevelText.gameObject.SetActive(false);
         
 
@@ -473,7 +494,7 @@ public class ItemUI : MonoBehaviour
         bathIcon.gameObject.SetActive(false);
         cleanIcon.gameObject.SetActive(false);
         strengthIcon.gameObject.SetActive(false);
-
+        plusCoinIcon.gameObject.SetActive(false);
         tags[0].transform.parent.gameObject.SetActive(false);
         for(int i = 0; i < tags.Length; i++)
         {

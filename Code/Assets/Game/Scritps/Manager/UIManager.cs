@@ -136,8 +136,12 @@ public class UIManager : MonoBehaviour
 
     }
     // Start is called before the first frame update
-    void Start()
+    IEnumerator Start()
     {
+        while (!GameManager.instance.isLoad)
+        {
+            yield return new WaitForEndOfFrame();
+        }
         Load();
     }
 
@@ -794,6 +798,9 @@ public class UIManager : MonoBehaviour
             callButton.SetActive(true);
         else
             callButton.SetActive(false);
+
+        if (type == MapType.Forest || type == MapType.Lake)
+            homeUI.SetActive(true);
     }
 
     public void OnFriendHouse()
