@@ -942,7 +942,15 @@ public class GameManager : MonoBehaviour
                     myPlayer.minigameLevels = ArrayHelper.Add(0, myPlayer.minigameLevels);
                 }
             }
-            
+
+            if (!IsHaveItem(173))
+            {
+                AddItem(170);
+                AddItem(163);
+                EquipItem(170);
+                EquipItem(163);
+            }
+
         }
         else
         {
@@ -975,6 +983,8 @@ public class GameManager : MonoBehaviour
         AddItem(69);
         AddItem(81);
         AddItem(87);
+        AddItem(170);
+        AddItem(163);
         AddPet(0);
         GetPet(0).isNew = true;
 
