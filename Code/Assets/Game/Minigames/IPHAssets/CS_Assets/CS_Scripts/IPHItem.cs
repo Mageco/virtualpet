@@ -51,7 +51,11 @@ namespace InfiniteHopper
 				}
 
 				if (coin != 0)
+                {
 					Minigame.instance.bonus += coin;
+					Minigame.instance.SpawnCoin(this.transform.position, coin);
+				}
+					
 
 				MageManager.instance.PlaySoundClip(soundHit);
 			}
