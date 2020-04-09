@@ -14,10 +14,10 @@ public class WinPanel : MonoBehaviour
     public Text priceText;
     int bonus = 0;
     public Button watchAd;
-    public Text nextText;
-    public Text replayText;
+    public GameObject nextText;
+    public GameObject replayText;
     public Text completeText;
-
+    int minigameId = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -38,6 +38,7 @@ public class WinPanel : MonoBehaviour
     }
 
     public void Load(int c,int minigameId,bool isWin){
+        this.minigameId = minigameId;
         bonus = c;
         gameId = minigameId;
         animator = this.GetComponent<Animator>();
@@ -96,7 +97,10 @@ public class WinPanel : MonoBehaviour
     }
 
     public void OnHome(){
-        Minigame.instance.OnHome();
+        if (minigameId == 2)
+            UIManager.instance.OnMap(MapType.Forest);
+        else
+            Minigame.instance.OnHome();
         this.GetComponent<Popup>().Close();
     }
 
@@ -126,6 +130,11 @@ public class WinPanel : MonoBehaviour
     public void OnWatchAd()
     {
         RewardVideoAdManager.instance.ShowAd(RewardType.Minigame);
+    }
+
+    public void OnLeaderBoard()
+    {
+        UIManager.instance.OnLeaderBoardPanel(this.minigameId);
     }
 
     public void Close(){

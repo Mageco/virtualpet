@@ -11,5 +11,8 @@ public class Minigame3 : Minigame
         iPHGameController.StartGame();
     }
 
-
+    public override void OnHome()
+    {
+        UIManager.instance.OnMap(MapType.Forest);
+    }
 }

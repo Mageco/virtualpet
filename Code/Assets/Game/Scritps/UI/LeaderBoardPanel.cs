@@ -11,9 +11,14 @@ public class LeaderBoardPanel : MonoBehaviour
     public Transform toogleAnchor;
     public ScrollRect scrollItem;
     List<LeaderUI> items = new List<LeaderUI>();
+    List<LeaderBoardItem> list1 = new List<LeaderBoardItem>();
+    List<LeaderBoardItem> list2 = new List<LeaderBoardItem>();
+    List<LeaderBoardItem> list3 = new List<LeaderBoardItem>();
+    List<LeaderBoardItem> list4 = new List<LeaderBoardItem>();
     public GameObject itemUIPrefab;
     public List<Toggle> toggles = new List<Toggle>();
     int currentTab = 0;
+    bool isLoad = false;
 
     // Start is called before the first frame update
 
@@ -34,6 +39,8 @@ public class LeaderBoardPanel : MonoBehaviour
 
         if (currentTab > toggles.Count)
             currentTab = 0;
+
+        LoadData();
     }
 
     public void ReLoad()
@@ -51,7 +58,6 @@ public class LeaderBoardPanel : MonoBehaviour
 
     void Start()
     {
-
         if (toggles[currentTab].isOn)
         {
             OnTab(currentTab);
@@ -63,7 +69,73 @@ public class LeaderBoardPanel : MonoBehaviour
     }
 
 
+    void LoadData()
+    {
+        if (ES2.Exists("List1"))
+            list1 = ES2.LoadList<LeaderBoardItem>("list1");
+        if (ES2.Exists("List2"))
+            list2 = ES2.LoadList<LeaderBoardItem>("list2");
+        if (ES2.Exists("List3"))
+            list3 = ES2.LoadList<LeaderBoardItem>("list3");
+        if (ES2.Exists("List4"))
+            list4 = ES2.LoadList<LeaderBoardItem>("list4");
 
+
+        int count = 0;
+        MageEngine.instance.GetLeaderBoardFromObject(
+        GameManager.instance.myPlayer,
+        "exp",
+        (leaderboardItems) => {
+            foreach (LeaderBoardItem i in leaderboardItems)
+            {
+                list1.Add(i);
+            }
+            ES2.Save(list1, "List1");
+            count++;
+        });
+
+        MageEngine.instance.GetLeaderBoardFromObject(
+        GameManager.instance.myPlayer,
+        "minigameLevels",
+        (leaderboardItems) => {
+            foreach (LeaderBoardItem i in leaderboardItems)
+            {
+                list2.Add(i);
+            }
+            ES2.Save(list2, "List2");
+            count++;
+        },
+        0);
+
+        MageEngine.instance.GetLeaderBoardFromObject(
+        GameManager.instance.myPlayer,
+        "minigameLevels",
+        (leaderboardItems) => {
+            foreach (LeaderBoardItem i in leaderboardItems)
+            {
+                list3.Add(i);
+            }
+            ES2.Save(list3, "List3");
+            count++;
+        },
+        1);
+
+        MageEngine.instance.GetLeaderBoardFromObject(
+        GameManager.instance.myPlayer,
+        "minigameLevels",
+        (leaderboardItems) => {
+            foreach (LeaderBoardItem i in leaderboardItems)
+            {
+                list4.Add(i);
+            }
+            ES2.Save(list4, "List4");
+            count++;
+        },
+        2);
+
+        if (count == 4)
+            isLoad = true;
+    }
 
     // Update is called once per frame
     void Update()
@@ -71,7 +143,7 @@ public class LeaderBoardPanel : MonoBehaviour
 
     }
 
-    public void OnTab(int id)
+    void OnTab(int id)
     {
         MageManager.instance.PlaySound("BubbleButton", false);
         currentTab = id;
@@ -79,31 +151,43 @@ public class LeaderBoardPanel : MonoBehaviour
         ES2.Save(id, "ShopToggle");
         ClearItems();
 
+        StartCoroutine(LoadItems(id));
+    }
+
+    IEnumerator LoadItems(int id)
+    {
+        while (!isLoad)
+        {
+            yield return new WaitForEndOfFrame();
+        }
 
         if(id == 0)
         {
-            MageEngine.instance.GetLeaderBoardFromObject(
-            GameManager.instance.myPlayer,
-            "exp",
-            (leaderboardItems) => {
-                foreach (LeaderBoardItem i in leaderboardItems)
-                {
-                    Debug.Log(i.ToJson());
-                    LoadItem(i, id);
-                }
-            });
-        }else
+            foreach(LeaderBoardItem item in list1)
+            {
+                LoadItem(item, id);
+            }
+        }
+        else if (id == 1)
         {
-            MageEngine.instance.GetLeaderBoardFromObject(
-            GameManager.instance.myPlayer,
-            "minigameLevels",
-            (leaderboardItems) => {
-                foreach (LeaderBoardItem i in leaderboardItems)
-                {
-                    Debug.Log(i.ToJson());
-                }
-            },
-            id-1);
+            foreach (LeaderBoardItem item in list2)
+            {
+                LoadItem(item, id);
+            }
+        }
+        else if (id == 2)
+        {
+            foreach (LeaderBoardItem item in list3)
+            {
+                LoadItem(item, id);
+            }
+        }
+        else if (id == 3)
+        {
+            foreach (LeaderBoardItem item in list4)
+            {
+                LoadItem(item, id);
+            }
         }
     }
 

@@ -86,7 +86,7 @@ public class Minigame : MonoBehaviour
             popup.transform.SetParent(GameObject.Find("Canvas").transform, false);
             popup.GetComponent<Popup>().Open();
             winPanel = popup.GetComponent<WinPanel>();
-            bonus += score/50;
+            //bonus += score/50;
             if(GameManager.instance.GetPlayer().minigameLevels[minigameId] < score)
                 GameManager.instance.GetPlayer().minigameLevels[minigameId] = score;
             if (bonus == 0)
@@ -114,7 +114,7 @@ public class Minigame : MonoBehaviour
 
     }
 
-    public void OnHome(){
+    public virtual void OnHome(){
         UIManager.instance.OnHome();
     }
 

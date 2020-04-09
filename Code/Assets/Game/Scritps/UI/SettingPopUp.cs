@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class SettingPopUp : MonoBehaviour {
 
@@ -106,7 +107,10 @@ public class SettingPopUp : MonoBehaviour {
 
 	public void OnHome(){
 		Time.timeScale = 1;
-		UIManager.instance.OnHome();
+		if (SceneManager.GetActiveScene().name == "Minigame2")
+			UIManager.instance.OnMap(MapType.Forest);
+        else
+		    UIManager.instance.OnHome();
 		Close();
 	}
 

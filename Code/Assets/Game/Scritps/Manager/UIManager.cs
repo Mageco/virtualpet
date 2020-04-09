@@ -710,6 +710,20 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    public void OnLeaderBoardPanel(int id)
+    {
+        if (leaderBoardPanel == null)
+        {
+            var popup = Instantiate(leaderBoardPanelPrefab) as GameObject;
+            popup.SetActive(true);
+            popup.transform.localScale = Vector3.zero;
+            popup.transform.SetParent(GameObject.Find("Canvas").transform, false);
+            popup.GetComponent<Popup>().Open();
+            leaderBoardPanel = popup.GetComponent<LeaderBoardPanel>();
+            leaderBoardPanel.ReLoadTab(id);
+        }
+    }
+
     public void OnChestSalePanel(RareType rareType)
     {
         if (chestSalePanel == null)

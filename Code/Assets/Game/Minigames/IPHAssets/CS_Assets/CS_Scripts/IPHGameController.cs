@@ -340,6 +340,7 @@ namespace InfiniteHopper
 
 						//Call the perfect landing function, which plays a sound and particle effect based on the player's streak
 						playerObjects[currentPlayer].gameObject.SendMessage("PerfectLanding", currentStreak);
+						Minigame.instance.bonus += landingBonuses[index].bonusValue * currentStreak * scoreMultiplier / 50;
 
 					}
 					else    
@@ -357,6 +358,8 @@ namespace InfiniteHopper
 
 						// Increase level progress
 						levelProgress += landingBonuses[index].bonusValue * scoreMultiplier;
+
+						Minigame.instance.bonus += landingBonuses[index].bonusValue * scoreMultiplier / 50;
 					}
 					
 					//Update the bonus text
@@ -398,6 +401,8 @@ namespace InfiniteHopper
 				
 				LevelUp();
 			}
+
+			
 		}
 		
 		//This function levels up, and increases the difficulty of the game
