@@ -37,12 +37,13 @@ public class LeaderUI : MonoBehaviour
         playerName.text = data.fullname;
         if(data.avatar != "")
         {
-            MageEngine.instance.LoadAvatar(
-            (texture2D) =>
-            {
-                if (texture2D != null && avatar != null)
-                    avatar.sprite = Utils.instance.CreateSprite(texture2D);
-            });
+            MageEngine.instance.LoadImage(
+           data.avatar,
+                       (texture2D) =>
+                       {
+                           if (texture2D != null && avatar != null)
+                               avatar.sprite = Utils.instance.CreateSprite(texture2D);
+                       });
         }
 
 
@@ -87,4 +88,6 @@ public class LeaderUI : MonoBehaviour
             scoreIcons[i].SetActive(false);
         }
     }
+
+
 }

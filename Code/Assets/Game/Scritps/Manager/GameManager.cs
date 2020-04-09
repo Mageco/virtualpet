@@ -943,7 +943,7 @@ public class GameManager : MonoBehaviour
                 }
             }
 
-            if (!IsHaveItem(173))
+            if (!IsHaveItem(170))
             {
                 AddItem(170);
                 AddItem(163);
