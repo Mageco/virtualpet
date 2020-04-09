@@ -161,6 +161,14 @@ public class UIManager : MonoBehaviour
                 });
                 
         }
+
+        if (callButton != null)
+        {
+            if (GameManager.instance.myPlayer.questId > 7)
+                callButton.SetActive(true);
+            else
+                callButton.SetActive(false);
+        }
     }
 
     // Update is called once per frame
@@ -175,13 +183,7 @@ public class UIManager : MonoBehaviour
         if (GameManager.instance.myPlayer.questId >= DataHolder.Quests().GetDataCount() && notificationIcon != null)
             notificationIcon.SetActive(false);
 
-        if(callButton != null)
-        {
-            if (GameManager.instance.myPlayer.questId > 7)
-                callButton.SetActive(true);
-            else
-                callButton.SetActive(false);
-        }
+
 
 
         if (isSale)
@@ -788,6 +790,10 @@ public class UIManager : MonoBehaviour
     {
         MageManager.instance.LoadSceneWithLoading(type.ToString());
         GameManager.instance.petObjects.Clear();
+        if (type == MapType.House)
+            callButton.SetActive(true);
+        else
+            callButton.SetActive(false);
     }
 
     public void OnFriendHouse()
