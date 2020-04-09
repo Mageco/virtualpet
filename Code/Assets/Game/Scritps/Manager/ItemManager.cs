@@ -488,7 +488,7 @@ public class ItemManager : MonoBehaviour
             float y = Random.Range(houseItem.gardenBoundY.x, houseItem.gardenBoundY.y);
             while (!isDone)
             {
-                x = Random.Range(houseItem.gardenBoundX.x, houseItem.gardenBoundX.y);
+                x = Random.Range(houseItem.gardenBoundX.x+5, houseItem.gardenBoundX.y-5);
                 y = Random.Range(houseItem.gardenBoundY.x, houseItem.gardenBoundY.y);
                 if (x < houseItem.roomBoundX.x || x > houseItem.roomBoundX.y)
                 {
@@ -676,6 +676,16 @@ public class ItemManager : MonoBehaviour
             GameManager.instance.myPlayer.itemSaveDatas.Add(data);
         }
 
+        ItemDecor[] decors = FindObjectsOfType<ItemDecor>();
+        for (int i = 0; i < decors.Length; i++)
+        {
+            ItemSaveData data = new ItemSaveData();
+            data.id = decors[i].item.itemID;
+            data.itemType = ItemSaveDataType.Decor;
+            data.position = decors[i].transform.position;
+            GameManager.instance.myPlayer.itemSaveDatas.Add(data);
+        }
+
 
         foreach (ItemObject item in items)
         {
@@ -727,6 +737,13 @@ public class ItemManager : MonoBehaviour
                 if (GetItem(item.id) != null)
                 {
                     GetItem(item.id).GetComponentInChildren<ItemCollider>().transform.position = item.position;
+                }
+            }
+            else if (item.itemType == ItemSaveDataType.Decor)
+            {
+                if (GetItem(item.id) != null)
+                {
+                    GetItem(item.id).GetComponentInChildren<ItemDecor>().transform.position = item.position;
                 }
             }
         }
