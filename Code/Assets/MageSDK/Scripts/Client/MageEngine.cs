@@ -158,7 +158,7 @@ namespace MageSDK.Client {
 				r, 
 				(result) => {
 					//do some other processing here
-					Debug.Log("Login: " + result.ToJson());
+					//Debug.Log("Login: " + result.ToJson());
 					OnCompleteLogin (result);
 					//GetApplicationData ();
 					OnLoginCompleteCallback();
@@ -203,7 +203,7 @@ namespace MageSDK.Client {
 				}
 			#endif
 
-			Debug.Log("User data after default load: " + GetUser().ToJson());
+			//Debug.Log("User data after default load: " + GetUser().ToJson());
 		}
 
 		///<summary>On completed logged in</summary>
@@ -1145,12 +1145,12 @@ namespace MageSDK.Client {
 				tex = ES3.LoadImage (path);
 			} else {
 				WWW url = new WWW (avatarUrl);
-				Debug.Log ("start Download");
+				//Debug.Log ("start Download");
 				yield return url;
 				url.LoadImageIntoTexture (tex);
-				Debug.Log ("downloaded");
+				//Debug.Log ("downloaded");
 				ES3.SaveImage (tex, path);
-				Debug.Log ("saved");
+				//Debug.Log ("saved");
 			}
 
 			if (tex != null) {
@@ -1193,7 +1193,7 @@ namespace MageSDK.Client {
 				r, 
 				(result) => {
 					Debug.Log("Success: get leaderboard successfully");
-					Debug.Log("Leaderboard result: " + result.ToJson());
+					//Debug.Log("Leaderboard result: " + result.ToJson());
 
 					if (null != onCompleteCallback) {
 						onCompleteCallback(result.Leaders);

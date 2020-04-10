@@ -90,7 +90,10 @@ public class WinPanel : MonoBehaviour
         if (!isWin)
         {
             int r = Random.Range(0, 100);
-            if(r > 50)
+            if(r > 50 && (minigameId == 0 || minigameId == 1))
+                RewardVideoAdManager.instance.ShowIntetestial();
+
+            if (r > 80 && (minigameId == 2))
                 RewardVideoAdManager.instance.ShowIntetestial();
         }
             

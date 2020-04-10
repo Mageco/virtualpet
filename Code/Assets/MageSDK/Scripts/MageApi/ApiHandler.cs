@@ -61,12 +61,12 @@ namespace MageApi {
 			var form = new WWWForm();
 
 			var formData = System.Text.Encoding.UTF8.GetBytes(request.ToJson());
-			Debug.Log ("Request: " + request.ToJson ());
+			//Debug.Log ("Request: " + request.ToJson ());
 			var header = form.headers;
 			header.Remove("Content-Type");
 			header.Add("Content-Type", "application/json");
 
-			Debug.Log("API URL: " + ApiUrl + "/" +ApplicationKey + "/" + apiName);
+			//Debug.Log("API URL: " + ApiUrl + "/" +ApplicationKey + "/" + apiName);
 			var www = new WWW(ApiUrl + "/" +ApplicationKey + "/" + apiName, formData, header);
 
 			StartCoroutine(WaitForReceiveInfo(apiName, callback, errorCallback, timeoutCallback, www));
@@ -132,21 +132,21 @@ namespace MageApi {
 					try {
 						result = BaseResponse.CreateFromJSON<GenericResponse<TResult>>(www.text);
 					} catch (Exception e) {
-						Debug.Log("Invalid server response: " + www.text);
+						//Debug.Log("Invalid server response: " + www.text);
 						//errorCallback (-1);
 						result.status = -1;
 					}
 
 					if (result != null && result.status == 0) {
 						//save cache to runtime
-						Debug.Log(result.cache.ToJson());
+						//Debug.Log(result.cache.ToJson());
 						if (null != result.cache) {
 							RuntimeParameters.GetInstance().SetParam (ApiSettings.API_CACHE, result.cache);
 						} else {
 							RuntimeParameters.GetInstance().SetParam (ApiSettings.API_CACHE, new ApiCache());
 						}
 						
-						Debug.Log("Server time: " + (DateTime.Parse(result.timestamp)).ToString("yyyy-MM-dd hh:mm:ss"));
+						//Debug.Log("Server time: " + (DateTime.Parse(result.timestamp)).ToString("yyyy-MM-dd hh:mm:ss"));
 						if (null != result.timestamp) {
 							RuntimeParameters.GetInstance().SetParam (ApiSettings.API_SERVER_TIMESTAMP, DateTime.Parse(result.timestamp));
 						} else {
@@ -160,7 +160,7 @@ namespace MageApi {
 						}
 						
 					} else {
-						Debug.Log ("Error message: " + result.error);
+						//Debug.Log ("Error message: " + result.error);
 						if (null != result) {
 							errorCallback (result.status);
 						} else {

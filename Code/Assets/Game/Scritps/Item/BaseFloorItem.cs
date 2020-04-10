@@ -194,6 +194,9 @@ public class BaseFloorItem : MonoBehaviour
 		if (GameManager.instance.isGuest)
 			return;
 
+		if (movementType == MovementType.None)
+			return;
+
 		if (IsPointerOverUIObject())
 		{
 			return;

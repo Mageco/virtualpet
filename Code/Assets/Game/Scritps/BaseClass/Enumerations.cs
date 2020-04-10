@@ -25,7 +25,7 @@ public enum IconStatus{None,Hungry_1,Hungry_2,Sick_1,Sick_2,Dirty_1,Dirty_2,Toil
 public enum ToyType{Jump,Ball,Car,Doll,SpaceShip,Wheel,Robot,Slider,Spring,Dance,Swing,Circle,Fun,Seesaw,Carrier,Sprinkler,Flying};
 public enum ItemSaveDataType{None,Pee,Shit,Rubbish,Food,Drink,Happy,Fruit,Chest,Toy,Equipment,Decor};
 public enum EquipmentState { Idle,Hold, Drag, Busy, Active }
-public enum MovementType {TwoDirection,FourDirection};
+public enum MovementType {TwoDirection,FourDirection,None};
 public enum MapType {House = 0,Forest=1,Lake=2,Habor=3,Mountain=4,Village=5,Cave=6,SunkenShip=7};
 public enum RewardType {None, Minigame, Chest, Sick, Injured, Map,Welcome,Service,ForestDiamond};
 public enum ServiceType {Instructor,Doctor,Chef,HouseKeeper,PetSitter,Exp};
