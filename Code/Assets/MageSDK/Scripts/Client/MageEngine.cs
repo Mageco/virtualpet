@@ -28,6 +28,9 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using MageSDK.Client.Helper;
 using System.Security.Cryptography;
+#if BUNNY_CDN
+using BunnyCDN.Net.Storage;
+#endif
 
 namespace MageSDK.Client {
 	public class MageEngine : MonoBehaviour {
@@ -64,6 +67,10 @@ namespace MageSDK.Client {
 		public string signatureHashAndroid = "";
 
 		private bool _completedSignatureCheckForAndroid = false;
+		#if BUNNY_CDN
+		private BunnyCDNStorage bunnyCDNStorage = new BunnyCDNStorage("virtupet", "877b185e-3517-42e0-a21b-04dc7feb9ea24feacd2d-4ac1-4bc6-993e-da1838d60ed5");
+		#endif
+
 		#endregion
 
 		void Awake() {
@@ -96,7 +103,7 @@ namespace MageSDK.Client {
 		}
 
 		void Update() {
-			//Debug.Log("Mage Engine update...");
+			//ApiUtils.Log("Mage Engine update...");
 			SceneTrackerHelper.GetInstance().AddScreenTime(SceneManager.GetActiveScene().name);
 		}
 
@@ -158,13 +165,13 @@ namespace MageSDK.Client {
 				r, 
 				(result) => {
 					//do some other processing here
-					//Debug.Log("Login: " + result.ToJson());
+					ApiUtils.Log("Login: " + result.ToJson());
 					OnCompleteLogin (result);
 					//GetApplicationData ();
 					OnLoginCompleteCallback();
 				},
 				(errorStatus) => {
-					Debug.Log("Error: " + errorStatus);
+					ApiUtils.Log("Error: " + errorStatus);
 					//do some other processing here
 				}, 
 				() => {
@@ -203,7 +210,7 @@ namespace MageSDK.Client {
 				}
 			#endif
 
-			//Debug.Log("User data after default load: " + GetUser().ToJson());
+			ApiUtils.Log("User data after default load: " + GetUser().ToJson());
 		}
 
 		///<summary>On completed logged in</summary>
@@ -277,7 +284,7 @@ namespace MageSDK.Client {
 			tmp.last_run_app_version = u.last_run_app_version;
 			//}
 
-			Debug.Log("Local version: " + tmp.GetUserDataInt(UserBasicData.Version) + " server version; " + u.GetUserDataInt(UserBasicData.Version));
+			ApiUtils.Log("Local version: " + tmp.GetUserDataInt(UserBasicData.Version) + " server version; " + u.GetUserDataInt(UserBasicData.Version));
 
 			// check and swap version
 			if (tmp.GetUserDataInt(UserBasicData.Version) >= u.GetUserDataInt(UserBasicData.Version)) {
@@ -292,7 +299,7 @@ namespace MageSDK.Client {
 			}
 
 			if (u.last_run_app_version != ""  && string.Compare(u.last_run_app_version, "1.08") <= 0) {
-				Debug.Log("Old Version detected");
+				ApiUtils.Log("Old Version detected");
 				_isReloadRequired = true;
 			}
 		}
@@ -337,7 +344,7 @@ namespace MageSDK.Client {
 		private void BackgroundEnrichData(List<UserData> userDatas) {
 			User u = GetUser();
 			if (null != u && null != userDatas && userDatas.Count > 0) {
-				//Debug.Log("Backround update");
+				//ApiUtils.Log("Backround update");
 				foreach(UserData d in userDatas) {
 					u.SetUserData(d);
 				}
@@ -391,14 +398,14 @@ namespace MageSDK.Client {
 				ApiSettings.API_UPDATE_USER_DATA, 
 				r, 
 				(result) => {
-					Debug.Log("Success: Update user data");
+					ApiUtils.Log("Success: Update user data");
 					MageCacheHelper.GetInstance().SaveCacheData<User>(u, MageEngineSettings.GAME_ENGINE_USER);
 					//clear counter cache
 					ResetSendable("UpdateUserDataRequest");
 
 				},
 				(errorStatus) => {
-					Debug.Log("Error: " + errorStatus);
+					ApiUtils.Log("Error: " + errorStatus);
 					//do some other processing here
 				},
 				() => {
@@ -468,10 +475,10 @@ namespace MageSDK.Client {
 					ApiSettings.API_UPDATE_PROFILE, 
 					r, 
 					(result) => {
-						Debug.Log("Success: Update user profile");
+						ApiUtils.Log("Success: Update user profile");
 					},
 					(errorStatus) => {
-						Debug.Log("Error: " + errorStatus);
+						ApiUtils.Log("Error: " + errorStatus);
 						//do some other processing here
 					},
 					() => {
@@ -497,17 +504,17 @@ namespace MageSDK.Client {
 			ApiHandler.instance.UploadFile<UploadFileResponse>(
 				r, 
 				(result) => {
-					Debug.Log("Success: Upload file successfully");
-					Debug.Log("Upload URL: " + result.UploadedURL);
+					ApiUtils.Log("Success: Upload file successfully");
+					ApiUtils.Log("Upload URL: " + result.UploadedURL);
 					output = result.UploadedURL;
 				},
 				(errorStatus) => {
-					Debug.Log("Error: " + errorStatus);
+					ApiUtils.Log("Error: " + errorStatus);
 					//do some other processing here
 				},
 				() => {
 					//timeout handler here
-					Debug.Log("Api call is timeout");
+					ApiUtils.Log("Api call is timeout");
 				}
 			);
 
@@ -522,12 +529,12 @@ namespace MageSDK.Client {
 		///<summary>Default timeout handler declare here, client implemnetation can overwrite this</summary>
 		public void TimeoutHandler() {
 			//timeout handler here
-			Debug.Log("Api call is timeout");
+			ApiUtils.Log("Api call is timeout");
 		}
 
 		public void ApiErrorHandler() {
 			//timeout handler here
-			Debug.Log("Api error handler");
+			ApiUtils.Log("Api error handler");
 		}
 		#endregion
 
@@ -581,7 +588,7 @@ namespace MageSDK.Client {
 				try {
 					
 					var jsonTextFile = Resources.Load<TextAsset>("Data/" + data);
-					//Debug.Log("Load data: " + data + jsonTextFile.text);
+					//ApiUtils.Log("Load data: " + data + jsonTextFile.text);
 					if(jsonTextFile != null) {
 
 						localResources.Add (new ApplicationData() {
@@ -589,10 +596,10 @@ namespace MageSDK.Client {
 							attr_value = jsonTextFile.text
 						});
 					} else {
-						Debug.Log("Failed to load resource file: " + data);
+						ApiUtils.Log("Failed to load resource file: " + data);
 					}
 				} catch (Exception e) {
-					Debug.Log("Failed to load resource file: " + data);
+					ApiUtils.Log("Failed to load resource file: " + data);
 				}
 				
 			}
@@ -612,7 +619,7 @@ namespace MageSDK.Client {
 					MergeApplicationDataFromServer(result.ApplicationDatas);
 				},
 				(errorStatus) => {
-					Debug.Log("Error: " + errorStatus);
+					ApiUtils.Log("Error: " + errorStatus);
 					//do some other processing here
 				},
 				() => {
@@ -744,7 +751,7 @@ namespace MageSDK.Client {
 							MageEventHelper.GetInstance().SaveMageEventsList(cachedEvent);
 						},
 						(errorStatus) => {
-							//Debug.Log("Error: " + errorStatus);
+							//ApiUtils.Log("Error: " + errorStatus);
 							//do some other processing here
 						},
 						() => {
@@ -763,7 +770,7 @@ namespace MageSDK.Client {
 							MageEventHelper.GetInstance().SaveMageEventsList(cachedEvent);
 						},
 						(errorStatus) => {
-							//Debug.Log("Error: " + errorStatus);
+							//ApiUtils.Log("Error: " + errorStatus);
 							//do some other processing here
 						},
 						() => {
@@ -793,7 +800,7 @@ namespace MageSDK.Client {
 					//SaveEvents();
 				},
 				(errorStatus) => {
-					//Debug.Log("Error: " + errorStatus);
+					//ApiUtils.Log("Error: " + errorStatus);
 					//do some other processing here
 				},
 				() => {
@@ -860,7 +867,7 @@ namespace MageSDK.Client {
 						MageLogHelper.GetInstance().ClearLogger<T>();
 					},
 					(errorStatus) => {
-						//Debug.Log("Error: " + errorStatus);
+						//ApiUtils.Log("Error: " + errorStatus);
 						//do some other processing here
 					},
 					() => {
@@ -948,7 +955,7 @@ namespace MageSDK.Client {
 		}
 
 		public void OnTokenReceived(object sender, Firebase.Messaging.TokenReceivedEventArgs token) {
-			UnityEngine.Debug.Log("Received Registration Token: " + token.Token);
+			ApiUtils.Log("Received Registration Token: " + token.Token);
 
 			User u = GetUser();
 			if (u.notification_token != token.Token) {
@@ -958,7 +965,7 @@ namespace MageSDK.Client {
 		}
 
 		public void OnMessageReceived(object sender, Firebase.Messaging.MessageReceivedEventArgs e) {
-			UnityEngine.Debug.Log("Received a new message from: " + e.Message.From);
+			ApiUtils.Log("Received a new message from: " + e.Message.From);
 			OnNewFirebaseMessageCallback(sender, e);
 		}
 
@@ -982,17 +989,17 @@ namespace MageSDK.Client {
 				ApiSettings.API_GET_USER_PROFILE,
 				r, 
 				(result) => {
-					Debug.Log("Success: get user profile successfully");
-					Debug.Log("Profile result: " + result.ToJson());
+					ApiUtils.Log("Success: get user profile successfully");
+					ApiUtils.Log("Profile result: " + result.ToJson());
 					getRandomFriendCallback(result.UserProfile);
 				},
 				(errorStatus) => {
-					Debug.Log("Error: " + errorStatus);
+					ApiUtils.Log("Error: " + errorStatus);
 					//do some other processing here
 				},
 				() => {
 					//timeout handler here
-					Debug.Log("Api call is timeout");
+					ApiUtils.Log("Api call is timeout");
 				}
 			);
 		}
@@ -1026,7 +1033,7 @@ namespace MageSDK.Client {
 							}
 						}
 					} catch (System.Exception e) {
-						Debug.Log (e);
+						ApiUtils.Log (e);
 						return new byte[0];
 					}
 			
@@ -1078,63 +1085,126 @@ namespace MageSDK.Client {
 
 		#region File upload
 		public void UploadFile(string sourcePath, Action<string> onUploadCompleteCallback, Action<int> onErrorCallback = null) {
-			UploadFileRequest r = new UploadFileRequest ();
-			r.SetUploadFile (File.ReadAllBytes(sourcePath));
+			#if BUNNY_CDN
 
-			//call to login api
-			ApiHandler.instance.UploadFile<UploadFileResponse>(
-				r, 
-				(result) => {
-					Debug.Log("Success: Upload file successfully");
-					Debug.Log("Upload URL: " + result.UploadedURL);
-					onUploadCompleteCallback(result.UploadedURL);
-				},
-				(errorStatus) => {
-					Debug.Log("Error: " + errorStatus);
-					//do some other processing here
-					if (null != onErrorCallback) {
-						onErrorCallback(errorStatus);
+			#else
+				UploadFileRequest r = new UploadFileRequest ();
+				r.SetUploadFile (File.ReadAllBytes(sourcePath));
+
+				//call to login api
+				ApiHandler.instance.UploadFile<UploadFileResponse>(
+					r, 
+					(result) => {
+						ApiUtils.Log("Success: Upload file successfully");
+						ApiUtils.Log("Upload URL: " + result.UploadedURL);
+						onUploadCompleteCallback(result.UploadedURL);
+					},
+					(errorStatus) => {
+						ApiUtils.Log("Error: " + errorStatus);
+						//do some other processing here
+						if (null != onErrorCallback) {
+							onErrorCallback(errorStatus);
+						}
+					},
+					() => {
+						//timeout handler here
+						ApiUtils.Log("Api call is timeout");
 					}
-				},
-				() => {
-					//timeout handler here
-					Debug.Log("Api call is timeout");
-				}
-			);
+				);
+			#endif
 		}
 
 		public void UploadAvatar(Texture2D image, Action<string> onUploadCompleteCallback = null) {
-			UploadFileRequest r = new UploadFileRequest ();
-			r.SetUploadFile (image.EncodeToPNG());
+			ApiUtils.Log("Upload avatar");
+			#if BUNNY_CDN
+				ApiUtils.Log("Calling bunny upload");
+				UploadPNGToBunnyCDN(image, onUploadCompleteCallback);
+			#else
+				UploadFileRequest r = new UploadFileRequest ();
+				r.SetUploadFile (image.EncodeToPNG());
 
-			//call to login api
-			ApiHandler.instance.UploadFile<UploadFileResponse>(
-				r, 
-				(result) => {
-					Debug.Log("Success: Upload file successfully");
-					Debug.Log("Upload URL: " + result.UploadedURL);
+				//call to login api
+				ApiHandler.instance.UploadFile<UploadFileResponse>(
+					r, 
+					(result) => {
+						ApiUtils.Log("Success: Upload file successfully");
+						ApiUtils.Log("Upload URL: " + result.UploadedURL);
 
-					User u = GetUser();
-					u.avatar = result.UploadedURL;
-					string[] keys = result.UploadedURL.Split ('/');
-					string path = keys [keys.Length - 1];
-					ES2.SaveImage(image,path);
-					UpdateUserProfile(u);
-					if (onUploadCompleteCallback != null) {
-						onUploadCompleteCallback(result.UploadedURL);
+						User u = GetUser();
+						u.avatar = result.UploadedURL;
+						string[] keys = result.UploadedURL.Split ('/');
+						string path = keys [keys.Length - 1];
+						ES2.SaveImage(image,path);
+						UpdateUserProfile(u);
+						if (onUploadCompleteCallback != null) {
+							onUploadCompleteCallback(result.UploadedURL);
+						}
+					},
+					(errorStatus) => {
+						ApiUtils.Log("Error: " + errorStatus);
+						//do some other processing here
+					},
+					() => {
+						//timeout handler here
+						ApiUtils.Log("Api call is timeout");
 					}
-				},
-				(errorStatus) => {
-					Debug.Log("Error: " + errorStatus);
-					//do some other processing here
-				},
-				() => {
-					//timeout handler here
-					Debug.Log("Api call is timeout");
-				}
-			);
+				);
+			#endif
 
 		}
+
+		#if BUNNY_CDN
+		private IEnumerator UploadPNGToBunnyCDN(Texture2D image, Action<string> onUploadCompleteCallback = null  ) {
+			if (null == bunnyCDNStorage) {
+				ApiUtils.Log("Bunny is null");
+				yield return null;
+			}
+
+			string targetFilename = GetUser().id+"_"+DateTime.Now.ToString("YYYYMMDDhhmmss")+".png";
+			ApiUtils.Log("Target file: " + targetFilename);
+
+			Stream stream = new MemoryStream(image.EncodeToPNG());
+			yield return bunnyCDNStorage.UploadAsync(stream, "/virtupet/" + targetFilename);
+
+			string avatarUrl = "https://virtupet.b-cdn.net/virtupet/" + targetFilename;
+			User u = GetUser();
+			u.avatar = avatarUrl;
+
+			ES2.SaveImage(image, targetFilename);
+			UpdateUserProfile(u);
+			if (onUploadCompleteCallback != null) {
+				onUploadCompleteCallback(avatarUrl);
+			}
+		}
+
+		async void LoadImageFromBunnyCDN(string avatarUrl, Action<Texture2D> onLoadCompleteCallback){
+
+
+			string[] keys = avatarUrl.Split ('/');
+			string path = keys [keys.Length - 1];
+			Texture2D tex = new Texture2D(128, 128,TextureFormat.ARGB32,false);
+			if (ES3.FileExists (path)) {
+				tex = ES3.LoadImage (path);
+			} else {
+				ApiUtils.Log ("start Download");
+				Stream stream = await bunnyCDNStorage.DownloadObjectAsStreamAsync("/virtupet/" + path) ;
+
+				using(var memoryStream = new MemoryStream())
+				{
+					stream.CopyTo(memoryStream);
+					tex.LoadImage(memoryStream.ToArray());
+					ApiUtils.Log ("downloaded");
+					ES3.SaveImage (tex, path);
+					ApiUtils.Log ("saved");
+				}
+			}
+
+			if (tex != null) {
+				onLoadCompleteCallback(tex);
+			}
+		}
+
+		#endif //BUNNY_CDN
 
 		IEnumerator LoadImageCoroutine(string avatarUrl, Action<Texture2D> onLoadCompleteCallback)
 		{
@@ -1145,12 +1215,12 @@ namespace MageSDK.Client {
 				tex = ES3.LoadImage (path);
 			} else {
 				WWW url = new WWW (avatarUrl);
-				//Debug.Log ("start Download");
+				ApiUtils.Log ("start Download");
 				yield return url;
 				url.LoadImageIntoTexture (tex);
-				//Debug.Log ("downloaded");
+				ApiUtils.Log ("downloaded");
 				ES3.SaveImage (tex, path);
-				//Debug.Log ("saved");
+				ApiUtils.Log ("saved");
 			}
 
 			if (tex != null) {
@@ -1160,7 +1230,12 @@ namespace MageSDK.Client {
 
 		public void LoadImage(string avatarUrl, Action<Texture2D> onLoadCompleteCallback) {
 			if (avatarUrl != "") {
-				StartCoroutine(LoadImageCoroutine(avatarUrl, onLoadCompleteCallback));
+				#if BUNNY_CDN
+					LoadImageFromBunnyCDN(avatarUrl, onLoadCompleteCallback);
+				#else 
+					StartCoroutine(LoadImageCoroutine(avatarUrl, onLoadCompleteCallback));
+				#endif
+				
 			}
 			
 		}
@@ -1192,25 +1267,26 @@ namespace MageSDK.Client {
 				ApiSettings.API_GET_LEADER_BOARD,
 				r, 
 				(result) => {
-					Debug.Log("Success: get leaderboard successfully");
-					//Debug.Log("Leaderboard result: " + result.ToJson());
+					ApiUtils.Log("Success: get leaderboard successfully");
+					ApiUtils.Log("Leaderboard result: " + result.ToJson());
 
 					if (null != onCompleteCallback) {
 						onCompleteCallback(result.Leaders);
 					}
 				},
 				(errorStatus) => {
-					Debug.Log("Error: " + errorStatus);
+					ApiUtils.Log("Error: " + errorStatus);
 					//do some other processing here
 				},
 				() => {
 					//timeout handler here
-					Debug.Log("Api call is timeout");
+					ApiUtils.Log("Api call is timeout");
 				}
 			);
 		}
 
 		#endregion
+
 	}
 		
 }

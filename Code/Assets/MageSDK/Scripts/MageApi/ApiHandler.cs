@@ -61,12 +61,12 @@ namespace MageApi {
 			var form = new WWWForm();
 
 			var formData = System.Text.Encoding.UTF8.GetBytes(request.ToJson());
-			//Debug.Log ("Request: " + request.ToJson ());
+			//ApiUtils.Log ("Request: " + request.ToJson ());
 			var header = form.headers;
 			header.Remove("Content-Type");
 			header.Add("Content-Type", "application/json");
 
-			//Debug.Log("API URL: " + ApiUrl + "/" +ApplicationKey + "/" + apiName);
+			//ApiUtils.Log("API URL: " + ApiUrl + "/" +ApplicationKey + "/" + apiName);
 			var www = new WWW(ApiUrl + "/" +ApplicationKey + "/" + apiName, formData, header);
 
 			StartCoroutine(WaitForReceiveInfo(apiName, callback, errorCallback, timeoutCallback, www));
@@ -90,8 +90,8 @@ namespace MageApi {
 			var header = form.headers;
 			//header.Remove("Content-Type");
 			//header.Add("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
-			Debug.Log("API URL: " + ApiUrl + "/" +ApplicationKey + "/" + "UploadFile");
-			//Debug.Log ("Form data: " + form.data);
+			ApiUtils.Log("API URL: " + ApiUrl + "/" +ApplicationKey + "/" + "UploadFile");
+			//ApiUtils.Log ("Form data: " + form.data);
 			var www = new WWW(ApiUrl + "/" +ApplicationKey + "/" + "UploadFile", form.data, header);
 
 			StartCoroutine(WaitForReceiveInfo("UploadFile", callback, errorCallback, timeoutCallback, www));
@@ -125,28 +125,28 @@ namespace MageApi {
 			if (!isTimeout)
 			{
 				if (www.text != null) {
-					//Debug.Log ("Response: " + www.text);
+					//ApiUtils.Log ("Response: " + www.text);
 					//File.AppendAllText (Application.dataPath + "/Images/result.txt", "\r\n" + www.text);
 					// handle error in response
 					GenericResponse<TResult> result = new GenericResponse<TResult>();
 					try {
 						result = BaseResponse.CreateFromJSON<GenericResponse<TResult>>(www.text);
 					} catch (Exception e) {
-						//Debug.Log("Invalid server response: " + www.text);
+						//ApiUtils.Log("Invalid server response: " + www.text);
 						//errorCallback (-1);
 						result.status = -1;
 					}
 
 					if (result != null && result.status == 0) {
 						//save cache to runtime
-						//Debug.Log(result.cache.ToJson());
+						//ApiUtils.Log(result.cache.ToJson());
 						if (null != result.cache) {
 							RuntimeParameters.GetInstance().SetParam (ApiSettings.API_CACHE, result.cache);
 						} else {
 							RuntimeParameters.GetInstance().SetParam (ApiSettings.API_CACHE, new ApiCache());
 						}
 						
-						//Debug.Log("Server time: " + (DateTime.Parse(result.timestamp)).ToString("yyyy-MM-dd hh:mm:ss"));
+						//ApiUtils.Log("Server time: " + (DateTime.Parse(result.timestamp)).ToString("yyyy-MM-dd hh:mm:ss"));
 						if (null != result.timestamp) {
 							RuntimeParameters.GetInstance().SetParam (ApiSettings.API_SERVER_TIMESTAMP, DateTime.Parse(result.timestamp));
 						} else {
@@ -160,7 +160,7 @@ namespace MageApi {
 						}
 						
 					} else {
-						//Debug.Log ("Error message: " + result.error);
+						//ApiUtils.Log ("Error message: " + result.error);
 						if (null != result) {
 							errorCallback (result.status);
 						} else {
@@ -172,15 +172,15 @@ namespace MageApi {
 					
 				} 
 				else {
-					Debug.Log ("Error message: Response is null");
+					ApiUtils.Log ("Error message: Response is null");
 					errorCallback (-1);
 				}
 
 			}
 			else
 			{
-				Debug.LogError("\n www is null or have error: "+ www.error + "\n" + www.url);
-				Debug.LogError("timeout "+ apiName);
+				ApiUtils.LogError("\n www is null or have error: "+ www.error + "\n" + www.url);
+				ApiUtils.LogError("timeout "+ apiName);
 				timeoutCallback();
 			}
 			www.Dispose();

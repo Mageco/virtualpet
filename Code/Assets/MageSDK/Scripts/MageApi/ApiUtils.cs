@@ -191,6 +191,18 @@ namespace MageApi
 			return SystemInfo.deviceUniqueIdentifier;
 	#endif
 		}
+
+		public static void Log(string s) {
+			#if UNITY_EDITOR
+				Debug.Log(s);
+			#endif
+		}
+
+		public static void LogError(string s) {
+			#if UNITY_EDITOR
+				Debug.LogError(s);
+			#endif
+		}
 	}
 }
 
