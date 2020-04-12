@@ -657,6 +657,9 @@ namespace MageSDK.Client {
 				this._isApplicationDataLoaded = true;
 
 			}
+
+			// refresh Event cache counter
+			RefereshEventCacheCounter();
 		}
 
 		public bool IsApplicationDataLoaded() {
@@ -736,9 +739,11 @@ namespace MageSDK.Client {
 					return;
 				}
 			#endif
+			ApiUtils.Log(" Queue size: " + ((OnlineCacheCounter)this.apiCounter["SendUserEventListRequest"]).GetMax());
 			if (this.IsSendable("SendUserEventListRequest")) {
+				ApiUtils.Log("Event can be sent");
 				List<MageEvent> cachedEvent = MageEventHelper.GetInstance().GetMageEventsList();
-				
+				ApiUtils.Log("Size of Event queue: " + cachedEvent.Count);
 				if (cachedEvent.Count > 1) {
 					SendUserEventListRequest r = new SendUserEventListRequest (cachedEvent);
 
@@ -814,7 +819,8 @@ namespace MageSDK.Client {
 			SaveEvents();
 			SendAppEvents();*/
 			// temporary fix to send single event
-			MageEventHelper.GetInstance().OnEvent(type, this.SendAppEvent, eventDetail);
+			ApiUtils.Log("OnEvent: " + type);
+			MageEventHelper.GetInstance().OnEvent(type, this.SendAppEvents, eventDetail);
 		}
 
 		public void OnEvent<T>(MageEventType type, T obj) where T:BaseModel {
@@ -822,7 +828,8 @@ namespace MageSDK.Client {
 			SaveEvents();
 			SendAppEvents();*/
 			// temporary fix to send single event
-			MageEventHelper.GetInstance().OnEvent(type, obj, this.SendAppEvent);
+			ApiUtils.Log("OnEvent: " + type);
+			MageEventHelper.GetInstance().OnEvent(type, obj, this.SendAppEvents);
 		}
 
 		
@@ -888,7 +895,20 @@ namespace MageSDK.Client {
 			this.apiCounter.Add("UpdateUserDataRequest", new OnlineCacheCounter(0, 10));
 			this.apiCounter.Add("UpdateGameCharacterDataRequest", new OnlineCacheCounter(0, 10));
 			this.apiCounter.Add("SendUserEventListRequest", new OnlineCacheCounter(0, 0));
-			
+		}
+
+		private void RefereshEventCacheCounter() {
+			int maxEventQueue = GetApplicationDataItemInt(MageEngineSettings.GAME_ENGINE_MAX_EVENT_COUNTER_QUEUE);
+			if (maxEventQueue > 0) {
+				// reset the current
+				if (apiCounter.Contains("SendUserEventListRequest")) {
+					OnlineCacheCounter x = (OnlineCacheCounter)apiCounter["SendUserEventListRequest"];
+					if (x!= null) {
+						x.SetMax(maxEventQueue);
+						apiCounter["SendUserEventListRequest"] = x;
+					}
+				}
+			}
 		}
 
 		private bool IsSendable(string apiName) {

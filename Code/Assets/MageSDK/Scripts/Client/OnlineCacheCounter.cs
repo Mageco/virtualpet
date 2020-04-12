@@ -33,6 +33,14 @@ namespace MageSDK.Client {
         public void ResetCounter () {
             counter = 0;
         }
+
+        public void SetMax(int newMax) {
+            max = newMax;
+        }
+
+        public int GetMax() {
+            return max;
+        }
 	}
 
 }

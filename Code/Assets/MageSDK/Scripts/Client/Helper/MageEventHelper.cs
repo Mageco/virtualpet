@@ -159,22 +159,23 @@ namespace MageSDK.Client.Helper {
 			RuntimeParameters.GetInstance().SetParam(MageEngineSettings.GAME_ENGINE_EVENT_CACHE, data);
 		}
 
-		public void OnEvent(MageEventType type, Action<MageEvent> callbackSendEventApi, string eventDetail = "" ) {
-			/*this.cachedEvent.Add(new MageEvent(type, eventDetail));
-			SaveEvents();
-			SendAppEvents();*/
-			// temporary fix to send single event
+		public void OnEvent(MageEventType type, Action callbackSendEventApi, string eventDetail = "" ) {
+			AddEventToCache(type, eventDetail);
 			AddEventCounter(type.ToString());
-			callbackSendEventApi(new MageEvent(type, eventDetail));
+			callbackSendEventApi();
 		}
 
-		public void OnEvent<T>(MageEventType type, T obj, Action<MageEvent> callbackSendEventApi) where T:BaseModel {
-			/*this.cachedEvent.Add(new MageEvent(type, obj.ToJson()));
-			SaveEvents();
-			SendAppEvents();*/
-			// temporary fix to send single event
+		public void OnEvent<T>(MageEventType type, T obj, Action callbackSendEventApi) where T:BaseModel {
+			AddEventToCache(type);
 			AddEventCounter(type.ToString());
-			callbackSendEventApi(new MageEvent(type, obj.ToJson()));
+			//callbackSendEventApi(new MageEvent(type, obj.ToJson()));
+			callbackSendEventApi();
+		}
+
+		private void AddEventToCache(MageEventType type, string eventDetail = "") {
+			List<MageEvent> cachedEvent = GetMageEventsList();
+			cachedEvent.Add(new MageEvent(type, eventDetail));
+			SaveMageEventsList(cachedEvent);
 		}
 
 		#endregion

@@ -61,12 +61,12 @@ namespace MageApi {
 			var form = new WWWForm();
 
 			var formData = System.Text.Encoding.UTF8.GetBytes(request.ToJson());
-			//ApiUtils.Log ("Request: " + request.ToJson ());
+			ApiUtils.Log ("Request: " + request.ToJson ());
 			var header = form.headers;
 			header.Remove("Content-Type");
 			header.Add("Content-Type", "application/json");
 
-			//ApiUtils.Log("API URL: " + ApiUrl + "/" +ApplicationKey + "/" + apiName);
+			ApiUtils.Log("API URL: " + ApiUrl + "/" +ApplicationKey + "/" + apiName);
 			var www = new WWW(ApiUrl + "/" +ApplicationKey + "/" + apiName, formData, header);
 
 			StartCoroutine(WaitForReceiveInfo(apiName, callback, errorCallback, timeoutCallback, www));
