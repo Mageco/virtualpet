@@ -253,6 +253,8 @@ GameObject:
   m_Component:
   - component: {fileID: 4164857843665832380}
   - component: {fileID: 589264230479218470}
+  - component: {fileID: 4554190895803799702}
+  - component: {fileID: 7135106871499187310}
   m_Layer: 0
   m_Name: Balloon 1
   m_TagString: Untagged
@@ -269,7 +271,7 @@ Transform:
   m_GameObject: {fileID: 7724388464484126976}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -21.371058, y: -3.2289844, z: -57.634907}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.2, y: 1.2, z: 1}
   m_Children:
   - {fileID: 5026134104481018431}
   - {fileID: 2172802868872491444}
@@ -296,3 +298,36 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &4554190895803799702
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7724388464484126976}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 703e35d9224244c8fb722d7806e4fc8a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speedX: 0
+  point: 2
+  effect: 0
+  explosionEffect: {fileID: 1545806602296978, guid: ef6918598908e7a429bb834a24327743,
+    type: 3}
+--- !u!58 &7135106871499187310
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7724388464484126976}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0.1}
+  serializedVersion: 2
+  m_Radius: 0.9

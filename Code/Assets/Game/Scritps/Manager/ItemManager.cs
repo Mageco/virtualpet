@@ -859,7 +859,7 @@ public class ItemManager : MonoBehaviour
 
     public void UnLoadPetObject(CharController p)
     {
-        if (p.agent != null)
+        if (p != null && p.agent != null)
             GameObject.Destroy(p.agent.gameObject);
         if (p != null)
             GameObject.Destroy(p.gameObject);

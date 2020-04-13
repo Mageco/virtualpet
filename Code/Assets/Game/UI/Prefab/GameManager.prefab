@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 7629980631625239534}
   - component: {fileID: 6429023365659312804}
   - component: {fileID: 7629980632854792807}
+  - component: {fileID: 1898776817}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -47,13 +48,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameTime: 0
   petObjects: []
+  isGuest: 0
   isLoad: 0
-  heartPrefab: {fileID: 5279987827855304787, guid: f8ee74ad838784eec8ba0103acacd0db,
-    type: 3}
-  expPrefab: {fileID: 2283063184842125480, guid: c4fe20bc18bc24396b1bf4f914498682,
-    type: 3}
   isTest: 0
   myPlayer:
+    playerName: House's ...
     coin: 0
     diamond: 0
     happy: 0
@@ -66,14 +65,42 @@ MonoBehaviour:
     exp: 0
     items: []
     pets: []
+    petDatas: []
     minigameLevels: 00000000
     questId: 0
     questValue: 0
     petColors: []
     achivements: []
     itemSaveDatas: []
-    gameType: 0
+    playerServices: []
+    startGameTime: 4/13/2020 2:45:21 PM
+    dailyBonus: []
+  guest:
+    playerName: House's ...
+    coin: 0
+    diamond: 0
+    happy: 0
+    level: 1
+    collectedHappy: 0
+    collectedCoin: 0
+    petCount: 1
+    itemCount: 0
+    playTime: 0
+    exp: 0
+    items: []
+    pets: []
+    petDatas: []
+    minigameLevels: 0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+    questId: 0
+    questValue: 0
+    petColors: []
+    achivements: []
+    itemSaveDatas: []
+    playerServices: []
+    startGameTime: 4/13/2020 2:45:21 PM
+    dailyBonus: []
   rateCount: 0
+  expScale: 1
 --- !u!114 &6429023365659312804
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -87,6 +114,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rewardType: 2
+  adDistribute: 1
 --- !u!114 &7629980632854792807
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -106,6 +134,115 @@ MonoBehaviour:
   - vn.mage.com.diamond2
   - vn.mage.com.diamond3
   - vn.mage.com.diamond4
+  - vn.mage.com.pethouse.commonchest
+  - vn.mage.com.pethouse.rarechest
+  - vn.mage.com.pethouse.epicchest
   nonConsumableIds: []
   subScriptionIds: []
   currentLesson: 0
+--- !u!114 &1898776817
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7629980631625239535}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 314e743f36767410aac2507c9fc40b3e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  languageName:
+  - Afrikaans
+  - Arabic
+  - Armenian
+  - Belarusian
+  - Bulgarian
+  - Catalan
+  - ' Chinese (Simplified)'
+  - Chinese (Traditional)
+  - Croatian
+  - Czech
+  - Danish
+  - Dutch
+  - English
+  - Esperanto
+  - Estonian
+  - Filipino
+  - Finnish
+  - French
+  - German
+  - Greek
+  - Hebrew
+  - Hindi
+  - Hungarian
+  - Icelandic
+  - Indonesian
+  - Italian
+  - Japanese
+  - Korean
+  - Latvian
+  - Lithuanian
+  - Norwegian
+  - Persian
+  - Polish
+  - Portuguese
+  - Romanian
+  - Russian
+  - Serbian
+  - Slovak
+  - Slovenian
+  - Spanish
+  - Swahili
+  - Swedish
+  - Thai
+  - Turkish
+  - Ukrainian
+  - Vietnamese
+  languageCode:
+  - af
+  - ar
+  - hy
+  - be
+  - bg
+  - ca
+  - zh-CN
+  - zh-TW
+  - hr
+  - cs
+  - da
+  - nl
+  - en
+  - eo
+  - et
+  - tl
+  - fi
+  - fr
+  - de
+  - el
+  - iw
+  - hi
+  - hu
+  - is
+  - id
+  - it
+  - ja
+  - ko
+  - lv
+  - lt
+  - no
+  - fa
+  - pl
+  - pt
+  - ro
+  - ru
+  - sr
+  - sk
+  - sl
+  - es
+  - sw
+  - sv
+  - th
+  - tr
+  - uk
+  - vi

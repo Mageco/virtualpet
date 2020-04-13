@@ -95,6 +95,9 @@ public class WinPanel : MonoBehaviour
 
             if (r > 80 && (minigameId == 2))
                 RewardVideoAdManager.instance.ShowIntetestial();
+
+            if (r > 60 && (minigameId == 3))
+                RewardVideoAdManager.instance.ShowIntetestial();
         }
             
     }

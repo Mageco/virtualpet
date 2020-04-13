@@ -224,8 +224,10 @@ public class GameManager : MonoBehaviour
                 p.itemState = ItemState.Have;
                 if (ItemManager.instance != null)
                 {
-                    petObjects.Remove(GetPetObject(p.iD));
-                    ItemManager.instance.UnLoadPetObject(GetPetObject(p.iD));
+                    CharController c = GetPetObject(p.iD);
+                    petObjects.Remove(c);
+                    ItemManager.instance.UnLoadPetObject(c);
+                    
                 }
             }
         }

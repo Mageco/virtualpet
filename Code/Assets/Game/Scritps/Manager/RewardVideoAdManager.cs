@@ -327,6 +327,7 @@ public class RewardVideoAdManager : MonoBehaviour , IUnityAdsListener
 	{
 		rewardType = RewardType.None;
 		Advertisement.Show("Interstitial");
+		MageEngine.instance.OnEvent(Mage.Models.Application.MageEventType.InterstitialAdShow, "Minigame");
 	}
 
 

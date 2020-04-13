@@ -23,7 +23,8 @@ public class ToyBallItem : ToyItem
         rigid = this.GetComponent<Rigidbody2D>();
         originalShadowScale = shadow.transform.localScale;
         Stop();
-        intHeight = col.radius; 
+        intHeight = col.radius;
+        boundX = ItemManager.instance.houseItem.roomBoundX;
     }
 
     
@@ -38,6 +39,9 @@ public class ToyBallItem : ToyItem
     {
         if (isOnForce)
             return;
+
+        if (state == EquipmentState.Active)
+            return;
         time = 0;
         isOnForce = true;
         rigid.isKinematic = false;
@@ -48,6 +52,8 @@ public class ToyBallItem : ToyItem
         rigid.AddForce(new Vector2(Random.Range(-1000,1000),Random.Range(1000,5000)));
         rigid.AddTorque(Random.Range(-100, 100));
         lastPosition = this.transform.position;
+        wall.SetActive(true);
+        
     }
 
     private void Stop()
@@ -58,6 +64,7 @@ public class ToyBallItem : ToyItem
         rigid.isKinematic = true;
         col.isTrigger = true;
         state = EquipmentState.Idle;
+        wall.SetActive(false);
     }
 
     protected override void Update()
