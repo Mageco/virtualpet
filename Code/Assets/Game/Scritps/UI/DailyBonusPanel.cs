@@ -47,7 +47,7 @@ public class DailyBonusPanel : MonoBehaviour
             }
         }
 
-        Debug.Log(n);
+        //Debug.Log(n);
         if(n == 0)
         {
             collectButtons[n].interactable = true;

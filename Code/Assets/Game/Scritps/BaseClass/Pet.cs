@@ -91,8 +91,8 @@ public class Pet : BaseModel
     public float maxItchi = 100;
     [HideInInspector]
     public float maxCurious = 100;
-
-    int levelRate = 10;
+    [HideInInspector]
+    public int levelRate = 10;
 
 
     //public CharController character;
@@ -638,6 +638,27 @@ public class Pet : BaseModel
         set
         {
             this.recoverHealth = value;
+        }
+    }
+
+    public int RateHappy
+    {
+        get
+        {
+            if (this.rareType == RareType.Rare)
+                return 3;
+            else if (this.rareType == RareType.Epic)
+                return 5;
+            else if (this.rareType == RareType.Legend)
+                return 10;
+            else if (this.rareType == RareType.Common)
+                return 1;
+            else
+                return 0;
+        }
+        set
+        {
+            this.rateHappy = value;
         }
     }
 

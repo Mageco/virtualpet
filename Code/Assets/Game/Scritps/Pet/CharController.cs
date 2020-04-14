@@ -118,17 +118,6 @@ public class CharController : MonoBehaviour
             Pet p = new Pet(pet.iD);
             this.data = p;
         }
-
-        if (this.data.rareType == RareType.Rare)
-            this.data.rateHappy = 3;
-        else if (this.data.rareType == RareType.Epic)
-            this.data.rateHappy = 5;
-        else if (this.data.rareType == RareType.Legend)
-            this.data.rateHappy = 10;
-        else if (this.data.rareType == RareType.Common)
-            this.data.rateHappy = 1;
-
-
     }
 
     public void LoadPrefab()
@@ -270,7 +259,7 @@ public class CharController : MonoBehaviour
             if (timeToy > 6 && toyItem != null && toyItem.IsActive())
             {
                 int value = (int)DataHolder.GetItem(toyItem.item.itemID).value;
-                ItemManager.instance.SpawnHeart(data.rateHappy + data.level/5 + value, this.transform.position);
+                ItemManager.instance.SpawnHeart(data.RateHappy + data.level/5 + value, this.transform.position);
                 timeToy = 0;
             }
             else
@@ -1379,7 +1368,7 @@ public class CharController : MonoBehaviour
             t += Time.deltaTime;
             if(timeLove > 5)
             {
-                ItemManager.instance.SpawnHeart(data.rateHappy + data.level / 5, this.transform.position);
+                ItemManager.instance.SpawnHeart(data.RateHappy + data.level / 5, this.transform.position);
                 timeLove = 0;
             }
             yield return new WaitForEndOfFrame();
@@ -1496,7 +1485,7 @@ public class CharController : MonoBehaviour
         {
             if (data.pee <= 1 && !isAbort)
             {
-                ItemManager.instance.SpawnHeart(data.rateHappy + data.level / 5, this.transform.position);
+                ItemManager.instance.SpawnHeart(data.RateHappy + data.level / 5, this.transform.position);
                 GameManager.instance.LogAchivement(AchivementType.Do_Action, ActionType.OnToilet);
             }
 
@@ -1541,7 +1530,7 @@ public class CharController : MonoBehaviour
         {
             if (data.shit <= 1 && !isAbort)
             {
-                ItemManager.instance.SpawnHeart(data.rateHappy + data.level / 5, this.transform.position);
+                ItemManager.instance.SpawnHeart(data.RateHappy + data.level / 5, this.transform.position);
                 GameManager.instance.LogAchivement(AchivementType.Do_Action, ActionType.OnToilet);
             }
             yield return StartCoroutine(JumpDown(-7, 10, 30));
@@ -1585,7 +1574,7 @@ public class CharController : MonoBehaviour
                 if (data.Food >= data.MaxFood - 10)
                 {
                     GameManager.instance.LogAchivement(AchivementType.Do_Action, ActionType.Eat);
-                    ItemManager.instance.SpawnHeart(data.rateHappy + data.level / 5, this.transform.position);
+                    ItemManager.instance.SpawnHeart(data.RateHappy + data.level / 5, this.transform.position);
                     if (GetFoodItem() != null && GetFoodItem().GetComponent<ItemObject>() != null)
                         GameManager.instance.LogAchivement(AchivementType.Eat, ActionType.None, GetFoodItem().GetComponent<ItemObject>().itemID);
                 }
@@ -1739,7 +1728,7 @@ public class CharController : MonoBehaviour
         {
             if (data.Sleep > data.MaxSleep - 1)
             {
-                ItemManager.instance.SpawnHeart((data.rateHappy + data.level / 5)*2, this.transform.position);
+                ItemManager.instance.SpawnHeart((data.RateHappy + data.level / 5)*2, this.transform.position);
                 GameManager.instance.LogAchivement(AchivementType.Do_Action, ActionType.Sleep);
             }
             yield return StartCoroutine(JumpDown(-7, 10, 30));
@@ -2142,7 +2131,7 @@ public class CharController : MonoBehaviour
             {
                 yield return StartCoroutine(DoAnim("Love"));
                 int value = (int)DataHolder.GetItem(toyItem.item.itemID).value;
-                ItemManager.instance.SpawnHeart(data.rateHappy + data.level / 5 + value, this.transform.position);
+                ItemManager.instance.SpawnHeart(data.RateHappy + data.level / 5 + value, this.transform.position);
 
             }
 

@@ -20,7 +20,7 @@ public class ProfilePanel : MonoBehaviour
     void Start()
     {   
         ClearItems();
-        foreach(CharController p in GameManager.instance.GetPetObjects()){
+        foreach(PlayerPet p in GameManager.instance.GetPets()){
             LoadItem(p);
         }
     }
@@ -34,13 +34,13 @@ public class ProfilePanel : MonoBehaviour
 
 
 
-    void LoadItem(CharController data){
+    void LoadItem(PlayerPet data){
         GameObject go = Instantiate(itemUIPrefab);
         go.transform.SetParent(this.anchor);
         go.transform.localScale = Vector3.one;
         ProfileUI item = go.GetComponent<ProfileUI>();
         items.Add(item);
-        item.Load(data.data.iD);
+        item.Load(data);
     }
 
     void ClearItems(){
