@@ -104,14 +104,18 @@ public class LeaderBoardPanel : MonoBehaviour
         GameManager.instance.myPlayer,
         "minigameLevels",
         (leaderboardItems) => {
-            list2.Clear();
-            foreach (LeaderBoardItem i in leaderboardItems)
+            if(UIManager.instance.leaderBoardPanel != null)
             {
-                list2.Add(i);
+                list2.Clear();
+                foreach (LeaderBoardItem i in leaderboardItems)
+                {
+                    list2.Add(i);
+                }
+                ES2.Save(list2, "List2");
+                if (currentTab == 1)
+                    OnTab(currentTab);
             }
-            ES2.Save(list2, "List2");
-            if (currentTab == 1)
-                OnTab(currentTab);
+
         },
         0);
 
@@ -119,14 +123,17 @@ public class LeaderBoardPanel : MonoBehaviour
         GameManager.instance.myPlayer,
         "minigameLevels",
         (leaderboardItems) => {
-            list3.Clear();
-            foreach (LeaderBoardItem i in leaderboardItems)
+            if (UIManager.instance.leaderBoardPanel != null)
             {
-                list3.Add(i);
+                list3.Clear();
+                foreach (LeaderBoardItem i in leaderboardItems)
+                {
+                    list3.Add(i);
+                }
+                ES2.Save(list3, "List3");
+                if (currentTab == 2)
+                    OnTab(currentTab);
             }
-            ES2.Save(list3, "List3");
-            if (currentTab == 2)
-                OnTab(currentTab);
         },
         1);
 
@@ -134,14 +141,17 @@ public class LeaderBoardPanel : MonoBehaviour
         GameManager.instance.myPlayer,
         "minigameLevels",
         (leaderboardItems) => {
-            list4.Clear();
-            foreach (LeaderBoardItem i in leaderboardItems)
+            if (UIManager.instance.leaderBoardPanel != null)
             {
-                list4.Add(i);
+                list4.Clear();
+                foreach (LeaderBoardItem i in leaderboardItems)
+                {
+                    list4.Add(i);
+                }
+                ES2.Save(list4, "List4");
+                if (currentTab == 3)
+                    OnTab(currentTab);
             }
-            ES2.Save(list4, "List4");
-            if (currentTab == 3)
-                OnTab(currentTab);
         },
         2);
         

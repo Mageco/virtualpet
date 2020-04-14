@@ -712,9 +712,10 @@ public class ItemManager : MonoBehaviour
             data = GameManager.instance.guest;
                 
         foreach (ItemSaveData item in data.itemSaveDatas){
-            if(item.itemType == ItemSaveDataType.Pee){
+            if(item.itemType == ItemSaveDataType.Pee && !GameManager.instance.isGuest){
                 SpawnPee(item.position,item.value);
-            }else if(item.itemType == ItemSaveDataType.Shit){
+            }else if(item.itemType == ItemSaveDataType.Shit && !GameManager.instance.isGuest)
+            {
                 SpawnShit(item.position,item.value);
             }else if(item.itemType == ItemSaveDataType.Food || item.itemType == ItemSaveDataType.Drink){
                 if(GetItem(item.id) != null){

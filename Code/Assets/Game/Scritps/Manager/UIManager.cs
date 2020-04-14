@@ -819,6 +819,11 @@ public class UIManager : MonoBehaviour
         }
         else
         {
+            int n = Random.Range(0, 100);
+            if(n > 80)
+            {
+                RewardVideoAdManager.instance.ShowIntetestial();
+            }
             callButton.SetActive(false);
             RewardVideoAdManager.instance.ShowBanner();
         }
@@ -830,10 +835,16 @@ public class UIManager : MonoBehaviour
 
     public void OnFriendHouse(string userId,Sprite avatar)
     {
+        
         if (leaderBoardPanel != null)
             leaderBoardPanel.Close();
 
         MageEngine.instance.GetRandomFriend((User u) => {
+            int n = Random.Range(0, 100);
+            if (n > 70)
+            {
+                RewardVideoAdManager.instance.ShowIntetestial();
+            }
             GameManager.instance.isGuest = true;
             toolUI.gameObject.SetActive(false);
             callButton.SetActive(false);
@@ -845,7 +856,6 @@ public class UIManager : MonoBehaviour
             MageManager.instance.LoadSceneWithLoading("House");
             Debug.Log("Friend: " + u.ToJson());
         },userId);
-
     }
 
     public void OnMyHouse()
@@ -854,7 +864,7 @@ public class UIManager : MonoBehaviour
         toolUI.gameObject.SetActive(true);
         callButton.SetActive(true);
         RewardVideoAdManager.instance.HideBanner();
-        GameManager.instance.UnEquipPets();
+        GameManager.instance.RemoveAllPetObjects();
         remotePanel.SetActive(false);
         MageManager.instance.LoadSceneWithLoading("House");
     }

@@ -336,6 +336,7 @@ public class RewardVideoAdManager : MonoBehaviour , IUnityAdsListener
     public void ShowBanner()
     {
 		StartCoroutine(ShowBannerWhenReady());
+		MageEngine.instance.OnEvent(Mage.Models.Application.MageEventType.BannerAdShow, "Scene");
 	}
 
     public void HideBanner()

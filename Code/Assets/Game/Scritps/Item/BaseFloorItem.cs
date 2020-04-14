@@ -61,6 +61,11 @@ public class BaseFloorItem : MonoBehaviour
 	// Update is called once per frame
 	protected virtual void Update()
 	{
+		if (GameManager.instance.isGuest)
+		{
+			return;
+		}
+
 		if (state == EquipmentState.Hold)
 		{
 			dragTime += Time.deltaTime;
@@ -141,8 +146,7 @@ public class BaseFloorItem : MonoBehaviour
 
 	protected virtual void OnMouseUp()
 	{
-		if (GameManager.instance.isGuest)
-			return;
+
 
 		if (state == EquipmentState.Drag || state == EquipmentState.Hold)
 		{
@@ -151,7 +155,8 @@ public class BaseFloorItem : MonoBehaviour
 				OnClick();
 			}
 			else
-			{
+			{ 
+
 				if ((obstructItem != null && obstructItem.itemCollides.Count > 0) || roomCollide != null)
 				{
 					StartCoroutine(ReturnPosition(lastPosition));
@@ -191,8 +196,6 @@ public class BaseFloorItem : MonoBehaviour
 
 	protected virtual void OnMouseDown()
 	{
-		if (GameManager.instance.isGuest)
-			return;
 
 		if (movementType == MovementType.None)
 			return;

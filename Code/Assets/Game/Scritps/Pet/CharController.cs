@@ -111,11 +111,13 @@ public class CharController : MonoBehaviour
         if (!GameManager.instance.isGuest && ES2.Exists(DataHolder.GetPet(pet.iD).GetName(0)))
         {
             Pet p = ES2.Load<Pet>(DataHolder.GetPet(pet.iD).GetName(0));
+            p.level = pet.level;
             this.data = p;
         }
         else
         {
             Pet p = new Pet(pet.iD);
+            p.level = pet.level;
             this.data = p;
         }
     }
