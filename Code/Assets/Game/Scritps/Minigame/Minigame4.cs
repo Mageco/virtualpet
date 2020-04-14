@@ -23,6 +23,7 @@ public class Minigame4 : Minigame
     float minY = 0;
     GuideUI guildUI;
 
+
     void Start()
     {
         float ratio = Screen.height * 1f / Screen.width;
@@ -101,7 +102,7 @@ public class Minigame4 : Minigame
             {
                 timeSpawn = 0;
                 SpawnBall();
-                timeDuration = Random.Range(2, 3);
+                timeDuration = Random.Range(0.5f,2f);
             }
             else
                 timeSpawn += Time.deltaTime;
@@ -113,9 +114,9 @@ public class Minigame4 : Minigame
     {
         int id = Random.Range(0, ballPrefabs.Length);
         GameObject go = GameObject.Instantiate(ballPrefabs[id]) as GameObject;
-        go.transform.position = new Vector3(Random.Range(0, 10), minY, 0);
+        go.transform.position = new Vector3(Random.Range(-1, 10), minY, 0);
         BallFlyItem ball = go.GetComponent<BallFlyItem>();
-        float speed = Random.Range(2, 3) + time/50;
+        float speed = Random.Range(2,3) + time/50;
         ball.Load(speed,maxY);
         balls.Add(ball);
     }

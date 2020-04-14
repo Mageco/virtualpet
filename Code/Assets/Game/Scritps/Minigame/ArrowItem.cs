@@ -7,6 +7,9 @@ public class ArrowItem : MonoBehaviour
     Rigidbody2D rigidbody2D;
     BoxCollider2D boxCollider2D;
     Vector3 lastPosition;
+    int number = 0;
+    int value = 0;
+    public GameObject[] bonuses;
 
     private void Awake()
     {
@@ -24,8 +27,37 @@ public class ArrowItem : MonoBehaviour
         var dir = rigidbody2D.velocity;
         var angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
         rigidbody2D.MoveRotation(angle);
-        if (this.transform.position.y < -20)
+        float minY = Camera.main.transform.position.y - Camera.main.orthographicSize + 0.5f;
+        if (this.transform.position.x > 16 || this.transform.position.y < minY)
+        {
+            if (number == 1)
+            {
+                value = 0;
+                GameObject bonus = Instantiate(bonuses[0]);
+                bonus.transform.position = Vector3.zero;
+            }
+            else if (number == 2)
+            {
+                value = 3;
+                GameObject bonus = Instantiate(bonuses[1]);
+                bonus.transform.position = Vector3.zero;
+            }
+            else if (number == 3)
+            {
+                value = 10;
+                GameObject bonus = Instantiate(bonuses[2]);
+                bonus.transform.position = Vector3.zero;
+            }
+            else if (number > 3)
+            {
+                value = 20;
+                GameObject bonus = Instantiate(bonuses[3]);
+                bonus.transform.position = Vector3.zero;
+            }
+            Minigame.instance.bonus += value;
             Destroy(this.gameObject);
+        }
+            
     }
 
     public void Load(float speed,float angle)
@@ -34,5 +66,18 @@ public class ArrowItem : MonoBehaviour
         boxCollider2D = this.GetComponent<BoxCollider2D>();
         rigidbody2D.velocity = new Vector2(speed * Mathf.Cos(angle),speed * Mathf.Sin(angle));
         lastPosition = this.transform.position;
+    }
+
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.GetComponent<BallFlyItem>() != null)
+        {
+            number++;
+        }
+    }
+
+    void OnTriggerExit2D(Collider2D other)
+    {
+
     }
 }
