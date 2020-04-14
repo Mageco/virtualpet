@@ -22,6 +22,7 @@ public class Minigame4 : Minigame
     float maxY = 3;
     float minY = 0;
     GuideUI guildUI;
+    public Animator bow;
 
 
     void Start()
@@ -37,7 +38,7 @@ public class Minigame4 : Minigame
         else
             StartGame();
 
-        MageManager.instance.PlayMusicName("Minigame1", true);
+        MageManager.instance.PlayMusicName("Minigame4", true);
     }
 
     public void Arm()
@@ -73,6 +74,8 @@ public class Minigame4 : Minigame
         Debug.Log(go.transform.rotation.eulerAngles.z);
         arrowItem.Load(speed, go.transform.rotation.eulerAngles.z / 180 * Mathf.PI);
         animator.speed = 0;
+        bow.Play("Active", 0);
+        MageManager.instance.PlaySound("Throw", false);
         yield return new WaitForSeconds(0.5f);
         animator.speed = 1;
         bowState = BowState.Idle;

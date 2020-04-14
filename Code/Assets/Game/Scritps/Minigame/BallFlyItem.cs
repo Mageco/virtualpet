@@ -53,6 +53,7 @@ public class BallFlyItem : MonoBehaviour
         circleCollider2D.enabled = false;
         if (explosionEffect != null)
             GameObject.Instantiate(explosionEffect, this.transform.position, Quaternion.identity);
+        MageManager.instance.PlaySound("punch_low_deep_impact_02", false);
         animator.Play("Explode", 0);
         yield return new WaitForEndOfFrame();
         yield return new WaitForSeconds(animator.GetCurrentAnimatorStateInfo(0).length);
@@ -61,11 +62,13 @@ public class BallFlyItem : MonoBehaviour
             minigame.OnExplode();
         else if(this.effect == BallFlyItemEffect.Speed)
         {
+            MageManager.instance.PlaySound("Item_Appear", false);
             minigame.OnReduceSpeed();
             minigame.RemoveBall(this);
         }
         else if(this.effect == BallFlyItemEffect.Coin)
         {
+            MageManager.instance.PlaySound("collect_item_02", false);
             minigame.bonus += 9;
             minigame.SpawnCoin(this.transform.position, point);
             minigame.RemoveBall(this);

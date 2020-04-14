@@ -38,18 +38,21 @@ public class ArrowItem : MonoBehaviour
             }
             else if (number == 2)
             {
+                MageManager.instance.PlaySound("points_ticker_bonus_score_reward_single_02", false);
                 value = 3;
                 GameObject bonus = Instantiate(bonuses[1]);
                 bonus.transform.position = Vector3.zero;
             }
             else if (number == 3)
             {
+                MageManager.instance.PlaySound("points_ticker_bonus_score_reward_single_04", false);
                 value = 10;
                 GameObject bonus = Instantiate(bonuses[2]);
                 bonus.transform.position = Vector3.zero;
             }
             else if (number > 3)
             {
+                MageManager.instance.PlaySound("points_ticker_bonus_score_reward_single_06", false);
                 value = 20;
                 GameObject bonus = Instantiate(bonuses[3]);
                 bonus.transform.position = Vector3.zero;
