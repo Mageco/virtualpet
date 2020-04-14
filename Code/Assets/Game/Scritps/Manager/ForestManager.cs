@@ -27,6 +27,8 @@ public class ForestManager : MonoBehaviour
     GameObject collector;
     public bool isForest = true;
     List<CharCollectorTimeline> collectorTimelines = new List<CharCollectorTimeline>();
+    
+
 
     void Awake()
     {
@@ -45,7 +47,10 @@ public class ForestManager : MonoBehaviour
         CheckDayNight();
         LoadMusic();
         LoadCollectors();
+        
     }
+
+
 
     void LoadCollectors()
     {

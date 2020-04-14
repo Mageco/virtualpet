@@ -14,9 +14,12 @@ public class RewardVideoAdManager : MonoBehaviour , IUnityAdsListener
 	RewardBasedVideoAd rewardBasedVideo;
 	ChestItem chestItem;
 	int petId = 0;
+	[HideInInspector]
+	public bool isUnityVideoLoaded = false;
+	public string bannerPlacementId = "bannerForest";
 
 #if UNITY_IOS
-    private string gameId = "3508454";
+	private string gameId = "3508454";
 #elif UNITY_ANDROID
 	private string gameId = "3508455";
 #else
@@ -330,11 +333,30 @@ public class RewardVideoAdManager : MonoBehaviour , IUnityAdsListener
 		MageEngine.instance.OnEvent(Mage.Models.Application.MageEventType.InterstitialAdShow, "Minigame");
 	}
 
+    public void ShowBanner()
+    {
+		StartCoroutine(ShowBannerWhenReady());
+	}
 
-    #region Unity Ad
-    
-    // Implement IUnityAdsListener interface methods:
-    public void OnUnityAdsDidFinish(string placementId, ShowResult showResult)
+    public void HideBanner()
+    {
+		Advertisement.Banner.Hide();
+    }
+
+	IEnumerator ShowBannerWhenReady()
+	{
+		while (!Advertisement.IsReady(bannerPlacementId))
+		{
+			yield return new WaitForSeconds(0.5f);
+		}
+		Advertisement.Banner.Show(bannerPlacementId);
+	}
+
+
+	#region Unity Ad
+
+	// Implement IUnityAdsListener interface methods:
+	public void OnUnityAdsDidFinish(string placementId, ShowResult showResult)
 	{
 		// Define conditional logic for each ad completion status:
 		if (showResult == ShowResult.Finished)
@@ -382,7 +404,10 @@ public class RewardVideoAdManager : MonoBehaviour , IUnityAdsListener
 
 	public void OnUnityAdsReady(string placementId)
 	{
-
+        if(placementId == "rewardedVideo")
+        {
+			isUnityVideoLoaded = true;
+        }
 	}
 
 	public void OnUnityAdsDidError(string message)

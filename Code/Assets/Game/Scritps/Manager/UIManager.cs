@@ -795,9 +795,16 @@ public class UIManager : MonoBehaviour
         MageManager.instance.LoadSceneWithLoading(type.ToString());
         GameManager.instance.petObjects.Clear();
         if (type == MapType.House)
+        {
             callButton.SetActive(true);
+            RewardVideoAdManager.instance.HideBanner();
+        }
         else
+        {
             callButton.SetActive(false);
+            RewardVideoAdManager.instance.ShowBanner();
+        }
+            
 
         if (type == MapType.Forest || type == MapType.Lake)
             homeUI.SetActive(true);

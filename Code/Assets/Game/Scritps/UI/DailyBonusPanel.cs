@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using MageSDK.Client;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -43,7 +44,6 @@ public class DailyBonusPanel : MonoBehaviour
                     covers[i].SetActive(true);
                     dones[i].SetActive(true);
                 }
-
             }
         }
 
@@ -51,17 +51,30 @@ public class DailyBonusPanel : MonoBehaviour
         if(n == 0)
         {
             collectButtons[n].interactable = true;
+        }else if (n == 7)
+        {
+            if (System.DateTime.Parse(GameManager.instance.myPlayer.dailyBonus[n-1].timeReceived).Year < MageEngine.instance.GetServerTimeStamp().Year || System.DateTime.Parse(GameManager.instance.myPlayer.dailyBonus[n-1].timeReceived).Month < MageEngine.instance.GetServerTimeStamp().Month || System.DateTime.Parse(GameManager.instance.myPlayer.dailyBonus[n-1].timeReceived).Day < MageEngine.instance.GetServerTimeStamp().Day)
+            {
+                for (int i = 0; i < GameManager.instance.myPlayer.dailyBonus.Count; i++)
+                {
+                    GameManager.instance.myPlayer.dailyBonus[i].isCollected = false;
+                    GameManager.instance.myPlayer.dailyBonus[i].timeReceived = System.DateTime.Now.ToString();
+                    Load();
+                }
+            }
         }
         else
         {
-            Debug.Log(System.DateTime.Parse(GameManager.instance.myPlayer.dailyBonus[n - 1].timeReceived).Day);
-            Debug.Log(System.DateTime.Now.Day);
-            
-            if(System.DateTime.Parse(GameManager.instance.myPlayer.dailyBonus[n - 1].timeReceived).Year < System.DateTime.Now.Year || System.DateTime.Parse(GameManager.instance.myPlayer.dailyBonus[n - 1].timeReceived).Month < System.DateTime.Now.Month || System.DateTime.Parse(GameManager.instance.myPlayer.dailyBonus[n-1].timeReceived).Day < System.DateTime.Now.Day)
+           
+            Debug.Log(MageEngine.instance.GetServerTimeStamp().Day);
+
+            if (System.DateTime.Parse(GameManager.instance.myPlayer.dailyBonus[n - 1].timeReceived).Year < MageEngine.instance.GetServerTimeStamp().Year || System.DateTime.Parse(GameManager.instance.myPlayer.dailyBonus[n - 1].timeReceived).Month < MageEngine.instance.GetServerTimeStamp().Month || System.DateTime.Parse(GameManager.instance.myPlayer.dailyBonus[n - 1].timeReceived).Day < MageEngine.instance.GetServerTimeStamp().Day)
             {
                 collectButtons[n].interactable = true;
             }
         }
+
+
         
     }
 

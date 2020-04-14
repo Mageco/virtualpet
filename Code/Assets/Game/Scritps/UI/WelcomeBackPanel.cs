@@ -9,7 +9,7 @@ public class WelcomeBackPanel : MonoBehaviour
     public Text happyText;
     int coin = 1;
     int happy = 1;
-    public AnimatedButton AdButton;
+    public Button AdButton;
     // Start is called before the first frame update
 
     public void Load(int c,int h)
@@ -18,13 +18,13 @@ public class WelcomeBackPanel : MonoBehaviour
         {
             if(item.itemType == ItemType.Fruit)
             {
-                coin += c * 10;
+                coin += c * DataHolder.GetItem(item.itemId).buyPrice / 50;
             }
         }
 
         foreach (PlayerPet p in GameManager.instance.myPlayer.petDatas)
         {
-            happy += h;
+            happy += h * DataHolder.GetPet(p.iD).RateHappy;
         }
     }
 
@@ -33,6 +33,10 @@ public class WelcomeBackPanel : MonoBehaviour
     {
         coinText.text = coin.ToString();
         happyText.text = happy.ToString();
+        if (RewardVideoAdManager.instance.isUnityVideoLoaded)
+            AdButton.interactable = true;
+        else
+            AdButton.interactable = false;
     }
 
 

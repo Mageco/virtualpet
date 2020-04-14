@@ -23,6 +23,7 @@ public class ItemManager : MonoBehaviour
     public GameObject guidePrefab;
     public GameObject petGiftPrefab;
 
+    System.DateTime startTime = System.DateTime.Now;
     float time = 0;
     float maxTimeCheck = 1.1f;
     System.DateTime playTime = System.DateTime.Now;
@@ -46,10 +47,13 @@ public class ItemManager : MonoBehaviour
     {
         if (instance == null)
             instance = this;
-        else 
+        else
             Destroy(this.gameObject);
 
-        
+        if (ES2.Exists("PlayTime"))
+        {
+            startTime = ES2.Load<System.DateTime>("PlayTime");
+        }
     }
     // Start is called before the first frame update
     IEnumerator Start()
@@ -69,16 +73,6 @@ public class ItemManager : MonoBehaviour
             yield return new WaitForEndOfFrame();
         }
 
-
-        if (ES2.Exists("PlayTime"))
-        {
-            playTime = ES2.Load<System.DateTime>("PlayTime");
-            //Debug.Log(playTime);
-            //Debug.Log(MageEngine.instance.GetServerTimeStamp());
-            LoadWelcome((float)(MageEngine.instance.GetServerTimeStamp() - playTime).TotalSeconds);
-        }
-
-
         if (ES2.Exists("CameraPosition"))
         {
             GetActiveCamera().transform.position = ES2.Load<Vector3>("CameraPosition");
@@ -88,6 +82,9 @@ public class ItemManager : MonoBehaviour
         MageManager.instance.loadingBar.UpdateProgress(t);
         yield return new WaitForEndOfFrame();
         MageManager.instance.loadingBar.gameObject.SetActive(false);
+        yield return new WaitForSeconds(1);
+        LoadWelcome((float)(MageEngine.instance.GetServerTimeStamp() - startTime).TotalSeconds);
+        
     }
 
     // Update is called once per frame

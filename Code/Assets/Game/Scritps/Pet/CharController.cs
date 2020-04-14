@@ -998,7 +998,7 @@ public class CharController : MonoBehaviour
 
         //Debug.Log("Toy5");
         if (actionType != ActionType.Sick && actionType != ActionType.Injured && actionType != ActionType.OnControl && charInteract.interactType != InteractType.Drag //actionType != ActionType.Hold
-         && actionType != ActionType.Toy && enviromentType == EnviromentType.Room && actionType != ActionType.Supprised && actionType != ActionType.OnCall)
+         && actionType != ActionType.Toy && enviromentType == EnviromentType.Room && actionType != ActionType.Supprised && actionType != ActionType.OnCall && actionType != ActionType.OnGift)
         {
             timeToy = 0;
             actionType = ActionType.Toy;
