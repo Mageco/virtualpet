@@ -446,7 +446,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHeight: 15
-  scaleFactor: 0.05
   height: 0
   scalePosition: {x: 0, y: 0, z: 0}
   speedFactor: 1
@@ -464,6 +463,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   interactType: 0
   dragOffset: {x: 0, y: 0, z: 0}
+  isDrag: 0
 --- !u!114 &494781705592010213
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -485,9 +485,11 @@ MonoBehaviour:
     itemState: 0
     prefabName: 
     isAvailable: 1
+    itemTag: 0
     requireEquipments: 
     requirePets: 
-    favouriteToys: 
+    requireValue: 0
+    requireValueType: 3
     skills: []
     petName: 
     shopOrder: 0
@@ -509,6 +511,8 @@ MonoBehaviour:
     fear: 0
     curious: 0
     maxTimeSick: 1800
+    isNew: 0
+    rareType: 0
     rateFood: 10
     rateWater: 10
     rateSleep: 0.5
@@ -518,6 +522,7 @@ MonoBehaviour:
     recoverDirty: 0.1
     recoverHealth: 0
     recoverEnergy: 0
+    rateHappy: 1
     maxFood: 100
     maxWater: 100
     maxShit: 100
@@ -529,16 +534,15 @@ MonoBehaviour:
     maxDirty: 100
     maxItchi: 100
     maxCurious: 100
-    character: {fileID: 0}
+    levelRate: 10
     actionType: 0
     position: {x: 0, y: 0, z: 0}
     scalePosition: {x: 0, y: 0, z: 0}
     height: 0
     enviromentType: 0
-  petPrefab: {fileID: 3850555077412868156, guid: a068f968923444cb1872b439b527818c,
+  petPrefab: {fileID: 5193235896956709516, guid: a9f23734ef29d495797580f655e34082,
     type: 3}
   charType: 0
-  gameType: 0
   enviromentType: 0
   direction: 1
   target: {x: 0, y: 0, z: 0}
@@ -548,6 +552,7 @@ MonoBehaviour:
   isAction: 0
   isMoving: 0
   actionType: 0
+  lastActionType: 0
   anim: {fileID: 0}
   charInteract: {fileID: 0}
   charScale: {fileID: 0}
@@ -558,7 +563,6 @@ MonoBehaviour:
   currentSkill: 0
   dropPosition: {x: 0, y: 0, z: 0}
   iconStatusObject: {fileID: 853995390}
-  timeWait: {fileID: 3433870804843710903}
   iconStatus: 0
   dirties: []
   dirties_L: []
