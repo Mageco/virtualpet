@@ -10,15 +10,15 @@ namespace Mage.Models.Application{
 	[Serializable]
 	public class IPAddress : BaseModel
 	{		
-			string client_ip = "";
-			string client_ip_long = "";
-			string country_code = "";
-			string country_name = "";
-			string region_name = "";
-			string latitude = "";
-			string longitude = "";
-			string time_zone = "";
-			string zip_ocd = "";
+			public string client_ip = "";
+			public string client_ip_long = "";
+			public string country_code = "";
+			public string country_name = "";
+			public string region_name = "";
+			public string latitude = "";
+			public string longitude = "";
+			public string time_zone = "";
+			public string zip_ocd = "";
 
 		public IPAddress() : base () {
 

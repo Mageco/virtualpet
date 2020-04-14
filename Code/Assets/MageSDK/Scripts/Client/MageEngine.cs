@@ -1053,7 +1053,7 @@ namespace MageSDK.Client {
 							}
 						}
 					} catch (System.Exception e) {
-						ApiUtils.Log (e);
+						ApiUtils.Log (e.Message);
 						return new byte[0];
 					}
 			
