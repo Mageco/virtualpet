@@ -21,7 +21,7 @@ public class TipManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        UIManager.instance.mapButton.gameObject.SetActive(false);
+        
     }
 
     // Update is called once per frame
@@ -30,18 +30,10 @@ public class TipManager : MonoBehaviour
         if (time > maxTimeCheck)
         {
             time = 0;
-            CheckUI();
 
         }
         else
             time += Time.deltaTime;
     }
 
-    void CheckUI()
-    {
-        if (GameManager.instance.myPlayer.level >= 2)
-            UIManager.instance.mapButton.gameObject.SetActive(true);
-        else
-            UIManager.instance.mapButton.gameObject.SetActive(false);
-    }
 }

@@ -702,7 +702,16 @@ public class ItemManager : MonoBehaviour
 
     void LoadItemData(){
 
-        foreach(ItemSaveData item in GameManager.instance.myPlayer.itemSaveDatas){
+
+        PlayerData data;
+        if (!GameManager.instance.isGuest)
+        {
+            data = GameManager.instance.myPlayer;
+        }
+        else
+            data = GameManager.instance.guest;
+                
+        foreach (ItemSaveData item in data.itemSaveDatas){
             if(item.itemType == ItemSaveDataType.Pee){
                 SpawnPee(item.position,item.value);
             }else if(item.itemType == ItemSaveDataType.Shit){

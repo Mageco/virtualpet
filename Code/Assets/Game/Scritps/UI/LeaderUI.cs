@@ -15,6 +15,7 @@ public class LeaderUI : MonoBehaviour
     public GameObject[] scoreIcons;
     public Text score;
     public Color highlightColor = Color.white;
+    public Button visitButton;
     int tabId;
     string userId = "";
     // Start is called before the first frame update
@@ -81,6 +82,14 @@ public class LeaderUI : MonoBehaviour
         {
             scoreIcons[2].SetActive(true);
         }
+
+        if (data.rank <= 50 && userId != MageEngine.instance.GetUser().id)
+        {
+            visitButton.gameObject.SetActive(true);
+        }
+        else
+            visitButton.gameObject.SetActive(false);
+
     }
 
     void OffAllIcon()
@@ -95,5 +104,15 @@ public class LeaderUI : MonoBehaviour
         }
     }
 
+    public void OnAvatar()
+    {
+        if(avatar.sprite != null)
+            UIManager.instance.OnRemotePlayerPanel(avatar.sprite);
+    }
+
+    public void OnVisit()
+    {
+        UIManager.instance.OnFriendHouse(userId,avatar.sprite);
+    }
 
 }

@@ -32,6 +32,8 @@ public class UIManager : MonoBehaviour
     public GameObject houseNamePanelPrefab;
     public GameObject takePhotoUIPrefab;
     public GameObject leaderBoardPanelPrefab;
+    public GameObject remotePlayerPanellPrefab;
+
     public static UIManager instance;
 	public Text coinText;
 	public Text diamonText;
@@ -86,6 +88,8 @@ public class UIManager : MonoBehaviour
     public ChestSalePanel chestSalePanel;
     [HideInInspector]
     public LeaderBoardPanel leaderBoardPanel;
+    [HideInInspector]
+    public RemotePlayerPanel remotePlayerPanel;
 
     public GameObject achivementNotification;
     public GameObject giftNotification;
@@ -98,6 +102,7 @@ public class UIManager : MonoBehaviour
     TreatmentPopup treatmentPopup;
 
     public GameObject homeUI;
+    public GameObject toolUI;
     public GameObject profilePrefab;
     public GameObject notificationIcon;
     
@@ -106,10 +111,11 @@ public class UIManager : MonoBehaviour
     public GameObject eventButton;
     public GameObject achivementButton;
     public GameObject shopButton;
-    public GameObject mapButton;
     public GameObject callButton;
+    public GameObject remotePanel;
 
     public AvatarUI avatarUI;
+    public AvatarUI remoteAvatarUI;
 
     float coin = 0;
     float happy = 0;
@@ -147,24 +153,21 @@ public class UIManager : MonoBehaviour
 
     public void Load()
     {
-        if(GameManager.instance.isGuest)
-        {
-            UpdateUI();
-            coin = GameManager.instance.GetCoin();
-            happy = GameManager.instance.GetHappy();
-            diamond = GameManager.instance.GetDiamond();
-            OnSale();
-        }
-        else
-        {
-            MageEngine.instance.LoadAvatar(
-                (texture2D) =>
-                {
-                    if(texture2D != null)
-                        UIManager.instance.avatarUI.LoadAvatar(Utils.instance.CreateSprite(texture2D));
-                });
+        toolUI.gameObject.SetActive(true);
+        UpdateUI();
+        coin = GameManager.instance.GetCoin();
+        happy = GameManager.instance.GetHappy();
+        diamond = GameManager.instance.GetDiamond();
+        remotePanel.SetActive(false);
+        OnSale();
+        MageEngine.instance.LoadAvatar(
+            (texture2D) =>
+            {
+                if(texture2D != null)
+                    UIManager.instance.avatarUI.LoadAvatar(Utils.instance.CreateSprite(texture2D));
+            });
                 
-        }
+        
 
         if (callButton != null)
         {
@@ -315,9 +318,10 @@ public class UIManager : MonoBehaviour
     }
 
     public void UsePet(int itemID){
-       shopPanel.Close();
+      
        GameManager.instance.EquipPet(itemID);
-	}
+        shopPanel.ReLoad();
+    }
 
     public void OnQuestNotification()
     {
@@ -730,6 +734,20 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    public void OnRemotePlayerPanel(Sprite s)
+    {
+        if (remotePlayerPanel == null)
+        {
+            var popup = Instantiate(remotePlayerPanellPrefab) as GameObject;
+            popup.SetActive(true);
+            popup.transform.localScale = Vector3.zero;
+            popup.transform.SetParent(GameObject.Find("Canvas").transform, false);
+            popup.GetComponent<Popup>().Open();
+            remotePlayerPanel = popup.GetComponent<RemotePlayerPanel>();
+            remotePlayerPanel.Load(s);
+        }
+    }
+
     public void OnChestSalePanel(RareType rareType)
     {
         if (chestSalePanel == null)
@@ -810,16 +828,35 @@ public class UIManager : MonoBehaviour
             homeUI.SetActive(true);
     }
 
-    public void OnFriendHouse()
+    public void OnFriendHouse(string userId,Sprite avatar)
     {
-        
+        if (leaderBoardPanel != null)
+            leaderBoardPanel.Close();
+
         MageEngine.instance.GetRandomFriend((User u) => {
             GameManager.instance.isGuest = true;
+            toolUI.gameObject.SetActive(false);
+            callButton.SetActive(false);
+            remotePanel.SetActive(true);
+            remoteAvatarUI.LoadAvatar(avatar); 
+            RewardVideoAdManager.instance.ShowBanner();
+            GameManager.instance.RemoveAllPetObjects();
             GameManager.instance.guest = u.GetUserData<PlayerData>();
             MageManager.instance.LoadSceneWithLoading("House");
             Debug.Log("Friend: " + u.ToJson());
-        });
+        },userId);
 
+    }
+
+    public void OnMyHouse()
+    {
+        GameManager.instance.isGuest = false;
+        toolUI.gameObject.SetActive(true);
+        callButton.SetActive(true);
+        RewardVideoAdManager.instance.HideBanner();
+        GameManager.instance.UnEquipPets();
+        remotePanel.SetActive(false);
+        MageManager.instance.LoadSceneWithLoading("House");
     }
 
     public void OnCall()

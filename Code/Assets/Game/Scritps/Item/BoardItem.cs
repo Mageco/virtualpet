@@ -16,6 +16,9 @@ public class BoardItem : BaseFloorItem
     protected override void Update()
     {
         base.Update();
-        playerName.text = GameManager.instance.myPlayer.playerName;
+        if(GameManager.instance.isGuest)
+            playerName.text = GameManager.instance.guest.playerName;
+        else
+            playerName.text = GameManager.instance.myPlayer.playerName;
     }
 }

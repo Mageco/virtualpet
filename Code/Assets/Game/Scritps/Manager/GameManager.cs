@@ -418,6 +418,15 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void RemoveAllPetObjects()
+    {
+        foreach(CharController p in petObjects)
+        {
+            ItemManager.instance.UnLoadPetObject(p);
+        }
+        petObjects.Clear();
+    }
+
     public PlayerPet GetActivePet()
     {
         return myPlayer.petDatas[0];
@@ -837,9 +846,6 @@ public class GameManager : MonoBehaviour
 
     public void AddCoin(int c)
     {
-        if (GameManager.instance.isGuest)
-            return;
-
         myPlayer.Coin += c;
         if (c > 0)
             myPlayer.collectedCoin += c;

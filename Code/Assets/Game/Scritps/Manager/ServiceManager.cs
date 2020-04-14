@@ -50,28 +50,36 @@ public class ServiceManager : MonoBehaviour
 
     void LoadServiceUI()
     {
-        if (GameManager.instance.myPlayer.petCount >= 4)
+        if (GameManager.instance.isGuest)
         {
-            servicePanel.SetActive(true);
-            for (int i = 0; i < serviceUIs.Length; i++)
-            {
-                serviceUIs[i].gameObject.SetActive(true);
-                serviceUIs[i].Load();
-            }
-        }
-        else if(GameManager.instance.myPlayer.petCount >= 2)
-        {
-            servicePanel.SetActive(true);
-            for (int i = 0; i < serviceUIs.Length; i++)
-            {
-                if (i < serviceUIs.Length - 1)
-                    serviceUIs[i].gameObject.SetActive(false);
-                else
-                    serviceUIs[i].Load();
-            }
+            servicePanel.SetActive(false);
         }
         else
-            servicePanel.SetActive(false);
+        {
+            if (GameManager.instance.myPlayer.petCount >= 4)
+            {
+                servicePanel.SetActive(true);
+                for (int i = 0; i < serviceUIs.Length; i++)
+                {
+                    serviceUIs[i].gameObject.SetActive(true);
+                    serviceUIs[i].Load();
+                }
+            }
+            else if (GameManager.instance.myPlayer.petCount >= 2)
+            {
+                servicePanel.SetActive(true);
+                for (int i = 0; i < serviceUIs.Length; i++)
+                {
+                    if (i < serviceUIs.Length - 1)
+                        serviceUIs[i].gameObject.SetActive(false);
+                    else
+                        serviceUIs[i].Load();
+                }
+            }
+            else
+                servicePanel.SetActive(false);
+        }
+
 
     }
 
