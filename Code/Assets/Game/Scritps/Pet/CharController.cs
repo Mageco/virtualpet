@@ -1264,13 +1264,13 @@ public class CharController : MonoBehaviour
             pos.z = 0;
             if (pos.y > charScale.maxHeight)
                 pos.y = charScale.maxHeight;
-            else if (pos.y < -24)
-                pos.y = -24;
+            else if (pos.y < ItemManager.instance.houseItem.gardenBoundY.x)
+                pos.y = ItemManager.instance.houseItem.gardenBoundY.x;
 
-            if (pos.x > 62)
-                pos.x = 62;
-            else if (pos.x < -270)
-                pos.x = -270;
+            if (pos.x > ItemManager.instance.houseItem.gardenBoundX.y)
+                pos.x = ItemManager.instance.houseItem.gardenBoundX.y;
+            else if (pos.x < ItemManager.instance.houseItem.gardenBoundX.x)
+                pos.x = ItemManager.instance.houseItem.gardenBoundX.x;
 
 
             pos.z = -50;

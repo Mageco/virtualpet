@@ -597,13 +597,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 160610122}
-  m_LocalRotation: {x: -0, y: -0, z: 0.023526326, w: 0.99972326}
-  m_LocalPosition: {x: -0.18, y: 1.88, z: -0.5}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: -0.026176924, y: 0.99965733, z: -0.000000007352581, w: 0.00000028078404}
+  m_LocalPosition: {x: -0.2, y: 1.82, z: -0.5}
+  m_LocalScale: {x: 1, y: 1, z: -1}
   m_Children: []
   m_Father: {fileID: 1557848815}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 2.696}
+  m_LocalEulerAnglesHint: {x: 0, y: 179.99998, z: -3}
 --- !u!114 &160610124
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -617,7 +617,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   text: {fileID: 0}
-  dialogId: 54
+  dialogId: 100
 --- !u!102 &160610125
 TextMesh:
   serializedVersion: 3
@@ -626,7 +626,7 @@ TextMesh:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 160610122}
-  m_Text: Coming soon
+  m_Text: 'City '
   m_OffsetZ: 0
   m_CharacterSize: 0.04
   m_LineSpacing: 1
@@ -4369,6 +4369,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1557848815}
   - component: {fileID: 1557848816}
+  - component: {fileID: 1557848818}
+  - component: {fileID: 1557848817}
   m_Layer: 0
   m_Name: Board (3)
   m_TagString: Untagged
@@ -4383,9 +4385,9 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1557848814}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 54.48256, y: -7.3345475, z: 120}
-  m_LocalScale: {x: 3, y: 3, z: 1}
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: -0.00000004371139}
+  m_LocalPosition: {x: 125.82973, y: -17.22, z: 120}
+  m_LocalScale: {x: 3, y: 3, z: -1}
   m_Children:
   - {fileID: 1687321905}
   - {fileID: 160610123}
@@ -4443,6 +4445,45 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1557848817
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1557848814}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59d26623d1910493ab313ccf0d086f0c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mapType: 3
+--- !u!61 &1557848818
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1557848814}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: -0.30377543, y: 1.1598706}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.59674376, y: 0.12341864}
+    oldSize: {x: 3.14, y: 3.08}
+    newSize: {x: 3.14, y: 3.08}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 3.14, y: 3.08}
+  m_EdgeRadius: 0
 --- !u!1 &1568686991
 GameObject:
   m_ObjectHideFlags: 0
@@ -5933,13 +5974,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2030335324}
-  m_LocalRotation: {x: -0, y: -0, z: 0.023526326, w: 0.99972326}
-  m_LocalPosition: {x: -0.19546509, y: 1.8954719, z: -0.4}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: -0.026176924, y: 0.99965733, z: -0.000000007352581, w: 0.00000028078404}
+  m_LocalPosition: {x: -0.18, y: 1.84, z: -0.4}
+  m_LocalScale: {x: 1, y: 1, z: -1}
   m_Children: []
   m_Father: {fileID: 1557848815}
   m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 2.696}
+  m_LocalEulerAnglesHint: {x: 0, y: 179.99998, z: -3}
 --- !u!114 &2030335326
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5953,7 +5994,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   text: {fileID: 0}
-  dialogId: 54
+  dialogId: 100
 --- !u!102 &2030335327
 TextMesh:
   serializedVersion: 3
@@ -5962,7 +6003,7 @@ TextMesh:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2030335324}
-  m_Text: Coming soon
+  m_Text: 'City '
   m_OffsetZ: 0
   m_CharacterSize: 0.04
   m_LineSpacing: 1
@@ -10794,7 +10835,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 355820692768395831}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -179.8, y: 0.14, z: 20.121094}
+  m_LocalPosition: {x: -174.1319, y: 0.13999999, z: 20.121094}
   m_LocalScale: {x: 3, y: 3, z: 1}
   m_Children:
   - {fileID: 355820691988589717}
@@ -12308,8 +12349,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8395616040582630933}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 94.74812, y: -0.92050004, z: -1}
-  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_LocalPosition: {x: 79.53134, y: -0.92050004, z: -1}
+  m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
   m_Children: []
   m_Father: {fileID: 8143020536285238125}
   m_RootOrder: 9

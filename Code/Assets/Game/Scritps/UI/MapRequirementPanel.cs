@@ -48,6 +48,11 @@ public class MapRequirementPanel : MonoBehaviour
             mapName.text = DataHolder.Dialog(97).GetName(MageManager.instance.GetLanguage());
             levelRequire = 8;
         }
+        else if (mapType == MapType.City)
+        {
+            mapName.text = DataHolder.Dialog(99).GetName(MageManager.instance.GetLanguage());
+            levelRequire = 5;
+        }
         else
             levelRequire = 99;
 
