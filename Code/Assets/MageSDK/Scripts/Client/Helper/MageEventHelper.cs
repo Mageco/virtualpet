@@ -105,6 +105,20 @@ namespace MageSDK.Client.Helper {
 			SaveEventCounterList(eventCounterList);
 		}
 
+		public int GetEventCounter(string eventName) {
+
+			List<EventCounter> eventCounterList = GetEventCounterList();
+
+			//search for eventName
+			for (int i = 0; i < eventCounterList.Count; i++) {
+				if (eventCounterList[i].Key == eventName) {
+					return eventCounterList[i].Value;
+				}
+			}
+
+			return 0;
+		}
+
 		public string ConvertEventCounterListToJson() {
 			List<EventCounter> eventCounterList = GetEventCounterList();
 
