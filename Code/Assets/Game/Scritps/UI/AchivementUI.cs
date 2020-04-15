@@ -8,7 +8,6 @@ public class AchivementUI : MonoBehaviour
     int iD = 0;
     public Image icon;
     public Text achivementlName;
-    public Text achivementDescription;
     public Text progress;
     public Image slider;
     public Image rewardIcon;
@@ -34,7 +33,6 @@ public class AchivementUI : MonoBehaviour
         url = url.Replace(".png","");
         icon.sprite = Resources.Load<Sprite>(url) as Sprite;
         achivementlName.text = d.GetName(MageManager.instance.GetLanguage());
-        achivementDescription.text = d.levelDescription[level];
         progress.text = a.amount.ToString() + "/" + d.maxProgress[level].ToString();
         slider.fillAmount = a.amount * 1f/d.maxProgress[level];
         if(d.coinValue[level] != 0){

@@ -74,7 +74,10 @@ public class LanguageData : BaseData
 		return DataHolder.LanguageName[languageIDs[index]];
 	}
 
-
+	public string GetLanguageCode(int index)
+	{
+		return DataHolder.LanguageCode[languageIDs[index]];
+	}
 
 	public override string[] GetNameList(bool showIDs)
 	{

@@ -67,7 +67,7 @@ public class AchivementTab : BaseTab
 
 					EditorGUILayout.LabelField(DataHolder.Language(i));
 					DataHolder.Achivement(selection).languageItem[i].Name = EditorGUILayout.TextField("Name", DataHolder.Achivement(selection).languageItem[i].Name, GUILayout.Width(pw.mWidth * 2));
-					DataHolder.Achivement(selection).languageItem[i].Description = EditorGUILayout.TextField("Description", DataHolder.Achivement(selection).languageItem[i].Description, GUILayout.Width(pw.mWidth * 2));
+					//DataHolder.Achivement(selection).languageItem[i].Description = EditorGUILayout.TextField("Description", DataHolder.Achivement(selection).languageItem[i].Description, GUILayout.Width(pw.mWidth * 2));
 					EditorGUILayout.Separator();
 				}
 			}
@@ -156,7 +156,6 @@ public class AchivementTab : BaseTab
 
 			if (GUILayout.Button("Add Achivement Level",GUILayout.Width (pw.mWidth))){
 				DataHolder.Achivement(selection).maxProgress = ArrayHelper.Add(1,DataHolder.Achivement(selection).maxProgress);
-				DataHolder.Achivement(selection).levelDescription = ArrayHelper.Add("",DataHolder.Achivement(selection).levelDescription);
 				DataHolder.Achivement(selection).coinValue = ArrayHelper.Add(0,DataHolder.Achivement(selection).coinValue);
 				DataHolder.Achivement(selection).diamondValue = ArrayHelper.Add(0,DataHolder.Achivement(selection).diamondValue);
 				//Debug.Log(DataHolder.Achivement(selection).maxProgress.Length);
@@ -172,7 +171,6 @@ public class AchivementTab : BaseTab
 				
 				if (GUILayout.Button("X",GUILayout.Width (pw.mWidth * 0.2f))){
 					DataHolder.Achivement(selection).maxProgress = ArrayHelper.Remove(DataHolder.Achivement(selection).maxProgress.Length - 1,DataHolder.Achivement(selection).maxProgress);
-					DataHolder.Achivement(selection).levelDescription = ArrayHelper.Remove(DataHolder.Achivement(selection).levelDescription.Length - 1,DataHolder.Achivement(selection).levelDescription);
 					DataHolder.Achivement(selection).coinValue = ArrayHelper.Remove(DataHolder.Achivement(selection).coinValue.Length - 1,DataHolder.Achivement(selection).coinValue);
 					DataHolder.Achivement(selection).diamondValue = ArrayHelper.Remove(DataHolder.Achivement(selection).diamondValue.Length - 1,DataHolder.Achivement(selection).diamondValue);
 				}
@@ -180,7 +178,6 @@ public class AchivementTab : BaseTab
 				
 				if(fold2)
 				{
-					DataHolder.Achivement(selection).levelDescription[i] = EditorGUILayout.TextField("Description", DataHolder.Achivement(selection).levelDescription[i], GUILayout.Width (pw.mWidth));
 					DataHolder.Achivement(selection).coinValue[i] = EditorGUILayout.IntField("Coin", DataHolder.Achivement(selection).coinValue[i], GUILayout.Width(pw.mWidth));
 					DataHolder.Achivement(selection).diamondValue[i] = EditorGUILayout.IntField("Diamond", DataHolder.Achivement(selection).diamondValue[i], GUILayout.Width(pw.mWidth));
 					EditorGUILayout.Separator();
