@@ -14,7 +14,7 @@ using MageApi;
 namespace MageSDK.Tools.Google {
 	public class GoogleHelper : MonoBehaviour {
 
-		public string TranslationApiUrl = "https://translation.googleapis.com/language/translate/v2?key=AIzaSyC8VM_J0LDi_BDB6OdWhhJeY3UXqxxq7So";
+		public string TranslationApiUrl = "";
 		[HideInInspector]
 		public float  TimeOut = 200;
 
