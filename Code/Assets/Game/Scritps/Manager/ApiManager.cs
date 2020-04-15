@@ -56,6 +56,7 @@ public class ApiManager : MageEngine {
 					pet.level = p.level;
 					pet.itemState = p.itemState;
 					pet.isNew = p.isNew;
+					pet.petName = p.petName;
 					GameManager.instance.myPlayer.petDatas.Add(pet);
 				}
 				GameManager.instance.myPlayer.pets.Clear();

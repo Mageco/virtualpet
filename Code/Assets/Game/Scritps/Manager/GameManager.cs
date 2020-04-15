@@ -141,6 +141,7 @@ public class GameManager : MonoBehaviour
     public void AddPet(int itemId)
     {
         PlayerPet p = new PlayerPet(itemId);
+        p.petName = DataHolder.GetPet(itemId).GetName(0);
         p.itemState = ItemState.Have;
         myPlayer.petDatas.Add(p);
         SavePlayer();
@@ -165,6 +166,7 @@ public class GameManager : MonoBehaviour
             PlayerPet p = new PlayerPet(pets[itemId].iD);
             p.itemState = ItemState.Equiped;
             p.isNew = true;
+            p.petName = DataHolder.GetPet(itemId).GetName(0);
             myPlayer.petDatas.Add(p);
             if (ItemManager.instance != null)
                 GameManager.instance.EquipPet(itemId);
@@ -982,6 +984,7 @@ public class GameManager : MonoBehaviour
                     pet.level = p.level;
                     pet.itemState = p.itemState;
                     pet.isNew = p.isNew;
+                    p.petName = DataHolder.GetPet(p.iD).GetName(0);
                     myPlayer.petDatas.Add(pet);
                 }
                 myPlayer.pets.Clear();

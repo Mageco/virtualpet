@@ -92,14 +92,17 @@ public class LeaderBoardPanel : MonoBehaviour
         GameManager.instance.myPlayer,
         "collectedHappy",
         (leaderboardItems) => {
-            list1.Clear();
-            foreach (LeaderBoardItem i in leaderboardItems)
+            if (UIManager.instance.leaderBoardPanel != null)
             {
-                list1.Add(i);
+                list1.Clear();
+                foreach (LeaderBoardItem i in leaderboardItems)
+                {
+                    list1.Add(i);
+                }
+                ES2.Save(list1, "List1");
+                if (currentTab == 0)
+                    OnTab(currentTab);
             }
-            ES2.Save(list1, "List1");
-            if(currentTab == 0)
-                OnTab(currentTab);
         });
 
         

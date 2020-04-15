@@ -28,6 +28,15 @@ public class ProfileUI : MonoBehaviour
     int price = 10;
     Pet data;
     PlayerPet playerPet;
+    public Button editButton;
+    public InputField input;
+
+    void Awake()
+    {
+        petName.gameObject.SetActive(true);
+        editButton.gameObject.SetActive(true);
+        input.gameObject.SetActive(false);
+    }
 
     public void Load(PlayerPet p){
         playerPet = p;
@@ -52,7 +61,7 @@ public class ProfileUI : MonoBehaviour
             dirtyText.text = data.MaxDirty.ToString();
         }
         Pet pet = DataHolder.GetPet(playerPet.iD);
-        petName.text = pet.GetName(0);
+        petName.text = playerPet.petName;
         string url = pet.iconUrl.Replace("Assets/Game/Resources/", "");
         url = url.Replace(".png", "");
         icon.sprite = Resources.Load<Sprite>(url) as Sprite;
@@ -63,7 +72,7 @@ public class ProfileUI : MonoBehaviour
     }
 
     void Update(){
-
+        petName.text = playerPet.petName;
         level.text = DataHolder.Dialog(27).GetName(MageManager.instance.GetLanguage()) + " " + playerPet.level.ToString();
         if (GameManager.instance.GetPetObject(playerPet.iD) != null)
         {
@@ -104,5 +113,21 @@ public class ProfileUI : MonoBehaviour
                 UIManager.instance.shopPanel.ReLoad();
             }
         }
+    }
+
+    public void OnEdit()
+    {
+        editButton.gameObject.SetActive(false);
+        input.gameObject.SetActive(true);
+        input.text = playerPet.petName;
+        petName.gameObject.SetActive(false);
+    }
+
+    public void EndEdit()
+    {
+        playerPet.petName = input.text;
+        petName.gameObject.SetActive(true);
+        editButton.gameObject.SetActive(true);
+        input.gameObject.SetActive(false);
     }
 }

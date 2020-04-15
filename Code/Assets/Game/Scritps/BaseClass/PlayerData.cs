@@ -108,6 +108,7 @@ public class PlayerPet : BaseModel
 
 	public int iD = 0;
 	public int level = 1;
+	public string petName = "";
 	public bool isNew = false;
 	public ItemState itemState = ItemState.OnShop;
 	public PlayerPet(int id)
