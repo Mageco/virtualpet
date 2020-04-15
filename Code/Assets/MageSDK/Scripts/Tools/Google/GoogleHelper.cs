@@ -14,7 +14,7 @@ using MageApi;
 namespace MageSDK.Tools.Google {
 	public class GoogleHelper : MonoBehaviour {
 
-		public string TranslationApiUrl = "https://texttospeech.googleapis.com/v1/text:synthesize?fields=audioContent&key=AIzaSyAWkXjUdaNcf3EobdAuF63Nilq7lAuTwb8";
+		public string TranslationApiUrl = "https://translation.googleapis.com/language/translate/v2?key=AIzaSyC8VM_J0LDi_BDB6OdWhhJeY3UXqxxq7So";
 		[HideInInspector]
 		public float  TimeOut = 200;
 
@@ -115,7 +115,7 @@ namespace MageSDK.Tools.Google {
 			www.Dispose();
 		}
 
-        public void TranslateMeExample() {
+        public void TranslateMeExample(string targetLanguage, string textTotranslate, Action<TranslationItem> onCompleteCallback) {
             GoogleTranslationRequest request = new GoogleTranslationRequest ("vi", "Translate me to Vietnamese");  
 		
             //call to login api
@@ -125,6 +125,7 @@ namespace MageSDK.Tools.Google {
                     ApiUtils.Log("Get translation text successful");
                     ApiUtils.Log("result: " + result.translations[0].ToJson());
                     //do all things like login
+                    onCompleteCallback(result.translations[0]);
                 },
                 (errorStatus) => {
                     ApiUtils.Log("Error: " + errorStatus);
