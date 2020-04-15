@@ -5,6 +5,8 @@ using GoogleMobileAds.Api;
 using System;
 using MageSDK.Client;
 using UnityEngine.Advertisements;
+using MageSDK.Client.Helper;
+using Mage.Models.Application;
 
 public class RewardVideoAdManager : MonoBehaviour , IUnityAdsListener
 {
@@ -14,6 +16,8 @@ public class RewardVideoAdManager : MonoBehaviour , IUnityAdsListener
 	RewardBasedVideoAd rewardBasedVideo;
 	ChestItem chestItem;
 	int petId = 0;
+	[HideInInspector]
+	public bool isRemoveAd = false;
 	[HideInInspector]
 	public bool isUnityVideoLoaded = false;
 	public string bannerPlacementId = "bannerForest";
@@ -105,6 +109,9 @@ public class RewardVideoAdManager : MonoBehaviour , IUnityAdsListener
 			Advertisement.AddListener(this);
 			Advertisement.Initialize(gameId, testMode);
 		}
+
+		if (MageEventHelper.GetInstance().GetEventCounter(MageEventType.ConfirmPaymentItem.ToString()) > 0)
+			isRemoveAd = true;
 	}
 
 	private void RequestRewardBasedVideo()
@@ -328,6 +335,8 @@ public class RewardVideoAdManager : MonoBehaviour , IUnityAdsListener
 
 	public void ShowIntetestial()
 	{
+		if (isRemoveAd)
+			return;
 		rewardType = RewardType.None;
 		Advertisement.Show("Interstitial");
 		MageEngine.instance.OnEvent(Mage.Models.Application.MageEventType.InterstitialAdShow, "Minigame");
@@ -335,6 +344,9 @@ public class RewardVideoAdManager : MonoBehaviour , IUnityAdsListener
 
     public void ShowBanner()
     {
+		if (isRemoveAd)
+			return;
+		Advertisement.Banner.SetPosition(BannerPosition.BOTTOM_CENTER);
 		StartCoroutine(ShowBannerWhenReady());
 		MageEngine.instance.OnEvent(Mage.Models.Application.MageEventType.BannerAdShow, "Scene");
 	}
@@ -348,7 +360,7 @@ public class RewardVideoAdManager : MonoBehaviour , IUnityAdsListener
 	{
 		while (!Advertisement.IsReady(bannerPlacementId))
 		{
-			yield return new WaitForSeconds(0.5f);
+			yield return new WaitForEndOfFrame();
 		}
 		Advertisement.Banner.Show(bannerPlacementId);
 	}

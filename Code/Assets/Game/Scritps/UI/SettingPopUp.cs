@@ -107,7 +107,7 @@ public class SettingPopUp : MonoBehaviour {
 
 	public void OnHome(){
 		Time.timeScale = 1;
-		if (SceneManager.GetActiveScene().name == "Minigame2")
+		if (SceneManager.GetActiveScene().name == "Minigame2" || SceneManager.GetActiveScene().name == "Minigame3")
 			UIManager.instance.OnMap(MapType.Forest);
         else
 		    UIManager.instance.OnHome();

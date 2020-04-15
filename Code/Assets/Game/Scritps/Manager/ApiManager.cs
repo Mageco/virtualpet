@@ -12,6 +12,7 @@ using System.IO;
 using Mage.Models.Application;
 using MageSDK.Client;
 using Firebase.Messaging;
+using MageSDK.Client.Helper;
 
 public class ApiManager : MageEngine {
 
@@ -27,6 +28,7 @@ public class ApiManager : MageEngine {
 	public string contactPhone = "";
 	[HideInInspector]
 	public int option = 0;
+	
 
 	protected override void Load()
 	{
@@ -79,6 +81,7 @@ public class ApiManager : MageEngine {
 				MageEngine.instance.UpdateUserProfile(u);
 			}
         }
+
 
 		SetupFirebaseMessaging();
     }

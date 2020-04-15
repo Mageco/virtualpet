@@ -103,7 +103,7 @@ public class WinPanel : MonoBehaviour
     }
 
     public void OnHome(){
-        if (minigameId == 2)
+        if (minigameId == 2 || minigameId == 3)
             UIManager.instance.OnMap(MapType.Forest);
         else
             Minigame.instance.OnHome();
