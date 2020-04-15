@@ -221,6 +221,7 @@ public class CharController : MonoBehaviour
         if (agent == null)
             return;
 
+        petNameText.gameObject.SetActive(true);
         //Debug.Log(actionType.ToString() + "  " + charInteract.interactType.ToString());
         if (actionType == ActionType.None)
         {
@@ -251,7 +252,7 @@ public class CharController : MonoBehaviour
         else if(actionType == ActionType.Toy)
         {
             data.Energy -= Time.deltaTime;
-            
+            petNameText.gameObject.SetActive(false);
             if (timeToy > 6 && toyItem != null && toyItem.IsActive())
             {
                 int value = (int)DataHolder.GetItem(toyItem.item.itemID).value;

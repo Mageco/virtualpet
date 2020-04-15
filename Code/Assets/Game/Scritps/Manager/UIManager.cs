@@ -836,6 +836,9 @@ public class UIManager : MonoBehaviour
         if (leaderBoardPanel != null)
             leaderBoardPanel.Close();
 
+        if (Minigame.instance != null)
+            Minigame.instance.winPanel.Close();
+
         MageEngine.instance.GetRandomFriend((User u) => {
             int n = Random.Range(0, 100);
             if (n > 70)
