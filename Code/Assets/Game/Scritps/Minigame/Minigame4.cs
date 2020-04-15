@@ -159,13 +159,9 @@ public class Minigame4 : Minigame
 
     public override void EndGame()
     {
-        if(bonus > GameManager.instance.myPlayer.minigameLevels[minigameId])
-        {
-            GameManager.instance.myPlayer.minigameLevels[minigameId] = bonus;
-        }
         state = GameState.End;
         MageManager.instance.StopMusic();
-        OnEndGame(false);
+        OnEndGame(bonus);
     }
 
     public void OnGuildPanel()

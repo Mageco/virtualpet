@@ -78,7 +78,7 @@ public class LeaderUI : MonoBehaviour
         }else if(tabId == 1 || tabId == 2)
         {
             scoreIcons[1].SetActive(true);
-        }else if(tabId == 3)
+        }else if(tabId == 3 || tabId == 4)
         {
             scoreIcons[2].SetActive(true);
         }

@@ -15,6 +15,7 @@ public class LeaderBoardPanel : MonoBehaviour
     List<LeaderBoardItem> list2 = new List<LeaderBoardItem>();
     List<LeaderBoardItem> list3 = new List<LeaderBoardItem>();
     List<LeaderBoardItem> list4 = new List<LeaderBoardItem>();
+    List<LeaderBoardItem> list5 = new List<LeaderBoardItem>();
     public GameObject itemUIPrefab;
     public List<Toggle> toggles = new List<Toggle>();
     int currentTab = 0;
@@ -79,6 +80,8 @@ public class LeaderBoardPanel : MonoBehaviour
             list3 = ES2.LoadList<LeaderBoardItem>("List3");
         if (ES2.Exists("List4"))
             list4 = ES2.LoadList<LeaderBoardItem>("List4");
+        if (ES2.Exists("List5"))
+            list5 = ES2.LoadList<LeaderBoardItem>("List5");
         OnTab(currentTab);
     }
 
@@ -154,7 +157,25 @@ public class LeaderBoardPanel : MonoBehaviour
             }
         },
         2);
-        
+
+        MageEngine.instance.GetLeaderBoardFromObject(
+        GameManager.instance.myPlayer,
+        "minigameLevels",
+        (leaderboardItems) => {
+            if (UIManager.instance.leaderBoardPanel != null)
+            {
+                list5.Clear();
+                foreach (LeaderBoardItem i in leaderboardItems)
+                {
+                    list5.Add(i);
+                }
+                ES2.Save(list5, "List5");
+                if (currentTab == 4)
+                    OnTab(currentTab);
+            }
+        },
+        3);
+
     }
 
     // Update is called once per frame
@@ -195,6 +216,13 @@ public class LeaderBoardPanel : MonoBehaviour
         else if (id == 3)
         {
             foreach (LeaderBoardItem item in list4)
+            {
+                LoadItem(item, id);
+            }
+        }
+        else if (id == 4)
+        {
+            foreach (LeaderBoardItem item in list5)
             {
                 LoadItem(item, id);
             }
