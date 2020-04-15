@@ -298,7 +298,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5467160713770211522}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 6.4618783, z: 0}
+  m_LocalPosition: {x: 0, y: 7.156405, z: 0}
   m_LocalScale: {x: 1.5, y: 1.5, z: 1}
   m_Children:
   - {fileID: 3163523921012788754}
@@ -636,8 +636,11 @@ MonoBehaviour:
     itemState: 0
     prefabName: 
     isAvailable: 1
+    itemTag: 0
     requireEquipments: 
     requirePets: 
+    requireValue: 0
+    requireValueType: 3
     skills: []
     petName: 
     shopOrder: 0
@@ -659,6 +662,8 @@ MonoBehaviour:
     fear: 0
     curious: 70
     maxTimeSick: 3600
+    isNew: 0
+    rareType: 0
     rateFood: 10
     rateWater: 10
     rateSleep: 0.5
@@ -668,6 +673,7 @@ MonoBehaviour:
     recoverDirty: 0.1
     recoverHealth: 0
     recoverEnergy: 5
+    rateHappy: 1
     maxFood: 100
     maxWater: 100
     maxShit: 100
@@ -679,7 +685,7 @@ MonoBehaviour:
     maxDirty: 100
     maxItchi: 100
     maxCurious: 100
-    character: {fileID: 0}
+    levelRate: 10
     actionType: 0
     position: {x: 0, y: 0, z: 0}
     scalePosition: {x: 0, y: 0, z: 0}
@@ -697,6 +703,7 @@ MonoBehaviour:
   isAction: 0
   isMoving: 0
   actionType: 0
+  lastActionType: 0
   anim: {fileID: 0}
   charInteract: {fileID: 0}
   charScale: {fileID: 0}

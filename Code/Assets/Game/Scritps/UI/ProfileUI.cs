@@ -129,5 +129,7 @@ public class ProfileUI : MonoBehaviour
         petName.gameObject.SetActive(true);
         editButton.gameObject.SetActive(true);
         input.gameObject.SetActive(false);
+        if (GameManager.instance.GetPetObject(playerPet.iD) != null)
+            GameManager.instance.GetPetObject(playerPet.iD).SetName();
     }
 }

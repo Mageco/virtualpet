@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using PolyNav;
+using TMPro;
 
 
 public class CharController : MonoBehaviour
@@ -60,6 +61,8 @@ public class CharController : MonoBehaviour
     public GameObject shadow;
     [HideInInspector]
     public Vector3 originalShadowScale;
+
+    TextMeshPro petNameText;
 
     #endregion
 
@@ -124,7 +127,13 @@ public class CharController : MonoBehaviour
 
     public void LoadPrefab()
     {
-        data.petName = DataHolder.GetPet(this.data.iD).GetName(MageManager.instance.GetLanguage());
+        data.petName = GameManager.instance.GetPet(data.iD).petName;
+        GameObject nameObject = GameObject.Instantiate(Resources.Load("Prefabs/Pets/PetNamePrefab")) as GameObject;
+        nameObject.transform.parent = this.transform;
+        nameObject.transform.position = iconStatusObject.transform.position - new Vector3(0,2,0);
+        petNameText = nameObject.GetComponent<TextMeshPro>();
+        petNameText.text = data.petName;
+
         GameObject go = Instantiate(petPrefab) as GameObject;
         go.transform.parent = this.transform;
         go.transform.localPosition = Vector3.zero;
@@ -183,32 +192,13 @@ public class CharController : MonoBehaviour
 
     public void LoadTime(float t)
     {
-        /*
-        int n = 0;
-        if(data.Health > data.MaxHealth * 0.5f && data.Damage < data.MaxDamage * 0.5f && t > 3600)
-        {
-            n += data.level/2;
-        }
+    }
 
-        if(actionType == ActionType.Sleep)
-            data.Sleep += 0.01f * t;
-        data.Energy -= 0.01f * t;
-        data.Food -= 0.01f * t;
-        data.Water -= 0.01f * t;
-        data.Pee += 0.01f * t;
-        data.Shit += 0.01f * t;
-        data.Dirty += data.recoverDirty*0.1f * t;
-
-        for (int i = 0; i < n; i++)
-        {
-            int ran = Random.Range(0, 100);
-            Quaternion rot = Quaternion.identity;
-            if (ran > 50)
-                rot = Quaternion.Euler(new Vector3(0, 180, -1));
-            Vector3 pos = this.charScale.scalePosition + new Vector3(Random.Range(-1, 1), Random.Range(-1, 1), 0);
-            ItemManager.instance.SpawnHeart(pos, rot, 1, true);
-        }*/
-
+    public void SetName()
+    {
+        data.petName = GameManager.instance.GetPet(data.iD).petName;
+        Debug.Log(data.petName);
+        petNameText.text = data.petName;
     }
 
     protected virtual void Load()
@@ -287,9 +277,6 @@ public class CharController : MonoBehaviour
         }
         else
             dataTime += Time.deltaTime;
-
-
-
     }
 
 
