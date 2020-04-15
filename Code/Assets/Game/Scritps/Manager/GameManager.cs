@@ -24,6 +24,9 @@ public class GameManager : MonoBehaviour
     [HideInInspector]
     public int expScale = 1;
 
+    float saveTime = 0;
+    float maxSaveTime = 10;
+
     void Awake()
     {
         if (instance == null)
@@ -53,6 +56,13 @@ public class GameManager : MonoBehaviour
     void Update()
     {
         gameTime += Time.deltaTime;
+        //Save
+        if (saveTime > maxSaveTime)
+        {
+            saveTime = 0;
+            SavePlayer();
+        }
+
     }
 
     void LateUpdate()
@@ -144,7 +154,6 @@ public class GameManager : MonoBehaviour
         p.petName = DataHolder.GetPet(itemId).GetName(0);
         p.itemState = ItemState.Have;
         myPlayer.petDatas.Add(p);
-        SavePlayer();
     }
 
     public void AddRandomPet(RareType rareType)
@@ -185,8 +194,6 @@ public class GameManager : MonoBehaviour
 
         if (UIManager.instance.chestSalePanel != null)
             UIManager.instance.chestSalePanel.Close();
-
-        SavePlayer();
 
     }
 
@@ -233,8 +240,6 @@ public class GameManager : MonoBehaviour
                 }
             }
         }
-        SavePlayer();
-
     }
 
     public void UnEquipPets()
@@ -248,7 +253,6 @@ public class GameManager : MonoBehaviour
                 ItemManager.instance.UnLoadPetObject(GetPetObject(p.iD));
             }
         }
-        SavePlayer();
     }
 
     public void UnLoadPets()
@@ -260,33 +264,9 @@ public class GameManager : MonoBehaviour
 
         }
         petObjects.Clear();
-        SavePlayer();
     }
 
 
-    /*
-    public void UpdatePetObjects()
-    {
-        if (ItemManager.instance == null)
-            return;
-        petObjects.Clear();
-        if (!isGuest)
-        {
-            for (int i = 0; i < myPlayer.petDatas.Count; i++)
-            {
-                if (myPlayer.pets[i].itemState == ItemState.Equiped && myPlayer.pets[i].character != null)
-                    petObjects.Add(myPlayer.pets[i].character);
-            }
-        }
-        else
-        {
-            for (int i = 0; i < guest.pets.Count; i++)
-            {
-                if (guest.pets[i].itemState == ItemState.Equiped && guest.pets[i].character != null)
-                    petObjects.Add(guest.pets[i].character);
-            }
-        }
-    }*/
 
     public bool BuyPet(int petId)
     {
@@ -304,7 +284,6 @@ public class GameManager : MonoBehaviour
             AddPet(petId);
             GetPet(petId).isNew = true;
             Debug.Log("Buy pet " + petId);
-            SavePlayer();
             return true;
         }
         else if (type == PriceType.Diamond)
@@ -317,7 +296,6 @@ public class GameManager : MonoBehaviour
             AddDiamond(-price);
             AddPet(petId);
             GetPet(petId).isNew = true;
-            SavePlayer();
             return true;
         }
         else if (type == PriceType.Happy)
@@ -330,7 +308,6 @@ public class GameManager : MonoBehaviour
             AddHappy(-price);
             AddPet(petId);
             GetPet(petId).isNew = true;
-            SavePlayer();
             return true;
         }
         else
@@ -357,23 +334,39 @@ public class GameManager : MonoBehaviour
             AddHappy(price);
         }
         RemovePet(petId);
-        SavePlayer();
     }
 
 
     public PlayerPet GetPet(int id)
     {
-        foreach (PlayerPet p in this.myPlayer.petDatas)
+        if (isGuest)
         {
-            if (p.iD == id)
-                return p;
+            foreach (PlayerPet p in this.guest.petDatas)
+            {
+                if (p.iD == id)
+                    return p;
+            }
         }
+        else
+        {
+            foreach (PlayerPet p in this.myPlayer.petDatas)
+            {
+                if (p.iD == id)
+                    return p;
+            }
+        }
+
         return null;
     }
 
     public List<PlayerPet> GetPets()
     {
-        return myPlayer.petDatas;
+        if (isGuest)
+        {
+            return guest.petDatas;
+        }
+        else
+            return myPlayer.petDatas;
     }
 
     public List<CharController> GetPetObjects()
@@ -509,7 +502,6 @@ public class GameManager : MonoBehaviour
             }
             AddCoin(-price);
             AddItem(itemId);
-            SavePlayer();
             return true;
         }
         else if (type == PriceType.Diamond)
@@ -521,7 +513,6 @@ public class GameManager : MonoBehaviour
             }
             AddDiamond(-price);
             AddItem(itemId);
-            SavePlayer();
             return true;
         }
         else if (type == PriceType.Happy)
@@ -533,7 +524,6 @@ public class GameManager : MonoBehaviour
             }
             AddHappy(-price);
             AddItem(itemId);
-            SavePlayer();
             return true;
         }
         else
@@ -608,7 +598,6 @@ public class GameManager : MonoBehaviour
             }
 
         }
-        SavePlayer();
     }
 
     public void RemoveItem(int itemId)
@@ -622,7 +611,7 @@ public class GameManager : MonoBehaviour
                 {
                     ItemManager.instance.RemoveItem(item.itemId);
                 }
-                SavePlayer();
+                
                 return;
             }
         }
@@ -670,7 +659,7 @@ public class GameManager : MonoBehaviour
         if (ItemManager.instance != null && DataHolder.GetItem(id).itemType != ItemType.Coin && DataHolder.GetItem(id).itemType != ItemType.Diamond)
             ItemManager.instance.EquipItem();
 
-        SavePlayer();
+        
     }
 
     public void UnEquipItem(int itemId)
@@ -682,7 +671,7 @@ public class GameManager : MonoBehaviour
                 item.state = ItemState.Have;
                 if (ItemManager.instance != null)
                     ItemManager.instance.RemoveItem(item.itemId);
-                SavePlayer();
+                
                 return;
             }
         }
@@ -843,7 +832,7 @@ public class GameManager : MonoBehaviour
         myPlayer.Diamond += d;
         if (UIManager.instance != null)
             UIManager.instance.diamonText.transform.parent.GetComponent<Animator>().Play("Active", 0);
-        SavePlayer();
+        
     }
 
     public void AddCoin(int c)
@@ -853,7 +842,7 @@ public class GameManager : MonoBehaviour
             myPlayer.collectedCoin += c;
         if (UIManager.instance != null)
             UIManager.instance.coinText.transform.parent.GetComponent<Animator>().Play("Active", 0);
-        SavePlayer();
+        
     }
 
     public void AddHappy(int c)
@@ -867,7 +856,7 @@ public class GameManager : MonoBehaviour
 
         if (UIManager.instance != null)
             UIManager.instance.heartText.transform.parent.GetComponent<Animator>().Play("Active", 0);
-        SavePlayer();
+        
     }
 
     public void AddExp(int c)
@@ -894,8 +883,8 @@ public class GameManager : MonoBehaviour
             Debug.Log("Level Up");
         }
 
-        SavePlayer();
-        //ForceSavePlayer();
+        
+        //Force
     }
 
     public void LevelUp(int petId)
@@ -912,7 +901,7 @@ public class GameManager : MonoBehaviour
 
             AddHappy(-10 * GetPet(petId).level * GetPet(petId).level);
             GetPet(petId).level++;
-            SavePlayer();
+            
         }
 
     }
@@ -942,7 +931,7 @@ public class GameManager : MonoBehaviour
                 a.rewardState = RewardState.Received;
                 a.level++;
                 a.Check();
-                SavePlayer();
+                
                 return;
             }
         }

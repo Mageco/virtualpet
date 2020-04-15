@@ -104,7 +104,7 @@ namespace MageSDK.Client {
 
 		void Update() {
 			//ApiUtils.Log("Mage Engine update...");
-			SceneTrackerHelper.GetInstance().AddScreenTime(SceneManager.GetActiveScene().name);
+			//SceneTrackerHelper.GetInstance().AddScreenTime(SceneManager.GetActiveScene().name);
 		}
 
 		void OnApplicationFocus(bool hasFocus) {

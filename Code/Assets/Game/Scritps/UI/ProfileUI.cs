@@ -121,6 +121,7 @@ public class ProfileUI : MonoBehaviour
         input.gameObject.SetActive(true);
         input.text = playerPet.petName;
         petName.gameObject.SetActive(false);
+        input.Select();
     }
 
     public void EndEdit()

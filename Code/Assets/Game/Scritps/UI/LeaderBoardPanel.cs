@@ -278,13 +278,19 @@ public class LeaderBoardPanel : MonoBehaviour
         foreach (LeaderUI item in items)
         {
             if(item != null)
+            {
+                item.OnClose();
                 Destroy(item.gameObject);
+            }
+                
         }
         items.Clear();
     }
 
     public void Close()
     {
+        ClearItems();
+        Resources.UnloadUnusedAssets();
         this.GetComponent<Popup>().Close();
     }
 }

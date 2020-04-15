@@ -59,7 +59,18 @@ public class MageManager : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		
+		if (ES2.Exists("Language"))
+			currentLanguage = ES2.Load<int>("Language");
+		else
+		{
+			for (int i = 0; i < DataHolder.Languages().GetDataCount(); i++)
+			{
+				if (Application.systemLanguage.ToString() == DataHolder.Languages().GetName(i))
+				{
+					currentLanguage = i;
+				}
+			}
+		}
 	}
 	
 	// Update is called once per frame
@@ -77,17 +88,7 @@ public class MageManager : MonoBehaviour {
 			voice.volume = ES2.Load<float> ("VoiceVolume");
 
        
-		if (ES2.Exists ("Language"))
-			currentLanguage = ES2.Load<int> ("Language");
-		else {
-            for(int i = 0; i < DataHolder.Languages().GetDataCount(); i++)
-            {
-				if (Application.systemLanguage.ToString() == DataHolder.Languages().GetName(i))
-				{
-					currentLanguage = i;
-				}			
-			} 
-		}
+
 
 		fadeScreen.SetActive (false);
 		waitingScreen.SetActive (false);

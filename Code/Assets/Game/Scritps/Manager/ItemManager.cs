@@ -135,7 +135,7 @@ public class ItemManager : MonoBehaviour
         {
             SpawnChest();
             timeChest = 0;
-            maxTimeChest = Random.Range(20, 40);
+            maxTimeChest = Random.Range(10, 30);
         }
         else
         {
@@ -601,7 +601,7 @@ public class ItemManager : MonoBehaviour
     public void SpawnChest()
     {
         ChestItem[] chests = FindObjectsOfType<ChestItem>();
-        if (chests.Length > 3)
+        if (chests.Length > 1)
             return;
         Vector3 pos = GetRandomPoint(AreaType.Garden);
         bool isOk = false;

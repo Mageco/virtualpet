@@ -18,6 +18,7 @@ public class LeaderUI : MonoBehaviour
     public Button visitButton;
     int tabId;
     string userId = "";
+    Texture2D texture;
     // Start is called before the first frame update
     void Start()
     {
@@ -48,8 +49,13 @@ public class LeaderUI : MonoBehaviour
            data.avatar,
                        (texture2D) =>
                        {
+                           texture = texture2D;
                            if ( texture2D != null && texture2D.width > 10 && avatar != null)
+                           {
+                             
                                avatar.sprite = Utils.instance.CreateSprite(texture2D);
+                           }
+                               
                        });
         }
 
@@ -115,4 +121,8 @@ public class LeaderUI : MonoBehaviour
         UIManager.instance.OnFriendHouse(userId,avatar.sprite);
     }
 
+    public void OnClose()
+    {
+        Texture2D.Destroy(texture);
+    }
 }

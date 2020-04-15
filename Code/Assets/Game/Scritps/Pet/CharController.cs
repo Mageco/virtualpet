@@ -23,6 +23,9 @@ public class CharController : MonoBehaviour
     protected float dataTime = 0;
     protected float maxDataTime = 1f;
 
+    float saveTime = 0;
+    float maxSaveTime = 10;
+
     //Movement
     [HideInInspector]
     public Vector3 target;
@@ -127,6 +130,7 @@ public class CharController : MonoBehaviour
 
     public void LoadPrefab()
     {
+
         data.petName = GameManager.instance.GetPet(data.iD).petName;
         GameObject nameObject = GameObject.Instantiate(Resources.Load("Prefabs/Pets/PetNamePrefab")) as GameObject;
         nameObject.transform.parent = this.transform;
@@ -272,11 +276,23 @@ public class CharController : MonoBehaviour
             CalculateData();
             CalculateStatus();
             dataTime = 0;
-            ES2.Save(this.data, DataHolder.GetPet(data.iD).GetName(0));
+            if(!GameManager.instance.isGuest)
+                ES2.Save(this.data, DataHolder.GetPet(data.iD).GetName(0));
 
         }
         else
             dataTime += Time.deltaTime;
+
+        //Save
+        if (saveTime > maxSaveTime)
+        {
+            saveTime = 0;
+            if (!GameManager.instance.isGuest)
+                ES2.Save(this.data, DataHolder.GetPet(data.iD).GetName(0));
+
+        }
+        else
+            saveTime += Time.deltaTime;
     }
 
 

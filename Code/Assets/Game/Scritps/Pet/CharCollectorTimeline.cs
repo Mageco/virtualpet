@@ -8,6 +8,7 @@ public class CharCollectorTimeline : MonoBehaviour
     public int petId = 0;
     bool isClick = false;
     bool isActive = false;
+    Vector3 clickPosition = Vector3.zero;
     // Start is called before the first frame update
     void Start()
     {
@@ -20,10 +21,20 @@ public class CharCollectorTimeline : MonoBehaviour
         
     }
 
+    private void OnMouseDown()
+    {
+        clickPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+    }
+
     private void OnMouseUp()
     {
         if (IsPointerOverUIObject())
             return;
+
+        if (Vector2.Distance(Camera.main.ScreenToWorldPoint(Input.mousePosition), clickPosition) > 1f)
+        {
+            return;
+        }
 
         UIManager.instance.OnPetRequirementPanel(DataHolder.GetPet(petId));
     }

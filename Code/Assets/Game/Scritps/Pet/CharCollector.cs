@@ -13,6 +13,7 @@ public class CharCollector : MonoBehaviour
     Animator anim;
     bool isClick = false;
     bool isActive = false;
+    Vector3 clickPosition;
 
     // Start is called before the first frame update
     IEnumerator Start()
@@ -56,10 +57,20 @@ public class CharCollector : MonoBehaviour
 
     }
 
+    private void OnMouseDown()
+    {
+        clickPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+    }
+
     private void OnMouseUp()
     {
         if (IsPointerOverUIObject())
             return;
+
+        if (Vector2.Distance(Camera.main.ScreenToWorldPoint(Input.mousePosition), clickPosition) > 1f)
+        {
+            return;
+        }
 
         if (!isClick && isActive)
         {
