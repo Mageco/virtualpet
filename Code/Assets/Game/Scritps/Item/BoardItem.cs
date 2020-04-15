@@ -8,6 +8,9 @@ public class BoardItem : BaseFloorItem
     public TextMeshPro playerName;
     protected override void OnClick()
     {
+        if (GameManager.instance.isGuest)
+            return;
+
         base.OnClick();
         UIManager.instance.OnHouseNamePanel();
         animator.Play("Active", 0);

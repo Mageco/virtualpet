@@ -31,6 +31,9 @@ public class CharCollectorTimeline : MonoBehaviour
         if (IsPointerOverUIObject())
             return;
 
+        if (GameManager.instance.isGuest)
+            return;
+
         if (Vector2.Distance(Camera.main.ScreenToWorldPoint(Input.mousePosition), clickPosition) > 1f)
         {
             return;

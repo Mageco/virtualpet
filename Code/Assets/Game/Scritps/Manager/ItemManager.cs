@@ -83,7 +83,8 @@ public class ItemManager : MonoBehaviour
         yield return new WaitForEndOfFrame();
         MageManager.instance.loadingBar.gameObject.SetActive(false);
         yield return new WaitForSeconds(1);
-        LoadWelcome((float)(MageEngine.instance.GetServerTimeStamp() - startTime).TotalSeconds);
+        if(!GameManager.instance.isGuest)
+            LoadWelcome((float)(MageEngine.instance.GetServerTimeStamp() - startTime).TotalSeconds);
         
     }
 
