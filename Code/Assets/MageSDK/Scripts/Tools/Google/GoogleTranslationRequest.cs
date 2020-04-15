@@ -10,7 +10,7 @@ namespace MageSDK.Tools.Google{
 	[Serializable]
 	public class GoogleTranslationRequest : BaseModel
 	{		
-			public string model = "mnt";
+			public string model = "nmt";
 			public string format = "text";
 			public string source = "en";
 			public string target = "";
