@@ -60,8 +60,8 @@ public class Minigame1 : Minigame
         chickenSpawner.speed = 5;
 
         float addSpeed = Mathf.Sqrt(gameLevel);
-        if(addSpeed > 20)
-            addSpeed = 20;
+        if(addSpeed > 25)
+            addSpeed = 25;
 
         
         if(gameLevel < 5)
@@ -216,28 +216,28 @@ public class Minigame1 : Minigame
         int value = 0;
         if (number == 1)
         {
-            value = 2;
+            value = 1;
             GameObject bonus = Instantiate(bonuses[0]);
             bonus.transform.position = pos + new Vector3(0, 2, -100);
             bonus.transform.localScale = new Vector3(3, 3, 1);
         }
         else if (number == 2)
         {
-            value = 6;
+            value = 3;
             GameObject bonus = Instantiate(bonuses[1]);
             bonus.transform.position = pos + new Vector3(0, 2, -100);
             bonus.transform.localScale = new Vector3(3, 3, 1);
         }
         else if (number == 3)
         {
-            value = 10;
+            value = 7;
             GameObject bonus = Instantiate(bonuses[2]);
             bonus.transform.position = pos + new Vector3(0, 2, -100);
             bonus.transform.localScale = new Vector3(3, 3, 1);
         }
         else if (number > 3)
         {
-            value = 20;
+            value = 12;
             GameObject bonus = Instantiate(bonuses[3]);
             bonus.transform.position = pos + new Vector3(0, 2, -100);
             bonus.transform.localScale = new Vector3(3, 3, 1);
