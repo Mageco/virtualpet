@@ -883,13 +883,22 @@ public class UIManager : MonoBehaviour
             toolUI.gameObject.SetActive(false);
             callButton.SetActive(false);
             remotePanel.SetActive(true);
-            remoteAvatarUI.LoadAvatar(avatar); 
             RewardVideoAdManager.instance.ShowBanner();
             GameManager.instance.RemoveAllPetObjects();
             GameManager.instance.guest = u.GetUserData<PlayerData>();
             MageManager.instance.LoadSceneWithLoading("House");
             Debug.Log("Friend: " + u.ToJson());
-        },userId);
+            MageEngine.instance.LoadImage(
+            u.avatar,
+            (texture2D) =>
+            {
+                if (texture2D != null && texture2D.width > 10 && avatar != null)
+                {
+                    remoteAvatarUI.LoadAvatar(Utils.instance.CreateSprite(texture2D));
+                }
+
+            });
+            },userId);
     }
 
     public void OnMyHouse()
