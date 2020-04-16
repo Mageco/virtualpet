@@ -164,7 +164,7 @@ public class Pet : BaseModel
         sleep = Random.Range(maxSleep / 2, maxSleep);
         energy = Random.Range(maxEnergy / 2, maxEnergy);
         health = maxHealth;
-
+        damage = 0;
         LoadSkill();
     }
 

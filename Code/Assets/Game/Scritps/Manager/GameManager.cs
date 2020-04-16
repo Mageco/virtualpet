@@ -25,7 +25,7 @@ public class GameManager : MonoBehaviour
     public int expScale = 1;
 
     float saveTime = 0;
-    float maxSaveTime = 10;
+    float maxSaveTime = 1;
 
     void Awake()
     {
