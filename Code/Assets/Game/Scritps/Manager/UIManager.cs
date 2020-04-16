@@ -33,6 +33,8 @@ public class UIManager : MonoBehaviour
     public GameObject takePhotoUIPrefab;
     public GameObject leaderBoardPanelPrefab;
     public GameObject remotePlayerPanellPrefab;
+    public GameObject spinWheelPanelPrefab;
+    public GameObject spinRewardPanelPrefab;
 
     public static UIManager instance;
 	public Text coinText;
@@ -90,6 +92,10 @@ public class UIManager : MonoBehaviour
     public LeaderBoardPanel leaderBoardPanel;
     [HideInInspector]
     public RemotePlayerPanel remotePlayerPanel;
+    [HideInInspector]
+    public SpinWheelPanel spinWheelPanel;
+    [HideInInspector]
+    public SpinRewardPanel spinRewardPanel;
 
     public GameObject achivementNotification;
     public GameObject giftNotification;
@@ -744,6 +750,34 @@ public class UIManager : MonoBehaviour
             remotePlayerPanel.Load(s);
         }
     }
+
+    public void OnSpinWheelPanel()
+    {
+        if (spinWheelPanel == null)
+        {
+            var popup = Instantiate(spinWheelPanelPrefab) as GameObject;
+            popup.SetActive(true);
+            //popup.transform.localScale = Vector3.zero;
+            popup.transform.SetParent(GameObject.Find("Canvas").transform, false);
+            popup.GetComponent<Popup>().Open();
+            spinWheelPanel = popup.GetComponent<SpinWheelPanel>();
+        }
+    }
+
+    public void OnSpinRewardPanel(Sprite s, string t)
+    {
+        if (spinRewardPanel == null)
+        {
+            var popup = Instantiate(spinRewardPanelPrefab) as GameObject;
+            popup.SetActive(true);
+            popup.transform.localScale = Vector3.zero;
+            popup.transform.SetParent(GameObject.Find("Canvas").transform, false);
+            popup.GetComponent<Popup>().Open();
+            spinRewardPanel = popup.GetComponent<SpinRewardPanel>();
+            spinRewardPanel.Load(s, t);
+        }
+    }
+
 
     public void OnChestSalePanel(RareType rareType)
     {

@@ -189,6 +189,10 @@ public class RewardVideoAdManager : MonoBehaviour , IUnityAdsListener
 		{
 			StartCoroutine(OnForestDiamond());
 		}
+		else if (rewardType == RewardType.SpinWheel)
+		{
+			StartCoroutine(OnSpinWheel());
+		}
 
 	}
 
@@ -251,6 +255,15 @@ public class RewardVideoAdManager : MonoBehaviour , IUnityAdsListener
 		if (UIManager.instance != null && UIManager.instance.rewardDiamondPanel != null)
 		{
 			UIManager.instance.rewardDiamondPanel.WatchedAd();
+		}
+	}
+
+	IEnumerator OnSpinWheel()
+	{
+		yield return new WaitForEndOfFrame();
+		if (UIManager.instance != null && UIManager.instance.spinWheelPanel != null)
+		{
+			UIManager.instance.spinWheelPanel.OnWatched();
 		}
 	}
 
@@ -403,6 +416,10 @@ public class RewardVideoAdManager : MonoBehaviour , IUnityAdsListener
 			else if (rewardType == RewardType.ForestDiamond)
 			{
 				StartCoroutine(OnForestDiamond());
+			}
+			else if (rewardType == RewardType.SpinWheel)
+			{
+				StartCoroutine(OnSpinWheel());
 			}
 		}
 		else if (showResult == ShowResult.Skipped)
