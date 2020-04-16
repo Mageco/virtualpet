@@ -90,7 +90,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHeight: 15
-  scaleFactor: 0.05
   height: 0
   scalePosition: {x: 0, y: 0, z: 0}
   speedFactor: 1
@@ -108,6 +107,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   interactType: 0
   dragOffset: {x: 0, y: 0, z: 0}
+  isDrag: 0
 --- !u!114 &2133356934295196438
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -133,9 +133,11 @@ MonoBehaviour:
     itemState: 0
     prefabName: 
     isAvailable: 1
+    itemTag: 0
     requireEquipments: 
     requirePets: 
-    favouriteToys: 
+    requireValue: 0
+    requireValueType: 3
     skills: []
     petName: 
     shopOrder: 0
@@ -157,6 +159,8 @@ MonoBehaviour:
     fear: 0
     curious: 70
     maxTimeSick: 1800
+    isNew: 0
+    rareType: 0
     rateFood: 10
     rateWater: 10
     rateSleep: 0.5
@@ -166,6 +170,7 @@ MonoBehaviour:
     recoverDirty: 0.1
     recoverHealth: 0
     recoverEnergy: 0
+    rateHappy: 1
     maxFood: 100
     maxWater: 100
     maxShit: 100
@@ -177,7 +182,7 @@ MonoBehaviour:
     maxDirty: 100
     maxItchi: 100
     maxCurious: 100
-    character: {fileID: 0}
+    levelRate: 10
     actionType: 0
     position: {x: 0, y: 0, z: 0}
     scalePosition: {x: 0, y: 0, z: 0}
@@ -186,7 +191,6 @@ MonoBehaviour:
   petPrefab: {fileID: 5271388201480225125, guid: 8b20de4567e5b7149ba4a697145110a3,
     type: 3}
   charType: 6
-  gameType: 0
   enviromentType: 0
   direction: 1
   target: {x: 0, y: 0, z: 0}
@@ -196,6 +200,7 @@ MonoBehaviour:
   isAction: 0
   isMoving: 0
   actionType: 0
+  lastActionType: 0
   anim: {fileID: 0}
   charInteract: {fileID: 0}
   charScale: {fileID: 0}
@@ -206,7 +211,6 @@ MonoBehaviour:
   currentSkill: 0
   dropPosition: {x: 0, y: 0, z: 0}
   iconStatusObject: {fileID: 2806895273251010099}
-  timeWait: {fileID: 82713964474638797}
   iconStatus: 0
   dirties: []
   dirties_L: []
@@ -418,7 +422,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2806895273251010097}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 5.03, z: 0}
+  m_LocalPosition: {x: 0, y: 6, z: 0}
   m_LocalScale: {x: 1.5, y: 1.5, z: 1}
   m_Children:
   - {fileID: 2419929243088815195}
