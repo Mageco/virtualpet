@@ -30,12 +30,14 @@ public class PlayerData : BaseModel
 
 	public int questId = 0;
     public int questValue = 0;
+	public bool isCompleteDailyQuest = false;
 	public List<Skin> petColors = new List<Skin>();
 	public List<PlayerAchivement> achivements = new List<PlayerAchivement>();
 	public List<ItemSaveData> itemSaveDatas = new List<ItemSaveData>();
 	public List<PlayerService> playerServices = new List<PlayerService>();
 	public string startGameTime = System.DateTime.Now.ToString();
 	public List<PlayerBonus> dailyBonus = new List<PlayerBonus>();
+	public List<DailyQuestData> dailyQuests = new List<DailyQuestData>();
 
 	public PlayerData(){
         for(int i = 0; i < minigameLevels.Length; i++)
@@ -206,6 +208,18 @@ public class PlayerBonus : BaseModel
 		isCollected = true;
 		timeReceived = System.DateTime.Now.ToString();
 	}
+}
+
+[System.Serializable]
+public class DailyQuestData : BaseModel
+{
+	public int achivementId = 0;
+	public int startValue = 0;
+	public int value = 0;
+	public int requireValue = 5;
+	public int bonus = 100;
+	public DailyQuestState state = DailyQuestState.None;
+	public string timeCollected = "";
 }
 
 

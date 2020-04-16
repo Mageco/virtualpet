@@ -1056,6 +1056,8 @@ public class GameManager : MonoBehaviour
         isLoad = true;
     }
 
+
+    #region Achivement
     public void LogAchivement(AchivementType achivementType = AchivementType.Do_Action, ActionType actionType = ActionType.None, int itemId = -1, AnimalType animalType = AnimalType.Mouse)
     {
         foreach (PlayerAchivement a in myPlayer.achivements)
@@ -1145,6 +1147,34 @@ public class GameManager : MonoBehaviour
         }
         return false;
     }
+    #endregion
+
+    #region Daily Quest
+    public DailyQuestData GetDailyQuestData(int id)
+    {
+        foreach(DailyQuestData quest in myPlayer.dailyQuests)
+        {
+            if (quest.achivementId == id)
+                return quest;
+        }
+        return null;
+    }
+
+    public void CompleteDailyQuest(int id)
+    {
+        foreach (DailyQuestData quest in myPlayer.dailyQuests)
+        {
+            if (quest.achivementId == id)
+            {
+                quest.state = DailyQuestState.Collected;
+                quest.timeCollected = MageEngine.instance.GetServerTimeStamp().ToString();
+                GameManager.instance.AddHappy(quest.bonus);
+            }
+        }
+
+    }
+
+    #endregion
 
     public void OnTreatment(CharController p, SickType sickType, int coin)
     {

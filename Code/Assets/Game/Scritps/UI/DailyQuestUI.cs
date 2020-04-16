@@ -7,48 +7,28 @@ public class DailyQuestUI : MonoBehaviour
 {
     int iD = 0;
     public Image icon;
-    public Text achivementlName;
+    public Text questName;
     public Text progress;
     public Image slider;
-    public Image rewardIcon;
-    public Sprite coinIcon;
-    public Sprite diamonIcon;
-    public Text rewardValue;
     public Button collect;
-    public Animator rewardAnim;
     void Awake()
     {
 
     }
 
     // Start is called before the first frame update
-    public void Load(PlayerAchivement a)
+    public void Load(DailyQuestData a)
     {
         Achivement d = DataHolder.GetAchivement(a.achivementId);
-        int level = a.level;
-        if (a.level == DataHolder.GetAchivement(a.achivementId).maxProgress.Length)
-        {
-            level = a.level - 1;
-        }
-        iD = d.iD;
+        iD = a.achivementId;
         string url = d.iconUrl.Replace("Assets/Game/Resources/", "");
         url = url.Replace(".png", "");
         icon.sprite = Resources.Load<Sprite>(url) as Sprite;
-        achivementlName.text = d.GetName(MageManager.instance.GetLanguage());
-        progress.text = a.amount.ToString() + "/" + d.maxProgress[level].ToString();
-        slider.fillAmount = a.amount * 1f / d.maxProgress[level];
-        if (d.coinValue[level] != 0)
-        {
-            rewardIcon.sprite = coinIcon;
-            rewardValue.text = d.coinValue[level].ToString();
-        }
-        else if (d.diamondValue[level] != 0)
-        {
-            rewardIcon.sprite = diamonIcon;
-            rewardValue.text = d.diamondValue[level].ToString();
-        }
+        questName.text = d.GetName(MageManager.instance.GetLanguage()) + " " + a.requireValue.ToString();
+        progress.text = a.value.ToString() + "/" + a.requireValue.ToString();
+        slider.fillAmount = a.value * 1f / a.requireValue;
 
-        if (a.rewardState == RewardState.Ready)
+        if (a.state == DailyQuestState.Ready)
         {
             collect.interactable = true;
         }
@@ -64,17 +44,9 @@ public class DailyQuestUI : MonoBehaviour
 
     public void Collect()
     {
-        rewardAnim.Play("Active", 0);
         MageManager.instance.PlaySound("Collect_Achivement", false);
-        GameManager.instance.CollectAchivementRewards(iD);
+        GameManager.instance.CompleteDailyQuest(iD);
         collect.interactable = false;
-
-        StartCoroutine(CollectCoroutine());
-    }
-
-    IEnumerator CollectCoroutine()
-    {
-        yield return new WaitForSeconds(1f);
-        UIManager.instance.achivementPanel.Load();
+        UIManager.instance.dailyQuestPanel.Load();
     }
 }

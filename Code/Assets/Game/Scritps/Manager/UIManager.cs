@@ -35,6 +35,7 @@ public class UIManager : MonoBehaviour
     public GameObject remotePlayerPanellPrefab;
     public GameObject spinWheelPanelPrefab;
     public GameObject spinRewardPanelPrefab;
+    public GameObject dailyQuestPanelPrefab;
 
     public static UIManager instance;
 	public Text coinText;
@@ -96,6 +97,8 @@ public class UIManager : MonoBehaviour
     public SpinWheelPanel spinWheelPanel;
     [HideInInspector]
     public SpinRewardPanel spinRewardPanel;
+    [HideInInspector]
+    public DailyQuestPanel dailyQuestPanel;
 
     public GameObject achivementNotification;
     public GameObject giftNotification;
@@ -128,7 +131,7 @@ public class UIManager : MonoBehaviour
     float diamond = 0;
 
     float timeUpdate;
-    float maxTimeUpdate = 0.4f;
+    float maxTimeUpdate = 1f;
 
     //Sale
     public GameObject saleButton;
@@ -181,6 +184,36 @@ public class UIManager : MonoBehaviour
                 callButton.SetActive(true);
             else
                 callButton.SetActive(false);
+        }
+
+        if (timeUpdate > maxTimeUpdate)
+        {
+            timeUpdate = 0;
+ 
+            //Check Achivement Notification
+            if (GameManager.instance.IsCollectAchivement())
+            {
+                UIManager.instance.achivementNotification.SetActive(true);
+            }
+            else
+                UIManager.instance.achivementNotification.SetActive(false);
+
+            //Check Gift Notification
+            if (GameManager.instance.IsCollectDailyGift())
+            {
+                UIManager.instance.giftNotification.SetActive(true);
+            }
+            else
+                UIManager.instance.giftNotification.SetActive(false);
+
+            if (GameManager.instance.gameTime > 400 && !ES2.Exists("RateUs") && (int)GameManager.instance.gameTime % 400 == 0)
+            {
+                UIManager.instance.OnRatingPopup();
+            }
+        }
+        else
+        {
+            timeUpdate += Time.deltaTime;
         }
     }
 
@@ -775,6 +808,20 @@ public class UIManager : MonoBehaviour
             popup.GetComponent<Popup>().Open();
             spinRewardPanel = popup.GetComponent<SpinRewardPanel>();
             spinRewardPanel.Load(s, t);
+        }
+    }
+
+    public void OnDailyQuestPanel()
+    {
+        if (dailyQuestPanel == null)
+        {
+            var popup = Instantiate(dailyQuestPanelPrefab) as GameObject;
+            popup.SetActive(true);
+            popup.transform.localScale = Vector3.zero;
+            popup.transform.SetParent(GameObject.Find("Canvas").transform, false);
+            popup.GetComponent<Popup>().Open();
+            dailyQuestPanel = popup.GetComponent<DailyQuestPanel>();
+            dailyQuestPanel.Load();
         }
     }
 

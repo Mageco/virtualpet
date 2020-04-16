@@ -33,3 +33,4 @@ public enum AdDistribute {None,Unity,Admob};
 public enum RareType { Common, Rare,Epic,Legend};
 public enum AreaType {Room,Garden,Lake,All,Camera,Fly};
 public enum ItemTag {None=0,Hot=1,Sale=2,New=3};
+public enum DailyQuestState {None,Started,Ready,Collected};

@@ -143,4 +143,10 @@ public class CityManager : MonoBehaviour
     {
         UIManager.instance.OnSpinWheelPanel();
     }
+
+
+    public void OnDailyQuest()
+    {
+        UIManager.instance.OnDailyQuestPanel();
+    }
 }
