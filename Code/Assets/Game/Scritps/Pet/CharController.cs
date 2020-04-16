@@ -1918,9 +1918,11 @@ public class CharController : MonoBehaviour
                 while (toyItem != null && !isAbort && count < maxCount)
                 {
                     toyItem.OnActive();
+                    
                     MageManager.instance.PlaySound3D(charType.ToString() + "_Supprised", false,this.transform.position);
                     MageManager.instance.PlaySound3D("Drag", false,this.transform.position);
-                    anim.Play("Teased", 0);
+                    //anim.Play("Teased", 0);
+                    anim.Play("Play_" + toyItem.toyType.ToString());
                     shadow.GetComponent<SpriteRenderer>().enabled = false;
                     yield return new WaitForEndOfFrame();
                     float ySpeed = 30 * anim.GetCurrentAnimatorStateInfo(0).length / 2;
