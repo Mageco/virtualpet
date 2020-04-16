@@ -69,7 +69,7 @@ public class BaseFloorItem : MonoBehaviour
 		if (state == EquipmentState.Hold)
 		{
 			dragTime += Time.deltaTime;
-			if (dragTime > 0.4f)
+			if (dragTime > 0.5f)
 			{
 				if (Vector2.Distance(Camera.main.ScreenToWorldPoint(Input.mousePosition), clickPosition) < 1f)
 				{
@@ -97,11 +97,11 @@ public class BaseFloorItem : MonoBehaviour
 				}
 			}
 
-			if (dragTime > 0.5f && Vector2.Distance(Camera.main.ScreenToWorldPoint(Input.mousePosition), clickPosition) < 1f)
+			if (dragTime > 1f && Vector2.Distance(Camera.main.ScreenToWorldPoint(Input.mousePosition), clickPosition) < 1f)
 			{
 				OnDrag();
 			}
-			else if (dragTime > 0.5f)
+			else if (dragTime > 1f)
 				OffDrag();
 
 
@@ -150,7 +150,7 @@ public class BaseFloorItem : MonoBehaviour
 
 		if (state == EquipmentState.Drag || state == EquipmentState.Hold)
 		{
-			if (dragTime < 0.4f)
+			if (dragTime < 0.5f)
 			{
 				OnClick();
 			}

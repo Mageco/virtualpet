@@ -930,6 +930,7 @@ public class UIManager : MonoBehaviour
             toolUI.gameObject.SetActive(false);
             callButton.SetActive(false);
             remotePanel.SetActive(true);
+            remoteAvatarUI.avatar.sprite = null;
             RewardVideoAdManager.instance.ShowBanner();
             GameManager.instance.RemoveAllPetObjects();
             GameManager.instance.guest = u.GetUserData<PlayerData>();
