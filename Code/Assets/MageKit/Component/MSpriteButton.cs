@@ -43,9 +43,14 @@ public class MSpriteButton : MonoBehaviour {
 			return;
 		}
 
+
         Vector3 upPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         if(interactable && Vector3.Distance(upPos,clickPos) < 0.5f)
+        {
+			MageManager.instance.PlaySound("BubbleButton", false);
 			m_OnClick.Invoke();
+		}
+			
 	}
 
 

@@ -62,6 +62,8 @@ public class GameManager : MonoBehaviour
             saveTime = 0;
             SavePlayer();
         }
+        else
+            saveTime += Time.deltaTime;
 
     }
 

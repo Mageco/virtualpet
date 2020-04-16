@@ -15,7 +15,6 @@ public class SpinWheelPanel : MonoBehaviour
     public Button buttonFree;
     public Button buttonAd;
     int spinCount = 0;
-    int rewardId = 0;
     System.DateTime timeSpin = System.DateTime.Now;
     public Image[] icons;
 
@@ -28,17 +27,26 @@ public class SpinWheelPanel : MonoBehaviour
 
     void LoadTime()
     {
+        if (ES2.Exists("SpinCount"))
+            spinCount = ES2.Load<int>("SpinCount");
+
         if (ES2.Exists("TimeSpin"))
         {
             timeSpin = ES2.Load<System.DateTime>("TimeSpin");
         }
         else
-            spinCount = 20;
-
-        if (timeSpin.Year < MageEngine.instance.GetServerTimeStamp().Year && timeSpin.Month < MageEngine.instance.GetServerTimeStamp().Month && timeSpin.Day < MageEngine.instance.GetServerTimeStamp().Day)
-        {
             spinCount = 2;
+
+
+
+        if (timeSpin.Year < System.DateTime.Now.Year || timeSpin.Month < System.DateTime.Now.Month || timeSpin.Day < System.DateTime.Now.Day)
+        {
+            
+            spinCount = 2;
+            Debug.Log(spinCount);
         }
+
+
 
         LoadButton();
     }
@@ -59,9 +67,9 @@ public class SpinWheelPanel : MonoBehaviour
         }
         else
         {
-            buttonFree.gameObject.SetActive(true);
-            buttonAd.gameObject.SetActive(false);
-            buttonFree.interactable = false;
+            buttonFree.gameObject.SetActive(false);
+            buttonAd.gameObject.SetActive(true);
+            buttonAd.interactable = false;
         }
     }
 
@@ -84,16 +92,26 @@ public class SpinWheelPanel : MonoBehaviour
 
     private IEnumerator DoSpin()
     {
-        int soundId = MageManager.instance.PlaySound("CollectItem", true);
-
+        int soundId = MageManager.instance.PlaySound("Wheel_Loop",false);
+        ES2.Save(System.DateTime.Now, "TimeSpin");
         spinCount -= 1;
+        ES2.Save(spinCount, "SpinCount");
         speed = Random.Range(2f,5f);
         float a = Random.Range(0.5f, 1f);
         Debug.Log(speed);
-       
+        bool isStop = false;
+
         while (speed > 0)
         {
-            
+            if(speed < 1.2f && !isStop)
+            {
+                isStop = true;
+                MageManager.instance.StopSound(soundId);
+                MageManager.instance.PlaySound("Wheel_Stop", false);
+            }
+                
+
+
             speed -= a * Time.deltaTime;
             if(speed < 0.1f && spinArrow.transform.rotation.eulerAngles.z > 0)
             {
@@ -110,7 +128,7 @@ public class SpinWheelPanel : MonoBehaviour
             n = 0;
         Debug.Log(n);
 
-        MageManager.instance.StopSound(soundId);
+        
 
         LoadButton();
 

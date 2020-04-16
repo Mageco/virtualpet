@@ -11,6 +11,8 @@ public class DailyQuestUI : MonoBehaviour
     public Text progress;
     public Image slider;
     public Button collect;
+    public Text bonus;
+    public GameObject collectIcon;
     void Awake()
     {
 
@@ -24,16 +26,21 @@ public class DailyQuestUI : MonoBehaviour
         string url = d.iconUrl.Replace("Assets/Game/Resources/", "");
         url = url.Replace(".png", "");
         icon.sprite = Resources.Load<Sprite>(url) as Sprite;
-        questName.text = d.GetName(MageManager.instance.GetLanguage()) + " " + a.requireValue.ToString();
-        progress.text = a.value.ToString() + "/" + a.requireValue.ToString();
+        questName.text = d.GetName(MageManager.instance.GetLanguage()) + " " + a.requireValue.ToString() + " " + DataHolder.Dialog(138).GetName(MageManager.instance.GetLanguage());
+        progress.text = Mathf.Clamp(a.value,0,a.requireValue).ToString() + "/" + a.requireValue.ToString();
         slider.fillAmount = a.value * 1f / a.requireValue;
-
+        bonus.text = a.bonus.ToString();
         if (a.state == DailyQuestState.Ready)
         {
             collect.interactable = true;
         }
         else
             collect.interactable = false;
+
+        if (a.state == DailyQuestState.Collected)
+            collectIcon.SetActive(true);
+        else
+            collectIcon.SetActive(false);
     }
 
     // Update is called once per frame

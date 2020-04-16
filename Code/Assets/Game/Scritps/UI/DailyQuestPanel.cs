@@ -11,6 +11,7 @@ public class DailyQuestPanel : MonoBehaviour
     public GameObject dailyQuestUIPrefab;
     public GameObject colectActive;
     public GameObject collectDeActive;
+    public Text completedText;
 
     // Start is called before the first frame update
     void Awake()
@@ -52,7 +53,7 @@ public class DailyQuestPanel : MonoBehaviour
             for(int i = 0;i < ids.Count; i++)
             {
                 DailyQuestData quest = new DailyQuestData();
-                quest.achivementId = ids[i];
+                quest.achivementId = achivements[ids[i]].iD;
                 GameManager.instance.myPlayer.dailyQuests.Add(quest);
             }
 
@@ -64,7 +65,7 @@ public class DailyQuestPanel : MonoBehaviour
         {
             if (quest.state == DailyQuestState.Collected && quest.timeCollected != "")
             {
-                if(System.DateTime.Parse(quest.timeCollected).Year < MageEngine.instance.GetServerTimeStamp().Year || System.DateTime.Parse(quest.timeCollected).Month < MageEngine.instance.GetServerTimeStamp().Month || System.DateTime.Parse(quest.timeCollected).Day < MageEngine.instance.GetServerTimeStamp().Day)
+                if (System.DateTime.Parse(quest.timeCollected).Year < MageEngine.instance.GetServerTimeStamp().Year || System.DateTime.Parse(quest.timeCollected).Month < MageEngine.instance.GetServerTimeStamp().Month || System.DateTime.Parse(quest.timeCollected).Day < MageEngine.instance.GetServerTimeStamp().Day)
                 {
                     quest.state = DailyQuestState.None;
                     quest.timeCollected = "";
@@ -101,17 +102,17 @@ public class DailyQuestPanel : MonoBehaviour
     {
         ClearItems();
 
-        bool isDone = false;
+        int count = 0;
         foreach (DailyQuestData quest in GameManager.instance.myPlayer.dailyQuests)
         {
             LoadItem(quest);
-            if (quest.state != DailyQuestState.Collected)
+            if (quest.state == DailyQuestState.Collected)
             {
-                isDone = false;
+                count ++;
             }
         }
 
-        if (isDone)
+        if (count == 3)
         {
             collectDeActive.SetActive(false);
             if (!GameManager.instance.myPlayer.isCompleteDailyQuest)
@@ -129,6 +130,7 @@ public class DailyQuestPanel : MonoBehaviour
         }
         else
         {
+            completedText.text = count.ToString() + "/3";
             collectDeActive.SetActive(true);
             colectActive.SetActive(false);
         }
