@@ -39,7 +39,7 @@ public class SpinWheelPanel : MonoBehaviour
 
 
 
-        if (timeSpin.Year < System.DateTime.Now.Year || timeSpin.Month < System.DateTime.Now.Month || timeSpin.Day < System.DateTime.Now.Day)
+        if (timeSpin.Year < MageEngine.instance.GetServerTimeStamp().Year || timeSpin.Month < MageEngine.instance.GetServerTimeStamp().Month || timeSpin.Day < MageEngine.instance.GetServerTimeStamp().Day)
         {
             
             spinCount = 2;
@@ -93,7 +93,7 @@ public class SpinWheelPanel : MonoBehaviour
     private IEnumerator DoSpin()
     {
         int soundId = MageManager.instance.PlaySound("Wheel_Loop",false);
-        ES2.Save(System.DateTime.Now, "TimeSpin");
+        ES2.Save(MageEngine.instance.GetServerTimeStamp(), "TimeSpin");
         spinCount -= 1;
         ES2.Save(spinCount, "SpinCount");
         speed = Random.Range(2f,5f);
