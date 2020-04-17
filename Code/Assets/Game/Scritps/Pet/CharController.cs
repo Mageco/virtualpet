@@ -1973,11 +1973,11 @@ public class CharController : MonoBehaviour
                     anim.speed = 1.5f;
                     if (toyItem.startPoint != null)
                     {
-                        target = toyItem.startPoint.position;
+                        target = toyItem.GetComponent<ToyBallItem>().shadow.transform.position;
                         yield return StartCoroutine(RunToPoint());
                     }
                     
-                    if (Vector2.Distance(this.transform.position, toyItem.startPoint.position) < 4 && toyItem.state != EquipmentState.Active)
+                    if (Vector2.Distance(this.transform.position, toyItem.GetComponent<ToyBallItem>().shadow.transform.position) < 4 && toyItem.state != EquipmentState.Active)
                     {
                         agent.Stop();
                         toyItem.OnActive();

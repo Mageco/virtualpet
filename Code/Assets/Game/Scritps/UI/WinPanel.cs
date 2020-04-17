@@ -9,8 +9,6 @@ public class WinPanel : MonoBehaviour
     public Text exp;
     public Text coin;
     public Text item;
-    int price = 5;
-    int gameId = 0;
     public Text priceText;
     int bonus = 0;
     public Button watchAd;
@@ -40,7 +38,6 @@ public class WinPanel : MonoBehaviour
     public void Load(int c,int minigameId,bool isWin){
         this.minigameId = minigameId;
         bonus = c;
-        gameId = minigameId;
         animator = this.GetComponent<Animator>();
        
 
@@ -103,6 +100,9 @@ public class WinPanel : MonoBehaviour
     }
 
     public void OnHome(){
+        MageManager.instance.PlaySound("Collect_Achivement", false);
+        GameManager.instance.AddCoin(bonus);
+        GameManager.instance.AddExp(bonus / 10);
         if (minigameId == 2 || minigameId == 3)
             UIManager.instance.OnMap(MapType.Forest);
         else
@@ -112,17 +112,11 @@ public class WinPanel : MonoBehaviour
 
     public void Replay(){
 
-        //if (GameManager.instance.GetHappy() < price)
-        //{
-        //    MageManager.instance.OnNotificationPopup(DataHolder.Dialog(8).GetDescription(MageManager.instance.GetLanguage()));
-        //}
-        //else
-        //{
-            GameManager.instance.AddCoin(bonus);
-        //    GameManager.instance.AddHappy(-price);
-            MageManager.instance.LoadScene(SceneManager.GetActiveScene().name, 0.5f);
+        MageManager.instance.PlaySound("Collect_Achivement", false);
+        GameManager.instance.AddCoin(bonus);
+        GameManager.instance.AddExp(bonus / 10);
+        MageManager.instance.LoadScene(SceneManager.GetActiveScene().name, 0.5f);
             this.GetComponent<Popup>().Close();
-        //}
     }
 
     public void OnWatchedAd()

@@ -13,7 +13,7 @@ public class ToyBallItem : ToyItem
     public GameObject shadow;
     Vector3 originalShadowScale;
     float maxHeight = 20;
-    float intHeight = 1;
+    public float intHeight = 1;
 
     protected override void Start()
     {
@@ -109,9 +109,9 @@ public class ToyBallItem : ToyItem
             rigid.velocity = Vector2.zero;
             rigid.isKinematic = true;
 
-            shadow.transform.position = this.transform.position + new Vector3(0, -intHeight * this.transform.localScale.x, 100);
+            shadow.transform.position = this.transform.position + new Vector3(0, -intHeight * this.transform.localScale.x, 500);
             Vector3 pos1 = wall.transform.position;
-            pos1.y = this.transform.position.y - 1 * this.transform.localScale.x;
+            pos1.y = shadow.transform.position.y; //this.transform.position.y - 1 * this.transform.localScale.x;
             wall.transform.position = pos1;
             lastPosition = this.transform.position;
             Vector3 pos2 = this.transform.position;
