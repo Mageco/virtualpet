@@ -31,6 +31,8 @@ public class PlayerData : BaseModel
 	public int questId = 0;
     public int questValue = 0;
 	public bool isCompleteDailyQuest = false;
+	public int spinCount = 0;
+	public string spinedTime = "";
 	public List<Skin> petColors = new List<Skin>();
 	public List<PlayerAchivement> achivements = new List<PlayerAchivement>();
 	public List<ItemSaveData> itemSaveDatas = new List<ItemSaveData>();

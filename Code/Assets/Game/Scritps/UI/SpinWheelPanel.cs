@@ -14,7 +14,6 @@ public class SpinWheelPanel : MonoBehaviour
     public GameObject spin;
     public Button buttonFree;
     public Button buttonAd;
-    int spinCount = 0;
     System.DateTime timeSpin = System.DateTime.Now;
     public Image[] icons;
 
@@ -27,23 +26,19 @@ public class SpinWheelPanel : MonoBehaviour
 
     void LoadTime()
     {
-        if (ES2.Exists("SpinCount"))
-            spinCount = ES2.Load<int>("SpinCount");
 
-        if (ES2.Exists("TimeSpin"))
+        if (GameManager.instance.myPlayer.spinedTime != "") 
         {
-            timeSpin = ES2.Load<System.DateTime>("TimeSpin");
+            timeSpin = System.DateTime.Parse(GameManager.instance.myPlayer.spinedTime);
         }
         else
-            spinCount = 2;
+            GameManager.instance.myPlayer.spinCount = 2;
 
 
 
         if (timeSpin.Year < MageEngine.instance.GetServerTimeStamp().Year || timeSpin.Month < MageEngine.instance.GetServerTimeStamp().Month || timeSpin.Day < MageEngine.instance.GetServerTimeStamp().Day)
         {
-            
-            spinCount = 2;
-            Debug.Log(spinCount);
+            GameManager.instance.myPlayer.spinCount = 2;
         }
 
 
@@ -53,13 +48,13 @@ public class SpinWheelPanel : MonoBehaviour
 
     void LoadButton()
     {
-        if (spinCount >= 2)
+        if (GameManager.instance.myPlayer.spinCount >= 2)
         {
             buttonFree.gameObject.SetActive(true);
             buttonAd.gameObject.SetActive(false);
             buttonFree.interactable = true;
         }
-        else if (spinCount == 1)
+        else if (GameManager.instance.myPlayer.spinCount == 1)
         {
             buttonFree.gameObject.SetActive(false);
             buttonAd.gameObject.SetActive(true);
@@ -93,9 +88,8 @@ public class SpinWheelPanel : MonoBehaviour
     private IEnumerator DoSpin()
     {
         int soundId = MageManager.instance.PlaySound("Wheel_Loop",false);
-        ES2.Save(MageEngine.instance.GetServerTimeStamp(), "TimeSpin");
-        spinCount -= 1;
-        ES2.Save(spinCount, "SpinCount");
+        GameManager.instance.myPlayer.spinedTime = MageEngine.instance.GetServerTimeStamp().ToString();
+        GameManager.instance.myPlayer.spinCount -= 1;
         speed = Random.Range(2f,5f);
         float a = Random.Range(0.5f, 1f);
         Debug.Log(speed);
