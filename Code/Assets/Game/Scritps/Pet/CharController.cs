@@ -308,8 +308,8 @@ public class CharController : MonoBehaviour
         {
             float delta = data.RecoveryEnergy / 5;
             data.Energy += delta;
-            data.Food -= 0.5f;
-            data.Water -= 0.5f;
+            data.Food -= 0.4f;
+            data.Water -= 0.4f;
             data.Shit += 0.2f;
             data.Pee += 0.25f;
         }
