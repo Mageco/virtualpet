@@ -54,10 +54,13 @@ public class SettingPopUp : MonoBehaviour {
 		AudioSource[] audios = FindObjectsOfType<AudioSource>();
 		foreach (AudioSource a in audios)
 		{
-			if (MageManager.instance.GetSoundVolume() < 0.1f)
-				a.enabled = false;
-			else
-				a.enabled = true;
+            if(a.gameObject != MageManager.instance.gameObject)
+            {
+				if (MageManager.instance.GetSoundVolume() < 0.1f)
+					a.enabled = false;
+				else
+					a.enabled = true;
+			}
 		}
 	}
 

@@ -100,6 +100,17 @@ public class ForestManager : MonoBehaviour
             GameObject.Destroy(collector);
         if (collector != null)
             collectorTimelines.Add(collector.GetComponentInChildren<CharCollectorTimeline>());
+        AudioSource[] audios = FindObjectsOfType<AudioSource>();
+        foreach (AudioSource a in audios)
+        {
+            if (a.gameObject != MageManager.instance.gameObject)
+            {
+                if (MageManager.instance.GetSoundVolume() < 0.1f)
+                    a.enabled = false;
+                else
+                    a.enabled = true;
+            }
+        }
     }
 
     public void CheckCollector(int id)
