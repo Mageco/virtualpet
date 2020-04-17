@@ -36,42 +36,41 @@ public class DailyQuestPanel : MonoBehaviour
             }
         }
 
-        if (GameManager.instance.myPlayer.dailyQuests.Count == 0)
+        List<int> ids = new List<int>();
+        while (ids.Count < 3)
         {
-            GameManager.instance.myPlayer.dailyQuests = new List<DailyQuestData>();
-            List<int> ids = new List<int>();
-            while(ids.Count < 3)
+            int id = Random.Range(0, achivements.Count);
+            while (ids.Contains(id))
             {
-                int id = Random.Range(0, achivements.Count);
-                while (ids.Contains(id))
-                {
-                    id = Random.Range(0, achivements.Count);
-                }
-                ids.Add(id);
+                id = Random.Range(0, achivements.Count);
             }
+            ids.Add(id);
+        }
 
-            for(int i = 0;i < ids.Count; i++)
+        if (GameManager.instance.myPlayer.dailyQuests.Count < 3)
+        {
+            for(int i= GameManager.instance.myPlayer.dailyQuests.Count; i < 3; i++)
             {
                 DailyQuestData quest = new DailyQuestData();
                 quest.achivementId = achivements[ids[i]].iD;
                 GameManager.instance.myPlayer.dailyQuests.Add(quest);
+                GameManager.instance.myPlayer.isCompleteDailyQuest = false;
             }
-
-            GameManager.instance.myPlayer.isCompleteDailyQuest = false;
         }
 
-
+        int count = 0;
         foreach(DailyQuestData quest in GameManager.instance.myPlayer.dailyQuests)
         {
             if (quest.state == DailyQuestState.Collected && quest.timeCollected != "")
             {
                 if (System.DateTime.Parse(quest.timeCollected).Year < MageEngine.instance.GetServerTimeStamp().Year || System.DateTime.Parse(quest.timeCollected).Month < MageEngine.instance.GetServerTimeStamp().Month || System.DateTime.Parse(quest.timeCollected).Day < MageEngine.instance.GetServerTimeStamp().Day)
                 {
+                    quest.achivementId = achivements[ids[count]].iD;
                     quest.state = DailyQuestState.None;
                     quest.timeCollected = "";
                     GameManager.instance.myPlayer.isCompleteDailyQuest = false;
+                    count++;
                 }
-                
             }
         }
 
