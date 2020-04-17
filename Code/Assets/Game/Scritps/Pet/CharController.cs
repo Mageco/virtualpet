@@ -886,7 +886,7 @@ public class CharController : MonoBehaviour
 
     public virtual void OnFall()
     {
-        if (actionType == ActionType.Sick || actionType == ActionType.Injured || actionType == ActionType.Hold || actionType == ActionType.Toy)
+        if (actionType == ActionType.Sick || actionType == ActionType.Injured || actionType == ActionType.Hold || actionType == ActionType.Toy || data.Health == 0 || data.Damage == data.MaxDamage)
             return;
 
 
