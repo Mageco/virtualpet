@@ -893,16 +893,19 @@ public class GameManager : MonoBehaviour
     {
         if (GetPet(petId) != null)
         {
-            if(GetPetObject(petId) != null)
+            AddHappy(-10 * GetPet(petId).level * GetPet(petId).level);
+            GetPet(petId).level++;
+
+            if (GetPetObject(petId) != null)
             {
                 MageManager.instance.PlaySound3D("points_ticker_bonus_score_reward_single_06", false, GetPetObject(petId).transform.position);
                 GameObject go = GameObject.Instantiate(Resources.Load("Prefabs/Effects/LevelUp") as GameObject);
                 go.transform.parent = GetPetObject(petId).transform;
                 go.transform.position = GetPetObject(petId).transform.position + new Vector3(0, 2, -1);
+                GetPetObject(petId).data.level = GetPet(petId).level;
             }
 
-            AddHappy(-10 * GetPet(petId).level * GetPet(petId).level);
-            GetPet(petId).level++;
+           
             
         }
 
@@ -913,12 +916,11 @@ public class GameManager : MonoBehaviour
     {
         if (myPlayer.level == 2)
         {
-            UIManager.instance.OnQuestNotificationPopup(DataHolder.Dialog(85).GetName(MageManager.instance.GetLanguage()));
+            UIManager.instance.OnQuestNotificationPopup(DataHolder.Dialog(77).GetName(MageManager.instance.GetLanguage()));
         }
         else if (myPlayer.level == 3)
         {
-            UIManager.instance.OnQuestNotificationPopup(DataHolder.Dialog(77).GetName(MageManager.instance.GetLanguage()));
-            UIManager.instance.OnQuestNotificationPopup(DataHolder.Dialog(79).GetName(MageManager.instance.GetLanguage()));
+            UIManager.instance.OnQuestNotificationPopup(DataHolder.Dialog(143).GetName(MageManager.instance.GetLanguage()));
         }
     }
 

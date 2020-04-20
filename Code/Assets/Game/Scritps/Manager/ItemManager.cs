@@ -63,9 +63,10 @@ public class ItemManager : MonoBehaviour
         while(!isLoad){
             if(GameManager.instance.isLoad){
                 LoadItems(false);
+                LoadItemData();
                 GameManager.instance.LoadPetObjects();
                 //if(GameManager.instance.isGuest)
-                LoadItemData();
+                
                 isLoad = true;
             }
             t += Time.deltaTime;
@@ -97,7 +98,7 @@ public class ItemManager : MonoBehaviour
         if(time > maxTimeCheck){
             CheckItemData();
             time = 0;
-            playTime = MageEngine.instance.GetServerTimeStamp();
+            playTime = System.DateTime.Now;
             ES2.Save(playTime, "PlayTime");
         }
         else{

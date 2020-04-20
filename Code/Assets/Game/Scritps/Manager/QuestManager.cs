@@ -118,6 +118,10 @@ public class QuestManager : MonoBehaviour
             GameManager.instance.GetActivePetObject().data.Dirty = GameManager.instance.GetActivePetObject().data.MaxDirty * 0.5f;
             delayTime = 30;
         }
+        else if (GameManager.instance.myPlayer.questId == 11)
+        {
+            UIManager.instance.OnQuestNotificationPopup(DataHolder.Dialog(142).GetName(MageManager.instance.GetLanguage()));
+        }
     }
 
     void PlayTip()

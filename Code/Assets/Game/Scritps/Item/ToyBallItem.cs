@@ -93,6 +93,7 @@ public class ToyBallItem : ToyItem
         }
         else
         {
+            isOnForce = false;
             if(this.transform.position.y > boundY.y)
             {
                 Vector3 pos = this.transform.position;

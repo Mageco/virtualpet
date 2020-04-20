@@ -8,10 +8,19 @@ public class MinigameOpen : MonoBehaviour
     public int gameId = 0;
     float time = 0;
     bool isMouseDown = false;
+    Animator animator;
+
+    private void Awake()
+    {
+        animator = this.GetComponent<Animator>();
+    }
     // Start is called before the first frame update
     void Start()
     {
-        
+        if(animator != null && GameManager.instance.myPlayer.minigameLevels[gameId] == 0)
+        {
+            animator.Play("Active", 0);
+        }
     }
 
     // Update is called once per frame

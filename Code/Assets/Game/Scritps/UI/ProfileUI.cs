@@ -31,6 +31,8 @@ public class ProfileUI : MonoBehaviour
     public Button editButton;
     public InputField input;
 
+    public Image[] icons;
+
     void Awake()
     {
         petName.gameObject.SetActive(true);
@@ -41,63 +43,76 @@ public class ProfileUI : MonoBehaviour
     public void Load(PlayerPet p){
         playerPet = p;
         level.text = DataHolder.Dialog(27).GetName(MageManager.instance.GetLanguage()) + " " + playerPet.level.ToString();
-        if (GameManager.instance.GetPetObject(playerPet.iD) != null)
-        {
-            data = GameManager.instance.GetPetObject(playerPet.iD).data;
-            sick.fillAmount = (data.MaxHealth - data.Health) / data.MaxHealth;
-            ịnjury.fillAmount = data.Damage / data.MaxDamage;
-            sleep.fillAmount = (data.MaxSleep - data.Sleep) / data.MaxSleep;
-            food.fillAmount = (data.MaxFood - data.Food) / data.MaxFood;
-            drink.fillAmount = (data.MaxWater - data.Water) / data.MaxWater;
-            dirty.fillAmount = data.Dirty / data.MaxDirty;
-            toilet.fillAmount = (Mathf.Max(data.Shit / data.MaxShit, data.Pee / data.MaxPee));
+        /*
+       if (GameManager.instance.GetPetObject(playerPet.iD) != null)
+       {
+           data = GameManager.instance.GetPetObject(playerPet.iD).data;
+           sick.fillAmount = (data.MaxHealth - data.Health) / data.MaxHealth;
+           ịnjury.fillAmount = data.Damage / data.MaxDamage;
+           sleep.fillAmount = (data.MaxSleep - data.Sleep) / data.MaxSleep;
+           food.fillAmount = (data.MaxFood - data.Food) / data.MaxFood;
+           drink.fillAmount = (data.MaxWater - data.Water) / data.MaxWater;
+           dirty.fillAmount = data.Dirty / data.MaxDirty;
+           toilet.fillAmount = (Mathf.Max(data.Shit / data.MaxShit, data.Pee / data.MaxPee));
 
-            sickText.text = data.MaxHealth.ToString();
-            injuryText.text = data.MaxDamage.ToString();
-            sleepText.text = data.MaxSleep.ToString();
-            foodText.text = data.MaxFood.ToString();
-            drinkText.text = data.MaxWater.ToString();
-            toiletText.text = data.MaxPee.ToString();
-            dirtyText.text = data.MaxDirty.ToString();
-        }
+           sickText.text = data.MaxHealth.ToString();
+           injuryText.text = data.MaxDamage.ToString();
+           sleepText.text = data.MaxSleep.ToString();
+           foodText.text = data.MaxFood.ToString();
+           drinkText.text = data.MaxWater.ToString();
+           toiletText.text = data.MaxPee.ToString();
+           dirtyText.text = data.MaxDirty.ToString();
+       }*/
+       Pet pet = DataHolder.GetPet(playerPet.iD);
+       petName.text = playerPet.petName;
+       string url = pet.iconUrl.Replace("Assets/Game/Resources/", "");
+       url = url.Replace(".png", "");
+       icon.sprite = Resources.Load<Sprite>(url) as Sprite;
+       price = playerPet.level * playerPet.level * 2;
+       priceText.text = price.ToString();
+       strengthText.text = (pet.maxHealth + playerPet.level * pet.levelRate).ToString();
+       heartText.text = "+" + (pet.RateHappy + playerPet.level / 5).ToString();
+
+
+   }
+
+   void Update(){
+       petName.text = playerPet.petName;
+       level.text = DataHolder.Dialog(27).GetName(MageManager.instance.GetLanguage()) + " " + playerPet.level.ToString();
+       /*
+       if (GameManager.instance.GetPetObject(playerPet.iD) != null)
+       {
+           data = GameManager.instance.GetPetObject(playerPet.iD).data;
+           sick.fillAmount = (data.MaxHealth - data.Health) / data.MaxHealth;
+           ịnjury.fillAmount = data.Damage / data.MaxDamage;
+           sleep.fillAmount = (data.MaxSleep - data.Sleep) / data.MaxSleep;
+           food.fillAmount = (data.MaxFood - data.Food) / data.MaxFood;
+           drink.fillAmount = (data.MaxWater - data.Water) / data.MaxWater;
+           dirty.fillAmount = data.Dirty / data.MaxDirty;
+           toilet.fillAmount = (Mathf.Max(data.Shit / data.MaxShit, data.Pee / data.MaxPee));
+
+           sickText.text = data.MaxHealth.ToString();
+           injuryText.text = data.MaxDamage.ToString();
+           sleepText.text = data.MaxSleep.ToString();
+           foodText.text = data.MaxFood.ToString();
+           drinkText.text = data.MaxWater.ToString();
+           toiletText.text = data.MaxPee.ToString();
+           dirtyText.text = data.MaxDirty.ToString();
+       }*/
         Pet pet = DataHolder.GetPet(playerPet.iD);
-        petName.text = playerPet.petName;
-        string url = pet.iconUrl.Replace("Assets/Game/Resources/", "");
-        url = url.Replace(".png", "");
-        icon.sprite = Resources.Load<Sprite>(url) as Sprite;
-        price = playerPet.level * playerPet.level * 10;
+        price = playerPet.level * playerPet.level * 2;
         priceText.text = price.ToString();
         strengthText.text = (pet.maxHealth + playerPet.level * pet.levelRate).ToString();
         heartText.text = "+" + (pet.RateHappy + playerPet.level / 5).ToString();
-    }
 
-    void Update(){
-        petName.text = playerPet.petName;
-        level.text = DataHolder.Dialog(27).GetName(MageManager.instance.GetLanguage()) + " " + playerPet.level.ToString();
-        if (GameManager.instance.GetPetObject(playerPet.iD) != null)
+        int n = playerPet.level / 5;
+        for(int i = 0; i < icons.Length; i++)
         {
-            data = GameManager.instance.GetPetObject(playerPet.iD).data;
-            sick.fillAmount = (data.MaxHealth - data.Health) / data.MaxHealth;
-            ịnjury.fillAmount = data.Damage / data.MaxDamage;
-            sleep.fillAmount = (data.MaxSleep - data.Sleep) / data.MaxSleep;
-            food.fillAmount = (data.MaxFood - data.Food) / data.MaxFood;
-            drink.fillAmount = (data.MaxWater - data.Water) / data.MaxWater;
-            dirty.fillAmount = data.Dirty / data.MaxDirty;
-            toilet.fillAmount = (Mathf.Max(data.Shit / data.MaxShit, data.Pee / data.MaxPee));
-
-            sickText.text = data.MaxHealth.ToString();
-            injuryText.text = data.MaxDamage.ToString();
-            sleepText.text = data.MaxSleep.ToString();
-            foodText.text = data.MaxFood.ToString();
-            drinkText.text = data.MaxWater.ToString();
-            toiletText.text = data.MaxPee.ToString();
-            dirtyText.text = data.MaxDirty.ToString();
+            if(i < n)
+            {
+                icons[i].material = null;
+            }
         }
-        Pet pet = DataHolder.GetPet(playerPet.iD);
-        price = playerPet.level * playerPet.level * 10;
-        priceText.text = price.ToString();
-        strengthText.text = (pet.maxHealth + playerPet.level * pet.levelRate).ToString();
-        heartText.text = "+" + (pet.RateHappy + playerPet.level / 5).ToString();
     }
 
     public void Upgrade()

@@ -436,6 +436,12 @@ public class CharController : MonoBehaviour
             return;
         }
 
+        if (data.Dirty > data.MaxDirty * 0.9f)
+        {
+            actionType = ActionType.OnBath;
+            return;   
+        }
+
         if (data.Food < data.MaxFood * 0.3f && GetFoodItem() != null && Vector2.Distance(this.transform.position, GetFoodItem().transform.position) < 3)
         {
             actionType = ActionType.Eat;
@@ -480,6 +486,8 @@ public class CharController : MonoBehaviour
                 return;
             }
         }
+
+
 
 
         if (data.Itchi > data.MaxItchi * 0.7f)
@@ -1030,7 +1038,7 @@ public class CharController : MonoBehaviour
 
     public virtual void OnLevelUp()
     {
-
+        
     }
 
     public virtual void OnTreatment(SickType sickType)
@@ -1404,6 +1412,23 @@ public class CharController : MonoBehaviour
 
     protected virtual IEnumerator Bath()
     {
+        if(enviromentType != EnviromentType.Bath)
+        {
+            if (data.level >= 15)
+            {
+                ItemCollider itemCollider = ItemManager.instance.GetItemCollider(ItemType.Bath);
+                if (itemCollider != null)
+                {
+                    if (itemCollider.startPoint != null)
+                    {
+                        target = itemCollider.startPoint.position;
+                        yield return StartCoroutine(RunToPoint());
+                        enviromentType = EnviromentType.Bath;
+                        yield return StartCoroutine(JumpUp(20, 0, itemCollider.transform.position + new Vector3(0, itemCollider.height, 0), itemCollider.height));
+                    }
+                }
+            }
+        }
 
         while (!isAbort)
         {
@@ -1468,6 +1493,19 @@ public class CharController : MonoBehaviour
             }
         }
 
+        if(data.level >= 5)
+        {
+            if(itemCollider != null)
+            {
+                if(itemCollider.startPoint != null)
+                {
+                    target = itemCollider.startPoint.position;
+                    yield return StartCoroutine(RunToPoint());
+                    enviromentType = EnviromentType.Toilet;
+                    yield return StartCoroutine(JumpUp(10, 0, itemCollider.transform.position + new Vector3(0, itemCollider.height, 0), itemCollider.height));
+                }
+            }
+        }
         
         if (!isAbort)
         {
@@ -1515,6 +1553,20 @@ public class CharController : MonoBehaviour
             }
         }
 
+        if (data.level >= 5)
+        {
+            if (itemCollider != null)
+            {
+                if (itemCollider.startPoint != null)
+                {
+                    target = itemCollider.startPoint.position;
+                    yield return StartCoroutine(RunToPoint());
+                    enviromentType = EnviromentType.Toilet;
+                    yield return StartCoroutine(JumpUp(10, 0, itemCollider.transform.position + new Vector3(0, itemCollider.height, 0), itemCollider.height));
+                }
+            }
+        }
+
         if (!isAbort)
         {
             anim.Play("Shit", 0);
@@ -1555,6 +1607,10 @@ public class CharController : MonoBehaviour
             {
                 target = food.anchor.position;
                 yield return StartCoroutine(RunToPoint());
+            }
+            if (data.level >= 20)
+            {
+                food.Fill();
             }
             bool canEat = true;
             if (Vector2.Distance(this.transform.position, GetFoodItem().anchor.position) > 1f)
@@ -1617,7 +1673,10 @@ public class CharController : MonoBehaviour
                 target = drink.anchor.position;
                 yield return StartCoroutine(RunToPoint());
             }
-
+            if (data.level >= 25)
+            {
+                drink.Fill();
+            }
             bool canDrink = true;
             if (Vector2.Distance(this.transform.position, GetDrinkItem().anchor.position) > 1f)
                 canDrink = false;
@@ -1711,6 +1770,20 @@ public class CharController : MonoBehaviour
         ItemCollider itemCollider = ItemManager.instance.GetItemCollider(ItemType.Bed);
     
         float value = 0;
+
+        if (data.level >= 10)
+        {
+            if (itemCollider != null)
+            {
+                if (itemCollider.startPoint != null)
+                {
+                    target = itemCollider.startPoint.position;
+                    yield return StartCoroutine(RunToPoint());
+                    enviromentType = EnviromentType.Bed;
+                    yield return StartCoroutine(JumpUp(10, 0, itemCollider.transform.position + new Vector3(0, itemCollider.height, 0), itemCollider.height));
+                }
+            }
+        }
 
         if (enviromentType == EnviromentType.Bed)
         {
@@ -1840,10 +1913,16 @@ public class CharController : MonoBehaviour
 
     protected virtual IEnumerator Sick()
     {
-        //timeWait.gameObject.SetActive(true);
-        //data.timeSick = System.DateTime.Now;
-        //SetTarget(PointType.Favourite);
-        //yield return StartCoroutine(WalkToPoint());
+        if (data.level >= 35)
+        {
+            if (ItemManager.instance.GetItem(ItemType.MedicineBox) != null)
+            {
+                target = ItemManager.instance.GetItem(ItemType.MedicineBox).GetComponentInChildren<FirstAidItem>().anchorPoint.position;
+                yield return StartCoroutine(RunToPoint());
+                OnHealth(SickType.Sick, data.MaxHealth);
+            }
+        }
+
         anim.Play("Sick", 0);
         Debug.Log("Sick");
         //while ((System.DateTime.Now - data.timeSick).TotalSeconds < data.MaxTimeSick && !isAbort)
@@ -1860,18 +1939,24 @@ public class CharController : MonoBehaviour
 
     protected virtual IEnumerator Injured()
     {
-        //timeWait.gameObject.SetActive(true);
-        //data.timeSick = System.DateTime.Now;
-        //SetTarget(PointType.Favourite);
-        //yield return StartCoroutine(WalkToPoint());
-        anim.Play("Injured", 0);
+        if(data.level >= 30)
+        {
+            if(ItemManager.instance.GetItem(ItemType.MedicineBox) != null)
+            {
+                target = ItemManager.instance.GetItem(ItemType.MedicineBox).GetComponentInChildren<FirstAidItem>().anchorPoint.position;
+                yield return StartCoroutine(RunToPoint());
+                Debug.Log(data.MaxDamage);
+                OnHealth(SickType.Injured, data.MaxDamage);
+            }
+        }
+
+        anim.Play("Injured_L", 0);
         Debug.Log("Injured");
         while (data.Damage > data.MaxDamage * 0.3f && !isAbort)
         {
             yield return new WaitForEndOfFrame();
         }
-        //data.Damage = data.MaxHealth;
-        //timeWait.gameObject.SetActive(false);
+
         GameManager.instance.LogAchivement(AchivementType.Do_Action, ActionType.Injured);
         CheckEnviroment();
         CheckAbort();
@@ -1982,8 +2067,9 @@ public class CharController : MonoBehaviour
                         agent.Stop();
                         toyItem.OnActive();
                         yield return StartCoroutine(DoAnim("Love"));
-                        count++;
+                        
                     }
+                    count++;
                     yield return new WaitForEndOfFrame();
                 }
                 

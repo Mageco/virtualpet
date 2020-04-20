@@ -41,17 +41,17 @@ public class MapRequirementPanel : MonoBehaviour
         if (mapType == MapType.Forest)
         {
             mapName.text = DataHolder.Dialog(72).GetName(MageManager.instance.GetLanguage());
-            levelRequire = 3;
+            levelRequire = 2;
         }
         else if (mapType == MapType.Lake)
         {
             mapName.text = DataHolder.Dialog(97).GetName(MageManager.instance.GetLanguage());
-            levelRequire = 8;
+            levelRequire = 5;
         }
         else if (mapType == MapType.City)
         {
             mapName.text = DataHolder.Dialog(99).GetName(MageManager.instance.GetLanguage());
-            levelRequire = 5;
+            levelRequire = 3;
         }
         else
             levelRequire = 99;

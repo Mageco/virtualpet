@@ -186,47 +186,46 @@ public class UIManager : MonoBehaviour
                 callButton.SetActive(false);
         }
 
-        if (timeUpdate > maxTimeUpdate)
-        {
-            timeUpdate = 0;
- 
-            //Check Achivement Notification
-            if (GameManager.instance.IsCollectAchivement())
-            {
-                UIManager.instance.achivementNotification.SetActive(true);
-            }
-            else
-                UIManager.instance.achivementNotification.SetActive(false);
-
-            //Check Gift Notification
-            if (GameManager.instance.IsCollectDailyGift())
-            {
-                UIManager.instance.giftNotification.SetActive(true);
-            }
-            else
-                UIManager.instance.giftNotification.SetActive(false);
-
-            if (GameManager.instance.gameTime > 400 && !ES2.Exists("RateUs") && (int)GameManager.instance.gameTime % 400 == 0)
-            {
-                UIManager.instance.OnRatingPopup();
-            }
-        }
-        else
-        {
-            timeUpdate += Time.deltaTime;
-        }
+        
     }
 
     // Update is called once per frame
     void Update()
     {
         UpdateUI();
-        timeUpdate = 0;
 
         if (GameManager.instance.myPlayer.questId >= DataHolder.Quests().GetDataCount() && notificationIcon != null)
             notificationIcon.SetActive(false);
 
+        if (timeUpdate > maxTimeUpdate)
+        {
+            timeUpdate = 0;
 
+            //Check Achivement Notification
+            if (GameManager.instance.IsCollectAchivement())
+            {
+                achivementNotification.SetActive(true);
+            }
+            else
+                achivementNotification.SetActive(false);
+
+            //Check Gift Notification
+            if (GameManager.instance.IsCollectDailyGift())
+            {
+                giftNotification.SetActive(true);
+            }
+            else
+                giftNotification.SetActive(false);
+
+            if (GameManager.instance.gameTime > 400 && !ES2.Exists("RateUs") && (int)GameManager.instance.gameTime % 400 == 0)
+            {
+                OnRatingPopup();
+            }
+        }
+        else
+        {
+            timeUpdate += Time.deltaTime;
+        }
 
 
         if (isSale)
