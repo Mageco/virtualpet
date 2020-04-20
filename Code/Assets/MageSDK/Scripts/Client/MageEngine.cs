@@ -28,6 +28,7 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using MageSDK.Client.Helper;
 using System.Security.Cryptography;
+using System.Text;
 #if BUNNY_CDN
 using BunnyCDN.Net.Storage;
 #endif
@@ -70,6 +71,10 @@ namespace MageSDK.Client {
 		#if BUNNY_CDN
 		private BunnyCDNStorage bunnyCDNStorage = new BunnyCDNStorage("virtupet", "877b185e-3517-42e0-a21b-04dc7feb9ea24feacd2d-4ac1-4bc6-993e-da1838d60ed5");
 		#endif
+
+		private bool _hasDataEncrypted = false;
+
+		private string _encryptKey = "wgIl3ZjLdwYviMeTPo90QhVk1BHLA4YgWt5ES1avh8Lace8wqp5SfetYqRFJvg2xh6Kn1pIrHRyVBGCtgCSn3V8FbsVROZSosJEN5CcHQpX6Roj89TDk0sRYzxPKzbqjzPbjk7PxZhVYAO8vg6kFPF7px8Hwl5yDxElhwxRdlpvmU9La96qelkXyAuTK55JuYOvohN0zdEJp5MSlkfpYxAMcudeB7dxL973Y6B835RIKB8Yq7Usr0IaxvF8QostF";
 
 		#endregion
 
@@ -195,7 +200,16 @@ namespace MageSDK.Client {
 					// if not in test mode, check the user saved in local and use the saved one
 					// if there is no user saved locally, then initate a default user
 					if (ES2.Exists (MageEngineSettings.GAME_ENGINE_USER)) {
-						SetUser(ES2.Load<User> (MageEngineSettings.GAME_ENGINE_USER));
+						if (!this._hasDataEncrypted) {
+							ApiUtils.Log("Data has not encrypted");
+							SetUser(ES2.Load<User> (MageEngineSettings.GAME_ENGINE_USER));
+						} else {
+							ApiUtils.Log("Data has encrypted");
+							byte[] rawData = ES2.LoadRaw(MageEngineSettings.GAME_ENGINE_USER);
+							string encryptedUser = Encoding.UTF8.GetString(rawData, 0, rawData.Length);
+							SetUser(User.CreatFromEncryptJson<User>(encryptedUser, this._encryptKey));
+						}
+						
 					} else {
 						SetUser(defaultUser);
 					}
@@ -204,7 +218,15 @@ namespace MageSDK.Client {
 				// if not in Editor mode, check the user saved in local and use the saved one
 				// if there is no user saved locally, then initate a default user
 				if (ES2.Exists (MageEngineSettings.GAME_ENGINE_USER)) {
-					SetUser(ES2.Load<User> (MageEngineSettings.GAME_ENGINE_USER));
+					if (!this._hasDataEncrypted) {
+						ApiUtils.Log("Data has not encrypted");
+						SetUser(ES2.Load<User> (MageEngineSettings.GAME_ENGINE_USER));
+					} else {
+						ApiUtils.Log("Data has encrypted");
+						byte[] rawData = ES2.LoadRaw(MageEngineSettings.GAME_ENGINE_USER);
+						string encryptedUser = Encoding.UTF8.GetString(rawData, 0, rawData.Length);
+						SetUser(User.CreatFromEncryptJson<User>(encryptedUser, this._encryptKey));
+					}
 				} else {
 					SetUser(defaultUser);
 				}
@@ -374,7 +396,7 @@ namespace MageSDK.Client {
 										"MageEngine")
 						);
 
-            MageCacheHelper.GetInstance().SaveCacheData<User>(u, MageEngineSettings.GAME_ENGINE_USER);
+			this.SaveUserDataToCache(u);
 
             if (this.isWorkingOnline && IsLogin() && (this.IsSendable("UpdateUserDataRequest") || forceUpdate)) {
 				/* decided when to send data */
@@ -399,7 +421,7 @@ namespace MageSDK.Client {
 				r, 
 				(result) => {
 					ApiUtils.Log("Success: Update user data");
-					MageCacheHelper.GetInstance().SaveCacheData<User>(u, MageEngineSettings.GAME_ENGINE_USER);
+					this.SaveUserDataToCache(u);
 					//clear counter cache
 					ResetSendable("UpdateUserDataRequest");
 
@@ -463,7 +485,7 @@ namespace MageSDK.Client {
 
 		///<summary>Upload file to server and get back the url</summary>
 		private void UpdateUserProfileToServer(User u) {
-			MageCacheHelper.GetInstance().SaveCacheData<User>(u, MageEngineSettings.GAME_ENGINE_USER);
+			this.SaveUserDataToCache(u);
 
 			// user must logged in
 			if (this.isWorkingOnline && IsLogin()) {
@@ -551,9 +573,46 @@ namespace MageSDK.Client {
 		}
 
 		private void SetUser(User u) {
-			//RuntimeParameters.GetInstance().SetParam(MageEngineSettings.GAME_ENGINE_USER, u);
-			MageCacheHelper.GetInstance().SaveCacheData<User>(u, MageEngineSettings.GAME_ENGINE_USER);
+			this.SaveUserDataToCache(u);
+			RuntimeParameters.GetInstance().SetParam(MageEngineSettings.GAME_ENGINE_USER, u);
+
 		}
+
+		private void SaveUserDataToCache(User u) {
+			#if PLATFORM_TEST
+				if (!this.resetUserDataOnStart) {
+					if (this._hasDataEncrypted) {
+						ApiUtils.Log("Save encrypted data");
+						ES2.SaveRaw(u.ToEncryptedJson(this._encryptKey), MageEngineSettings.GAME_ENGINE_USER);
+					} else {
+						this._hasDataEncrypted = true;
+						ES2.SaveRaw("{\"Company\": \"Mage Co. Ltd.,\"}", MageEngineSettings.GAME_ENGINE_OWNER);
+						ApiUtils.Log("Convert data to encrypt");
+						ApiUtils.Log("Encrypted data: " + u.ToEncryptedJson(this._encryptKey));
+						//ES2.Delete(MageEngineSettings.GAME_ENGINE_USER);
+						//ES2.Save(u.ToEncryptedJson(this._encryptKey), MageEngineSettings.GAME_ENGINE_USER);
+
+						ES2.SaveRaw(u.ToEncryptedJson(this._encryptKey), MageEngineSettings.GAME_ENGINE_USER);
+					}
+					
+				}
+			#else
+				if (this._hasDataEncrypted) {
+					ApiUtils.Log("Save encrypted data");
+					ES2.SaveRaw(u.ToEncryptedJson(this._encryptKey), MageEngineSettings.GAME_ENGINE_USER);
+				} else {
+					this._hasDataEncrypted = true;
+					ES2.SaveRaw("{\"Company\": \"Mage Co. Ltd.,\"}", MageEngineSettings.GAME_ENGINE_OWNER);
+					ApiUtils.Log("Convert data to encrypt");
+					ApiUtils.Log("Encrypted data: " + u.ToEncryptedJson(this._encryptKey));
+					//ES2.Delete(MageEngineSettings.GAME_ENGINE_USER);
+					//ES2.Save(u.ToEncryptedJson(this._encryptKey), MageEngineSettings.GAME_ENGINE_USER);
+
+					ES2.SaveRaw(u.ToEncryptedJson(this._encryptKey), MageEngineSettings.GAME_ENGINE_USER);
+				}
+			#endif
+		}
+
 
 		#endregion
 
@@ -579,8 +638,11 @@ namespace MageSDK.Client {
 				LoadApplicationDataFromServer();
 			#endif
 
-			
+			if (ES2.Exists(MageEngineSettings.GAME_ENGINE_OWNER)) {
+				this._hasDataEncrypted = true;
+			} 
 		}
+
 		///<summary>Get Application Data configured in Resources/Data</summary>
 		private void LoadApplicationDataFromResources() {
 			List<ApplicationData> localResources = new List<ApplicationData>();

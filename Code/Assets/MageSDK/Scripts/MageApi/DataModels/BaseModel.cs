@@ -34,5 +34,19 @@ namespace Mage.Models {
 			}
 			
 		}
+
+		public string ToEncryptedJson(string key) {
+			return ApiUtils.GetInstance().EncryptStringWithKey(JsonUtility.ToJson (this), key);
+		}
+
+		public static TResult CreatFromEncryptJson<TResult>(string encryptedString, string key) where TResult: BaseModel
+		{
+			try {
+				string jsonString = ApiUtils.GetInstance().DecryptStringWithKey(encryptedString, key);
+				return JsonUtility.FromJson<TResult>(jsonString);
+			} catch (Exception e) {
+				return default(TResult);
+			}
+		}
 	}
 }

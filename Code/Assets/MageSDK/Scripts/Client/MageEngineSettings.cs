@@ -12,6 +12,7 @@ using MageApi;
 
 namespace MageSDK.Client {
 	public class MageEngineSettings {
+		public const string GAME_ENGINE_OWNER = "OwnerInfo";
 		public const string GAME_ENGINE_USER = "GameEngineUser";
 
 		public const string GAME_ENGINE_APPLICATION_DATA = "GameEngineApplicationData";
@@ -48,7 +49,8 @@ namespace MageSDK.Client {
 			"DefaultUserData",
 			"DefaultCharacterData",
 			"MinUserDataUpdateDuration",
-			"MaxEventCounterQueue"
+			"MaxEventCounterQueue",
+			"OwnerInfo"
 		};
 	}
 

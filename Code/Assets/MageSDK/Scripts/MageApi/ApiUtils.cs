@@ -89,6 +89,14 @@ namespace MageApi
 
 		}
 
+		public string EncryptStringWithKey(string plainTextString, string secretKey) {
+			return encrypt(plainTextString, secretKey);
+		}
+
+		public string DecryptStringWithKey(string cipherText, string secretKey) {
+			return decrypt(cipherText, secretKey);
+		}
+
 		/*
 		 * Get device type
 		 */
