@@ -207,7 +207,7 @@ public class QuestManager : MonoBehaviour
 
         if(GameManager.instance.myPlayer.questId == 4)
         {
-            GameManager.instance.myPlayer.questId = 7;
+            GameManager.instance.myPlayer.questId = 11;
         }
         else
             GameManager.instance.myPlayer.questId++;
