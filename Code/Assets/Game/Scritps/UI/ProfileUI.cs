@@ -111,6 +111,7 @@ public class ProfileUI : MonoBehaviour
             if(i < n)
             {
                 icons[i].material = null;
+                icons[i].transform.parent.GetComponent<Image>().enabled = false;
             }
         }
     }
