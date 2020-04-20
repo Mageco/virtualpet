@@ -22,11 +22,11 @@ public class ChestItem : MonoBehaviour
     {
         int n = Random.Range(0, 100);
 
-        if (n < 30)
+        if (n < 0)
         {
             priceType = PriceType.Coin;
             value = 200;
-        }else if(n < 60)
+        }else if(n < 0)
         {
             priceType = PriceType.Happy;
             value = GameManager.instance.myPlayer.petCount * 10;

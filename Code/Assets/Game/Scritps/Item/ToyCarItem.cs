@@ -26,7 +26,7 @@ public class ToyCarItem : ToyItem
 	public override void OnActive(){
 		if (state == EquipmentState.Active)
 			return;
-		int round = Random.Range(3, 10);
+		int round = Random.Range(2, 4);
         MageManager.instance.PlaySound3D("Item_Car", false,this.transform.position);
 		state = EquipmentState.Active;
         animator.speed = 2;
@@ -42,8 +42,7 @@ public class ToyCarItem : ToyItem
 			paths [i] = pointRandoms[Random.Range(0,pointRandoms.Count)];
 		}
 
-		iTween.MoveTo (this.gameObject, iTween.Hash ("name","car","path", paths, "speed", speed, "orienttopath", false,"oncomplete", "CompleteSeek"));
-		
+		iTween.MoveTo (this.gameObject, iTween.Hash ("name","car","path", paths, "speed", speed, "orienttopath", false, "easetype", "linear","oncomplete", "CompleteSeek"));
 		animator.Play("Run_" + direction.ToString(),0);
 	}
 

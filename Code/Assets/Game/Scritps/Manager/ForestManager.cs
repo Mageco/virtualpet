@@ -46,7 +46,7 @@ public class ForestManager : MonoBehaviour
         today = System.DateTime.Today;
         CheckDayNight();
         LoadMusic();
-        LoadCollectors();
+        //LoadCollectors();
         
     }
 

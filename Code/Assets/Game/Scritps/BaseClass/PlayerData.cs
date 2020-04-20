@@ -123,6 +123,7 @@ public class PlayerPet : BaseModel
 
 [System.Serializable]
 public class PlayerItem : BaseModel{
+	public int realId = 0;
     public int itemId = 0;
 	public ItemType itemType = ItemType.All;
     public ItemState state = ItemState.OnShop;

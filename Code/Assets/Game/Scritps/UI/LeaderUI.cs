@@ -88,13 +88,13 @@ public class LeaderUI : MonoBehaviour
         {
             scoreIcons[2].SetActive(true);
         }
-
+        /*
         if (data.rank <= 50 && userId != MageEngine.instance.GetUser().id)
         {
             visitButton.gameObject.SetActive(true);
         }
         else
-            visitButton.gameObject.SetActive(false);
+            visitButton.gameObject.SetActive(false);*/
 
     }
 
