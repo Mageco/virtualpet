@@ -15,6 +15,7 @@ public class PlayerData : BaseModel
 	[ExtractField]
 	public int collectedHappy = 0;
     public int collectedCoin = 0;
+	public int collectedDiamond = 0;
 	[ExtractField]
 	public int petCount = 1;
 	[ExtractField]

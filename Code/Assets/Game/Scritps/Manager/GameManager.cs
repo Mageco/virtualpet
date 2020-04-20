@@ -185,11 +185,11 @@ public class GameManager : MonoBehaviour
         else
         {
             if(rareType == RareType.Common)
-                AddDiamond(99);
+                AddDiamond(49);
             else if(rareType == RareType.Rare)
-                AddDiamond(299);
+                AddDiamond(99);
             else if (rareType == RareType.Epic)
-                AddDiamond(999);
+                AddDiamond(199);
         }
         if (UIManager.instance.shopPanel != null)
             UIManager.instance.shopPanel.Close();
@@ -831,6 +831,8 @@ public class GameManager : MonoBehaviour
         if (GameManager.instance.isGuest)
             return;
 
+        if(d > 0)
+            myPlayer.collectedDiamond += d;
         myPlayer.Diamond += d;
         if (UIManager.instance != null)
             UIManager.instance.diamonText.transform.parent.GetComponent<Animator>().Play("Active", 0);
