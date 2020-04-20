@@ -321,7 +321,7 @@ public class CharController : MonoBehaviour
 
         data.Sleep -= data.recoverSleep;
 
-        float deltaHealth = data.RecoverHealth;
+        float deltaHealth = 0;// data.RecoverHealth;
         //Debug.Log(deltaHealth);
 
         if (data.Health > 0.1f * data.MaxHealth)
@@ -762,17 +762,17 @@ public class CharController : MonoBehaviour
 
     public virtual void OnHold()
     {
-        if (actionType == ActionType.Sick)
-        {
-            UIManager.instance.OnTreatmentPopup(this.data,SickType.Sick);
-            return;
-        }
+        //if (actionType == ActionType.Sick)
+        //{
+            //UIManager.instance.OnTreatmentPopup(this.data,SickType.Sick);
+        //    return;
+        //}
 
-        if (actionType == ActionType.Injured)
-        {
-            UIManager.instance.OnTreatmentPopup(this.data, SickType.Injured);
-            return;
-        }
+        //if (actionType == ActionType.Injured)
+        //{
+            //UIManager.instance.OnTreatmentPopup(this.data, SickType.Injured);
+        //    return;
+        //}
 
         if (charInteract.interactType == InteractType.Drop || charInteract.interactType == InteractType.Jump || actionType == ActionType.OnControl || actionType == ActionType.OnGift)
             return;
@@ -1328,8 +1328,21 @@ public class CharController : MonoBehaviour
         charInteract.interactType = InteractType.None;
 
         CheckEnviroment();
+
         MageManager.instance.PlaySound3D("whoosh_swish_med_03", false,this.transform.position);
         yield return StartCoroutine(DoAnim("Drop"));
+
+        if (data.Damage > data.MaxDamage * 0.9f)
+        {
+            actionType = ActionType.Injured;
+            isAbort = true;
+        }
+
+        if (data.Health < data.MaxHealth * 0.1f)
+        {
+            actionType = ActionType.Sick;
+            isAbort = true;
+        }
 
 
         CheckAbort();
@@ -1807,6 +1820,8 @@ public class CharController : MonoBehaviour
         {
             if (data.Sleep > data.MaxSleep - 1)
             {
+                data.Health += 10 * data.level;
+                data.Damage -= 10 * data.level;
                 ItemManager.instance.SpawnHeart((data.RateHappy + data.level / 5)*2, this.transform.position);
                 GameManager.instance.LogAchivement(AchivementType.Do_Action, ActionType.Sleep);
             }

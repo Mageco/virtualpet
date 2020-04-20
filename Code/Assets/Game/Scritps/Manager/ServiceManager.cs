@@ -56,7 +56,7 @@ public class ServiceManager : MonoBehaviour
         }
         else
         {
-            if (GameManager.instance.myPlayer.petCount >= 4)
+            if (GameManager.instance.myPlayer.petCount >= 5)
             {
                 servicePanel.SetActive(true);
                 for (int i = 0; i < serviceUIs.Length; i++)

@@ -37,7 +37,7 @@ public class ItemDirty : MonoBehaviour
 
 	void OnTriggerEnter2D(Collider2D other) {
         if (other.tag == "Player") {
-           other.GetComponent<CharController>().data.Dirty += this.dirty/100f;   
+           other.GetComponent<CharController>().data.Dirty += this.dirty/200f;   
 		}else if(other.tag == "Toilet"){
 			isClearning = true;
 		}        
