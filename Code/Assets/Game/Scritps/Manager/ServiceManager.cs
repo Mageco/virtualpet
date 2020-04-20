@@ -65,7 +65,7 @@ public class ServiceManager : MonoBehaviour
                     serviceUIs[i].Load();
                 }
             }
-            else if (GameManager.instance.myPlayer.petCount >= 2)
+            else if (GameManager.instance.myPlayer.questId >= 10)
             {
                 servicePanel.SetActive(true);
                 for (int i = 0; i < serviceUIs.Length; i++)
