@@ -436,7 +436,7 @@ public class CharController : MonoBehaviour
             return;
         }
 
-        if (data.Dirty > data.MaxDirty * 0.9f)
+        if (data.Dirty > data.MaxDirty * 0.9f && data.level >= 15)
         {
             actionType = ActionType.OnBath;
             return;   
@@ -2052,17 +2052,19 @@ public class CharController : MonoBehaviour
             }
             else if (toyItem.toyType == ToyType.Ball || toyItem.toyType == ToyType.Car)
             {
+                if (toyItem.toyType == ToyType.Car)
+                    maxCount = 1;
                 charScale.speedFactor = 1.5f;
                 while (toyItem != null && data.Energy > data.MaxEnergy * 0.1f && count < maxCount && !isAbort)
                 {
                     anim.speed = 1.5f;
                     if (toyItem.startPoint != null)
                     {
-                        target = toyItem.GetComponent<ToyBallItem>().shadow.transform.position;
+                        target = toyItem.startPoint.transform.position;
                         yield return StartCoroutine(RunToPoint());
                     }
                     
-                    if (Vector2.Distance(this.transform.position, toyItem.GetComponent<ToyBallItem>().shadow.transform.position) < 4 && toyItem.state != EquipmentState.Active)
+                    if (Vector2.Distance(this.transform.position, toyItem.startPoint.transform.position) < 4 && toyItem.state != EquipmentState.Active)
                     {
                         agent.Stop();
                         toyItem.OnActive();
