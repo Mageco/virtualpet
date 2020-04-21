@@ -306,10 +306,11 @@ public class TutorialManager : MonoBehaviour
             }
             else if (step == 1)
             {
+                /*
                 if (GameManager.instance.GetHappy() < DataHolder.GetItem(1).buyPrice)
                 {
                     GameManager.instance.AddHappy(DataHolder.GetItem(1).buyPrice);
-                }
+                }*/
                 Destroy(UIManager.instance.shopPanel.toogleAnchor.GetChild(4).gameObject.GetComponent<Canvas>());
                 UIManager.instance.shopPanel.ReLoadTab(4);
                 UIManager.instance.shopPanel.ScrollToItem(4);

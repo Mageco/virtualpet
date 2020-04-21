@@ -157,7 +157,7 @@ public class DailyQuestPanel : MonoBehaviour
     public void CollectAll()
     {
         GameManager.instance.myPlayer.isCompleteDailyQuest = true;
-        GameManager.instance.AddDiamond(10);
+        GameManager.instance.AddDiamond(10, Utils.instance.Md5Sum(GameManager.instance.count.ToString() + GameManager.instance.myPlayer.playTime.ToString() + GameManager.instance.myPlayer.Happy.ToString() + "M@ge2013"));
         MageManager.instance.PlaySound("Collect_Achivement", false);
         LoadUI();
     }

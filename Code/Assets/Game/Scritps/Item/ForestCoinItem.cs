@@ -56,7 +56,7 @@ public class ForestCoinItem : MonoBehaviour
         isClick = true;
         animator.Play("Active", 0);
         ForestManager.instance.SpawnCoin(this.transform.position + new Vector3(0, 2, -1), value, this.gameObject);
-        GameManager.instance.AddCoin(value);
+        GameManager.instance.AddCoin(value, Utils.instance.Md5Sum(GameManager.instance.count.ToString() + GameManager.instance.myPlayer.playTime.ToString() + GameManager.instance.myPlayer.Happy.ToString() + "M@ge2013"));
         MageManager.instance.PlaySound("collect_item_02", false);
         GameManager.instance.LogAchivement(AchivementType.CollectFruit);
         yield return new WaitForEndOfFrame();

@@ -68,7 +68,7 @@ public class RewardItemPanel : MonoBehaviour
         }
         else
         {
-            GameManager.instance.AddHappy(-price);
+            GameManager.instance.AddHappy(-price, Utils.instance.Md5Sum(GameManager.instance.count.ToString() + GameManager.instance.myPlayer.playTime.ToString() + GameManager.instance.myPlayer.Happy.ToString() + "M@ge2013"));
             if(chestItem != null)
             {
                 chestItem.OnActive();

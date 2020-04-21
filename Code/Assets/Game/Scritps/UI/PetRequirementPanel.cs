@@ -227,8 +227,8 @@ public class PetRequirementPanel : MonoBehaviour
             {
                 GameManager.instance.AddDiamond(-pet.requireValue);
             }*/
-            GameManager.instance.AddHappy(-price);
-            GameManager.instance.AddPet(petId);
+            GameManager.instance.AddHappy(-price, Utils.instance.Md5Sum(GameManager.instance.count.ToString() + GameManager.instance.myPlayer.playTime.ToString() + GameManager.instance.myPlayer.Happy.ToString() + "M@ge2013"));
+            GameManager.instance.AddPet(petId, Utils.instance.Md5Sum(GameManager.instance.count.ToString() + GameManager.instance.myPlayer.playTime.ToString() + GameManager.instance.myPlayer.Happy.ToString() + "M@ge2013"));
             PlayerPet p = GameManager.instance.GetPet(petId);
             p.isNew = true;
             GameManager.instance.EquipPet(petId);

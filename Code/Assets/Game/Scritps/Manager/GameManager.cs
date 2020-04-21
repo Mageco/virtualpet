@@ -27,6 +27,10 @@ public class GameManager : MonoBehaviour
     float saveTime = 0;
     float maxSaveTime = 1;
 
+    string passWord = "M@ge2013";
+    [HideInInspector]
+    public int count = 14536;
+
     void Awake()
     {
         if (instance == null)
@@ -150,53 +154,74 @@ public class GameManager : MonoBehaviour
 
     }
 
-    public void AddPet(int itemId)
+    public void AddPet(int itemId,string key)
     {
-        PlayerPet p = new PlayerPet(itemId);
-        p.petName = DataHolder.GetPet(itemId).GetName(0);
-        p.itemState = ItemState.Have;
-        myPlayer.petDatas.Add(p);
+        if (IsOK(key))
+        {
+            PlayerPet p = new PlayerPet(itemId);
+            p.petName = DataHolder.GetPet(itemId).GetName(0);
+            p.itemState = ItemState.Have;
+            myPlayer.petDatas.Add(p);
+        }
     }
 
-    public void AddRandomPet(RareType rareType)
+    bool IsOK(string key)
     {
-        List<Pet> pets = new List<Pet>();
-        for(int i = 0; i < DataHolder.Pets().GetDataCount(); i++)
+        if(key == Utils.instance.Md5Sum(count.ToString() + myPlayer.playTime.ToString() + myPlayer.Happy.ToString() + passWord ))
         {
-            if(DataHolder.Pet(i).isAvailable && !IsHavePet(DataHolder.Pet(i).iD) && DataHolder.Pet(i).rareType == rareType)
+            count++;
+            return true;
+        }
+        return false;
+    }
+
+    string GetKey()
+    {
+        return Utils.instance.Md5Sum(count.ToString() + myPlayer.playTime.ToString() + myPlayer.Happy.ToString() + passWord);
+    }
+
+    public void AddRandomPet(RareType rareType,string key)
+    {
+        if (IsOK(key))
+        {
+
+            List<Pet> pets = new List<Pet>();
+            for (int i = 0; i < DataHolder.Pets().GetDataCount(); i++)
             {
-                pets.Add(DataHolder.Pet(i));
+                if (DataHolder.Pet(i).isAvailable && !IsHavePet(DataHolder.Pet(i).iD) && DataHolder.Pet(i).rareType == rareType)
+                {
+                    pets.Add(DataHolder.Pet(i));
+                }
             }
+
+            Debug.Log(pets.Count);
+
+            if (pets.Count > 0)
+            {
+                int itemId = Random.Range(0, pets.Count);
+                PlayerPet p = new PlayerPet(pets[itemId].iD);
+                p.itemState = ItemState.Equiped;
+                p.isNew = true;
+                p.petName = DataHolder.GetPet(itemId).GetName(0);
+                myPlayer.petDatas.Add(p);
+                if (ItemManager.instance != null)
+                    GameManager.instance.EquipPet(itemId);
+            }
+            else
+            {
+                if (rareType == RareType.Common)
+                    AddDiamond(49,GetKey());
+                else if (rareType == RareType.Rare)
+                    AddDiamond(99, GetKey());
+                else if (rareType == RareType.Epic)
+                    AddDiamond(199, GetKey());
+            }
+            if (UIManager.instance.shopPanel != null)
+                UIManager.instance.shopPanel.Close();
+
+            if (UIManager.instance.chestSalePanel != null)
+                UIManager.instance.chestSalePanel.Close();
         }
-
-        Debug.Log(pets.Count);
-
-        if(pets.Count > 0)
-        {
-            int itemId = Random.Range(0, pets.Count);
-            PlayerPet p = new PlayerPet(pets[itemId].iD);
-            p.itemState = ItemState.Equiped;
-            p.isNew = true;
-            p.petName = DataHolder.GetPet(itemId).GetName(0);
-            myPlayer.petDatas.Add(p);
-            if (ItemManager.instance != null)
-                GameManager.instance.EquipPet(itemId);
-        }
-        else
-        {
-            if(rareType == RareType.Common)
-                AddDiamond(49);
-            else if(rareType == RareType.Rare)
-                AddDiamond(99);
-            else if (rareType == RareType.Epic)
-                AddDiamond(199);
-        }
-        if (UIManager.instance.shopPanel != null)
-            UIManager.instance.shopPanel.Close();
-
-        if (UIManager.instance.chestSalePanel != null)
-            UIManager.instance.chestSalePanel.Close();
-
     }
 
     public void EquipPet(int itemId)
@@ -282,8 +307,8 @@ public class GameManager : MonoBehaviour
                 MageManager.instance.OnNotificationPopup(DataHolder.Dialog(6).GetDescription(MageManager.instance.GetLanguage()));
                 return false;
             }
-            AddCoin(-price);
-            AddPet(petId);
+            AddCoin(-price, GetKey());
+            AddPet(petId, GetKey());
             GetPet(petId).isNew = true;
             Debug.Log("Buy pet " + petId);
             return true;
@@ -295,8 +320,8 @@ public class GameManager : MonoBehaviour
                 MageManager.instance.OnNotificationPopup(DataHolder.GetDialog(7).GetDescription(MageManager.instance.GetLanguage()));
                 return false;
             }
-            AddDiamond(-price);
-            AddPet(petId);
+            AddDiamond(-price, GetKey());
+            AddPet(petId, GetKey());
             GetPet(petId).isNew = true;
             return true;
         }
@@ -307,8 +332,8 @@ public class GameManager : MonoBehaviour
                 MageManager.instance.OnNotificationPopup(DataHolder.Dialog(8).GetDescription(MageManager.instance.GetLanguage()));
                 return false;
             }
-            AddHappy(-price);
-            AddPet(petId);
+            AddHappy(-price,GetKey());
+            AddPet(petId, GetKey());
             GetPet(petId).isNew = true;
             return true;
         }
@@ -325,15 +350,15 @@ public class GameManager : MonoBehaviour
         int price = DataHolder.GetPet(petId).buyPrice / 2;
         if (type == PriceType.Coin)
         {
-            AddCoin(price);
+            AddCoin(price, GetKey());
         }
         else if (type == PriceType.Diamond)
         {
-            AddDiamond(price);
+            AddDiamond(price, GetKey());
         }
         else if (type == PriceType.Happy)
         {
-            AddHappy(price);
+            AddHappy(price, GetKey());
         }
         RemovePet(petId);
     }
@@ -502,8 +527,8 @@ public class GameManager : MonoBehaviour
                 MageManager.instance.OnNotificationPopup(DataHolder.Dialog(6).GetDescription(MageManager.instance.GetLanguage()));
                 return false;
             }
-            AddCoin(-price);
-            AddItem(itemId);
+            AddCoin(-price, GetKey());
+            AddItem(itemId, GetKey());
             return true;
         }
         else if (type == PriceType.Diamond)
@@ -513,8 +538,8 @@ public class GameManager : MonoBehaviour
                 MageManager.instance.OnNotificationPopup(DataHolder.Dialog(7).GetDescription(MageManager.instance.GetLanguage()));
                 return false;
             }
-            AddDiamond(-price);
-            AddItem(itemId);
+            AddDiamond(-price, GetKey());
+            AddItem(itemId, GetKey());
             return true;
         }
         else if (type == PriceType.Happy)
@@ -524,8 +549,8 @@ public class GameManager : MonoBehaviour
                 MageManager.instance.OnNotificationPopup(DataHolder.Dialog(8).GetDescription(MageManager.instance.GetLanguage()));
                 return false;
             }
-            AddHappy(-price);
-            AddItem(itemId);
+            AddHappy(-price, GetKey());
+            AddItem(itemId, GetKey());
             return true;
         }
         else
@@ -541,65 +566,68 @@ public class GameManager : MonoBehaviour
         int price = DataHolder.GetItem(itemId).buyPrice / 2;
         if (type == PriceType.Coin)
         {
-            AddCoin(price);
+            AddCoin(price, GetKey());
         }
         else if (type == PriceType.Diamond)
         {
-            AddDiamond(price);
+            AddDiamond(price, GetKey());
         }
         else if (type == PriceType.Happy)
         {
-            AddHappy(price);
+            AddHappy(price, GetKey());
         }
         RemoveItem(itemId);
     }
 
-    public void AddItem(int id)
+    public void AddItem(int id,string key)
     {
-        if (DataHolder.GetItem(id).itemType == ItemType.Diamond)
+        if (IsOK(key))
         {
-            AddDiamond(DataHolder.GetItem(id).sellPrice);
-        }
-        else if (DataHolder.GetItem(id).itemType == ItemType.Coin)
-        {
-            AddCoin(DataHolder.GetItem(id).sellPrice);
-        }
-        else
-        {
-
-            bool isExist = false;
-            foreach (PlayerItem item in myPlayer.items)
+            if (DataHolder.GetItem(id).itemType == ItemType.Diamond)
             {
-                if (item.itemId == id)
+                AddDiamond(DataHolder.GetItem(id).sellPrice,GetKey());
+            }
+            else if (DataHolder.GetItem(id).itemType == ItemType.Coin)
+            {
+                AddCoin(DataHolder.GetItem(id).sellPrice, GetKey());
+            }
+            else
+            {
+
+                bool isExist = false;
+                foreach (PlayerItem item in myPlayer.items)
                 {
-                    if (DataHolder.GetItem(id).consume)
+                    if (item.itemId == id)
                     {
-                        item.state = ItemState.Have;
-                        item.number++;
-                        isExist = true;
-                    }
-                    else
-                    {
-                        item.state = ItemState.Have;
-                        item.number = 1;
-                        isExist = true;
-                        Debug.Log(" Exist " + id);
+                        if (DataHolder.GetItem(id).consume)
+                        {
+                            item.state = ItemState.Have;
+                            item.number++;
+                            isExist = true;
+                        }
+                        else
+                        {
+                            item.state = ItemState.Have;
+                            item.number = 1;
+                            isExist = true;
+                            Debug.Log(" Exist " + id);
+                        }
                     }
                 }
-            }
-            if (!isExist)
-            {
-                PlayerItem item = new PlayerItem();
-                item.itemId = id;
-                item.state = ItemState.Have;
-                item.itemType = DataHolder.GetItem(id).itemType;
-                item.isConsumable = DataHolder.GetItem(id).consume;
-                item.number = 1;
-                Debug.Log("Not Exist " + id);
-                myPlayer.items.Add(item);
-            }
+                if (!isExist)
+                {
+                    PlayerItem item = new PlayerItem();
+                    item.itemId = id;
+                    item.state = ItemState.Have;
+                    item.itemType = DataHolder.GetItem(id).itemType;
+                    item.isConsumable = DataHolder.GetItem(id).consume;
+                    item.number = 1;
+                    Debug.Log("Not Exist " + id);
+                    myPlayer.items.Add(item);
+                }
 
-        }
+            }
+        }  
     }
 
     public void RemoveItem(int itemId)
@@ -826,67 +854,78 @@ public class GameManager : MonoBehaviour
     }
 
 
-    public void AddDiamond(int d)
+    public void AddDiamond(int d,string key)
     {
         if (GameManager.instance.isGuest)
             return;
 
-        if(d > 0)
-            myPlayer.collectedDiamond += d;
-        myPlayer.Diamond += d;
-        if (UIManager.instance != null)
-            UIManager.instance.diamonText.transform.parent.GetComponent<Animator>().Play("Active", 0);
-        
-    }
+        Debug.Log(key);
 
-    public void AddCoin(int c)
-    {
-        myPlayer.Coin += c;
-        if (c > 0)
-            myPlayer.collectedCoin += c;
-        if (UIManager.instance != null)
-            UIManager.instance.coinText.transform.parent.GetComponent<Animator>().Play("Active", 0);
-        
-    }
-
-    public void AddHappy(int c)
-    {
-        if (GameManager.instance.isGuest)
-            return;
-
-        myPlayer.Happy += c;
-        if (c > 0)
-            myPlayer.collectedHappy += c;
-
-        if (UIManager.instance != null)
-            UIManager.instance.heartText.transform.parent.GetComponent<Animator>().Play("Active", 0);
-        
-    }
-
-    public void AddExp(int c)
-    {
-        if (GameManager.instance.isGuest)
-            return;
-
-
-        myPlayer.exp += c;
-        int l = 1;
-        float e = 20 * l + 20 * l * l;
-        while (myPlayer.exp >= e)
+        if (IsOK(key))
         {
-            l++;
-            e = 20 * l + 20 * l * l;
+            if (d > 0)
+                myPlayer.collectedDiamond += d;
+            myPlayer.Diamond += d;
+            if (UIManager.instance != null)
+                UIManager.instance.diamonText.transform.parent.GetComponent<Animator>().Play("Active", 0);
         }
+        
+    }
 
-        if (l > myPlayer.level)
+    public void AddCoin(int c,string key)
+    {
+        if (IsOK(key))
         {
-            myPlayer.level = l;
-            UIManager.instance.OnLevelUpPanel();
-            OnTip();
-            UIManager.instance.OnSale();
-            Debug.Log("Level Up");
+            myPlayer.Coin += c;
+            if (c > 0)
+                myPlayer.collectedCoin += c;
+            if (UIManager.instance != null)
+                UIManager.instance.coinText.transform.parent.GetComponent<Animator>().Play("Active", 0);
         }
+    }
 
+    public void AddHappy(int c,string key)
+    {
+        if (GameManager.instance.isGuest)
+            return;
+
+        if (IsOK(key))
+        {
+            myPlayer.Happy += c;
+            if (c > 0)
+                myPlayer.collectedHappy += c;
+
+            if (UIManager.instance != null)
+                UIManager.instance.heartText.transform.parent.GetComponent<Animator>().Play("Active", 0);
+        }
+        
+    }
+
+    public void AddExp(int c,string key)
+    {
+        if (GameManager.instance.isGuest)
+            return;
+
+        if (IsOK(key))
+        {
+            myPlayer.exp += c;
+            int l = 1;
+            float e = 20 * l + 20 * l * l;
+            while (myPlayer.exp >= e)
+            {
+                l++;
+                e = 20 * l + 20 * l * l;
+            }
+
+            if (l > myPlayer.level)
+            {
+                myPlayer.level = l;
+                UIManager.instance.OnLevelUpPanel();
+                OnTip();
+                UIManager.instance.OnSale();
+                Debug.Log("Level Up");
+            }
+        }
         
         //Force
     }
@@ -895,7 +934,7 @@ public class GameManager : MonoBehaviour
     {
         if (GetPet(petId) != null)
         {
-            AddHappy(-10 * GetPet(petId).level * GetPet(petId).level);
+            AddHappy(-10 * GetPet(petId).level * GetPet(petId).level,GetKey());
             GetPet(petId).level++;
 
             if (GetPetObject(petId) != null)
@@ -906,11 +945,7 @@ public class GameManager : MonoBehaviour
                 go.transform.position = GetPetObject(petId).transform.position + new Vector3(0, 2, -1);
                 GetPetObject(petId).data.level = GetPet(petId).level;
             }
-
-           
-            
         }
-
     }
 
 
@@ -932,8 +967,8 @@ public class GameManager : MonoBehaviour
         {
             if (a.achivementId == achivementId)
             {
-                AddCoin(DataHolder.GetAchivement(achivementId).coinValue[a.level]);
-                AddDiamond(DataHolder.GetAchivement(achivementId).diamondValue[a.level]);
+                AddCoin(DataHolder.GetAchivement(achivementId).coinValue[a.level], GetKey());
+                AddDiamond(DataHolder.GetAchivement(achivementId).diamondValue[a.level], GetKey());
                 a.rewardState = RewardState.Received;
                 a.level++;
                 a.Check();
@@ -995,8 +1030,8 @@ public class GameManager : MonoBehaviour
 
             if (!IsHaveItem(170))
             {
-                AddItem(170);
-                AddItem(163);
+                AddItem(170, GetKey());
+                AddItem(163, GetKey());
                 EquipItem(170);
                 EquipItem(163);
             }
@@ -1016,41 +1051,28 @@ public class GameManager : MonoBehaviour
         myPlayer.LoadData();
 
 
-        AddCoin(100);
-        AddDiamond(1);
-        AddHappy(10);
+        AddCoin(100, GetKey());
+        AddDiamond(1, GetKey());
+        AddHappy(10, GetKey());
 
-        AddItem(17);
+        AddItem(17, GetKey());
         //AddItem(7);
-        AddItem(8);
-        AddItem(4);
-        AddItem(41);
-        AddItem(58);
-        AddItem(59);
-        AddItem(11);
-        AddItem(2);
+        AddItem(8, GetKey());
+        AddItem(4, GetKey());
+        AddItem(41, GetKey());
+        AddItem(58, GetKey());
+        AddItem(59, GetKey());
+        AddItem(11, GetKey());
+        AddItem(2, GetKey());
         //AddItem(13);
-        AddItem(1);
-        AddItem(69);
-        AddItem(81);
-        AddItem(87);
-        AddItem(170);
-        AddItem(163);
-        AddPet(0);
+        AddItem(1, GetKey());
+        AddItem(69, GetKey());
+        AddItem(81, GetKey());
+        AddItem(87, GetKey());
+        AddItem(170, GetKey());
+        AddItem(163, GetKey());
+        AddPet(0, GetKey());
         GetPet(0).isNew = true;
-
-        //#if UNITY_EDITOR
-        if (isTest)
-        {
-            AddCoin(10000);
-            AddDiamond(10000);
-            AddPet(1);
-            AddPet(2);
-            AddPet(3);
-            AddPet(4);
-            AddPet(5);
-        }
-        //#endif
 
         foreach (PlayerItem item in myPlayer.items)
         {
@@ -1174,7 +1196,7 @@ public class GameManager : MonoBehaviour
             {
                 quest.state = DailyQuestState.Collected;
                 quest.timeCollected = MageEngine.instance.GetServerTimeStamp().ToString();
-                GameManager.instance.AddHappy(quest.bonus);
+                GameManager.instance.AddHappy(quest.bonus,GetKey());
             }
         }
 
@@ -1184,7 +1206,7 @@ public class GameManager : MonoBehaviour
 
     public void OnTreatment(CharController p, SickType sickType, int coin)
     {
-        AddCoin(-coin);
+        AddCoin(-coin, GetKey());
         if (sickType == SickType.Sick)
             LogAchivement(AchivementType.Sick);
         else if (sickType == SickType.Injured)

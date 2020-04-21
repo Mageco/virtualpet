@@ -51,7 +51,7 @@ public class LosePanel : MonoBehaviour
         }
         else
         {
-            GameManager.instance.AddHappy(-price);
+            GameManager.instance.AddHappy(-price, Utils.instance.Md5Sum(GameManager.instance.count.ToString() + GameManager.instance.myPlayer.playTime.ToString() + GameManager.instance.myPlayer.Happy.ToString() + "M@ge2013"));
             MageManager.instance.LoadScene(SceneManager.GetActiveScene().name, 0.5f);
             this.GetComponent<Popup>().Close();
         }

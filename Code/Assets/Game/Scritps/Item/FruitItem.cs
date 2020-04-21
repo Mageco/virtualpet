@@ -94,7 +94,7 @@ public class FruitItem : MonoBehaviour
         OnStep();
         int value = Random.Range(coin, coin*2);
         ItemManager.instance.SpawnCoin(this.transform.position + new Vector3(0, 2, -1), value, this.gameObject);
-        GameManager.instance.AddCoin(value); 
+        GameManager.instance.AddCoin(value, Utils.instance.Md5Sum(GameManager.instance.count.ToString() + GameManager.instance.myPlayer.playTime.ToString() + GameManager.instance.myPlayer.Happy.ToString() + "M@ge2013")); 
         MageManager.instance.PlaySound("happy_collect_item_01",false);
         GameManager.instance.LogAchivement(AchivementType.CollectFruit);
     }

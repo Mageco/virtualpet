@@ -60,8 +60,8 @@ public class LevelUpPanel : MonoBehaviour
     public void Close()
     {
         MageManager.instance.PlaySound("Collect_Achivement", false);
-        GameManager.instance.AddCoin(coin);
-        GameManager.instance.AddDiamond(diamond);
+        GameManager.instance.AddCoin(coin, Utils.instance.Md5Sum(GameManager.instance.count.ToString() + GameManager.instance.myPlayer.playTime.ToString() + GameManager.instance.myPlayer.Happy.ToString() + "M@ge2013"));
+        GameManager.instance.AddDiamond(diamond, Utils.instance.Md5Sum(GameManager.instance.count.ToString() + GameManager.instance.myPlayer.playTime.ToString() + GameManager.instance.myPlayer.Happy.ToString() + "M@ge2013"));
         this.GetComponent<Popup>().Close();
     }
 }

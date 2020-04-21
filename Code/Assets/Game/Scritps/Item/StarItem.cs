@@ -27,7 +27,7 @@ public class StarItem : MonoBehaviour
             StartCoroutine(Pick());
         else
         {
-            GameManager.instance.AddExp(value);
+            GameManager.instance.AddExp(value, Utils.instance.Md5Sum(GameManager.instance.count.ToString() + GameManager.instance.myPlayer.playTime.ToString() + GameManager.instance.myPlayer.Happy.ToString() + "M@ge2013"));
             Destroy(this.gameObject);
         }
     }
@@ -42,7 +42,7 @@ public class StarItem : MonoBehaviour
             this.body.transform.localPosition = Vector3.Lerp(this.body.transform.localPosition, target, 5 * Time.deltaTime);
             yield return new WaitForEndOfFrame();
         }
-        GameManager.instance.AddExp(value);
+        GameManager.instance.AddExp(value, Utils.instance.Md5Sum(GameManager.instance.count.ToString() + GameManager.instance.myPlayer.playTime.ToString() + GameManager.instance.myPlayer.Happy.ToString() + "M@ge2013"));
         Destroy(this.body.gameObject);
         Destroy(this.gameObject);
     }

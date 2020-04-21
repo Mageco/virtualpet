@@ -44,7 +44,7 @@ public class ForestAnimalItem : MonoBehaviour
     {
         isActive = false;
         ForestManager.instance.SpawnCoin(this.transform.position + new Vector3(0, 2, -1), value);
-        GameManager.instance.AddCoin(value);
+        GameManager.instance.AddCoin(value, Utils.instance.Md5Sum(GameManager.instance.count.ToString() + GameManager.instance.myPlayer.playTime.ToString() + GameManager.instance.myPlayer.Happy.ToString() + "M@ge2013"));
         MageManager.instance.PlaySound("collect_item_02", false);
         yield return new WaitForEndOfFrame();
         SpriteRenderer[] sprites = this.GetComponentsInChildren<SpriteRenderer>();

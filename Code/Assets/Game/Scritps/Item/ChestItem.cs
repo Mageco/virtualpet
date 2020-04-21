@@ -95,17 +95,17 @@ public class ChestItem : MonoBehaviour
         if (priceType == PriceType.Coin)
         {
             animator.Play("Active_Coin",0);
-            GameManager.instance.AddCoin(value);
+            GameManager.instance.AddCoin(value, Utils.instance.Md5Sum(GameManager.instance.count.ToString() + GameManager.instance.myPlayer.playTime.ToString() + GameManager.instance.myPlayer.Happy.ToString() + "M@ge2013"));
         }
         else if (priceType == PriceType.Happy)
         {
             animator.Play("Active_Happy",0);
-            GameManager.instance.AddHappy(value);
+            GameManager.instance.AddHappy(value, Utils.instance.Md5Sum(GameManager.instance.count.ToString() + GameManager.instance.myPlayer.playTime.ToString() + GameManager.instance.myPlayer.Happy.ToString() + "M@ge2013"));
         }
         else if (priceType == PriceType.Diamond)
         {
             animator.Play("Active_Diamond", 0);
-            GameManager.instance.AddDiamond(value);
+            GameManager.instance.AddDiamond(value, Utils.instance.Md5Sum(GameManager.instance.count.ToString() + GameManager.instance.myPlayer.playTime.ToString() + GameManager.instance.myPlayer.Happy.ToString() + "M@ge2013"));
         }
         
         

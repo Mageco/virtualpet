@@ -78,6 +78,10 @@ public class DailyBonusPanel : MonoBehaviour
         
     }
 
+    string GetKey()
+    {
+        return Utils.instance.Md5Sum(GameManager.instance.count.ToString() + GameManager.instance.myPlayer.playTime.ToString() + GameManager.instance.myPlayer.Happy.ToString() + "M@ge2013");
+    }
 
     public void OnCollect(int id)
     {
@@ -85,30 +89,31 @@ public class DailyBonusPanel : MonoBehaviour
 
         if (id == 0)
         {
-            GameManager.instance.AddCoin(100);
+            GameManager.instance.AddCoin(100,GetKey());
         }else if(id == 1)
         {
-            GameManager.instance.AddDiamond(10);
+            GameManager.instance.AddDiamond(10, GetKey());
         }
         else if (id == 2)
         {
-            GameManager.instance.AddCoin(500);
+            GameManager.instance.AddCoin(500, GetKey());
         }
         else if (id == 3)
         {
-            GameManager.instance.AddDiamond(20);
+            GameManager.instance.AddDiamond(20, GetKey());
         }
         else if (id == 4)
         {
-            GameManager.instance.AddCoin(1000);
+            GameManager.instance.AddCoin(1000, GetKey());
         }
         else if (id == 5)
         {
-            GameManager.instance.AddDiamond(50);
+            GameManager.instance.AddDiamond(50, GetKey());
         }
         else if (id == 6)
         {
-            GameManager.instance.AddRandomPet(RareType.Common);
+            GameManager.instance.AddRandomPet(RareType.Common, GetKey());
+            GameManager.instance.myPlayer.dailyBonus[id].Collect();
             this.Close();
         }
         GameManager.instance.myPlayer.dailyBonus[id].Collect();

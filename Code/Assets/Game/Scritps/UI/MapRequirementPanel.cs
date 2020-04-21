@@ -82,7 +82,7 @@ public class MapRequirementPanel : MonoBehaviour
         }
         else
         {
-            GameManager.instance.AddCoin(-price);
+            GameManager.instance.AddCoin(-price,Utils.instance.Md5Sum(GameManager.instance.count.ToString() + GameManager.instance.myPlayer.playTime.ToString() + GameManager.instance.myPlayer.Happy.ToString() + "M@ge2013"));
             UIManager.instance.OnMap(mapType);
             if (UIManager.instance.mapPanel != null)
                 UIManager.instance.mapPanel.Close();

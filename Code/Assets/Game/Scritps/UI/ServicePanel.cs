@@ -69,7 +69,7 @@ public class ServicePanel : MonoBehaviour
         }
         else
         {
-            GameManager.instance.AddDiamond(-price);
+            GameManager.instance.AddDiamond(-price, Utils.instance.Md5Sum(GameManager.instance.count.ToString() + GameManager.instance.myPlayer.playTime.ToString() + GameManager.instance.myPlayer.Happy.ToString() + "M@ge2013"));
             ServiceManager.instance.StartService(serviceType);
             this.Close();
         }

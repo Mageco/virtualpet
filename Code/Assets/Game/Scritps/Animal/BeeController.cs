@@ -206,7 +206,7 @@ public class BeeController : MonoBehaviour
 		anim.Play("Hit",0);
 		int value = Random.Range(2, 6);
 		ItemManager.instance.SpawnCoin(this.transform.position + new Vector3(0, 2, -1), value, this.gameObject);
-		GameManager.instance.AddCoin(value);
+		GameManager.instance.AddCoin(value, Utils.instance.Md5Sum(GameManager.instance.count.ToString() + GameManager.instance.myPlayer.playTime.ToString() + GameManager.instance.myPlayer.Happy.ToString() + "M@ge2013"));
 		GameManager.instance.LogAchivement(AchivementType.Tap_Animal,ActionType.None,-1,AnimalType.Bee);
 		if(state == BeeState.Fight || state == BeeState.Seek || state == BeeState.Enter || state == BeeState.Patrol) {
 			hitCount ++;

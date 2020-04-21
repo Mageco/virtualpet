@@ -53,7 +53,7 @@ public class WinPanel : MonoBehaviour
                 if ((GameManager.instance.myPlayer.minigameLevels[0] + 1) % 5 == 0 || GameManager.instance.myPlayer.minigameLevels[0] == 0)
                 {
                     item.transform.parent.gameObject.SetActive(true);
-                    GameManager.instance.AddItem(72);
+                    GameManager.instance.AddItem(72, Utils.instance.Md5Sum(GameManager.instance.count.ToString() + GameManager.instance.myPlayer.playTime.ToString() + GameManager.instance.myPlayer.Happy.ToString() + "M@ge2013"));
                     GameManager.instance.EquipItem(72);
                 }
                 else
@@ -101,8 +101,8 @@ public class WinPanel : MonoBehaviour
 
     public void OnHome(){
         MageManager.instance.PlaySound("Collect_Achivement", false);
-        GameManager.instance.AddCoin(bonus);
-        GameManager.instance.AddExp(bonus / 10);
+        GameManager.instance.AddCoin(bonus, Utils.instance.Md5Sum(GameManager.instance.count.ToString() + GameManager.instance.myPlayer.playTime.ToString() + GameManager.instance.myPlayer.Happy.ToString() + "M@ge2013"));
+        GameManager.instance.AddExp(bonus / 10, Utils.instance.Md5Sum(GameManager.instance.count.ToString() + GameManager.instance.myPlayer.playTime.ToString() + GameManager.instance.myPlayer.Happy.ToString() + "M@ge2013"));
         if (minigameId == 2 || minigameId == 3)
             UIManager.instance.OnMap(MapType.Forest);
         else
@@ -113,8 +113,8 @@ public class WinPanel : MonoBehaviour
     public void Replay(){
 
         MageManager.instance.PlaySound("Collect_Achivement", false);
-        GameManager.instance.AddCoin(bonus);
-        GameManager.instance.AddExp(bonus / 10);
+        GameManager.instance.AddCoin(bonus, Utils.instance.Md5Sum(GameManager.instance.count.ToString() + GameManager.instance.myPlayer.playTime.ToString() + GameManager.instance.myPlayer.Happy.ToString() + "M@ge2013"));
+        GameManager.instance.AddExp(bonus / 10, Utils.instance.Md5Sum(GameManager.instance.count.ToString() + GameManager.instance.myPlayer.playTime.ToString() + GameManager.instance.myPlayer.Happy.ToString() + "M@ge2013"));
         MageManager.instance.LoadScene(SceneManager.GetActiveScene().name, 0.5f);
             this.GetComponent<Popup>().Close();
     }
@@ -139,8 +139,8 @@ public class WinPanel : MonoBehaviour
 
     public void Close(){
         MageManager.instance.PlaySound("Collect_Achivement", false);
-        GameManager.instance.AddCoin(bonus);
-        GameManager.instance.AddExp(bonus/10);
+        GameManager.instance.AddCoin(bonus,Utils.instance.Md5Sum(GameManager.instance.count.ToString() + GameManager.instance.myPlayer.playTime.ToString() + GameManager.instance.myPlayer.Happy.ToString() + "M@ge2013"));
+        GameManager.instance.AddExp(bonus/10, Utils.instance.Md5Sum(GameManager.instance.count.ToString() + GameManager.instance.myPlayer.playTime.ToString() + GameManager.instance.myPlayer.Happy.ToString() + "M@ge2013"));
         Minigame.instance.OnHome();
         this.GetComponent<Popup>().Close();
     }

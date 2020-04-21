@@ -69,7 +69,7 @@ public class FoxController : AnimalController
                 value = 5;
             
             Minigame.instance.SpawnCoin(this.transform.position + new Vector3(0, 2, -1), value, this.gameObject);
-            GameManager.instance.AddCoin(value);
+            GameManager.instance.AddCoin(value, Utils.instance.Md5Sum(GameManager.instance.count.ToString() + GameManager.instance.myPlayer.playTime.ToString() + GameManager.instance.myPlayer.Happy.ToString() + "M@ge2013"));
             GameManager.instance.LogAchivement(AchivementType.Dissmiss_Animal,ActionType.None,-1,animalType);
         }else if(state == AnimalState.Run){
             agent.Stop();
@@ -85,7 +85,7 @@ public class FoxController : AnimalController
             else if (animalType == AnimalType.Eagle)
                 value = 5;
             Minigame.instance.SpawnCoin(this.transform.position + new Vector3(0, 2, -1), value, this.gameObject);
-            GameManager.instance.AddCoin(value);
+            GameManager.instance.AddCoin(value, Utils.instance.Md5Sum(GameManager.instance.count.ToString() + GameManager.instance.myPlayer.playTime.ToString() + GameManager.instance.myPlayer.Happy.ToString() + "M@ge2013"));
             GameManager.instance.LogAchivement(AchivementType.Dissmiss_Animal,ActionType.None,-1,animalType);
         }
         col2D.enabled = false;

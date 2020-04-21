@@ -134,24 +134,24 @@ public class SpinWheelPanel : MonoBehaviour
         if (n == 0)
         {
             int value = 100;
-            GameManager.instance.AddCoin(value);
+            GameManager.instance.AddCoin(value, Utils.instance.Md5Sum(GameManager.instance.count.ToString() + GameManager.instance.myPlayer.playTime.ToString() + GameManager.instance.myPlayer.Happy.ToString() + "M@ge2013"));
             UIManager.instance.OnSpinRewardPanel(icons[n].sprite, value.ToString());
         }else if(n == 1)
         {
             int value = 2;
-            GameManager.instance.AddDiamond(value);
+            GameManager.instance.AddDiamond(value, Utils.instance.Md5Sum(GameManager.instance.count.ToString() + GameManager.instance.myPlayer.playTime.ToString() + GameManager.instance.myPlayer.Happy.ToString() + "M@ge2013"));
             UIManager.instance.OnSpinRewardPanel(icons[n].sprite, value.ToString());
         }
         else if (n == 2)
         {
             int value = 300;
-            GameManager.instance.AddHappy(value);
+            GameManager.instance.AddHappy(value, Utils.instance.Md5Sum(GameManager.instance.count.ToString() + GameManager.instance.myPlayer.playTime.ToString() + GameManager.instance.myPlayer.Happy.ToString() + "M@ge2013"));
             UIManager.instance.OnSpinRewardPanel(icons[n].sprite, value.ToString());
         }
         else if (n == 3)
         {
             int value = 10;
-            GameManager.instance.AddDiamond(value);
+            GameManager.instance.AddDiamond(value, Utils.instance.Md5Sum(GameManager.instance.count.ToString() + GameManager.instance.myPlayer.playTime.ToString() + GameManager.instance.myPlayer.Happy.ToString() + "M@ge2013"));
             UIManager.instance.OnSpinRewardPanel(icons[n].sprite, value.ToString());
         }
         else if (n == 4)
@@ -196,7 +196,7 @@ public class SpinWheelPanel : MonoBehaviour
                             id = 0;
                     }
                 }
-                GameManager.instance.AddItem(items[id].iD);
+                GameManager.instance.AddItem(items[id].iD, Utils.instance.Md5Sum(GameManager.instance.count.ToString() + GameManager.instance.myPlayer.playTime.ToString() + GameManager.instance.myPlayer.Happy.ToString() + "M@ge2013"));
                 GameManager.instance.EquipItem(items[id].iD);
                 string url = items[id].iconUrl.Replace("Assets/Game/Resources/", "");
                 url = url.Replace(".png", "");
@@ -206,19 +206,19 @@ public class SpinWheelPanel : MonoBehaviour
         else if (n == 5)
         {
             int value = 5;
-            GameManager.instance.AddExp(value);
+            GameManager.instance.AddExp(value, Utils.instance.Md5Sum(GameManager.instance.count.ToString() + GameManager.instance.myPlayer.playTime.ToString() + GameManager.instance.myPlayer.Happy.ToString() + "M@ge2013"));
             UIManager.instance.OnSpinRewardPanel(icons[n].sprite, value.ToString());
         }
         else if (n == 6)
         {
             int value = 500;
-            GameManager.instance.AddCoin(value);
+            GameManager.instance.AddCoin(value, Utils.instance.Md5Sum(GameManager.instance.count.ToString() + GameManager.instance.myPlayer.playTime.ToString() + GameManager.instance.myPlayer.Happy.ToString() + "M@ge2013"));
             UIManager.instance.OnSpinRewardPanel(icons[n].sprite, value.ToString());
         }
         else if (n == 7)
         {
             int value = 50;
-            GameManager.instance.AddHappy(value);
+            GameManager.instance.AddHappy(value, Utils.instance.Md5Sum(GameManager.instance.count.ToString() + GameManager.instance.myPlayer.playTime.ToString() + GameManager.instance.myPlayer.Happy.ToString() + "M@ge2013"));
             UIManager.instance.OnSpinRewardPanel(icons[n].sprite, value.ToString());
         }
 

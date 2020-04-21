@@ -57,8 +57,8 @@ public class WelcomeBackPanel : MonoBehaviour
     public void Close()
     {
         MageManager.instance.PlaySound("Collect_Achivement", false);
-        GameManager.instance.AddCoin(coin);
-        GameManager.instance.AddHappy(happy);
+        GameManager.instance.AddCoin(coin,Utils.instance.Md5Sum(GameManager.instance.count.ToString() + GameManager.instance.myPlayer.playTime.ToString() + GameManager.instance.myPlayer.Happy.ToString() + "M@ge2013"));
+        GameManager.instance.AddHappy(happy, Utils.instance.Md5Sum(GameManager.instance.count.ToString() + GameManager.instance.myPlayer.playTime.ToString() + GameManager.instance.myPlayer.Happy.ToString() + "M@ge2013"));
         this.GetComponent<Popup>().Close();
     }
 }

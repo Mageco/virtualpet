@@ -59,44 +59,64 @@ public class PurchaseManager : MonoBehaviour, IStoreListener
         
     }
 
+	string GetKey()
+	{
+		return Utils.instance.Md5Sum(GameManager.instance.count.ToString() + GameManager.instance.myPlayer.playTime.ToString() + GameManager.instance.myPlayer.Happy.ToString() + "M@ge2013");
+	}
+
+	bool IsOK(string key)
+	{
+		if (key == GetKey())
+		{
+			GameManager.instance.count++;
+			return true;
+		}
+		return false;
+	}
 
 	#region IN App action
-	void OnPurchaseConsumableComplete(int id){
-		MageManager.instance.OnNotificationPopup(DataHolder.Dialog(76).GetName(MageManager.instance.GetLanguage()));
-		if (id == 0)
-		{ 
-			GameManager.instance.AddDiamond(DataHolder.GetItem(3).sellPrice);
-		}
-		else if (id == 1)
+	void OnPurchaseConsumableComplete(int id,string key){
+
+        if (IsOK(key))
         {
-			GameManager.instance.AddDiamond(DataHolder.GetItem(19).sellPrice);
+			MageManager.instance.OnNotificationPopup(DataHolder.Dialog(76).GetName(MageManager.instance.GetLanguage()));
+			if (id == 0)
+			{
+				GameManager.instance.AddDiamond(DataHolder.GetItem(3).sellPrice, GetKey());
+			}
+			else if (id == 1)
+			{
+				GameManager.instance.AddDiamond(DataHolder.GetItem(19).sellPrice, GetKey());
+			}
+			else if (id == 2)
+			{
+				GameManager.instance.AddDiamond(DataHolder.GetItem(20).sellPrice, GetKey());
+			}
+			else if (id == 3)
+			{
+				GameManager.instance.AddDiamond(DataHolder.GetItem(21).sellPrice, GetKey());
+			}
+			else if (id == 4)
+			{
+				GameManager.instance.AddDiamond(100, GetKey());
+				GameManager.instance.AddRandomPet(RareType.Common, GetKey());
+				GameManager.instance.AddItem(128, GetKey());
+			}
+			else if (id == 5)
+			{
+				GameManager.instance.AddDiamond(300, GetKey());
+				GameManager.instance.AddRandomPet(RareType.Rare, GetKey());
+				GameManager.instance.AddItem(129, GetKey());
+			}
+			else if (id == 6)
+			{
+				GameManager.instance.AddDiamond(1200, GetKey());
+				GameManager.instance.AddRandomPet(RareType.Epic, GetKey());
+				GameManager.instance.AddItem(130, GetKey());
+			}
+			MageEngine.instance.OnEvent(Mage.Models.Application.MageEventType.ConfirmPaymentItem, consumableIds[id]);
 		}
-		else if (id == 2)
-		{
-			GameManager.instance.AddDiamond(DataHolder.GetItem(20).sellPrice);
-		}
-		else if (id == 3)
-		{
-			GameManager.instance.AddDiamond(DataHolder.GetItem(21).sellPrice);
-		}else if(id == 4)
-        {
-			GameManager.instance.AddDiamond(100);
-			GameManager.instance.AddRandomPet(RareType.Common);
-			GameManager.instance.AddItem(128);
-		}
-		else if (id == 5)
-		{
-			GameManager.instance.AddDiamond(300);
-			GameManager.instance.AddRandomPet(RareType.Rare);
-			GameManager.instance.AddItem(129);
-		}
-		else if (id == 6)
-		{
-			GameManager.instance.AddDiamond(1200);
-			GameManager.instance.AddRandomPet(RareType.Epic);
-			GameManager.instance.AddItem(130);
-		}
-		MageEngine.instance.OnEvent(Mage.Models.Application.MageEventType.ConfirmPaymentItem, consumableIds[id]);
+		
 	}
 
 	void OnPurchaseComplete(int id)
@@ -309,7 +329,7 @@ public class PurchaseManager : MonoBehaviour, IStoreListener
 			{
 				Debug.Log(string.Format("ProcessPurchase: PASS. Product: '{0}'", args.purchasedProduct.definition.id));
 				// TODO: The non-consumable item has been successfully purchased, grant this item to the player.
-				OnPurchaseConsumableComplete(i);
+				OnPurchaseConsumableComplete(i,GetKey());
 			}
 		}
 

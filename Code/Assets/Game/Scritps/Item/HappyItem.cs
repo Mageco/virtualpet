@@ -33,7 +33,7 @@ public class HappyItem : MonoBehaviour
     IEnumerator Start()
     {
         yield return new WaitForSeconds(lifeTime);
-        GameManager.instance.AddHappy(happy);
+        GameManager.instance.AddHappy(happy, Utils.instance.Md5Sum(GameManager.instance.count.ToString() + GameManager.instance.myPlayer.playTime.ToString() + GameManager.instance.myPlayer.Happy.ToString() + "M@ge2013"));
         Destroy(this.gameObject);
 
     }

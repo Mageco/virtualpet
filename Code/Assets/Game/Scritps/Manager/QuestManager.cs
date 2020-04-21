@@ -195,6 +195,7 @@ public class QuestManager : MonoBehaviour
 
     public void EndCompleteQuest()
     {
+        /*
         if (DataHolder.Quest(GameManager.instance.myPlayer.questId).haveItem)
         {
            GameManager.instance.AddItem(DataHolder.Quest(GameManager.instance.myPlayer.questId).itemId);
@@ -204,7 +205,7 @@ public class QuestManager : MonoBehaviour
 
         GameManager.instance.AddCoin(DataHolder.Quest(GameManager.instance.myPlayer.questId).coinValue);
         GameManager.instance.AddDiamond(DataHolder.Quest(GameManager.instance.myPlayer.questId).diamondValue);
-      
+      */
 
         if (guideItem != null)
             Destroy(guideItem);

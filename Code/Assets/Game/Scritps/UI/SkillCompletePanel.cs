@@ -40,7 +40,7 @@ public class SkillCompletePanel : MonoBehaviour
         if (DataHolder.GetSkill(skillId).coinValue != 0)
         {
             coin.text = DataHolder.GetSkill(skillId).coinValue.ToString();
-            GameManager.instance.AddCoin(DataHolder.GetSkill(skillId).coinValue);
+            GameManager.instance.AddCoin(DataHolder.GetSkill(skillId).coinValue, Utils.instance.Md5Sum(GameManager.instance.count.ToString() + GameManager.instance.myPlayer.playTime.ToString() + GameManager.instance.myPlayer.Happy.ToString() + "M@ge2013"));
         }
         else
         {
@@ -60,7 +60,7 @@ public class SkillCompletePanel : MonoBehaviour
         if (DataHolder.GetSkill(skillId).diamondValue != 0)
         {
             diamond.text = DataHolder.GetSkill(skillId).diamondValue.ToString();
-            GameManager.instance.AddDiamond(DataHolder.GetSkill(skillId).diamondValue);
+            GameManager.instance.AddDiamond(DataHolder.GetSkill(skillId).diamondValue, Utils.instance.Md5Sum(GameManager.instance.count.ToString() + GameManager.instance.myPlayer.playTime.ToString() + GameManager.instance.myPlayer.Happy.ToString() + "M@ge2013"));
         }
         else
         {
