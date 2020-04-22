@@ -763,17 +763,17 @@ public class CharController : MonoBehaviour
 
     public virtual void OnHold()
     {
-        //if (actionType == ActionType.Sick)
-        //{
-            //UIManager.instance.OnTreatmentPopup(this.data,SickType.Sick);
-        //    return;
-        //}
+        if (actionType == ActionType.Sick)
+        {
+            UIManager.instance.OnTreatmentPopup(this.data,SickType.Sick);
+            return;
+        }
 
-        //if (actionType == ActionType.Injured)
-        //{
-            //UIManager.instance.OnTreatmentPopup(this.data, SickType.Injured);
-        //    return;
-        //}
+        if (actionType == ActionType.Injured)
+        {
+            UIManager.instance.OnTreatmentPopup(this.data, SickType.Injured);
+            return;
+        }
 
         if (charInteract.interactType == InteractType.Drop || charInteract.interactType == InteractType.Jump || actionType == ActionType.OnControl || actionType == ActionType.OnGift)
             return;
