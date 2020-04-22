@@ -69,7 +69,7 @@ public class DailyQuestPanel : MonoBehaviour
                 {
                     quest.achivementId = achivements[ids[count]].iD;
                     quest.state = DailyQuestState.None;
-                    quest.timeCollected = "";
+                    quest.timeCollected = MageEngine.instance.GetServerTimeStamp().ToString();
                     GameManager.instance.myPlayer.isCompleteDailyQuest = false;
                     count++;
                 }
@@ -158,11 +158,13 @@ public class DailyQuestPanel : MonoBehaviour
 
     public void CollectAll()
     {
+#if !UNITY_EDITOR
         if (!ApiManager.instance.IsLogin())
         {
             MageManager.instance.OnNotificationPopup("Network error");
             return;
         }
+#endif
 
         GameManager.instance.myPlayer.isCompleteDailyQuest = true;
         GameManager.instance.AddDiamond(10, Utils.instance.Md5Sum(GameManager.instance.count.ToString() + GameManager.instance.myPlayer.playTime.ToString() + GameManager.instance.myPlayer.Happy.ToString() + "M@ge2013"));
