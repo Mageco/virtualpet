@@ -161,6 +161,7 @@ namespace MageApi {
 						
 					} else {
 						//ApiUtils.Log ("Error message: " + result.error);
+						RuntimeParameters.GetInstance().SetParam (ApiSettings.API_SERVER_TIMESTAMP, DateTime.Now);
 						if (null != result) {
 							errorCallback (result.status);
 						} else {
@@ -173,6 +174,7 @@ namespace MageApi {
 				} 
 				else {
 					ApiUtils.Log ("Error message: Response is null");
+					RuntimeParameters.GetInstance().SetParam (ApiSettings.API_SERVER_TIMESTAMP, DateTime.Now);
 					errorCallback (-1);
 				}
 
@@ -181,6 +183,7 @@ namespace MageApi {
 			{
 				ApiUtils.LogError("\n www is null or have error: "+ www.error + "\n" + www.url);
 				ApiUtils.LogError("timeout "+ apiName);
+				RuntimeParameters.GetInstance().SetParam (ApiSettings.API_SERVER_TIMESTAMP, DateTime.Now);
 				timeoutCallback();
 			}
 			www.Dispose();
