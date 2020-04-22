@@ -63,7 +63,7 @@ public class DailyQuestPanel : MonoBehaviour
         int count = 0;
         foreach(DailyQuestData quest in GameManager.instance.myPlayer.dailyQuests)
         {
-            if (quest.state == DailyQuestState.Collected && quest.timeCollected != "")
+            if (quest.timeCollected != "")
             {
                 if (System.DateTime.Parse(quest.timeCollected).Year < MageEngine.instance.GetServerTimeStamp().Year || System.DateTime.Parse(quest.timeCollected).Month < MageEngine.instance.GetServerTimeStamp().Month || System.DateTime.Parse(quest.timeCollected).Day < MageEngine.instance.GetServerTimeStamp().Day)
                 {
