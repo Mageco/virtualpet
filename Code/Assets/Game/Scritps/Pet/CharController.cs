@@ -507,11 +507,12 @@ public class CharController : MonoBehaviour
         }
 
         int n = Random.Range(1, 100);
-        if(n > 20)
+        if (n > 70)
             actionType = ActionType.Discover;
-        else
+        else if (n > 50)
             actionType = ActionType.Patrol;
-        
+        else
+            actionType = ActionType.OnCall;
     }
 
 

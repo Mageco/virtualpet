@@ -46,7 +46,7 @@ public class ForestManager : MonoBehaviour
         today = System.DateTime.Today;
         CheckDayNight();
         LoadMusic();
-        //LoadCollectors();
+        LoadCollectors();
         
     }
 
@@ -59,31 +59,29 @@ public class ForestManager : MonoBehaviour
             int cave = Random.Range(0, 100);
             int tree = Random.Range(0, 100);
             int board = Random.Range(0, 100);
-            for (int i = 0; i < charCollectors.Length / 5; i++)
+            for (int i = 0; i < charCollectors.Length; i++)
             {
-                int n = Random.Range(0, 5);
                 if (cave > 50 && i == 2)
-                    StartCoroutine(LoadCollector(i * 5 + n));
+                    StartCoroutine(LoadCollector(i));
                 else if (cave <= 50 && i == 3)
-                    StartCoroutine(LoadCollector(i * 5 + n));
+                    StartCoroutine(LoadCollector(i));
                 else if (i == 0 && tree > 50)
-                    StartCoroutine(LoadCollector(i * 5 + n));
+                    StartCoroutine(LoadCollector(i));
                 else if (i == 4 && tree <= 50)
-                    StartCoroutine(LoadCollector(i * 5 + n));
+                    StartCoroutine(LoadCollector(i));
                 else if (i == 1 && board > 50)
-                    StartCoroutine(LoadCollector(i * 5 + n));
+                    StartCoroutine(LoadCollector(i));
 
             }
         }
         else
         {
-            for (int i = 0; i < charCollectors.Length / 5; i++)
+            for (int i = 0; i < charCollectors.Length; i++)
             {
                 int r = Random.Range(0, 100);
-                int n = Random.Range(0, 5);
                 if (r > 50)
                 {
-                    StartCoroutine(LoadCollector(i * 5 + n));
+                    StartCoroutine(LoadCollector(i));
                 }
             }
         }

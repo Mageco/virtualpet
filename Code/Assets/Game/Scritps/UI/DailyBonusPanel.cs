@@ -85,6 +85,12 @@ public class DailyBonusPanel : MonoBehaviour
 
     public void OnCollect(int id)
     {
+        if (!ApiManager.instance.IsLogin())
+        {
+            MageManager.instance.OnNotificationPopup("Network error");
+            return;
+        }
+
         MageManager.instance.PlaySound("Collect_Achivement", false);
 
         if (id == 0)

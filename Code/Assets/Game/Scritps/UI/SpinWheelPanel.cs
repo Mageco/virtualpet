@@ -27,6 +27,7 @@ public class SpinWheelPanel : MonoBehaviour
     void LoadTime()
     {
 
+
         if (GameManager.instance.myPlayer.spinedTime != "") 
         {
             timeSpin = System.DateTime.Parse(GameManager.instance.myPlayer.spinedTime);
@@ -80,6 +81,12 @@ public class SpinWheelPanel : MonoBehaviour
 
     public void Spin()
     {
+        if (!ApiManager.instance.IsLogin())
+        {
+            MageManager.instance.OnNotificationPopup("Network error");
+            return;
+        }
+
         MageManager.instance.PlaySound("BubbleButton", false);
         StartCoroutine(DoSpin());
         buttonFree.interactable = false;

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using Mage.Models;
+using MageSDK.Client;
 using UnityEngine;
 
 [System.Serializable]
@@ -210,7 +211,7 @@ public class PlayerBonus : BaseModel
 	public void Collect()
 	{
 		isCollected = true;
-		timeReceived = System.DateTime.Now.ToString();
+		timeReceived = MageEngine.instance.GetServerTimeStamp().ToString();
 	}
 }
 

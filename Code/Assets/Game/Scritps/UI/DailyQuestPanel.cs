@@ -27,6 +27,8 @@ public class DailyQuestPanel : MonoBehaviour
 
     void LoadQuest()
     {
+
+
         List<Achivement> achivements = new List<Achivement>();
         for(int i = 0; i < DataHolder.Achivements().GetDataCount(); i++)
         {
@@ -156,6 +158,12 @@ public class DailyQuestPanel : MonoBehaviour
 
     public void CollectAll()
     {
+        if (!ApiManager.instance.IsLogin())
+        {
+            MageManager.instance.OnNotificationPopup("Network error");
+            return;
+        }
+
         GameManager.instance.myPlayer.isCompleteDailyQuest = true;
         GameManager.instance.AddDiamond(10, Utils.instance.Md5Sum(GameManager.instance.count.ToString() + GameManager.instance.myPlayer.playTime.ToString() + GameManager.instance.myPlayer.Happy.ToString() + "M@ge2013"));
         MageManager.instance.PlaySound("Collect_Achivement", false);

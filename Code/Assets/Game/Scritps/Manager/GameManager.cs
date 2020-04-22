@@ -1056,7 +1056,7 @@ public class GameManager : MonoBehaviour
         AddHappy(10, GetKey());
 
         AddItem(17, GetKey());
-        //AddItem(7);
+        AddItem(77, GetKey());
         AddItem(8, GetKey());
         AddItem(4, GetKey());
         AddItem(41, GetKey());
@@ -1232,7 +1232,7 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-           if (System.DateTime.Parse(GameManager.instance.myPlayer.dailyBonus[n - 1].timeReceived).Year < System.DateTime.Now.Year || System.DateTime.Parse(GameManager.instance.myPlayer.dailyBonus[n - 1].timeReceived).Month < System.DateTime.Now.Month || System.DateTime.Parse(GameManager.instance.myPlayer.dailyBonus[n - 1].timeReceived).Day < System.DateTime.Now.Day)
+            if (System.DateTime.Parse(GameManager.instance.myPlayer.dailyBonus[n - 1].timeReceived).Year < MageEngine.instance.GetServerTimeStamp().Year || System.DateTime.Parse(GameManager.instance.myPlayer.dailyBonus[n - 1].timeReceived).Month < MageEngine.instance.GetServerTimeStamp().Month || System.DateTime.Parse(GameManager.instance.myPlayer.dailyBonus[n - 1].timeReceived).Day < MageEngine.instance.GetServerTimeStamp().Day)
             {
                 isCollect = true;
             }

@@ -87,7 +87,8 @@ public class ShopPanel : MonoBehaviour
         {
             for (int i=0;i<DataHolder.Pets().GetDataCount();i++)
             {
-                pets.Add(DataHolder.Pet(i));              
+                if(DataHolder.Pet(i).isAvailable)
+                    pets.Add(DataHolder.Pet(i));              
             }
         }
         else if (currentTab == 0)
