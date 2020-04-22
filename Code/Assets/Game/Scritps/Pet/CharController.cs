@@ -507,9 +507,9 @@ public class CharController : MonoBehaviour
         }
 
         int n = Random.Range(1, 100);
-        if (n > 70)
+        if (n > 50)
             actionType = ActionType.Discover;
-        else if (n > 50)
+        else if (n > 30)
             actionType = ActionType.Patrol;
         else
             actionType = ActionType.OnCall;
@@ -1354,6 +1354,7 @@ public class CharController : MonoBehaviour
         anim.Play("Idle_" + this.direction.ToString(), 0);
         while (!isAbort)
         {
+
             yield return new WaitForEndOfFrame();
         }
         
@@ -1375,30 +1376,22 @@ public class CharController : MonoBehaviour
         {
             yield return StartCoroutine(DoAnim("Standby"));
         }
-        else
+        else if(ran < 60)
         {
             MageManager.instance.PlaySound3D(charType.ToString() + "_Speak", false,this.transform.position);
             yield return DoAnim("Speak_" + direction.ToString());
+        }
+        else
+        {
+            yield return DoAnim("Love");
         }
 
         float t = 0;
         float maxTime = 20;
         while (t < maxTime && !isAbort)
         {
-            if (charInteract.interactType == InteractType.Love)
-            {
-                anim.Play("Love", 0);
-                timeLove += Time.deltaTime;
-                t = 0;
-            }
-            else
-                anim.Play("Idle_" + direction.ToString(), 0);
+            anim.Play("Idle_" + this.direction.ToString(), 0);
             t += Time.deltaTime;
-            if(timeLove > 5)
-            {
-                ItemManager.instance.SpawnHeart(data.RateHappy + data.level / 5, this.transform.position);
-                timeLove = 0;
-            }
             yield return new WaitForEndOfFrame();
         }
         CheckAbort();
