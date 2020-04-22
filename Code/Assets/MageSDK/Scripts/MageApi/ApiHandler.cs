@@ -53,6 +53,7 @@ namespace MageApi {
 			RuntimeParameters.GetInstance().SetParam (ApiSettings.DEVICE_TYPE, ApiUtils.GetInstance ().GetDeviceType ());
 			RuntimeParameters.GetInstance().SetParam (ApiSettings.APPLICATION_VERSION, Application.version);
 			RuntimeParameters.GetInstance().SetParam (ApiSettings.SYSTEM_LANGUAGE, Application.systemLanguage.ToString());
+			RuntimeParameters.GetInstance().SetParam (ApiSettings.API_SERVER_TIMESTAMP, DateTime.Now);
 			
 		}
 
