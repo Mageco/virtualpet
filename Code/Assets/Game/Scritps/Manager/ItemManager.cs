@@ -583,7 +583,7 @@ public class ItemManager : MonoBehaviour
     public void SpawnChest()
     {
         ChestItem[] chests = FindObjectsOfType<ChestItem>();
-        if (chests.Length > 1)
+        if (chests.Length > 2)
             return;
         Vector3 pos = GetRandomPoint(AreaType.Garden);
         bool isOk = false;
