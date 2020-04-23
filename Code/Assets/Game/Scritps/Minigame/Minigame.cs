@@ -30,15 +30,15 @@ public class Minigame : MonoBehaviour
         float d = Camera.main.orthographicSize * (float)Screen.width / (float)Screen.height;
         boundX.x = -d;
         boundX.y = d;
-        if(GameManager.instance.isLoad)
-            gameLevel = GameManager.instance.GetPlayer().minigameLevels[minigameId];
+
     }
 
         
     // Start is called before the first frame update
-    void Start()
+    protected virtual void Start()
     {
-        
+        if (GameManager.instance.isLoad)
+            gameLevel = GameManager.instance.GetPlayer().minigameLevels[minigameId];
     }
 
     // Update is called once per frame

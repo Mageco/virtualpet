@@ -25,8 +25,9 @@ public class Minigame4 : Minigame
     public Animator bow;
 
 
-    void Start()
+    protected override void Start()
     {
+        base.Start();
         float ratio = Screen.height * 1f / Screen.width;
         Debug.Log(ratio);
         Camera.main.orthographicSize = 15 * ratio;

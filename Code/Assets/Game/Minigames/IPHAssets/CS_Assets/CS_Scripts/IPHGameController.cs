@@ -206,16 +206,6 @@ namespace InfiniteHopper
 		/// </summary>
 		void  Update()
 		{
-			//If the game is over, listen for the Restart and MainMenu buttons
-
-                /*
-				//Toggle pause/unpause in the game
-				if ( Input.GetButtonDown(pauseButton) )
-				{
-					if ( isPaused == true )    Unpause();
-					else    Pause();
-				}*/
-				
 				//If there is a player object, you can make it jump, the background moves in a loop.
 			if ( playerObjects[currentPlayer] )
 			{
@@ -430,32 +420,7 @@ namespace InfiniteHopper
 			scoreMultiplier = setValue;
 		}
 
-        /*
-		//This function pauses the game
-		void  Pause()
-		{
-			isPaused = true;
-			
-			//Set timescale to 0, preventing anything from moving
-			Time.timeScale = 0;
-			
-			//Show the pause screen and hide the game screen
-			if ( pauseCanvas )    pauseCanvas.gameObject.SetActive(true);
-			if ( gameCanvas )    gameCanvas.gameObject.SetActive(false);
-		}
-		
-		//This function resume the game
-		public void  Unpause()
-		{
-			isPaused = false;
-			
-			//Set timescale back to the current game speed
-			Time.timeScale = gameSpeed;
-			
-			//Hide the pause screen and show the game screen
-			if ( pauseCanvas )    pauseCanvas.gameObject.SetActive(false);
-			if ( gameCanvas )    gameCanvas.gameObject.SetActive(true);
-		}*/
+        
 		
 		//This function handles the game over event
 		IEnumerator GameOver(float delay)

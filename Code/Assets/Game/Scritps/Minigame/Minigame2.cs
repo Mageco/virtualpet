@@ -23,7 +23,8 @@ public class Minigame2 : Minigame
 
 
 
-    void Start(){
+    protected override void Start(){
+        base.Start();
         timeText.text = "";
         fishNumber.text = "";
         levelText.text = DataHolder.Dialog(29).GetName(MageManager.instance.GetLanguage()) + " " + (gameLevel + 1).ToString();

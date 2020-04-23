@@ -26,7 +26,8 @@ public class Minigame1 : Minigame
     float timeHit = 0;
     
     
-    void Start(){
+    protected override void Start(){
+        base.Start();
         timeText.text = "";
         chickenNumber.text = "";
         levelText.text = DataHolder.Dialog(29).GetName(MageManager.instance.GetLanguage()) + " " + (gameLevel + 1).ToString();
