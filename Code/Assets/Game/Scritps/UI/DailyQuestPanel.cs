@@ -85,13 +85,15 @@ public class DailyQuestPanel : MonoBehaviour
                 quest.bonus = petNumber * 10;
                 quest.state = DailyQuestState.Started;
                 if (quest.achivementId == 3)
-                    quest.requireValue = 3;
-                else if(quest.achivementId == 7)
+                    quest.requireValue = 1;
+                else if (quest.achivementId == 7)
                     quest.requireValue = 3;
                 else if (quest.achivementId == 8)
                     quest.requireValue = 1;
                 else if (quest.achivementId == 21)
                     quest.requireValue = 1;
+                else
+                    quest.requireValue = 5;
             }
         }
 
