@@ -212,7 +212,7 @@ public class Minigame5 : Minigame
 			speed = 1.5f * speedRate;
 			playerObject.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
 			playerObject.GetComponent<Rigidbody2D>().AddForce(new Vector2(0, force));
-			playerObject.transform.rotation = Quaternion.Euler(0, 0, -30);
+			playerObject.transform.rotation = Quaternion.Euler(0, 0, 30);
 			animator.Play("Jump", 0);
 		}
     }
