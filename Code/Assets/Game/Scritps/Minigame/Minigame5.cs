@@ -112,7 +112,7 @@ public class Minigame5 : Minigame
 				go.transform.position += new Vector3(-speed * Time.deltaTime, 0, 0);
 			}
 
-			if (columns[0].transform.position.x < -5)
+			if (columns[0].transform.position.x < -10)
 			{
 				Debug.Log("Remove " + columns[0].name);
 				columns[0].SetActive(false);
