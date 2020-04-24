@@ -33,14 +33,18 @@ public class DuplicateCharacterInspector : Editor
                 {
                     for (int j = 0; j < copySprites.Length; j++)
                     {
-                        if (targetSprites[i].name == copySprites[j].name && targetSprites[i].sharedMaterial.name != "Sprites-Default")
+                        if (targetSprites[i].name == copySprites[j].name)
                         {
-                            copySprites[j].sharedMaterial = targetSprites[i].sharedMaterial;
+                            if (targetSprites[i].sharedMaterial.name != "Sprites-Default")
+                            {
+                                copySprites[j].sharedMaterial = targetSprites[i].sharedMaterial;
+                            }
+                            else
+                            {
+                                copySprites[j].color = targetSprites[i].color;
+                            }
                         }
-                        else
-                        {
-                            copySprites[j].color = targetSprites[i].color;
-                        }
+
                     }
                 }
 
