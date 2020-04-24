@@ -36,6 +36,7 @@ public class DuplicateCharacterInspector : Editor
                         if (targetSprites[i].name == copySprites[j].name && targetSprites[i].sharedMaterial.name != "Sprites-Default")
                         {
                             copySprites[j].sharedMaterial = targetSprites[i].sharedMaterial;
+                            copySprites[j].color = targetSprites[i].color;
                         }
                     }
                 }
