@@ -363,6 +363,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1174253154, guid: 35888b7d4d06cb2449eddf66cf6736db, type: 3}
+      propertyPath: m_GravityScale
+      value: 0.7
+      objectReference: {fileID: 0}
     - target: {fileID: 2286613330955155774, guid: 35888b7d4d06cb2449eddf66cf6736db,
         type: 3}
       propertyPath: m_Name
@@ -423,7 +427,9 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 1174253154, guid: 35888b7d4d06cb2449eddf66cf6736db, type: 3}
+    - {fileID: 1174253151, guid: 35888b7d4d06cb2449eddf66cf6736db, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 35888b7d4d06cb2449eddf66cf6736db, type: 3}
 --- !u!1 &774020521
 GameObject:
@@ -819,6 +825,65 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 693984567}
   m_PrefabAsset: {fileID: 0}
+--- !u!60 &1174253152
+PolygonCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1174253150}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Points:
+    m_Paths:
+    - - {x: 1.1811761, y: 3.5792058}
+      - {x: 0.18904686, y: 4.4746923}
+      - {x: -1.4469988, y: 4.077545}
+      - {x: -1.0978516, y: 1.9220994}
+      - {x: -1.2909889, y: -0.35466543}
+      - {x: -3.0887978, y: -0.55632615}
+      - {x: -3.5254858, y: -1.5216032}
+      - {x: 3.446004, y: -1.3462355}
+      - {x: 3.0629094, y: -0.38407314}
+      - {x: 1.1362321, y: -0.13872772}
+      - {x: 0.8655813, y: 1.5284548}
+      - {x: 1.7273191, y: 2.2224555}
+      - {x: 1.2470315, y: 3.033459}
+--- !u!50 &1174253153
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1174253150}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 0.8
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 4
 --- !u!1 &1218018668
 GameObject:
   m_ObjectHideFlags: 0
@@ -944,7 +1009,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1373805658
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1066,6 +1131,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 9284254, guid: e2b0782092e75414fb7315928f50fccd, type: 3}
+    - {fileID: 5084254, guid: e2b0782092e75414fb7315928f50fccd, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: e2b0782092e75414fb7315928f50fccd, type: 3}
 --- !u!1001 &1559021156
 PrefabInstance:
@@ -1238,20 +1304,20 @@ MonoBehaviour:
   downColumn:
   - {fileID: 7319327988911293107, guid: 25b37e8e02dab9a4382e9589dc774396, type: 3}
   - {fileID: 7319327988911293107, guid: 0b2b24ddc33683940a8d4c146988fb5f, type: 3}
-  columnGapRange: {x: 8, y: 10}
+  columnGapRange: {x: 8.5, y: 10}
   columnHeightRange: {x: 1, y: 4}
   deathLineHeight: -6
   items: []
-  force: 270
-  speedRate: 5
+  force: 350
+  speedRate: 4
   fallEffect: {fileID: 5434382846500456908, guid: 105d17d1b2b8b4d30a5531299205561f,
     type: 3}
-  initTime: 3
   sounds:
   - {fileID: 8300000, guid: 491e9bdba81b36f48aef9cd3d7ebb597, type: 3}
   - {fileID: 8300000, guid: f761f1a7a1361674a8f94633fb1fe4e8, type: 3}
   - {fileID: 8300000, guid: bde4f8b13a10e0a408c931868aaa7675, type: 3}
   - {fileID: 8300000, guid: 97ace823aef82364e894a587b79a5e33, type: 3}
+  columns: []
 --- !u!114 &1827546443
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1673,7 +1739,7 @@ PrefabInstance:
     - target: {fileID: 7293622571369199419, guid: 25b37e8e02dab9a4382e9589dc774396,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.04150963
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7293622571369199419, guid: 25b37e8e02dab9a4382e9589dc774396,
         type: 3}

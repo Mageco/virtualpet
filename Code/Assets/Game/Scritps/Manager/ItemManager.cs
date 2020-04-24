@@ -752,12 +752,12 @@ public class ItemManager : MonoBehaviour
         //Debug.Log(t);
         if (t > 10800)
         {
-            c = 30;
+            c = 20;
             h = 60;
         }
         else if (t > 7200)
         {
-            c = 20;
+            c = 15;
             h = 40;
         }
         else if (t > 3600)
@@ -767,17 +767,17 @@ public class ItemManager : MonoBehaviour
         }
         else if (t > 1800)
         {
-            c = 5;
+            c = 6;
             h = 10;
         }
         else if (t > 600)
         {
-            c = 2;
+            c = 4;
             h = 4;
         }
         else 
         {
-            c = 1;
+            c = 2;
             h = 2;
         }
 

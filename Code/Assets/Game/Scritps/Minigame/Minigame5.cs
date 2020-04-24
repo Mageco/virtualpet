@@ -31,12 +31,12 @@ public class Minigame5 : Minigame
 	float speed = 1;
 	public GameObject fallEffect;
 	GuideUI guildUI;
-	public float initTime = 3;
 	public AudioClip[] sounds;
 	GameObject scoreColumn;
 	bool isDead = false;
+	int count = 0;
 
-	List<GameObject> columns = new List<GameObject>();
+	public List<GameObject> columns = new List<GameObject>();
 
 
 	protected override void Start()
@@ -94,10 +94,6 @@ public class Minigame5 : Minigame
 		{
 			time += Time.deltaTime;
 
-			if (time > initTime)
-			{
-				createColumn();
-			}
 
 			//If there is a player object, you can make it jump, the background moves in a loop.
 			if (playerObject)
@@ -109,11 +105,18 @@ public class Minigame5 : Minigame
 
 			speed = Mathf.Lerp(speed, speedRate, Time.deltaTime * 2);
 
-			playerObject.transform.rotation = Quaternion.Lerp(playerObject.transform.rotation, Quaternion.identity, Time.deltaTime * 2);
+			playerObject.transform.rotation = Quaternion.Lerp(playerObject.transform.rotation, Quaternion.Euler(0,0,10), Time.deltaTime * 2);
+
+			foreach (GameObject go in columns)
+			{
+				go.transform.position += new Vector3(-speed * Time.deltaTime, 0, 0);
+			}
 
 			if (columns[0].transform.position.x < -5)
 			{
-				GameObject.Destroy(columns[0]);
+				Debug.Log("Remove " + columns[0].name);
+				columns[0].SetActive(false);
+				GameObject.DestroyImmediate(columns[0]);
 				columns.RemoveAt(0);
 				createColumn();
 			}
@@ -125,10 +128,7 @@ public class Minigame5 : Minigame
 				bonus += 3;
 			}
 
-			foreach (GameObject go in columns)
-			{
-				go.transform.position += new Vector3(-speed * Time.deltaTime, 0, 0);
-			}
+
 
 		}
 		else
@@ -169,6 +169,7 @@ public class Minigame5 : Minigame
 	//This function creates a column
 	void createColumn()
 	{
+		count++;
 		int id1 = Random.Range(0, 2);
 		int id2 = Random.Range(0, 2);
 		GameObject go1 = GameObject.Instantiate(topColumn[id1]) as GameObject;
@@ -198,8 +199,9 @@ public class Minigame5 : Minigame
 
 		go1.transform.position = pos1;
 		go2.transform.position = pos2;
+		go2.transform.parent = go1.transform;
+		go1.name = "Column " + count.ToString();
 		columns.Add(go1);
-		columns.Add(go2);
 	}
 
 	public void OnJump()
@@ -210,7 +212,7 @@ public class Minigame5 : Minigame
 			speed = 1.5f * speedRate;
 			playerObject.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
 			playerObject.GetComponent<Rigidbody2D>().AddForce(new Vector2(0, force));
-			playerObject.transform.rotation = Quaternion.Euler(0, 0, -20);
+			playerObject.transform.rotation = Quaternion.Euler(0, 0, -30);
 			animator.Play("Jump", 0);
 		}
     }

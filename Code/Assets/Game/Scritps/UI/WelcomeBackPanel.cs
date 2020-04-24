@@ -18,7 +18,7 @@ public class WelcomeBackPanel : MonoBehaviour
         {
             if(item.itemType == ItemType.Fruit)
             {
-                coin += c * DataHolder.GetItem(item.itemId).buyPrice / 50;
+                coin += c * DataHolder.GetItem(item.itemId).buyPrice / 100;
             }
         }
 
