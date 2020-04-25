@@ -4,19 +4,22 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-public class Skin
+public class Accessory
 {
-	public int skinId = 0;
+	public int iD = 0;
     public string iconUrl = "";
     public LanguageItem[] languageItem = new LanguageItem[0];
 	public int petId = 0;
-    public PriceType priceType = PriceType.Coin;
+	public int accessoryId = 0;
+	public bool isAvailable = true;
+	public ItemTag itemTag = ItemTag.None;
+	public PriceType priceType = PriceType.Diamond;
     public int levelRequire = 0;
-    public string prefabName = "";
     public int buyPrice = 0;
     public ItemState itemState = ItemState.OnShop;
+	
 
-	public Skin()
+	public Accessory()
 	{
 		languageItem = new LanguageItem[DataHolder.Languages().GetDataCount()];
 		for (int i = 0; i < languageItem.Length; i++)

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class LoadAccessories : MonoBehaviour
 {
-    public GameObject petBasic;
+    public GameObject[] petBasic;
     // Start is called before the first frame update
     void Start()
     {

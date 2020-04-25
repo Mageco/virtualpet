@@ -227,20 +227,20 @@ public class ArrayHelper
         return tmp.ToArray(typeof(Pet)) as Pet[];
     }
 
-    public static Skin[] Add(Skin n, Skin[] list)
+    public static Accessory[] Add(Accessory n, Accessory[] list)
     {
         ArrayList tmp = new ArrayList();
-        foreach (Skin str in list) tmp.Add(str);
+        foreach (Accessory str in list) tmp.Add(str);
         tmp.Add(n);
-        return tmp.ToArray(typeof(Skin)) as Skin[];
+        return tmp.ToArray(typeof(Accessory)) as Accessory[];
     }
 
-    public static Skin[] Remove(int index, Skin[] list)
+    public static Accessory[] Remove(int index, Accessory[] list)
     {
         ArrayList tmp = new ArrayList();
-        foreach (Skin str in list) tmp.Add(str);
+        foreach (Accessory str in list) tmp.Add(str);
         tmp.RemoveAt(index);
-        return tmp.ToArray(typeof(Skin)) as Skin[];
+        return tmp.ToArray(typeof(Accessory)) as Accessory[];
     }
 
     public static Achivement[] Add(Achivement n, Achivement[] list)

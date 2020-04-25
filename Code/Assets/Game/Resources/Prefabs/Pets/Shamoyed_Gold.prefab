@@ -485,6 +485,7 @@ MonoBehaviour:
     itemState: 0
     prefabName: 
     isAvailable: 1
+    itemTag: 0
     requireEquipments: 
     requirePets: 
     requireValue: 0
@@ -521,6 +522,7 @@ MonoBehaviour:
     recoverDirty: 0.1
     recoverHealth: 0
     recoverEnergy: 5
+    rateHappy: 1
     maxFood: 100
     maxWater: 100
     maxShit: 100
@@ -532,7 +534,7 @@ MonoBehaviour:
     maxDirty: 100
     maxItchi: 100
     maxCurious: 100
-    character: {fileID: 0}
+    levelRate: 20
     actionType: 0
     position: {x: 0, y: 0, z: 0}
     scalePosition: {x: 0, y: 0, z: 0}
@@ -550,6 +552,7 @@ MonoBehaviour:
   isAction: 0
   isMoving: 0
   actionType: 0
+  lastActionType: 0
   anim: {fileID: 0}
   charInteract: {fileID: 0}
   charScale: {fileID: 0}
@@ -564,6 +567,17 @@ MonoBehaviour:
   dirties: []
   dirties_L: []
   dirties_LD: []
+  skinPrefabs:
+  - {fileID: 4215020183971099762, guid: 068d1da4a83b3423394913e22c7caf09, type: 3}
+  - {fileID: 7401452530998560957, guid: 9f79d67d167c0490898bc69fb9274b62, type: 3}
+  - {fileID: 7206780005191943512, guid: 9eded8e78984b4553ac705e613ef5551, type: 3}
+  - {fileID: 7105593432021191633, guid: 53d86a5c178f34c5a862a6e3e07ecadf, type: 3}
+  - {fileID: 4303056154851645696, guid: e1b2c16a247114e1baeff8db0b00ef30, type: 3}
+  - {fileID: 7732263807138465897, guid: 6e0839b997fd04a6bba9f0719fa64469, type: 3}
+  - {fileID: 3367048615844243718, guid: e835ab1561c454901a62efce7162ad7e, type: 3}
+  - {fileID: 4542622356086847687, guid: 8f6e6592c6b044611b5567cbe61ceaa3, type: 3}
+  - {fileID: 6595927221790291851, guid: e7baa16fd18ac48d9a36cef142e5af20, type: 3}
+  - {fileID: 7217282994708993697, guid: 34998edae89384ce3b425249840606b9, type: 3}
 --- !u!1 &4120367848773837643
 GameObject:
   m_ObjectHideFlags: 0

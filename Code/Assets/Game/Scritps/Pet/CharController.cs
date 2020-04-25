@@ -95,7 +95,7 @@ public class CharController : MonoBehaviour
     public List<GameObject> dirties_L = new List<GameObject>();
     [HideInInspector]
     public List<GameObject> dirties_LD = new List<GameObject>();
-
+    public List<GameObject> skinPrefabs = new List<GameObject>();
     Vector3 callPosition;
 
     #region Load

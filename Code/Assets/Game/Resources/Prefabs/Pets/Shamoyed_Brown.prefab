@@ -371,7 +371,7 @@ GameObject:
   - component: {fileID: 8264768739620265649}
   - component: {fileID: 7065807389065324203}
   m_Layer: 0
-  m_Name: Shamoyed 1
+  m_Name: Shamoyed_Brown
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -485,6 +485,7 @@ MonoBehaviour:
     itemState: 0
     prefabName: 
     isAvailable: 1
+    itemTag: 0
     requireEquipments: 
     requirePets: 
     requireValue: 0
@@ -521,6 +522,7 @@ MonoBehaviour:
     recoverDirty: 0.1
     recoverHealth: 0
     recoverEnergy: 5
+    rateHappy: 1
     maxFood: 100
     maxWater: 100
     maxShit: 100
@@ -532,7 +534,7 @@ MonoBehaviour:
     maxDirty: 100
     maxItchi: 100
     maxCurious: 100
-    character: {fileID: 0}
+    levelRate: 20
     actionType: 0
     position: {x: 0, y: 0, z: 0}
     scalePosition: {x: 0, y: 0, z: 0}
@@ -550,6 +552,7 @@ MonoBehaviour:
   isAction: 0
   isMoving: 0
   actionType: 0
+  lastActionType: 0
   anim: {fileID: 0}
   charInteract: {fileID: 0}
   charScale: {fileID: 0}
@@ -564,6 +567,17 @@ MonoBehaviour:
   dirties: []
   dirties_L: []
   dirties_LD: []
+  skinPrefabs:
+  - {fileID: 123100409796209690, guid: 71297312976c24a9bb7588cfbbd9a35b, type: 3}
+  - {fileID: 1910732679582275520, guid: f975035f7ba974a5584e14e314ef90b7, type: 3}
+  - {fileID: 8151216852598247191, guid: e5879d4524adc475c9175dfb9504e85f, type: 3}
+  - {fileID: 7436029055488733774, guid: 484fe586b3a134f26a80609dd72a2ed0, type: 3}
+  - {fileID: 3048597988722132926, guid: 0a08ab06319c64763a44a341737fdeb4, type: 3}
+  - {fileID: 7028690720272410503, guid: 98891631096b44c6ba8064082da70904, type: 3}
+  - {fileID: 98646170838158325, guid: f5a0f6f7e59e849d1bf5b807af570bbd, type: 3}
+  - {fileID: 5250339861780454985, guid: b5999a004666940e083622956fdc4e92, type: 3}
+  - {fileID: 6090402562717965180, guid: 1e5c99ab52c844b51a01ce4a7cfc8739, type: 3}
+  - {fileID: 1202192362957786786, guid: 3fb009e95263b42a0bfed65d8767cb75, type: 3}
 --- !u!1 &4120367848773837643
 GameObject:
   m_ObjectHideFlags: 0

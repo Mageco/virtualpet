@@ -7,16 +7,112 @@ public class LoadAccessoryInspector : Editor
     public override void OnInspectorGUI()
     {
         Undo.RecordObject(target, "Changed");
-        ((LoadAccessories)target).petBasic = (GameObject)EditorGUILayout.ObjectField("pet basic", ((LoadAccessories)target).petBasic, typeof(GameObject), false, GUILayout.Width(300));
-        if (GUILayout.Button("Load", GUILayout.Width(200)))
+        if (GUILayout.Button("Add Pet", GUILayout.Width(200)))
         {
-            var sourcePath = AssetDatabase.GetAssetPath(((LoadAccessories)target).petBasic);
-            sourcePath = sourcePath.Replace(".prefab", "");
-            var copyPath = sourcePath + "_Accessory_" + (1).ToString() + ".prefab";
-            if (GameObject.FindObjectOfType<CharController>())
+            ((LoadAccessories)target).petBasic = ArrayHelper.Add(null, ((LoadAccessories)target).petBasic);
+        }
+
+        for (int i = 0; i < ((LoadAccessories)target).petBasic.Length; i++)
+        {
+            GUILayout.BeginHorizontal();
+            ((LoadAccessories)target).petBasic[i] = (GameObject)EditorGUILayout.ObjectField("pet " + (i + 1).ToString(), ((LoadAccessories)target).petBasic[i], typeof(GameObject), false, GUILayout.Width(300));
+            if (GUILayout.Button("x", GUILayout.Width(20)))
             {
-                GameObject.FindObjectOfType<CharController>().petPrefab = AssetDatabase.LoadAssetAtPath<GameObject>(copyPath);
+                ((LoadAccessories)target).petBasic = ArrayHelper.Remove(i, ((LoadAccessories)target).petBasic);
             }
+            GUILayout.EndHorizontal();
+        }
+
+        if (GUILayout.Button("Load Accessory Skin", GUILayout.Width(200)))
+        {
+            for (int i = 0; i < ((LoadAccessories)target).petBasic.Length; i++)
+            {
+                var sourcePath = AssetDatabase.GetAssetPath(((LoadAccessories)target).petBasic[i]);
+                sourcePath = sourcePath.Replace(".prefab", "");
+
+                GameObject go = GameObject.Find(((LoadAccessories)target).petBasic[i].name);
+                if (go != null)
+                {
+                    //var pastePath = PrefabUtility.A.GetAssetPath(go);
+                    //Debug.Log(pastePath);
+                    go.GetComponent<CharController>().skinPrefabs.Clear();
+                    for (int j = 0; j < 20; j++)
+                    {
+                        var copyPath = sourcePath + "_Accessory_" + (j + 1).ToString() + ".prefab";
+                        GameObject sourceObject = AssetDatabase.LoadAssetAtPath<GameObject>(copyPath);
+                        if (sourceObject != null)
+                        {
+                            go.GetComponent<CharController>().skinPrefabs.Add(AssetDatabase.LoadAssetAtPath<GameObject>(copyPath));
+                        }
+                    }
+                    PrefabUtility.ApplyPrefabInstance(go, InteractionMode.AutomatedAction);
+                    Debug.Log("Save prefab ok " + go.name);
+                }
+            }
+        }
+
+        if (GUILayout.Button("Import Accessory Data", GUILayout.Width(200)))
+        {
+            for (int i = 0; i < ((LoadAccessories)target).petBasic.Length; i++)
+            {
+               
+
+                GameObject go = GameObject.Find(((LoadAccessories)target).petBasic[i].name);
+                if (go != null)
+                {
+                    for (int j = 0; j < go.GetComponent<CharController>().skinPrefabs.Count; j++)
+                    {
+                        bool isExist = false;
+                        string name = ((LoadAccessories)target).petBasic[i].name + "_Accessory_" + (j + 1).ToString();
+                        for (int k = 0; k < DataHolder.Accessories().GetDataCount(); k++)
+                        {
+                            if(DataHolder.Accessory(k).GetName(0) == name)
+                            {
+                                Debug.Log("Existed " + name);
+                                isExist = true;
+                                break;
+                            }
+                        }
+                        if (!isExist)
+                        {
+                            Accessory a = new Accessory();
+                            a.iD = DataHolder.LastAccessoryID() + 1;
+                            a.SetName(0, name);
+                            a.accessoryId = j + 1;
+                            a.levelRequire = 5 + (40 / go.GetComponent<CharController>().skinPrefabs.Count * j);
+                            
+                            Random.InitState(a.iD);
+                            int n = Random.Range(0, 100);
+                            if (n > 80)
+                            {
+                                a.priceType = PriceType.Coin;
+                                a.buyPrice = (10 + j * 5)*120;
+                            }
+                            else
+                            {
+                                a.priceType = PriceType.Diamond;
+                                a.buyPrice = 10 + j * 5;
+                            }
+                                
+                            string url = "Assets/Game/Resources/icons/Accessory/" + name + ".png";
+                            a.iconUrl = url;
+                            for(int m = 0; m < DataHolder.Pets().GetDataCount(); m++)
+                            {
+                                if (DataHolder.Pet(m).prefabName == ((LoadAccessories)target).petBasic[i].name)
+                                {
+                                    a.petId = DataHolder.Pet(m).iD;
+                                    break;
+                                }
+                            }
+                            DataHolder.Accessories().accessories = ArrayHelper.Add(a, DataHolder.Accessories().accessories);
+                            Debug.Log("Add " + name);
+                        }
+                    }
+                }
+
+            }
+
+            DataHolder.Accessories().SaveData();
         }
     }
 }

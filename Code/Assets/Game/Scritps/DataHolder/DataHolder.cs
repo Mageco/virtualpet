@@ -13,7 +13,7 @@ public class DataHolder
 	private DialogData dialogs;
 	private QuestData quests;
 	private PetData pets;
-
+	private AccessoryData accessories;
 	private AchivementData achivements;
 
 
@@ -38,6 +38,7 @@ public class DataHolder
 		quests = new QuestData();
 		pets = new PetData();
 		achivements = new AchivementData();
+		accessories = new AccessoryData();
 	}
 
 
@@ -247,6 +248,40 @@ public class DataHolder
 		else 
 			return 0;
 	}
+
+	public static AccessoryData Accessories()
+	{
+		return DataHolder.Instance().accessories;
+	}
+
+	public static Accessory Accessory(int index)
+	{
+		return DataHolder.Instance().accessories.accessories[index];
+	}
+
+	public static Accessory GetAccessory(int id)
+	{
+		return DataHolder.Instance().accessories.GetAccessory(id);
+	}
+
+	public static int GetAccessoryIndex(int id)
+	{
+		for (int i = 0; i < DataHolder.Accessories().GetDataCount(); i++)
+		{
+			if (DataHolder.Accessory(i).iD == id)
+				return i;
+		}
+		return 0;
+	}
+
+	public static int LastAccessoryID()
+	{
+		if (DataHolder.Instance().accessories != null && DataHolder.Instance().accessories.GetDataCount() > 0)
+			return DataHolder.Instance().accessories.accessories[DataHolder.Instance().accessories.accessories.Length - 1].iD;
+		else
+			return 0;
+	}
+
 
 	public static LanguageData Languages()
 	{

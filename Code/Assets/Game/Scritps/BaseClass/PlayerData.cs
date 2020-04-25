@@ -35,7 +35,6 @@ public class PlayerData : BaseModel
 	public bool isCompleteDailyQuest = false;
 	public int spinCount = 0;
 	public string spinedTime = "";
-	public List<Skin> petColors = new List<Skin>();
 	public List<PlayerAchivement> achivements = new List<PlayerAchivement>();
 	public List<ItemSaveData> itemSaveDatas = new List<ItemSaveData>();
 	public List<PlayerService> playerServices = new List<PlayerService>();
@@ -111,9 +110,9 @@ public class PlayerData : BaseModel
 [System.Serializable]
 public class PlayerPet : BaseModel
 {
-
 	public int iD = 0;
 	public int level = 1;
+	public int accessoryId = 0;
 	public string petName = "";
 	public bool isNew = false;
 	public ItemState itemState = ItemState.OnShop;
@@ -160,8 +159,6 @@ public class PlayerAchivement : BaseModel{
 				if(rewardState != RewardState.Ready)
 					rewardState = RewardState.Ready;
 			}
-				
-			
 		}
 	}
 

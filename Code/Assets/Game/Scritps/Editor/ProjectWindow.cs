@@ -10,7 +10,7 @@ public class ProjectWindow : EditorWindow
 	public int mWidth = 300;
 	// section handling
 	private int currentSection = 0;
-	private string[] sections = new string[] {"Language","Item","Dialog","Quest","Pet","Achivement"};
+	private string[] sections = new string[] {"Language","Item","Dialog","Quest","Pet","Achivement","Accessories"};
 	
 	private int LANGUAGES = 0;
 	//private int SKILL = 1;
@@ -19,6 +19,7 @@ public class ProjectWindow : EditorWindow
 	private int QUESTS = 3;
 	private int PETS = 4;
 	private int ACHIVEMENTS = 5;
+	private int ACCESSORY = 6;
 
 	// tabs
 	private LanguageTab langTab = null;
@@ -28,6 +29,7 @@ public class ProjectWindow : EditorWindow
 	private QuestTab questTab = null;
 	private PetTab petTab = null;
 	private AchivementTab achivementTab = null;
+	private AccessoryTab accessoryTab = null;
 
 
 
@@ -64,6 +66,9 @@ public class ProjectWindow : EditorWindow
 		
 		if(achivementTab == null) achivementTab = new AchivementTab(this);
 		else achivementTab.Reload();
+
+		if (accessoryTab == null) accessoryTab = new AccessoryTab(this);
+		else accessoryTab.Reload();
 	}
 	
 	public void Save()
@@ -75,6 +80,7 @@ public class ProjectWindow : EditorWindow
 		DataHolder.Quests().SaveData();
 		DataHolder.Pets().SaveData();
 		DataHolder.Achivements().SaveData();
+		DataHolder.Accessories().SaveData();
 	}
 
 
@@ -92,23 +98,37 @@ public class ProjectWindow : EditorWindow
 			GUI.FocusControl ("Toolbar");
 		}
 		GUILayout.Box (" ", GUILayout.ExpandWidth (true));
-	
-		if (currentSection == this.LANGUAGES) {
-			this.langTab.ShowTab ();
-		} else if (currentSection == this.ITEMS) {
-			this.itemTab.ShowTab ();
-		//}  else if (currentSection == this.SKILL) {
-		//	this.skillTab.ShowTab ();
+
+		if (currentSection == this.LANGUAGES)
+		{
+			this.langTab.ShowTab();
 		}
-        else if (currentSection == this.DIALOGS) {
-			this.dialogTab.ShowTab ();
-		} else if (currentSection == this.QUESTS) {
-			this.questTab.ShowTab ();
-		} else if (currentSection == this.PETS) {
-			this.petTab.ShowTab ();
-		} else if (currentSection == this.ACHIVEMENTS) {
-			this.achivementTab.ShowTab ();
-		} 
+		else if (currentSection == this.ITEMS)
+		{
+			this.itemTab.ShowTab();
+			//}  else if (currentSection == this.SKILL) {
+			//	this.skillTab.ShowTab ();
+		}
+		else if (currentSection == this.DIALOGS)
+		{
+			this.dialogTab.ShowTab();
+		}
+		else if (currentSection == this.QUESTS)
+		{
+			this.questTab.ShowTab();
+		}
+		else if (currentSection == this.PETS)
+		{
+			this.petTab.ShowTab();
+		}
+		else if (currentSection == this.ACHIVEMENTS)
+		{
+			this.achivementTab.ShowTab();
+		}
+		else if (currentSection == this.ACCESSORY)
+		{
+			this.accessoryTab.ShowTab();
+		}
 
 
 		EditorGUILayout.Separator ();
@@ -141,6 +161,7 @@ public class ProjectWindow : EditorWindow
 		DataHolder.Quests ().AddLanguage ();
 		DataHolder.Pets ().AddLanguage ();
 		DataHolder.Achivements ().AddLanguage ();
+		DataHolder.Accessories().AddLanguage();
 	}
 	
 	public void RemoveLanguage(int lang)
@@ -151,6 +172,7 @@ public class ProjectWindow : EditorWindow
 		DataHolder.Quests ().RemoveLanguage (lang);
 		DataHolder.Pets ().RemoveLanguage (lang);
 		DataHolder.Achivements ().RemoveLanguage (lang);
+		DataHolder.Accessories().RemoveLanguage(lang);
 	}
 
 

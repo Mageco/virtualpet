@@ -485,6 +485,7 @@ MonoBehaviour:
     itemState: 0
     prefabName: 
     isAvailable: 1
+    itemTag: 0
     requireEquipments: 
     requirePets: 
     requireValue: 0
@@ -511,6 +512,7 @@ MonoBehaviour:
     curious: 70
     maxTimeSick: 3600
     isNew: 0
+    rareType: 0
     rateFood: 10
     rateWater: 10
     rateSleep: 0.5
@@ -520,6 +522,7 @@ MonoBehaviour:
     recoverDirty: 0.1
     recoverHealth: 0
     recoverEnergy: 5
+    rateHappy: 1
     maxFood: 100
     maxWater: 100
     maxShit: 100
@@ -531,7 +534,7 @@ MonoBehaviour:
     maxDirty: 100
     maxItchi: 100
     maxCurious: 100
-    character: {fileID: 0}
+    levelRate: 20
     actionType: 0
     position: {x: 0, y: 0, z: 0}
     scalePosition: {x: 0, y: 0, z: 0}
@@ -549,6 +552,7 @@ MonoBehaviour:
   isAction: 0
   isMoving: 0
   actionType: 0
+  lastActionType: 0
   anim: {fileID: 0}
   charInteract: {fileID: 0}
   charScale: {fileID: 0}
@@ -563,6 +567,7 @@ MonoBehaviour:
   dirties: []
   dirties_L: []
   dirties_LD: []
+  skinPrefabs: []
 --- !u!1 &4120367848773837643
 GameObject:
   m_ObjectHideFlags: 0
