@@ -149,4 +149,9 @@ public class CityManager : MonoBehaviour
     {
         UIManager.instance.OnDailyQuestPanel();
     }
+
+    public void OnAccessoryPanel(int petId)
+    {
+        UIManager.instance.OnAccessoryPanel(petId);
+    }
 }

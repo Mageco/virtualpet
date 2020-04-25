@@ -838,6 +838,78 @@ public class GameManager : MonoBehaviour
         return 0;
     }
 
+    #region Accessory
+    public void BuyAccessory(int itemId)
+    {
+        PriceType type = DataHolder.GetAccessory(itemId).priceType;
+        int price = DataHolder.GetAccessory(itemId).buyPrice;
+        if (type == PriceType.Coin)
+        {
+            if (price > GetCoin())
+            {
+                MageManager.instance.OnNotificationPopup(DataHolder.Dialog(6).GetDescription(MageManager.instance.GetLanguage()));
+                return;
+            }
+            AddCoin(-price, GetKey());
+            AddAccessory(itemId, GetKey());
+        }
+        else if (type == PriceType.Diamond)
+        {
+            if (price > GetDiamond())
+            {
+                MageManager.instance.OnNotificationPopup(DataHolder.Dialog(7).GetDescription(MageManager.instance.GetLanguage()));
+                return;
+            }
+            AddDiamond(-price, GetKey());
+            AddAccessory(itemId, GetKey());
+        }
+        else if (type == PriceType.Happy)
+        {
+            if (price > GetHappy())
+            {
+                MageManager.instance.OnNotificationPopup(DataHolder.Dialog(8).GetDescription(MageManager.instance.GetLanguage()));
+                return;
+            }
+            AddHappy(-price, GetKey());
+            AddAccessory(itemId, GetKey());
+        }
+        Accessory a = DataHolder.GetAccessory(itemId);
+        CharController pet = GetPetObject(a.petId);
+        if(pet != null)
+        {
+            pet.LoadCharObject();
+        }
+    }
+
+
+    public void AddAccessory(int id, string key)
+    {
+        if (IsOK(key))
+        {
+            Accessory a = DataHolder.GetAccessory(id);
+            PlayerPet p = GetPet(a.petId);
+            if(p != null)
+            {
+                p.accessoryId = id;
+            }
+        }
+    }
+
+    public bool IsHaveAccessory(int itemId)
+    {
+        foreach (PlayerItem item in myPlayer.items)
+        {
+            if (item.itemId == itemId)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    #endregion
+
+
     public int GetDiamond()
     {
         return myPlayer.Diamond;

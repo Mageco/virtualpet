@@ -202,7 +202,7 @@ namespace MageApi
 
 		public static void Log(string s) {
 			#if UNITY_EDITOR
-				Debug.Log(s);
+				//Debug.Log(s);
 			#endif
 		}
 

@@ -97,6 +97,7 @@ public class CharController : MonoBehaviour
     public List<GameObject> dirties_LD = new List<GameObject>();
     public List<GameObject> skinPrefabs = new List<GameObject>();
     Vector3 callPosition;
+    GameObject charObject;
 
     #region Load
 
@@ -130,7 +131,6 @@ public class CharController : MonoBehaviour
 
     public void LoadPrefab()
     {
-
         data.petName = GameManager.instance.GetPet(data.iD).petName;
         GameObject nameObject = GameObject.Instantiate(Resources.Load("Prefabs/Pets/PetNamePrefab")) as GameObject;
         nameObject.transform.parent = this.transform;
@@ -138,13 +138,11 @@ public class CharController : MonoBehaviour
         petNameText = nameObject.GetComponent<TextMeshPro>();
         petNameText.text = data.petName;
 
-        GameObject go = Instantiate(petPrefab) as GameObject;
-        go.transform.parent = this.transform;
-        go.transform.localPosition = Vector3.zero;
+        LoadCharObject();
 
-        anim = go.transform.GetComponent<Animator>();
         charInteract = this.GetComponent<CharInteract>();
         charScale = this.GetComponent<CharScale>();
+
 
         GameObject go1 = Instantiate(Resources.Load("Prefabs/Pets/Agent")) as GameObject;
         //go1.transform.parent = GameManager.instance.transform;
@@ -192,6 +190,26 @@ public class CharController : MonoBehaviour
         }
 
         Load();
+    }
+
+    public void LoadCharObject()
+    {
+        if (charObject != null)
+            Destroy(charObject);
+
+        if (GameManager.instance.GetPet(data.iD).accessoryId == 0)
+        {
+            charObject = Instantiate(petPrefab) as GameObject;
+            charObject.transform.parent = this.transform;
+            charObject.transform.localPosition = Vector3.zero;            
+        }
+        else
+        {
+            charObject = Instantiate(skinPrefabs[DataHolder.GetAccessory(GameManager.instance.GetPet(data.iD).accessoryId).accessoryId]) as GameObject;
+            charObject.transform.parent = this.transform;
+            charObject.transform.localPosition = Vector3.zero;
+        }
+        anim = charObject.transform.GetComponent<Animator>();
     }
 
     public void LoadTime(float t)

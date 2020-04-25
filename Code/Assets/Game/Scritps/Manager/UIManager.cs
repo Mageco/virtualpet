@@ -36,6 +36,7 @@ public class UIManager : MonoBehaviour
     public GameObject spinWheelPanelPrefab;
     public GameObject spinRewardPanelPrefab;
     public GameObject dailyQuestPanelPrefab;
+    public GameObject accessoryPanelPrefab;
 
     public static UIManager instance;
 	public Text coinText;
@@ -99,6 +100,8 @@ public class UIManager : MonoBehaviour
     public SpinRewardPanel spinRewardPanel;
     [HideInInspector]
     public DailyQuestPanel dailyQuestPanel;
+    [HideInInspector]
+    public AccessoryPanel accessoryPanel;
 
     public GameObject achivementNotification;
     public GameObject giftNotification;
@@ -821,6 +824,20 @@ public class UIManager : MonoBehaviour
             popup.GetComponent<Popup>().Open();
             dailyQuestPanel = popup.GetComponent<DailyQuestPanel>();
             dailyQuestPanel.Load();
+        }
+    }
+
+    public void OnAccessoryPanel(int petId)
+    {
+        if (accessoryPanel == null)
+        {
+            var popup = Instantiate(accessoryPanelPrefab) as GameObject;
+            popup.SetActive(true);
+            popup.transform.localScale = Vector3.zero;
+            popup.transform.SetParent(GameObject.Find("Canvas").transform, false);
+            popup.GetComponent<Popup>().Open();
+            accessoryPanel = popup.GetComponent<AccessoryPanel>();
+            accessoryPanel.Load(petId);
         }
     }
 

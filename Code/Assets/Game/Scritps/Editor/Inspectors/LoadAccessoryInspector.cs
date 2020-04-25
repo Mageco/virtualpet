@@ -53,6 +53,7 @@ public class LoadAccessoryInspector : Editor
 
         if (GUILayout.Button("Import Accessory Data", GUILayout.Width(200)))
         {
+ 
             for (int i = 0; i < ((LoadAccessories)target).petBasic.Length; i++)
             {
                
@@ -70,6 +71,16 @@ public class LoadAccessoryInspector : Editor
                             {
                                 Debug.Log("Existed " + name);
                                 isExist = true;
+                                for (int m = 0; m < DataHolder.Pets().GetDataCount(); m++)
+                                {
+                                    if (DataHolder.Pet(m).prefabName == ((LoadAccessories)target).petBasic[i].name)
+                                    {
+
+                                        DataHolder.Accessory(k).petId = DataHolder.Pet(m).iD;
+                                        Debug.Log(DataHolder.Pet(m).iD + " : " + DataHolder.Pet(m).prefabName);
+                                        break;
+                                    }
+                                }
                                 break;
                             }
                         }
@@ -79,19 +90,19 @@ public class LoadAccessoryInspector : Editor
                             a.iD = DataHolder.LastAccessoryID() + 1;
                             a.SetName(0, name);
                             a.accessoryId = j + 1;
-                            a.levelRequire = 5 + (40 / go.GetComponent<CharController>().skinPrefabs.Count * j);
+                            a.levelRequire = 3*(j+1);
                             
                             Random.InitState(a.iD);
                             int n = Random.Range(0, 100);
                             if (n > 80)
                             {
                                 a.priceType = PriceType.Coin;
-                                a.buyPrice = (10 + j * 5)*120;
+                                a.buyPrice = 999;
                             }
                             else
                             {
                                 a.priceType = PriceType.Diamond;
-                                a.buyPrice = 10 + j * 5;
+                                a.buyPrice = 10;
                             }
                                 
                             string url = "Assets/Game/Resources/icons/Accessory/" + name + ".png";
@@ -100,7 +111,9 @@ public class LoadAccessoryInspector : Editor
                             {
                                 if (DataHolder.Pet(m).prefabName == ((LoadAccessories)target).petBasic[i].name)
                                 {
+                                    
                                     a.petId = DataHolder.Pet(m).iD;
+                                    Debug.Log(a.petId + " : " + DataHolder.Pet(m).prefabName);
                                     break;
                                 }
                             }
