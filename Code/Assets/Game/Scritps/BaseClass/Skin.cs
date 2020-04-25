@@ -4,10 +4,12 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-public class Skin : BaseModel
+public class Skin
 {
+	public int skinId = 0;
     public string iconUrl = "";
     public LanguageItem[] languageItem = new LanguageItem[0];
+	public int petId = 0;
     public PriceType priceType = PriceType.Coin;
     public int levelRequire = 0;
     public string prefabName = "";
