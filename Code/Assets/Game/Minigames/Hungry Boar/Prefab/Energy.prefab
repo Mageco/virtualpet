@@ -27,7 +27,7 @@ Transform:
   m_GameObject: {fileID: 6099518970738854518}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0.09710765, y: 0.41829026, z: 0.5}
-  m_LocalScale: {x: 0.4, y: 0.4, z: 1}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 1}
   m_Children: []
   m_Father: {fileID: 6195654424428922744}
   m_RootOrder: 1
@@ -220,8 +220,8 @@ ParticleSystem:
         m_RotationOrder: 4
     startColor:
       serializedVersion: 2
-      minMaxState: 0
-      minColor: {r: 1, g: 0.39741516, b: 0, a: 1}
+      minMaxState: 2
+      minColor: {r: 0.99845475, g: 1, b: 0.5801887, a: 1}
       maxColor: {r: 1, g: 0.7734498, b: 0, a: 1}
       maxGradient:
         serializedVersion: 2
@@ -549,8 +549,8 @@ ParticleSystem:
     startRotation:
       serializedVersion: 2
       minMaxState: 3
-      scalar: 3.1415925
-      minScalar: -3.1415925
+      scalar: -62.831852
+      minScalar: 0
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -971,7 +971,7 @@ ParticleSystem:
     m_BurstCount: 0
     m_Bursts: []
   SizeModule:
-    enabled: 0
+    enabled: 1
     curve:
       serializedVersion: 2
       minMaxState: 1
@@ -982,9 +982,18 @@ ParticleSystem:
         m_Curve:
         - serializedVersion: 3
           time: 0
-          value: 0
+          value: 0.49473572
           inSlope: 0
           outSlope: 0
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0.33333334
+          outWeight: 0.33333334
+        - serializedVersion: 3
+          time: 0.46021998
+          value: 0.95443
+          inSlope: 0.36177647
+          outSlope: 0.36177647
           tangentMode: 0
           weightedMode: 0
           inWeight: 0.33333334
@@ -4817,8 +4826,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1.634207, y: 1.1865315, z: 1}
-  m_Center: {x: 0.018653244, y: -0.09326577, z: 0}
+  m_Size: {x: 1.2779715, y: 1.550863, z: 1}
+  m_Center: {x: 0.0024607182, y: -0.040639997, z: 0}
 --- !u!1 &6195654423700850418
 GameObject:
   m_ObjectHideFlags: 0
@@ -4845,7 +4854,7 @@ Transform:
   m_GameObject: {fileID: 6195654423700850418}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.9, y: 0.9, z: 0.9}
   m_Children: []
   m_Father: {fileID: 6195654423447165254}
   m_RootOrder: 0
