@@ -663,6 +663,10 @@ public class CharController : MonoBehaviour
         {
             StartCoroutine(Gift());
         }
+        else if (actionType == ActionType.OnCity)
+        {
+            StartCoroutine(City());
+        }
     }
 
     #endregion
@@ -793,7 +797,7 @@ public class CharController : MonoBehaviour
             return;
         }
 
-        if (charInteract.interactType == InteractType.Drop || charInteract.interactType == InteractType.Jump || actionType == ActionType.OnControl || actionType == ActionType.OnGift)
+        if (charInteract.interactType == InteractType.Drop || charInteract.interactType == InteractType.Jump || actionType == ActionType.OnControl || actionType == ActionType.OnGift || actionType == ActionType.OnCity)
             return;
 
         Abort();
@@ -959,6 +963,12 @@ public class CharController : MonoBehaviour
             MageManager.instance.PlaySound3D("Shake", false,this.transform.position);
         }
 
+    }
+
+    public void OnCity()
+    {
+        Abort();
+        actionType = ActionType.OnCity;
     }
 
     public virtual void OnControl()
@@ -2297,6 +2307,15 @@ public class CharController : MonoBehaviour
         else
         {
             yield return StartCoroutine(DoAnim("Love"));
+        }
+        CheckAbort();
+    }
+
+    protected virtual IEnumerator City()
+    {
+        while (!isAbort)
+        {
+            yield return new WaitForEndOfFrame();
         }
         CheckAbort();
     }

@@ -154,6 +154,8 @@ public class GameManager : MonoBehaviour
 
     }
 
+
+
     public void AddPet(int itemId,string key)
     {
         if (IsOK(key))

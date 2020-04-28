@@ -13,7 +13,7 @@ public class CityManager : MonoBehaviour
     public string music = "Forest";
     public GameObject coinPrefab;
     public GameObject starPrefab;
-
+    public int activePetId = 0;
 
 
     void Awake()
@@ -31,11 +31,36 @@ public class CityManager : MonoBehaviour
         today = System.DateTime.Today;
         CheckDayNight();
         LoadMusic();
+        SpawnPet(activePetId);
     }
 
 
+    void SpawnPet(int petId)
+    {
 
-   
+        if (GameManager.instance.GetPetObject(petId) != null)
+            return;
+
+        Pet p = DataHolder.GetPet(petId);
+        PlayerPet pet = GameManager.instance.GetPet(petId);
+
+        if (p == null)
+            return;
+
+        string url = "";
+        url = p.prefabName.Replace("Assets/Game/Resources/", "");
+        url = url.Replace(".prefab", "");
+        url = DataHolder.Pets().GetPrefabPath() + url;
+        //Debug.Log(url);
+        GameObject go = GameObject.Instantiate((Resources.Load(url) as GameObject), Vector3.zero, Quaternion.identity) as GameObject;
+        CharController character = go.GetComponent<CharController>();
+        go.transform.position = Vector3.zero;
+        character.LoadData(pet);
+        character.LoadPrefab();
+        character.OnCity();
+        GameManager.instance.AddPetObject(character);
+    }
+
 
 
     // Update is called once per frame
