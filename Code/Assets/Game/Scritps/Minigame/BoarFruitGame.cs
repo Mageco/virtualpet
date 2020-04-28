@@ -5,22 +5,23 @@ using UnityEngine;
 public class BoarFruitGame : MonoBehaviour
 {
     public float originalSpeed = 10;
-    public float speed = 0;
+    float speed = 0;
     float time = 0;
-    AnimalState state = AnimalState.Idle;
+    public AnimalState state = AnimalState.Idle;
     public Animator animator;
     Direction direction = Direction.R;
-    bool isPower = true;
+    public bool isPower = false;
+    public bool isMove = false;
+    public bool isEat = false;
+    
 
     private void Awake()
     {
-        
+        speed = originalSpeed;
     }
     // Start is called before the first frame update
     void Start()
     {
-        speed = originalSpeed;
-        animator.Play("Head_Idle", 1);
     }
 
     // Update is called once per frame
@@ -58,12 +59,34 @@ public class BoarFruitGame : MonoBehaviour
 
             animator.transform.position = pos;
         }
+
+
+        if(state != AnimalState.Cached)
+        {
+
+            if (isEat)
+            {
+                animator.Play("Head_Eat", 1);
+            }
+            else if (isPower)
+            {
+                animator.Play("Head_PowerUp", 1);
+            }
+
+            else if (isMove)
+            {
+                animator.Play("Head_Run", 1);
+            }
+            else
+                animator.Play("Head_Idle", 1);
+        }
+
+
     }
 
     public void OnIncreaseSpeed()
     {
-        isPower = true;
-        animator.Play("Head_PowerUp", 1);
+        isPower = true; 
         speed = originalSpeed * 1.5f;
     }
 
@@ -76,7 +99,13 @@ public class BoarFruitGame : MonoBehaviour
 
     public void Eat()
     {
-        animator.Play("Head_Eat", 1);
+        isEat = true;
+        Invoke("OffEat", 1f);
+    }
+
+    void OffEat()
+    {
+        isEat = false;
     }
 
     public void OnLose()
@@ -84,13 +113,21 @@ public class BoarFruitGame : MonoBehaviour
         state = AnimalState.Cached;
         animator.Play("Head_Fail", 1);
         animator.Play("Fail_" + direction.ToString(), 0);
+        StartCoroutine(LoseCoroutine());
+    }
+
+    IEnumerator LoseCoroutine()
+    {
+        yield return new WaitForSeconds(1);
+        Minigame.instance.EndGame();
     }
 
     public void OnRunLeft()
     {
-        if (state == AnimalState.Idle)
+        Debug.Log("IsPointLeftDown");
+        if (state != AnimalState.Cached)
         {
-            animator.Play("Head_Run", 1);
+            isMove = true;
             direction = Direction.L;
             state = AnimalState.Run;
         }
@@ -99,9 +136,9 @@ public class BoarFruitGame : MonoBehaviour
 
     public void OnRunRight()
     {
-        if(state == AnimalState.Idle)
+        if(state != AnimalState.Cached)
         {
-            animator.Play("Head_Run", 1);
+            isMove = true;
             direction = Direction.R;
             state = AnimalState.Run;
         }
@@ -110,7 +147,7 @@ public class BoarFruitGame : MonoBehaviour
 
     public void OnStop()
     {
-        animator.Play("Head_Idle", 1);
+        isMove = false;
         if (state == AnimalState.Run)
             state = AnimalState.Idle;
     }
@@ -128,4 +165,5 @@ public class BoarFruitGame : MonoBehaviour
 
     }
 }
+
 

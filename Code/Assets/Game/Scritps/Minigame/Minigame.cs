@@ -125,7 +125,9 @@ public class Minigame : MonoBehaviour
     }
 
     public virtual void EndGame(){
-        
+        state = GameState.End;
+        MageManager.instance.StopMusic();
+        OnEndGame(bonus);
     }
 
     public int GetZindex()

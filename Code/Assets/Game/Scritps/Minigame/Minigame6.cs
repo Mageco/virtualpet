@@ -49,11 +49,19 @@ public class Minigame6 : Minigame
             {
                 timeSpawn = 0;
                 SpawnFruit();
-                timeDuration = Random.Range(0.5f, 2f);
+                timeDuration = Random.Range(0.5f, 2.5f);
+
             }
             else
                 timeSpawn += Time.deltaTime;
+
+
+            if (live <= 0)
+                EndGame();
         }
+
+        if (live <= 0)
+            live = 0;
 
     }
 
@@ -64,12 +72,7 @@ public class Minigame6 : Minigame
         go.transform.position = new Vector3(Random.Range(-9f, 9f), maxY, 0);
         FruitFallItem fruit = go.GetComponent<FruitFallItem>();
         fruits.Add(fruit);
-    }
-
-
-    public void OnExplode()
-    {
-        EndGame();
+        fruit.Load(Mathf.Clamp(0.1f * (1 + time / 10),0.1f,0.5f));
     }
 
 
@@ -81,12 +84,6 @@ public class Minigame6 : Minigame
         }
     }
 
-    public override void EndGame()
-    {
-        state = GameState.End;
-        MageManager.instance.StopMusic();
-        OnEndGame(bonus);
-    }
 
     public void OnGuildPanel()
     {
