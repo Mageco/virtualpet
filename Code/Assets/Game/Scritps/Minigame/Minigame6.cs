@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class Minigame6 : Minigame
 {
-    public Text scoreText;
+    public Text liveText;
     public int score = 0;
     public float speed = 10;
     public GameObject[] fruitPrefabs;
@@ -14,7 +14,6 @@ public class Minigame6 : Minigame
     float timeDuration = 0;
     float timeSpawn = 0;
     float maxY = 3;
-    float minY = 0;
     GuideUI guildUI;
 
 
@@ -24,31 +23,15 @@ public class Minigame6 : Minigame
         base.Start();
         float ratio = Screen.height * 1f / Screen.width;
         Debug.Log(ratio);
-        Camera.main.orthographicSize = 15 * ratio;
-        Camera.main.transform.position += new Vector3(0, Camera.main.orthographicSize - 7, 0);
-        maxY = Camera.main.orthographicSize + 1 + Camera.main.transform.position.y;
-        minY = Camera.main.transform.position.y - Camera.main.orthographicSize - 1;
-        if (GameManager.instance.myPlayer.minigameLevels[minigameId] == 0)
-            OnGuildPanel();
-        else
+        Camera.main.orthographicSize = 10f * ratio;
+        Camera.main.transform.position += new Vector3(0, Camera.main.orthographicSize - 6, 0);
+        maxY = Camera.main.orthographicSize + 1;
+        //if (GameManager.instance.myPlayer.minigameLevels != null && GameManager.instance.myPlayer.minigameLevels[minigameId] == 0)
+        //    OnGuildPanel();
+        //else
             StartGame();
 
         MageManager.instance.PlayMusicName("Minigame4", true);
-    }
-
-    public void Arm()
-    {
-        if (state != GameState.Run)
-            return;
-
-    }
-
-    public void Eat()
-    {
-        if (state != GameState.Run)
-            return;
-
-        
     }
 
 
@@ -56,7 +39,7 @@ public class Minigame6 : Minigame
     protected override void Update()
     {
         base.Update();
-        scoreText.text = score.ToString();
+        liveText.text = live.ToString();
 
         time += Time.deltaTime;
 
@@ -78,9 +61,8 @@ public class Minigame6 : Minigame
     {
         int id = Random.Range(0, fruitPrefabs.Length);
         GameObject go = GameObject.Instantiate(fruitPrefabs[id]) as GameObject;
-        go.transform.position = new Vector3(Random.Range(-1, 10), minY, 0);
+        go.transform.position = new Vector3(Random.Range(-9f, 9f), maxY, 0);
         FruitFallItem fruit = go.GetComponent<FruitFallItem>();
-        float speed = Random.Range(2, 3) + time / 50;
         fruits.Add(fruit);
     }
 

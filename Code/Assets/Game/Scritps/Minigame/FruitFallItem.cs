@@ -37,10 +37,11 @@ public class FruitFallItem : MonoBehaviour
                 other.GetComponent<BoarFruitGame>().OnLose();
                 Minigame.instance.live = 0;
             }
+            other.GetComponent<BoarFruitGame>().Eat();
             Eat();
         }else if(other.tag == "Floor")
         {
-            other.GetComponent<BoarFruitGame>().ResetSpeed();
+            GameObject.FindObjectOfType<BoarFruitGame>().ResetSpeed();
             Minigame.instance.live--;
             GameObject.Destroy(this.gameObject);
         }
