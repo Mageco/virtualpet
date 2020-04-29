@@ -34,7 +34,7 @@ public class AccessoryUI : MonoBehaviour
         url = url.Replace(".png", "");
         icon.sprite = Resources.Load<Sprite>(url) as Sprite;
 
-        if (GameManager.instance.IsHaveAccessory(d.iD))
+        if (GameManager.instance.IsHaveAccessory(d.petId,d.iD))
         {
             state = ItemState.Have;
         }
@@ -72,68 +72,80 @@ public class AccessoryUI : MonoBehaviour
         }
         else
         {
-            if (state == ItemState.OnShop)
+            if(itemId == 0)
             {
                 price.gameObject.SetActive(true);
-                price.text = d.buyPrice.ToString();
+                price.text = "0";
                 buyButton.gameObject.SetActive(true);
                 buyButton.interactable = true;
-                if(d.itemTag == ItemTag.Hot)
-                {
-                    tags[0].transform.parent.gameObject.SetActive(true);
-                    tags[0].SetActive(true);
-                }
-                else if(d.itemTag == ItemTag.Sale)
-                {
-                    tags[0].transform.parent.gameObject.SetActive(true);
-                    tags[1].SetActive(true);
-                }
-                else if (d.itemTag == ItemTag.New)
-                {
-                    tags[0].transform.parent.gameObject.SetActive(true);
-                    tags[2].SetActive(true);
-                }
-                    
+                coinIcon.SetActive(true);
             }
-            else if (state == ItemState.Have)
+            else
             {
-                buyButton.gameObject.SetActive(true);
-                buyButton.interactable = false;
-            }
+                if (state == ItemState.OnShop)
+                {
+                    price.gameObject.SetActive(true);
+                    price.text = d.buyPrice.ToString();
+                    buyButton.gameObject.SetActive(true);
+                    buyButton.interactable = true;
+                    if (d.itemTag == ItemTag.Hot)
+                    {
+                        tags[0].transform.parent.gameObject.SetActive(true);
+                        tags[0].SetActive(true);
+                    }
+                    else if (d.itemTag == ItemTag.Sale)
+                    {
+                        tags[0].transform.parent.gameObject.SetActive(true);
+                        tags[1].SetActive(true);
+                    }
+                    else if (d.itemTag == ItemTag.New)
+                    {
+                        tags[0].transform.parent.gameObject.SetActive(true);
+                        tags[2].SetActive(true);
+                    }
 
-            if (state == ItemState.OnShop)
-            {
-                if (d.priceType == PriceType.Coin)
+                }
+                else if (state == ItemState.Have)
                 {
-                    coinIcon.SetActive(true);
-                    if (GameManager.instance.GetCoin() < (DataHolder.GetAccessory(itemId).buyPrice))
+                    buyButton.gameObject.SetActive(true);
+                    buyButton.interactable = false;
+                }
+
+                if (state == ItemState.OnShop)
+                {
+                    if (d.priceType == PriceType.Coin)
                     {
-                        buyButton.interactable = false;
+                        coinIcon.SetActive(true);
+                        if (GameManager.instance.GetCoin() < (DataHolder.GetAccessory(itemId).buyPrice))
+                        {
+                            buyButton.interactable = false;
+                        }
                     }
-                }
-                else if (d.priceType == PriceType.Diamond)
-                {
-                    diamonIcon.SetActive(true);
-                    if (GameManager.instance.GetDiamond() < (DataHolder.GetAccessory(itemId).buyPrice))
+                    else if (d.priceType == PriceType.Diamond)
                     {
-                        buyButton.interactable = false;
+                        diamonIcon.SetActive(true);
+                        if (GameManager.instance.GetDiamond() < (DataHolder.GetAccessory(itemId).buyPrice))
+                        {
+                            buyButton.interactable = false;
+                        }
                     }
-                }
-                else if (d.priceType == PriceType.Money)
-                {
-                    moneyIcon.SetActive(true);
-                    moneyIcon.GetComponent<Text>().text = DataHolder.Dialog(64).GetName(MageManager.instance.GetLanguage());
-                    price.text = (d.buyPrice * (float.Parse(DataHolder.Dialog(64).GetDescription(MageManager.instance.GetLanguage())))).ToString(".00");
-                }
-                else if (d.priceType == PriceType.Happy)
-                {
-                    happyIcon.SetActive(true);
-                    if (state == ItemState.OnShop && GameManager.instance.GetHappy() < (DataHolder.GetAccessory(itemId).buyPrice))
+                    else if (d.priceType == PriceType.Money)
                     {
-                        buyButton.interactable = false;
+                        moneyIcon.SetActive(true);
+                        moneyIcon.GetComponent<Text>().text = DataHolder.Dialog(64).GetName(MageManager.instance.GetLanguage());
+                        price.text = (d.buyPrice * (float.Parse(DataHolder.Dialog(64).GetDescription(MageManager.instance.GetLanguage())))).ToString(".00");
+                    }
+                    else if (d.priceType == PriceType.Happy)
+                    {
+                        happyIcon.SetActive(true);
+                        if (state == ItemState.OnShop && GameManager.instance.GetHappy() < (DataHolder.GetAccessory(itemId).buyPrice))
+                        {
+                            buyButton.interactable = false;
+                        }
                     }
                 }
             }
+ 
         }
     }
 
@@ -166,8 +178,11 @@ public class AccessoryUI : MonoBehaviour
     {
         isBusy = true;
         GameManager.instance.BuyAccessory(itemId);
-        if (UIManager.instance.accessoryPanel != null)
-            UIManager.instance.accessoryPanel.Close();
+        MageManager.instance.OnNotificationPopup(DataHolder.Dialog(76).GetName(MageManager.instance.GetLanguage()));
+        if(UIManager.instance.accessoryPanel != null)
+        {
+            UIManager.instance.accessoryPanel.ReLoad();
+        }
     }
 
     public void OnItemInfo()

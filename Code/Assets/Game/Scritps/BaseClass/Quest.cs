@@ -11,8 +11,10 @@ public class Quest
     //Requirement
     //Rewards
     public bool haveItem = false;
-    public int itemId = 0;
-    public int coinValue = 0;
+	public bool havePet = false;
+	public int itemId = 0;
+	public int petId = 0;
+	public int coinValue = 0;
     public int diamondValue = 0;
     public int expValue = 0;
     //Dialog

@@ -36,6 +36,7 @@ public class LoadAccessoryInspector : Editor
                     //var pastePath = PrefabUtility.A.GetAssetPath(go);
                     //Debug.Log(pastePath);
                     go.GetComponent<CharController>().skinPrefabs.Clear();
+                    go.GetComponent<CharController>().skinPrefabs.Add(((LoadAccessories)target).petBasic[i]);
                     for (int j = 0; j < 20; j++)
                     {
                         var copyPath = sourcePath + "_Accessory_" + (j + 1).ToString() + ".prefab";
@@ -64,7 +65,7 @@ public class LoadAccessoryInspector : Editor
                     for (int j = 0; j < go.GetComponent<CharController>().skinPrefabs.Count; j++)
                     {
                         bool isExist = false;
-                        string name = ((LoadAccessories)target).petBasic[i].name + "_Accessory_" + (j + 1).ToString();
+                        string name = ((LoadAccessories)target).petBasic[i].name + "_Accessory_" + j.ToString();
                         for (int k = 0; k < DataHolder.Accessories().GetDataCount(); k++)
                         {
                             if(DataHolder.Accessory(k).GetName(0) == name)
@@ -89,34 +90,47 @@ public class LoadAccessoryInspector : Editor
                             Accessory a = new Accessory();
                             a.iD = DataHolder.LastAccessoryID() + 1;
                             a.SetName(0, name);
-                            a.accessoryId = j + 1;
-                            a.levelRequire = 3*(j+1);
+                            a.accessoryId = j;
+                            a.levelRequire = 3*j;
                             
                             Random.InitState(a.iD);
-                            int n = Random.Range(0, 100);
-                            if (n > 80)
-                            {
-                                a.priceType = PriceType.Coin;
-                                a.buyPrice = 999;
-                            }
-                            else
-                            {
-                                a.priceType = PriceType.Diamond;
-                                a.buyPrice = 10;
-                            }
-                                
-                            string url = "Assets/Game/Resources/icons/Accessory/" + name + ".png";
-                            a.iconUrl = url;
-                            for(int m = 0; m < DataHolder.Pets().GetDataCount(); m++)
+
+                            for (int m = 0; m < DataHolder.Pets().GetDataCount(); m++)
                             {
                                 if (DataHolder.Pet(m).prefabName == ((LoadAccessories)target).petBasic[i].name)
                                 {
-                                    
+
                                     a.petId = DataHolder.Pet(m).iD;
                                     Debug.Log(a.petId + " : " + DataHolder.Pet(m).prefabName);
                                     break;
                                 }
                             }
+
+                            if (j == 0)
+                            {
+                                string url = DataHolder.GetPet(a.petId).iconUrl;
+                                a.iconUrl = url;
+                                a.priceType = PriceType.Coin;
+                                a.buyPrice = 0;
+                            }
+                            else
+                            {
+                                string url = "Assets/Game/Resources/icons/Accessory/" + name + ".png";
+                                a.iconUrl = url;
+                                int n = Random.Range(0, 100);
+                                if (n > 80)
+                                {
+                                    a.priceType = PriceType.Coin;
+                                    a.buyPrice = 999;
+                                }
+                                else
+                                {
+                                    a.priceType = PriceType.Diamond;
+                                    a.buyPrice = 10;
+                                }
+                            }
+ 
+
                             DataHolder.Accessories().accessories = ArrayHelper.Add(a, DataHolder.Accessories().accessories);
                             Debug.Log("Add " + name);
                         }

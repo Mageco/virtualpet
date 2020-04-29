@@ -290,7 +290,7 @@ public class DataHolder
 		if (DataHolder.Instance().accessories != null && DataHolder.Instance().accessories.GetDataCount() > 0)
 			return DataHolder.Instance().accessories.accessories[DataHolder.Instance().accessories.accessories.Length - 1].iD;
 		else
-			return 0;
+			return -1;
 	}
 
 

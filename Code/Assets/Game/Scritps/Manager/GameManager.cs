@@ -897,11 +897,11 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public bool IsHaveAccessory(int itemId)
+    public bool IsHaveAccessory(int petId,int itemId)
     {
-        foreach (PlayerItem item in myPlayer.items)
+        foreach (PlayerPet pet in myPlayer.petDatas)
         {
-            if (item.itemId == itemId)
+            if (pet.iD == petId && pet.accessoryId == itemId)
             {
                 return true;
             }

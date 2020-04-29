@@ -82,7 +82,12 @@ public class QuestTab : BaseTab
                    lastSellection = selection;
                     
                 }
-				EditorGUILayout.Separator();
+                DataHolder.Quest(selection).havePet = EditorGUILayout.Toggle("Item Reward", DataHolder.Quest(selection).havePet, GUILayout.Width(pw.mWidth));
+                if (DataHolder.Quest(selection).havePet)
+                {
+                    DataHolder.Quest(selection).petId = EditorGUILayout.Popup("Pet", DataHolder.Quest(selection).petId, DataHolder.Pets().GetNameList(true), GUILayout.Width(pw.mWidth));
+                }
+                EditorGUILayout.Separator();
 			}
 			EditorGUILayout.EndVertical();
 
