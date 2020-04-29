@@ -119,6 +119,7 @@ public class BoarFruitGame : MonoBehaviour
     IEnumerator LoseCoroutine()
     {
         yield return new WaitForSeconds(1);
+        MageManager.instance.PlaySound("Fall", false);
         Minigame.instance.EndGame();
     }
 

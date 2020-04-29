@@ -42,7 +42,7 @@ public class Minigame5 : Minigame
 	protected override void Start()
 	{
 		base.Start();
-
+		MageManager.instance.PlayMusicName("Minigame2", true);
 		animator = playerObject.GetComponent<Animator>();
 
 		//MageManager.instance.PlayMusic(music, 0, true);

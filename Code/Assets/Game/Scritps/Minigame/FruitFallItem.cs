@@ -20,12 +20,6 @@ public class FruitFallItem : MonoBehaviour
 
     }
 
-    public void Eat()
-    {
-        Minigame.instance.bonus += point;
-        GameObject.Destroy(this.gameObject);
-    }
-
     public void Load(float gravity)
     {
         rigid.gravityScale = gravity;
@@ -38,22 +32,26 @@ public class FruitFallItem : MonoBehaviour
         {
             if (effect == BallFlyItemEffect.Speed)
             {
-                Eat();
+                MageManager.instance.PlaySound("Collect_Item", false);        
                 other.GetComponent<BoarFruitGame>().OnIncreaseSpeed();
             }else if(effect == BallFlyItemEffect.Explode){
+                MageManager.instance.PlaySound("Fox_Hurt", false);
                 other.GetComponent<BoarFruitGame>().OnLose();
                 Minigame.instance.live = 0;
             }else
             {
+                MageManager.instance.PlaySound("collect_item_02", false);
                 other.GetComponent<BoarFruitGame>().Eat();
-                Eat();
+                Minigame.instance.SpawnCoin(this.transform.position, point);
+                Minigame.instance.bonus += point;
             }
-                
-            
-        }else if(other.tag == "Floor")
+            GameObject.Destroy(this.gameObject);
+        }
+        else if(other.tag == "Floor")
         {
             if(effect != BallFlyItemEffect.Explode && effect != BallFlyItemEffect.Speed)
             {
+                MageManager.instance.PlaySound("Item_Dissapear", false);
                 GameObject.FindObjectOfType<BoarFruitGame>().ResetSpeed();
                 Minigame.instance.live--;
                 GameObject.Destroy(this.gameObject);

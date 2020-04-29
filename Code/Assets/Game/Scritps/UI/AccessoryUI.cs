@@ -68,7 +68,7 @@ public class AccessoryUI : MonoBehaviour
         {
             price.gameObject.SetActive(false);
             levelText.gameObject.SetActive(true);
-            levelText.text = DataHolder.Dialog(27).GetName(MageManager.instance.GetLanguage()) + " " + d.levelRequire.ToString();
+            levelText.text = DataHolder.Dialog(145).GetName(MageManager.instance.GetLanguage()) + " " + DataHolder.Dialog(27).GetName(MageManager.instance.GetLanguage()) + " " + d.levelRequire.ToString();
         }
         else
         {

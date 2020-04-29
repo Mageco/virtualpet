@@ -26,12 +26,12 @@ public class Minigame6 : Minigame
         Camera.main.orthographicSize = 10f * ratio;
         Camera.main.transform.position += new Vector3(0, Camera.main.orthographicSize - 6, 0);
         maxY = Camera.main.orthographicSize + 1;
-        //if (GameManager.instance.myPlayer.minigameLevels != null && GameManager.instance.myPlayer.minigameLevels[minigameId] == 0)
-        //    OnGuildPanel();
-        //else
+        if (GameManager.instance.myPlayer.minigameLevels != null && GameManager.instance.myPlayer.minigameLevels[minigameId] == 0)
+            OnGuildPanel();
+        else
             StartGame();
 
-        MageManager.instance.PlayMusicName("Minigame4", true);
+        MageManager.instance.PlayMusicName("Minigame2", true);
     }
 
 

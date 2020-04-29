@@ -13,7 +13,7 @@ public class CityManager : MonoBehaviour
     public string music = "Forest";
     public GameObject coinPrefab;
     public GameObject starPrefab;
-    public int activePetId = 0;
+    //public int activePetId = 0;
 
 
     void Awake()
@@ -31,7 +31,7 @@ public class CityManager : MonoBehaviour
         today = System.DateTime.Today;
         CheckDayNight();
         LoadMusic();
-        SpawnPet(activePetId);
+        //SpawnPet(activePetId);
     }
 
 
