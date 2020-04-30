@@ -97,7 +97,7 @@ public class ItemInfoUI : MonoBehaviour
                 sellButton.gameObject.SetActive(false);
                 price.text = (d.buyPrice / 2).ToString();
 
-                if (DataHolder.GetItem(itemId).itemType == ItemType.Room && GameManager.instance.GetBuyItems(ItemType.Room).Count == 1)
+                if (DataHolder.GetItem(itemId).itemType == ItemType.Room && GameManager.instance.GetItemNumber(ItemType.Room) == 1)
                 {
                     sellButton.interactable = false;
                 }

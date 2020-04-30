@@ -13,6 +13,7 @@ public class ItemCollider : BaseFloorItem
 	public Transform anchorPoint;
 	public Transform startPoint;
 	public Transform endPoint;
+	public bool isWall = false;
 
 	Animator[] animParts;
 
@@ -24,11 +25,18 @@ public class ItemCollider : BaseFloorItem
 		animParts = this.GetComponentsInChildren<Animator>(true);
 	}
 
-
+    
 	protected override void Start()
 	{
-		item = this.transform.parent.GetComponent<ItemObject>();
-		boundX = ItemManager.instance.houseItem.gardenBoundX;
+        if (isWall)
+        {
+			item = this.transform.parent.GetComponent<ItemObject>();
+			boundX = ItemManager.instance.houseItem.roomBoundX;
+		}
+		else
+        {
+			base.Start();
+        }
 	}
 
 	// Update is called once per frame
@@ -72,14 +80,14 @@ public class ItemCollider : BaseFloorItem
 
 	protected override void LateUpdate()
 	{
-
-
+        if (!isWall)
+        {
+			base.LateUpdate();
+        }
 	}
 
 	protected override void OnDrag()
 	{
-
-
 		if (animator != null)
 			animator.enabled = false;
         for(int i = 0; i < animParts.Length; i++)

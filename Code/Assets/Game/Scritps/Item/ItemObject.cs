@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class ItemObject : MonoBehaviour
 {
+    public int realID = 0;
     public int itemID = 0;
 	public ItemType itemType = ItemType.Coin;
     ItemCollider itemCollider;

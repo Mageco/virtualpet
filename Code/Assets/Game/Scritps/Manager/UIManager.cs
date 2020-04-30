@@ -37,6 +37,7 @@ public class UIManager : MonoBehaviour
     public GameObject spinRewardPanelPrefab;
     public GameObject dailyQuestPanelPrefab;
     public GameObject accessoryPanelPrefab;
+    public GameObject inventoryPanelPrefab;
 
     public static UIManager instance;
 	public Text coinText;
@@ -102,6 +103,8 @@ public class UIManager : MonoBehaviour
     public DailyQuestPanel dailyQuestPanel;
     [HideInInspector]
     public AccessoryPanel accessoryPanel;
+    [HideInInspector]
+    public InventoryPanel inventoryPanel;
 
     public GameObject achivementNotification;
     public GameObject giftNotification;
@@ -273,8 +276,8 @@ public class UIManager : MonoBehaviour
 
 	public void BuyItem(int itemID){
         MageEngine.instance.OnEvent(Mage.Models.Application.MageEventType.CheckoutIAPWindow ,DataHolder.GetItem(itemID).GetName(MageManager.instance.GetLanguage()));
-        GameManager.instance.BuyItem(itemID);
-      GameManager.instance.EquipItem(itemID);
+        int realId = GameManager.instance.BuyItem(itemID);
+      GameManager.instance.EquipItem(realId);
       if(ItemManager.instance != null)
             ItemManager.instance.EquipItem();
       GameManager.instance.LogAchivement(AchivementType.Buy_Item);
@@ -304,8 +307,8 @@ public class UIManager : MonoBehaviour
 
     public void SellItem(int itemID){
         GameManager.instance.SellItem(itemID);
-        if (shopPanel != null)
-            shopPanel.ReLoad();
+        if (inventoryPanel != null)
+            inventoryPanel.Load();
         if (petRequirementPanel != null)
             petRequirementPanel.ReLoad();
     }
@@ -320,9 +323,9 @@ public class UIManager : MonoBehaviour
 	public void BuyPet(int itemID){
         MageEngine.instance.OnEvent(Mage.Models.Application.MageEventType.CheckOutItem, DataHolder.GetPet(itemID).GetName(MageManager.instance.GetLanguage()));
 
-        GameManager.instance.BuyPet(itemID);
+        int realId = GameManager.instance.BuyPet(itemID);
         if(ItemManager.instance != null)
-            GameManager.instance.EquipPet(itemID);
+            GameManager.instance.EquipPet(realId);
         if (shopPanel != null)
             shopPanel.Close();
         if (petRequirementPanel != null)
@@ -530,7 +533,7 @@ public class UIManager : MonoBehaviour
     }
 
 
-    public void OnConfirmationShopPanel(int itemid,bool isCharacter,bool isBuy,int colorId = 0)
+    public void OnConfirmationShopPanel(int itemid,bool isCharacter,bool isBuy)
     {
         if (confirmBuyShopPopup == null)
         {
@@ -541,9 +544,9 @@ public class UIManager : MonoBehaviour
             popup.GetComponent<Popup>().Open();
             confirmBuyShopPopup = popup.GetComponent<ConfirmBuyShopPopup>();
             if(isCharacter)
-                confirmBuyShopPopup.Load(DataHolder.GetPet(itemid),isBuy);
+                confirmBuyShopPopup.LoadPet(itemid,isBuy);
             else
-                confirmBuyShopPopup.Load(DataHolder.GetItem(itemid),isBuy);
+                confirmBuyShopPopup.LoadItem(itemid,isBuy);
         }
      }
 
@@ -841,6 +844,19 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    public void OnInventoryPanel()
+    {
+        if (inventoryPanel == null)
+        {
+            var popup = Instantiate(inventoryPanelPrefab) as GameObject;
+            popup.SetActive(true);
+            popup.transform.localScale = Vector3.zero;
+            popup.transform.SetParent(GameObject.Find("Canvas").transform, false);
+            popup.GetComponent<Popup>().Open();
+            inventoryPanel = popup.GetComponent<InventoryPanel>();
+            inventoryPanel.Load();
+        }
+    }
 
     public void OnChestSalePanel(RareType rareType)
     {

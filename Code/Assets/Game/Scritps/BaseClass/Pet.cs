@@ -6,6 +6,7 @@ using System.Collections.Generic;
 [System.Serializable]
 public class Pet : BaseModel
 {
+    public int realId = 0;
     public int iD = 0;
     public string iconUrl = "";
     public LanguageItem[] languageItem = new LanguageItem[0];

@@ -8,7 +8,7 @@ public class BaseFloorItem : MonoBehaviour
 	protected Animator animator;
 	[HideInInspector]
 	public ItemObject item;
-	protected float scaleFactor = 0.03f;
+	protected float scaleFactor = 0.01f;
 	protected Vector3 dragOffset;
 	public EquipmentState state = EquipmentState.Idle;
 	protected Vector3 originalPosition;
@@ -52,6 +52,7 @@ public class BaseFloorItem : MonoBehaviour
 	{
 		item = this.transform.parent.GetComponent<ItemObject>();
 		boundX = ItemManager.instance.houseItem.gardenBoundX;
+		boundY = ItemManager.instance.houseItem.gardenBoundY;
 		Vector3 pos = this.transform.position;
 		pos.z = pos.y * 10;
 		this.transform.position = pos;
@@ -69,7 +70,7 @@ public class BaseFloorItem : MonoBehaviour
 		if (state == EquipmentState.Hold)
 		{
 			dragTime += Time.deltaTime;
-			if (dragTime > 0.5f)
+			if (dragTime > 0.4f)
 			{
 				if (Vector2.Distance(Camera.main.ScreenToWorldPoint(Input.mousePosition), clickPosition) < 1f)
 				{
@@ -97,11 +98,11 @@ public class BaseFloorItem : MonoBehaviour
 				}
 			}
 
-			if (dragTime > 1f && Vector2.Distance(Camera.main.ScreenToWorldPoint(Input.mousePosition), clickPosition) < 1f)
+			if (dragTime > 0.5f && Vector2.Distance(Camera.main.ScreenToWorldPoint(Input.mousePosition), clickPosition) < 1f)
 			{
 				OnDrag();
 			}
-			else if (dragTime > 1f)
+			else if (dragTime > 0.5f)
 				OffDrag();
 
 
@@ -150,7 +151,7 @@ public class BaseFloorItem : MonoBehaviour
 
 		if (state == EquipmentState.Drag || state == EquipmentState.Hold)
 		{
-			if (dragTime < 0.5f)
+			if (dragTime < 0.4f)
 			{
 				OnClick();
 			}

@@ -99,6 +99,8 @@ public class CharController : MonoBehaviour
     Vector3 callPosition;
     GameObject charObject;
 
+    ItemCollider currentItemCollider;
+
     #region Load
 
     void Awake()
@@ -115,15 +117,27 @@ public class CharController : MonoBehaviour
     public void LoadData(PlayerPet pet)
     {
 
-        if (!GameManager.instance.isGuest && ES2.Exists(DataHolder.GetPet(pet.iD).GetName(0)))
+        if (!GameManager.instance.isGuest && ES2.Exists(DataHolder.GetPet(data.realId).GetName(0) + data.realId.ToString()))
         {
-            Pet p = ES2.Load<Pet>(DataHolder.GetPet(pet.iD).GetName(0));
-            p.level = pet.level;
-            this.data = p;
+            if (float.Parse(GameManager.instance.myPlayer.version) < 1.20f)
+            {
+                Pet p = new Pet(pet.iD);
+                p.realId = pet.realId;
+                p.level = pet.level;
+                this.data = p;
+            }
+            else
+            {
+                Pet p = ES2.Load<Pet>(DataHolder.GetPet(pet.realId).GetName(0));
+                p.realId = pet.realId;
+                p.level = pet.level;
+                this.data = p;
+            }
         }
         else
         {
             Pet p = new Pet(pet.iD);
+            p.realId = pet.realId;
             p.level = pet.level;
             this.data = p;
         }
@@ -131,7 +145,7 @@ public class CharController : MonoBehaviour
 
     public void LoadPrefab()
     {
-        data.petName = GameManager.instance.GetPet(data.iD).petName;
+        data.petName = GameManager.instance.GetPet(data.realId).petName;
         GameObject nameObject = GameObject.Instantiate(Resources.Load("Prefabs/Pets/PetNamePrefab")) as GameObject;
         nameObject.transform.parent = this.transform;
         nameObject.transform.position = iconStatusObject.transform.position - new Vector3(0,2,0);
@@ -197,7 +211,7 @@ public class CharController : MonoBehaviour
         if (charObject != null)
             Destroy(charObject);
 
-        if (GameManager.instance.GetPet(data.iD).accessoryId == 0)
+        if (GameManager.instance.GetPet(data.realId).accessoryId == 0)
         {
             charObject = Instantiate(petPrefab) as GameObject;
             charObject.transform.parent = this.transform;
@@ -205,7 +219,7 @@ public class CharController : MonoBehaviour
         }
         else
         {
-            charObject = Instantiate(skinPrefabs[DataHolder.GetAccessory(GameManager.instance.GetPet(data.iD).accessoryId).accessoryId]) as GameObject;
+            charObject = Instantiate(skinPrefabs[DataHolder.GetAccessory(GameManager.instance.GetPet(data.realId).accessoryId).accessoryId]) as GameObject;
             charObject.transform.parent = this.transform;
             charObject.transform.localPosition = Vector3.zero;
         }
@@ -218,7 +232,7 @@ public class CharController : MonoBehaviour
 
     public void SetName()
     {
-        data.petName = GameManager.instance.GetPet(data.iD).petName;
+        data.petName = GameManager.instance.GetPet(data.realId).petName;
         Debug.Log(data.petName);
         petNameText.text = data.petName;
     }
@@ -295,9 +309,6 @@ public class CharController : MonoBehaviour
             CalculateData();
             CalculateStatus();
             dataTime = 0;
-            if(!GameManager.instance.isGuest)
-                ES2.Save(this.data, DataHolder.GetPet(data.iD).GetName(0));
-
         }
         else
             dataTime += Time.deltaTime;
@@ -307,7 +318,7 @@ public class CharController : MonoBehaviour
         {
             saveTime = 0;
             if (!GameManager.instance.isGuest)
-                ES2.Save(this.data, DataHolder.GetPet(data.iD).GetName(0));
+                ES2.Save(this.data, DataHolder.GetPet(data.realId).GetName(0) + data.realId.ToString());
 
         }
         else
@@ -460,22 +471,10 @@ public class CharController : MonoBehaviour
             return;   
         }
 
-        if (data.Food < data.MaxFood * 0.3f && GetFoodItem() != null && Vector2.Distance(this.transform.position, GetFoodItem().transform.position) < 3)
-        {
-            actionType = ActionType.Eat;
-            return;
-        }
-
-        if (data.Water < data.MaxWater * 0.3f && GetDrinkItem() != null && Vector2.Distance(this.transform.position, GetDrinkItem().transform.position) < 3)
-        {
-            actionType = ActionType.Drink;
-            return;
-        }
-
         if (data.Food < data.MaxFood * 0.1f)
         {
             int ran = Random.Range(0, 100);
-            if (ran > 0)
+            if (ran > 30)
             {
                 actionType = ActionType.Eat;
                 return;
@@ -486,7 +485,7 @@ public class CharController : MonoBehaviour
         if (data.Water < data.MaxWater * 0.1f)
         {
             int ran = Random.Range(0, 100);
-            if (ran > 0)
+            if (ran > 30)
             {
                 actionType = ActionType.Drink;
                 return;
@@ -704,33 +703,13 @@ public class CharController : MonoBehaviour
         {
             iconStatus = IconStatus.Dirty_2;
         }
-        else if (data.Damage > 0.7f * data.MaxDamage)
-        {
-            iconStatus = IconStatus.Injured_1;
-        }
-        else if (data.Health < 0.3f * data.MaxHealth)
-        {
-            iconStatus = IconStatus.Sick_1;
-        }
         else if (data.Pee > 0.7f * data.MaxPee || data.Shit > 0.7f * data.MaxShit)
         {
             iconStatus = IconStatus.Toilet_1;
         }
-        else if (data.Food < 0.3f * data.MaxFood)
-        {
-            iconStatus = IconStatus.Hungry_1;
-        }
-        else if (data.Water < 0.3f * data.MaxWater)
-        {
-            iconStatus = IconStatus.Thirsty_1;
-        }
         else if (data.sleep < 0.3f * data.MaxSleep)
         {
             iconStatus = IconStatus.Sleepy_1;
-        }
-        else if (data.dirty > 0.7f * data.MaxDirty)
-        {
-            iconStatus = IconStatus.Dirty_1;
         }
         else
         {
@@ -785,6 +764,7 @@ public class CharController : MonoBehaviour
 
     public virtual void OnHold()
     {
+        /*
         if (actionType == ActionType.Sick)
         {
             UIManager.instance.OnTreatmentPopup(this.data,SickType.Sick);
@@ -795,7 +775,7 @@ public class CharController : MonoBehaviour
         {
             UIManager.instance.OnTreatmentPopup(this.data, SickType.Injured);
             return;
-        }
+        }*/
 
         if (charInteract.interactType == InteractType.Drop || charInteract.interactType == InteractType.Jump || actionType == ActionType.OnControl || actionType == ActionType.OnGift || actionType == ActionType.OnCity)
             return;
@@ -1522,9 +1502,9 @@ public class CharController : MonoBehaviour
 
         if (enviromentType == EnviromentType.Toilet)
         {
-            if (itemCollider != null)
+            if (currentItemCollider != null)
             {
-                itemCollider.pets.Add(this);
+                currentItemCollider.pets.Add(this);
             }
         }
 
@@ -1582,9 +1562,9 @@ public class CharController : MonoBehaviour
 
         if (enviromentType == EnviromentType.Toilet)
         {
-            if (itemCollider != null)
+            if (currentItemCollider != null)
             {
-                itemCollider.pets.Add(this);
+                currentItemCollider.pets.Add(this);
             }
         }
 
@@ -1635,124 +1615,127 @@ public class CharController : MonoBehaviour
 
     protected virtual IEnumerator Eat()
     {
-        FoodBowlItem food = GetFoodItem();
-        if (food != null)
+        ItemObject item = ItemManager.instance.GetItem(ItemType.Food);
+        if(item != null)
         {
-            if (Vector2.Distance(this.transform.position, food.anchor.position) > 0.5f)
+            FoodBowlItem food = item.GetComponentInChildren<FoodBowlItem>();
+            if (food != null)
             {
-                target = food.anchor.position;
-                yield return StartCoroutine(RunToPoint());
-            }
-            if (data.level >= 20)
-            {
-                food.Fill();
-            }
-            bool canEat = true;
-            if (Vector2.Distance(this.transform.position, GetFoodItem().anchor.position) > 1f)
-                canEat = false;
-            if (GetFoodItem().CanEat() && canEat)
-            {
-                anim.Play("Eat", 0);
-                int soundid = MageManager.instance.PlaySound3D("Eat", false,this.transform.position);
-                yield return StartCoroutine(Wait(0.1f));
-                while (data.Food < data.MaxFood && !isAbort && canEat)
+                if (Vector2.Distance(this.transform.position, food.anchor.position) > 0.5f)
                 {
-                    data.Food += data.rateFood * 0.1f;
-                    GetFoodItem().Eat(data.rateFood * 0.1f);
-                    if (!GetFoodItem().CanEat())
+                    target = food.anchor.position;
+                    yield return StartCoroutine(RunToPoint());
+                }
+                if (data.level >= 20)
+                {
+                    food.Fill();
+                }
+                bool canEat = true;
+                if (Vector2.Distance(this.transform.position, food.anchor.position) > 1f)
+                    canEat = false;
+                if (food != null && food.CanEat() && canEat)
+                {
+                    anim.Play("Eat", 0);
+                    int soundid = MageManager.instance.PlaySound3D("Eat", false, this.transform.position);
+                    yield return StartCoroutine(Wait(0.1f));
+                    while (food != null && data.Food < data.MaxFood && !isAbort && canEat)
                     {
-                        canEat = false;
+                        data.Food += data.rateFood * 0.1f;
+                        food.Eat(data.rateFood * 0.1f);
+                        if (!food.CanEat())
+                        {
+                            canEat = false;
+                        }
+                        if (Vector2.Distance(this.transform.position, food.anchor.position) > 1f)
+                            canEat = false;
+                        yield return new WaitForEndOfFrame();
                     }
-                    if (Vector2.Distance(this.transform.position, GetFoodItem().anchor.position) > 1f)
-                        canEat = false;
-                    yield return new WaitForEndOfFrame();
-                }
-                MageManager.instance.StopSound(soundid);
-                if (data.Food >= data.MaxFood - 10)
-                {
-                    GameManager.instance.LogAchivement(AchivementType.Do_Action, ActionType.Eat);
-                    ItemManager.instance.SpawnHeart(data.RateHappy + data.level / 5, this.transform.position);
-                    if (GetFoodItem() != null && GetFoodItem().GetComponent<ItemObject>() != null)
-                        GameManager.instance.LogAchivement(AchivementType.Eat, ActionType.None, GetFoodItem().GetComponent<ItemObject>().itemID);
-                }
-            }
-            else
-            {
-
-                int ran = Random.Range(0, 100);
-                if (ran < 30)
-                {
-                    MageManager.instance.PlaySound3D(charType.ToString() + "_Speak", false,this.transform.position);
-                    yield return StartCoroutine(DoAnim("Speak_" + direction.ToString()));
+                    MageManager.instance.StopSound(soundid);
+                    if (data.Food >= data.MaxFood - 10)
+                    {
+                        GameManager.instance.LogAchivement(AchivementType.Do_Action, ActionType.Eat);
+                        ItemManager.instance.SpawnHeart(data.RateHappy + data.level / 5, this.transform.position);
+                    }
                 }
                 else
                 {
-                    yield return StartCoroutine(DoAnim("Standby"));
+
+                    int ran = Random.Range(0, 100);
+                    if (ran < 30)
+                    {
+                        MageManager.instance.PlaySound3D(charType.ToString() + "_Speak", false, this.transform.position);
+                        yield return StartCoroutine(DoAnim("Speak_" + direction.ToString()));
+                    }
+                    else
+                    {
+                        yield return StartCoroutine(DoAnim("Standby"));
+                    }
                 }
             }
         }
-
         yield return new WaitForEndOfFrame();
         CheckAbort();
     }
 
     protected virtual IEnumerator Drink()
     {
-        DrinkBowlItem drink = GetDrinkItem();
-        if (drink != null)
+        ItemObject item = ItemManager.instance.GetItem(ItemType.Drink);
+        if (item != null)
         {
-            //Debug.Log("Drink");
+            DrinkBowlItem drink = item.GetComponentInChildren<DrinkBowlItem>();
+            if (drink != null)
+            {
+                //Debug.Log("Drink");
 
-            if (Vector2.Distance(this.transform.position, drink.anchor.position) > 0.5f)
-            {
-                target = drink.anchor.position;
-                yield return StartCoroutine(RunToPoint());
-            }
-            if (data.level >= 25)
-            {
-                drink.Fill();
-            }
-            bool canDrink = true;
-            if (Vector2.Distance(this.transform.position, GetDrinkItem().anchor.position) > 1f)
-                canDrink = false;
-
-            if (GetDrinkItem().CanEat() && canDrink)
-            {
-                int soundid = MageManager.instance.PlaySound3D("Drink", true,this.transform.position);
-                anim.Play("Drink", 0);
-                yield return StartCoroutine(Wait(0.1f));
-                while (data.Water < data.MaxWater && !isAbort && canDrink)
+                if (Vector2.Distance(this.transform.position, drink.anchor.position) > 0.5f)
                 {
-                    data.Water += data.rateWater * 0.1f;
-                    GetDrinkItem().Eat(data.rateWater * 0.1f);
-                    if (!GetDrinkItem().CanEat())
+                    target = drink.anchor.position;
+                    yield return StartCoroutine(RunToPoint());
+                }
+                if (data.level >= 25)
+                {
+                    drink.Fill();
+                }
+                bool canDrink = true;
+                if (Vector2.Distance(this.transform.position, drink.anchor.position) > 1f)
+                    canDrink = false;
+
+                if (drink != null && drink.CanEat() && canDrink)
+                {
+                    int soundid = MageManager.instance.PlaySound3D("Drink", true, this.transform.position);
+                    anim.Play("Drink", 0);
+                    yield return StartCoroutine(Wait(0.1f));
+                    while (drink != null && data.Water < data.MaxWater && !isAbort && canDrink)
                     {
-                        canDrink = false;
+                        data.Water += data.rateWater * 0.1f;
+                        drink.Eat(data.rateWater * 0.1f);
+                        if (!drink.CanEat())
+                        {
+                            canDrink = false;
+                        }
+                        if (Vector2.Distance(this.transform.position, drink.anchor.position) > 1f)
+                            canDrink = false;
+                        yield return new WaitForEndOfFrame();
                     }
-                    if (Vector2.Distance(this.transform.position, GetDrinkItem().anchor.position) > 1f)
-                        canDrink = false;
-                    yield return new WaitForEndOfFrame();
-                }
-                MageManager.instance.StopSound(soundid);
-                if (data.Water >= data.MaxWater - 10)
-                {
-                    GameManager.instance.LogAchivement(AchivementType.Do_Action, ActionType.Drink);
-                    ItemManager.instance.SpawnHeart(data.level + data.level / 5, this.transform.position);
-                    if (GetDrinkItem() != null && GetDrinkItem().GetComponent<ItemObject>() != null)
-                        GameManager.instance.LogAchivement(AchivementType.Drink, ActionType.None, GetDrinkItem().GetComponent<ItemObject>().itemID);
-                }
-            }
-            else
-            {
-                int ran = Random.Range(0, 100);
-                if (ran < 30)
-                {
-                    MageManager.instance.PlaySound3D(charType.ToString() + "_Speak", false,this.transform.position);
-                    yield return StartCoroutine(DoAnim("Speak_" + direction.ToString()));
+                    MageManager.instance.StopSound(soundid);
+                    if (data.Water >= data.MaxWater - 10)
+                    {
+                        GameManager.instance.LogAchivement(AchivementType.Do_Action, ActionType.Drink);
+                        ItemManager.instance.SpawnHeart(data.level + data.level / 5, this.transform.position);
+                     }
                 }
                 else
                 {
-                    yield return StartCoroutine(DoAnim("Standby"));
+                    int ran = Random.Range(0, 100);
+                    if (ran < 30)
+                    {
+                        MageManager.instance.PlaySound3D(charType.ToString() + "_Speak", false, this.transform.position);
+                        yield return StartCoroutine(DoAnim("Speak_" + direction.ToString()));
+                    }
+                    else
+                    {
+                        yield return StartCoroutine(DoAnim("Standby"));
+                    }
                 }
             }
         }
@@ -1822,10 +1805,10 @@ public class CharController : MonoBehaviour
 
         if (enviromentType == EnviromentType.Bed)
         {
-            if (itemCollider != null)
+            if (currentItemCollider != null)
             {
-                itemCollider.pets.Add(this);
-                value = ItemManager.instance.GetItemData(ItemType.Bed).value;
+                currentItemCollider.pets.Add(this);
+                value = DataHolder.GetItem(currentItemCollider.item.itemID).value;
             }
         }
 
@@ -1967,7 +1950,7 @@ public class CharController : MonoBehaviour
         {
             yield return new WaitForEndOfFrame();
         }
-
+        yield return StartCoroutine(DoAnim("Love"));
         //timeWait.gameObject.SetActive(false);
         GameManager.instance.LogAchivement(AchivementType.Do_Action, ActionType.Sick);
         CheckEnviroment();
@@ -2439,7 +2422,11 @@ public class CharController : MonoBehaviour
             }
 
             if (enviromentType != EnviromentType.Room)
+            {
+                currentItemCollider = col;
                 col.pets.Add(this);
+            }
+                
 
 
             dropPosition.y = charScale.scalePosition.y + col.height;
@@ -2501,20 +2488,6 @@ public class CharController : MonoBehaviour
 
 
     #endregion
-
-    public FoodBowlItem GetFoodItem()
-    {
-        if (foodItem == null)
-            foodItem = FindObjectOfType<FoodBowlItem>();
-        return foodItem;
-    }
-
-    public DrinkBowlItem GetDrinkItem()
-    {
-        if (drinkItem == null)
-            drinkItem = FindObjectOfType<DrinkBowlItem>();
-        return drinkItem;
-    }
 
     public MouseController GetMouse()
     {

@@ -5,8 +5,8 @@ using UnityEngine.UI;
 
 public class ConfirmBuyShopPopup : MonoBehaviour
 {
+    int realId = 0;
     int itemId = 0;
-    int itemReplaceId = 0;
     bool isCharacter = false;
     public Image icon;
     public GameObject coinIcon;
@@ -20,30 +20,35 @@ public class ConfirmBuyShopPopup : MonoBehaviour
     public Image replaceIcon;
     ItemState state = ItemState.OnShop;
     public GameObject okButton;
-
     bool isBuy = false;
-    bool isReplace = false;
 
-    public void Load(Item d, bool isBuy)
+    public void LoadItem(int id, bool isBuy)
     {
-
-        itemId = d.iD;
+        if (isBuy)
+            itemId = id;
+        else
+        {
+            realId = id;
+            Debug.Log(realId);
+            itemId = GameManager.instance.GetItem(realId).itemId;
+        }
+            
         this.isBuy = isBuy;
+        Item d = DataHolder.GetItem(itemId);
         string url = d.iconUrl.Replace("Assets/Game/Resources/", "");
         url = url.Replace(".png", "");
         icon.sprite = Resources.Load<Sprite>(url) as Sprite;
         replaceText.GetComponent<Text>().text = DataHolder.Dialog(14).GetName(MageManager.instance.GetLanguage()) + " ";
 
+        replacePanel.SetActive(false);
         if (isBuy)
         {
             priceText.text = d.buyPrice.ToString();
-            replacePanel.SetActive(false);
             question.text = DataHolder.Dialog(3).GetDescription(MageManager.instance.GetLanguage()) + " ";
         }
         else
         {
             question.text = DataHolder.Dialog(4).GetDescription(MageManager.instance.GetLanguage()) + " ";
-            replacePanel.SetActive(false);
             priceText.text = (d.buyPrice / 2).ToString();
         }
 
@@ -78,11 +83,19 @@ public class ConfirmBuyShopPopup : MonoBehaviour
     }
 
 
-    public void Load(Pet d, bool isBuy)
+    public void LoadPet(int id, bool isBuy)
     {
+        if (isBuy)
+            itemId = id;
+        else
+        {
+            realId = id;
+            itemId = GameManager.instance.GetPet(realId).iD;
+        }
+
         isCharacter = true;
         this.isBuy = isBuy;
-        itemId = d.iD;
+        Pet d = DataHolder.GetPet(itemId);
         string url = d.iconUrl.Replace("Assets/Game/Resources/", "");
         url = url.Replace(".png", "");
         icon.sprite = Resources.Load<Sprite>(url) as Sprite;
@@ -140,18 +153,16 @@ public class ConfirmBuyShopPopup : MonoBehaviour
                 UIManager.instance.BuyPet(itemId);
             }
             else
-                UIManager.instance.SellPet(itemId);
+                UIManager.instance.SellPet(realId);
         }
         else
         {
             if (isBuy)
             {
-                if (isReplace)
-                    UIManager.instance.SellItem(itemReplaceId);
                 UIManager.instance.BuyItem(itemId);
             }
             else
-                UIManager.instance.SellItem(itemId);
+                UIManager.instance.SellItem(realId);
         }
         this.Close();
     }

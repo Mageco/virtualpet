@@ -6,7 +6,7 @@ public class CharScale : MonoBehaviour
 {
     [HideInInspector]
 	public float maxHeight = 15;
-	float scaleFactor = 0.03f;
+	float scaleFactor = 0.01f;
 	CharController character;
 	CharInteract interact;
 	Vector3 originalScale;

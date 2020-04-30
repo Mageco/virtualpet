@@ -18,7 +18,7 @@ public class BaseDragItem : MonoBehaviour
     protected float fallSpeed = 0;
 	public float maxHeight = 10;
     public float depth = -1;
-	protected float scaleFactor = 0.03f;
+	protected float scaleFactor = 0.01f;
 	protected Vector3 dragScale;
 	public float height = 0;
     public float minHeight = 0;

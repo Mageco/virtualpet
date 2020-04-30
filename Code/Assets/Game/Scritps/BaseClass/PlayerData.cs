@@ -30,6 +30,8 @@ public class PlayerData : BaseModel
 	[ExtractField]
 	public int[] minigameLevels = new int[20];
 
+	public int realItemId = 0;
+	public int realPetId = 0;
 	public int questId = 0;
     public int questValue = 0;
 	public bool isCompleteDailyQuest = false;
@@ -110,6 +112,7 @@ public class PlayerData : BaseModel
 [System.Serializable]
 public class PlayerPet : BaseModel
 {
+	public int realId = 0;
 	public int iD = 0;
 	public int level = 1;
 	public int accessoryId = 0;

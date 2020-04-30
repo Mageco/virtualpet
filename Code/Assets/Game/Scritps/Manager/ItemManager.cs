@@ -165,33 +165,13 @@ public class ItemManager : MonoBehaviour
         Debug.Log("Data " + data.Count);
         List<ItemObject> removes = new List<ItemObject>();
 
-        foreach (ItemObject item in items)
-        {
-            bool isRemove = true;
-            for (int i = 0; i < data.Count; i++)
-            {
-                if (data[i].itemId == item.itemID)
-                {
-                    isRemove = false;
-                }
-            }
-            if (isRemove)
-                removes.Add(item);
-        }
-
-        foreach (ItemObject item in removes)
-        {
-            RemoveItem(item);
-        }
-
-
         List<PlayerItem> adds = new List<PlayerItem>();
         for (int i = 0; i < data.Count; i++)
         {
             bool isAdd = true;
             foreach (ItemObject item in items)
             {
-                if (data[i].itemId == item.itemID)
+                if (data[i].realId == item.realID)
                 {
                     isAdd = false;
                 }
@@ -210,22 +190,29 @@ public class ItemManager : MonoBehaviour
         UpdateItemColliders();
     }
 
+   
+
     public ItemObject GetItem(int itemId){
+        List<ItemObject> temp = new List<ItemObject>();
         foreach(ItemObject item in items){
-            if(item.itemID == itemId)
-                return item;
+            if (item.itemID == itemId)
+                temp.Add(item);
         }
-        return null;
+
+        if(temp.Count > 0)
+        {
+            int id = Random.Range(0, temp.Count);
+            return temp[id];
+        }else
+            return null;
     }
 
-    public Item GetItemData(ItemType type)
+    public ItemObject GetItemRealId(int itemId)
     {
-        foreach (ItemObject item in items)
+       foreach (ItemObject item in items)
         {
-            if (DataHolder.GetItem(item.itemID).itemType == type)
-            {
-                return DataHolder.GetItem(item.itemID);
-            }
+            if (item.realID == itemId)
+                return item;
         }
         return null;
     }
@@ -242,8 +229,9 @@ public class ItemManager : MonoBehaviour
             {
                 GameObject go = Instantiate((Resources.Load(url) as GameObject), Vector3.zero, Quaternion.identity) as GameObject;
                 ItemObject item = go.AddComponent<ItemObject>();
-                item.itemType = DataHolder.GetItem(playerItem.itemId).itemType;
+                item.itemType = playerItem.itemType;
                 item.itemID = playerItem.itemId;
+                item.realID = playerItem.realId;
                 items.Add(item);
                 go.transform.parent = this.transform;
                 if (isAnimated)
@@ -257,28 +245,14 @@ public class ItemManager : MonoBehaviour
                         }
                     }
                 }
-                else
-                {
-                    /*
-                    for (int j = 0; j < item.transform.childCount; j++)
-                    {
-                        Animator anim = item.transform.GetChild(j).GetComponent<Animator>();
-                        if (anim != null)
-                        {
-                            anim.Play("Idle", 0);
-                        }
-                    }*/
-                }
             }
-            //Debug.Log(DataHolder.GetItem(playerItem.itemId).GetName(0));
         }       
         
     }
 
     public void RemoveItem(int id){
         foreach(ItemObject item in items){
-            if(item.itemID == id){
-
+            if(item.realID == id){
                 RemoveItem(item);
                 return;
             }
@@ -334,14 +308,21 @@ public class ItemManager : MonoBehaviour
 
     public ItemObject GetItem(ItemType type)
     {
+        List<ItemObject> temp = new List<ItemObject>();
         foreach (ItemObject item in items)
         {
-            if (DataHolder.GetItem(item.itemID).itemType == type)
+            if (item.itemType == type)
             {
-                return item;
+                temp.Add(item);
             }
         }
-        return null;
+        if (temp.Count > 0)
+        {
+            int n = Random.Range(0, temp.Count);
+            return temp[n];
+        }
+        else
+            return null;
     }
 
 
@@ -355,24 +336,14 @@ public class ItemManager : MonoBehaviour
         return null;
     }
 
-    public ItemCollider GetEquipment(ItemType type)
-    {
-        foreach (ItemObject item in items)
-        {
-            if (DataHolder.GetItem(item.itemID).itemType == type)
-            {
-                return item.transform.GetComponentInChildren<ItemCollider>();
-            }
-        }
-        return null;
-    }
+
 
     public int GetItemCount(ItemType type)
     {
         int count = 0;
         foreach (ItemObject item in items)
         {
-            if (DataHolder.GetItem(item.itemID).itemType == type)
+            if (item.itemType == type)
             {
                 count++;
             }
@@ -407,13 +378,11 @@ public class ItemManager : MonoBehaviour
     }
 
     public ItemCollider GetItemCollider(ItemType type){
-        foreach(ItemObject item in items){
-            if(DataHolder.GetItem(item.itemID).itemType == type){
-                if(item.GetComponentInChildren<ItemCollider>() != null)
-                return item.GetComponentInChildren<ItemCollider>();
-            }
-        }
-        return null;
+        ItemObject item = GetItem(type);
+        if (item.GetComponentInChildren<ItemCollider>() != null)
+            return item.GetComponentInChildren<ItemCollider>();            
+        else
+            return null;
     }
 
     public ItemCollider GetItemCollider(Vector3 dropPosition){
@@ -618,7 +587,7 @@ public class ItemManager : MonoBehaviour
         EatItem[] eats = FindObjectsOfType<EatItem>();
         for(int i=0;i<eats.Length;i++){
            ItemSaveData data = new ItemSaveData();
-           data.id = eats[i].item.itemID;
+           data.id = eats[i].item.realID;
            data.itemType = eats[i].itemSaveDataType;
            data.value = eats[i].foodAmount;
            data.position = eats[i].transform.position;
@@ -641,7 +610,7 @@ public class ItemManager : MonoBehaviour
         for (int i = 0; i < toys.Length; i++)
         {
             ItemSaveData data = new ItemSaveData();
-            data.id = toys[i].item.itemID;
+            data.id = toys[i].item.realID;
             data.itemType = ItemSaveDataType.Toy;
             data.position = toys[i].transform.position;
             GameManager.instance.myPlayer.itemSaveDatas.Add(data);
@@ -652,7 +621,7 @@ public class ItemManager : MonoBehaviour
         for (int i = 0; i < equipments.Length; i++)
         {
             ItemSaveData data = new ItemSaveData();
-            data.id = equipments[i].item.itemID;
+            data.id = equipments[i].item.realID;
             data.itemType = ItemSaveDataType.Equipment;
             data.position = equipments[i].transform.position;
             GameManager.instance.myPlayer.itemSaveDatas.Add(data);
@@ -662,7 +631,7 @@ public class ItemManager : MonoBehaviour
         for (int i = 0; i < decors.Length; i++)
         {
             ItemSaveData data = new ItemSaveData();
-            data.id = decors[i].item.itemID;
+            data.id = decors[i].item.realID;
             data.itemType = ItemSaveDataType.Decor;
             data.position = decors[i].transform.position;
             GameManager.instance.myPlayer.itemSaveDatas.Add(data);
@@ -694,50 +663,115 @@ public class ItemManager : MonoBehaviour
             data = GameManager.instance.guest;
                 
         foreach (ItemSaveData item in data.itemSaveDatas){
-            if(item.itemType == ItemSaveDataType.Pee && !GameManager.instance.isGuest){
-                SpawnPee(item.position,item.value);
-            }else if(item.itemType == ItemSaveDataType.Shit && !GameManager.instance.isGuest)
+
+            if (float.Parse(GameManager.instance.myPlayer.version) < 1.20f)
             {
-                SpawnShit(item.position,item.value);
-            }else if(item.itemType == ItemSaveDataType.Food || item.itemType == ItemSaveDataType.Drink){
-                if(GetItem(item.id) != null){
-                    GetItem(item.id).GetComponentInChildren<EatItem>().foodAmount = item.value;
-                    GetItem(item.id).GetComponentInChildren<EatItem>().transform.position = item.position;
-                }
-            }else if(item.itemType == ItemSaveDataType.Fruit)
-            {
-                FruitItem[] fruits = FindObjectsOfType<FruitItem>();
-                for (int i = 0; i < fruits.Length; i++)
+                if (item.itemType == ItemSaveDataType.Pee && !GameManager.instance.isGuest)
                 {
-                    if (fruits[i].id == item.id)
+                    SpawnPee(item.position, item.value);
+                }
+                else if (item.itemType == ItemSaveDataType.Shit && !GameManager.instance.isGuest)
+                {
+                    SpawnShit(item.position, item.value);
+                }
+                else if (item.itemType == ItemSaveDataType.Food || item.itemType == ItemSaveDataType.Drink)
+                {
+                    if (GetItem(item.id) != null)
                     {
-                        fruits[i].step = (int)item.value;
-                        fruits[i].time = item.time;
-                        fruits[i].Load();
+                        GetItem(item.id).GetComponentInChildren<EatItem>().foodAmount = item.value;
+                        GetItem(item.id).GetComponentInChildren<EatItem>().transform.position = item.position;
+                    }
+                }
+                else if (item.itemType == ItemSaveDataType.Fruit)
+                {
+                    FruitItem[] fruits = FindObjectsOfType<FruitItem>();
+                    for (int i = 0; i < fruits.Length; i++)
+                    {
+                        if (fruits[i].id == item.id)
+                        {
+                            fruits[i].step = (int)item.value;
+                            fruits[i].time = item.time;
+                            fruits[i].Load();
+                        }
+                    }
+                }
+                else if (item.itemType == ItemSaveDataType.Toy)
+                {
+                    if (GetItem(item.id) != null)
+                    {
+                        GetItem(item.id).GetComponentInChildren<ToyItem>().transform.position = item.position;
+                    }
+                }
+                else if (item.itemType == ItemSaveDataType.Equipment)
+                {
+                    if (GetItem(item.id) != null)
+                    {
+                        GetItem(item.id).GetComponentInChildren<ItemCollider>().transform.position = item.position;
+                    }
+                }
+                else if (item.itemType == ItemSaveDataType.Decor)
+                {
+                    if (GetItem(item.id) != null)
+                    {
+                        GetItem(item.id).GetComponentInChildren<ItemDecor>().transform.position = item.position;
                     }
                 }
             }
-            else if (item.itemType == ItemSaveDataType.Toy)
+            else
             {
-                if (GetItem(item.id) != null)
+                if (item.itemType == ItemSaveDataType.Pee && !GameManager.instance.isGuest)
                 {
-                    GetItem(item.id).GetComponentInChildren<ToyItem>().transform.position = item.position;
+                    SpawnPee(item.position, item.value);
                 }
-            }
-            else if (item.itemType == ItemSaveDataType.Equipment)
-            {
-                if (GetItem(item.id) != null)
+                else if (item.itemType == ItemSaveDataType.Shit && !GameManager.instance.isGuest)
                 {
-                    GetItem(item.id).GetComponentInChildren<ItemCollider>().transform.position = item.position;
+                    SpawnShit(item.position, item.value);
                 }
-            }
-            else if (item.itemType == ItemSaveDataType.Decor)
-            {
-                if (GetItem(item.id) != null)
+                else if (item.itemType == ItemSaveDataType.Food || item.itemType == ItemSaveDataType.Drink)
                 {
-                    GetItem(item.id).GetComponentInChildren<ItemDecor>().transform.position = item.position;
+                    if (GetItemRealId(item.id) != null)
+                    {
+                        GetItemRealId(item.id).GetComponentInChildren<EatItem>().foodAmount = item.value;
+                        GetItemRealId(item.id).GetComponentInChildren<EatItem>().transform.position = item.position;
+                    }
                 }
+                else if (item.itemType == ItemSaveDataType.Fruit)
+                {
+                    FruitItem[] fruits = FindObjectsOfType<FruitItem>();
+                    for (int i = 0; i < fruits.Length; i++)
+                    {
+                        if (fruits[i].id == item.id)
+                        {
+                            fruits[i].step = (int)item.value;
+                            fruits[i].time = item.time;
+                            fruits[i].Load();
+                        }
+                    }
+                }
+                else if (item.itemType == ItemSaveDataType.Toy)
+                {
+                    if (GetItemRealId(item.id) != null)
+                    {
+                        GetItemRealId(item.id).GetComponentInChildren<ToyItem>().transform.position = item.position;
+                    }
+                }
+                else if (item.itemType == ItemSaveDataType.Equipment)
+                {
+                    if (GetItemRealId(item.id) != null)
+                    {
+                        GetItemRealId(item.id).GetComponentInChildren<ItemCollider>().transform.position = item.position;
+                    }
+                }
+                else if (item.itemType == ItemSaveDataType.Decor)
+                {
+                    if (GetItemRealId(item.id) != null)
+                    {
+                        GetItemRealId(item.id).GetComponentInChildren<ItemDecor>().transform.position = item.position;
+                    }
+                }
+
             }
+                
         }
     }
 
@@ -824,8 +858,8 @@ public class ItemManager : MonoBehaviour
     CharController SpawnPet(PlayerPet pet)
     {
         
-        if (GameManager.instance.GetPetObject(pet.iD) != null)
-            return GameManager.instance.GetPetObject(pet.iD);
+        if (GameManager.instance.GetPetObject(pet.realId) != null)
+            return GameManager.instance.GetPetObject(pet.realId);
 
         Pet p = DataHolder.GetPet(pet.iD);
 
