@@ -1123,7 +1123,8 @@ public class GameManager : MonoBehaviour
 
         myPlayer = new PlayerData();
         myPlayer.LoadData();
-
+        myPlayer.version = Application.version;
+        Debug.Log("Version " + myPlayer.version);
 
         AddCoin(100, GetKey());
         AddDiamond(1, GetKey());

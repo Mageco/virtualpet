@@ -9,7 +9,7 @@ public class PlayerData : BaseModel
 {
 	public string playerName = "House's ...";
     public int coin = 0;
-	
+	public string version = ""; 
     public int diamond = 0;
 	public int happy = 0;
 	public int level = 1;

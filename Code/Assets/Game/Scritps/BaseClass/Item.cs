@@ -21,6 +21,7 @@ public class Item
 	public ItemTag itemTag = ItemTag.None;
 	public int shopOrder = 0;
 	public int levelRequire = 0;
+	public bool isOnShop = true;
 
 	//All item properties
 	public float value = 0; //Value can be food amount, cleaness 
