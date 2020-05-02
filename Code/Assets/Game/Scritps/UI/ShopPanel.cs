@@ -14,7 +14,13 @@ public class ShopPanel : MonoBehaviour
     [HideInInspector]
     public List<Toggle> toggles = new List<Toggle>();
     public Transform toogleAnchor;
-   
+
+    int currentCat = 0;
+    [HideInInspector]
+    public List<Toggle> catToggles = new List<Toggle>();
+    List<ItemType> catType = new List<ItemType>();
+    public Transform  catToogleAnchor;
+    public GameObject catTogglePrefab;
     // Start is called before the first frame update
 
     void Awake()
@@ -34,6 +40,8 @@ public class ShopPanel : MonoBehaviour
 
         if (currentTab > toggles.Count)
             currentTab = 0;
+
+
     }
     void Start()
     {
@@ -50,9 +58,11 @@ public class ShopPanel : MonoBehaviour
 
     }
 
+
+
     public void ReLoad()
     {
-        OnTab(currentTab);
+        LoadTab();
     }
 
     public void ReLoadTab(int id)
@@ -69,29 +79,25 @@ public class ShopPanel : MonoBehaviour
 
     }
 
-
-
     public void OnTab(int id)
     {
         MageManager.instance.PlaySound("BubbleButton", false);
         currentTab = id;
-
+        currentCat = 0;
         ES2.Save(id, "ShopToggle");
+        ClearCat();
+        LoadTab();
+        
+    }
+
+    public void LoadTab()
+    {
         ClearItems();
 
         List<Item> items = new List<Item>();
         List<Pet> pets = new List<Pet>();
 
-
-        if (currentTab == 1)
-        {
-            for (int i=0;i<DataHolder.Pets().GetDataCount();i++)
-            {
-                if(DataHolder.Pet(i).isAvailable)
-                    pets.Add(DataHolder.Pet(i));              
-            }
-        }
-        else if (currentTab == 0)
+        if (currentTab == 0)
         {
             for (int i = 0; i < DataHolder.Items().GetDataCount(); i++)
             {
@@ -101,12 +107,24 @@ public class ShopPanel : MonoBehaviour
                 }
             }
         }
+        else if (currentTab == 1)
+        {
+            for (int i = 0; i < DataHolder.Pets().GetDataCount(); i++)
+            {
+                if (DataHolder.Pet(i).isAvailable)
+                    pets.Add(DataHolder.Pet(i));
+            }
+        }
         else if (currentTab == 2)
         {
             for (int i = 0; i < DataHolder.Items().GetDataCount(); i++)
             {
                 if ((int)DataHolder.Item(i).itemType == (int)ItemType.Food || (int)DataHolder.Item(i).itemType == (int)ItemType.Drink)
                 {
+                    if (!catType.Contains(DataHolder.Item(i).itemType))
+                    {
+                        catType.Add(DataHolder.Item(i).itemType);
+                    }
                     items.Add(DataHolder.Item(i));
                 }
             }
@@ -117,10 +135,14 @@ public class ShopPanel : MonoBehaviour
             {
                 if ((int)DataHolder.Item(i).itemType == (int)ItemType.Bath || (int)DataHolder.Item(i).itemType == (int)ItemType.Bed
                 || (int)DataHolder.Item(i).itemType == (int)ItemType.Clean || (int)DataHolder.Item(i).itemType == (int)ItemType.Clock
-                || (int)DataHolder.Item(i).itemType == (int)ItemType.MedicineBox || (int)DataHolder.Item(i).itemType == (int)ItemType.Board
-                || (int)DataHolder.Item(i).itemType == (int)ItemType.Toilet || (int)DataHolder.Item(i).itemType == (int)ItemType.Gate
-                || (int)DataHolder.Item(i).itemType == (int)ItemType.Room)
+                || (int)DataHolder.Item(i).itemType == (int)ItemType.MedicineBox 
+                || (int)DataHolder.Item(i).itemType == (int)ItemType.Toilet || (int)DataHolder.Item(i).itemType == (int)ItemType.Table)
+                
                 {
+                    if (!catType.Contains(DataHolder.Item(i).itemType))
+                    {
+                        catType.Add(DataHolder.Item(i).itemType);
+                    }
                     items.Add(DataHolder.Item(i));
                 }
             }
@@ -139,24 +161,47 @@ public class ShopPanel : MonoBehaviour
         {
             for (int i = 0; i < DataHolder.Items().GetDataCount(); i++)
             {
-                if ((int)DataHolder.Item(i).itemType == (int)ItemType.Fruit)
+                if ((int)DataHolder.Item(i).itemType == (int)ItemType.Room  || (int)DataHolder.Item(i).itemType == (int)ItemType.Fruit
+                    || (int)DataHolder.Item(i).itemType == (int)ItemType.Board || (int)DataHolder.Item(i).itemType == (int)ItemType.Picture
+                    || (int)DataHolder.Item(i).itemType == (int)ItemType.Gate || (int)DataHolder.Item(i).itemType == (int)ItemType.Deco)
                 {
-                    items.Add(DataHolder.Item(i));
-                }
-            }
-        }
-        else if (currentTab == 6)
-        {
-            for (int i = 0; i < DataHolder.Items().GetDataCount(); i++)
-            {
-                if ((int)DataHolder.Item(i).itemType == (int)ItemType.Picture || (int)DataHolder.Item(i).itemType == (int)ItemType.Table
-                    || (int)DataHolder.Item(i).itemType == (int)ItemType.Deco)
-                {
+                    if (!catType.Contains(DataHolder.Item(i).itemType))
+                    {
+                        catType.Add(DataHolder.Item(i).itemType);
+                    }
                     items.Add(DataHolder.Item(i));
                 }
             }
         }
 
+        foreach(ItemType t in catType)
+        {
+            bool isExisted = false;
+            foreach(Toggle to in catToggles)
+            {
+                if(to.gameObject.name == t.ToString())
+                {
+                    isExisted = true;
+                    break;
+                }
+            }
+
+            if (!isExisted)
+            {
+                GameObject go = GameObject.Instantiate(catTogglePrefab);
+                go.transform.SetParent(catToogleAnchor);
+                go.transform.localScale = Vector3.one;
+                go.name = t.ToString();
+                Toggle toggle = go.GetComponent<Toggle>();
+                toggle.group = catToogleAnchor.GetComponent<ToggleGroup>();
+                toggle.targetGraphic.GetComponent<Image>().sprite = Resources.Load<Sprite>("Icons/ItemType/" + t.ToString());
+                toggle.graphic.GetComponent<Image>().sprite = Resources.Load<Sprite>("Icons/ItemType/" + t.ToString());
+                catToggles.Add(toggle);
+                int n = (int)t;
+                toggle.onValueChanged.AddListener(delegate { OnType(n); });
+            }
+
+        }
 
         //Arrange
         if (currentTab == 0)
@@ -170,7 +215,18 @@ public class ShopPanel : MonoBehaviour
         else if (currentTab != 1)
         {
             items.Sort((p1, p2) => (p1.levelRequire).CompareTo(p2.levelRequire));
+            List<Item> temp = new List<Item>();
+ 
             foreach (Item item in items)
+            {
+                if (currentCat == 0 || (int)item.itemType == currentCat)
+                {
+                    temp.Add(item);
+                }               
+            }
+            
+            
+            foreach (Item item in temp)
             {
                 LoadItem(item);
             }
@@ -182,6 +238,12 @@ public class ShopPanel : MonoBehaviour
                 LoadItem(p);
             }
         }
+    }
+
+    public void OnType(int id)
+    {
+        currentCat = id;
+        ReLoad();
     }
 
     public void ScrollToItem(int id)
@@ -245,6 +307,16 @@ public class ShopPanel : MonoBehaviour
             Destroy(item.gameObject);
         }
         items.Clear();
+    }
+
+    void ClearCat()
+    {
+        catType.Clear();
+        foreach (Toggle t in catToggles)
+        {
+            GameObject.Destroy(t.gameObject);
+        }
+        catToggles.Clear();
     }
 
     public void Close()

@@ -356,6 +356,12 @@ public class GameManager : MonoBehaviour
 
     public void SellPet(int realId)
     {
+        if (GetPetObject(realId).actionType == ActionType.Toy)
+        {
+            MageManager.instance.OnNotificationPopup(DataHolder.Dialog(107).GetName(MageManager.instance.GetLanguage()));
+            return;
+        }
+
         int petId = GetPet(realId).iD;
         PriceType type = DataHolder.GetPet(petId).priceType;
         int price = DataHolder.GetPet(petId).buyPrice / 2;
@@ -372,6 +378,8 @@ public class GameManager : MonoBehaviour
             AddHappy(price, GetKey());
         }
         RemovePet(realId);
+        if (UIManager.instance.profilePanel != null)
+            UIManager.instance.profilePanel.Load();
     }
 
 
@@ -442,10 +450,15 @@ public class GameManager : MonoBehaviour
             {
                  if (ItemManager.instance != null)
                 {
-                    petObjects.Remove(GetPetObject(realId));
-                    ItemManager.instance.UnLoadPetObject(GetPetObject(realId));
+                    CharController petObject = GetPetObject(realId);
+                    petObjects.Remove(petObject);
+                    ItemManager.instance.UnLoadPetObject(petObject);
                 }
-                p.itemState = ItemState.OnShop;
+                if(GetPetNumber(p.iD) >= 2)
+                {
+                    myPlayer.petDatas.Remove(p);
+                }else
+                    p.itemState = ItemState.OnShop;
                 return;
             }
         }
@@ -497,6 +510,18 @@ public class GameManager : MonoBehaviour
         return false;
     }
 
+    public int GetPetNumber(int petId)
+    {
+        int count = 0;
+        foreach (PlayerPet p in myPlayer.petDatas)
+        {
+            if (p.iD == petId)
+            {
+                count++;
+            }
+        }
+        return count;
+    }
 
     //Items
     public int BuyItem(int itemId)
@@ -641,7 +666,7 @@ public class GameManager : MonoBehaviour
             {
                 if (item.state == ItemState.Equiped)
                 {
-                    item.state = ItemState.OnShop;
+                    myPlayer.items.Remove(item);
                     ItemManager.instance.RemoveItem(item.realId);
                 }
                 return;
@@ -657,7 +682,7 @@ public class GameManager : MonoBehaviour
             {
                 foreach(PlayerItem item1 in myPlayer.items)
                 {
-                    if (item != item1 && item.itemId == item1.itemId && (item.itemType == ItemType.Room || item.itemType == ItemType.Gate))
+                    if (item != item1 && item.itemId == item1.itemId && (item.itemType == ItemType.Room || item.itemType == ItemType.Gate || item.itemType == ItemType.Board || item.itemType == ItemType.Clean))
                         item1.state = ItemState.Have;
                 }
                 item.state = ItemState.Equiped;
@@ -768,7 +793,7 @@ public class GameManager : MonoBehaviour
     }
 
     #region Accessory
-    public void BuyAccessory(int itemId)
+    public void BuyAccessory(int itemId,int realId)
     {
         PriceType type = DataHolder.GetAccessory(itemId).priceType;
         int price = DataHolder.GetAccessory(itemId).buyPrice;
@@ -780,7 +805,7 @@ public class GameManager : MonoBehaviour
                 return;
             }
             AddCoin(-price, GetKey());
-            AddAccessory(itemId, GetKey());
+            AddAccessory(itemId, realId, GetKey());
         }
         else if (type == PriceType.Diamond)
         {
@@ -790,7 +815,7 @@ public class GameManager : MonoBehaviour
                 return;
             }
             AddDiamond(-price, GetKey());
-            AddAccessory(itemId, GetKey());
+            AddAccessory(itemId, realId, GetKey());
         }
         else if (type == PriceType.Happy)
         {
@@ -800,26 +825,39 @@ public class GameManager : MonoBehaviour
                 return;
             }
             AddHappy(-price, GetKey());
-            AddAccessory(itemId, GetKey());
+            AddAccessory(itemId,realId,GetKey());
         }
-        Accessory a = DataHolder.GetAccessory(itemId);
-        CharController pet = GetPetObject(a.petId);
+        CharController pet = GetPetObject(realId);
         if(pet != null)
         {
             pet.LoadCharObject();
         }
+
     }
 
+    public void EquipAccessory(int id, int realId)
+    {
+        PlayerPet p = GetPet(realId);
+        if (p != null)
+        {
+            p.accessoryId = id;
+            CharController pet = GetPetObject(realId);
+            if (pet != null)
+            {
+                pet.LoadCharObject();
+            }
+        }
+    }
 
-    public void AddAccessory(int id, string key)
+    public void AddAccessory(int id,int realId, string key)
     {
         if (IsOK(key))
         {
-            Accessory a = DataHolder.GetAccessory(id);
-            PlayerPet p = GetPet(a.petId);
+            PlayerPet p = GetPet(realId);
             if(p != null)
             {
                 p.accessoryId = id;
+                p.accessories.Add(id);
             }
         }
     }
@@ -836,6 +874,23 @@ public class GameManager : MonoBehaviour
         return false;
     }
 
+    public void Evolve(int realId)
+    {
+        foreach (PlayerPet pet in myPlayer.petDatas)
+        {
+            if (pet.realId == realId)
+            {
+                List<Accessory> temp = DataHolder.GetAccessories(pet.iD);
+                int ran = Random.Range(0, temp.Count);
+                pet.accessoryId = ran;
+                CharController petObject = GetPetObject(realId);
+                if (petObject != null)
+                {
+                    petObject.LoadCharObject();
+                }
+            }
+        }
+    }
     #endregion
 
 
@@ -931,20 +986,20 @@ public class GameManager : MonoBehaviour
         //Force
     }
 
-    public void LevelUp(int petId)
+    public void LevelUp(int realId)
     {
-        if (GetPet(petId) != null)
+        if (GetPet(realId) != null)
         {
-            AddHappy(-10 * GetPet(petId).level * GetPet(petId).level,GetKey());
-            GetPet(petId).level++;
+            AddHappy(-10 * GetPet(realId).level * GetPet(realId).level,GetKey());
+            GetPet(realId).level++;
 
-            if (GetPetObject(petId) != null)
+            if (GetPetObject(realId) != null)
             {
-                MageManager.instance.PlaySound3D("points_ticker_bonus_score_reward_single_06", false, GetPetObject(petId).transform.position);
+                MageManager.instance.PlaySound3D("points_ticker_bonus_score_reward_single_06", false, GetPetObject(realId).transform.position);
                 GameObject go = GameObject.Instantiate(Resources.Load("Prefabs/Effects/LevelUp") as GameObject);
-                go.transform.parent = GetPetObject(petId).transform;
-                go.transform.position = GetPetObject(petId).transform.position + new Vector3(0, 2, -1);
-                GetPetObject(petId).data.level = GetPet(petId).level;
+                go.transform.parent = GetPetObject(realId).transform;
+                go.transform.position = GetPetObject(realId).transform.position + new Vector3(0, 2, -1);
+                GetPetObject(realId).data.level = GetPet(realId).level;
             }
         }
     }
@@ -1046,6 +1101,15 @@ public class GameManager : MonoBehaviour
         {
             if (pet.realId == 0)
                 pet.realId = GetRealPetId();
+        }
+
+        foreach (PlayerPet pet in myPlayer.petDatas)
+        {
+            if (pet.accessories == null || pet.accessories.Count == 0)
+            {
+                pet.accessories = new List<int>();
+                pet.accessories.Add(0);
+            }
         }
     }
 

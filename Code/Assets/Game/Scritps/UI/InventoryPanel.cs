@@ -5,16 +5,27 @@ using UnityEngine.UI;
 
 public class InventoryPanel : MonoBehaviour
 {
-    ItemType itemType = ItemType.All;
     public Transform anchor;
     List<InventoryUI> items = new List<InventoryUI>();
     public GameObject InventoryUIPrefab;
-    int currentTab = -1;
-
+    int currentCat = 0;
+    [HideInInspector]
+    public List<Toggle> catToggles = new List<Toggle>();
+    List<ItemType> catType = new List<ItemType>();
+    public Transform catToogleAnchor;
+    public GameObject catTogglePrefab;
     // Start is called before the first frame update
 
     void Awake()
     {
+        foreach (PlayerItem item in GameManager.instance.myPlayer.items)
+        {
+            if (item.state != ItemState.OnShop && !catType.Contains(item.itemType))
+            {
+                catType.Add(item.itemType);
+            }
+        }
+
 
     }
     void Start()
@@ -34,8 +45,35 @@ public class InventoryPanel : MonoBehaviour
     public void Load()
     {
         MageManager.instance.PlaySound("BubbleButton", false);
-        itemType = (ItemType)currentTab;
         ClearItems();
+
+        foreach (ItemType t in catType)
+        {
+            bool isExisted = false;
+            foreach (Toggle to in catToggles)
+            {
+                if (to.gameObject.name == t.ToString())
+                {
+                    isExisted = true;
+                    break;
+                }
+            }
+
+            if (!isExisted)
+            {
+                GameObject go = GameObject.Instantiate(catTogglePrefab);
+                go.transform.SetParent(catToogleAnchor);
+                go.transform.localScale = Vector3.one;
+                go.name = t.ToString();
+                Toggle toggle = go.GetComponent<Toggle>();
+                toggle.group = catToogleAnchor.GetComponent<ToggleGroup>();
+                toggle.targetGraphic.GetComponent<Image>().sprite = Resources.Load<Sprite>("Icons/ItemType/" + t.ToString());
+                toggle.graphic.GetComponent<Image>().sprite = Resources.Load<Sprite>("Icons/ItemType/" + t.ToString());
+                catToggles.Add(toggle);
+                int n = (int)t;
+                toggle.onValueChanged.AddListener(delegate { OnType(n); });
+            }
+        }
 
         List<PlayerItem> temp = new List<PlayerItem>();
 
@@ -43,11 +81,7 @@ public class InventoryPanel : MonoBehaviour
         {
             if(item.state != ItemState.OnShop)
             {
-                if (itemType == ItemType.All)
-                {
-                    temp.Add(item);
-                }
-                else if (item.itemType == itemType)
+                if (currentCat == 0 || (int)item.itemType == currentCat)
                 {
                     temp.Add(item);
                 }
@@ -56,10 +90,16 @@ public class InventoryPanel : MonoBehaviour
 
         temp.Sort((p1, p2) => ((int)p1.itemType).CompareTo((int)p2.itemType));
 
-        foreach(PlayerItem item in temp)
+        foreach (PlayerItem item in temp)
         {
             LoadItem(item);
         }
+    }
+
+    public void OnType(int id)
+    {
+        currentCat = id;
+        Load();
     }
 
     public InventoryUI GetItem(int id)
@@ -82,6 +122,15 @@ public class InventoryPanel : MonoBehaviour
         item.Load(data);
     }
 
+    void ClearCat()
+    {
+        catType.Clear();
+        foreach (Toggle t in catToggles)
+        {
+            GameObject.Destroy(t.gameObject);
+        }
+        catToggles.Clear();
+    }
 
     void ClearItems()
     {

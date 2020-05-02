@@ -61,7 +61,7 @@ public class InventoryUI : MonoBehaviour
         price.text = (item.buyPrice/2).ToString();
         sellButton.gameObject.SetActive(true);
         sellButton.interactable = true;
-        if ((item.itemType == ItemType.Room && GameManager.instance.GetItemNumber(ItemType.Room) == 1) || (item.itemType == ItemType.Gate && GameManager.instance.GetItemNumber(ItemType.Gate) == 1))
+        if ((item.itemType == ItemType.Room && GameManager.instance.GetItemNumber(ItemType.Room) == 1) || (item.itemType == ItemType.Gate && GameManager.instance.GetItemNumber(ItemType.Gate) == 1) || (item.itemType == ItemType.Board && GameManager.instance.GetItemNumber(ItemType.Board) == 1))
             sellButton.interactable = false;
 
         if (item.priceType == PriceType.Coin)

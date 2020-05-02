@@ -119,11 +119,13 @@ public class PlayerPet : BaseModel
 	public string petName = "";
 	public bool isNew = false;
 	public ItemState itemState = ItemState.OnShop;
+	public List<int> accessories = new List<int>();
 	public PlayerPet(int id)
 	{
 		iD = id;
 	}
 }
+
 
 [System.Serializable]
 public class PlayerItem : BaseModel{

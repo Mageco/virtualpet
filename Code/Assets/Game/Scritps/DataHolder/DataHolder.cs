@@ -275,6 +275,17 @@ public class DataHolder
 		return temp;
 	}
 
+	public static Accessory GetAccessory(int petId,int accessoryId)
+	{
+		List<Accessory> temp = new List<Accessory>();
+		for (int i = 0; i < DataHolder.Accessories().GetDataCount(); i++)
+		{
+			if (DataHolder.Accessory(i).petId == petId)
+				temp.Add(DataHolder.Accessory(i));
+		}
+		return temp[accessoryId];
+	}
+
 	public static int GetAccessoryIndex(int id)
 	{
 		for (int i = 0; i < DataHolder.Accessories().GetDataCount(); i++)

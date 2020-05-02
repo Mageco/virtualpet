@@ -164,6 +164,27 @@ public class ItemManager : MonoBehaviour
         List<PlayerItem> data = GameManager.instance.GetEquipedPLayerItems();
         Debug.Log("Data " + data.Count);
         List<ItemObject> removes = new List<ItemObject>();
+        foreach (ItemObject item in items)
+        {
+            bool isRemove = false;
+            for (int i = 0; i < data.Count; i++)
+            {
+                if (data[i].realId == item.realID && (data[i].state == ItemState.Have || data[i].state == ItemState.OnShop))
+                {
+                    isRemove = true;
+                }
+            }
+            if (isRemove && !removes.Contains(item))
+            {
+                removes.Add(item);
+            }
+        }
+
+
+        foreach (ItemObject item in removes)
+        {
+            RemoveItem(item.realID);
+        }
 
         List<PlayerItem> adds = new List<PlayerItem>();
         for (int i = 0; i < data.Count; i++)
@@ -379,7 +400,7 @@ public class ItemManager : MonoBehaviour
 
     public ItemCollider GetItemCollider(ItemType type){
         ItemObject item = GetItem(type);
-        if (item.GetComponentInChildren<ItemCollider>() != null)
+        if (item != null && item.GetComponentInChildren<ItemCollider>() != null)
             return item.GetComponentInChildren<ItemCollider>();            
         else
             return null;
@@ -842,6 +863,7 @@ public class ItemManager : MonoBehaviour
 
     IEnumerator SpawnGift(PlayerPet pet)
     {
+        pet.isNew = false;
         CharController petObject = SpawnPet(pet);
         petObject.agent.transform.position = new Vector3(10000,00,0);
         GameObject gift = GameObject.Instantiate(petGiftPrefab);
@@ -852,7 +874,7 @@ public class ItemManager : MonoBehaviour
         petObject.agent.transform.position = pos;
         petObject.transform.position = pos;
         petObject.OnGift();
-        pet.isNew = false;
+        
     }
 
     CharController SpawnPet(PlayerPet pet)

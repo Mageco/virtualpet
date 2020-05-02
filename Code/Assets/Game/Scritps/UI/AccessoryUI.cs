@@ -5,10 +5,12 @@ using UnityEngine.UI;
 
 public class AccessoryUI : MonoBehaviour
 {
+    public int realId = 0;
     public int itemId = 0;
     public Image icon;
     public Text price;
     public Button buyButton;
+    public Button equipButton;
     public Text levelText;
     public GameObject coinIcon;
     public GameObject diamonIcon;
@@ -26,24 +28,22 @@ public class AccessoryUI : MonoBehaviour
     }
 
     // Start is called before the first frame update
-    public void Load(Accessory d)
+    public void Load(Accessory d,PlayerPet p)
     {
-        itemId = d.iD;
-        //Debug.Log(d.iconUrl);
+        if (d.accessoryId == p.accessoryId)
+            state = ItemState.Equiped;
+        else if (p.accessories.Contains(d.accessoryId))
+            state = ItemState.Have;
+        else
+            state = ItemState.OnShop;
+
+        realId = p.realId;
+        itemId = d.accessoryId;
         string url = d.iconUrl.Replace("Assets/Game/Resources/", "");
         url = url.Replace(".png", "");
         icon.sprite = Resources.Load<Sprite>(url) as Sprite;
 
-        if (GameManager.instance.IsHaveAccessory(d.petId,d.iD))
-        {
-            state = ItemState.Have;
-        }
-        else
-        {
-            state = ItemState.OnShop;
-        }
-
-        if (d.levelRequire > GameManager.instance.myPlayer.level && state == ItemState.OnShop)
+        if (d.levelRequire > p.level && state == ItemState.OnShop)
             isLevelRequire = true;
 
         OffAllIcon();
@@ -72,16 +72,7 @@ public class AccessoryUI : MonoBehaviour
         }
         else
         {
-            if(itemId == 0)
-            {
-                price.gameObject.SetActive(true);
-                price.text = "0";
-                buyButton.gameObject.SetActive(true);
-                buyButton.interactable = true;
-                coinIcon.SetActive(true);
-            }
-            else
-            {
+
                 if (state == ItemState.OnShop)
                 {
                     price.gameObject.SetActive(true);
@@ -107,45 +98,48 @@ public class AccessoryUI : MonoBehaviour
                 }
                 else if (state == ItemState.Have)
                 {
-                    buyButton.gameObject.SetActive(true);
-                    buyButton.interactable = false;
+                    equipButton.gameObject.SetActive(true);
+                    equipButton.interactable = true;
+                }else if(state == ItemState.Equiped)
+                {
+                    equipButton.gameObject.SetActive(true);
+                    equipButton.interactable = false;
                 }
 
-                if (state == ItemState.OnShop)
+            if (state == ItemState.OnShop)
+            {
+                if (d.priceType == PriceType.Coin)
                 {
-                    if (d.priceType == PriceType.Coin)
+                    coinIcon.SetActive(true);
+                    if (GameManager.instance.GetCoin() < (DataHolder.GetAccessory(itemId).buyPrice))
                     {
-                        coinIcon.SetActive(true);
-                        if (GameManager.instance.GetCoin() < (DataHolder.GetAccessory(itemId).buyPrice))
-                        {
-                            buyButton.interactable = false;
-                        }
+                        buyButton.interactable = false;
                     }
-                    else if (d.priceType == PriceType.Diamond)
+                }
+                else if (d.priceType == PriceType.Diamond)
+                {
+                    diamonIcon.SetActive(true);
+                    if (GameManager.instance.GetDiamond() < (DataHolder.GetAccessory(itemId).buyPrice))
                     {
-                        diamonIcon.SetActive(true);
-                        if (GameManager.instance.GetDiamond() < (DataHolder.GetAccessory(itemId).buyPrice))
-                        {
-                            buyButton.interactable = false;
-                        }
+                        buyButton.interactable = false;
                     }
-                    else if (d.priceType == PriceType.Money)
+                }
+                else if (d.priceType == PriceType.Money)
+                {
+                    moneyIcon.SetActive(true);
+                    moneyIcon.GetComponent<Text>().text = DataHolder.Dialog(64).GetName(MageManager.instance.GetLanguage());
+                    price.text = (d.buyPrice * (float.Parse(DataHolder.Dialog(64).GetDescription(MageManager.instance.GetLanguage())))).ToString(".00");
+                }
+                else if (d.priceType == PriceType.Happy)
+                {
+                    happyIcon.SetActive(true);
+                    if (state == ItemState.OnShop && GameManager.instance.GetHappy() < (DataHolder.GetAccessory(itemId).buyPrice))
                     {
-                        moneyIcon.SetActive(true);
-                        moneyIcon.GetComponent<Text>().text = DataHolder.Dialog(64).GetName(MageManager.instance.GetLanguage());
-                        price.text = (d.buyPrice * (float.Parse(DataHolder.Dialog(64).GetDescription(MageManager.instance.GetLanguage())))).ToString(".00");
-                    }
-                    else if (d.priceType == PriceType.Happy)
-                    {
-                        happyIcon.SetActive(true);
-                        if (state == ItemState.OnShop && GameManager.instance.GetHappy() < (DataHolder.GetAccessory(itemId).buyPrice))
-                        {
-                            buyButton.interactable = false;
-                        }
+                        buyButton.interactable = false;
                     }
                 }
             }
- 
+            
         }
     }
 
@@ -153,6 +147,7 @@ public class AccessoryUI : MonoBehaviour
     {
         levelText.gameObject.SetActive(false);
         buyButton.gameObject.SetActive(false);
+        equipButton.gameObject.SetActive(false);
         price.gameObject.SetActive(false);
         coinIcon.SetActive(false);
         diamonIcon.SetActive(false);
@@ -171,23 +166,34 @@ public class AccessoryUI : MonoBehaviour
             return;
 
         MageManager.instance.PlaySound("BubbleButton", false);
-        BuyCoroutine();
-    }
 
-    void BuyCoroutine()
-    {
-        isBusy = true;
-        GameManager.instance.BuyAccessory(itemId);
-        MageManager.instance.OnNotificationPopup(DataHolder.Dialog(76).GetName(MageManager.instance.GetLanguage()));
-        if(UIManager.instance.accessoryPanel != null)
+        if(state == ItemState.OnShop)
         {
-            UIManager.instance.accessoryPanel.ReLoad();
+            GameManager.instance.BuyAccessory(itemId, realId);
+            
+            if (UIManager.instance.profilePanel != null)
+            {
+                UIManager.instance.profilePanel.Load();
+            }
+            if (UIManager.instance.accessoryPanel != null)
+            {
+                UIManager.instance.accessoryPanel.Close();
+            }
+            MageManager.instance.OnNotificationPopup(DataHolder.Dialog(76).GetName(MageManager.instance.GetLanguage()));
+        }else if(state == ItemState.Have)
+        {
+            GameManager.instance.EquipAccessory(itemId, realId);
+            if (UIManager.instance.profilePanel != null)
+            {
+                UIManager.instance.profilePanel.Load();
+            }
+            if (UIManager.instance.accessoryPanel != null)
+            {
+                UIManager.instance.accessoryPanel.Close();
+            }
         }
-    }
-
-    public void OnItemInfo()
-    {
 
     }
+
 
 }

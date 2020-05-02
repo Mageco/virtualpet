@@ -18,11 +18,8 @@ public class ProfilePanel : MonoBehaviour
 
     }
     void Start()
-    {   
-        ClearItems();
-        foreach(PlayerPet p in GameManager.instance.GetPets()){
-            LoadItem(p);
-        }
+    {
+        Load();
     }
 
     
@@ -32,6 +29,15 @@ public class ProfilePanel : MonoBehaviour
 
     }
 
+    public void Load()
+    {
+        ClearItems();
+        foreach (PlayerPet p in GameManager.instance.GetPets())
+        {
+            if(p.itemState != ItemState.OnShop)
+                LoadItem(p);
+        }
+    }
 
 
     void LoadItem(PlayerPet data){

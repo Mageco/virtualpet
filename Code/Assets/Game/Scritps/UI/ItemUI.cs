@@ -98,22 +98,14 @@ public class ItemUI : MonoBehaviour
             price.gameObject.SetActive(true);
             price.text = d.buyPrice.ToString();
             buyButton.gameObject.SetActive(true);
-            if (d.itemTag == ItemTag.Hot)
-            {
-                tags[0].transform.parent.gameObject.SetActive(true);
-                tags[0].SetActive(true);
-            }
-            else if (d.itemTag == ItemTag.Sale)
-            {
-                tags[0].transform.parent.gameObject.SetActive(true);
-                tags[1].SetActive(true);
-            }
-            else if (d.itemTag == ItemTag.New)
-            {
-                tags[0].transform.parent.gameObject.SetActive(true);
-                tags[2].SetActive(true);
-            }
 
+            if(d.itemType == ItemType.Room || d.itemType == ItemType.Gate || d.itemType == ItemType.Board || d.itemType == ItemType.Clean)
+            {
+                if (GameManager.instance.IsHaveItem(d.iD))
+                {
+                    buyButton.interactable = false;
+                }
+            }
 
             if (d.priceType == PriceType.Coin)
             {
@@ -353,6 +345,7 @@ public class ItemUI : MonoBehaviour
         price.gameObject.SetActive(true);
         price.text = d.buyPrice.ToString();
         buyButton.gameObject.SetActive(true);
+
         if (d.itemTag == ItemTag.Hot)
         {
             tags[0].transform.parent.gameObject.SetActive(true);

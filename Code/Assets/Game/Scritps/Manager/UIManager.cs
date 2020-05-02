@@ -341,8 +341,8 @@ public class UIManager : MonoBehaviour
 
 
 
-    public void SellPet(int itemID){
-	  GameManager.instance.SellPet(itemID);
+    public void SellPet(int realId){
+	  GameManager.instance.SellPet(realId);
         if (shopPanel != null)
             shopPanel.ReLoad();
         if (petRequirementPanel != null)

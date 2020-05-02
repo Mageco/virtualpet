@@ -117,7 +117,7 @@ public class CharController : MonoBehaviour
     public void LoadData(PlayerPet pet)
     {
 
-        if (!GameManager.instance.isGuest && ES2.Exists(DataHolder.GetPet(data.realId).GetName(0) + data.realId.ToString()))
+        if (!GameManager.instance.isGuest && ES2.Exists(DataHolder.GetPet(data.iD).GetName(0) + data.realId.ToString()))
         {
             if (float.Parse(GameManager.instance.myPlayer.version) < 1.20f)
             {
@@ -173,11 +173,29 @@ public class CharController : MonoBehaviour
             iconStatusObject.gameObject.SetActive(false);
             originalStatusScale = iconStatusObject.transform.localScale;
         }
+    }
+
+    public void LoadCharObject()
+    {
+        if (charObject != null)
+            Destroy(charObject);
+
+
+        charObject = Instantiate(skinPrefabs[GameManager.instance.GetPet(data.realId).accessoryId]) as GameObject;
+        charObject.transform.parent = this.transform;
+        charObject.transform.localScale = skinPrefabs[GameManager.instance.GetPet(data.realId).accessoryId].transform.localScale;
+        charObject.transform.localPosition = Vector3.zero;
+        
+        anim = charObject.transform.GetComponent<Animator>();
 
         //Load Dirty Effect
         //grab all the kids and only keep the ones with dirty tags
+        dirties.Clear();
+        dirties_L.Clear();
+        dirties_LD.Clear();
+       
 
-        Transform[] allChildren = gameObject.GetComponentsInChildren<Transform>(true);
+        Transform[] allChildren = charObject.GetComponentsInChildren<Transform>(true);
 
         foreach (Transform child in allChildren)
         {
@@ -202,33 +220,8 @@ public class CharController : MonoBehaviour
                 child.gameObject.SetActive(false);
             }
         }
-
-        Load();
     }
 
-    public void LoadCharObject()
-    {
-        if (charObject != null)
-            Destroy(charObject);
-
-        if (GameManager.instance.GetPet(data.realId).accessoryId == 0)
-        {
-            charObject = Instantiate(petPrefab) as GameObject;
-            charObject.transform.parent = this.transform;
-            charObject.transform.localPosition = Vector3.zero;            
-        }
-        else
-        {
-            charObject = Instantiate(skinPrefabs[DataHolder.GetAccessory(GameManager.instance.GetPet(data.realId).accessoryId).accessoryId]) as GameObject;
-            charObject.transform.parent = this.transform;
-            charObject.transform.localPosition = Vector3.zero;
-        }
-        anim = charObject.transform.GetComponent<Animator>();
-    }
-
-    public void LoadTime(float t)
-    {
-    }
 
     public void SetName()
     {
@@ -237,10 +230,7 @@ public class CharController : MonoBehaviour
         petNameText.text = data.petName;
     }
 
-    protected virtual void Load()
-    {
 
-    }
     // Use this for initialization
 
     #endregion
@@ -318,7 +308,7 @@ public class CharController : MonoBehaviour
         {
             saveTime = 0;
             if (!GameManager.instance.isGuest)
-                ES2.Save(this.data, DataHolder.GetPet(data.realId).GetName(0) + data.realId.ToString());
+                ES2.Save(this.data, DataHolder.GetPet(data.iD).GetName(0) + data.realId.ToString());
 
         }
         else
@@ -379,50 +369,57 @@ public class CharController : MonoBehaviour
         data.curious += 0.1f;
 
         //CheckDirty
-        if (data.dirty > data.MaxDirty * 0.5f)
+
+        if(charObject != null)
         {
-            int n = (int)((data.dirty - data.MaxDirty * 0.5f) / (data.MaxDirty * 0.5f) * dirties.Count);
-            for (int i = 0; i < dirties.Count; i++)
+            if (data.dirty > data.MaxDirty * 0.5f)
             {
-                if (i < n)
-                    dirties[i].SetActive(true);
-                else
+                int n = (int)((data.dirty - data.MaxDirty * 0.5f) / (data.MaxDirty * 0.5f) * dirties.Count);
+                for (int i = 0; i < dirties.Count; i++)
+                {
+                    if (i < n)
+                        dirties[i].SetActive(true);
+                    else
+                        dirties[i].SetActive(false);
+                }
+
+                int n1 = (int)((data.dirty - data.MaxDirty * 0.5f) / (data.MaxDirty * 0.5f) * dirties_L.Count);
+                for (int i = 0; i < dirties_L.Count; i++)
+                {
+                    if (i < n)
+                        dirties_L[i].SetActive(true);
+                    else
+                        dirties_L[i].SetActive(false);
+                }
+
+                int n2 = (int)((data.dirty - data.MaxDirty * 0.5f) / (data.MaxDirty * 0.5f) * dirties_LD.Count);
+                for (int i = 0; i < dirties_LD.Count; i++)
+                {
+                    if (i < n)
+                        dirties_LD[i].SetActive(true);
+                    else
+                        dirties_LD[i].SetActive(false);
+                }
+            }
+            else
+            {
+                for (int i = 0; i < dirties.Count; i++)
+                {
                     dirties[i].SetActive(false);
-            }
-
-            int n1 = (int)((data.dirty - data.MaxDirty * 0.5f) / (data.MaxDirty * 0.5f) * dirties_L.Count);
-            for (int i = 0; i < dirties_L.Count; i++)
-            {
-                if (i < n)
-                    dirties_L[i].SetActive(true);
-                else
+                }
+                for (int i = 0; i < dirties_L.Count; i++)
+                {
                     dirties_L[i].SetActive(false);
-            }
-
-            int n2 = (int)((data.dirty - data.MaxDirty * 0.5f) / (data.MaxDirty * 0.5f) * dirties_LD.Count);
-            for (int i = 0; i < dirties_LD.Count; i++)
-            {
-                if (i < n)
-                    dirties_LD[i].SetActive(true);
-                else
+                }
+                for (int i = 0; i < dirties_LD.Count; i++)
+                {
                     dirties_LD[i].SetActive(false);
+                }
             }
         }
-        else
-        {
-            for (int i = 0; i < dirties.Count; i++)
-            {
-                dirties[i].SetActive(false);
-            }
-            for (int i = 0; i < dirties_L.Count; i++)
-            {
-                dirties_L[i].SetActive(false);
-            }
-            for (int i = 0; i < dirties_LD.Count; i++)
-            {
-                dirties_LD[i].SetActive(false);
-            }
-        }
+        
+        
+        
 
         //Save data
         data.actionType = this.actionType;
