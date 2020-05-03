@@ -75,7 +75,7 @@ public class GameManager : MonoBehaviour
     {
         foreach (CharController c in petObjects)
         {
-            if (c.charInteract.interactType != InteractType.Toy)
+            if (c.charInteract.interactType != InteractType.Equipment)
             {
                 Vector3 pos = c.transform.position;
                 pos.z = (int)(c.charScale.scalePosition.y * 10);
@@ -262,18 +262,17 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void UnEquipPet(int itemId)
+    public void UnEquipPet(int realId)
     {
-        if(GetPetObject(itemId).actionType == ActionType.Toy || GetPetObject(itemId).enviromentType != EnviromentType.Room)
+        if(GetPetObject(realId).equipment != null)
         {
-            MageManager.instance.OnNotificationPopup(DataHolder.Dialog(107).GetName(MageManager.instance.GetLanguage()));
-            return;
+            GetPetObject(realId).equipment.DeActive();
         }
 
         
         foreach (PlayerPet p in myPlayer.petDatas)
         {
-            if (p.realId == itemId)
+            if (p.realId == realId)
             {
                 p.itemState = ItemState.Have;
                 if (ItemManager.instance != null)
@@ -451,6 +450,8 @@ public class GameManager : MonoBehaviour
                  if (ItemManager.instance != null)
                 {
                     CharController petObject = GetPetObject(realId);
+                    if (petObject.equipment != null)
+                        petObject.equipment.DeActive();
                     petObjects.Remove(petObject);
                     ItemManager.instance.UnLoadPetObject(petObject);
                 }
@@ -682,12 +683,15 @@ public class GameManager : MonoBehaviour
             {
                 foreach(PlayerItem item1 in myPlayer.items)
                 {
-                    if (item != item1 && item.itemId == item1.itemId && (item.itemType == ItemType.Room || item.itemType == ItemType.Gate || item.itemType == ItemType.Board || item.itemType == ItemType.Clean))
-                        item1.state = ItemState.Have;
+                    if (item != item1  && item.itemType == item1.itemType && (item.itemType == ItemType.Room || item.itemType == ItemType.Gate || item.itemType == ItemType.Board || item.itemType == ItemType.Clean))
+                    {
+                        item1.state = ItemState.OnShop;
+                        Debug.Log("Have " + item1.realId);
+                    }
                 }
                 item.state = ItemState.Equiped;
                 if (ItemManager.instance != null)
-                    ItemManager.instance.EquipItem();
+                    ItemManager.instance.LoadItems();
             }
         }
 
@@ -714,7 +718,7 @@ public class GameManager : MonoBehaviour
     {
         foreach (PlayerItem item in myPlayer.items)
         {
-            if (item.itemId == itemId)
+            if (item.itemId == itemId && item.state != ItemState.OnShop)
             {
                 return true;
             }

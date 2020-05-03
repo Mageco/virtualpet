@@ -6,7 +6,6 @@ using UnityEngine.EventSystems;
 public class FruitItem : MonoBehaviour
 {
     [HideInInspector]
-    public ItemSaveDataType itemSaveDataType = ItemSaveDataType.Fruit;
     public int id = 0;
     public GameObject[] steps;
     public int step = 0;

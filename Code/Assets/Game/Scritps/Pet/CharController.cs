@@ -14,9 +14,7 @@ public class CharController : MonoBehaviour
     public GameObject petPrefab;
     public CharType charType = CharType.Dog;
 
-    [HideInInspector]
-    public EnviromentType enviromentType = EnviromentType.Room;
-    [HideInInspector]
+   [HideInInspector]
     public Direction direction = Direction.L;
 
     //Think
@@ -54,6 +52,8 @@ public class CharController : MonoBehaviour
     public CharInteract charInteract;
     [HideInInspector]
     public CharScale charScale;
+    [HideInInspector]
+    public CharCollider charCollider;
 
     //Pee,Sheet
     public Transform peePosition;
@@ -72,8 +72,6 @@ public class CharController : MonoBehaviour
     //Skill
     [HideInInspector]
     public SkillType currentSkill = SkillType.NONE;
-    FoodBowlItem foodItem;
-    DrinkBowlItem drinkItem;
     MouseController mouse;
 
     [HideInInspector]
@@ -85,8 +83,8 @@ public class CharController : MonoBehaviour
     IconStatus lastIconStatus = IconStatus.None;
     Vector3 originalStatusScale;
 
-    protected ToyItem toyItem;
-    protected ToyItem lastToyItem;
+    public BaseFloorItem equipment;
+    protected BaseFloorItem lastEquipment;
     float timeToy = 0;
     float timeLove = 0;
     [HideInInspector]
@@ -96,10 +94,7 @@ public class CharController : MonoBehaviour
     [HideInInspector]
     public List<GameObject> dirties_LD = new List<GameObject>();
     public List<GameObject> skinPrefabs = new List<GameObject>();
-    Vector3 callPosition;
     GameObject charObject;
-
-    ItemCollider currentItemCollider;
 
     #region Load
 
@@ -156,6 +151,7 @@ public class CharController : MonoBehaviour
 
         charInteract = this.GetComponent<CharInteract>();
         charScale = this.GetComponent<CharScale>();
+        charCollider = this.GetComponentInChildren<CharCollider>(true);
 
 
         GameObject go1 = Instantiate(Resources.Load("Prefabs/Pets/Agent")) as GameObject;
@@ -247,37 +243,16 @@ public class CharController : MonoBehaviour
         //Debug.Log(actionType.ToString() + "  " + charInteract.interactType.ToString());
         if (actionType == ActionType.None)
         {
-            //Debug.Log("Think");
-            if (enviromentType == EnviromentType.Bath)
-            {
-                OnBath();
-            }
-            else if (enviromentType == EnviromentType.Table)
-            {
-                OnTable();
-            }
-            else if (enviromentType == EnviromentType.Bed)
-            {
-                OnBed();
-            }
-            else if (enviromentType == EnviromentType.Toilet)
-            {
-                OnToilet();
-            }
-            else
-            {
-                Think();
-            }
+            Think();
             DoAction();
-            LogAction();
         }
         else if(actionType == ActionType.Toy)
         {
             data.Energy -= Time.deltaTime;
             petNameText.gameObject.SetActive(false);
-            if (timeToy > 6 && toyItem != null && toyItem.IsActive())
+            if (timeToy > 6 && equipment != null && equipment.IsActive())
             {
-                int value = (int)DataHolder.GetItem(toyItem.item.itemID).value;
+                int value = (int)DataHolder.GetItem(equipment.itemID).value;
                 ItemManager.instance.SpawnHeart(data.RateHappy + data.level/5 + value, this.transform.position);
                 timeToy = 0;
             }
@@ -325,8 +300,6 @@ public class CharController : MonoBehaviour
 
         if (data.Food > 0 && data.Water > 0)
         {
-            float delta = data.RecoveryEnergy / 5;
-            data.Energy += delta;
             data.Food -= 0.4f;
             data.Water -= 0.4f;
             data.Shit += 0.2f;
@@ -334,14 +307,10 @@ public class CharController : MonoBehaviour
         }
 
 
-        data.Dirty += data.recoverDirty;
-        if (data.Dirty > data.MaxDirty * 0.7f)
-            data.Itchi += (data.Dirty - data.MaxDirty * 0.7f) * 0.005f;
+        data.Dirty += 0.2f;
+        data.Sleep -= 0.1f;
 
-        data.Sleep -= data.recoverSleep;
-
-        float deltaHealth = 0;// data.RecoverHealth;
-        //Debug.Log(deltaHealth);
+        float deltaHealth = 0;
 
         if (data.Health > 0.1f * data.MaxHealth)
         {
@@ -366,7 +335,6 @@ public class CharController : MonoBehaviour
         //Debug.Log(deltaHealth);
 
         data.Health += deltaHealth;
-        data.curious += 0.1f;
 
         //CheckDirty
 
@@ -418,13 +386,10 @@ public class CharController : MonoBehaviour
             }
         }
         
-        
-        
 
         //Save data
         data.actionType = this.actionType;
         data.position = this.transform.position;
-        data.enviromentType = this.enviromentType;
         data.scalePosition = charScale.scalePosition;
         data.height = charScale.height;
 
@@ -504,7 +469,7 @@ public class CharController : MonoBehaviour
 
 
 
-        if (data.Itchi > data.MaxItchi * 0.7f)
+        if (data.Dirty > data.MaxDirty * 0.9f)
         {
             int ran = Random.Range(0, 100);
             if (ran > 50)
@@ -599,10 +564,6 @@ public class CharController : MonoBehaviour
         {
             StartCoroutine(Table());
         }
-        else if (actionType == ActionType.Fear)
-        {
-            StartCoroutine(Fear());
-        }
         else if (actionType == ActionType.Tired)
         {
             StartCoroutine(Tired());
@@ -614,14 +575,6 @@ public class CharController : MonoBehaviour
         else if (actionType == ActionType.Fall)
         {
             StartCoroutine(Fall());
-        }
-        else if (actionType == ActionType.OnBed)
-        {
-            StartCoroutine(Bed());
-        }
-        else if (actionType == ActionType.OnToilet)
-        {
-            StartCoroutine(Toilet());
         }
         else if (actionType == ActionType.Supprised)
         {
@@ -639,10 +592,6 @@ public class CharController : MonoBehaviour
         {
             StartCoroutine(Injured());
         }
-        else if (actionType == ActionType.JumpOut)
-        {
-            StartCoroutine(JumpOut());
-        }
         else if (actionType == ActionType.OnCall)
         {
             StartCoroutine(Call());
@@ -651,17 +600,9 @@ public class CharController : MonoBehaviour
         {
             StartCoroutine(Control());
         }
-        else if (actionType == ActionType.OnGarden)
-        {
-            StartCoroutine(Garden());
-        }
         else if (actionType == ActionType.OnGift)
         {
             StartCoroutine(Gift());
-        }
-        else if (actionType == ActionType.OnCity)
-        {
-            StartCoroutine(City());
         }
     }
 
@@ -774,12 +715,54 @@ public class CharController : MonoBehaviour
             return;
         }*/
 
-        if (charInteract.interactType == InteractType.Drop || charInteract.interactType == InteractType.Jump || actionType == ActionType.OnControl || actionType == ActionType.OnGift || actionType == ActionType.OnCity)
+        if (charInteract.interactType == InteractType.Drop || charInteract.interactType == InteractType.Jump || actionType == ActionType.OnControl || actionType == ActionType.OnGift)
             return;
 
         Abort();
         charInteract.interactType = InteractType.Drag;
         actionType = ActionType.Hold;
+    }
+
+    public virtual void OnToy(BaseFloorItem item)
+    {
+        if (equipment != null)
+            return;
+
+        if (item == null)
+            return;
+
+        //Debug.Log("Toy2");
+        if (item.state == EquipmentState.Drag || item.state == EquipmentState.Busy || item.state == EquipmentState.Active)
+            return;
+
+
+        if(item.itemType == ItemType.Toy)
+        {
+            if (data.Energy < data.MaxEnergy * 0.1f)
+            {
+                return;
+            }
+
+            if (lastEquipment != null && item == lastEquipment)
+            {
+                int n = Random.Range(0, 100);
+
+                if (n > 50 && lastActionType != ActionType.Hold)
+                    return;
+
+            }
+
+            if (actionType != ActionType.Sick && actionType != ActionType.Injured && actionType != ActionType.OnControl && charInteract.interactType != InteractType.Drag //actionType != ActionType.Hold
+                && actionType != ActionType.Toy && actionType != ActionType.Supprised && actionType != ActionType.OnCall && actionType != ActionType.OnGift)
+            {
+                timeToy = 0;
+                actionType = ActionType.Toy;
+                isAbort = true;
+                lastEquipment = item;
+                equipment = item;
+                //Debug.Log(item.toyType);            
+            }
+        }
     }
 
     public virtual void OnCall()
@@ -789,55 +772,46 @@ public class CharController : MonoBehaviour
             return;
         }
 
-
-        //if (callPosition != null && actionType == ActionType.OnCall && Mathf.Abs(ItemManager.instance.GetActiveCamera().transform.position.x - callPosition.x) < 5)
-        //    return;
-
-        if (enviromentType != EnviromentType.Room)
-            return;
+        if(equipment != null)
+        {
+            agent.transform.position = equipment.endPoint.position;
+        }
 
         Abort();
         actionType = ActionType.OnCall;
-        callPosition.x = ItemManager.instance.GetActiveCamera().transform.position.x;
     }
 
     public virtual void OnSupprised()
     {
-        if (actionType == ActionType.Hold || actionType == ActionType.Sick || actionType == ActionType.Injured || enviromentType != EnviromentType.Room || actionType == ActionType.Toy)
+        if (actionType == ActionType.Hold || actionType == ActionType.Sick || actionType == ActionType.Injured || actionType == ActionType.Toy)
             return;
 
         Abort();
         actionType = ActionType.Supprised;
     }
 
-    public virtual void OnFear()
-    {
-        if (actionType == ActionType.Hold || actionType == ActionType.Sick || actionType == ActionType.Injured || enviromentType != EnviromentType.Room || actionType == ActionType.Toy)
-            return;
-
-        Abort();
-        actionType = ActionType.Fear;
-    }
-
     public virtual void OnEat()
     {
-        if (enviromentType == EnviromentType.Room && data.Food < 0.3f * data.MaxFood &&
-            (actionType == ActionType.Patrol || actionType == ActionType.Discover || actionType == ActionType.OnCall))
-        {
-            actionType = ActionType.Eat;
-            isAbort = true;
-        }
+        actionType = ActionType.Eat;
+        isAbort = true;        
     }
 
     public virtual void OnDrink()
     {
-        if (enviromentType == EnviromentType.Room && data.Water < 0.3f * data.MaxWater &&
-            (actionType == ActionType.Patrol || actionType == ActionType.Discover))
-        {
-            actionType = ActionType.Drink;
-            isAbort = true;
-        }
+        actionType = ActionType.Drink;
+        isAbort = true;   
+    }
 
+    protected void OnSleep()
+    {
+        Abort();
+        actionType = ActionType.Sleep;
+    }
+
+    protected void OnToilet()
+    {
+        Abort();
+        actionType = ActionType.Shit;
     }
 
     protected void OnBath()
@@ -874,17 +848,6 @@ public class CharController : MonoBehaviour
 
     }
 
-    protected void OnBed()
-    {
-        Abort();
-        actionType = ActionType.OnBed;
-    }
-
-    protected void OnToilet()
-    {
-        Abort();
-        actionType = ActionType.OnToilet;
-    }
 
     protected void OnTable()
     {
@@ -910,6 +873,7 @@ public class CharController : MonoBehaviour
         }
     }
 
+    /*
     public virtual void OnSoap()
     {
         if (actionType == ActionType.OnBath)
@@ -940,13 +904,8 @@ public class CharController : MonoBehaviour
             MageManager.instance.PlaySound3D("Shake", false,this.transform.position);
         }
 
-    }
+    }*/
 
-    public void OnCity()
-    {
-        Abort();
-        actionType = ActionType.OnCity;
-    }
 
     public virtual void OnControl()
     {
@@ -980,56 +939,7 @@ public class CharController : MonoBehaviour
         }
     }
 
-
-    public virtual void OnJumpOut()
-    {
-        isAbort = true;
-        actionType = ActionType.JumpOut;
-    }
-
-    public virtual void OnToy(ToyItem item)
-    {
-        //Debug.Log("Toy1");
-        if (toyItem != null)
-            return;
-
-        if (item == null)
-            return;
-
-        //Debug.Log("Toy2");
-        if (item.state == EquipmentState.Drag || item.state == EquipmentState.Busy || item.state == EquipmentState.Active)
-            return;
-
-        //Debug.Log("Toy3");
-        if (data.Energy < data.MaxEnergy * 0.1f)
-        {
-            return;
-        }
-
-        //Debug.Log("Toy4");
-        if (lastToyItem != null && item == lastToyItem)
-        {
-            int n = Random.Range(0, 100);
-            
-            if (n > 50 && lastActionType != ActionType.Hold)
-                return;
-
-        }
-
-        //Debug.Log("Toy5");
-        if (actionType != ActionType.Sick && actionType != ActionType.Injured && actionType != ActionType.OnControl && charInteract.interactType != InteractType.Drag //actionType != ActionType.Hold
-         && actionType != ActionType.Toy && enviromentType == EnviromentType.Room && actionType != ActionType.Supprised && actionType != ActionType.OnCall && actionType != ActionType.OnGift)
-        {
-            timeToy = 0;
-            actionType = ActionType.Toy;
-            isAbort = true;
-            lastToyItem = item;
-            toyItem = item;
-            //Debug.Log(item.toyType);            
-        }
-    }
-
-
+ 
     public virtual void OnArrived()
     {
         if (actionType == ActionType.Mouse)
@@ -1055,10 +965,6 @@ public class CharController : MonoBehaviour
             data.Damage = 0;
     }
 
-    void LogAction()
-    {
-        //ApiManager.GetInstance().LogAc(actionType);
-    }
 
 
     #endregion
@@ -1183,72 +1089,6 @@ public class CharController : MonoBehaviour
     }
 
 
-    protected IEnumerator JumpDown(float zSpeed, float ySpeed, float accelerator)
-    {
-        enviromentType = EnviromentType.Room;
-        anim.Play("Hold", 0);
-        float speed = ySpeed;
-        //charScale.scalePosition = new Vector3(this.transform.position.x, this.transform.position.y - height, 0);
-        charInteract.interactType = InteractType.Jump;
-        MageManager.instance.PlaySound("Drag", false);
-        while (charInteract.interactType == InteractType.Jump && !isAbort)
-        {
-            speed -= accelerator * Time.deltaTime;
-            if (speed < -50)
-                speed = -50;
-            Vector3 pos1 = agent.transform.position;
-            pos1.y += speed * Time.deltaTime + zSpeed * Time.deltaTime;
-            charScale.scalePosition.y += zSpeed * Time.deltaTime;
-            charScale.height += speed * Time.deltaTime;
-            agent.transform.position = pos1;
-
-            if (charScale.height <= 0)
-            {
-                this.transform.rotation = Quaternion.identity;
-                charInteract.interactType = InteractType.None;
-            }
-            yield return new WaitForEndOfFrame();
-        }
-        charInteract.interactType = InteractType.None;
-
-        yield return StartCoroutine(DoAnim("Drop"));
-
-    }
-
-    protected IEnumerator JumpUp(float ySpeed, float zSpeed, Vector3 dropPosition, float height)
-    {
-        if (!isAbort)
-        {
-            anim.Play("Hold", 0);
-            charInteract.interactType = InteractType.Jump;
-            MageManager.instance.PlaySound3D("Drag", false,this.transform.position);
-            while (charInteract.interactType == InteractType.Jump && !isAbort)
-            {
-                ySpeed -= 30 * Time.deltaTime;
-                if (ySpeed < -50)
-                    ySpeed = -50;
-                Vector3 pos1 = agent.transform.position;
-                pos1.y += ySpeed * Time.deltaTime + zSpeed * Time.deltaTime;
-                pos1.x = Mathf.Lerp(pos1.x, dropPosition.x, Time.deltaTime * 5);
-                agent.transform.position = pos1;
-                charScale.height += ySpeed * Time.deltaTime;
-                charScale.scalePosition.y = Mathf.Lerp(charScale.scalePosition.y, dropPosition.y - height, Time.deltaTime * 5);
-
-                if (ySpeed < 0 && this.transform.position.y < dropPosition.y)
-                {
-                    this.transform.rotation = Quaternion.identity;
-                    charInteract.interactType = InteractType.None;
-                    agent.transform.position = dropPosition;
-                    this.transform.position = dropPosition;
-                    charScale.scalePosition.y = dropPosition.y - height;
-                    charScale.height = height;
-                }
-                yield return new WaitForEndOfFrame();
-            }
-            yield return StartCoroutine(DoAnim("Drop"));
-        }
-    }
-
     protected virtual IEnumerator Mouse()
     {
         isMoving = true;
@@ -1267,13 +1107,13 @@ public class CharController : MonoBehaviour
 
     protected virtual IEnumerator Hold()
     {
+        equipment = null;
         MageManager.instance.PlaySound("Drag", false);
         if (charInteract.isDrag)
         {
             charInteract.interactType = InteractType.Drag;
         }
         
-        enviromentType = EnviromentType.Room;
         ItemManager.instance.SetCameraTarget(this.gameObject);
         anim.Play("Hold", 0);
         if (shadow != null)
@@ -1284,13 +1124,13 @@ public class CharController : MonoBehaviour
             pos.z = 0;
             if (pos.y > charScale.maxHeight)
                 pos.y = charScale.maxHeight;
-            else if (pos.y < ItemManager.instance.houseItem.gardenBoundY.x)
-                pos.y = ItemManager.instance.houseItem.gardenBoundY.x;
+            else if (pos.y < ItemManager.instance.gardenBoundY.x)
+                pos.y = ItemManager.instance.gardenBoundY.x;
 
-            if (pos.x > ItemManager.instance.houseItem.gardenBoundX.y)
-                pos.x = ItemManager.instance.houseItem.gardenBoundX.y;
-            else if (pos.x < ItemManager.instance.houseItem.gardenBoundX.x)
-                pos.x = ItemManager.instance.houseItem.gardenBoundX.x;
+            if (pos.x > ItemManager.instance.gardenBoundX.y)
+                pos.x = ItemManager.instance.gardenBoundX.y;
+            else if (pos.x < ItemManager.instance.gardenBoundX.x)
+                pos.x = ItemManager.instance.gardenBoundX.x;
 
 
             pos.z = -50;
@@ -1300,12 +1140,20 @@ public class CharController : MonoBehaviour
             yield return new WaitForEndOfFrame();
         }
 
-        //Start Drop
-        CheckDrop();
 
+        dropPosition = charScale.scalePosition;
+        
+        //Start Drop
+        if(charCollider.items.Count > 0)
+        {
+            equipment = charCollider.items[0];
+            dropPosition = equipment.anchorPoints[0].transform.position;
+        }
+
+        
         float fallSpeed = 0;
 
-        while (charInteract.interactType == InteractType.Drop && actionType != ActionType.OnControl && !isAbort)
+        while (charInteract.interactType == InteractType.Drop)
         {
             if (agent.transform.position.y > dropPosition.y)
             {
@@ -1325,8 +1173,16 @@ public class CharController : MonoBehaviour
                 pos3.y = dropPosition.y;
                 pos3.x = dropPosition.x;
                 agent.transform.position = pos3;
-                charScale.height = dropPosition.y - charScale.scalePosition.y;
                 charInteract.interactType = InteractType.None;
+                if (equipment != null && (equipment.itemType == ItemType.Food || equipment.itemType == ItemType.Drink))
+                {
+                    charScale.height = 0;
+                    charScale.scalePosition = agent.transform.position;
+                }
+                    
+                else
+                    charScale.height = dropPosition.y - charScale.scalePosition.y;
+                
             }
             yield return new WaitForEndOfFrame();
         }
@@ -1334,24 +1190,20 @@ public class CharController : MonoBehaviour
         charInteract.interactType = InteractType.None;
 
         CheckEnviroment();
+        
 
-        MageManager.instance.PlaySound3D("whoosh_swish_med_03", false,this.transform.position);
+        MageManager.instance.PlaySound3D("whoosh_swish_med_03", false, this.transform.position);
         yield return StartCoroutine(DoAnim("Drop"));
 
-        if (data.Damage > data.MaxDamage * 0.9f)
-        {
-            actionType = ActionType.Injured;
-            isAbort = true;
-        }
 
-        if (data.Health < data.MaxHealth * 0.1f)
-        {
-            actionType = ActionType.Sick;
-            isAbort = true;
-        }
 
 
         CheckAbort();
+    }
+
+    void CompleteDrop()
+    {
+        charInteract.interactType = InteractType.None;
     }
 
     protected virtual IEnumerator Table()
@@ -1369,7 +1221,7 @@ public class CharController : MonoBehaviour
     protected virtual IEnumerator Call()
     {
         Vector3 pos = Camera.main.transform.position;
-        pos.y = ItemManager.instance.houseItem.roomBoundY.x + Random.Range (2,8f);
+        pos.y = ItemManager.instance.roomBoundY.x + Random.Range (2,8f);
         pos.x += Random.Range(-15f, 15f);
         target = pos;
         if(charType == CharType.Parrot)
@@ -1404,10 +1256,10 @@ public class CharController : MonoBehaviour
 
     protected virtual IEnumerator Discover()
     {
-        ToyItem toyItem = ItemManager.instance.GetRandomToyItem();
+        BaseFloorItem toyItem = ItemManager.instance.GetRandomItem(ItemType.Toy);
         if(toyItem != null)
         {
-            target = toyItem.transform.position;
+            target = toyItem.startPoint.transform.position;
             yield return StartCoroutine(RunToPoint());
         }
 
@@ -1424,129 +1276,118 @@ public class CharController : MonoBehaviour
 
     protected virtual IEnumerator Bath()
     {
-        if(enviromentType != EnviromentType.Bath)
+        float value = 0;
+
+        if (data.level >= 15 && (equipment == null || equipment.itemType != ItemType.Bath))
         {
-            if (data.level >= 15)
+            equipment = ItemManager.instance.GetRandomItem(ItemType.Bath);
+            if (equipment != null)
             {
-                ItemCollider itemCollider = ItemManager.instance.GetItemCollider(ItemType.Bath);
-                if (itemCollider != null)
+                if (equipment.startPoint != null)
                 {
-                    if (itemCollider.startPoint != null)
-                    {
-                        target = itemCollider.startPoint.position;
-                        yield return StartCoroutine(RunToPoint());
-                        enviromentType = EnviromentType.Bath;
-                        yield return StartCoroutine(JumpUp(20, 0, itemCollider.transform.position + new Vector3(0, itemCollider.height, 0), itemCollider.height));
-                    }
+                    target = equipment.startPoint.position;
+                    yield return StartCoroutine(RunToPoint());
+                    agent.transform.position = equipment.anchorPoints[0].position;
                 }
             }
         }
 
-        while (!isAbort)
+        if (equipment != null && equipment.itemType == ItemType.Bath)
         {
+            value = DataHolder.GetItem(equipment.itemID).value;
+            charInteract.interactType = InteractType.Equipment;
+            this.transform.position = equipment.anchorPoints[0].position;
+            agent.transform.position = equipment.anchorPoints[0].position;
+            Debug.Log(equipment.anchorPoints[0].position);
+        }
+
+        while (this.data.Dirty > 0 && !isAbort)
+        {
+            anim.Play("Soap", 0);
+            this.data.Dirty -= value/60 * Time.deltaTime;
             yield return new WaitForEndOfFrame();
         }
 
-        CheckAbort();
-    }
-
-    protected virtual IEnumerator Toilet()
-    {
-        while (!isAbort)
+        if (equipment != null && equipment.itemType == ItemType.Bath)
         {
-            if (data.shit > 0.7 * data.MaxShit)
+            if (data.Dirty <= 1 && !isAbort)
             {
-                actionType = ActionType.Shit;
-                isAbort = true;
+                ItemManager.instance.SpawnHeart(data.RateHappy + data.level / 5, this.transform.position);
+                GameManager.instance.LogAchivement(AchivementType.Do_Action, ActionType.OnBath);
             }
-            else if (data.pee > 0.7f * data.MaxPee)
+
+            if(data.level >= 15)
             {
-                actionType = ActionType.Pee;
-                isAbort = true;
+                charInteract.interactType = InteractType.None;
+                yield return StartCoroutine(JumpOut());
             }
             else
             {
-                int n = Random.Range(0, 100);
-                if (n < 30)
-                    SetDirection(Direction.L);
-                else if (n < 60)
-                    SetDirection(Direction.R);
-
-                int n1 = Random.Range(0, 100);
-                if (n1 < 30)
+                anim.Play("Shake", 0);
+                while(!isAbort)
                 {
-                    MageManager.instance.PlaySound3D(charType.ToString() + "_Speak", false, this.transform.position);
-                    yield return StartCoroutine(DoAnim("Speak_" + direction.ToString()));
-                    anim.Play("Idle_" + direction.ToString(), 0);
+                    yield return new WaitForEndOfFrame();
                 }
-                else if (n1 < 60)
-                    anim.Play("Idle_" + direction.ToString(), 0);
-                else
-                {
-                    yield return StartCoroutine(DoAnim("Tired"));
-                    anim.Play("Idle_" + direction.ToString(), 0);
-                }
-                yield return StartCoroutine(Wait(Random.Range(2, 7)));
             }
         }
 
         CheckAbort();
     }
 
+
     protected virtual IEnumerator Pee()
     {
-        ItemCollider itemCollider = ItemManager.instance.GetItemCollider(ItemType.Toilet);
+        float value = data.Pee;
 
-        if (enviromentType == EnviromentType.Toilet)
+        if (data.level >= 5 && (equipment == null || equipment.itemType != ItemType.Toilet))
         {
-            if (currentItemCollider != null)
+            BaseFloorItem item = ItemManager.instance.GetRandomItem(ItemType.Toilet);
+            if (item != null)
             {
-                currentItemCollider.pets.Add(this);
-            }
-        }
-
-        if(data.level >= 5)
-        {
-            if(itemCollider != null)
-            {
-                if(itemCollider.startPoint != null)
+                if (item.startPoint != null)
                 {
-                    target = itemCollider.startPoint.position;
+                    target = item.startPoint.position;
                     yield return StartCoroutine(RunToPoint());
-                    enviromentType = EnviromentType.Toilet;
-                    yield return StartCoroutine(JumpUp(10, 0, itemCollider.transform.position + new Vector3(0, itemCollider.height, 0), itemCollider.height));
+                    equipment = item;
+                    yield return StartCoroutine(JumpIn(0));
                 }
             }
         }
-        
+
+        if (equipment != null && equipment.itemType == ItemType.Toilet)
+        {
+            charInteract.interactType = InteractType.Equipment;
+            this.transform.position = equipment.anchorPoints[0].position;
+            agent.transform.position = equipment.anchorPoints[0].position;
+        }
+
         if (!isAbort)
         {
             anim.Play("Pee", 0);
             int soundid = MageManager.instance.PlaySound3D("Pee", true,this.transform.position);
             MageManager.instance.PlaySound3D("PeeDrop", false,this.transform.position);
             Debug.Log("Pee");
-            float value = data.Pee;
+           
             Vector3 pos = peePosition.position;
             pos.z = 10;
             ItemManager.instance.SpawnPee(pos, value);
             while (data.Pee > 0 && !isAbort)
             {
-                data.Pee -= data.ratePee * Time.deltaTime;
+                data.Pee -= 10 * Time.deltaTime;
                 yield return new WaitForEndOfFrame();
             }
             MageManager.instance.StopSound(soundid);
         }
 
-        if (enviromentType == EnviromentType.Toilet)
+        if (equipment != null && equipment.itemType == ItemType.Toilet)
         {
             if (data.pee <= 1 && !isAbort)
             {
                 ItemManager.instance.SpawnHeart(data.RateHappy + data.level / 5, this.transform.position);
-                GameManager.instance.LogAchivement(AchivementType.Do_Action, ActionType.OnToilet);
+                GameManager.instance.LogAchivement(AchivementType.Do_Action, ActionType.Pee);
             }
-
-            
-            yield return StartCoroutine(JumpDown(-7, 10, 30));
+            charInteract.interactType = InteractType.None;
+            yield return StartCoroutine(JumpOut());
         }
 
         CheckAbort();
@@ -1554,109 +1395,116 @@ public class CharController : MonoBehaviour
 
     protected virtual IEnumerator Shit()
     {
-
-        ItemCollider itemCollider = ItemManager.instance.GetItemCollider(ItemType.Toilet);
-
-        if (enviromentType == EnviromentType.Toilet)
+        float value = data.Shit;
+        if (data.level >= 5 && (equipment == null || equipment.itemType != ItemType.Toilet))
         {
-            if (currentItemCollider != null)
+            BaseFloorItem item = ItemManager.instance.GetRandomItem(ItemType.Toilet);
+            if (item != null)
             {
-                currentItemCollider.pets.Add(this);
+                if (item.startPoint != null)
+                {
+                    target = item.startPoint.position;
+                    yield return StartCoroutine(RunToPoint());
+                    equipment = item;
+                    yield return StartCoroutine(JumpIn(0));
+                }
             }
         }
 
-        if (data.level >= 5)
+        if (equipment != null && equipment.itemType == ItemType.Toilet)
         {
-            if (itemCollider != null)
-            {
-                if (itemCollider.startPoint != null)
-                {
-                    target = itemCollider.startPoint.position;
-                    yield return StartCoroutine(RunToPoint());
-                    enviromentType = EnviromentType.Toilet;
-                    yield return StartCoroutine(JumpUp(10, 0, itemCollider.transform.position + new Vector3(0, itemCollider.height, 0), itemCollider.height));
-                }
-            }
+            charInteract.interactType = InteractType.Equipment;
+            this.transform.position = equipment.anchorPoints[0].position;
+            agent.transform.position = equipment.anchorPoints[0].position;
         }
 
         if (!isAbort)
         {
             anim.Play("Shit", 0);
             MageManager.instance.PlaySound3D("Shit", false,this.transform.position);
-            float value = data.Pee;
-
             while (data.Shit > 0 && !isAbort)
             {
-                data.Shit -= data.rateShit * Time.deltaTime;
+                data.Shit -= 5 * Time.deltaTime;
                 yield return new WaitForEndOfFrame();
             }
-            Vector3 pos = peePosition.position;
-            pos.z = pos.y * 10 + 10;
-            ItemManager.instance.SpawnShit(shitPosition.position, value);
+            if (!isAbort)
+            {
+                Vector3 pos = peePosition.position;
+                pos.z = pos.y * 10 + 10;
+                ItemManager.instance.SpawnShit(shitPosition.position, value);
+            }
+            else
+            {
+                data.Shit = value;
+            }
         }
 
-
-        if (enviromentType == EnviromentType.Toilet)
+        if (equipment != null && equipment.itemType == ItemType.Toilet && !isAbort)
         {
             if (data.shit <= 1 && !isAbort)
             {
                 ItemManager.instance.SpawnHeart(data.RateHappy + data.level / 5, this.transform.position);
-                GameManager.instance.LogAchivement(AchivementType.Do_Action, ActionType.OnToilet);
+                GameManager.instance.LogAchivement(AchivementType.Do_Action, ActionType.Shit);
             }
-            yield return StartCoroutine(JumpDown(-7, 10, 30));
+            charInteract.interactType = InteractType.None;
+            actionType = ActionType.Pee;
+            isAbort = true;
         }
-
 
         CheckAbort();
     }
 
     protected virtual IEnumerator Eat()
     {
-        ItemObject item = ItemManager.instance.GetItem(ItemType.Food);
-        if(item != null)
+        if (equipment == null || equipment.itemType != ItemType.Food)
         {
-            FoodBowlItem food = item.GetComponentInChildren<FoodBowlItem>();
-            if (food != null)
+            equipment = ItemManager.instance.GetRandomItem(ItemType.Food);
+        }
+
+        if (equipment != null && equipment.itemType == ItemType.Food)
+        {
+            EatItem item = equipment.GetComponent<EatItem>();
+            if (item != null)
             {
-                if (Vector2.Distance(this.transform.position, food.anchor.position) > 0.5f)
+                if (Vector2.Distance(this.transform.position, item.anchorPoints[0].position) > 0.5f)
                 {
-                    target = food.anchor.position;
+                    target = item.anchorPoints[0].position;
                     yield return StartCoroutine(RunToPoint());
                 }
                 if (data.level >= 20)
                 {
-                    food.Fill();
+                    item.Fill();
                 }
-                bool canEat = true;
-                if (Vector2.Distance(this.transform.position, food.anchor.position) > 1f)
-                    canEat = false;
-                if (food != null && food.CanEat() && canEat)
+                bool isContinue = true;
+                if (Vector2.Distance(this.transform.position, item.anchorPoints[0].position) > 1f)
+                    isContinue = false;
+
+                if (item != null && isContinue)
                 {
+                    int soundid = MageManager.instance.PlaySound3D("Eat", true, this.transform.position);
                     anim.Play("Eat", 0);
-                    int soundid = MageManager.instance.PlaySound3D("Eat", false, this.transform.position);
                     yield return StartCoroutine(Wait(0.1f));
-                    while (food != null && data.Food < data.MaxFood && !isAbort && canEat)
+                    while (item != null && data.Food < data.MaxFood && !isAbort && isContinue)
                     {
-                        data.Food += data.rateFood * 0.1f;
-                        food.Eat(data.rateFood * 0.1f);
-                        if (!food.CanEat())
+                        data.Food += 2 * 0.1f;
+                        item.Eat(2 * 0.1f);
+                        if (!item.CanEat())
                         {
-                            canEat = false;
+                            isContinue = false;
                         }
-                        if (Vector2.Distance(this.transform.position, food.anchor.position) > 1f)
-                            canEat = false;
+                        if (Vector2.Distance(this.transform.position, item.anchorPoints[0].position) > 1f)
+                            isContinue = false;
                         yield return new WaitForEndOfFrame();
                     }
                     MageManager.instance.StopSound(soundid);
                     if (data.Food >= data.MaxFood - 10)
                     {
                         GameManager.instance.LogAchivement(AchivementType.Do_Action, ActionType.Eat);
-                        ItemManager.instance.SpawnHeart(data.RateHappy + data.level / 5, this.transform.position);
+                        ItemManager.instance.SpawnHeart(data.level + data.level / 5, this.transform.position);
                     }
                 }
                 else
                 {
-
                     int ran = Random.Range(0, 100);
                     if (ran < 30)
                     {
@@ -1670,48 +1518,50 @@ public class CharController : MonoBehaviour
                 }
             }
         }
-        yield return new WaitForEndOfFrame();
         CheckAbort();
     }
 
     protected virtual IEnumerator Drink()
     {
-        ItemObject item = ItemManager.instance.GetItem(ItemType.Drink);
-        if (item != null)
+        if(equipment == null || equipment.itemType != ItemType.Drink)
         {
-            DrinkBowlItem drink = item.GetComponentInChildren<DrinkBowlItem>();
-            if (drink != null)
+            equipment = ItemManager.instance.GetRandomItem(ItemType.Drink);
+        }
+        
+        if (equipment != null && equipment.itemType == ItemType.Drink)
+        {
+            EatItem item = equipment.GetComponentInChildren<EatItem>();
+            if (item != null)
             {
                 //Debug.Log("Drink");
-
-                if (Vector2.Distance(this.transform.position, drink.anchor.position) > 0.5f)
+                if (Vector2.Distance(this.transform.position, item.anchorPoints[0].position) > 0.5f)
                 {
-                    target = drink.anchor.position;
+                    target = item.anchorPoints[0].position;
                     yield return StartCoroutine(RunToPoint());
                 }
                 if (data.level >= 25)
                 {
-                    drink.Fill();
+                    item.Fill();
                 }
-                bool canDrink = true;
-                if (Vector2.Distance(this.transform.position, drink.anchor.position) > 1f)
-                    canDrink = false;
+                bool isContinue = true;
+                if (Vector2.Distance(this.transform.position, item.anchorPoints[0].position) > 1f)
+                    isContinue = false;
 
-                if (drink != null && drink.CanEat() && canDrink)
+                if (item != null && isContinue)
                 {
                     int soundid = MageManager.instance.PlaySound3D("Drink", true, this.transform.position);
                     anim.Play("Drink", 0);
                     yield return StartCoroutine(Wait(0.1f));
-                    while (drink != null && data.Water < data.MaxWater && !isAbort && canDrink)
+                    while (item != null && data.Water < data.MaxWater && !isAbort && isContinue)
                     {
-                        data.Water += data.rateWater * 0.1f;
-                        drink.Eat(data.rateWater * 0.1f);
-                        if (!drink.CanEat())
+                        data.Water += 10 * 0.1f;
+                        item.Eat(10 * 0.1f);
+                        if (!item.CanEat())
                         {
-                            canDrink = false;
+                            isContinue = false;
                         }
-                        if (Vector2.Distance(this.transform.position, drink.anchor.position) > 1f)
-                            canDrink = false;
+                        if (Vector2.Distance(this.transform.position, item.anchorPoints[0].position) > 1f)
+                            isContinue = false;
                         yield return new WaitForEndOfFrame();
                     }
                     MageManager.instance.StopSound(soundid);
@@ -1719,7 +1569,7 @@ public class CharController : MonoBehaviour
                     {
                         GameManager.instance.LogAchivement(AchivementType.Do_Action, ActionType.Drink);
                         ItemManager.instance.SpawnHeart(data.level + data.level / 5, this.transform.position);
-                     }
+                    }
                 }
                 else
                 {
@@ -1739,86 +1589,44 @@ public class CharController : MonoBehaviour
         CheckAbort();
     }
 
-    protected virtual IEnumerator Bed()
-    {
-        
-        while (!isAbort) 
-        {
-            if(data.sleep < 0.3f * data.MaxSleep || data.Health < 0.3f * data.MaxHealth)
-            {
-                actionType = ActionType.Sleep;
-                Abort();
-            }
-            else
-            {
-                int n = Random.Range(0,100);
-                if (n < 30)
-                    SetDirection(Direction.L);
-                else if (n < 60)
-                    SetDirection(Direction.R);
-
-                int n1 = Random.Range(0, 100);
-                if(n1 < 30)
-                {
-                    MageManager.instance.PlaySound3D(charType.ToString() + "_Speak", false, this.transform.position);
-                    yield return StartCoroutine(DoAnim("Speak_" + direction.ToString()));
-                    anim.Play("Idle_" + direction.ToString(), 0);
-                }
-                else if(n1 < 60)
-                    anim.Play("Idle_" + direction.ToString(), 0);
-                else
-                {
-                    yield return StartCoroutine(DoAnim("Love"));
-                    anim.Play("Idle_" + direction.ToString(), 0);
-                }
-                yield return StartCoroutine(Wait(Random.Range(2, 7)));
-            }
-        }
-
-        
-
-        CheckAbort();
-    }
-
     protected virtual IEnumerator Sleep()
     {
-        ItemCollider itemCollider = ItemManager.instance.GetItemCollider(ItemType.Bed);
     
         float value = 0;
 
         if (data.level >= 10)
         {
-            if (itemCollider != null)
+            BaseFloorItem bed = ItemManager.instance.GetRandomItem(ItemType.Bed);
+            if (bed != null)
             {
-                if (itemCollider.startPoint != null)
+                if (bed.startPoint != null)
                 {
-                    target = itemCollider.startPoint.position;
+                    target = bed.startPoint.position;
                     yield return StartCoroutine(RunToPoint());
-                    enviromentType = EnviromentType.Bed;
-                    yield return StartCoroutine(JumpUp(10, 0, itemCollider.transform.position + new Vector3(0, itemCollider.height, 0), itemCollider.height));
+                    equipment = bed;
+                    yield return StartCoroutine(JumpIn(0));
                 }
             }
         }
 
-        if (enviromentType == EnviromentType.Bed)
+        if (equipment != null && equipment.itemType == ItemType.Bed)
         {
-            if (currentItemCollider != null)
-            {
-                currentItemCollider.pets.Add(this);
-                value = DataHolder.GetItem(currentItemCollider.item.itemID).value;
-            }
+            value = DataHolder.GetItem(equipment.itemID).value;
+            charInteract.interactType = InteractType.Equipment;
+            this.transform.position = equipment.anchorPoints[0].position;
+            agent.transform.position = equipment.anchorPoints[0].position;
+            Debug.Log(equipment.anchorPoints[0].position);
         }
 
         anim.Play("Sleep", 0);
 
-
         while (data.Sleep < data.MaxSleep && !isAbort)
         {
-            data.Sleep += (data.rateSleep + value) * Time.deltaTime;
+            data.Sleep += (1 + value) * Time.deltaTime;
             yield return new WaitForEndOfFrame();
         }
 
-        if (enviromentType == EnviromentType.Bed)
+        if (equipment != null && equipment.itemType == ItemType.Bed && !isAbort)
         {
             if (data.Sleep > data.MaxSleep - 1)
             {
@@ -1827,7 +1635,8 @@ public class CharController : MonoBehaviour
                 ItemManager.instance.SpawnHeart((data.RateHappy + data.level / 5)*2, this.transform.position);
                 GameManager.instance.LogAchivement(AchivementType.Do_Action, ActionType.Sleep);
             }
-            yield return StartCoroutine(JumpDown(-7, 10, 30));
+            charInteract.interactType = InteractType.None;
+            yield return StartCoroutine(JumpOut());
         }
         CheckAbort();
     }
@@ -1865,41 +1674,6 @@ public class CharController : MonoBehaviour
         CheckAbort();
     }
 
-    protected virtual IEnumerator Garden()
-    {
-        int n = 0;
-        int maxCount = Random.Range(2, 5);
-        SetTarget(AreaType.Garden);
-        yield return StartCoroutine(RunToPoint());
-        while (!isAbort && n < maxCount)
-        {
-            int ran = Random.Range(0, 100);
-            if (ran < 40)
-            {
-                SetTarget(AreaType.Garden);
-                yield return StartCoroutine(RunToPoint());
-            }
-            else if (ran < 60)
-            {
-                anim.Play("Standby", 0);
-                yield return StartCoroutine(Wait(Random.Range(1, 10)));
-            }
-            else if (ran < 80)
-            {
-                anim.Play("Idle_" + this.direction.ToString(), 0);
-                yield return StartCoroutine(Wait(Random.Range(1, 10)));
-            }
-            else
-            {
-                MageManager.instance.PlaySound3D(charType.ToString() + "_Speak", false,this.transform.position);
-                yield return DoAnim("Speak_" + direction.ToString());
-            }
-
-            n++;
-        }
-        CheckAbort();
-    }
-
 
     protected virtual IEnumerator Listening()
     {
@@ -1911,30 +1685,59 @@ public class CharController : MonoBehaviour
 
     protected virtual IEnumerator JumpOut()
     {
-        if (enviromentType == EnviromentType.Bath)
-        {
-            yield return StartCoroutine(JumpDown(-5, 15, 35));
-        }
-        else if (enviromentType == EnviromentType.Bed || enviromentType == EnviromentType.Toilet)
-        {
-            yield return StartCoroutine(JumpDown(-7, 10, 30));
-        }
-        else if (enviromentType == EnviromentType.Table)
-        {
-            yield return StartCoroutine(JumpDown(-2, 10, 30));
-        }
-        CheckAbort();
+        if (equipment != null)
+            agent.transform.position = equipment.endPoint.position;
+        yield return new WaitForEndOfFrame();
+        equipment = null;
     }
 
+    protected virtual IEnumerator JumpIn(int id)
+    {
+        if (equipment != null)
+            agent.transform.position = equipment.anchorPoints[id].position;
+        yield return new WaitForEndOfFrame();
+    }
+
+    protected IEnumerator JumpDown(float zSpeed, float ySpeed, float accelerator)
+    {
+
+        anim.Play("Hold", 0);
+        float speed = ySpeed;
+        //charScale.scalePosition = new Vector3(this.transform.position.x, this.transform.position.y - height, 0);
+        charInteract.interactType = InteractType.Jump;
+        MageManager.instance.PlaySound("Drag", false);
+        while (charInteract.interactType == InteractType.Jump && !isAbort)
+        {
+            speed -= accelerator * Time.deltaTime;
+            if (speed < -50)
+                speed = -50;
+            Vector3 pos1 = agent.transform.position;
+            pos1.y += speed * Time.deltaTime + zSpeed * Time.deltaTime;
+            charScale.scalePosition.y += zSpeed * Time.deltaTime;
+            charScale.height += speed * Time.deltaTime;
+            agent.transform.position = pos1;
+
+            if (charScale.height <= 0)
+            {
+                this.transform.rotation = Quaternion.identity;
+                charInteract.interactType = InteractType.None;
+            }
+            yield return new WaitForEndOfFrame();
+        }
+        charInteract.interactType = InteractType.None;
+
+        yield return StartCoroutine(DoAnim("Drop"));
+
+    }
 
 
     protected virtual IEnumerator Sick()
     {
         if (data.level >= 35)
         {
-            if (ItemManager.instance.GetItem(ItemType.MedicineBox) != null)
+            if (ItemManager.instance.GetRandomItem(ItemType.MedicineBox) != null)
             {
-                target = ItemManager.instance.GetItem(ItemType.MedicineBox).GetComponentInChildren<FirstAidItem>().anchorPoint.position;
+                target = ItemManager.instance.GetRandomItem(ItemType.MedicineBox).anchorPoints[0].position;
                 yield return StartCoroutine(RunToPoint());
                 OnHealth(SickType.Sick, data.MaxHealth);
             }
@@ -1958,9 +1761,9 @@ public class CharController : MonoBehaviour
     {
         if(data.level >= 30)
         {
-            if(ItemManager.instance.GetItem(ItemType.MedicineBox) != null)
+            if(ItemManager.instance.GetRandomItem(ItemType.MedicineBox) != null)
             {
-                target = ItemManager.instance.GetItem(ItemType.MedicineBox).GetComponentInChildren<FirstAidItem>().anchorPoint.position;
+                target = ItemManager.instance.GetRandomItem(ItemType.MedicineBox).GetComponent<FirstAidItem>().anchorPoints[0].position;
                 yield return StartCoroutine(RunToPoint());
                 Debug.Log(data.MaxDamage);
                 OnHealth(SickType.Injured, data.MaxDamage);
@@ -1979,21 +1782,12 @@ public class CharController : MonoBehaviour
         CheckAbort();
     }
 
-    protected virtual IEnumerator Fear()
-    {
-        MageManager.instance.PlaySound3D(charType.ToString() + "_Supprised", false,this.transform.position);
-        yield return StartCoroutine(DoAnim("Teased"));
-        data.Energy -= 2;
-        CheckAbort();
-    }
-
-
     protected virtual IEnumerator Tired()
     {
         anim.Play("Tired", 0);
-        while (data.Food > 0 && data.Water > 0 && data.Sleep > 0 && data.energy < data.MaxEnergy * 0.9f && !isAbort)
+        while (data.energy < data.MaxEnergy && !isAbort)
         {
-            float delta = data.RecoveryEnergy * Time.deltaTime;
+            float delta = 10 * Time.deltaTime;
             data.Energy += delta;
             yield return new WaitForEndOfFrame();
         }
@@ -2002,29 +1796,22 @@ public class CharController : MonoBehaviour
 
     protected virtual IEnumerator Toy()
     {
-        if (toyItem != null && toyItem.pets.Count < toyItem.anchorPoints.Length)
+        if (equipment != null && equipment.pets.Count < equipment.anchorPoints.Length)
         {
-            toyItem.pets.Add(this);
-            float time = 0;
-            float maxTime = Random.Range(10, 15);
-            int count = 0;
-            int maxCount = Random.Range(3, 6);
-            toyItem.maxTime = maxTime;
-
-            if (toyItem.toyType == ToyType.Jump)
+            equipment.pets.Add(this);
+            if (equipment.toyType == ToyType.Jump)
             {
-                dropPosition = toyItem.anchorPoints[0].position + new Vector3(0, Random.Range(-1f, 1f), 0);
+                dropPosition = equipment.anchorPoints[0].position + new Vector3(0, Random.Range(-1f, 1f), 0);
                 agent.transform.position = dropPosition;
-                maxCount = Random.Range(6, 10);
                 yield return new WaitForEndOfFrame();
-                while (toyItem != null && !isAbort && count < maxCount)
+                while (equipment != null && !isAbort && data.Energy > data.MaxEnergy * 0.1f)
                 {
-                    toyItem.OnActive();
+                    equipment.OnActive();
                     
                     MageManager.instance.PlaySound3D(charType.ToString() + "_Supprised", false,this.transform.position);
                     MageManager.instance.PlaySound3D("Drag", false,this.transform.position);
                     //anim.Play("Teased", 0);
-                    anim.Play("Play_" + toyItem.toyType.ToString());
+                    anim.Play("Play_" + equipment.toyType.ToString());
                     shadow.GetComponent<SpriteRenderer>().enabled = false;
                     yield return new WaitForEndOfFrame();
                     float ySpeed = 30 * anim.GetCurrentAnimatorStateInfo(0).length / 2;
@@ -2033,15 +1820,15 @@ public class CharController : MonoBehaviour
                         anim.speed = 0.5f;
                         ySpeed = 60 * anim.GetCurrentAnimatorStateInfo(0).length / 2;
                     }
-                    charInteract.interactType = InteractType.Toy;
-                    while (charInteract.interactType == InteractType.Toy && !isAbort)
+                    charInteract.interactType = InteractType.Equipment;
+                    while (charInteract.interactType == InteractType.Equipment && !isAbort)
                     {
                         
                         ySpeed -= 30 * Time.deltaTime;
                         Vector3 pos1 = agent.transform.position;
                         pos1.y += ySpeed * Time.deltaTime;
 
-                        if (count == maxCount - 1)
+                        if (data.Energy <= data.MaxEnergy * 0.1f)
                         {
                             pos1.x += 15 * Time.deltaTime;
                         }
@@ -2049,7 +1836,7 @@ public class CharController : MonoBehaviour
 
                         if (ySpeed < 0 && this.transform.position.y < dropPosition.y)
                         {
-                            if (count == maxCount - 1)
+                            if (data.Energy <= data.MaxEnergy * 0.1f)
                             {
                                 MageManager.instance.PlaySound3D("whoosh_swish_med_03", false,this.transform.position);
                                 yield return StartCoroutine(DoAnim("Drop"));
@@ -2063,197 +1850,189 @@ public class CharController : MonoBehaviour
                         }
                         yield return new WaitForEndOfFrame();
                     }
-                    count++;
                 }
                 shadow.GetComponent<SpriteRenderer>().enabled = true;
             }
-            else if (toyItem.toyType == ToyType.Ball || toyItem.toyType == ToyType.Car)
+            else if (equipment.toyType == ToyType.Ball || equipment.toyType == ToyType.Car)
             {
-                if (toyItem.toyType == ToyType.Car)
-                    maxCount = 1;
                 charScale.speedFactor = 1.5f;
-                while (toyItem != null && data.Energy > data.MaxEnergy * 0.1f && count < maxCount && !isAbort)
+                while (equipment != null && data.Energy > data.MaxEnergy * 0.1f && !isAbort)
                 {
                     anim.speed = 1.5f;
-                    if (toyItem.startPoint != null)
+                    if (equipment.startPoint != null)
                     {
-                        target = toyItem.startPoint.transform.position;
+                        target = equipment.startPoint.transform.position;
                         yield return StartCoroutine(RunToPoint());
                     }
                     
-                    if (Vector2.Distance(this.transform.position, toyItem.startPoint.transform.position) < 4 && toyItem.state != EquipmentState.Active)
+                    if (Vector2.Distance(this.transform.position, equipment.startPoint.transform.position) < 4 && equipment.state != EquipmentState.Active)
                     {
                         agent.Stop();
-                        toyItem.OnActive();
+                        equipment.OnActive();
                         yield return StartCoroutine(DoAnim("Love"));
                         
                     }
-                    count++;
                     yield return new WaitForEndOfFrame();
-                }
-                
+                }               
             }
-            else if (toyItem.toyType == ToyType.Wheel)
+            else if (equipment.toyType == ToyType.Wheel)
             {
-                charInteract.interactType = InteractType.Toy;
+                charInteract.interactType = InteractType.Equipment;
                 MageManager.instance.PlaySound3D("Wheel", false,this.transform.position);
                 charScale.speedFactor = 2f;
                 anim.speed = 2f;
                 SetDirection(Direction.L);
-                toyItem.OnActive();
-                while (toyItem != null && data.Energy > data.MaxEnergy * 0.1f && !isAbort && time < toyItem.maxTime)
+                equipment.OnActive();
+                while (equipment != null && data.Energy > data.MaxEnergy * 0.1f && !isAbort)
                 {
-                    time += Time.deltaTime;
-                    agent.transform.position = toyItem.anchorPoints[0].position;
+                    agent.transform.position = equipment.anchorPoints[0].position;
                     anim.Play("Run_" + this.direction.ToString(), 0);
                     yield return new WaitForEndOfFrame();
                 }
                 charInteract.interactType = InteractType.None;
             }
-            else if (toyItem.toyType == ToyType.Slider || toyItem.toyType == ToyType.Circle)
+            else if (equipment.toyType == ToyType.Slider || equipment.toyType == ToyType.Circle)
             {
-                
-                toyItem.OnActive();
-                if (toyItem.startPoint != null)
+                while (equipment != null && data.Energy > data.MaxEnergy * 0.1f && !isAbort)
                 {
-                    target = toyItem.startPoint.position;
-                    yield return StartCoroutine(RunToPoint());
-                }
-                charInteract.interactType = InteractType.Toy;
-                agent.transform.position = toyItem.startPoint.position;
-                yield return StartCoroutine(DoAnim("Play_" + toyItem.toyType.ToString()));
-                if (toyItem.endPoint != null && !isAbort)
-                {
-                    agent.transform.position = toyItem.endPoint.position;
+                    equipment.OnActive();
+                    if (equipment.startPoint != null)
+                    {
+                        target = equipment.startPoint.position;
+                        yield return StartCoroutine(RunToPoint());
+                    }
+                    charInteract.interactType = InteractType.Equipment;
+                    agent.transform.position = equipment.startPoint.position;
+                    yield return StartCoroutine(DoAnim("Play_" + equipment.toyType.ToString()));
+                    if (equipment.endPoint != null && !isAbort)
+                    {
+                        agent.transform.position = equipment.endPoint.position;
+                    }
                 }
                 charInteract.interactType = InteractType.None;
             }
-            else if (toyItem.toyType == ToyType.Spring || toyItem.toyType == ToyType.Swing || toyItem.toyType == ToyType.Dance || toyItem.toyType == ToyType.Fun)
+            else if (equipment.toyType == ToyType.Spring || equipment.toyType == ToyType.Swing || equipment.toyType == ToyType.Dance || equipment.toyType == ToyType.Fun)
             {
-                if (toyItem.startPoint != null)
+                if (equipment.startPoint != null)
                 {
-                    target = toyItem.startPoint.position;
+                    target = equipment.startPoint.position;
                     yield return StartCoroutine(RunToPoint());
                 }
-                toyItem.OnActive();
-                charInteract.interactType = InteractType.Toy;
-                while (toyItem != null && time < toyItem.maxTime && !isAbort)
+                equipment.OnActive();
+                charInteract.interactType = InteractType.Equipment;
+                while (equipment != null && data.Energy > data.MaxEnergy * 0.1f && !isAbort)
                 {
-                    if (toyItem.anchorPoints[0] != null)
+                    if (equipment.anchorPoints[0] != null)
                     {
-                        agent.transform.position = toyItem.anchorPoints[0].position;
+                        agent.transform.position = equipment.anchorPoints[0].position;
                     }
-                    anim.Play("Play_" + toyItem.toyType.ToString(), 0);
-
-                    time += Time.deltaTime;
+                    anim.Play("Play_" + equipment.toyType.ToString(), 0);
                     yield return new WaitForEndOfFrame();
                 }
                 charInteract.interactType = InteractType.None;
-                if (toyItem.endPoint != null && !isAbort)
+                if (equipment.endPoint != null && !isAbort)
                 {
-                    agent.transform.position = toyItem.endPoint.position;
+                    agent.transform.position = equipment.endPoint.position;
                 }
             }
-            else if (toyItem.toyType == ToyType.Seesaw || toyItem.toyType == ToyType.Sprinkler || toyItem.toyType == ToyType.Carrier || toyItem.toyType == ToyType.Flying)
+            else if (equipment.toyType == ToyType.Seesaw || equipment.toyType == ToyType.Sprinkler || equipment.toyType == ToyType.Carrier || equipment.toyType == ToyType.Flying)
             {
                
-                int index = toyItem.GetPetIndex(this);
+                int index = equipment.GetPetIndex(this);
                 bool isAnchor = false;
                 
-                if (toyItem.anchorPoints[index] != null)
+                if (equipment.anchorPoints[index] != null)
                 {
                     
-                    target.x = toyItem.anchorPoints[index].position.x;
-                    if (toyItem.toyType == ToyType.Carrier)
-                        target.y = toyItem.transform.position.y + 5;
+                    target.x = equipment.anchorPoints[index].position.x;
+                    if (equipment.toyType == ToyType.Carrier)
+                        target.y = equipment.transform.position.y + 5;
                     else
-                        target.y = toyItem.transform.position.y;
+                        target.y = equipment.transform.position.y;
                     //Debug.Log(target);
                     yield return StartCoroutine(RunToPoint());
                     //Debug.Log(target);
                 }
 
                 
-                Vector3 lastStartPosition = toyItem.anchorPoints[index].position - this.transform.position;
+                Vector3 lastStartPosition = equipment.anchorPoints[index].position - this.transform.position;
 
                 
                 if (!isAbort)
                 {
-                    charInteract.interactType = InteractType.Toy;
-                    if(toyItem.toyType != ToyType.Sprinkler)
+                    charInteract.interactType = InteractType.Equipment;
+                    if(equipment.toyType != ToyType.Sprinkler)
                         shadow.GetComponent<SpriteRenderer>().enabled = false;
                     if (index != -1)
                     {
-                        agent.transform.position = toyItem.anchorPoints[index].position;
-                        this.transform.rotation = toyItem.anchorPoints[index].rotation;
-                        this.transform.localScale = new Vector3(this.transform.localScale.x, this.transform.localScale.y, toyItem.anchorPoints[index].localScale.z);
+                        agent.transform.position = equipment.anchorPoints[index].position;
+                        this.transform.rotation = equipment.anchorPoints[index].rotation;
+                        this.transform.localScale = new Vector3(this.transform.localScale.x, this.transform.localScale.y, equipment.anchorPoints[index].localScale.z);
                     }
-                    toyItem.count++;
-                    anim.Play("Wait_" + toyItem.toyType.ToString(), 0);
+                    equipment.count++;
+                    anim.Play("Wait_" + equipment.toyType.ToString(), 0);
                     isAnchor = true;
                 }
 
                 float timeWait = 0;
-                while (toyItem != null && !isAbort && toyItem.count < toyItem.anchorPoints.Length)
+                while (equipment != null && !isAbort && equipment.count < equipment.anchorPoints.Length)
                 {
                     timeWait += Time.deltaTime;
-                    agent.transform.position = toyItem.anchorPoints[index].position;
-                    this.transform.rotation = toyItem.anchorPoints[index].rotation;
-                    this.transform.localScale = new Vector3(this.transform.localScale.x, this.transform.localScale.y, toyItem.anchorPoints[index].localScale.z);
+                    agent.transform.position = equipment.anchorPoints[index].position;
+                    this.transform.rotation = equipment.anchorPoints[index].rotation;
+                    this.transform.localScale = new Vector3(this.transform.localScale.x, this.transform.localScale.y, equipment.anchorPoints[index].localScale.z);
                     if (timeWait > 30)
                         isAbort = true;
                     yield return new WaitForEndOfFrame();
                 }
 
                 if(!isAbort)
-                    toyItem.OnActive();
+                    equipment.OnActive();
 
-                while (toyItem != null && time < toyItem.maxTime && !isAbort)
+                while (equipment != null && data.Energy > data.MaxEnergy * 0.1f && !isAbort)
                 {
-                    toyItem.OnActive();
-                    agent.transform.position = toyItem.anchorPoints[index].position;
-                    this.transform.rotation = toyItem.anchorPoints[index].rotation;
-                    this.transform.localScale = new Vector3(this.transform.localScale.x, this.transform.localScale.y, toyItem.anchorPoints[index].localScale.z);
-                    anim.Play("Play_" + toyItem.toyType.ToString(), 0);
-                    time += Time.deltaTime;
+                    equipment.OnActive();
+                    agent.transform.position = equipment.anchorPoints[index].position;
+                    this.transform.rotation = equipment.anchorPoints[index].rotation;
+                    this.transform.localScale = new Vector3(this.transform.localScale.x, this.transform.localScale.y, equipment.anchorPoints[index].localScale.z);
+                    anim.Play("Play_" + equipment.toyType.ToString(), 0);
                     yield return new WaitForEndOfFrame();
                 }
                 
                 charInteract.interactType = InteractType.None;
                 if (!isAbort)
                 {
-                    toyItem.DeActive();
+                    equipment.DeActive();
                     yield return new WaitForEndOfFrame();
                 }
                 if(isAnchor)
-                    agent.transform.position = toyItem.anchorPoints[index].position - lastStartPosition;
+                    agent.transform.position = equipment.anchorPoints[index].position - lastStartPosition;
                 shadow.GetComponent<SpriteRenderer>().enabled = true;
                 this.transform.rotation = Quaternion.identity;
                
             }
 
-            if (toyItem != null)
+            if (equipment != null)
             {
-                if(toyItem.pets.Contains(this))
-                    toyItem.pets.Remove(this);
-                toyItem.DeActive();
+                if(equipment.pets.Contains(this))
+                    equipment.pets.Remove(this);
+                equipment.DeActive();
             }
 
 
             if (!isAbort)
             {
                 yield return StartCoroutine(DoAnim("Love"));
-                int value = (int)DataHolder.GetItem(toyItem.item.itemID).value;
+                int value = (int)DataHolder.GetItem(equipment.itemID).value;
                 ItemManager.instance.SpawnHeart(data.RateHappy + data.level / 5 + value, this.transform.position);
 
             }
 
             charScale.speedFactor = 1f;
             anim.speed = 1f;
-            toyItem = null;
+            equipment = null;
 
         }
-
         
         CheckAbort();
     }
@@ -2268,9 +2047,8 @@ public class CharController : MonoBehaviour
     {
         anim.Play("Itching", 0);
         Debug.Log("Itchi");
-        while (data.itchi > 0.5 * data.MaxItchi && !isAbort)
+        while (!isAbort)
         {
-            data.itchi -= 1f;
             yield return new WaitForEndOfFrame();
         }
         CheckAbort();
@@ -2304,7 +2082,6 @@ public class CharController : MonoBehaviour
     {
         MageManager.instance.PlaySound("Drag", false);
         charInteract.interactType = InteractType.Touch;
-        enviromentType = EnviromentType.Room;
         ItemManager.instance.SetCameraTarget(this.gameObject);
         anim.Play("Hold", 0);
         if (shadow != null)
@@ -2329,9 +2106,6 @@ public class CharController : MonoBehaviour
             this.transform.rotation = Quaternion.Lerp(this.transform.rotation, Quaternion.identity, Time.deltaTime * 2);
             yield return new WaitForEndOfFrame();
         }
-
-        //Start Drop
-        CheckDrop();
 
         float fallSpeed = 0;
 
@@ -2374,6 +2148,7 @@ public class CharController : MonoBehaviour
     protected virtual IEnumerator Gift()
     {
         yield return StartCoroutine(JumpDown(0, 20, 30));
+        //syield return StartCoroutine(JumpOut());
         yield return StartCoroutine(DoAnim("Love"));
         CheckAbort();
     }
@@ -2390,56 +2165,7 @@ public class CharController : MonoBehaviour
     }
 
 
-    protected void CheckDrop()
-    {
-        enviromentType = EnviromentType.Room;
-        dropPosition = charScale.scalePosition;
-        ItemCollider col = ItemManager.instance.GetItemCollider(dropPosition);
-
-
-        if (col != null)
-        {
-
-            if (col.tag == "Table")
-            {
-                enviromentType = EnviromentType.Table;
-
-            }
-            else if (col.tag == "Bath")
-            {
-                enviromentType = EnviromentType.Bath;
-            }
-            else if (col.tag == "Bed")
-            {
-                enviromentType = EnviromentType.Bed;
-            }
-            else if (col.tag == "Toilet")
-            {
-                enviromentType = EnviromentType.Toilet;
-            }
-
-            if (enviromentType != EnviromentType.Room)
-            {
-                currentItemCollider = col;
-                col.pets.Add(this);
-            }
-                
-
-
-            dropPosition.y = charScale.scalePosition.y + col.height;
-
-            if (this.transform.position.x > col.transform.position.x + col.width / 2 - col.edge)
-            {
-                dropPosition.x = col.transform.position.x + col.width / 2 - col.edge;
-            }
-            else if (this.transform.position.x < col.transform.position.x - col.width / 2 + col.edge)
-            {
-                dropPosition.x = col.transform.position.x - col.width / 2 + col.edge;
-            }
-        }
-
-
-    }
+    
 
     protected void CheckAbort()
     {
@@ -2449,32 +2175,56 @@ public class CharController : MonoBehaviour
             actionType = ActionType.None;
         else
         {
-            LogAction();
             DoAction();
         }
     }
 
     protected void CheckEnviroment()
     {
-        //Debug.Log("Check enviroment");
-        //Debug.Log(isAbort);
-        if (isAbort)
-            return;
-        if (enviromentType == EnviromentType.Bath)
+        if (data.Health < data.MaxHealth * 0.1f)
         {
-            OnBath();
+            actionType = ActionType.Sick;
+            isAbort = true;
         }
-        else if (enviromentType == EnviromentType.Table)
+        else if (data.Damage > data.MaxDamage * 0.9f)
         {
-            OnTable();
+            actionType = ActionType.Injured;
+            isAbort = true;
         }
-        else if (enviromentType == EnviromentType.Bed)
+        else if (equipment != null)
         {
-            OnBed();
-        }
-        else if (enviromentType == EnviromentType.Toilet)
-        {
-            OnToilet();
+            Debug.Log(equipment.itemType);
+            if (equipment.itemType == ItemType.Bed)
+            {
+                OnSleep();
+            }
+            else if (equipment.itemType == ItemType.Bath)
+            {
+                OnBath();
+            }
+            else if (equipment.itemType == ItemType.Toilet)
+            {
+                OnToilet();
+            }
+            else if (equipment.itemType == ItemType.Table)
+            {
+                OnTable();
+            }
+            else if (equipment.itemType == ItemType.Food)
+            {
+                OnEat();
+            }
+            else if (equipment.itemType == ItemType.Drink)
+            {
+                OnDrink();
+            }
+            else if (equipment.itemType == ItemType.Toy)
+            {
+                timeToy = 0;
+                actionType = ActionType.Toy;
+                isAbort = true;
+                lastEquipment = equipment;
+            }
         }
     }
 

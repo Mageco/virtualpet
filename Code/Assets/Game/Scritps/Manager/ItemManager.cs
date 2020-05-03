@@ -8,8 +8,7 @@ public class ItemManager : MonoBehaviour
 {
     public static ItemManager instance;
 
-    public List<ItemObject> items = new List<ItemObject>();
-    public ItemCollider[] itemColliders;
+    public List<BaseFloorItem> items = new List<BaseFloorItem>();
 
     public GameObject peePrefab;
     public GameObject shitPrefab;
@@ -22,6 +21,14 @@ public class ItemManager : MonoBehaviour
     public GameObject healthEffectPrefab;
     public GameObject guidePrefab;
     public GameObject petGiftPrefab;
+
+    public Vector2 roomBoundX = new Vector2(-50, 80);
+    public Vector2 roomBoundY = new Vector2(-26, 0);
+    public Vector2 roomWallBoundY = new Vector2(0, 30);
+    public Vector2 gardenBoundX = new Vector2(-270, 150);
+    public Vector2 gardenBoundY = new Vector2(-26, 0);
+    public Vector2 cameraBoundX = new Vector2(-320, 200);
+    public Vector2 cameraBoundY = new Vector2(-26, 40);
 
     System.DateTime startTime = System.DateTime.Now;
     float time = 0;
@@ -36,9 +43,6 @@ public class ItemManager : MonoBehaviour
 
     float timeChest = 0;
     float maxTimeChest = 10;
-
-    [HideInInspector]
-    public HouseItem houseItem;
 
     [HideInInspector]
     public bool isLoad = false;
@@ -62,11 +66,9 @@ public class ItemManager : MonoBehaviour
         MageManager.instance.loadingBar.gameObject.SetActive(true);
         while(!isLoad){
             if(GameManager.instance.isLoad){
-                LoadItems(false);
+                LoadItems();
                 LoadItemData();
                 GameManager.instance.LoadPetObjects();
-                //if(GameManager.instance.isGuest)
-                
                 isLoad = true;
             }
             t += Time.deltaTime;
@@ -78,6 +80,8 @@ public class ItemManager : MonoBehaviour
         {
             GetActiveCamera().transform.position = ES2.Load<Vector3>("CameraPosition");
         }
+        GetActiveCamera().boundX = cameraBoundX;
+        GetActiveCamera().boundY = cameraBoundY;
         GameManager.instance.rateCount++;
         t += Time.deltaTime;
         MageManager.instance.loadingBar.UpdateProgress(t);
@@ -149,48 +153,39 @@ public class ItemManager : MonoBehaviour
     #endregion
 
 
-
-    public void EquipItem()
-    {
-        LoadItems(true);
-        UpdateItemColliders();
-        
-    }
-
-
-    public void LoadItems(bool isAnimated)
+    public void LoadItems()
     {
         
         List<PlayerItem> data = GameManager.instance.GetEquipedPLayerItems();
-        Debug.Log("Data " + data.Count);
-        List<ItemObject> removes = new List<ItemObject>();
-        foreach (ItemObject item in items)
+        List<BaseFloorItem> removes = new List<BaseFloorItem>();
+        foreach (BaseFloorItem item in items)
         {
-            bool isRemove = false;
+            bool isRemove = true;
             for (int i = 0; i < data.Count; i++)
             {
-                if (data[i].realId == item.realID && (data[i].state == ItemState.Have || data[i].state == ItemState.OnShop))
+                if (data[i].realId == item.realID)
                 {
-                    isRemove = true;
+                    isRemove = false;
                 }
             }
             if (isRemove && !removes.Contains(item))
             {
+                Debug.Log(item.name);
                 removes.Add(item);
             }
         }
 
 
-        foreach (ItemObject item in removes)
+        foreach (BaseFloorItem item in removes)
         {
-            RemoveItem(item.realID);
+            RemoveItem(item);
         }
 
         List<PlayerItem> adds = new List<PlayerItem>();
         for (int i = 0; i < data.Count; i++)
         {
             bool isAdd = true;
-            foreach (ItemObject item in items)
+            foreach (BaseFloorItem item in items)
             {
                 if (data[i].realId == item.realID)
                 {
@@ -205,17 +200,15 @@ public class ItemManager : MonoBehaviour
 
         for (int i = 0; i < adds.Count; i++)
         {
-            AddItem(adds[i],isAnimated);
+            AddItem(adds[i]);
         }
-
-        UpdateItemColliders();
     }
 
    
 
-    public ItemObject GetItem(int itemId){
-        List<ItemObject> temp = new List<ItemObject>();
-        foreach(ItemObject item in items){
+    public BaseFloorItem GetRandomItem(int itemId){
+        List<BaseFloorItem> temp = new List<BaseFloorItem>();
+        foreach(BaseFloorItem item in items){
             if (item.itemID == itemId)
                 temp.Add(item);
         }
@@ -228,109 +221,10 @@ public class ItemManager : MonoBehaviour
             return null;
     }
 
-    public ItemObject GetItemRealId(int itemId)
+    public BaseFloorItem GetRandomItem(ItemType type)
     {
-       foreach (ItemObject item in items)
-        {
-            if (item.realID == itemId)
-                return item;
-        }
-        return null;
-    }
-
-
-    void AddItem(PlayerItem playerItem,bool isAnimated)
-    {
-        if(DataHolder.GetItem(playerItem.itemId) != null)
-        {
-            string url = DataHolder.GetItem(playerItem.itemId).prefabName.Replace("Assets/Game/Resources/", "");
-            url = url.Replace(".prefab", "");
-            url = DataHolder.Items().GetPrefabPath() + url;
-            for (int i = 0; i < playerItem.number; i++)
-            {
-                GameObject go = Instantiate((Resources.Load(url) as GameObject), Vector3.zero, Quaternion.identity) as GameObject;
-                ItemObject item = go.AddComponent<ItemObject>();
-                item.itemType = playerItem.itemType;
-                item.itemID = playerItem.itemId;
-                item.realID = playerItem.realId;
-                items.Add(item);
-                go.transform.parent = this.transform;
-                if (isAnimated)
-                {
-                    for (int j = 0; j < item.transform.childCount; j++)
-                    {
-                        Animator anim = item.transform.GetChild(j).GetComponent<Animator>();
-                        if (anim != null)
-                        {
-                            anim.Play("Appear", 0);
-                        }
-                    }
-                }
-            }
-        }       
-        
-    }
-
-    public void RemoveItem(int id){
-        foreach(ItemObject item in items){
-            if(item.realID == id){
-                RemoveItem(item);
-                return;
-            }
-        }
-    }
-
-    void RemoveItem(ItemObject item)
-    {
-        if(DataHolder.GetItem(item.itemID).itemType == ItemType.Table)
-        {
-            foreach(CharController pet in GameManager.instance.GetPetObjects())
-            {
-                if(pet.enviromentType == EnviromentType.Table)
-                {
-                    pet.OnJumpOut();
-                }
-            }
-        }
-        if (DataHolder.GetItem(item.itemID).itemType == ItemType.Bed)
-        {
-            foreach (CharController pet in GameManager.instance.GetPetObjects())
-            {
-                if (pet.enviromentType == EnviromentType.Bed)
-                {
-                    pet.OnJumpOut();
-                }
-            }
-        }
-        if (DataHolder.GetItem(item.itemID).itemType == ItemType.Bath)
-        {
-            foreach (CharController pet in GameManager.instance.GetPetObjects())
-            {
-                if (pet.enviromentType == EnviromentType.Bath)
-                {
-                    pet.OnJumpOut();
-                }
-            }
-        }
-        if (DataHolder.GetItem(item.itemID).itemType == ItemType.Toilet)
-        {
-            foreach (CharController pet in GameManager.instance.GetPetObjects())
-            {
-                if (pet.enviromentType == EnviromentType.Toilet)
-                {
-                    pet.OnJumpOut();
-                }
-            }
-        }
-        items.Remove(item);
-        if(item != null)
-            Destroy(item.gameObject);
-    }
-
-    public ItemObject GetItem(ItemType type)
-    {
-        List<ItemObject> temp = new List<ItemObject>();
-        foreach (ItemObject item in items)
+        List<BaseFloorItem> temp = new List<BaseFloorItem>();
+        foreach (BaseFloorItem item in items)
         {
             if (item.itemType == type)
             {
@@ -346,23 +240,68 @@ public class ItemManager : MonoBehaviour
             return null;
     }
 
-
-    public GameObject GetItemChildObject(ItemType type){
-        foreach(ItemObject item in items){
-            if(DataHolder.GetItem(item.itemID).itemType == type){
-                //Debug.Log(item.name);
-                return item.transform.GetChild(0).gameObject;
-            }
+    public BaseFloorItem GetItem(int readId)
+    {
+       foreach (BaseFloorItem item in items)
+        {
+            if (item.realID == readId)
+                return item;
         }
         return null;
     }
 
 
+    void AddItem(PlayerItem playerItem)
+    {
+        if(DataHolder.GetItem(playerItem.itemId) != null)
+        {
+            string url = DataHolder.GetItem(playerItem.itemId).prefabName.Replace("Assets/Game/Resources/", "");
+            url = url.Replace(".prefab", "");
+            url = DataHolder.Items().GetPrefabPath() + url;
+            for (int i = 0; i < playerItem.number; i++)
+            {
+                GameObject go = Instantiate((Resources.Load(url) as GameObject), Vector3.zero, Quaternion.identity) as GameObject;
+                BaseFloorItem item = go.GetComponentInChildren<BaseFloorItem>(true);
+                item.itemType = playerItem.itemType;
+                item.itemID = playerItem.itemId;
+                item.realID = playerItem.realId;
+                items.Add(item);
+                go.transform.parent = this.transform;
+            }
+        }       
+    }
+
+    public void RemoveItem(int realID)
+    {
+        foreach(BaseFloorItem item in items){
+            if(item.realID == realID)
+            {
+                RemoveItem(item);
+                return;
+            }
+        }
+    }
+
+    void RemoveItem(BaseFloorItem item)
+    {
+
+        foreach(CharController pet in GameManager.instance.GetPetObjects())
+        {
+            if(pet.equipment == item)
+            {
+                pet.agent.transform.position = item.endPoint.position ;
+            }
+        }
+       
+        items.Remove(item);
+        if(item != null)
+            Destroy(item.gameObject);
+    }
 
     public int GetItemCount(ItemType type)
     {
         int count = 0;
-        foreach (ItemObject item in items)
+        foreach (BaseFloorItem item in items)
         {
             if (item.itemType == type)
             {
@@ -370,66 +309,6 @@ public class ItemManager : MonoBehaviour
             }
         }
         return count;
-    }
-
-    public ToyItem GetRandomToyItem()
-    {
-        List<ItemObject> temp = new List<ItemObject>();
-        foreach (ItemObject item in items)
-        {
-            if (DataHolder.GetItem(item.itemID).itemType == ItemType.Toy)
-            {
-                temp.Add(item);
-            }
-        }
-        if (temp.Count > 0)
-        {
-            int n = Random.Range(0, temp.Count);
-            return temp[n].GetComponentInChildren<ToyItem>();
-        }
-        else
-            return null;
-
-    }
-
-    void UpdateItemColliders(){
-        itemColliders = this.GetComponentsInChildren<ItemCollider>();
-        houseItem = this.GetComponentInChildren<HouseItem>();
-        GetActiveCamera().boundX = houseItem.cameraBoundX;
-    }
-
-    public ItemCollider GetItemCollider(ItemType type){
-        ItemObject item = GetItem(type);
-        if (item != null && item.GetComponentInChildren<ItemCollider>() != null)
-            return item.GetComponentInChildren<ItemCollider>();            
-        else
-            return null;
-    }
-
-    public ItemCollider GetItemCollider(Vector3 dropPosition){
-        UpdateItemColliders();
-        if(itemColliders != null){
-            for(int i=0;i<itemColliders.Length;i++){
-                if(IsInCollider(dropPosition,itemColliders[i])){
-                    return itemColliders[i];
-                }
-            }
-            return null;
-        }
-        else 
-            return null;
-
-    }
-
-    bool IsInCollider(Vector3 pos,ItemCollider col){
-        if(pos.x > col.transform.position.x - col.width/2 && pos.x < col.transform.position.x + col.width/2 &&
-        pos.y > col.transform.position.y - col.depth/2 && pos.y < col.transform.position.y + col.depth/2)
-        {
-            return true;
-        }else
-        {
-            return false;
-        }
     }
 
 
@@ -442,27 +321,26 @@ public class ItemManager : MonoBehaviour
 		return randomPoints;
 	}
 
-
     public Vector3 GetRandomPoint(AreaType type)
     {
         Vector3 r = Vector3.zero;
         if (type == AreaType.All)
         {
 
-            float x = Random.Range(houseItem.gardenBoundX.x, houseItem.gardenBoundX.y);
-            float y = Random.Range(houseItem.gardenBoundY.x, houseItem.gardenBoundY.y);
+            float x = Random.Range(gardenBoundX.x, gardenBoundX.y);
+            float y = Random.Range(gardenBoundY.x, gardenBoundY.y);
             r = new Vector3(x, y, 0);
         }
         else if (type == AreaType.Garden)
         {
             bool isDone = false;
-            float x = Random.Range(houseItem.gardenBoundX.x, houseItem.gardenBoundX.y);
-            float y = Random.Range(houseItem.gardenBoundY.x, houseItem.gardenBoundY.y);
+            float x = Random.Range(gardenBoundX.x, gardenBoundX.y);
+            float y = Random.Range(gardenBoundY.x, gardenBoundY.y);
             while (!isDone)
             {
-                x = Random.Range(houseItem.gardenBoundX.x+5, houseItem.gardenBoundX.y-5);
-                y = Random.Range(houseItem.gardenBoundY.x, houseItem.gardenBoundY.y);
-                if (x < houseItem.roomBoundX.x || x > houseItem.roomBoundX.y)
+                x = Random.Range(gardenBoundX.x+5, gardenBoundX.y-5);
+                y = Random.Range(gardenBoundY.x, gardenBoundY.y);
+                if (x < roomBoundX.x || x > roomBoundX.y)
                 {
                     isDone = true;
                 }
@@ -470,20 +348,20 @@ public class ItemManager : MonoBehaviour
             r = new Vector3(x, y, 0);
         }else if(type == AreaType.Room)
         {
-            float x = Random.Range(houseItem.roomBoundX.x, houseItem.roomBoundX.y);
-            float y = Random.Range(houseItem.roomBoundY.x, houseItem.roomBoundY.y);
+            float x = Random.Range(roomBoundX.x, roomBoundX.y);
+            float y = Random.Range(roomBoundY.x, roomBoundY.y);
             r = new Vector3(x, y, 0);
         }
         else if (type == AreaType.Camera)
         {
-            float x = Random.Range(houseItem.cameraBoundX.x, houseItem.cameraBoundX.y);
-            float y = Random.Range(houseItem.cameraBoundY.x, houseItem.cameraBoundY.y);
+            float x = Random.Range(cameraBoundX.x, cameraBoundX.y);
+            float y = Random.Range(cameraBoundY.x, cameraBoundY.y);
             r = new Vector3(x, y, 0);
         }
         else if (type == AreaType.Fly)
         {
-            float x = Random.Range(houseItem.roomBoundX.x, houseItem.roomBoundX.y);
-            float y = Random.Range(houseItem.roomBoundY.x + 15, houseItem.roomBoundY.y + 15);
+            float x = Random.Range(roomBoundX.x, roomBoundX.y);
+            float y = Random.Range(roomBoundY.x + 15, roomBoundY.y + 15);
             r = new Vector3(x, y, 0);
         }
         return r;
@@ -539,8 +417,8 @@ public class ItemManager : MonoBehaviour
 
     public GameObject SpawnGuideArrow(ItemType itemType)
     {
-        GameObject go = Instantiate(guidePrefab, GetItem(itemType).transform.GetChild(0).transform.position + new Vector3(0,3,0), Quaternion.identity);
-        go.transform.parent = GetItem(itemType).transform.GetChild(0).transform;
+        GameObject go = Instantiate(guidePrefab, GetRandomItem(itemType).transform.GetChild(0).transform.position + new Vector3(0,3,0), Quaternion.identity);
+        go.transform.parent = GetRandomItem(itemType).transform.GetChild(0).transform;
         return go;
     }
 
@@ -604,16 +482,21 @@ public class ItemManager : MonoBehaviour
            GameManager.instance.myPlayer.itemSaveDatas.Add(data);
        }
 
-        //Find All Food/Drink Item
-        EatItem[] eats = FindObjectsOfType<EatItem>();
-        for(int i=0;i<eats.Length;i++){
-           ItemSaveData data = new ItemSaveData();
-           data.id = eats[i].item.realID;
-           data.itemType = eats[i].itemSaveDataType;
-           data.value = eats[i].foodAmount;
-           data.position = eats[i].transform.position;
-           GameManager.instance.myPlayer.itemSaveDatas.Add(data);
-       }
+        //Find All Food/Drink 
+        foreach (BaseFloorItem item in items)
+        {
+            ItemSaveData data = new ItemSaveData();
+            data.id = item.realID;
+            if(item.itemType == ItemType.Food || item.itemType == ItemType.Drink)
+            {
+                data.value = item.GetComponent<EatItem>().foodAmount;
+                data.itemType = ItemSaveDataType.Food;
+            }else
+                data.itemType = ItemSaveDataType.Equipment;
+
+            data.position = item.transform.position;
+            GameManager.instance.myPlayer.itemSaveDatas.Add(data);
+        }
 
 
         FruitItem[] fruits = FindObjectsOfType<FruitItem>();
@@ -621,48 +504,12 @@ public class ItemManager : MonoBehaviour
         {
             ItemSaveData data = new ItemSaveData();
             data.id = fruits[i].id;
-            data.itemType = fruits[i].itemSaveDataType;
+            data.itemType = ItemSaveDataType.Fruit;
             data.value = fruits[i].step;
             data.time = fruits[i].time;
             GameManager.instance.myPlayer.itemSaveDatas.Add(data);
         }
 
-        ToyItem[] toys = FindObjectsOfType<ToyItem>();
-        for (int i = 0; i < toys.Length; i++)
-        {
-            ItemSaveData data = new ItemSaveData();
-            data.id = toys[i].item.realID;
-            data.itemType = ItemSaveDataType.Toy;
-            data.position = toys[i].transform.position;
-            GameManager.instance.myPlayer.itemSaveDatas.Add(data);
-        }
-
-
-        ItemCollider[] equipments = FindObjectsOfType<ItemCollider>();
-        for (int i = 0; i < equipments.Length; i++)
-        {
-            ItemSaveData data = new ItemSaveData();
-            data.id = equipments[i].item.realID;
-            data.itemType = ItemSaveDataType.Equipment;
-            data.position = equipments[i].transform.position;
-            GameManager.instance.myPlayer.itemSaveDatas.Add(data);
-        }
-
-        ItemDecor[] decors = FindObjectsOfType<ItemDecor>();
-        for (int i = 0; i < decors.Length; i++)
-        {
-            ItemSaveData data = new ItemSaveData();
-            data.id = decors[i].item.realID;
-            data.itemType = ItemSaveDataType.Decor;
-            data.position = decors[i].transform.position;
-            GameManager.instance.myPlayer.itemSaveDatas.Add(data);
-        }
-
-
-        foreach (ItemObject item in items)
-        {
-
-        }
         SaveItemData();
     }
 
@@ -685,13 +532,13 @@ public class ItemManager : MonoBehaviour
                 
         foreach (ItemSaveData item in data.itemSaveDatas){
 
-            if (float.Parse(GameManager.instance.myPlayer.version) < 1.20f)
-            {
-                if (item.itemType == ItemSaveDataType.Pee && !GameManager.instance.isGuest)
+            if (float.Parse(GameManager.instance.myPlayer.version) >= 1.20f)
+            { 
+                if (item.itemType == ItemSaveDataType.Pee)
                 {
                     SpawnPee(item.position, item.value);
                 }
-                else if (item.itemType == ItemSaveDataType.Shit && !GameManager.instance.isGuest)
+                else if (item.itemType == ItemSaveDataType.Shit)
                 {
                     SpawnShit(item.position, item.value);
                 }
@@ -699,8 +546,8 @@ public class ItemManager : MonoBehaviour
                 {
                     if (GetItem(item.id) != null)
                     {
-                        GetItem(item.id).GetComponentInChildren<EatItem>().foodAmount = item.value;
-                        GetItem(item.id).GetComponentInChildren<EatItem>().transform.position = item.position;
+                        GetItem(item.id).GetComponent<EatItem>().foodAmount = item.value;
+                        GetItem(item.id).GetComponent<EatItem>().transform.position = item.position;
                     }
                 }
                 else if (item.itemType == ItemSaveDataType.Fruit)
@@ -716,81 +563,14 @@ public class ItemManager : MonoBehaviour
                         }
                     }
                 }
-                else if (item.itemType == ItemSaveDataType.Toy)
-                {
-                    if (GetItem(item.id) != null)
-                    {
-                        GetItem(item.id).GetComponentInChildren<ToyItem>().transform.position = item.position;
-                    }
-                }
                 else if (item.itemType == ItemSaveDataType.Equipment)
                 {
                     if (GetItem(item.id) != null)
                     {
-                        GetItem(item.id).GetComponentInChildren<ItemCollider>().transform.position = item.position;
+                        GetItem(item.id).transform.position = item.position;
                     }
                 }
-                else if (item.itemType == ItemSaveDataType.Decor)
-                {
-                    if (GetItem(item.id) != null)
-                    {
-                        GetItem(item.id).GetComponentInChildren<ItemDecor>().transform.position = item.position;
-                    }
-                }
-            }
-            else
-            {
-                if (item.itemType == ItemSaveDataType.Pee && !GameManager.instance.isGuest)
-                {
-                    SpawnPee(item.position, item.value);
-                }
-                else if (item.itemType == ItemSaveDataType.Shit && !GameManager.instance.isGuest)
-                {
-                    SpawnShit(item.position, item.value);
-                }
-                else if (item.itemType == ItemSaveDataType.Food || item.itemType == ItemSaveDataType.Drink)
-                {
-                    if (GetItemRealId(item.id) != null)
-                    {
-                        GetItemRealId(item.id).GetComponentInChildren<EatItem>().foodAmount = item.value;
-                        GetItemRealId(item.id).GetComponentInChildren<EatItem>().transform.position = item.position;
-                    }
-                }
-                else if (item.itemType == ItemSaveDataType.Fruit)
-                {
-                    FruitItem[] fruits = FindObjectsOfType<FruitItem>();
-                    for (int i = 0; i < fruits.Length; i++)
-                    {
-                        if (fruits[i].id == item.id)
-                        {
-                            fruits[i].step = (int)item.value;
-                            fruits[i].time = item.time;
-                            fruits[i].Load();
-                        }
-                    }
-                }
-                else if (item.itemType == ItemSaveDataType.Toy)
-                {
-                    if (GetItemRealId(item.id) != null)
-                    {
-                        GetItemRealId(item.id).GetComponentInChildren<ToyItem>().transform.position = item.position;
-                    }
-                }
-                else if (item.itemType == ItemSaveDataType.Equipment)
-                {
-                    if (GetItemRealId(item.id) != null)
-                    {
-                        GetItemRealId(item.id).GetComponentInChildren<ItemCollider>().transform.position = item.position;
-                    }
-                }
-                else if (item.itemType == ItemSaveDataType.Decor)
-                {
-                    if (GetItemRealId(item.id) != null)
-                    {
-                        GetItemRealId(item.id).GetComponentInChildren<ItemDecor>().transform.position = item.position;
-                    }
-                }
-
+                
             }
                 
         }

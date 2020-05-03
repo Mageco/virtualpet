@@ -4,59 +4,57 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using Lean.Touch;
 
-public class CleanItem : MonoBehaviour
+public class CleanItem : BaseFloorItem
 {
 	public float clean = 1f;
 	//bool isTouch = false;
 	protected ItemDirty dirtyItem;
 	//float targetAngle = 0;
-
-	protected Animator anim;
-
-	protected ItemObject item;
 	int soundId = 0;
 	float time = 1;
 	float maxTime = 0.5f;
 
-	protected virtual void Awake(){
-		anim = this.GetComponent<Animator>();
+
+
+	protected override void Start(){
+
+		base.Start();
+		this.clean = DataHolder.GetItem(this.itemID).value;
 	}
 
-	protected virtual void Start(){
-
-		item = this.transform.parent.GetComponent<ItemObject>();
-		this.clean = DataHolder.GetItem(item.itemID).value;
-	}
-
-	protected virtual void Update()
+	protected override void Update()
 	{
+		base.Update();
 		if(dirtyItem != null){
-			if(item.itemType == ItemType.Clean && dirtyItem.dirty <= clean*Time.deltaTime){
+			if(this.itemType == ItemType.Clean && dirtyItem.dirty <= clean*Time.deltaTime){
 				ItemManager.instance.SpawnHeart(1,this.transform.position);
 				GameManager.instance.LogAchivement(AchivementType.Clean);
             }
 			
-			if(item.itemType == ItemType.Clean && time > maxTime){
+			if(this.itemType == ItemType.Clean && time > maxTime){
 				MageManager.instance.PlaySound3D("Item_Broom", false,this.transform.position);
 				time  = 0;
 			}else{
 				time += Time.deltaTime;
 			}
 			dirtyItem.OnClean(clean*Time.deltaTime);
-			if(anim != null)
-				anim.Play("Active");
+			if(animator != null)
+				animator.Play("Active");
         }
         else
         {
-            if(item.itemType == ItemType.Clean)
-                anim.Play("Idle");
+            if(this.itemType == ItemType.Clean)
+				animator.Play("Idle");
         }
 			
 	}
 
+    protected override void LateUpdate()
+    {
+        
+    }
 
-
-	void OnTriggerStay2D(Collider2D other) {
+    void OnTriggerStay2D(Collider2D other) {
 		if (other.GetComponent <ItemDirty>() != null) {
 			dirtyItem = other.GetComponent <ItemDirty>();
 		}

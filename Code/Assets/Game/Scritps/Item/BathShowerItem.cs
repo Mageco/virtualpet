@@ -59,10 +59,10 @@ public class BathShowerItem : MonoBehaviour
 		Debug.Log ("Shower");
 		foreach(CharController pet in GameManager.instance.petObjects){
 			if (pet.actionType == ActionType.OnBath) {
-				pet.OnShower ();
+				//pet.OnShower ();
 			}
 		}
-		GetBathTube().OnShower ();
+		//GetBathTube().OnShower ();
 	}
 
 	void OffShower(){
@@ -72,7 +72,7 @@ public class BathShowerItem : MonoBehaviour
 		MageManager.instance.StopSound(soundid);
 		foreach(CharController pet in GameManager.instance.petObjects){
 			if (pet.actionType == ActionType.OnBath) {
-				pet.OffShower ();
+				//pet.OffShower ();
 			}
 		}
 	}

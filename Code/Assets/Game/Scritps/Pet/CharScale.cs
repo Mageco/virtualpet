@@ -64,7 +64,9 @@ public class CharScale : MonoBehaviour
 				}		
 			}
 			if(character.shadow != null){
-                character.shadow.transform.position = scalePosition + new Vector3(0,0,600);
+				Vector3 pos = scalePosition;
+				pos.z = pos.y * 10;
+				character.shadow.transform.position = pos;
 				character.shadow.transform.localScale = character.originalShadowScale * (1f - 0.5f*height/maxHeight); 
             }
 		}else if(interact.interactType == InteractType.Drop){
@@ -78,23 +80,27 @@ public class CharScale : MonoBehaviour
 				height = 0;
 			}
 			if(character.shadow != null){
-                character.shadow.transform.position = scalePosition + new Vector3(0,0,600);
+				Vector3 pos = scalePosition;
+				pos.z = pos.y * 10;
+				character.shadow.transform.position = pos;
 				character.shadow.transform.localScale = character.originalShadowScale * (1f - 0.5f*height/maxHeight); 
             }
 		}else if(interact.interactType == InteractType.Fly){
 			if(character.shadow != null){
-                character.shadow.transform.position = scalePosition + new Vector3(0,0,600);
+				Vector3 pos = scalePosition;
+				pos.z = pos.y * 10;
+				character.shadow.transform.position = pos;
 				character.shadow.transform.localScale = character.originalShadowScale * (1f - 0.5f*height/maxHeight); 
             }
 		}
 
-		if(interact.interactType ==InteractType.None && character.enviromentType == EnviromentType.Room)
+		if(interact.interactType ==InteractType.None)
 		{
 			scalePosition = this.transform.position;
 			height = 0;
 		}
 
-        if(interact.interactType != InteractType.Toy)
+        if(interact.interactType != InteractType.Equipment)
         {
 			dragScale = originalScale * (1 - scalePosition.y * scaleFactor);
 			character.transform.localScale = dragScale;

@@ -143,19 +143,23 @@ public class QuestManager : MonoBehaviour
         if(GameManager.instance.myPlayer.questId == 0)
         {
             yield return new WaitForSeconds(1);
-            if(GameManager.instance.GetActivePetObject() != null)
+            EatItem eat = ItemManager.instance.GetRandomItem(ItemType.Food).GetComponent<EatItem>();
+            if (GameManager.instance.GetActivePetObject() != null)
                 GameManager.instance.GetActivePetObject().data.Food = 0.05f * GameManager.instance.GetActivePetObject().data.MaxFood;
-
-            ItemManager.instance.GetItemChildObject(ItemType.Food).GetComponent<FoodBowlItem>().foodAmount = 0;
+            if(eat != null)
+            {
+                eat.foodAmount = 0;
+                ItemManager.instance.SetCameraTarget(eat.gameObject);
+            }
+                
             if (GameManager.instance.GetActivePetObject() != null)
                 GameManager.instance.GetActivePetObject().data.Dirty = GameManager.instance.GetActivePetObject().data.MaxDirty * 0.3f;
-            ItemManager.instance.SetCameraTarget(ItemManager.instance.GetItemChildObject(ItemType.Food));
+            
             yield return new WaitForSeconds(1);
-            // GameManager.instance.GetActivePetObject().data.character.OnEat();
             ItemManager.instance.ResetCameraTarget();
         }
         else if(GameManager.instance.myPlayer.questId == 1){
-            ItemManager.instance.SetCameraTarget(ItemManager.instance.GetItemChildObject(ItemType.Drink));
+            ItemManager.instance.SetCameraTarget(ItemManager.instance.GetRandomItem(ItemType.Drink).gameObject);
             GameManager.instance.GetActivePetObject().OnDrink();
             yield return new WaitForSeconds(1);
             ItemManager.instance.ResetCameraTarget();
@@ -244,13 +248,13 @@ public class QuestManager : MonoBehaviour
             return;
 
         if (GameManager.instance.myPlayer.questId == 0) {
-            if(GameManager.instance.GetAchivement(1) >= 1 || ItemManager.instance.GetItemChildObject(ItemType.Food).GetComponent<FoodBowlItem>().foodAmount >= ItemManager.instance.GetItemChildObject(ItemType.Food).GetComponent<FoodBowlItem>().maxfoodAmount - 2)
+            if(GameManager.instance.GetAchivement(1) >= 1)
             {
                 isComplete = true;
             }
         }
         else if (GameManager.instance.myPlayer.questId == 1) {
-            if (GameManager.instance.GetAchivement(2) >= 1 || ItemManager.instance.GetItemChildObject(ItemType.Drink).GetComponent<DrinkBowlItem>().foodAmount >= ItemManager.instance.GetItemChildObject(ItemType.Drink).GetComponent<DrinkBowlItem>().maxfoodAmount - 2)
+            if (GameManager.instance.GetAchivement(2) >= 1)
             {
                 isComplete = true;
             }
@@ -264,10 +268,9 @@ public class QuestManager : MonoBehaviour
         }
         else if (GameManager.instance.myPlayer.questId == 3)
         {
-            if (GameManager.instance.GetActivePetObject().data.enviromentType == EnviromentType.Room)
-            {
+
                 isComplete = true;
-            }
+            
         }
         else if (GameManager.instance.myPlayer.questId == 4)
         {
@@ -285,10 +288,9 @@ public class QuestManager : MonoBehaviour
         }
         else if (GameManager.instance.myPlayer.questId == 6)
         {
-            if (GameManager.instance.GetActivePetObject().data.enviromentType == EnviromentType.Bed && GameManager.instance.GetActivePetObject().data.actionType == ActionType.Sleep)
-            {
+
                 isComplete = true;
-            }
+            
         }
         else if (GameManager.instance.myPlayer.questId == 7)
         {

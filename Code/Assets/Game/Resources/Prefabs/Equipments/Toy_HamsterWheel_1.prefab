@@ -1,5 +1,35 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &117880439482404061
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 9200338252474040136}
+  m_Layer: 0
+  m_Name: StartPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &9200338252474040136
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 117880439482404061}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.24594986, y: -2.0189528, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 8965451729971009475}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1403530335536412165
 GameObject:
   m_ObjectHideFlags: 0
@@ -37,6 +67,7 @@ Transform:
   - {fileID: 3503108613193364738}
   - {fileID: 4426548293217856231}
   - {fileID: 7608571630644952830}
+  - {fileID: 9200338252474040136}
   m_Father: {fileID: 8965451729389793698}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -71,21 +102,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf612b25915af4b9da3d6f34f534be46, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  item: {fileID: 0}
+  realID: 0
+  itemID: 0
+  itemType: -1
   state: 0
-  lastPosition: {x: 0, y: 0, z: 0}
-  boundX: {x: -270, y: 52}
-  boundY: {x: -24, y: -3}
   pets: []
-  movementType: 1
-  toyType: 5
-  startPoint: {fileID: 0}
-  endPoint: {fileID: 0}
   anchorPoints:
   - {fileID: 5967279832835210227}
-  maxTime: 1
+  startPoint: {fileID: 9200338252474040136}
+  endPoint: {fileID: 9200338252474040136}
+  toyType: 5
   count: 0
-  wheel: {fileID: 9164894374999152236}
 --- !u!61 &1432538066
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -14310,7 +14337,7 @@ GameObject:
   - component: {fileID: 2982190801855030026}
   m_Layer: 8
   m_Name: Obstruct
-  m_TagString: Toy
+  m_TagString: Equipment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

@@ -9511,6 +9511,36 @@ ParticleSystemRenderer:
   m_Mesh2: {fileID: 0}
   m_Mesh3: {fileID: 0}
   m_MaskInteraction: 0
+--- !u!1 &2426057652305684735
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1022382896102733291}
+  m_Layer: 0
+  m_Name: StartPoint (2)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1022382896102733291
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2426057652305684735}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: -1.8, z: 202}
+  m_LocalScale: {x: 0.3888889, y: 0.3888889, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4124196570079035667}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3170402349898598793
 GameObject:
   m_ObjectHideFlags: 0
@@ -9935,7 +9965,7 @@ GameObject:
   - component: {fileID: 4124196568521427423}
   m_Layer: 8
   m_Name: Obstruct
-  m_TagString: Toy
+  m_TagString: Equipment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -10106,6 +10136,7 @@ Transform:
   - {fileID: 4124196568521427420}
   - {fileID: 1924519908118680373}
   - {fileID: 4908204789026223275}
+  - {fileID: 1022382896102733291}
   m_Father: {fileID: 4124196569543281070}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -10140,21 +10171,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf612b25915af4b9da3d6f34f534be46, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  item: {fileID: 0}
+  realID: 0
+  itemID: 0
+  itemType: -1
   state: 0
-  lastPosition: {x: 0, y: 0, z: 0}
-  boundX: {x: -270, y: 52}
-  boundY: {x: -24, y: -3}
   pets: []
-  movementType: 1
-  toyType: 5
-  startPoint: {fileID: 0}
-  endPoint: {fileID: 0}
   anchorPoints:
   - {fileID: 4124196569181542513}
-  maxTime: 1
+  startPoint: {fileID: 1022382896102733291}
+  endPoint: {fileID: 1022382896102733291}
+  toyType: 5
   count: 0
-  wheel: {fileID: 4124196568356358060}
 --- !u!61 &4124196570079035757
 BoxCollider2D:
   m_ObjectHideFlags: 0

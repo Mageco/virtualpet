@@ -5,8 +5,6 @@ using UnityEngine.EventSystems;
 
 public class ChestItem : MonoBehaviour
 {
-    [HideInInspector]
-    public ItemSaveDataType itemSaveDataType = ItemSaveDataType.Chest;
     public int id = 0;
     RewardType rewardType = RewardType.Chest;
     [HideInInspector]

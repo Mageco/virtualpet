@@ -162,4 +162,35 @@ public class ProfileUI : MonoBehaviour
     {
         UIManager.instance.OnAccessoryPanel(playerPet.realId);        
     }
+
+    public void OnSkill(int skillId)
+    {
+        if(skillId == 0)
+        {
+            MageManager.instance.OnNotificationPopup(DataHolder.Dialog(149).GetName(MageManager.instance.GetLanguage()));
+        }else if(skillId == 1)
+        {
+            MageManager.instance.OnNotificationPopup(DataHolder.Dialog(150).GetName(MageManager.instance.GetLanguage()));
+        }
+        else if (skillId == 2)
+        {
+            MageManager.instance.OnNotificationPopup(DataHolder.Dialog(151).GetName(MageManager.instance.GetLanguage()));
+        }
+        else if (skillId == 3)
+        {
+            MageManager.instance.OnNotificationPopup(DataHolder.Dialog(152).GetName(MageManager.instance.GetLanguage()));
+        }
+        else if (skillId == 4)
+        {
+            MageManager.instance.OnNotificationPopup(DataHolder.Dialog(153).GetName(MageManager.instance.GetLanguage()));
+        }
+        else if (skillId == 5)
+        {
+            MageManager.instance.OnNotificationPopup(DataHolder.Dialog(155).GetName(MageManager.instance.GetLanguage()));
+        }
+        else if (skillId == 6)
+        {
+            MageManager.instance.OnNotificationPopup(DataHolder.Dialog(154).GetName(MageManager.instance.GetLanguage()));
+        }
+    }
 }

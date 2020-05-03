@@ -45,7 +45,7 @@ GameObject:
   - component: {fileID: 590430328584883333}
   m_Layer: 14
   m_Name: Obstruct (4)
-  m_TagString: Decor
+  m_TagString: Equipment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -298,13 +298,13 @@ MonoBehaviour:
   m_margin: {x: 0.0000006556511, y: 0, z: 0, w: 0}
   m_textInfo:
     textComponent: {fileID: 4528853016776754788}
-    characterCount: 5
+    characterCount: 0
     spriteCount: 0
     spaceCount: 0
-    wordCount: 1
+    wordCount: 0
     linkCount: 0
-    lineCount: 1
-    pageCount: 1
+    lineCount: 0
+    pageCount: 0
     materialCount: 1
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
@@ -5348,13 +5348,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e65a09af83d62487d8d5b89dac689018, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  item: {fileID: 0}
+  realID: 0
+  itemID: 0
+  itemType: -1
   state: 0
-  lastPosition: {x: 0, y: 0, z: 0}
-  boundX: {x: -270, y: 0}
-  boundY: {x: 0, y: 0}
   pets: []
-  movementType: 0
+  anchorPoints: []
+  startPoint: {fileID: 0}
+  endPoint: {fileID: 0}
+  toyType: 17
+  count: 0
   playerName: {fileID: 4528853016776754788}
 --- !u!1 &5534310126602812567
 GameObject:

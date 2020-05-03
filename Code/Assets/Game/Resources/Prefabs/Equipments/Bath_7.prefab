@@ -9896,7 +9896,7 @@ GameObject:
   - component: {fileID: 329505732}
   m_Layer: 8
   m_Name: Obstruct (1)
-  m_TagString: Untagged
+  m_TagString: Equipment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -10092,7 +10092,6 @@ GameObject:
   - component: {fileID: 5505067462061468521}
   - component: {fileID: 5505067462061468522}
   - component: {fileID: 1980404474467130287}
-  - component: {fileID: 8655827732448111745}
   - component: {fileID: 6174950317240866847}
   - component: {fileID: 8647882510104371457}
   m_Layer: 15
@@ -10156,35 +10155,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2c3082b9292a466dae7efc00c14f197, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemId: 0
-  clean: 10
---- !u!114 &8655827732448111745
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5505067462061468523}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5d2367fc09d9c472090672a3e878fc4f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  item: {fileID: 0}
+  realID: 0
+  itemID: 0
+  itemType: -1
   state: 0
-  lastPosition: {x: 0, y: 0, z: 0}
-  boundX: {x: -40, y: 60}
-  boundY: {x: -1, y: -1}
   pets: []
-  movementType: 0
-  height: 3
-  depth: 2
-  width: 20
-  edge: 10
-  anchorPoint: {fileID: 0}
-  startPoint: {fileID: 3986092671528988361}
+  anchorPoints:
+  - {fileID: 0}
+  startPoint: {fileID: 0}
   endPoint: {fileID: 0}
-  isWall: 0
+  toyType: 17
+  count: 0
 --- !u!50 &6174950317240866847
 Rigidbody2D:
   serializedVersion: 4

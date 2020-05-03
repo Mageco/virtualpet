@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FirstAidItem : ItemCollider
+public class FirstAidItem : BaseFloorItem
 {
     bool isOpen = false;
     public HealthItem[] healthItems;

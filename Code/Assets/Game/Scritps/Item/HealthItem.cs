@@ -5,7 +5,7 @@ using UnityEngine.EventSystems;
 
 public class HealthItem : ItemDrag
 {
-    ItemObject item;
+    BaseFloorItem item;
     public CharController pet;
     public float amounnt = 1;
     public float timeDelay = 10;
@@ -35,7 +35,7 @@ public class HealthItem : ItemDrag
     protected override void Start(){
         base.Start();
         localPosition = this.transform.localPosition;
-        item = this.transform.parent.parent.parent.GetComponent<ItemObject>();
+        item = this.transform.parent.parent.GetComponent<BaseFloorItem>();
         amounnt = DataHolder.GetItem(item.itemID).value;
     }
 

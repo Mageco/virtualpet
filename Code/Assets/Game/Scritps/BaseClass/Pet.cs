@@ -40,32 +40,11 @@ public class Pet : BaseModel
     public float shit = 0;
     public float pee = 0;
     public float dirty = 10;
-    public float itchi = 10;
-    public float fear = 0;
-    public float curious = 70;
     public System.DateTime timeSick;
     public float maxTimeSick = 3600;
     public bool isNew = false;
     public RareType rareType = RareType.Common;
 
-    [HideInInspector]
-    public float rateFood = 10f;
-    [HideInInspector]
-    public float rateWater = 10f;
-    [HideInInspector]
-    public float rateSleep = 0.5f;
-    [HideInInspector]
-    public float recoverSleep = 0.1f;
-    [HideInInspector]
-    public float ratePee = 10f;
-    [HideInInspector]
-    public float rateShit = 10f;
-    [HideInInspector]
-    public float recoverDirty = 0.1f;
-    [HideInInspector]
-    public float recoverHealth = 0;
-    [HideInInspector]
-    public float recoverEnergy = 5;
     [HideInInspector]
     public int rateHappy = 1;
 
@@ -89,10 +68,6 @@ public class Pet : BaseModel
     [HideInInspector]
     public float maxDirty = 100;
     [HideInInspector]
-    public float maxItchi = 100;
-    [HideInInspector]
-    public float maxCurious = 100;
-    [HideInInspector]
     public int levelRate = 20;
 
 
@@ -103,7 +78,6 @@ public class Pet : BaseModel
     public Vector3 position = Vector3.zero;
     public Vector3 scalePosition = Vector3.zero;
     public float height = 0;
-    public EnviromentType enviromentType = EnviromentType.Room;
 
     public Pet()
     {
@@ -150,15 +124,6 @@ public class Pet : BaseModel
         maxShit = p.maxHealth;
         maxSleep = p.maxHealth;
         maxDirty = p.maxHealth;
-        rateFood = p.rateFood;
-        rateWater = p.rateWater;
-        rateSleep = p.rateSleep;
-        ratePee = p.ratePee;
-        rateShit = p.rateShit;
-
-        recoverEnergy = p.recoverEnergy;
-        recoverSleep = p.recoverSleep;
-        recoverHealth = p.recoverHealth;
 
         food = Random.Range(maxFood / 2, maxFood);
         water = Random.Range(maxWater / 2, maxWater);
@@ -380,38 +345,6 @@ public class Pet : BaseModel
         }
     }
 
-    public float Itchi
-    {
-        get
-        {
-            return this.itchi;
-        }
-        set
-        {
-            this.itchi = value;
-            if (this.itchi < 0)
-                this.itchi = 0;
-            else if (this.itchi > MaxItchi)
-                this.itchi = MaxItchi;
-        }
-    }
-
-
-    public float Curious
-    {
-        get
-        {
-            return this.curious;
-        }
-        set
-        {
-            this.curious = value;
-            if (this.curious < 0)
-                this.curious = 0;
-            else if (this.curious > maxCurious)
-                this.curious = maxCurious;
-        }
-    }
 
     public float Intelligent
     {
@@ -579,32 +512,6 @@ public class Pet : BaseModel
         }
     }
 
-    public float MaxItchi
-    {
-        get
-        {
-            return maxItchi + level * levelRate;
-        }
-        set
-        {
-            this.maxItchi = value;
-        }
-    }
-
-
-
-    public float MaxCurious
-    {
-        get
-        {
-            return maxCurious;
-        }
-        set
-        {
-            this.maxCurious = value;
-        }
-    }
-
     public float MaxTimeSick
     {
         get
@@ -615,30 +522,6 @@ public class Pet : BaseModel
         set
         {
             this.maxTimeSick = value;
-        }
-    }
-
-    public float RecoveryEnergy
-    {
-        get
-        {
-            return recoverEnergy + level;
-        }
-        set
-        {
-            this.recoverEnergy = value;
-        }
-    }
-
-    public float RecoverHealth
-    {
-        get
-        {
-            return recoverHealth + level / 25;
-        }
-        set
-        {
-            this.recoverHealth = value;
         }
     }
 

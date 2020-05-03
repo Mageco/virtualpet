@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using PolyNav;
 
-public class ToyCarrier : ToyItem
+public class ToyCarrier : BaseFloorItem
 {
     //public CharController target;
     public PolyNavAgent agent;

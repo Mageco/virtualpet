@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 7256972251141999582}
   m_Layer: 8
   m_Name: Obstruct
-  m_TagString: Toy
+  m_TagString: Equipment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -207,19 +207,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02308cd9743014949b2d9bf7824d8c61, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  item: {fileID: 0}
+  realID: 0
+  itemID: 0
+  itemType: -1
   state: 0
-  lastPosition: {x: 0, y: 0, z: 0}
-  boundX: {x: -270, y: 52}
-  boundY: {x: -24, y: -3}
   pets: []
-  movementType: 1
-  toyType: 2
-  startPoint: {fileID: 3996177853375926304}
-  endPoint: {fileID: 0}
   anchorPoints:
   - {fileID: 3996177853375926304}
-  maxTime: 1
+  startPoint: {fileID: 3996177853375926304}
+  endPoint: {fileID: 0}
+  toyType: 2
   count: 0
   speed: 50
   body: {fileID: 8983550800580757322}

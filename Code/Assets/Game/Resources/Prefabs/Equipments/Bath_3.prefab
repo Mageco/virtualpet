@@ -5451,7 +5451,7 @@ GameObject:
   - component: {fileID: 725234954}
   m_Layer: 8
   m_Name: Obstruct (1)
-  m_TagString: Untagged
+  m_TagString: Equipment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5648,7 +5648,6 @@ GameObject:
   - component: {fileID: 5505067462061468522}
   - component: {fileID: 1980404474467130287}
   - component: {fileID: 5129820700197405400}
-  - component: {fileID: 3396037928354696701}
   - component: {fileID: 3444454561032366871}
   m_Layer: 15
   m_Name: BathTube
@@ -5713,8 +5712,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2c3082b9292a466dae7efc00c14f197, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemId: 0
-  clean: 10
+  realID: 0
+  itemID: 0
+  itemType: -1
+  state: 0
+  pets: []
+  anchorPoints:
+  - {fileID: 0}
+  startPoint: {fileID: 0}
+  endPoint: {fileID: 0}
+  toyType: 17
+  count: 0
 --- !u!61 &5129820700197405400
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -5741,33 +5749,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 14, y: 8}
   m_EdgeRadius: 0
---- !u!114 &3396037928354696701
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5505067462061468523}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5d2367fc09d9c472090672a3e878fc4f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  item: {fileID: 0}
-  state: 0
-  lastPosition: {x: 0, y: 0, z: 0}
-  boundX: {x: -40, y: 60}
-  boundY: {x: -1, y: -1}
-  pets: []
-  movementType: 0
-  height: 6
-  depth: 2
-  width: 20
-  edge: 10
-  anchorPoint: {fileID: 0}
-  startPoint: {fileID: 3986092671528988361}
-  endPoint: {fileID: 0}
-  isWall: 0
 --- !u!50 &3444454561032366871
 Rigidbody2D:
   serializedVersion: 4

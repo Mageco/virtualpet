@@ -48,8 +48,8 @@ public class SoapItem : MonoBehaviour
 			character = other.GetComponent <CharController>();
 			if(character.actionType == ActionType.OnBath && isTouch && !isSoap){
 				bubbleEffect.SetActive(true);
-				character.OnSoap();
-                GetBathTube().OnSoap ();
+				//character.OnSoap();
+                //GetBathTube().OnSoap ();
 				soundId = MageManager.instance.PlaySound3D("Soap",true,this.transform.position);
 				isSoap = true;
 			}
@@ -58,8 +58,8 @@ public class SoapItem : MonoBehaviour
 
 	void OnTriggerExit2D(Collider2D other) {
 		if (other.GetComponent <CharController>() == character) {
-			if(character != null)
-				character.OffSoap();
+			//if(character != null)
+			//	character.OffSoap();
 
 			MageManager.instance.StopSound(soundId);
 			character = null;

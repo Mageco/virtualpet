@@ -10,12 +10,6 @@ public class ToyCarItem : ToyItem
 	public GameObject body;
 	Direction direction = Direction.R;
 
-	public bool IsSupprised(){
-		if(animator.speed > 1 && state == EquipmentState.Active){
-			return true;
-		}else
-			return false;
-	}
 
     protected override void OnClick()
     {
@@ -30,7 +24,6 @@ public class ToyCarItem : ToyItem
         MageManager.instance.PlaySound3D("Item_Car", false,this.transform.position);
 		state = EquipmentState.Active;
         animator.speed = 2;
-		GameManager.instance.LogAchivement(AchivementType.Use_Item,ActionType.None,this.item.itemID);
 		List<Vector3> pointRandoms = ItemManager.instance.GetRandomPoints (AreaType.Garden,round);
 
 		if(pointRandoms == null || pointRandoms.Count == 0){

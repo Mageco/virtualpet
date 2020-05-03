@@ -8,6 +8,7 @@ public class CharCollider : MonoBehaviour
 {
     CharController character;
     public List<CharController> pets = new List<CharController>();
+    public List<BaseFloorItem> items = new List<BaseFloorItem>();
 
     void Awake()
     {
@@ -15,17 +16,18 @@ public class CharCollider : MonoBehaviour
     }
    
     void Update(){
+
+        if(character != null && character.shadow != null)
+        {
+            this.transform.position = character.shadow.transform.position;
+        }
         
     }
 
     void OnTriggerEnter2D(Collider2D other) {
         if (other.tag == "Mouse") {
            character.OnMouse();     
-        }else if (other.tag == "Food") {
-            character.OnEat();
-        }else if(other.tag == "Drink"){
-            character.OnDrink();
-        }
+        }
         else if (other.tag == "Water") {
             if(character.isMoving){
                 character.OnFall();
@@ -33,36 +35,46 @@ public class CharCollider : MonoBehaviour
         }else if(other.tag == "Pet"){
             CharController p = other.transform.parent.GetComponent<CharController>();
             pets.Add(p);
-            if(p.actionType != ActionType.Hold && p.actionType != ActionType.Toy && character.enviromentType == EnviromentType.Room && character.isMoving && character.actionType != ActionType.Toy && character.actionType != ActionType.OnCall)
+            if(p.actionType != ActionType.Hold && character.equipment == null && character.isMoving && character.equipment != null && character.actionType != ActionType.OnCall)
             {
                 character.OnStop();
             }
         }else if(other.tag == "Car"){
-            if(other.transform.parent.GetComponent<ToyCarItem>().IsSupprised())
-                character.OnSupprised();
-            else if(character.actionType == ActionType.Patrol)
+            if(character.actionType == ActionType.Patrol)
                 character.OnStop();
-        }else if(other.tag == "Toy"){
-            ToyItem toy = other.transform.parent.GetComponent<ToyItem>();
-            character.OnToy(toy);
         }else if(other.tag == "Break"){
             Debug.Log("Break");
-            character.OnFear();
+            character.OnSupprised();
+        }else if(other.tag == "Equipment")
+        {
+            BaseFloorItem item = other.transform.parent.GetComponent<BaseFloorItem>();
+            if(item != null)
+            {
+                items.Add(item);
+                character.OnToy(item);
+            }
+
         }
     }
 
     void OnTriggerExit2D(Collider2D other) {
         if (other.tag == "Mouse" && character.actionType == ActionType.Mouse) {
             //character.OffMouse();
-        }else if (other.tag == "Food") {
-
         }else if(other.tag == "Pet"){
             CharController pet = other.transform.parent.GetComponent<CharController>();
             if(pets.Contains(pet)){
                 pets.Remove(pet);
             }
         }
-    }
+        else if (other.tag == "Equipment")
+        {
+            BaseFloorItem item = other.transform.parent.GetComponent<BaseFloorItem>();
+            if (item != null && items.Contains(item))
+            {
+                items.Remove(item); 
+            }
+        }
+    }
 
     private bool IsPointerOverUIObject() {
         PointerEventData eventDataCurrentPosition = new PointerEventData(EventSystem.current);

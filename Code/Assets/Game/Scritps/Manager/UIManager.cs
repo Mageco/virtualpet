@@ -279,7 +279,7 @@ public class UIManager : MonoBehaviour
         int realId = GameManager.instance.BuyItem(itemID);
       GameManager.instance.EquipItem(realId);
       if(ItemManager.instance != null)
-            ItemManager.instance.EquipItem();
+            ItemManager.instance.LoadItems();
       GameManager.instance.LogAchivement(AchivementType.Buy_Item);
         if (shopPanel != null)
             shopPanel.ReLoad();
@@ -313,12 +313,6 @@ public class UIManager : MonoBehaviour
             petRequirementPanel.ReLoad();
     }
 
-	public void UseItem(int itemID){
-        shopPanel.Close();
-	    GameManager.instance.EquipItem(itemID);
-        if(ItemManager.instance != null)
-            ItemManager.instance.EquipItem();
-	}
 
 	public void BuyPet(int itemID){
         MageEngine.instance.OnEvent(Mage.Models.Application.MageEventType.CheckOutItem, DataHolder.GetPet(itemID).GetName(MageManager.instance.GetLanguage()));
@@ -379,9 +373,7 @@ public class UIManager : MonoBehaviour
 
 	public NotificationPopup OnQuestNotificationPopup(string description)
 	{
-        //if(!notificationText.Contains(description))
-        //    notificationText.Add(description);
-        if (questNotification == null)
+       if (questNotification == null)
         {
             var popup = Instantiate(questUIPrefab) as GameObject;
             popup.SetActive(true);

@@ -16,7 +16,6 @@ public class ConfirmBuyShopPopup : MonoBehaviour
     public Text priceText;
     public Text question;
     public GameObject replacePanel;
-    public GameObject replaceText;
     public Image replaceIcon;
     ItemState state = ItemState.OnShop;
     public GameObject okButton;
@@ -38,9 +37,24 @@ public class ConfirmBuyShopPopup : MonoBehaviour
         string url = d.iconUrl.Replace("Assets/Game/Resources/", "");
         url = url.Replace(".png", "");
         icon.sprite = Resources.Load<Sprite>(url) as Sprite;
-        replaceText.GetComponent<Text>().text = DataHolder.Dialog(14).GetName(MageManager.instance.GetLanguage()) + " ";
-
         replacePanel.SetActive(false);
+
+        if (d.itemType == ItemType.Room || d.itemType == ItemType.Gate || d.itemType == ItemType.Clean || d.itemType == ItemType.Board)
+        {
+            foreach(PlayerItem item in GameManager.instance.myPlayer.items)
+            {
+                if(item.itemType == d.itemType && item.state == ItemState.Equiped)
+                {
+                    replacePanel.SetActive(true);
+                    string url1 = DataHolder.GetItem(item.itemId).iconUrl.Replace("Assets/Game/Resources/", "");
+                    url1 = url1.Replace(".png", "");
+                    replaceIcon.sprite = Resources.Load<Sprite>(url1) as Sprite;
+                }
+            }
+            
+        }
+            
+
         if (isBuy)
         {
             priceText.text = d.buyPrice.ToString();
@@ -99,8 +113,7 @@ public class ConfirmBuyShopPopup : MonoBehaviour
         string url = d.iconUrl.Replace("Assets/Game/Resources/", "");
         url = url.Replace(".png", "");
         icon.sprite = Resources.Load<Sprite>(url) as Sprite;
-        replaceText.GetComponent<Text>().text = DataHolder.Dialog(14).GetName(MageManager.instance.GetLanguage()) + " ";
-
+ 
         if (isBuy)
         {
             priceText.text = d.buyPrice.ToString();

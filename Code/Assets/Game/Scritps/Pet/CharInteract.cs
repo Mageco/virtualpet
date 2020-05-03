@@ -55,23 +55,11 @@ public class CharInteract : MonoBehaviour
         holdPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
     }
 
-    void OnTouch()
-    {
-        ItemManager.instance.SetCameraTarget(this.gameObject);
-        interactType = InteractType.Love;
-    }
-
-    void EndTouch()
-    {
-        ItemManager.instance.ResetCameraTarget();
-        interactType = InteractType.None;
-    }
-
     void OnDrag()
     {
         isDrag = true;
         dragOffset = Camera.main.ScreenToWorldPoint(Input.mousePosition) - this.transform.position;
-        if (interactType == InteractType.None)
+        if (interactType == InteractType.None || interactType == InteractType.Equipment)
         {
             character.OnHold();
         }
@@ -91,9 +79,6 @@ public class CharInteract : MonoBehaviour
         if (interactType == InteractType.Touch)
         {
 
-        }else if(interactType == InteractType.Love)
-        {
-            EndTouch();
         }
         else if (interactType == InteractType.Drag) {
             interactType = InteractType.Drop;

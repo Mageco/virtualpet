@@ -27,7 +27,7 @@ public class CleanRobotItem : MonoBehaviour
 
 	protected Animator anim;
 
-	protected ItemObject item;
+	protected BaseFloorItem item;
 	int count = 0;
 	
 
@@ -39,7 +39,7 @@ public class CleanRobotItem : MonoBehaviour
     // Start is called before the first frame update
     protected void Start()
     {
-		item = this.transform.parent.GetComponent<ItemObject>();
+		item = this.GetComponent<BaseFloorItem>();
 		this.clean = DataHolder.GetItem(item.itemID).value;
 		LoadPrefab();
     }

@@ -180,7 +180,7 @@ public class BeeController : MonoBehaviour
 				if (Vector2.Distance(this.transform.position, target.transform.position) < 5)
 				{
 					anim.Play("Attack");
-					target.OnFear();
+					target.OnSupprised();
 					target.data.Health -= 5;
 				}
 			}

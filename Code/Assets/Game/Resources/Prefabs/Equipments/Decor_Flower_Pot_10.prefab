@@ -94,7 +94,7 @@ GameObject:
   - component: {fileID: 4638489383280622466}
   m_Layer: 20
   m_Name: Obstruct (5)
-  m_TagString: Decor
+  m_TagString: Equipment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -177,7 +177,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4899853440570143643}
   m_Layer: 0
-  m_Name: Decor_Tribe_FlowerPot_4
+  m_Name: Decor_Flower_Pot_10
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9677,16 +9677,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 8117838086076256711}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8c1a876cd294b45118cdc23a0e3f6d9e, type: 3}
+  m_Script: {fileID: 11500000, guid: db1fa7cb65fcb46b1874697b63836cad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  item: {fileID: 0}
+  realID: 0
+  itemID: 0
+  itemType: -1
   state: 0
-  lastPosition: {x: 0, y: 0, z: 0}
-  boundX: {x: -270, y: 52}
-  boundY: {x: -24, y: 0}
   pets: []
-  movementType: 1
+  anchorPoints: []
+  startPoint: {fileID: 0}
+  endPoint: {fileID: 0}
+  toyType: 17
+  count: 0
 --- !u!1 &8117838086265958920
 GameObject:
   m_ObjectHideFlags: 0

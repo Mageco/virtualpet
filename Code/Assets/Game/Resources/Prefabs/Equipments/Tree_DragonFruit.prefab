@@ -14138,7 +14138,7 @@ GameObject:
   - component: {fileID: 7744622074458854525}
   m_Layer: 14
   m_Name: Obstruct
-  m_TagString: Untagged
+  m_TagString: Equipment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -14211,6 +14211,66 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemCollides: []
+--- !u!1 &3372165171001262667
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 642302104838679470}
+  m_Layer: 15
+  m_Name: AnchorPoint (9)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &642302104838679470
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3372165171001262667}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.42565918, y: 8.210493, z: -1}
+  m_LocalScale: {x: 1.7500001, y: 1.7500001, z: 1}
+  m_Children: []
+  m_Father: {fileID: 5877823368478440704}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &3796097779674136518
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5039833120752507206}
+  m_Layer: 15
+  m_Name: StartPoint (3)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5039833120752507206
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3796097779674136518}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.34025574, y: -1.3322687, z: -100}
+  m_LocalScale: {x: 1.7500001, y: 1.7500001, z: 1}
+  m_Children: []
+  m_Father: {fileID: 5877823368478440704}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4583504159855687211
 GameObject:
   m_ObjectHideFlags: 0
@@ -14586,7 +14646,6 @@ GameObject:
   m_Component:
   - component: {fileID: 5877823368478440704}
   - component: {fileID: 2933254387347441988}
-  - component: {fileID: 1654034889544145306}
   - component: {fileID: 2662589530741008716}
   - component: {fileID: 5877823368478440718}
   m_Layer: 15
@@ -14604,7 +14663,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5877823368478440719}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -223.79625, y: 1.5, z: 100}
+  m_LocalPosition: {x: -223.79625, y: 1.5, z: 0}
   m_LocalScale: {x: 2, y: 2, z: 1}
   m_Children:
   - {fileID: 4592172721121168663}
@@ -14612,6 +14671,8 @@ Transform:
   - {fileID: 31083969550721838}
   - {fileID: 1963882093701549358}
   - {fileID: 2147729297105568117}
+  - {fileID: 5039833120752507206}
+  - {fileID: 642302104838679470}
   m_Father: {fileID: 3407633946655290459}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -14624,45 +14685,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 5877823368478440719}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5d2367fc09d9c472090672a3e878fc4f, type: 3}
+  m_Script: {fileID: 11500000, guid: db1fa7cb65fcb46b1874697b63836cad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  item: {fileID: 0}
+  realID: 0
+  itemID: 0
+  itemType: -1
   state: 0
-  lastPosition: {x: 0, y: 0, z: 0}
-  boundX: {x: -270, y: -70}
-  boundY: {x: 1.5, y: 1.5}
   pets: []
-  movementType: 0
-  height: 0
-  depth: 0
-  width: 0
-  edge: 0
-  anchorPoint: {fileID: 0}
-  startPoint: {fileID: 0}
-  endPoint: {fileID: 0}
-  isWall: 0
---- !u!50 &1654034889544145306
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5877823368478440719}
-  m_BodyType: 1
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
+  anchorPoints:
+  - {fileID: 642302104838679470}
+  startPoint: {fileID: 5039833120752507206}
+  endPoint: {fileID: 5039833120752507206}
+  toyType: 17
+  count: 0
 --- !u!95 &2662589530741008716
 Animator:
   serializedVersion: 3

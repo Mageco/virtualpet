@@ -24,7 +24,7 @@ public class ToyBallItem : ToyItem
         originalShadowScale = shadow.transform.localScale;
         Stop();
         intHeight = col.radius;
-        boundX = ItemManager.instance.houseItem.roomBoundX;
+        boundX = ItemManager.instance.roomBoundX;
     }
 
     

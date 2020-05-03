@@ -91,7 +91,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1140540292}
-  - component: {fileID: 1140540293}
   m_Layer: 0
   m_Name: AnchorPoint
   m_TagString: Untagged
@@ -107,25 +106,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1140540291}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -4.37, z: 45}
+  m_LocalPosition: {x: 0.39473438, y: -0.5639075, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 6156094059106791757}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1140540293
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1140540291}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dcdf5b8ec418b4da7b609718b96802fa, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  type: 0
 --- !u!1 &1939175298
 GameObject:
   m_ObjectHideFlags: 0
@@ -18942,7 +18928,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4109204398295387162}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -1.66, z: 0}
+  m_LocalPosition: {x: 0, y: -1.66, z: 500}
   m_LocalScale: {x: 1.5, y: 1.5, z: 1}
   m_Children: []
   m_Father: {fileID: 6156094059106791757}
@@ -18997,6 +18983,36 @@ SpriteRenderer:
   m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &5618836500126687493
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5754352105033071884}
+  m_Layer: 0
+  m_Name: StartPoint (2)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5754352105033071884
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5618836500126687493}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: -4.37, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 6156094059106791757}
+  m_RootOrder: 7
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6156094059106791758
 GameObject:
   m_ObjectHideFlags: 0
@@ -19007,9 +19023,9 @@ GameObject:
   m_Component:
   - component: {fileID: 6156094059106791757}
   - component: {fileID: 3496216689732433814}
-  - component: {fileID: 6412081594076346916}
   - component: {fileID: 2118551919009862826}
   - component: {fileID: 7206113647761304103}
+  - component: {fileID: 1706743841}
   m_Layer: 15
   m_Name: Bed
   m_TagString: Bed
@@ -19025,7 +19041,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6156094059106791758}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -10, y: 0, z: 500}
+  m_LocalPosition: {x: -10, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 7869791109958889702}
@@ -19035,6 +19051,7 @@ Transform:
   - {fileID: 3093005956699460125}
   - {fileID: 8350417539285825830}
   - {fileID: 897562271}
+  - {fileID: 5754352105033071884}
   m_Father: {fileID: 652627862347865378}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -19057,33 +19074,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &6412081594076346916
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6156094059106791758}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5d2367fc09d9c472090672a3e878fc4f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  item: {fileID: 0}
-  state: 0
-  lastPosition: {x: 0, y: 0, z: 0}
-  boundX: {x: -40, y: 60}
-  boundY: {x: 0, y: 0}
-  pets: []
-  movementType: 0
-  height: 1
-  depth: 3
-  width: 12
-  edge: 6
-  anchorPoint: {fileID: 0}
-  startPoint: {fileID: 1140540292}
-  endPoint: {fileID: 0}
-  isWall: 0
 --- !u!50 &2118551919009862826
 Rigidbody2D:
   serializedVersion: 4
@@ -19130,11 +19120,34 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: 0.6226673, y: 5.773782}
-      - {x: -1.7293892, y: 1.13924}
-      - {x: -3.182231, y: -2.417574}
-      - {x: 3.0265656, y: -2.5213513}
-      - {x: 3.337947, y: 1.0873507}
+    - - {x: -0.05402279, y: 1.4880829}
+      - {x: -3.646676, y: -0.60887384}
+      - {x: -2.449151, y: -2.530356}
+      - {x: 3.3649106, y: -2.5213513}
+      - {x: 4.071029, y: 0.015925765}
+--- !u!114 &1706743841
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6156094059106791758}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db1fa7cb65fcb46b1874697b63836cad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  realID: 0
+  itemID: 0
+  itemType: -1
+  state: 0
+  pets: []
+  anchorPoints:
+  - {fileID: 1140540292}
+  startPoint: {fileID: 5754352105033071884}
+  endPoint: {fileID: 5754352105033071884}
+  toyType: 17
+  count: 0
 --- !u!1 &8715259787942574206
 GameObject:
   m_ObjectHideFlags: 0
@@ -19149,7 +19162,7 @@ GameObject:
   - component: {fileID: 1711909712}
   m_Layer: 8
   m_Name: Obstruct
-  m_TagString: Untagged
+  m_TagString: Equipment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -19162,7 +19175,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8715259787942574206}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -2.165, z: 10}
+  m_LocalPosition: {x: 0.29897594, y: -1.268073, z: 10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 6156094059106791757}
@@ -19207,7 +19220,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 8, y: 4}
+  m_Size: {x: 8, y: 3}
   m_EdgeRadius: 0
 --- !u!114 &1711909712
 MonoBehaviour:

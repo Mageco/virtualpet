@@ -725,7 +725,6 @@ MonoBehaviour:
   priceText: {fileID: 1502285679318866755}
   question: {fileID: 4936680970302332044}
   replacePanel: {fileID: 8714084513272780524}
-  replaceText: {fileID: 7992381178453341995}
   replaceIcon: {fileID: 4683788890587460232}
   okButton: {fileID: 8303138072190592040}
 --- !u!1 &4401217998271516939
@@ -1288,6 +1287,7 @@ GameObject:
   - component: {fileID: 6607805655593057143}
   - component: {fileID: 6125804770470812831}
   - component: {fileID: 6744881176547709494}
+  - component: {fileID: 411021317}
   m_Layer: 5
   m_Name: repqceText
   m_TagString: Untagged
@@ -1311,8 +1311,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -36.45, y: 5.0049973}
-  m_SizeDelta: {x: 249.47, y: 42.17}
+  m_AnchoredPosition: {x: -129.5, y: 5.0049973}
+  m_SizeDelta: {x: 409.9, y: 42.2}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6125804770470812831
 CanvasRenderer:
@@ -1344,16 +1344,30 @@ MonoBehaviour:
     m_Font: {fileID: 12800000, guid: 9b4ab9a405a684c5ab1bee3fbe07fa65, type: 3}
     m_FontSize: 24
     m_FontStyle: 0
-    m_BestFit: 0
-    m_MinSize: 2
-    m_MaxSize: 40
-    m_Alignment: 0
+    m_BestFit: 1
+    m_MinSize: 16
+    m_MaxSize: 24
+    m_Alignment: 2
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Get back half value of
+  m_Text: You will return the following item
+--- !u!114 &411021317
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7992381178453341995}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 06040c762767d48eabdcb7a46129cad1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  text: {fileID: 0}
+  dialogId: 149
 --- !u!1 &8115829778156936887
 GameObject:
   m_ObjectHideFlags: 0
@@ -1784,7 +1798,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -94.850006}
+  m_AnchoredPosition: {x: 77, y: -94.850006}
   m_SizeDelta: {x: 453.4, y: 53}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5688361775403355617

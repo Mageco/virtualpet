@@ -5,26 +5,33 @@ using UnityEngine.EventSystems;
 
 public class BaseFloorItem : MonoBehaviour
 {
+	public int realID = 0;
+	public int itemID = 0;
 	protected Animator animator;
-	[HideInInspector]
-	public ItemObject item;
-	protected float scaleFactor = 0.01f;
-	protected Vector3 dragOffset;
+	public ItemType itemType = ItemType.All;
 	public EquipmentState state = EquipmentState.Idle;
+	protected float scaleFactor = 0.01f;
+	protected Vector3 dragOffset;	
 	protected Vector3 originalPosition;
 	protected Vector3 originalScale;
-	public Vector3 lastPosition;
+	protected Vector3 lastPosition;
 	protected float dragTime = 0;
-	public Vector2 boundX = new Vector2(-270, 52);
-	public Vector2 boundY = new Vector2(-24, -3);
+	protected Vector2 boundX = new Vector2(-270, 52);
+	protected Vector2 boundY = new Vector2(-24, -3);
+    protected Animator[] animParts;
+	[HideInInspector]
 	public List<CharController> pets = new List<CharController>();
 	Vector3 clickPosition;
 	GameObject arrow;
 	List<Color> colors = new List<Color>();
 	SpriteRenderer[] sprites;
 	ObstructItem obstructItem;
-	public MovementType movementType = MovementType.FourDirection;
-	protected GameObject roomCollide;
+	public Transform[] anchorPoints;
+	public Transform startPoint;
+	public Transform endPoint;
+	public ToyType toyType = ToyType.None;
+	[HideInInspector]
+	public int count = 0;
 
 	protected virtual void Awake()
 	{
@@ -34,7 +41,7 @@ public class BaseFloorItem : MonoBehaviour
 		lastPosition = this.transform.position;
 		LoadSprite();
 		obstructItem = this.GetComponentInChildren<ObstructItem>(true);
-        
+		animParts = this.GetComponentsInChildren<Animator>(true);
 	}
 
 	void LoadSprite()
@@ -50,12 +57,23 @@ public class BaseFloorItem : MonoBehaviour
 
 	protected virtual void Start()
 	{
-		item = this.transform.parent.GetComponent<ItemObject>();
-		boundX = ItemManager.instance.houseItem.gardenBoundX;
-		boundY = ItemManager.instance.houseItem.gardenBoundY;
-		Vector3 pos = this.transform.position;
-		pos.z = pos.y * 10;
-		this.transform.position = pos;
+        if(itemType == ItemType.Room || itemType == ItemType.Gate)
+        {
+
+        }
+		else if (itemType == ItemType.Picture || itemType == ItemType.Clock)
+		{
+			boundX = ItemManager.instance.roomBoundX;
+			boundY = ItemManager.instance.roomWallBoundY;
+		}
+		else
+		{
+			boundX = ItemManager.instance.gardenBoundX;
+			boundY = ItemManager.instance.gardenBoundY;
+			Vector3 pos = this.transform.position;
+			pos.z = pos.y * 10;
+			this.transform.position = pos;
+		}
 	}
 
 
@@ -76,12 +94,7 @@ public class BaseFloorItem : MonoBehaviour
 				{
 					if (arrow == null)
 					{
-						if (movementType == MovementType.FourDirection)
-							arrow = GameObject.Instantiate(Resources.Load("Prefabs/Effects/AllDirectionArrow")) as GameObject;
-						else if (movementType == MovementType.TwoDirection)
-						{
-							arrow = GameObject.Instantiate(Resources.Load("Prefabs/Effects/TwoDirectionArrow")) as GameObject;
-						}
+					    arrow = GameObject.Instantiate(Resources.Load("Prefabs/Effects/AllDirectionArrow")) as GameObject;
 						arrow.transform.parent = this.transform;
 						Vector3 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 						pos.z = -500;
@@ -122,7 +135,7 @@ public class BaseFloorItem : MonoBehaviour
 				pos.x = boundX.x;
 			this.transform.position = pos;
 			dragTime += Time.deltaTime;
-			if ((obstructItem != null && obstructItem.itemCollides.Count > 0) || roomCollide != null)
+			if ((obstructItem != null && obstructItem.itemCollides.Count > 0))
 			{
 				SetColor(new Color(1, 0, 0, 0.5f));
 			}
@@ -139,16 +152,17 @@ public class BaseFloorItem : MonoBehaviour
 
 	protected virtual void LateUpdate()
 	{
-	    transform.localScale = originalScale * (1 + (-transform.position.y) * scaleFactor);
-		Vector3 pos = this.transform.position;
-		pos.z = this.transform.position.y * 10;
-		this.transform.position = pos;
+		if (itemType != ItemType.Picture && itemType != ItemType.Clock && itemType != ItemType.Room && itemType != ItemType.Gate)
+		{
+			transform.localScale = originalScale * (1 + (-transform.position.y) * scaleFactor);
+			Vector3 pos = this.transform.position;
+			pos.z = this.transform.position.y * 10;
+			this.transform.position = pos;
+		}
 	}
 
 	protected virtual void OnMouseUp()
 	{
-
-
 		if (state == EquipmentState.Drag || state == EquipmentState.Hold)
 		{
 			if (dragTime < 0.4f)
@@ -158,7 +172,7 @@ public class BaseFloorItem : MonoBehaviour
 			else
 			{ 
 
-				if ((obstructItem != null && obstructItem.itemCollides.Count > 0) || roomCollide != null)
+				if (obstructItem != null && obstructItem.itemCollides.Count > 0)
 				{
 					StartCoroutine(ReturnPosition(lastPosition));
 					MageManager.instance.PlaySound("Drag", false);
@@ -198,7 +212,7 @@ public class BaseFloorItem : MonoBehaviour
 	protected virtual void OnMouseDown()
 	{
 
-		if (movementType == MovementType.None)
+		if(itemType == ItemType.Room || itemType == ItemType.Gate || itemType == ItemType.Clean)
 			return;
 
 		if (IsPointerOverUIObject())
@@ -222,17 +236,28 @@ public class BaseFloorItem : MonoBehaviour
 
 	protected virtual void OnDrag()
 	{
+		if (animator != null)
+			animator.enabled = false;
+		for (int i = 0; i < animParts.Length; i++)
+		{
+			animParts[i].enabled = false;
+		}
+
 		dragOffset = Camera.main.ScreenToWorldPoint(Input.mousePosition) - this.transform.position;
 		state = EquipmentState.Drag;
 		lastPosition = this.transform.position; 
 		ItemManager.instance.SetCameraTarget(this.gameObject);
-		//if (arrow != null)
-		//	Destroy(arrow);
-
 	}
 
 	protected virtual void OffDrag()
 	{
+		for (int i = 0; i < animParts.Length; i++)
+		{
+			animParts[i].enabled = true;
+		}
+		if (animator != null)
+			animator.enabled = true;
+
 		state = EquipmentState.Idle;
 		dragOffset = Vector3.zero;
 		dragTime = 0;
@@ -272,6 +297,24 @@ public class BaseFloorItem : MonoBehaviour
 		state = EquipmentState.Idle;
 		if (animator != null)
 			animator.Play("Idle", 0);
+	}
+
+	public bool IsActive()
+	{
+		if (state == EquipmentState.Active)
+			return true;
+		else
+			return false;
+	}
+
+	public int GetPetIndex(CharController pet)
+	{
+		for (int i = 0; i < pets.Count; i++)
+		{
+			if (pets[i] == pet)
+				return i;
+		}
+		return -1;
 	}
 
 	protected bool IsPointerOverUIObject()

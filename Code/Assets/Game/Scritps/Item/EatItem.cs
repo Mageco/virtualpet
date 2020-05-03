@@ -6,13 +6,12 @@ using PolyNav;
 
 public class EatItem : BaseFloorItem
 {
-	public ItemSaveDataType itemSaveDataType = ItemSaveDataType.None;
+    [HideInInspector]
 	public float foodAmount = 0;
+    [HideInInspector]
 	public float maxfoodAmount = 100;
 	public SpriteRenderer image;
 	public Sprite[] foodSprites;
-	public Transform anchor;
-
 
 	int foodId = 0;
 	int lastId = -1;
@@ -20,7 +19,7 @@ public class EatItem : BaseFloorItem
 	protected override void Start()
 	{
 		base.Start();
-		maxfoodAmount = DataHolder.GetItem(item.itemID).value;	
+		maxfoodAmount = DataHolder.GetItem(this.itemID).value;	
 	}
 
 

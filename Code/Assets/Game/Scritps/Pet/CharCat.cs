@@ -50,22 +50,20 @@ public class CharCat : CharController
             anim.Play("Sleep", 0);
             while (data.Sleep < data.MaxSleep && !isAbort)
             {
-                data.Sleep += data.rateSleep * Time.deltaTime;
+                data.Sleep += 1f * Time.deltaTime;
                 yield return new WaitForEndOfFrame();
             }
         }
         else{
-            ItemObject item = ItemManager.instance.GetItem(ItemType.Table);
+            BaseFloorItem item = ItemManager.instance.GetRandomItem(ItemType.Table);
             if (item != null)
             {
-                target = item.GetComponentInChildren<ItemCollider>().anchorPoint.position;
+                target = item.startPoint.position;
                 yield return StartCoroutine(RunToPoint());
                 if (Vector2.Distance(this.transform.position, target) < 1)
                 {
-                    ItemCollider col = ItemManager.instance.GetItemCollider(ItemType.Table);
-                    enviromentType = EnviromentType.Table;
-                    yield return StartCoroutine(JumpUp(35, 0, col.transform.position + new Vector3(0, col.height - 0.5f, 0), col.height));
-                    enviromentType = EnviromentType.Table;
+                    equipment = item;
+                    yield return StartCoroutine(JumpIn(0));
                     CheckEnviroment();
                 }
             }
@@ -88,12 +86,12 @@ public class CharCat : CharController
             anim.Play("Sleep", 0);
             while (data.Sleep < data.MaxSleep && !isAbort)
             {
-                data.Sleep += data.rateSleep * Time.deltaTime;
+                data.Sleep += 1 * Time.deltaTime;
                 yield return new WaitForEndOfFrame();
             }
         }
         if(!isAbort)
-            yield return StartCoroutine(JumpDown(-2,10,30)); 
+            yield return StartCoroutine(JumpOut()); 
         CheckAbort();
     }
 
