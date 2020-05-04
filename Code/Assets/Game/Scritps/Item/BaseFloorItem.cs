@@ -29,7 +29,7 @@ public class BaseFloorItem : MonoBehaviour
 	public Transform startPoint;
 	public Transform endPoint;
 	public ToyType toyType = ToyType.None;
-	List<AnchorPoint> points = new List<AnchorPoint>();
+	public List<AnchorPoint> points = new List<AnchorPoint>();
 
 
 	protected virtual void Awake()
@@ -324,34 +324,48 @@ public class BaseFloorItem : MonoBehaviour
 		return -1;
 	}
 
+    
     public void AddPet(CharController pet)
     {
         if (!pets.Contains(pet))
         {
 			pets.Add(pet);
-            foreach(AnchorPoint p in points)
-            {
-                if(p.pet == null)
-                {
+			foreach (AnchorPoint p in points)
+			{
+				if (p.pet == null)
+				{
 					p.pet = pet;
-                }
-            }
+					return;
+				}
+			}
         }
     }
+
+    bool IsPetAnchor(CharController pet)
+    {
+		foreach (AnchorPoint p in points)
+		{
+			if (p.pet == pet)
+			{
+				return true;
+			}
+		}
+		return false;
+	}
 
     public void RemovePet(CharController pet)
     {
         if (pets.Contains(pet))
         {
+			pets.Remove(pet);
 			foreach (AnchorPoint p in points)
 			{
 				if (p.pet == pet)
 				{
 					p.pet = null;
+					break;
 				}
 			}
-			pets.Remove(pet);
-
         }
     }
 
@@ -371,7 +385,7 @@ public class BaseFloorItem : MonoBehaviour
 				return p.transform;
 			}
 		}
-		return null;
+		return endPoint;
 	}
 
     public bool IsBusy()

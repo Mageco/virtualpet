@@ -38,7 +38,7 @@ public class CharHamster : CharController
                     target = chicken.transform.position;
                     yield return StartCoroutine(RunToPoint());
                     bool isSpeak = false;
-                    while (chicken != null && data.Energy > data.MaxEnergy * 0.1f && !isAbort)
+                    while (chicken != null && data.Energy > 0 && !isAbort)
                     {
                         agent.SetDestination(chicken.transform.position);
                         anim.Play("Run_Angry_" + this.direction.ToString(), 0);

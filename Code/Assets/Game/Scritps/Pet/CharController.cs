@@ -738,7 +738,7 @@ public class CharController : MonoBehaviour
 
         if(item.itemType == ItemType.Toy)
         {
-            if (data.Energy < data.MaxEnergy * 0.1f)
+            if (data.Energy <= 0)
             {
                 return;
             }
@@ -1054,7 +1054,6 @@ public class CharController : MonoBehaviour
         while (!isArrived && !isAbort)
         {
             anim.Play("Run_" + this.direction.ToString(), 0);
-            //data.Energy -= Time.deltaTime;
             yield return new WaitForEndOfFrame();
         }
         isMoving = false;
@@ -1070,7 +1069,6 @@ public class CharController : MonoBehaviour
         while (!isArrived && !isAbort)
         {
             anim.Play("Walk_" + this.direction.ToString(), 0);
-            //data.Energy -= 0.3f * Time.deltaTime;
             yield return new WaitForEndOfFrame();
         }
         isMoving = false;
@@ -1097,7 +1095,6 @@ public class CharController : MonoBehaviour
         {
             agent.SetDestination(GetMouse().transform.position);
             anim.Play("Run_Angry_" + this.direction.ToString(), 0);
-            data.Energy -= 1.5f * Time.deltaTime;
             yield return new WaitForEndOfFrame();
         }
         isMoving = false;
@@ -1154,7 +1151,7 @@ public class CharController : MonoBehaviour
             equipment = charCollider.items[0];
             if (!equipment.IsBusy())
             {
-                dropPosition = equipment.anchorPoints[equipment.pets.Count].transform.position;
+                dropPosition = equipment.GetAnchorPoint(this).position;
             }
             else
             {
@@ -1832,7 +1829,7 @@ public class CharController : MonoBehaviour
             dropPosition = equipment.GetAnchorPoint(this).position + new Vector3(0, Random.Range(-1f, 1f), 0);
             agent.transform.position = dropPosition;
             yield return new WaitForEndOfFrame();
-            while (equipment != null && !isAbort && data.Energy > data.MaxEnergy * 0.1f)
+            while (equipment != null && !isAbort && data.Energy > 0)
             {
                 equipment.OnActive();
                     
@@ -1856,7 +1853,7 @@ public class CharController : MonoBehaviour
                     Vector3 pos1 = agent.transform.position;
                     pos1.y += ySpeed * Time.deltaTime;
 
-                    if (data.Energy <= data.MaxEnergy * 0.1f)
+                    if (data.Energy <= 0)
                     {
                         pos1.x += 15 * Time.deltaTime;
                     }
@@ -1864,7 +1861,7 @@ public class CharController : MonoBehaviour
 
                     if (ySpeed < 0 && this.transform.position.y < dropPosition.y)
                     {
-                        if (data.Energy <= data.MaxEnergy * 0.1f)
+                        if (data.Energy <= 0)
                         {
                             MageManager.instance.PlaySound3D("whoosh_swish_med_03", false,this.transform.position);
                             yield return StartCoroutine(DoAnim("Drop"));
@@ -1884,7 +1881,7 @@ public class CharController : MonoBehaviour
         else if (equipment.toyType == ToyType.Ball || equipment.toyType == ToyType.Car)
         {
             charScale.speedFactor = 1.5f;
-            while (equipment != null && data.Energy > data.MaxEnergy * 0.1f && !isAbort)
+            while (equipment != null && data.Energy > 0 && !isAbort)
             {
                 anim.speed = 1.5f;
                     
@@ -1912,7 +1909,7 @@ public class CharController : MonoBehaviour
             anim.speed = 2f;
             SetDirection(Direction.L);
             equipment.OnActive();
-            while (equipment != null && data.Energy > data.MaxEnergy * 0.1f && !isAbort)
+            while (equipment != null && data.Energy > 0 && !isAbort)
             {
                 agent.transform.position = equipment.GetAnchorPoint(this).position;
                 anim.Play("Run_" + this.direction.ToString(), 0);
@@ -1922,7 +1919,7 @@ public class CharController : MonoBehaviour
         }
         else if (equipment.toyType == ToyType.Slider || equipment.toyType == ToyType.Circle)
         {
-            while (equipment != null && data.Energy > data.MaxEnergy * 0.1f && !isAbort)
+            while (equipment != null && data.Energy > 0 && !isAbort)
             {
                 equipment.OnActive();
                 charInteract.interactType = InteractType.Equipment;
@@ -1939,7 +1936,7 @@ public class CharController : MonoBehaviour
         {
             equipment.OnActive();
             charInteract.interactType = InteractType.Equipment;
-            while (equipment != null && data.Energy > data.MaxEnergy * 0.1f && !isAbort)
+            while (equipment != null && data.Energy > 0 && !isAbort)
             {
                 if (equipment.GetAnchorPoint(this) != null)
                 {
@@ -1961,12 +1958,25 @@ public class CharController : MonoBehaviour
             if (equipment.toyType != ToyType.Sprinkler)
                 shadow.GetComponent<SpriteRenderer>().enabled = false;
 
-
-            while (equipment != null && !isAbort && data.Energy > 0)
+            int n = Random.Range(0, 2);
+            if(equipment.toyType == ToyType.Carrier || equipment.toyType == ToyType.Flying)
             {
-                agent.transform.position = equipment.GetAnchorPoint(this).position;
-                this.transform.rotation = equipment.GetAnchorPoint(this).rotation;
-                this.transform.localScale = new Vector3(this.transform.localScale.x, this.transform.localScale.y, equipment.GetAnchorPoint(this).localScale.z);
+                n = 0;
+            }
+
+            Transform anchorPoint = equipment.GetAnchorPoint(this);
+            while (anchorPoint != null && !isAbort && data.Energy > 0)
+            {
+                agent.transform.position = anchorPoint.position;
+                if(n == 0)
+                {
+                    this.transform.rotation = anchorPoint.rotation;
+                    this.transform.localScale = new Vector3(this.transform.localScale.x, this.transform.localScale.y, anchorPoint.localScale.z);
+                }else
+                {
+                    this.transform.rotation = Quaternion.Euler(new Vector3(anchorPoint.rotation.x,anchorPoint.rotation.y + 180,anchorPoint.rotation.z));
+                    this.transform.localScale = new Vector3(this.transform.localScale.x, this.transform.localScale.y, -anchorPoint.localScale.z);
+                }
                 if (equipment.pets.Count == equipment.anchorPoints.Length)
                 {
                     anim.Play("Play_" + equipment.toyType.ToString(), 0);
@@ -1990,8 +2000,7 @@ public class CharController : MonoBehaviour
 
         if (equipment != null)
         {
-            if(equipment.pets.Contains(this))
-                equipment.pets.Remove(this);
+            equipment.RemovePet(this);
             equipment.DeActive();
         }
 
