@@ -1155,7 +1155,7 @@ public class CharController : MonoBehaviour
 
         while (charInteract.interactType == InteractType.Drop)
         {
-            if (agent.transform.position.y > dropPosition.y)
+            if (agent.transform.position.y > dropPosition.y && charScale.height > 0)
             {
                 fallSpeed += 100f * Time.deltaTime;
                 if (fallSpeed > 50)
@@ -1594,7 +1594,7 @@ public class CharController : MonoBehaviour
     
         float value = 0;
 
-        if (data.level >= 10)
+        if (data.level >= 10 && (equipment == null || equipment.itemType != ItemType.Bed))
         {
             BaseFloorItem bed = ItemManager.instance.GetRandomItem(ItemType.Bed);
             if (bed != null)
@@ -1623,6 +1623,9 @@ public class CharController : MonoBehaviour
         while (data.Sleep < data.MaxSleep && !isAbort)
         {
             data.Sleep += (1 + value) * Time.deltaTime;
+            data.Energy += Time.deltaTime;
+            data.Health += 0.1f * Time.deltaTime;
+            data.Damage -= 0.1f * Time.deltaTime;
             yield return new WaitForEndOfFrame();
         }
 
@@ -1630,8 +1633,7 @@ public class CharController : MonoBehaviour
         {
             if (data.Sleep > data.MaxSleep - 1)
             {
-                data.Health += 10 * data.level;
-                data.Damage -= 10 * data.level;
+
                 ItemManager.instance.SpawnHeart((data.RateHappy + data.level / 5)*2, this.transform.position);
                 GameManager.instance.LogAchivement(AchivementType.Do_Action, ActionType.Sleep);
             }
