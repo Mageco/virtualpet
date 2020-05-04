@@ -47,13 +47,13 @@ public class CharCollider : MonoBehaviour
             character.OnSupprised();
         }else if(other.tag == "Equipment")
         {
+            
             BaseFloorItem item = other.transform.parent.GetComponent<BaseFloorItem>();
             if(item != null)
             {
                 items.Add(item);
-                character.OnToy(item);
+                //character.OnToy(item);
             }
-
         }
     }
 

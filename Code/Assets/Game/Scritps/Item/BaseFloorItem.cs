@@ -19,7 +19,6 @@ public class BaseFloorItem : MonoBehaviour
 	protected Vector2 boundX = new Vector2(-270, 52);
 	protected Vector2 boundY = new Vector2(-24, -3);
     protected Animator[] animParts;
-	[HideInInspector]
 	public List<CharController> pets = new List<CharController>();
 	Vector3 clickPosition;
 	GameObject arrow;
@@ -316,6 +315,32 @@ public class BaseFloorItem : MonoBehaviour
 		}
 		return -1;
 	}
+
+    public void AddPet(CharController pet)
+    {
+        if (!pets.Contains(pet))
+        {
+			pets.Add(pet);
+        }
+    }
+
+    public void RemovePet(CharController pet)
+    {
+        if (pets.Contains(pet))
+        {
+			pets.Remove(pet);
+        }
+    }
+
+    public bool IsBusy()
+    {
+		if (pets.Count >= anchorPoints.Length)
+		{
+			return true;
+		}
+		else
+			return false;
+    }
 
 	protected bool IsPointerOverUIObject()
 	{

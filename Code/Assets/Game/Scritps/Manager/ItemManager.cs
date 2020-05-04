@@ -240,6 +240,25 @@ public class ItemManager : MonoBehaviour
             return null;
     }
 
+    public BaseFloorItem FindFreeRandomItem(ItemType type)
+    {
+        List<BaseFloorItem> temp = new List<BaseFloorItem>();
+        foreach (BaseFloorItem item in items)
+        {
+            if (item.itemType == type && !item.IsBusy())
+            {
+                temp.Add(item);
+            }
+        }
+        if (temp.Count > 0)
+        {
+            int n = Random.Range(0, temp.Count);
+            return temp[n];
+        }
+        else
+            return null;
+    }
+
     public BaseFloorItem GetItem(int readId)
     {
        foreach (BaseFloorItem item in items)
