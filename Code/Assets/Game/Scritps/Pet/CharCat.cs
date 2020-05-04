@@ -70,29 +70,6 @@ public class CharCat : CharController
         CheckAbort();
     }
 
-    protected override IEnumerator Table()
-    {   
-        int ran = Random.Range(0,100);
-        if(ran < 30){
-            anim.Play("Idle_" + this.direction.ToString(), 0);
-            yield return StartCoroutine(Wait(Random.Range(5,15)));
-            MageManager.instance.PlaySound3D(charType.ToString() + "_Speak",false,this.transform.position);
-            yield return StartCoroutine(DoAnim("Speak_" + direction.ToString()));
-        }else if(ran < 60){
-            anim.Play("Idle_" + this.direction.ToString(), 0);
-            yield return StartCoroutine(Wait(Random.Range(5,15)));
-        }else{
-            anim.Play("Sleep", 0);
-            while (data.Sleep < data.MaxSleep && !isAbort)
-            {
-                data.Sleep += 1 * Time.deltaTime;
-                yield return new WaitForEndOfFrame();
-            }
-        }
-        if(!isAbort)
-            yield return StartCoroutine(JumpOut()); 
-        CheckAbort();
-    }
 
     
 
