@@ -2082,16 +2082,8 @@ public class CharController : MonoBehaviour
 
     protected virtual IEnumerator Supprised()
     {
-        int ran = Random.Range(0, 100);
-        if (ran > 50)
-        {
-            MageManager.instance.PlaySound3D(charType.ToString() + "_Supprised", false,this.transform.position);
-            yield return StartCoroutine(DoAnim("Teased"));
-        }
-        else
-        {
-            yield return StartCoroutine(DoAnim("Love"));
-        }
+        MageManager.instance.PlaySound3D(charType.ToString() + "_Supprised", false,this.transform.position);
+        yield return StartCoroutine(DoAnim("Teased"));
         CheckAbort();
     }
 
