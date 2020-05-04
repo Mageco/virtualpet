@@ -9,7 +9,7 @@ public class DataHolder
 	// data
 	private ItemData items;
 	private LanguageData languages;
-	private SkillData skills;
+	//private SkillData skills;
 	private DialogData dialogs;
 	private QuestData quests;
 	private PetData pets;
@@ -33,7 +33,7 @@ public class DataHolder
 		// first init languages
 		languages = new LanguageData();
 		items = new  ItemData();
-		skills = new SkillData ();
+		//skills = new SkillData ();
 		dialogs = new DialogData();
 		quests = new QuestData();
 		pets = new PetData();
@@ -97,35 +97,7 @@ public class DataHolder
 			return -1;
 	}
 
-	public static SkillData Skills()
-	{
-		return DataHolder.Instance().skills;
-	}
-
-	public static Skill Skill(int index)
-	{
-		return DataHolder.Instance().skills.skills[index];
-	}
-
-	public static Skill GetSkill(int id)
-	{
-		return DataHolder.Instance().skills.GetSkill(id);
-	}
-
-	public static int GetSkillIndex(int id){
-		for(int i=0;i<DataHolder.Skills().GetDataCount();i++){
-			if(DataHolder.Skill(i).iD == id)
-				return i;
-		}
-		return 0;
-	}
-
-	public static int LastSkillID(){
-		if(DataHolder.Instance().skills != null && DataHolder.Instance().skills.GetDataCount() > 0)
-			return DataHolder.Instance().skills.skills[DataHolder.Instance().skills.skills.Length - 1].iD;
-		else 
-			return 0;
-	}
+    
 
 	public static DialogData Dialogs()
 	{

@@ -162,21 +162,7 @@ public class ArrayHelper
         return tmp.ToArray(typeof(Item)) as Item[];
     }
 
-    public static Skill[] Add(Skill n, Skill[] list)
-    {
-        ArrayList tmp = new ArrayList();
-        foreach (Skill str in list) tmp.Add(str);
-        tmp.Add(n);
-        return tmp.ToArray(typeof(Skill)) as Skill[];
-    }
 
-    public static Skill[] Remove(int index, Skill[] list)
-    {
-        ArrayList tmp = new ArrayList();
-        foreach (Skill str in list) tmp.Add(str);
-        tmp.RemoveAt(index);
-        return tmp.ToArray(typeof(Skill)) as Skill[];
-    }
 
 
     public static Dialog[] Add(Dialog n, Dialog[] list)
