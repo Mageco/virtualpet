@@ -1126,9 +1126,9 @@ public class GameManager : MonoBehaviour
         Debug.Log("Version " + myPlayer.version);
 
         
-        AddCoin(100, GetKey());
-        AddDiamond(1, GetKey());
-        AddHappy(10, GetKey());
+        AddCoin(100000000, GetKey());
+        AddDiamond(10000000, GetKey());
+        AddHappy(100000000, GetKey());
 
         AddItem(17, GetKey());
         AddItem(41, GetKey());

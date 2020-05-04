@@ -1151,10 +1151,13 @@ public class CharController : MonoBehaviour
             }
             else
             {
-                dropPosition = equipment.endPoint.transform.position;
-                equipment = null;
-                dropOutSide = true;
-                UIManager.instance.OnQuestNotificationPopup(DataHolder.Dialog(157).GetName(MageManager.instance.GetLanguage()));
+                if(equipment.anchorPoints.Length > 0)
+                {
+                    dropPosition = equipment.endPoint.transform.position;
+                    equipment = null;
+                    dropOutSide = true;
+                    UIManager.instance.OnQuestNotificationPopup(DataHolder.Dialog(157).GetName(MageManager.instance.GetLanguage()));
+                }
             }
         }
 
@@ -1819,10 +1822,10 @@ public class CharController : MonoBehaviour
         {
             yield return new WaitForEndOfFrame();
         }
-        yield return StartCoroutine(DoAnim("Love"));
+        //yield return StartCoroutine(DoAnim("Love"));
         //timeWait.gameObject.SetActive(false);
-        GameManager.instance.LogAchivement(AchivementType.Do_Action, ActionType.Sick);
-        CheckEnviroment();
+        //GameManager.instance.LogAchivement(AchivementType.Do_Action, ActionType.Sick);
+        //CheckEnviroment();
         CheckAbort();
     }
 
@@ -2213,38 +2216,49 @@ public class CharController : MonoBehaviour
         }
         else if (equipment != null)
         {
-            equipment.AddPet(this);
+            
             Debug.Log(equipment.itemType);
             if (equipment.itemType == ItemType.Bed)
             {
+                equipment.AddPet(this);
                 OnSleep();
             }
             else if (equipment.itemType == ItemType.Bath)
             {
+                equipment.AddPet(this);
                 OnBath();
             }
             else if (equipment.itemType == ItemType.Toilet)
             {
+                equipment.AddPet(this);
                 OnToilet();
             }
             else if (equipment.itemType == ItemType.Table)
             {
+                equipment.AddPet(this);
                 OnTable();
             }
             else if (equipment.itemType == ItemType.Food)
             {
+                equipment.AddPet(this);
                 OnEat();
             }
             else if (equipment.itemType == ItemType.Drink)
             {
+                equipment.AddPet(this);
                 OnDrink();
             }
             else if (equipment.itemType == ItemType.Toy)
             {
+                equipment.AddPet(this);
                 timeToy = 0;
                 actionType = ActionType.Toy;
                 isAbort = true;
                 lastEquipment = equipment;
+            }
+            else
+            {
+                equipment = null;
             }
         }
     }
