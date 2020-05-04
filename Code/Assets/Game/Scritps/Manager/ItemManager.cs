@@ -18,7 +18,8 @@ public class ItemManager : MonoBehaviour
 
     public GameObject dirtyPrefab;
     public GameObject chestPrefab;
-    public GameObject healthEffectPrefab;
+    public GameObject pillEffectPrefab;
+    public GameObject bandageEffectPrefab;
     public GameObject guidePrefab;
     public GameObject petGiftPrefab;
 
@@ -456,9 +457,20 @@ public class ItemManager : MonoBehaviour
         SpawnStar(p, 1);
     }
 
-    public void SpawnHealth(Vector3 pos)
+    public void SpawnPillEffect(CharController pet,float time)
     {
-        GameObject go = Instantiate(healthEffectPrefab, pos, Quaternion.identity);
+        GameObject go = Instantiate(pillEffectPrefab, pet.transform.position, Quaternion.identity);
+        go.transform.parent = pet.transform;
+        go.transform.localPosition = Vector3.zero;
+        go.GetComponent<AutoDestroy>().liveTime = time;
+    }
+
+    public void SpawnBandageEffect(CharController pet, float time)
+    {
+        GameObject go = Instantiate(bandageEffectPrefab, pet.transform.position, Quaternion.identity);
+        go.transform.parent = pet.transform;
+        go.transform.localPosition = Vector3.zero;
+        go.GetComponent<AutoDestroy>().liveTime = time;
     }
 
     public void SpawnDirty()

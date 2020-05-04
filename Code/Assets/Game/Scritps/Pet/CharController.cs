@@ -830,6 +830,7 @@ public class CharController : MonoBehaviour
                 GameManager.instance.LogAchivement(AchivementType.Injured);
             }
             data.Damage -= value;
+            ItemManager.instance.SpawnBandageEffect(this, 10);
         }
         else if (type == SickType.Sick)
         {
@@ -838,6 +839,7 @@ public class CharController : MonoBehaviour
                 GameManager.instance.LogAchivement(AchivementType.Sick);
             }
             data.Health += value;
+            ItemManager.instance.SpawnPillEffect(this, 10);
         }
 
     }
