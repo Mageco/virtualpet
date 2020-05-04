@@ -1337,6 +1337,7 @@ public class CharController : MonoBehaviour
             this.transform.position = equipment.GetAnchorPoint(this).position;
             agent.transform.position = equipment.GetAnchorPoint(this).position;
             Debug.Log(equipment.GetAnchorPoint(this).position);
+            equipment.OnActive();
         }
 
         while (this.data.Dirty > 0 && !isAbort)
@@ -1348,6 +1349,7 @@ public class CharController : MonoBehaviour
 
         if (equipment != null && equipment.itemType == ItemType.Bath)
         {
+            equipment.DeActive();
             if (data.Dirty <= 1 && !isAbort)
             {
                 ItemManager.instance.SpawnHeart(data.RateHappy + data.level / 5, this.transform.position);
@@ -1362,12 +1364,19 @@ public class CharController : MonoBehaviour
             }
             else
             {
+                yield return StartCoroutine(Wait(1));
                 anim.Play("Shake", 0);
                 while(!isAbort)
                 {
                     yield return new WaitForEndOfFrame();
                 }
             }
+        }
+
+        if(equipment != null && equipment.itemType == ItemType.Bath)
+        {
+            equipment.RemovePet(this);
+            equipment = null;
         }
 
         CheckAbort();

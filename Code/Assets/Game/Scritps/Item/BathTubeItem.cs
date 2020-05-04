@@ -8,14 +8,14 @@ public class BathTubeItem : BaseFloorItem
 	{
 		state = EquipmentState.Active;
 		if (animator != null)
-			animator.Play("Bath_Start", 0);
+			animator.Play("Active", 0);
 	}
 
 	public override void DeActive()
 	{
 		state = EquipmentState.Idle;
 		if (animator != null)
-			animator.Play("Bath_End", 0);
+			animator.Play("Deactive", 0);
 	}
 
 }
