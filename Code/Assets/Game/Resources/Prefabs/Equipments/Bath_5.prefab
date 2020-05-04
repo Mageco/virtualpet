@@ -365,6 +365,50 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &2676712530920497230
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4038900775423776936}
+  - component: {fileID: 4304872038650459494}
+  m_Layer: 0
+  m_Name: AnchorPoint (2)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4038900775423776936
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2676712530920497230}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.010000229, y: -2.77, z: -450}
+  m_LocalScale: {x: 2, y: 2, z: 1}
+  m_Children: []
+  m_Father: {fileID: 5505067462061468521}
+  m_RootOrder: 10
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4304872038650459494
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2676712530920497230}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dcdf5b8ec418b4da7b609718b96802fa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  type: 8
 --- !u!1 &3203360706656746746
 GameObject:
   m_ObjectHideFlags: 0
@@ -14904,6 +14948,7 @@ Transform:
   - {fileID: 2520610020677393114}
   - {fileID: 8526314282909029152}
   - {fileID: 8023270760867127736}
+  - {fileID: 4038900775423776936}
   m_Father: {fileID: 2520610022184568620}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -14944,11 +14989,11 @@ MonoBehaviour:
   state: 0
   pets: []
   anchorPoints:
-  - {fileID: 0}
-  startPoint: {fileID: 0}
-  endPoint: {fileID: 0}
+  - {fileID: 4038900775423776936}
+  startPoint: {fileID: 3986092671528988361}
+  endPoint: {fileID: 3986092671528988361}
   toyType: 17
-  count: 0
+  points: []
 --- !u!61 &5129820700197405400
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -15474,7 +15519,7 @@ GameObject:
   - component: {fileID: 3986092671528988361}
   - component: {fileID: 7691538376614862375}
   m_Layer: 0
-  m_Name: AnchorPoint (1)
+  m_Name: StartPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -15488,7 +15533,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6979829426976613076}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.010000229, y: -2.77, z: -450}
+  m_LocalPosition: {x: -0.010000229, y: 1.7977033, z: -450}
   m_LocalScale: {x: 2, y: 2, z: 1}
   m_Children: []
   m_Father: {fileID: 5505067462061468521}
