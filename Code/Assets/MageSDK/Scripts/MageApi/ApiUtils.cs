@@ -186,13 +186,13 @@ namespace MageApi
 			applicationKey = FSG.iOSKeychain.Keychain.GetValue("deviceId");
 			if (applicationKey == "")
 			{
-				Debug.Log("not Exists");
+				//Debug.Log("not Exists");
 				FSG.iOSKeychain.Keychain.SetValue("deviceId", SystemInfo.deviceUniqueIdentifier);
 				return SystemInfo.deviceUniqueIdentifier;
 			}
 			else
 			{
-				Debug.Log("Exists");
+				//Debug.Log("Exists");
 				return applicationKey;
 			}
 	#else

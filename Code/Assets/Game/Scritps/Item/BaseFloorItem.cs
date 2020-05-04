@@ -72,6 +72,7 @@ public class BaseFloorItem : MonoBehaviour
 		{
 			boundX = ItemManager.instance.roomBoundX;
 			boundY = ItemManager.instance.roomWallBoundY;
+			StartCoroutine(CheckCollide());
 		}
 		else
 		{
@@ -80,9 +81,22 @@ public class BaseFloorItem : MonoBehaviour
 			Vector3 pos = this.transform.position;
 			pos.z = pos.y * 10;
 			this.transform.position = pos;
+			StartCoroutine(CheckCollide());
 		}
+
 	}
 
+	IEnumerator CheckCollide()
+	{
+		yield return new WaitForSeconds(1);
+		while (obstructItem != null && obstructItem.itemCollides.Count > 0)
+		{
+            
+			this.transform.position = ItemManager.instance.GetRandomPoint(AreaType.All);
+			Debug.Log(ItemManager.instance.GetRandomPoint(AreaType.All));
+			yield return new WaitForEndOfFrame();
+		}
+	}
 
 	// Update is called once per frame
 	protected virtual void Update()
@@ -190,7 +204,6 @@ public class BaseFloorItem : MonoBehaviour
 					MageManager.instance.PlaySound("BubbleButton", false);
 					state = EquipmentState.Idle;
 				}
-
 
 				OffDrag();
 			}

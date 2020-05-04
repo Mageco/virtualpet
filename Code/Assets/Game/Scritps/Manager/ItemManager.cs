@@ -309,6 +309,7 @@ public class ItemManager : MonoBehaviour
             if(pet.equipment == item)
             {
                 pet.agent.transform.position = item.endPoint.position ;
+                pet.OnStop();
             }
         }
        

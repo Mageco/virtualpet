@@ -35,6 +35,8 @@ namespace PolyNav
         private PathNode startNode;
         private PathNode endNode;
         private bool regenerateFlag;
+        float timeUpdate = 0;
+        float timeUpdateInterval = 1;
 
 
         private Collider2D _masterCollider;
@@ -98,18 +100,30 @@ namespace PolyNav
                 return;
             }
 
-            for ( var i = 0; i < navObstacles.Count; i++ ) {
-                var obstacle = navObstacles[i];
-                if ( obstacle.transform.hasChanged ) {
-                    obstacle.transform.hasChanged = false;
-                    regenerateFlag = true;
+            if (timeUpdate > timeUpdateInterval)
+            {
+                timeUpdate = 0;
+                for (var i = 0; i < navObstacles.Count; i++)
+                {
+                    var obstacle = navObstacles[i];
+                    if (obstacle.transform.hasChanged)
+                    {
+                        obstacle.transform.hasChanged = false;
+                        regenerateFlag = true;
+                    }
+                }
+
+
+                if (regenerateFlag == true)
+                {
+                    regenerateFlag = false;
+                    GenerateMap(false);
                 }
             }
+            else
+                timeUpdate += Time.fixedDeltaTime;
 
-            if ( regenerateFlag == true ) {
-                regenerateFlag = false;
-                GenerateMap(false);
-            }
+
         }
 
         void MonitorObstacle(PolyNavObstacle obstacle, bool active) {

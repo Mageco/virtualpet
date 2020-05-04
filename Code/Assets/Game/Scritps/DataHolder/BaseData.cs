@@ -38,7 +38,7 @@ public class BaseData
 	public string LoadFile(string fileName)
 	{
 		var jsonTextFile = Resources.Load<TextAsset>("Data/" + fileName);
-		Debug.Log(jsonTextFile.text);
+		//Debug.Log(jsonTextFile.text);
 		string text = ApiUtils.GetInstance().DecryptStringWithKey(jsonTextFile.text, key);
 		if (jsonTextFile != null)
 			return text;

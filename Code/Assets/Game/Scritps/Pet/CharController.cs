@@ -427,10 +427,19 @@ public class CharController : MonoBehaviour
             return;
         }
 
-        if (data.Dirty > data.MaxDirty * 0.9f && data.level >= 15)
+        if (data.Dirty > data.MaxDirty * 0.9f)
         {
-            actionType = ActionType.OnBath;
-            return;   
+            if(data.level >= 15)
+            {
+                actionType = ActionType.OnBath;
+                return;
+            }
+            else
+            {
+                actionType = ActionType.Itchi;
+                return;
+            }
+  
         }
 
         if (data.Food < data.MaxFood * 0.1f)
@@ -454,27 +463,12 @@ public class CharController : MonoBehaviour
             }
         }
 
-
-
         if (data.Sleep < data.MaxSleep * 0.1f)
         {
             int ran = Random.Range(0, 100);
             if (ran > 30)
             {
                 actionType = ActionType.Sleep;
-                return;
-            }
-        }
-
-
-
-
-        if (data.Dirty > data.MaxDirty * 0.9f)
-        {
-            int ran = Random.Range(0, 100);
-            if (ran > 50)
-            {
-                actionType = ActionType.Itchi;
                 return;
             }
         }
@@ -1477,9 +1471,13 @@ public class CharController : MonoBehaviour
         if (equipment == null || equipment.itemType != ItemType.Food)
         {
             BaseFloorItem item = ItemManager.instance.FindFreeRandomItem(ItemType.Food);
-            target = item.GetAnchorPoint(this).position;
-            yield return StartCoroutine(RunToPoint());
-            equipment = item;
+            if(item != null)
+            {
+                target = item.GetAnchorPoint(this).position;
+                yield return StartCoroutine(RunToPoint());
+                equipment = item;
+            }
+  
         }
 
         if (equipment != null && equipment.itemType == ItemType.Food)
@@ -1547,9 +1545,12 @@ public class CharController : MonoBehaviour
         if(equipment == null || equipment.itemType != ItemType.Drink)
         {
             BaseFloorItem item = ItemManager.instance.FindFreeRandomItem(ItemType.Drink);
-            target = item.GetAnchorPoint(this).position;
-            yield return StartCoroutine(RunToPoint());
-            equipment = item;
+            if (item != null)
+            {
+                target = item.GetAnchorPoint(this).position;
+                yield return StartCoroutine(RunToPoint());
+                equipment = item;
+            }
         }
         
         if (equipment != null && equipment.itemType == ItemType.Drink)
@@ -2030,7 +2031,7 @@ public class CharController : MonoBehaviour
 
     protected virtual IEnumerator Itchi()
     {
-        anim.Play("Itching", 0);
+        anim.Play("Itching_" + direction.ToString(), 0);
         Debug.Log("Itchi");
         while (!isAbort)
         {
