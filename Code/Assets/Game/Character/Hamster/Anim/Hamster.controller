@@ -1015,7 +1015,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Itching
+  m_Name: Itching_L
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -1212,6 +1212,32 @@ AnimatorState:
   m_MirrorParameter: 
   m_CycleOffsetParameter: 
   m_TimeParameter: 
+--- !u!1102 &7498533250607292691
+AnimatorState:
+  serializedVersion: 5
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Itching_R
+  m_Speed: 1
+  m_CycleOffset: 0
+  m_Transitions: []
+  m_StateMachineBehaviours: []
+  m_Position: {x: 50, y: 50, z: 0}
+  m_IKOnFeet: 0
+  m_WriteDefaultValues: 1
+  m_Mirror: 0
+  m_SpeedParameterActive: 0
+  m_MirrorParameterActive: 0
+  m_CycleOffsetParameterActive: 0
+  m_TimeParameterActive: 0
+  m_Motion: {fileID: 7400000, guid: 4ca449d5f269545f29f716841f5c5c16, type: 2}
+  m_Tag: 
+  m_SpeedParameter: 
+  m_MirrorParameter: 
+  m_CycleOffsetParameter: 
+  m_TimeParameter: 
 --- !u!1107 &7596439330780153370
 AnimatorStateMachine:
   serializedVersion: 5
@@ -1307,7 +1333,7 @@ AnimatorStateMachine:
     m_Position: {x: 730, y: 920, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 5580983895391277169}
-    m_Position: {x: 730, y: 960, z: 0}
+    m_Position: {x: 940, y: 960, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 6373845509982026322}
     m_Position: {x: 730, y: 1000, z: 0}
@@ -1362,6 +1388,9 @@ AnimatorStateMachine:
   - serializedVersion: 1
     m_State: {fileID: 4168931456278127994}
     m_Position: {x: 1130, y: 150, z: 0}
+  - serializedVersion: 1
+    m_State: {fileID: 7498533250607292691}
+    m_Position: {x: 940, y: 1000, z: 0}
   m_ChildStateMachines: []
   m_AnyStateTransitions: []
   m_EntryTransitions: []
