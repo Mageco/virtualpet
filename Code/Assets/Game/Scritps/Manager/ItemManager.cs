@@ -25,7 +25,7 @@ public class ItemManager : MonoBehaviour
 
     public Vector2 roomBoundX = new Vector2(-50, 80);
     public Vector2 roomBoundY = new Vector2(-26, 0);
-    public Vector2 roomWallBoundY = new Vector2(0, 30);
+    public Vector2 roomWallBoundY = new Vector2(3, 30);
     public Vector2 gardenBoundX = new Vector2(-270, 150);
     public Vector2 gardenBoundY = new Vector2(-26, 0);
     public Vector2 cameraBoundX = new Vector2(-320, 200);
@@ -348,19 +348,19 @@ public class ItemManager : MonoBehaviour
         if (type == AreaType.All)
         {
 
-            float x = Random.Range(gardenBoundX.x, gardenBoundX.y);
-            float y = Random.Range(gardenBoundY.x, gardenBoundY.y);
+            float x = Random.Range(gardenBoundX.x + 5, gardenBoundX.y - 5);
+            float y = Random.Range(gardenBoundY.x + 3, gardenBoundY.y);
             r = new Vector3(x, y, 0);
         }
         else if (type == AreaType.Garden)
         {
             bool isDone = false;
-            float x = Random.Range(gardenBoundX.x, gardenBoundX.y);
-            float y = Random.Range(gardenBoundY.x, gardenBoundY.y);
+            float x = Random.Range(gardenBoundX.x + 5, gardenBoundX.y - 5);
+            float y = Random.Range(gardenBoundY.x+ 3, gardenBoundY.y);
             while (!isDone)
             {
                 x = Random.Range(gardenBoundX.x+5, gardenBoundX.y-5);
-                y = Random.Range(gardenBoundY.x, gardenBoundY.y);
+                y = Random.Range(gardenBoundY.x + 3, gardenBoundY.y);
                 if (x < roomBoundX.x || x > roomBoundX.y)
                 {
                     isDone = true;
@@ -369,8 +369,8 @@ public class ItemManager : MonoBehaviour
             r = new Vector3(x, y, 0);
         }else if(type == AreaType.Room)
         {
-            float x = Random.Range(roomBoundX.x, roomBoundX.y);
-            float y = Random.Range(roomBoundY.x, roomBoundY.y);
+            float x = Random.Range(roomBoundX.x + 5, roomBoundX.y - 5);
+            float y = Random.Range(roomBoundY.x + 3, roomBoundY.y);
             r = new Vector3(x, y, 0);
         }
         else if (type == AreaType.Camera)
@@ -383,6 +383,12 @@ public class ItemManager : MonoBehaviour
         {
             float x = Random.Range(roomBoundX.x, roomBoundX.y);
             float y = Random.Range(roomBoundY.x + 15, roomBoundY.y + 15);
+            r = new Vector3(x, y, 0);
+        }
+        else if (type == AreaType.Wall)
+        {
+            float x = Random.Range(roomBoundX.x, roomBoundX.y);
+            float y = Random.Range(roomWallBoundY.x + 3, roomWallBoundY.y);
             r = new Vector3(x, y, 0);
         }
         return r;
@@ -433,7 +439,8 @@ public class ItemManager : MonoBehaviour
         {
             go.transform.parent = item.transform;
         }
-        SpawnStar(pos,1);
+        if(value >= 0)
+            SpawnStar(pos,1);
     }
 
     public GameObject SpawnGuideArrow(ItemType itemType)

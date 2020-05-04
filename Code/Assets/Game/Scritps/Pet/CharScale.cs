@@ -39,7 +39,11 @@ public class CharScale : MonoBehaviour
     {
 		if (interact.interactType == InteractType.Drag || interact.interactType == InteractType.Touch)
         {
-			scalePosition.x = this.transform.position.x;
+			if (scalePosition.y > -1)
+			{
+				scalePosition.y = -1;
+			}
+		    scalePosition.x = this.transform.position.x;
 			float delta = this.transform.position.y - lastPosition.y;
 			height += delta;
 			if(height <= 0 && this.transform.position.y <= scalePosition.y ){

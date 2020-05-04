@@ -1,10 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class CoinItem : MonoBehaviour
 {
-    public TextMesh coinNumber;
+    public TextMeshPro coinNumber;
     public int lifeTime = 1;
     public ParticleSystem particle;
     ParticleSystem.EmissionModule emissionModule;
@@ -12,17 +13,27 @@ public class CoinItem : MonoBehaviour
 
     public void Load(int value)
     {
-        coinNumber.text = "+" + value.ToString();
+        if(value > 0)
+            coinNumber.text = "+" + value.ToString();
+        else
+            coinNumber.text = value.ToString();
+
+        if (value < 0)
+            coinNumber.color = Color.red;
+
+        int number = Mathf.Abs(value);
+        if (number > 10)
+            number = 10;
         emissionModule = particle.emission;
         burst = emissionModule.GetBurst(0);
         Debug.Log("Burst Count " + burst.count.constant);
-        burst.minCount = (short)value;
-        burst.maxCount = (short)value;
+        burst.minCount = (short)number;
+        burst.maxCount = (short)number;
         var c = burst.count;
         c.mode = ParticleSystemCurveMode.Constant;
-        c.constant = value;
-        c.constantMin = value;
-        c.constantMax = value;
+        c.constant = number;
+        c.constantMin = number;
+        c.constantMax = number;
         emissionModule.SetBurst(0, burst);
         particle.Play();
     }

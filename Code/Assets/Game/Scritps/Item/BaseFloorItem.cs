@@ -20,7 +20,7 @@ public class BaseFloorItem : MonoBehaviour
 	protected Vector2 boundY = new Vector2(-24, -3);
     protected Animator[] animParts;
 	public List<CharController> pets = new List<CharController>();
-	Vector3 clickPosition;
+	protected Vector3 clickPosition;
 	GameObject arrow;
 	List<Color> colors = new List<Color>();
 	SpriteRenderer[] sprites;
@@ -107,9 +107,12 @@ public class BaseFloorItem : MonoBehaviour
 			yield return new WaitForEndOfFrame();
 		}
 
+        if(n >= 1)
+		    animator.Play("Appear");
+
         if(n >= 100)
         {
-			MageManager.instance.OnNotificationPopup("You have no more place, please arrange your equipment and equip again");
+			MageManager.instance.OnNotificationPopup(DataHolder.Dialog(158).GetName(MageManager.instance.GetLanguage()));
 			GameManager.instance.UnEquipItem(this.realID);
         }
 	}

@@ -35,11 +35,25 @@ public class EatItem : BaseFloorItem
 		}
 	}
 
+	protected override void OnMouseDown()
+	{
+
+		if (IsPointerOverUIObject())
+		{
+			return;
+		}
+
+		clickPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+		state = EquipmentState.Hold;
+	}
+
 	protected override void OnClick()
 	{
 		Fill();
 		state = EquipmentState.Idle;
 	}
+
+
 
 
 	public void Eat(float f)
@@ -62,10 +76,26 @@ public class EatItem : BaseFloorItem
 
 	public void Fill()
 	{
-		if(foodAmount < maxfoodAmount-1)
-			MageManager.instance.PlaySound3D("happy_collect_item_06",false,this.transform.position);
-		
-		foodAmount = maxfoodAmount-1;
+        if(foodAmount < maxfoodAmount - 1)
+        {
+			int price = (int)((maxfoodAmount - foodAmount)/30);
+			if (GameManager.instance.GetCoin() < price)
+			{
+				MageManager.instance.OnNotificationPopup(DataHolder.Dialog(6).GetDescription(MageManager.instance.GetLanguage()));
+			}
+			else
+			{
+                if(price > 0)
+                {
+					ItemManager.instance.SpawnCoin(this.transform.position, -price);
+					GameManager.instance.AddCoin(-price, Utils.instance.Md5Sum(GameManager.instance.count.ToString() + GameManager.instance.myPlayer.playTime.ToString() + GameManager.instance.myPlayer.Happy.ToString() + "M@ge2013"));
+				}
+				if (foodAmount < maxfoodAmount - 1)
+					MageManager.instance.PlaySound3D("happy_collect_item_06", false, this.transform.position);
+
+				foodAmount = maxfoodAmount - 1;
+			}
+		}
 	}
 
 
