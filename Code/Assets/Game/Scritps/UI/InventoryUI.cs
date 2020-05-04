@@ -11,6 +11,7 @@ public class InventoryUI : MonoBehaviour
     public Image iconType;
     public Text price;
     public Button sellButton;
+    public Button equipButton;
     public GameObject coinIcon;
     public GameObject diamonIcon;
     public GameObject moneyIcon;
@@ -57,10 +58,19 @@ public class InventoryUI : MonoBehaviour
 
         OffAllIcon();
 
-        price.gameObject.SetActive(true);
-        price.text = (item.buyPrice/2).ToString();
-        sellButton.gameObject.SetActive(true);
-        sellButton.interactable = true;
+        if(d.state == ItemState.Equiped)
+        {
+            price.gameObject.SetActive(true);
+            price.text = (item.buyPrice / 2).ToString();
+            sellButton.gameObject.SetActive(true);
+            sellButton.interactable = true;
+        }
+        else
+        {
+            equipButton.gameObject.SetActive(true);
+            equipButton.interactable = true;
+        }
+
         if ((item.itemType == ItemType.Room && GameManager.instance.GetItemNumber(ItemType.Room) == 1) || (item.itemType == ItemType.Gate && GameManager.instance.GetItemNumber(ItemType.Gate) == 1) || (item.itemType == ItemType.Board && GameManager.instance.GetItemNumber(ItemType.Board) == 1))
             sellButton.interactable = false;
 
@@ -170,6 +180,7 @@ public class InventoryUI : MonoBehaviour
     void OffAllIcon()
     {
         sellButton.gameObject.SetActive(false);
+        equipButton.gameObject.SetActive(false);
         price.gameObject.SetActive(false);
         coinIcon.SetActive(false);
         diamonIcon.SetActive(false);
@@ -194,5 +205,16 @@ public class InventoryUI : MonoBehaviour
 
         MageManager.instance.PlaySound("BubbleButton", false);
         UIManager.instance.OnConfirmationShopPanel(realId, false, false);
+    }
+
+    public void OnEquip()
+    {
+        if (isBusy)
+            return;
+
+        MageManager.instance.PlaySound("BubbleButton", false);
+        GameManager.instance.EquipItem(realId);
+        if (UIManager.instance.inventoryPanel != null)
+            UIManager.instance.inventoryPanel.Load();
     }
 }

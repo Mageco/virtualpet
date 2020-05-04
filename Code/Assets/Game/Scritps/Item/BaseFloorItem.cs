@@ -89,13 +89,29 @@ public class BaseFloorItem : MonoBehaviour
 	IEnumerator CheckCollide()
 	{
 		yield return new WaitForSeconds(1);
-		while (obstructItem != null && obstructItem.itemCollides.Count > 0)
+		int n = 0;
+		while (obstructItem != null && obstructItem.itemCollides.Count > 0 && n < 100)
 		{
-            
-			this.transform.position = ItemManager.instance.GetRandomPoint(AreaType.All);
+			if (itemType == ItemType.Bath || itemType == ItemType.Bed || itemType == ItemType.Toilet || itemType == ItemType.Food ||
+				itemType == ItemType.Drink || itemType == ItemType.Table )
+				this.transform.position = ItemManager.instance.GetRandomPoint(AreaType.Room);
+            else if (itemType == ItemType.Fruit)
+				this.transform.position = ItemManager.instance.GetRandomPoint(AreaType.Garden);
+            else if (itemType == ItemType.MedicineBox || itemType == ItemType.Picture || itemType == ItemType.Clock)
+				this.transform.position = ItemManager.instance.GetRandomPoint(AreaType.Wall);
+            else
+				this.transform.position = ItemManager.instance.GetRandomPoint(AreaType.All);
+
 			Debug.Log(ItemManager.instance.GetRandomPoint(AreaType.All));
+			n++;
 			yield return new WaitForEndOfFrame();
 		}
+
+        if(n >= 100)
+        {
+			MageManager.instance.OnNotificationPopup("You have no more place, please arrange your equipment and equip again");
+			GameManager.instance.UnEquipItem(this.realID);
+        }
 	}
 
 	// Update is called once per frame
