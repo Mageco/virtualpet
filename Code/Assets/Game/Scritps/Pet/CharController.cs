@@ -1303,7 +1303,7 @@ public class CharController : MonoBehaviour
                     target = equipment.startPoint.position;
                     yield return StartCoroutine(RunToPoint());
                     equipment.AddPet(this);
-                    agent.transform.position = equipment.anchorPoints[0].position;
+                    agent.transform.position = equipment.GetAnchorPoint(this).position;
                 }
             }
         }
@@ -1312,9 +1312,9 @@ public class CharController : MonoBehaviour
         {
             value = DataHolder.GetItem(equipment.itemID).value;
             charInteract.interactType = InteractType.Equipment;
-            this.transform.position = equipment.anchorPoints[0].position;
-            agent.transform.position = equipment.anchorPoints[0].position;
-            Debug.Log(equipment.anchorPoints[0].position);
+            this.transform.position = equipment.GetAnchorPoint(this).position;
+            agent.transform.position = equipment.GetAnchorPoint(this).position;
+            Debug.Log(equipment.GetAnchorPoint(this).position);
         }
 
         while (this.data.Dirty > 0 && !isAbort)
@@ -1367,7 +1367,7 @@ public class CharController : MonoBehaviour
                     yield return StartCoroutine(RunToPoint());
                     equipment = item;
                     equipment.AddPet(this);
-                    yield return StartCoroutine(JumpIn(0));
+                    yield return StartCoroutine(JumpIn());
                 }
             }
         }
@@ -1375,8 +1375,8 @@ public class CharController : MonoBehaviour
         if (equipment != null && equipment.itemType == ItemType.Toilet)
         {
             charInteract.interactType = InteractType.Equipment;
-            this.transform.position = equipment.anchorPoints[0].position;
-            agent.transform.position = equipment.anchorPoints[0].position;
+            this.transform.position = equipment.GetAnchorPoint(this).position;
+            agent.transform.position = equipment.GetAnchorPoint(this).position;
         }
 
         if (!isAbort)
@@ -1426,7 +1426,7 @@ public class CharController : MonoBehaviour
                     yield return StartCoroutine(RunToPoint());
                     equipment = item;
                     equipment.AddPet(this);
-                    yield return StartCoroutine(JumpIn(0));
+                    yield return StartCoroutine(JumpIn());
                 }
             }
         }
@@ -1434,8 +1434,8 @@ public class CharController : MonoBehaviour
         if (equipment != null && equipment.itemType == ItemType.Toilet)
         {
             charInteract.interactType = InteractType.Equipment;
-            this.transform.position = equipment.anchorPoints[0].position;
-            agent.transform.position = equipment.anchorPoints[0].position;
+            this.transform.position = equipment.GetAnchorPoint(this).position;
+            agent.transform.position = equipment.GetAnchorPoint(this).position;
         }
 
         if (!isAbort)
@@ -1480,7 +1480,7 @@ public class CharController : MonoBehaviour
         if (equipment == null || equipment.itemType != ItemType.Food)
         {
             BaseFloorItem item = ItemManager.instance.FindFreeRandomItem(ItemType.Food);
-            target = item.anchorPoints[0].position;
+            target = item.GetAnchorPoint(this).position;
             yield return StartCoroutine(RunToPoint());
             equipment = item;
         }
@@ -1496,7 +1496,7 @@ public class CharController : MonoBehaviour
                     item.Fill();
                 }
                 bool isContinue = true;
-                if (Vector2.Distance(this.transform.position, item.anchorPoints[0].position) > 1f)
+                if (Vector2.Distance(this.transform.position, item.GetAnchorPoint(this).position) > 1f)
                     isContinue = false;
 
                 if (item != null && isContinue)
@@ -1512,7 +1512,7 @@ public class CharController : MonoBehaviour
                         {
                             isContinue = false;
                         }
-                        if (Vector2.Distance(this.transform.position, item.anchorPoints[0].position) > 1f)
+                        if (Vector2.Distance(this.transform.position, item.GetAnchorPoint(this).position) > 1f)
                             isContinue = false;
                         yield return new WaitForEndOfFrame();
                     }
@@ -1550,7 +1550,7 @@ public class CharController : MonoBehaviour
         if(equipment == null || equipment.itemType != ItemType.Drink)
         {
             BaseFloorItem item = ItemManager.instance.FindFreeRandomItem(ItemType.Drink);
-            target = item.anchorPoints[0].position;
+            target = item.GetAnchorPoint(this).position;
             yield return StartCoroutine(RunToPoint());
             equipment = item;
         }
@@ -1566,7 +1566,7 @@ public class CharController : MonoBehaviour
                     item.Fill();
                 }
                 bool isContinue = true;
-                if (Vector2.Distance(this.transform.position, item.anchorPoints[0].position) > 1f)
+                if (Vector2.Distance(this.transform.position, item.GetAnchorPoint(this).position) > 1f)
                     isContinue = false;
 
                 if (item != null && isContinue)
@@ -1582,7 +1582,7 @@ public class CharController : MonoBehaviour
                         {
                             isContinue = false;
                         }
-                        if (Vector2.Distance(this.transform.position, item.anchorPoints[0].position) > 1f)
+                        if (Vector2.Distance(this.transform.position, item.GetAnchorPoint(this).position) > 1f)
                             isContinue = false;
                         yield return new WaitForEndOfFrame();
                     }
@@ -1631,7 +1631,7 @@ public class CharController : MonoBehaviour
                     yield return StartCoroutine(RunToPoint());
                     equipment = bed;
                     equipment.AddPet(this);
-                    yield return StartCoroutine(JumpIn(0));
+                    yield return StartCoroutine(JumpIn());
                 }
             }
         }
@@ -1640,9 +1640,8 @@ public class CharController : MonoBehaviour
         {
             value = DataHolder.GetItem(equipment.itemID).value;
             charInteract.interactType = InteractType.Equipment;
-            this.transform.position = equipment.anchorPoints[0].position;
-            agent.transform.position = equipment.anchorPoints[0].position;
-            Debug.Log(equipment.anchorPoints[0].position);
+            this.transform.position = equipment.GetAnchorPoint(this).position;
+            agent.transform.position = equipment.GetAnchorPoint(this).position;
         }
 
         anim.Play("Sleep", 0);
@@ -1720,10 +1719,10 @@ public class CharController : MonoBehaviour
         equipment = null;
     }
 
-    protected virtual IEnumerator JumpIn(int id)
+    protected virtual IEnumerator JumpIn()
     {
         if (equipment != null)
-            agent.transform.position = equipment.anchorPoints[id].position;
+            agent.transform.position = equipment.GetAnchorPoint(this).position;
         yield return new WaitForEndOfFrame();
     }
 
@@ -1767,7 +1766,7 @@ public class CharController : MonoBehaviour
             BaseFloorItem item = ItemManager.instance.GetRandomItem(ItemType.MedicineBox);
             if (item != null)
             {
-                target = item.anchorPoints[0].position;
+                target = item.GetAnchorPoint(this).position;
                 yield return StartCoroutine(RunToPoint());
                 OnHealth(SickType.Sick, data.MaxHealth);
             }
@@ -1794,7 +1793,7 @@ public class CharController : MonoBehaviour
             BaseFloorItem item = ItemManager.instance.GetRandomItem(ItemType.MedicineBox);
             if (item != null)
             {
-                target = item.anchorPoints[0].position;
+                target = item.GetAnchorPoint(this).position;
                 yield return StartCoroutine(RunToPoint());
                 Debug.Log(data.MaxDamage);
                 OnHealth(SickType.Injured, data.MaxDamage);
@@ -1830,7 +1829,7 @@ public class CharController : MonoBehaviour
         
         if (equipment.toyType == ToyType.Jump)
         {
-            dropPosition = equipment.anchorPoints[0].position + new Vector3(0, Random.Range(-1f, 1f), 0);
+            dropPosition = equipment.GetAnchorPoint(this).position + new Vector3(0, Random.Range(-1f, 1f), 0);
             agent.transform.position = dropPosition;
             yield return new WaitForEndOfFrame();
             while (equipment != null && !isAbort && data.Energy > data.MaxEnergy * 0.1f)
@@ -1915,7 +1914,7 @@ public class CharController : MonoBehaviour
             equipment.OnActive();
             while (equipment != null && data.Energy > data.MaxEnergy * 0.1f && !isAbort)
             {
-                agent.transform.position = equipment.anchorPoints[0].position;
+                agent.transform.position = equipment.GetAnchorPoint(this).position;
                 anim.Play("Run_" + this.direction.ToString(), 0);
                 yield return new WaitForEndOfFrame();
             }
@@ -1942,9 +1941,9 @@ public class CharController : MonoBehaviour
             charInteract.interactType = InteractType.Equipment;
             while (equipment != null && data.Energy > data.MaxEnergy * 0.1f && !isAbort)
             {
-                if (equipment.anchorPoints[0] != null)
+                if (equipment.GetAnchorPoint(this) != null)
                 {
-                    agent.transform.position = equipment.anchorPoints[0].position;
+                    agent.transform.position = equipment.GetAnchorPoint(this).position;
                 }
                 anim.Play("Play_" + equipment.toyType.ToString(), 0);
                 yield return new WaitForEndOfFrame();
@@ -1958,53 +1957,16 @@ public class CharController : MonoBehaviour
         else if (equipment.toyType == ToyType.Seesaw || equipment.toyType == ToyType.Sprinkler || equipment.toyType == ToyType.Carrier || equipment.toyType == ToyType.Flying)
         {
             
-            int index = equipment.GetPetIndex(this);
-            bool isAnchor = false;
-
-            /*
-            if (equipment.anchorPoints[index] != null)
-            {
-                    
-                target.x = equipment.anchorPoints[index].position.x;
-                if (equipment.toyType == ToyType.Carrier)
-                    target.y = equipment.transform.position.y + 5;
-                else
-                    target.y = equipment.transform.position.y;
-                //Debug.Log(target);
-                yield return StartCoroutine(RunToPoint());
-                //Debug.Log(target);
-            }*/
-
-
-            //Vector3 lastStartPosition = equipment.anchorPoints[index].position - this.transform.position;
-
             charInteract.interactType = InteractType.Equipment;
             if (equipment.toyType != ToyType.Sprinkler)
                 shadow.GetComponent<SpriteRenderer>().enabled = false;
 
-            /*
-
-            if (!isAbort)
-            {
-                charInteract.interactType = InteractType.Equipment;
-                if(equipment.toyType != ToyType.Sprinkler)
-                    shadow.GetComponent<SpriteRenderer>().enabled = false;
-                if (index != -1)
-                {
-                    agent.transform.position = equipment.anchorPoints[index].position;
-                    this.transform.rotation = equipment.anchorPoints[index].rotation;
-                    this.transform.localScale = new Vector3(this.transform.localScale.x, this.transform.localScale.y, equipment.anchorPoints[index].localScale.z);
-                }
-                //equipment.count++;
-                
-                //isAnchor = true;
-            }*/
 
             while (equipment != null && !isAbort && data.Energy > 0)
             {
-                agent.transform.position = equipment.anchorPoints[index].position;
-                this.transform.rotation = equipment.anchorPoints[index].rotation;
-                this.transform.localScale = new Vector3(this.transform.localScale.x, this.transform.localScale.y, equipment.anchorPoints[index].localScale.z);
+                agent.transform.position = equipment.GetAnchorPoint(this).position;
+                this.transform.rotation = equipment.GetAnchorPoint(this).rotation;
+                this.transform.localScale = new Vector3(this.transform.localScale.x, this.transform.localScale.y, equipment.GetAnchorPoint(this).localScale.z);
                 if (equipment.pets.Count == equipment.anchorPoints.Length)
                 {
                     anim.Play("Play_" + equipment.toyType.ToString(), 0);
@@ -2018,29 +1980,8 @@ public class CharController : MonoBehaviour
                 yield return new WaitForEndOfFrame();
             }
 
-            /*
-            if(!isAbort)
-                equipment.OnActive();
-
-            while (equipment != null && data.Energy > data.MaxEnergy * 0.1f && !isAbort)
-            {
-                equipment.OnActive();
-                agent.transform.position = equipment.anchorPoints[index].position;
-                this.transform.rotation = equipment.anchorPoints[index].rotation;
-                this.transform.localScale = new Vector3(this.transform.localScale.x, this.transform.localScale.y, equipment.anchorPoints[index].localScale.z);
-                anim.Play("Play_" + equipment.toyType.ToString(), 0);
-                yield return new WaitForEndOfFrame();
-            }*/
                 
             charInteract.interactType = InteractType.None;
-            /*
-            if (!isAbort)
-            {
-                equipment.DeActive();
-                yield return new WaitForEndOfFrame();
-            }*/
-            //if(isAnchor)
-            //    agent.transform.position = equipment.anchorPoints[index].position - lastStartPosition;
             agent.transform.position = equipment.endPoint.position + new Vector3(Random.Range(-2f,2f),Random.Range(-1f,1f),0);
             shadow.GetComponent<SpriteRenderer>().enabled = true;
             this.transform.rotation = Quaternion.identity;

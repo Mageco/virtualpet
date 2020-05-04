@@ -156,7 +156,6 @@ public class ProjectWindow : EditorWindow
 	public void AddLanguage(int lang)
 	{
 		DataHolder.Items ().AddLanguage ();
-		DataHolder.Skills ().AddLanguage ();
 		DataHolder.Dialogs ().AddLanguage ();
 		DataHolder.Quests ().AddLanguage ();
 		DataHolder.Pets ().AddLanguage ();
@@ -167,7 +166,6 @@ public class ProjectWindow : EditorWindow
 	public void RemoveLanguage(int lang)
 	{
 		DataHolder.Items ().RemoveLanguage (lang);
-		DataHolder.Skills ().RemoveLanguage (lang);
 		DataHolder.Dialogs ().RemoveLanguage (lang);
 		DataHolder.Quests ().RemoveLanguage (lang);
 		DataHolder.Pets ().RemoveLanguage (lang);
@@ -208,21 +206,6 @@ public class ProjectWindow : EditorWindow
 	public void RemoveItem(int item)
 	{
 
-	}
-
-	public int GetSkillCount()
-	{
-		return DataHolder.Skills().GetDataCount();
-	}
-
-	public string GetSkill(int index)
-	{
-		return DataHolder.Skills().GetName(index);
-	}
-
-	public string[] GetSkills()
-	{
-		return DataHolder.Skills().GetNameList(true);
 	}
 
 	public void RemoveSkill(int item)

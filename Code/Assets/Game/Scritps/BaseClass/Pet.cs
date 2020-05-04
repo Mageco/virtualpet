@@ -131,19 +131,9 @@ public class Pet : BaseModel
         energy = Random.Range(maxEnergy / 2, maxEnergy);
         health = maxHealth;
         damage = 0;
-        LoadSkill();
     }
 
-    void LoadSkill()
-    {
-        for (int i = 0; i < DataHolder.Skills().GetDataCount(); i++)
-        {
-            PetSkill s = new PetSkill();
-            s.skillId = DataHolder.Skill(i).iD;
-            s.rewardState = RewardState.None;
-            skills.Add(s);
-        }
-    }
+
 
     public void AddLanguageItem()
     {
@@ -547,50 +537,6 @@ public class Pet : BaseModel
     }
 
 
-    public int GetSkillProgress(SkillType type)
-    {
-        for (int i = 0; i < skills.Count; i++)
-        {
-            if (DataHolder.Skills().GetSkill(skills[i].skillId).skillType == type)
-            {
-                return skills[i].level;
-            }
-        }
-        return 0;
-    }
-
-    public void LevelUpSkill(SkillType type)
-    {
-        for (int i = 0; i < skills.Count; i++)
-        {
-            if (DataHolder.Skills().GetSkill(skills[i].skillId).skillType == type)
-            {
-                skills[i].level++;
-                if (skills[i].level >= DataHolder.Skills().GetSkill(skills[i].skillId).maxProgress)
-                {
-                    skills[i].rewardState = RewardState.Ready;
-                    skills[i].level = DataHolder.Skills().GetSkill(skills[i].skillId).maxProgress;
-                }
-
-                return;
-            }
-        }
-    }
-
-    public bool SkillLearned(SkillType type)
-    {
-        for (int i = 0; i < skills.Count; i++)
-        {
-            if (DataHolder.Skills().GetSkill(skills[i].skillId).skillType == type)
-            {
-                if (skills[i].level >= DataHolder.Skills().GetSkill(skills[i].skillId).maxProgress)
-                    return true;
-                else
-                    return false;
-            }
-        }
-        return false;
-    }
 }
 
 [System.Serializable]

@@ -29,8 +29,8 @@ public class BaseFloorItem : MonoBehaviour
 	public Transform startPoint;
 	public Transform endPoint;
 	public ToyType toyType = ToyType.None;
-	[HideInInspector]
-	public int count = 0;
+	List<AnchorPoint> points = new List<AnchorPoint>();
+
 
 	protected virtual void Awake()
 	{
@@ -41,6 +41,14 @@ public class BaseFloorItem : MonoBehaviour
 		LoadSprite();
 		obstructItem = this.GetComponentInChildren<ObstructItem>(true);
 		animParts = this.GetComponentsInChildren<Animator>(true);
+        if(anchorPoints != null)
+        {
+			for (int i = 0; i < anchorPoints.Length; i++)
+			{
+				points.Add(anchorPoints[i].gameObject.AddComponent<AnchorPoint>());
+                
+			}
+		}
 	}
 
 	void LoadSprite()
@@ -321,6 +329,13 @@ public class BaseFloorItem : MonoBehaviour
         if (!pets.Contains(pet))
         {
 			pets.Add(pet);
+            foreach(AnchorPoint p in points)
+            {
+                if(p.pet == null)
+                {
+					p.pet = pet;
+                }
+            }
         }
     }
 
@@ -328,9 +343,36 @@ public class BaseFloorItem : MonoBehaviour
     {
         if (pets.Contains(pet))
         {
+			foreach (AnchorPoint p in points)
+			{
+				if (p.pet == pet)
+				{
+					p.pet = null;
+				}
+			}
 			pets.Remove(pet);
+
         }
     }
+
+    public Transform GetAnchorPoint(CharController pet)
+    {
+		foreach (AnchorPoint p in points)
+		{
+			if (p.pet == pet)
+			{
+				return p.transform;
+			}
+		}
+		foreach (AnchorPoint p in points)
+		{
+			if (p.pet == null)
+			{
+				return p.transform;
+			}
+		}
+		return null;
+	}
 
     public bool IsBusy()
     {
