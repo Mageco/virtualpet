@@ -1119,6 +1119,7 @@ public class CharController : MonoBehaviour
         if (shadow != null)
             shadow.SetActive(true);
         Vector3 lastPosition = this.transform.position;
+        Quaternion targetRotation;
         while (charInteract.interactType == InteractType.Drag && !isAbort)
         {
 
@@ -1135,14 +1136,15 @@ public class CharController : MonoBehaviour
             else if (pos.x < ItemManager.instance.gardenBoundX.x)
                 pos.x = ItemManager.instance.gardenBoundX.x;
 
-
+            targetRotation = Quaternion.Euler(new Vector3(0, 0, -(this.transform.position.x - lastPosition.x) * 50));
+            this.charObject.transform.rotation = Quaternion.Lerp(this.charObject.transform.rotation, targetRotation, Time.deltaTime * 5);
             pos.z = -50;
             agent.transform.position = Vector3.Lerp(this.transform.position,pos,Time.deltaTime * 5);
             lastPosition = this.transform.position;
             yield return new WaitForEndOfFrame();
         }
 
-
+        this.charObject.transform.rotation = Quaternion.identity;
         dropPosition = charScale.scalePosition;
         bool dropOutSide = false;
         //Start Drop
@@ -1408,6 +1410,7 @@ public class CharController : MonoBehaviour
         if(equipment != null && equipment.itemType == ItemType.Bath)
         {
             equipment.RemovePet(this);
+            equipment.DeActive();
             equipment = null;
         }
 
@@ -1440,6 +1443,7 @@ public class CharController : MonoBehaviour
             charInteract.interactType = InteractType.Equipment;
             this.transform.position = equipment.GetAnchorPoint(this).position;
             agent.transform.position = equipment.GetAnchorPoint(this).position;
+            equipment.OnActive();
         }
 
         if (!isAbort)
@@ -1468,6 +1472,7 @@ public class CharController : MonoBehaviour
                 GameManager.instance.LogAchivement(AchivementType.Do_Action, ActionType.Pee);
             }
             equipment.RemovePet(this);
+            equipment.DeActive();
             charInteract.interactType = InteractType.None;
             yield return StartCoroutine(JumpOut());
         }
@@ -1499,6 +1504,7 @@ public class CharController : MonoBehaviour
             charInteract.interactType = InteractType.Equipment;
             this.transform.position = equipment.GetAnchorPoint(this).position;
             agent.transform.position = equipment.GetAnchorPoint(this).position;
+            equipment.OnActive();
         }
 
         if (!isAbort)
@@ -1530,6 +1536,7 @@ public class CharController : MonoBehaviour
                 GameManager.instance.LogAchivement(AchivementType.Do_Action, ActionType.Shit);
             }
             equipment.RemovePet(this);
+            equipment.DeActive();
             charInteract.interactType = InteractType.None;
             actionType = ActionType.Pee;
             isAbort = true;

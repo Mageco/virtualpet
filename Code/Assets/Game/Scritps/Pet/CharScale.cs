@@ -113,5 +113,6 @@ public class CharScale : MonoBehaviour
 		character.agent.maxSpeed = 0.3f * character.data.speed * speedFactor *(1 - scalePosition.y * scaleFactor);
 
 		lastPosition = this.transform.position;
+		character.shadow.transform.rotation = Quaternion.identity;
 	}
 }

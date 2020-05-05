@@ -24,7 +24,7 @@ public class ToyCarItem : ToyItem
         MageManager.instance.PlaySound3D("Item_Car", false,this.transform.position);
 		state = EquipmentState.Active;
         animator.speed = 2;
-		List<Vector3> pointRandoms = ItemManager.instance.GetRandomPoints (AreaType.Garden,round);
+		List<Vector3> pointRandoms = ItemManager.instance.GetRandomPoints (AreaType.All,round);
 
 		if(pointRandoms == null || pointRandoms.Count == 0){
 			return;

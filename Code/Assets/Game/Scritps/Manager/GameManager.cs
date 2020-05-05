@@ -981,6 +981,8 @@ public class GameManager : MonoBehaviour
             {
                 myPlayer.level = l;
                 UIManager.instance.OnLevelUpPanel();
+                if (ItemManager.instance != null)
+                    ItemManager.instance.LoadArea();
                 OnTip();
                 UIManager.instance.OnSale();
                 Debug.Log("Level Up");
@@ -1129,7 +1131,7 @@ public class GameManager : MonoBehaviour
         AddCoin(100000000, GetKey());
         AddDiamond(10000000, GetKey());
         AddHappy(100000000, GetKey());
-        AddExp(100000, GetKey());
+        //AddExp(100000, GetKey());
         AddItem(17, GetKey());
         AddItem(41, GetKey());
         AddItem(170, GetKey());

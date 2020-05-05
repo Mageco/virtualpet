@@ -69,6 +69,7 @@ public class ItemManager : MonoBehaviour
             if(GameManager.instance.isLoad){
                 LoadItems();
                 LoadItemData();
+                LoadArea();
                 GameManager.instance.LoadPetObjects();
                 isLoad = true;
             }
@@ -348,28 +349,19 @@ public class ItemManager : MonoBehaviour
         if (type == AreaType.All)
         {
 
-            float x = Random.Range(gardenBoundX.x + 5, gardenBoundX.y - 5);
+            float x = Random.Range(gardenBoundX.x + 10, gardenBoundX.y - 10);
             float y = Random.Range(gardenBoundY.x + 3, gardenBoundY.y);
             r = new Vector3(x, y, 0);
         }
         else if (type == AreaType.Garden)
         {
-            bool isDone = false;
-            float x = Random.Range(gardenBoundX.x + 5, gardenBoundX.y - 5);
-            float y = Random.Range(gardenBoundY.x+ 3, gardenBoundY.y);
-            while (!isDone)
-            {
-                x = Random.Range(gardenBoundX.x+5, gardenBoundX.y-5);
-                y = Random.Range(gardenBoundY.x + 3, gardenBoundY.y);
-                if (x < roomBoundX.x || x > roomBoundX.y)
-                {
-                    isDone = true;
-                }
-            }
+            float x = Random.Range(gardenBoundX.x + 10, roomBoundX.x - 10);
+            float y = Random.Range(gardenBoundY.x + 3, gardenBoundY.y);
             r = new Vector3(x, y, 0);
-        }else if(type == AreaType.Room)
+        }
+        else if(type == AreaType.Room)
         {
-            float x = Random.Range(roomBoundX.x + 5, roomBoundX.y - 5);
+            float x = Random.Range(roomBoundX.x + 10, roomBoundX.y - 10);
             float y = Random.Range(roomBoundY.x + 3, roomBoundY.y);
             r = new Vector3(x, y, 0);
         }
@@ -664,6 +656,23 @@ public class ItemManager : MonoBehaviour
     {
         fruitId++;
         return fruitId;
+    }
+
+    public void LoadArea()
+    {
+        if(GameManager.instance.myPlayer.level <= 1)
+        {
+            gardenBoundX = roomBoundX;
+            cameraBoundX = roomBoundX;
+        }else if(GameManager.instance.myPlayer.level <= 2)
+        {
+            gardenBoundX = new Vector2(-50, 150);
+            cameraBoundX = new Vector2(-50, 200);
+        }else
+        {
+            gardenBoundX = new Vector2(-270, 150);
+            cameraBoundX = new Vector2(-320, 200);
+        }
     }
 
     #region Pet
