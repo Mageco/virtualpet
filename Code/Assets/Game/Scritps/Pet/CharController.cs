@@ -142,7 +142,7 @@ public class CharController : MonoBehaviour
     {
         data.petName = GameManager.instance.GetPet(data.realId).petName;
         GameObject nameObject = GameObject.Instantiate(Resources.Load("Prefabs/Pets/PetNamePrefab")) as GameObject;
-        nameObject.transform.parent = this.transform;
+        nameObject.transform.SetParent(this.transform);
         nameObject.transform.position = iconStatusObject.transform.position - new Vector3(0,2,0);
         petNameText = nameObject.GetComponent<TextMeshPro>();
         petNameText.text = data.petName;

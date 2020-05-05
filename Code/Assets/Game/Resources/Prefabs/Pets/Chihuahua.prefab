@@ -456,6 +456,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pets: []
+  items: []
 --- !u!50 &6974126722816852261
 Rigidbody2D:
   serializedVersion: 4
@@ -628,6 +629,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   data:
+    realId: 0
     iD: 0
     iconUrl: 
     languageItem: []
@@ -658,21 +660,9 @@ MonoBehaviour:
     shit: 0
     pee: 0
     dirty: 10
-    itchi: 10
-    fear: 0
-    curious: 70
     maxTimeSick: 3600
     isNew: 0
     rareType: 0
-    rateFood: 10
-    rateWater: 10
-    rateSleep: 0.5
-    recoverSleep: 0.1
-    ratePee: 10
-    rateShit: 10
-    recoverDirty: 0.1
-    recoverHealth: 0
-    recoverEnergy: 5
     rateHappy: 1
     maxFood: 100
     maxWater: 100
@@ -683,18 +673,14 @@ MonoBehaviour:
     maxHealth: 100
     maxDamage: 100
     maxDirty: 100
-    maxItchi: 100
-    maxCurious: 100
     levelRate: 10
     actionType: 0
     position: {x: 0, y: 0, z: 0}
     scalePosition: {x: 0, y: 0, z: 0}
     height: 0
-    enviromentType: 0
   petPrefab: {fileID: 2254446045999560448, guid: fb5bb5dc60dac1c488bf886606e3d925,
     type: 3}
   charType: 7
-  enviromentType: 0
   direction: 2
   target: {x: 0, y: 0, z: 0}
   agent: {fileID: 0}
@@ -707,6 +693,7 @@ MonoBehaviour:
   anim: {fileID: 0}
   charInteract: {fileID: 0}
   charScale: {fileID: 0}
+  charCollider: {fileID: 0}
   peePosition: {fileID: 8189130833799134212}
   shitPosition: {fileID: 7413338357829856030}
   shadow: {fileID: 0}
@@ -715,6 +702,7 @@ MonoBehaviour:
   dropPosition: {x: 0, y: 0, z: 0}
   iconStatusObject: {fileID: 5467160713770211520}
   iconStatus: 0
+  equipment: {fileID: 0}
   dirties: []
   dirties_L: []
   dirties_LD: []
@@ -724,6 +712,7 @@ MonoBehaviour:
   - {fileID: 2254446045999560448, guid: 00e814021f9534be2ac6d6aba6a765f0, type: 3}
   - {fileID: 2254446045999560448, guid: 1ceb96bc556814db18ea48a930d93995, type: 3}
   - {fileID: 2254446045999560448, guid: 78e694ea1cbfb4693920d53108c5efe2, type: 3}
+  - {fileID: 2254446045999560448, guid: 47b462f4474f7b44a9b00003c451452e, type: 3}
 --- !u!1 &7982657717251248569
 GameObject:
   m_ObjectHideFlags: 0
