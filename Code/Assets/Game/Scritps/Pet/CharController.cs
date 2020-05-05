@@ -831,6 +831,7 @@ public class CharController : MonoBehaviour
             }
             data.Damage -= value;
             ItemManager.instance.SpawnBandageEffect(this, 10);
+            GameManager.instance.LogAchivement(AchivementType.Do_Action, ActionType.Injured);
         }
         else if (type == SickType.Sick)
         {
@@ -840,8 +841,9 @@ public class CharController : MonoBehaviour
             }
             data.Health += value;
             ItemManager.instance.SpawnPillEffect(this, 10);
+            GameManager.instance.LogAchivement(AchivementType.Do_Action, ActionType.Sick);
         }
-
+       
     }
 
 
@@ -1116,9 +1118,12 @@ public class CharController : MonoBehaviour
         anim.Play("Hold", 0);
         if (shadow != null)
             shadow.SetActive(true);
+        Vector3 lastPosition = this.transform.position;
         while (charInteract.interactType == InteractType.Drag && !isAbort)
         {
+
             Vector3 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition) - charInteract.dragOffset;
+            
             pos.z = 0;
             if (pos.y > charScale.maxHeight)
                 pos.y = charScale.maxHeight;
@@ -1132,9 +1137,8 @@ public class CharController : MonoBehaviour
 
 
             pos.z = -50;
-            agent.transform.position = pos;
-
-            this.transform.rotation = Quaternion.Lerp(this.transform.rotation, Quaternion.identity, Time.deltaTime * 2);
+            agent.transform.position = Vector3.Lerp(this.transform.position,pos,Time.deltaTime * 5);
+            lastPosition = this.transform.position;
             yield return new WaitForEndOfFrame();
         }
 
@@ -1142,12 +1146,20 @@ public class CharController : MonoBehaviour
         dropPosition = charScale.scalePosition;
         bool dropOutSide = false;
         //Start Drop
-        if(charCollider.items.Count > 0)
+        
+        if (charCollider.items.Count > 0)
         {
             equipment = charCollider.items[0];
             if (!equipment.IsBusy())
             {
-                dropPosition = equipment.GetAnchorPoint(this).position;
+                if (equipment.itemType != ItemType.Bed && equipment.itemType != ItemType.Toilet && equipment.itemType != ItemType.Table && (data.Health < data.MaxHealth * 0.1f || data.Damage > data.MaxDamage * 0.9f))
+                {
+                    dropPosition = equipment.endPoint.transform.position;
+                    equipment = null;
+                    dropOutSide = true;
+                }
+                else
+                    dropPosition = equipment.GetAnchorPoint(this).position;
             }
             else
             {
@@ -1223,26 +1235,41 @@ public class CharController : MonoBehaviour
 
             while (!isAbort)
             {
-                int ran = Random.Range(0, 100);
-                if (ran < 30)
+                if(data.Health < data.MaxHealth * 0.1f) 
                 {
-                    MageManager.instance.PlaySound3D(charType.ToString() + "_Speak", false, this.transform.position);
-                    yield return StartCoroutine(DoAnim("Speak_" + direction.ToString()));
+                    anim.Play("Sick", 0);
+                    yield return new WaitForEndOfFrame();
                 }
-                else if (ran < 60)
+                else if(data.Damage > data.MaxDamage * 0.9f)
                 {
-                    anim.Play("Idle_" + this.direction.ToString(), 0);
-                    yield return StartCoroutine(Wait(Random.Range(5, 15)));
+                    anim.Play("Injured_L", 0);
+                    yield return new WaitForEndOfFrame();
                 }
                 else
                 {
-                    anim.Play("Sleep", 0);
-                    while (data.Sleep < data.MaxSleep && !isAbort)
+
+                    int ran = Random.Range(0, 100);
+                    if (ran < 30)
                     {
-                        data.Sleep += 1 * Time.deltaTime;
-                        yield return new WaitForEndOfFrame();
+                        MageManager.instance.PlaySound3D(charType.ToString() + "_Speak", false, this.transform.position);
+                        yield return StartCoroutine(DoAnim("Speak_" + direction.ToString()));
+                    }
+                    else if (ran < 60)
+                    {
+                        anim.Play("Idle_" + this.direction.ToString(), 0);
+                        yield return StartCoroutine(Wait(Random.Range(5, 15)));
+                    }
+                    else
+                    {
+                        anim.Play("Sleep", 0);
+                        while (data.Sleep < data.MaxSleep && !isAbort)
+                        {
+                            data.Sleep += 1 * Time.deltaTime;
+                            yield return new WaitForEndOfFrame();
+                        }
                     }
                 }
+                
             }
 
             if (equipment != null)
@@ -1660,7 +1687,7 @@ public class CharController : MonoBehaviour
 
     protected virtual IEnumerator Sleep()
     {
-    
+
         float value = 0;
 
         if (data.level >= 10 && (equipment == null || equipment.itemType != ItemType.Bed))
@@ -1687,14 +1714,28 @@ public class CharController : MonoBehaviour
             agent.transform.position = equipment.GetAnchorPoint(this).position;
         }
 
-        anim.Play("Sleep", 0);
+
+        
 
         while (data.Sleep < data.MaxSleep && !isAbort)
         {
-            data.Sleep += (1 + value) * Time.deltaTime;
-            data.Energy += Time.deltaTime;
-            data.Health += 0.1f * Time.deltaTime;
-            data.Damage -= 0.1f * Time.deltaTime;
+            if (data.Health < data.MaxHealth * 0.1f)
+            {
+                anim.Play("Sick", 0);
+            }
+            else if (data.Damage > data.MaxDamage * 0.9f)
+            {
+                anim.Play("Injured_L", 0);
+            }
+            else
+            {
+                anim.Play("Sleep", 0);
+                data.Sleep += (1 + value) * Time.deltaTime;
+                data.Energy += Time.deltaTime;
+                data.Health += 0.1f * Time.deltaTime;
+                data.Damage -= 0.1f * Time.deltaTime;
+            }
+
             yield return new WaitForEndOfFrame();
         }
 
@@ -2204,17 +2245,7 @@ public class CharController : MonoBehaviour
 
     protected void CheckEnviroment()
     {
-        if (data.Health < data.MaxHealth * 0.1f)
-        {
-            actionType = ActionType.Sick;
-            isAbort = true;
-        }
-        else if (data.Damage > data.MaxDamage * 0.9f)
-        {
-            actionType = ActionType.Injured;
-            isAbort = true;
-        }
-        else if (equipment != null)
+        if (equipment != null)
         {
             
             Debug.Log(equipment.itemType);

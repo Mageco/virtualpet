@@ -1129,7 +1129,7 @@ public class GameManager : MonoBehaviour
         AddCoin(100000000, GetKey());
         AddDiamond(10000000, GetKey());
         AddHappy(100000000, GetKey());
-
+        AddExp(100000, GetKey());
         AddItem(17, GetKey());
         AddItem(41, GetKey());
         AddItem(170, GetKey());
