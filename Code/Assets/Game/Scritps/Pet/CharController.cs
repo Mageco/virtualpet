@@ -22,7 +22,10 @@ public class CharController : MonoBehaviour
     protected float maxDataTime = 1f;
 
     float saveTime = 0;
-    float maxSaveTime = 10;
+    float maxSaveTime = 1;
+
+    float timeLove = 0;
+    float maxTimeLove = 10;
 
     //Movement
     [HideInInspector]
@@ -123,7 +126,7 @@ public class CharController : MonoBehaviour
             }
             else
             {
-                Pet p = ES2.Load<Pet>(DataHolder.GetPet(pet.realId).GetName(0));
+                Pet p = ES2.Load<Pet>(DataHolder.GetPet(data.iD).GetName(0) + data.realId.ToString());
                 p.realId = pet.realId;
                 p.level = pet.level;
                 this.data = p;
@@ -140,12 +143,7 @@ public class CharController : MonoBehaviour
 
     public void LoadPrefab()
     {
-        data.petName = GameManager.instance.GetPet(data.realId).petName;
-        GameObject nameObject = GameObject.Instantiate(Resources.Load("Prefabs/Pets/PetNamePrefab")) as GameObject;
-        nameObject.transform.SetParent(this.transform);
-        nameObject.transform.position = iconStatusObject.transform.position - new Vector3(0,2,0);
-        petNameText = nameObject.GetComponent<TextMeshPro>();
-        petNameText.text = data.petName;
+        
 
         LoadCharObject();
 
@@ -164,16 +162,7 @@ public class CharController : MonoBehaviour
 
         SetDirection(Direction.R);
 
-        if (iconStatusObject != null)
-        {
-            iconStatusObject.enabled = false;
-            iconStatusObject.gameObject.SetActive(false);
-            originalStatusScale = iconStatusObject.transform.localScale;
-            GameObject go2 = Instantiate(Resources.Load("Prefabs/Pets/PetStatusPrefab")) as GameObject;
-            charStatus = go2.GetComponent<CharStatus>();
-            go2.transform.parent = iconStatusObject.transform;
-            go2.transform.localPosition = new Vector3(0,0,-5);
-        }
+
     }
 
     public void LoadCharObject()
@@ -221,6 +210,26 @@ public class CharController : MonoBehaviour
                 child.gameObject.SetActive(false);
             }
         }
+
+        iconStatusObject.transform.parent = charObject.transform.GetChild(0);
+        data.petName = GameManager.instance.GetPet(data.realId).petName;
+        GameObject nameObject = GameObject.Instantiate(Resources.Load("Prefabs/Pets/PetNamePrefab")) as GameObject;
+
+        nameObject.transform.position = iconStatusObject.transform.position - new Vector3(0, 2.5f, 10);
+        petNameText = nameObject.GetComponent<TextMeshPro>();
+        petNameText.text = data.petName;
+
+        nameObject.transform.SetParent(this.transform);
+        if (iconStatusObject != null)
+        {
+            iconStatusObject.enabled = false;
+            iconStatusObject.gameObject.SetActive(false);
+            originalStatusScale = iconStatusObject.transform.localScale;
+            GameObject go2 = Instantiate(Resources.Load("Prefabs/Pets/PetStatusPrefab")) as GameObject;
+            charStatus = go2.GetComponent<CharStatus>();
+            go2.transform.parent = iconStatusObject.transform;
+            go2.transform.localPosition = new Vector3(0, 0, -10);
+        }
     }
 
 
@@ -230,6 +239,7 @@ public class CharController : MonoBehaviour
         Debug.Log(data.petName);
         petNameText.text = data.petName;
     }
+
 
 
     // Use this for initialization
@@ -244,7 +254,8 @@ public class CharController : MonoBehaviour
         if (agent == null)
             return;
 
-        petNameText.gameObject.SetActive(true);
+
+        //petNameText.gameObject.SetActive(true);
         //Debug.Log(actionType.ToString() + "  " + charInteract.interactType.ToString());
         if (actionType == ActionType.None)
         {
@@ -253,13 +264,26 @@ public class CharController : MonoBehaviour
         }
         else if(actionType == ActionType.Toy)
         {
-            petNameText.gameObject.SetActive(false);
-            if (equipment != null)
+            petNameText.transform.position = iconStatusObject.transform.position - new Vector3(0, 2.5f, 10);
+            petNameText.transform.rotation = Quaternion.identity;
+            //petNameText.gameObject.SetActive(false);
+            if (equipment != null && equipment.IsActive())
             {
                 int value = (int)DataHolder.GetItem(equipment.itemID).value;
                 data.Toy += 2 * value * Time.deltaTime;
-                //ItemManager.instance.SpawnHeart(data.RateHappy + data.level/5 + value, this.transform.position);
             }
+        }
+
+        if(data.Health > data.MaxHealth * 0.1f && data.Damage < data.MaxDamage * 0.9f && data.Food > 0.1f * data.MaxFood && data.Water > 0.1f * data.MaxWater
+            && data.Pee < data.MaxPee * 0.9f && data.Shit < data.MaxShit * 0.9f && data.Toy > data.MaxToy * 0.1f && data.Sleep > data.MaxSleep * 0.1f && data.Dirty < data.MaxDirty * 0.9f)
+        {
+            Debug.Log("Love");
+            if(timeLove > maxTimeLove)
+            {
+                ItemManager.instance.SpawnHeart(data.RateHappy + data.level / 5, this.transform.position);
+                timeLove = 0;
+            }else
+                timeLove += Time.deltaTime;
         }
 
 
@@ -770,6 +794,7 @@ public class CharController : MonoBehaviour
 
     void LoadIconStatus()
     {
+
         if (iconStatus != IconStatus.None && lastIconStatus != iconStatus)
         {
             iconStatusObject.gameObject.SetActive(true);
@@ -781,6 +806,7 @@ public class CharController : MonoBehaviour
         {
             iconStatusObject.gameObject.SetActive(false);
         }
+        
     }
 
     protected virtual void CalculateDirection()
@@ -1140,6 +1166,7 @@ public class CharController : MonoBehaviour
 
     protected virtual IEnumerator RunToPoint()
     {
+        agent.Stop();
         isMoving = true;
         isArrived = false;
         agent.SetDestination(target);
@@ -1618,7 +1645,7 @@ public class CharController : MonoBehaviour
             BaseFloorItem item = ItemManager.instance.FindFreeRandomItem(ItemType.Food);
             if(item != null && item.startPoint != null)
             {
-                target = item.GetAnchorPoint(this).position;
+                target = item.startPoint.position;
                 yield return StartCoroutine(RunToPoint());
                 JumpIn(item);
             }
@@ -1626,7 +1653,6 @@ public class CharController : MonoBehaviour
 
         if (equipment != null && equipment.itemType == ItemType.Food)
         {
-            equipment.AddPet(this);
             EatItem item = equipment.GetComponent<EatItem>();
             if (item != null)
             {
@@ -1635,8 +1661,6 @@ public class CharController : MonoBehaviour
                     item.Fill();
                 }
                 bool isContinue = true;
-                if (Vector2.Distance(this.transform.position, item.GetAnchorPoint(this).position) > 1f)
-                    isContinue = false;
 
                 if (item != null && isContinue)
                 {
@@ -1690,7 +1714,7 @@ public class CharController : MonoBehaviour
             BaseFloorItem item = ItemManager.instance.FindFreeRandomItem(ItemType.Drink);
             if (item != null && item.startPoint != null)
             {
-                target = item.GetAnchorPoint(this).position;
+                target = item.startPoint.position;
                 yield return StartCoroutine(RunToPoint());
                 JumpIn(item);
             }
@@ -1698,7 +1722,6 @@ public class CharController : MonoBehaviour
         
         if (equipment != null && equipment.itemType == ItemType.Drink)
         {
-            equipment.AddPet(this);
             EatItem item = equipment.GetComponentInChildren<EatItem>();
             if (item != null)
             {
@@ -1707,8 +1730,6 @@ public class CharController : MonoBehaviour
                     item.Fill();
                 }
                 bool isContinue = true;
-                if (Vector2.Distance(this.transform.position, item.GetAnchorPoint(this).position) > 1f)
-                    isContinue = false;
 
                 if (item != null && isContinue)
                 {
@@ -1823,7 +1844,7 @@ public class CharController : MonoBehaviour
     protected virtual IEnumerator Patrol()
     {
         int n = 0;
-        int maxCount = Random.Range(2, 5);
+        int maxCount = Random.Range(1, 3);
         while (!isAbort && n < maxCount)
         {
             int ran = Random.Range(0, 100);
@@ -1872,6 +1893,9 @@ public class CharController : MonoBehaviour
 
     protected void JumpIn(BaseFloorItem item)
     {
+        if (isAbort)
+            return;
+
         if (item != null && !item.IsBusy())
         {
             equipment = item;
@@ -2090,10 +2114,12 @@ public class CharController : MonoBehaviour
                 if (equipment.endPoint != null && !isAbort)
                 {
                     agent.transform.position = equipment.endPoint.position;
+                    this.transform.position = agent.transform.position;
                     yield return new WaitForEndOfFrame();
                 }
                 charInteract.interactType = InteractType.None;
                 target = equipment.startPoint.position;
+                Debug.Log(target);
                 yield return StartCoroutine(RunToPoint());
             }
             charInteract.interactType = InteractType.None;

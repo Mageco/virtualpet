@@ -9,6 +9,7 @@ public class ItemDirty : MonoBehaviour
 	bool isClearning = false;
 	Vector3 originalScale;
 	public Vector3 position;
+	Vector3 clickPosition;
     // Start is called before the first frame update
     void Start()
     {
@@ -35,7 +36,21 @@ public class ItemDirty : MonoBehaviour
 			
 	}
 
-	void OnTriggerEnter2D(Collider2D other) {
+    private void OnMouseDown()
+    {
+		clickPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+	}
+
+    private void OnMouseUp()
+    {
+        if(Vector2.Distance(Camera.main.ScreenToWorldPoint(Input.mousePosition), clickPosition) < 1f)
+        {
+			ItemManager.instance.SpawnStar(this.transform.position, 1);
+			Destroy(this.gameObject);
+        }
+    }
+
+    void OnTriggerEnter2D(Collider2D other) {
         if (other.tag == "Player") {
            other.GetComponent<CharController>().data.Dirty += this.dirty/200f;   
 		}else if(other.tag == "Toilet"){

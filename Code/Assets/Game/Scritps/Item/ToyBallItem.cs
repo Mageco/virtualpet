@@ -49,7 +49,7 @@ public class ToyBallItem : ToyItem
         state = EquipmentState.Active;
         rigid.angularVelocity = 0;
         rigid.velocity = Vector2.zero;
-        rigid.AddForce(new Vector2(Random.Range(-1000,1000),Random.Range(1000,5000)));
+        rigid.AddForce(new Vector2(Random.Range(-1000,1000),Random.Range(100,5000)));
         rigid.AddTorque(Random.Range(-100, 100));
         lastPosition = this.transform.position;
         wall.SetActive(true);
@@ -67,6 +67,11 @@ public class ToyBallItem : ToyItem
         wall.SetActive(false);
     }
 
+    public override void DeActive()
+    {
+
+    }
+
     protected override void Update()
     { 
         base.Update();
@@ -82,10 +87,17 @@ public class ToyBallItem : ToyItem
             time += Time.deltaTime;
             if (time > 1)
                 isOnForce = false;
-            if (time > 5 && Mathf.Abs(this.transform.position.y - lastPosition.y) < 0.3f)
+            if (time > 5)
             {
-                Vector3 pos = this.transform.position;
-                pos.y = lastPosition.y;
+                Vector3 pos = shadow.transform.position;
+                if (pos.x > ItemManager.instance.roomBoundX.y)
+                    pos.x = ItemManager.instance.roomBoundX.y - 5;
+                if(pos.x < ItemManager.instance.roomBoundX.x)
+                    pos.x = ItemManager.instance.roomBoundX.x + 5;
+                if (pos.y > ItemManager.instance.roomBoundY.y)
+                    pos.y = ItemManager.instance.roomBoundY.y - 5;
+                if (pos.y < ItemManager.instance.roomBoundY.x)
+                    pos.y = ItemManager.instance.roomBoundY.x + 5;
                 this.transform.position = pos;
                 Stop();
             }

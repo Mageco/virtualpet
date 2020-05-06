@@ -26,8 +26,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6845529143108872579}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1.5, y: -15.2, z: 0}
-  m_LocalScale: {x: 1500, y: 304.13824, z: 1}
+  m_LocalPosition: {x: 1.5, y: -177.1, z: 0}
+  m_LocalScale: {x: 1500, y: 3528.0037, z: 1}
   m_Children: []
   m_Father: {fileID: 6845529144793133690}
   m_RootOrder: 0
@@ -133,8 +133,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6845529143345635774}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -72.31666, y: 33.47, z: 0}
-  m_LocalScale: {x: 433.5, y: 1275.2999, z: 1}
+  m_LocalPosition: {x: -183.2, y: 65.4, z: 0}
+  m_LocalScale: {x: 2644.3499, y: 6197.9575, z: 1}
   m_Children: []
   m_Father: {fileID: 6845529144793133690}
   m_RootOrder: 2
@@ -240,8 +240,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6845529144100613961}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -8.51, y: 77.31, z: 0}
-  m_LocalScale: {x: 1725, y: 382.88235, z: 1}
+  m_LocalPosition: {x: -8.51, y: 246.2, z: 0}
+  m_LocalScale: {x: 1725, y: 3752.247, z: 1}
   m_Children: []
   m_Father: {fileID: 6845529144793133690}
   m_RootOrder: 1
@@ -427,8 +427,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6845529144428150831}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 100, y: 32.9, z: 0}
-  m_LocalScale: {x: 472.49997, y: 1265, z: 1}
+  m_LocalPosition: {x: 245.7, y: 59.6, z: 0}
+  m_LocalScale: {x: 3401.9998, y: 6831, z: 1}
   m_Children: []
   m_Father: {fileID: 6845529144793133690}
   m_RootOrder: 3
@@ -672,6 +672,7 @@ GameObject:
   - component: {fileID: 6845529144119669248}
   - component: {fileID: 6845529144119669251}
   - component: {fileID: 6845529144119669261}
+  - component: {fileID: 8716731344865447984}
   m_Layer: 18
   m_Name: ball_1
   m_TagString: Untagged
@@ -802,12 +803,31 @@ MonoBehaviour:
   anchorPoints:
   - {fileID: 6845529144836242006}
   startPoint: {fileID: 6845529144836242006}
-  endPoint: {fileID: 0}
+  endPoint: {fileID: 6845529144836242006}
   toyType: 1
   points: []
   wall: {fileID: 6845529144793133691}
   shadow: {fileID: 6845529144339456552}
   intHeight: 1
+--- !u!95 &8716731344865447984
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9042252544859544212}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 8c1a2d1284ef642aabde67ef0087df71, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &9178544115327284151
 GameObject:
   m_ObjectHideFlags: 0
@@ -817,7 +837,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3122630700682278004}
-  - component: {fileID: 2220120909568138395}
   m_Layer: 0
   m_Name: Toy_Ball_3
   m_TagString: Untagged
@@ -842,22 +861,3 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!95 &2220120909568138395
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9178544115327284151}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 8c1a2d1284ef642aabde67ef0087df71, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
