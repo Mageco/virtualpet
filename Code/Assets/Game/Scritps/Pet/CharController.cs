@@ -2092,7 +2092,7 @@ public class CharController : MonoBehaviour
                     agent.transform.position = equipment.endPoint.position;
                     yield return new WaitForEndOfFrame();
                 }
-                
+                charInteract.interactType = InteractType.None;
                 target = equipment.startPoint.position;
                 yield return StartCoroutine(RunToPoint());
             }
