@@ -18,6 +18,7 @@ public class ES2UserType_Pet : ES2Type
 		writer.Write(data.Shit);
 		writer.Write(data.Pee);
 		writer.Write(data.Dirty);
+		writer.Write(data.Toy);
 		writer.Write(data.Intelligent);
 		writer.Write(data.Exp);
 		writer.Write(data.Speed);
@@ -30,7 +31,10 @@ public class ES2UserType_Pet : ES2Type
 		writer.Write(data.MaxHealth);
 		writer.Write(data.MaxDamage);
 		writer.Write(data.MaxDirty);
+		writer.Write(data.MaxToy);
 		writer.Write(data.MaxTimeSick);
+		writer.Write(data.RateHappy);
+		writer.Write(data.realId);
 		writer.Write(data.iD);
 		writer.Write(data.iconUrl);
 		writer.Write(data.buyPrice);
@@ -59,6 +63,7 @@ public class ES2UserType_Pet : ES2Type
 		writer.Write(data.shit);
 		writer.Write(data.pee);
 		writer.Write(data.dirty);
+		writer.Write(data.toy);
 		writer.Write(data.timeSick);
 		writer.Write(data.maxTimeSick);
 		writer.Write(data.isNew);
@@ -73,6 +78,8 @@ public class ES2UserType_Pet : ES2Type
 		writer.Write(data.maxHealth);
 		writer.Write(data.maxDamage);
 		writer.Write(data.maxDirty);
+		writer.Write(data.maxToy);
+		writer.Write(data.levelRate);
 		writer.Write(data.actionType);
 		writer.Write(data.position);
 		writer.Write(data.scalePosition);
@@ -100,6 +107,7 @@ public class ES2UserType_Pet : ES2Type
 		data.Shit = reader.Read<System.Single>();
 		data.Pee = reader.Read<System.Single>();
 		data.Dirty = reader.Read<System.Single>();
+		data.Toy = reader.Read<System.Single>();
 		data.Intelligent = reader.Read<System.Single>();
 		data.Exp = reader.Read<System.Int32>();
 		data.Speed = reader.Read<System.Single>();
@@ -112,7 +120,10 @@ public class ES2UserType_Pet : ES2Type
 		data.MaxHealth = reader.Read<System.Single>();
 		data.MaxDamage = reader.Read<System.Single>();
 		data.MaxDirty = reader.Read<System.Single>();
+		data.MaxToy = reader.Read<System.Single>();
 		data.MaxTimeSick = reader.Read<System.Single>();
+		data.RateHappy = reader.Read<System.Int32>();
+		data.realId = reader.Read<System.Int32>();
 		data.iD = reader.Read<System.Int32>();
 		data.iconUrl = reader.Read<System.String>();
 		data.buyPrice = reader.Read<System.Int32>();
@@ -141,6 +152,7 @@ public class ES2UserType_Pet : ES2Type
 		data.shit = reader.Read<System.Single>();
 		data.pee = reader.Read<System.Single>();
 		data.dirty = reader.Read<System.Single>();
+		data.toy = reader.Read<System.Single>();
 		data.timeSick = reader.Read<System.DateTime>();
 		data.maxTimeSick = reader.Read<System.Single>();
 		data.isNew = reader.Read<System.Boolean>();
@@ -155,10 +167,13 @@ public class ES2UserType_Pet : ES2Type
 		data.maxHealth = reader.Read<System.Single>();
 		data.maxDamage = reader.Read<System.Single>();
 		data.maxDirty = reader.Read<System.Single>();
+		data.maxToy = reader.Read<System.Single>();
+		data.levelRate = reader.Read<System.Int32>();
 		data.actionType = reader.Read<ActionType>();
 		data.position = reader.Read<UnityEngine.Vector3>();
 		data.scalePosition = reader.Read<UnityEngine.Vector3>();
 		data.height = reader.Read<System.Single>();
+
 	}
 	
 	/* ! Don't modify anything below this line ! */

@@ -54,6 +54,8 @@ public class CharController : MonoBehaviour
     public CharScale charScale;
     [HideInInspector]
     public CharCollider charCollider;
+    [HideInInspector]
+    public CharStatus charStatus;
 
     //Pee,Sheet
     public Transform peePosition;
@@ -85,8 +87,6 @@ public class CharController : MonoBehaviour
 
     public BaseFloorItem equipment;
     protected BaseFloorItem lastEquipment;
-    float timeToy = 0;
-    float timeLove = 0;
     [HideInInspector]
     public List<GameObject> dirties = new List<GameObject>();
     [HideInInspector]
@@ -166,8 +166,13 @@ public class CharController : MonoBehaviour
 
         if (iconStatusObject != null)
         {
+            iconStatusObject.enabled = false;
             iconStatusObject.gameObject.SetActive(false);
             originalStatusScale = iconStatusObject.transform.localScale;
+            GameObject go2 = Instantiate(Resources.Load("Prefabs/Pets/PetStatusPrefab")) as GameObject;
+            charStatus = go2.GetComponent<CharStatus>();
+            go2.transform.parent = iconStatusObject.transform;
+            go2.transform.localPosition = new Vector3(0,0,-5);
         }
     }
 
@@ -248,17 +253,12 @@ public class CharController : MonoBehaviour
         }
         else if(actionType == ActionType.Toy)
         {
-            data.Energy -= Time.deltaTime;
             petNameText.gameObject.SetActive(false);
-            if (timeToy > 6 && equipment != null && equipment.IsActive())
+            if (equipment != null)
             {
                 int value = (int)DataHolder.GetItem(equipment.itemID).value;
-                ItemManager.instance.SpawnHeart(data.RateHappy + data.level/5 + value, this.transform.position);
-                timeToy = 0;
-            }
-            else
-            {
-                timeToy += Time.deltaTime;
+                data.Toy += 2 * value * Time.deltaTime;
+                //ItemManager.instance.SpawnHeart(data.RateHappy + data.level/5 + value, this.transform.position);
             }
         }
 
@@ -272,11 +272,12 @@ public class CharController : MonoBehaviour
         if (dataTime > maxDataTime)
         {
             CalculateData();
-            CalculateStatus();
             dataTime = 0;
         }
         else
             dataTime += Time.deltaTime;
+
+        CalculateStatus();
 
         //Save
         if (saveTime > maxSaveTime)
@@ -309,6 +310,9 @@ public class CharController : MonoBehaviour
 
         data.Dirty += 0.2f;
         data.Sleep -= 0.1f;
+
+        if(actionType != ActionType.Toy)
+            data.Toy -= 0.5f;
 
         float deltaHealth = 0;
 
@@ -473,16 +477,23 @@ public class CharController : MonoBehaviour
             }
         }
 
+        if (data.Toy < data.MaxToy * 0.1f && data.level >= 10) 
+        {
+            actionType = ActionType.Discover;
+            return;
+        }
+
+        /*
         if (data.Energy < data.MaxEnergy * 0.1f)
         {
             actionType = ActionType.Tired;
             return;
-        }
+        }*/
+
+        
 
         int n = Random.Range(1, 100);
-        if (n > 50)
-            actionType = ActionType.Discover;
-        else if (n > 30)
+        if (n > 20)
             actionType = ActionType.Patrol;
         else
             actionType = ActionType.OnCall;
@@ -607,41 +618,140 @@ public class CharController : MonoBehaviour
 
         lastIconStatus = iconStatus;
 
-        if (data.Damage > 0.9f * data.MaxDamage || actionType == ActionType.Injured)
+        if (actionType == ActionType.Injured)
         {
-            iconStatus = IconStatus.Injured_2;
+            iconStatus = IconStatus.Bandage;
+            charStatus.SetProgress((data.MaxDamage - data.Damage) / data.MaxDamage);
         }
-        else if (data.Health < 0.1f * data.MaxHealth || actionType == ActionType.Sick)
+        else if (actionType == ActionType.Sick)
         {
-            iconStatus = IconStatus.Sick_2;
+            iconStatus = IconStatus.MedicineBox;
+            charStatus.SetProgress(data.Health / data.MaxHealth);
         }
-        else if (data.Pee > 0.9f * data.MaxPee || data.Shit > 0.9f * data.MaxShit)
+        else if (actionType == ActionType.OnBath)
         {
-            iconStatus = IconStatus.Toilet_2;
+            iconStatus = IconStatus.Bath;
+            charStatus.SetProgress((data.MaxDirty - data.Dirty) / data.MaxDirty);
+        }
+        else if (actionType == ActionType.Sleep)
+        {
+            iconStatus = IconStatus.Bed;
+            charStatus.SetProgress(data.Sleep / data.MaxSleep);
+        }
+        else if (actionType == ActionType.Eat)
+        {
+            iconStatus = IconStatus.Food;
+            charStatus.SetProgress(data.Food / data.MaxFood);
+        }
+        else if (actionType == ActionType.Drink)
+        {
+            iconStatus = IconStatus.Drink;
+            charStatus.SetProgress(data.Water / data.MaxWater);
+        }
+        else if (actionType == ActionType.Pee)
+        {
+            iconStatus = IconStatus.Toilet;
+            charStatus.SetProgress((data.MaxPee - data.Pee) / data.MaxPee);
+        }
+        else if (actionType == ActionType.Shit)
+        {
+            iconStatus = IconStatus.Toilet;
+            charStatus.SetProgress((data.MaxShit - data.Shit) / data.MaxShit);
+        }
+        else if (actionType == ActionType.Toy)
+        {
+            iconStatus = IconStatus.Toy;
+            charStatus.SetProgress(data.Toy / data.MaxToy);
+        }
+        else if (data.Damage > 0.9f * data.MaxDamage)
+        {
+            iconStatus = IconStatus.Bandage;
+            charStatus.SetProgress((data.MaxDamage - data.Damage) / data.MaxDamage);
+        }
+        else if (data.Health < 0.1f * data.MaxHealth)
+        {
+            iconStatus = IconStatus.MedicineBox;
+            charStatus.SetProgress(data.Health / data.MaxHealth);
+        }
+        else if (data.Pee > 0.9f * data.MaxPee)
+        {
+            iconStatus = IconStatus.Toilet;
+            charStatus.SetProgress((data.MaxPee - data.Pee) / data.MaxPee);
+        }
+        else if (data.Pee > 0.9f * data.MaxShit)
+        {
+            iconStatus = IconStatus.Toilet;
+            charStatus.SetProgress((data.MaxShit - data.Shit) / data.MaxShit);
         }
         else if (data.Food < 0.1f * data.MaxFood)
         {
-            iconStatus = IconStatus.Hungry_2;
+            iconStatus = IconStatus.Food;
+            charStatus.SetProgress(data.Food / data.MaxFood);
         }
         else if (data.Water < 0.1f * data.MaxWater)
         {
-            iconStatus = IconStatus.Thirsty_2;
+            iconStatus = IconStatus.Drink;
+            charStatus.SetProgress(data.Water / data.MaxWater);
         }
-        else if (data.sleep < 0.1f * data.MaxSleep)
+        else if (data.Sleep < 0.1f * data.MaxSleep)
         {
-            iconStatus = IconStatus.Sleepy_2;
+            iconStatus = IconStatus.Bed;
+            charStatus.SetProgress(data.Sleep / data.MaxSleep);
         }
-        else if (data.dirty > 0.9f * data.MaxDirty)
+        else if (data.Toy < 0.1f * data.MaxToy)
         {
-            iconStatus = IconStatus.Dirty_2;
+            iconStatus = IconStatus.Toy;
+            charStatus.SetProgress(data.Toy / data.MaxToy);
         }
-        else if (data.Pee > 0.7f * data.MaxPee || data.Shit > 0.7f * data.MaxShit)
+        else if (data.Dirty > 0.9f * data.MaxDirty)
         {
-            iconStatus = IconStatus.Toilet_1;
+            iconStatus = IconStatus.Bath;
+            charStatus.SetProgress((data.MaxDirty - data.Dirty) / data.MaxDirty);
         }
-        else if (data.sleep < 0.3f * data.MaxSleep)
+        else if (data.Damage > 0.7f * data.MaxDamage)
         {
-            iconStatus = IconStatus.Sleepy_1;
+            iconStatus = IconStatus.Bandage;
+            charStatus.SetProgress((data.MaxDamage - data.Damage) / data.MaxDamage);
+        }
+        else if (data.Health < 0.3f * data.MaxHealth)
+        {
+            iconStatus = IconStatus.MedicineBox;
+            charStatus.SetProgress(data.Health / data.MaxHealth);
+        }
+        else if (data.Pee > 0.7f * data.MaxPee)
+        {
+            iconStatus = IconStatus.Toilet;
+            charStatus.SetProgress((data.MaxPee - data.Pee) / data.MaxPee);
+        }
+        else if (data.Pee > 0.7f * data.MaxShit)
+        {
+            iconStatus = IconStatus.Toilet;
+            charStatus.SetProgress((data.MaxShit - data.Shit) / data.MaxShit);
+        }
+        else if (data.Food < 0.3f * data.MaxFood)
+        {
+            iconStatus = IconStatus.Food;
+            charStatus.SetProgress(data.Food / data.MaxFood);
+        }
+        else if (data.Water < 0.3f * data.MaxWater)
+        {
+            iconStatus = IconStatus.Drink;
+            charStatus.SetProgress(data.Water / data.MaxWater);
+        }
+        else if (data.Sleep < 0.3f * data.MaxSleep)
+        {
+            iconStatus = IconStatus.Bed;
+            charStatus.SetProgress(data.Sleep / data.MaxSleep);
+        }
+        else if (data.Toy < 0.3f * data.MaxToy)
+        {
+            iconStatus = IconStatus.Toy;
+            charStatus.SetProgress(data.Toy / data.MaxToy);
+        }
+        else if (data.Dirty > 0.7f * data.MaxDirty)
+        {
+            iconStatus = IconStatus.Bath;
+            charStatus.SetProgress((data.MaxDirty - data.Dirty) / data.MaxDirty);
         }
         else
         {
@@ -663,6 +773,7 @@ public class CharController : MonoBehaviour
         if (iconStatus != IconStatus.None && lastIconStatus != iconStatus)
         {
             iconStatusObject.gameObject.SetActive(true);
+            charStatus.Load(iconStatus);
             iconStatusObject.sprite = Resources.Load<Sprite>("Icons/Status/" + iconStatus.ToString()) as Sprite;
         }
 
@@ -732,24 +843,9 @@ public class CharController : MonoBehaviour
 
         if(item.itemType == ItemType.Toy)
         {
-            if (data.Energy <= 0)
-            {
-                return;
-            }
-
-            if (lastEquipment != null && item == lastEquipment)
-            {
-                int n = Random.Range(0, 100);
-
-                if (n > 50 && lastActionType != ActionType.Hold)
-                    return;
-
-            }
-
             if (actionType != ActionType.Sick && actionType != ActionType.Injured && actionType != ActionType.OnControl && charInteract.interactType != InteractType.Drag //actionType != ActionType.Hold
                 && actionType != ActionType.Toy && actionType != ActionType.Supprised && actionType != ActionType.OnCall && actionType != ActionType.OnGift)
             {
-                timeToy = 0;
                 actionType = ActionType.Toy;
                 isAbort = true;
                 lastEquipment = item;
@@ -1312,7 +1408,7 @@ public class CharController : MonoBehaviour
         }
 
         float t = 0;
-        float maxTime = 20;
+        float maxTime = Random.Range(3,5);
         while (t < maxTime && !isAbort)
         {
             anim.Play("Idle_" + this.direction.ToString(), 0);
@@ -1329,10 +1425,11 @@ public class CharController : MonoBehaviour
         {
             target = toyItem.startPoint.transform.position;
             yield return StartCoroutine(RunToPoint());
-            if (toyItem != null && !toyItem.IsBusy())
+            if (toyItem != null && !toyItem.IsActive() && !isAbort)
             {
                 equipment = toyItem;
-                OnToy(equipment);
+                actionType = ActionType.Toy;
+                isAbort = true;
             }
         }
         CheckAbort();
@@ -1350,18 +1447,14 @@ public class CharController : MonoBehaviour
     {
         float value = 0;
 
-        if (data.level >= 15 && (equipment == null || equipment.itemType != ItemType.Bath))
+        if (data.level >= 20 && (equipment == null || equipment.itemType != ItemType.Bath))
         {
-            equipment = ItemManager.instance.FindFreeRandomItem(ItemType.Bath);
-            if (equipment != null)
+            BaseFloorItem item = ItemManager.instance.FindFreeRandomItem(ItemType.Bath);
+            if (item != null && item.startPoint != null)
             {
-                if (equipment.startPoint != null)
-                {
-                    target = equipment.startPoint.position;
-                    yield return StartCoroutine(RunToPoint());
-                    equipment.AddPet(this);
-                    agent.transform.position = equipment.GetAnchorPoint(this).position;
-                }
+                target = equipment.startPoint.position;
+                yield return StartCoroutine(RunToPoint());
+                JumpIn(item);   
             }
         }
 
@@ -1387,32 +1480,16 @@ public class CharController : MonoBehaviour
             equipment.DeActive();
             if (data.Dirty <= 1 && !isAbort)
             {
-                ItemManager.instance.SpawnHeart(data.RateHappy + data.level / 5, this.transform.position);
                 GameManager.instance.LogAchivement(AchivementType.Do_Action, ActionType.OnBath);
             }
 
-            if(data.level >= 15)
-            {
-                charInteract.interactType = InteractType.None;
-                equipment.RemovePet(this);
-                yield return StartCoroutine(JumpOut());
-            }
-            else
-            {
-                yield return StartCoroutine(Wait(1));
-                anim.Play("Shake", 0);
-                while(!isAbort)
-                {
-                    yield return new WaitForEndOfFrame();
-                }
-            }
-        }
-
-        if(equipment != null && equipment.itemType == ItemType.Bath)
-        {
+            yield return StartCoroutine(DoAnim("Shake"));
+            charInteract.interactType = InteractType.None;
             equipment.RemovePet(this);
             equipment.DeActive();
             equipment = null;
+            yield return StartCoroutine(JumpOut());
+
         }
 
         CheckAbort();
@@ -1426,16 +1503,11 @@ public class CharController : MonoBehaviour
         if (data.level >= 5 && (equipment == null || equipment.itemType != ItemType.Toilet))
         {
             BaseFloorItem item = ItemManager.instance.FindFreeRandomItem(ItemType.Toilet);
-            if (item != null)
+            if (item != null && item.startPoint != null)
             {
-                if (item.startPoint != null)
-                {
-                    target = item.startPoint.position;
-                    yield return StartCoroutine(RunToPoint());
-                    equipment = item;
-                    equipment.AddPet(this);
-                    yield return StartCoroutine(JumpIn());
-                }
+                target = item.startPoint.position;
+                yield return StartCoroutine(RunToPoint());
+                JumpIn(item);   
             }
         }
 
@@ -1469,7 +1541,6 @@ public class CharController : MonoBehaviour
         {
             if (data.pee <= 1 && !isAbort)
             {
-                ItemManager.instance.SpawnHeart(data.RateHappy + data.level / 5, this.transform.position);
                 GameManager.instance.LogAchivement(AchivementType.Do_Action, ActionType.Pee);
             }
             equipment.RemovePet(this);
@@ -1487,16 +1558,11 @@ public class CharController : MonoBehaviour
         if (data.level >= 5 && (equipment == null || equipment.itemType != ItemType.Toilet))
         {
             BaseFloorItem item = ItemManager.instance.FindFreeRandomItem(ItemType.Toilet);
-            if (item != null)
-            {
-                if (item.startPoint != null)
-                {
-                    target = item.startPoint.position;
-                    yield return StartCoroutine(RunToPoint());
-                    equipment = item;
-                    equipment.AddPet(this);
-                    yield return StartCoroutine(JumpIn());
-                }
+            if (item != null && item.startPoint != null)
+            { 
+                target = item.startPoint.position;
+                yield return StartCoroutine(RunToPoint());
+                JumpIn(item);                
             }
         }
 
@@ -1533,7 +1599,6 @@ public class CharController : MonoBehaviour
         {
             if (data.shit <= 1 && !isAbort)
             {
-                ItemManager.instance.SpawnHeart(data.RateHappy + data.level / 5, this.transform.position);
                 GameManager.instance.LogAchivement(AchivementType.Do_Action, ActionType.Shit);
             }
             equipment.RemovePet(this);
@@ -1551,13 +1616,12 @@ public class CharController : MonoBehaviour
         if (equipment == null || equipment.itemType != ItemType.Food)
         {
             BaseFloorItem item = ItemManager.instance.FindFreeRandomItem(ItemType.Food);
-            if(item != null)
+            if(item != null && item.startPoint != null)
             {
                 target = item.GetAnchorPoint(this).position;
                 yield return StartCoroutine(RunToPoint());
-                equipment = item;
+                JumpIn(item);
             }
-  
         }
 
         if (equipment != null && equipment.itemType == ItemType.Food)
@@ -1566,7 +1630,7 @@ public class CharController : MonoBehaviour
             EatItem item = equipment.GetComponent<EatItem>();
             if (item != null)
             {
-                if (data.level >= 20)
+                if (data.level >= 25)
                 {
                     item.Fill();
                 }
@@ -1581,8 +1645,8 @@ public class CharController : MonoBehaviour
                     yield return StartCoroutine(Wait(0.1f));
                     while (item != null && data.Food < data.MaxFood && !isAbort && isContinue)
                     {
-                        data.Food += 2 * 0.1f;
-                        item.Eat(2 * 0.1f);
+                        data.Food += 2 * Time.deltaTime;
+                        item.Eat(2 * Time.deltaTime);
                         if (!item.CanEat())
                         {
                             isContinue = false;
@@ -1599,7 +1663,6 @@ public class CharController : MonoBehaviour
                     if (data.Food >= data.MaxFood - 10)
                     {
                         GameManager.instance.LogAchivement(AchivementType.Do_Action, ActionType.Eat);
-                        ItemManager.instance.SpawnHeart(data.level + data.level / 5, this.transform.position);
                     }
                 }
                 else
@@ -1625,11 +1688,11 @@ public class CharController : MonoBehaviour
         if(equipment == null || equipment.itemType != ItemType.Drink)
         {
             BaseFloorItem item = ItemManager.instance.FindFreeRandomItem(ItemType.Drink);
-            if (item != null)
+            if (item != null && item.startPoint != null)
             {
                 target = item.GetAnchorPoint(this).position;
                 yield return StartCoroutine(RunToPoint());
-                equipment = item;
+                JumpIn(item);
             }
         }
         
@@ -1654,8 +1717,8 @@ public class CharController : MonoBehaviour
                     yield return StartCoroutine(Wait(0.1f));
                     while (item != null && data.Water < data.MaxWater && !isAbort && isContinue)
                     {
-                        data.Water += 10 * 0.1f;
-                        item.Eat(10 * 0.1f);
+                        data.Water += 5 * Time.deltaTime;
+                        item.Eat(5 * Time.deltaTime);
                         if (!item.CanEat())
                         {
                             isContinue = false;
@@ -1672,7 +1735,6 @@ public class CharController : MonoBehaviour
                     if (data.Water >= data.MaxWater - 10)
                     {
                         GameManager.instance.LogAchivement(AchivementType.Do_Action, ActionType.Drink);
-                        ItemManager.instance.SpawnHeart(data.level + data.level / 5, this.transform.position);
                     }
                 }
                 else
@@ -1698,7 +1760,7 @@ public class CharController : MonoBehaviour
 
         float value = 0;
 
-        if (data.level >= 10 && (equipment == null || equipment.itemType != ItemType.Bed))
+        if (data.level >= 15 && (equipment == null || equipment.itemType != ItemType.Bed))
         {
             BaseFloorItem bed = ItemManager.instance.FindFreeRandomItem(ItemType.Bed);
             if (bed != null)
@@ -1707,9 +1769,7 @@ public class CharController : MonoBehaviour
                 {
                     target = bed.startPoint.position;
                     yield return StartCoroutine(RunToPoint());
-                    equipment = bed;
-                    equipment.AddPet(this);
-                    yield return StartCoroutine(JumpIn());
+                    JumpIn(bed);
                 }
             }
         }
@@ -1739,7 +1799,6 @@ public class CharController : MonoBehaviour
             {
                 anim.Play("Sleep", 0);
                 data.Sleep += (1 + value) * Time.deltaTime;
-                data.Energy += Time.deltaTime;
                 data.Health += 0.1f * Time.deltaTime;
                 data.Damage -= 0.1f * Time.deltaTime;
             }
@@ -1751,10 +1810,10 @@ public class CharController : MonoBehaviour
         {
             if (data.Sleep > data.MaxSleep - 1)
             {
-                ItemManager.instance.SpawnHeart((data.RateHappy + data.level / 5)*2, this.transform.position);
                 GameManager.instance.LogAchivement(AchivementType.Do_Action, ActionType.Sleep);
             }
             equipment.RemovePet(this);
+            equipment.DeActive();
             charInteract.interactType = InteractType.None;
             yield return StartCoroutine(JumpOut());
         }
@@ -1768,7 +1827,7 @@ public class CharController : MonoBehaviour
         while (!isAbort && n < maxCount)
         {
             int ran = Random.Range(0, 100);
-            if (ran < 40)
+            if (ran < 30)
             {
                 SetTarget(AreaType.All);
                 yield return StartCoroutine(RunToPoint());
@@ -1811,11 +1870,19 @@ public class CharController : MonoBehaviour
         equipment = null;
     }
 
-    protected virtual IEnumerator JumpIn()
+    protected void JumpIn(BaseFloorItem item)
     {
-        if (equipment != null)
+        if (item != null && !item.IsBusy())
+        {
+            equipment = item;
+            equipment.AddPet(this);
             agent.transform.position = equipment.GetAnchorPoint(this).position;
-        yield return new WaitForEndOfFrame();
+        }
+        else
+        {
+            equipment = null;
+            isAbort = true;
+        }
     }
 
     protected IEnumerator JumpDown(float zSpeed, float ySpeed, float accelerator)
@@ -1853,7 +1920,7 @@ public class CharController : MonoBehaviour
 
     protected virtual IEnumerator Sick()
     {
-        if (data.level >= 35)
+        if (data.level >= 30)
         {
             BaseFloorItem item = ItemManager.instance.GetRandomItem(ItemType.MedicineBox);
             if (item != null)
@@ -1924,7 +1991,7 @@ public class CharController : MonoBehaviour
             dropPosition = equipment.GetAnchorPoint(this).position + new Vector3(0, Random.Range(-1f, 1f), 0);
             agent.transform.position = dropPosition;
             yield return new WaitForEndOfFrame();
-            while (equipment != null && !isAbort && data.Energy > 0)
+            while (equipment != null && !isAbort && data.Toy < data.MaxToy)
             {
                 equipment.OnActive();
                     
@@ -1948,7 +2015,7 @@ public class CharController : MonoBehaviour
                     Vector3 pos1 = agent.transform.position;
                     pos1.y += ySpeed * Time.deltaTime;
 
-                    if (data.Energy <= 0)
+                    if (data.Toy == data.MaxToy)
                     {
                         pos1.x += 15 * Time.deltaTime;
                     }
@@ -1956,7 +2023,7 @@ public class CharController : MonoBehaviour
 
                     if (ySpeed < 0 && this.transform.position.y < dropPosition.y)
                     {
-                        if (data.Energy <= 0)
+                        if (data.Toy == data.MaxToy)
                         {
                             MageManager.instance.PlaySound3D("whoosh_swish_med_03", false,this.transform.position);
                             yield return StartCoroutine(DoAnim("Drop"));
@@ -1976,7 +2043,7 @@ public class CharController : MonoBehaviour
         else if (equipment.toyType == ToyType.Ball || equipment.toyType == ToyType.Car)
         {
             charScale.speedFactor = 1.5f;
-            while (equipment != null && data.Energy > 0 && !isAbort)
+            while (equipment != null && data.Toy < data.MaxToy && !isAbort)
             {
                 anim.speed = 1.5f;
                     
@@ -2004,7 +2071,7 @@ public class CharController : MonoBehaviour
             anim.speed = 2f;
             SetDirection(Direction.L);
             equipment.OnActive();
-            while (equipment != null && data.Energy > 0 && !isAbort)
+            while (equipment != null && data.Toy < data.MaxToy && !isAbort)
             {
                 agent.transform.position = equipment.GetAnchorPoint(this).position;
                 anim.Play("Run_" + this.direction.ToString(), 0);
@@ -2014,7 +2081,7 @@ public class CharController : MonoBehaviour
         }
         else if (equipment.toyType == ToyType.Slider || equipment.toyType == ToyType.Circle)
         {
-            while (equipment != null && data.Energy > 0 && !isAbort)
+            while (equipment != null && data.Toy < data.MaxToy && !isAbort)
             {
                 equipment.OnActive();
                 charInteract.interactType = InteractType.Equipment;
@@ -2023,7 +2090,11 @@ public class CharController : MonoBehaviour
                 if (equipment.endPoint != null && !isAbort)
                 {
                     agent.transform.position = equipment.endPoint.position;
+                    yield return new WaitForEndOfFrame();
                 }
+                
+                target = equipment.startPoint.position;
+                yield return StartCoroutine(RunToPoint());
             }
             charInteract.interactType = InteractType.None;
         }
@@ -2031,7 +2102,7 @@ public class CharController : MonoBehaviour
         {
             equipment.OnActive();
             charInteract.interactType = InteractType.Equipment;
-            while (equipment != null && data.Energy > 0 && !isAbort)
+            while (equipment != null && data.Toy < data.MaxToy && !isAbort)
             {
                 if (equipment.GetAnchorPoint(this) != null)
                 {
@@ -2060,7 +2131,7 @@ public class CharController : MonoBehaviour
             }
 
             Transform anchorPoint = equipment.GetAnchorPoint(this);
-            while (anchorPoint != null && !isAbort && data.Energy > 0)
+            while (anchorPoint != null && !isAbort && data.Toy < data.MaxToy)
             {
                 agent.transform.position = anchorPoint.position;
                 if(n == 0)
@@ -2104,8 +2175,6 @@ public class CharController : MonoBehaviour
         {
             yield return StartCoroutine(DoAnim("Love"));
             int value = (int)DataHolder.GetItem(equipment.itemID).value;
-            ItemManager.instance.SpawnHeart(data.RateHappy + data.level / 5 + value, this.transform.position);
-
         }
 
         charScale.speedFactor = 1f;
@@ -2290,7 +2359,6 @@ public class CharController : MonoBehaviour
             else if (equipment.itemType == ItemType.Toy)
             {
                 equipment.AddPet(this);
-                timeToy = 0;
                 actionType = ActionType.Toy;
                 isAbort = true;
                 lastEquipment = equipment;

@@ -73,7 +73,7 @@ public class ProfileUI : MonoBehaviour
         price = playerPet.level * playerPet.level * 2;
         priceText.text = price.ToString();
         strengthText.text = (pet.maxHealth + playerPet.level * pet.levelRate).ToString();
-        heartText.text = "+" + (pet.RateHappy + playerPet.level / 5).ToString();
+        heartText.text = "+" + (pet.RateHappy).ToString();
 
         sellPrice = pet.buyPrice / 2;
         sellText.text = sellPrice.ToString();
@@ -106,7 +106,7 @@ public class ProfileUI : MonoBehaviour
         price = playerPet.level * playerPet.level * 2;
         priceText.text = price.ToString();
         strengthText.text = (pet.maxHealth + playerPet.level * pet.levelRate).ToString();
-        heartText.text = "+" + (pet.RateHappy + playerPet.level / 5).ToString();
+        heartText.text = "+" + (pet.RateHappy).ToString();
 
         int n = playerPet.level / 5;
         for (int i = 0; i < icons.Length; i++)
@@ -170,25 +170,21 @@ public class ProfileUI : MonoBehaviour
             MageManager.instance.OnNotificationPopup(DataHolder.Dialog(149).GetName(MageManager.instance.GetLanguage()));
         }else if(skillId == 1)
         {
-            MageManager.instance.OnNotificationPopup(DataHolder.Dialog(150).GetName(MageManager.instance.GetLanguage()));
+            MageManager.instance.OnNotificationPopup(DataHolder.Dialog(153).GetName(MageManager.instance.GetLanguage()));
         }
         else if (skillId == 2)
         {
-            MageManager.instance.OnNotificationPopup(DataHolder.Dialog(151).GetName(MageManager.instance.GetLanguage()));
+            MageManager.instance.OnNotificationPopup(DataHolder.Dialog(150).GetName(MageManager.instance.GetLanguage()));
         }
         else if (skillId == 3)
         {
-            MageManager.instance.OnNotificationPopup(DataHolder.Dialog(152).GetName(MageManager.instance.GetLanguage()));
+            MageManager.instance.OnNotificationPopup(DataHolder.Dialog(151).GetName(MageManager.instance.GetLanguage()));
         }
         else if (skillId == 4)
         {
-            MageManager.instance.OnNotificationPopup(DataHolder.Dialog(153).GetName(MageManager.instance.GetLanguage()));
+            MageManager.instance.OnNotificationPopup(DataHolder.Dialog(152).GetName(MageManager.instance.GetLanguage()));
         }
         else if (skillId == 5)
-        {
-            MageManager.instance.OnNotificationPopup(DataHolder.Dialog(155).GetName(MageManager.instance.GetLanguage()));
-        }
-        else if (skillId == 6)
         {
             MageManager.instance.OnNotificationPopup(DataHolder.Dialog(154).GetName(MageManager.instance.GetLanguage()));
         }

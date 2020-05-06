@@ -22,7 +22,7 @@ public enum AnimalState {None,Idle,Seek,Eat,Run,Flee,Hit,Hit_Grab,Hold,Cached,In
 public enum SickType{Sick,Injured};
 public enum AnimalType{Mouse,Fox,Eagle,Snake,Chicken,Bee};
 public enum RewardState{None,Ready,Received};
-public enum IconStatus{None,Hungry_1,Hungry_2,Sick_1,Sick_2,Dirty_1,Dirty_2,Toilet_1,Toilet_2,Thirsty_1,Thirsty_2,Sleepy_1,Sleepy_2,Tired_1,Tired_2,Injured_1,Injured_2};
+public enum IconStatus{None,Food,Drink, MedicineBox, Bandage,Bath,Toilet,Bed,Toy};
 public enum ToyType{Jump,Ball,Car,Doll,SpaceShip,Wheel,Robot,Slider,Spring,Dance,Swing,Circle,Fun,Seesaw,Carrier,Sprinkler,Flying,None};
 public enum ItemSaveDataType{None,Pee,Shit,Rubbish,Food,Drink,Fruit,Equipment};
 public enum EquipmentState { Idle,Hold, Drag, Busy, Active }

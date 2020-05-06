@@ -14805,6 +14805,7 @@ Transform:
   - {fileID: 602900283990035447}
   - {fileID: 6009447642665823746}
   - {fileID: 5695788033695696155}
+  - {fileID: 9066038453059604885}
   m_Father: {fileID: 332248818682743943}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -14872,10 +14873,10 @@ MonoBehaviour:
   pets: []
   anchorPoints:
   - {fileID: 546986874648267995}
-  startPoint: {fileID: 0}
-  endPoint: {fileID: 0}
+  startPoint: {fileID: 9066038453059604885}
+  endPoint: {fileID: 9066038453059604885}
   toyType: 6
-  count: 0
+  points: []
   target: {fileID: 0}
   agent: {fileID: 0}
   isArrived: 0
@@ -15226,6 +15227,36 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &8233007692494378891
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 9066038453059604885}
+  m_Layer: 0
+  m_Name: StartPoint (2)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &9066038453059604885
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8233007692494378891}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 1.5635647, y: 4.1581535, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 6167997553020434274}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &9125546874894096241
 GameObject:
   m_ObjectHideFlags: 0

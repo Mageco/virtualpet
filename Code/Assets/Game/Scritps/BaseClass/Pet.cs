@@ -40,6 +40,7 @@ public class Pet : BaseModel
     public float shit = 0;
     public float pee = 0;
     public float dirty = 10;
+    public float toy = 10;
     public System.DateTime timeSick;
     public float maxTimeSick = 3600;
     public bool isNew = false;
@@ -68,7 +69,9 @@ public class Pet : BaseModel
     [HideInInspector]
     public float maxDirty = 100;
     [HideInInspector]
-    public int levelRate = 20;
+    public float maxToy = 100;
+    [HideInInspector]
+    public int levelRate = 2;
 
 
     //public CharController character;
@@ -124,6 +127,7 @@ public class Pet : BaseModel
         maxShit = p.maxHealth;
         maxSleep = p.maxHealth;
         maxDirty = p.maxHealth;
+        maxToy = p.maxToy;
 
         food = Random.Range(maxFood / 2, maxFood);
         water = Random.Range(maxWater / 2, maxWater);
@@ -335,6 +339,22 @@ public class Pet : BaseModel
         }
     }
 
+    public float Toy
+    {
+        get
+        {
+            return this.toy;
+        }
+        set
+        {
+            this.toy = value;
+            if (this.toy < 0)
+                this.toy = 0;
+            else if (this.toy > MaxToy)
+                this.toy = MaxToy;
+        }
+    }
+
 
     public float Intelligent
     {
@@ -499,6 +519,18 @@ public class Pet : BaseModel
         set
         {
             this.maxDirty = value;
+        }
+    }
+
+    public float MaxToy
+    {
+        get
+        {
+            return maxToy + level * levelRate;
+        }
+        set
+        {
+            this.maxToy = value;
         }
     }
 

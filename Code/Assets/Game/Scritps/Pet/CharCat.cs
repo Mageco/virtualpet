@@ -61,16 +61,12 @@ public class CharCat : CharController
                 yield return StartCoroutine(RunToPoint());
                 if (Vector2.Distance(this.transform.position, target) < 1)
                 {
-                    equipment = item;
-                    yield return StartCoroutine(JumpIn());
+                    JumpIn(item);
                     CheckEnviroment();
                 }
             }
         }
         CheckAbort();
     }
-
-
-    
 
 }
