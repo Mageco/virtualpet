@@ -1105,6 +1105,7 @@ public class CharController : MonoBehaviour
         if (equipment != null)
         {
             equipment.RemovePet(this);
+            equipment.DeActive();
             equipment = null;
         }
        
