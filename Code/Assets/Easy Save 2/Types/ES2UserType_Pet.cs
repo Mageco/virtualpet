@@ -83,7 +83,8 @@ public class ES2UserType_Pet : ES2Type
 		writer.Write(data.actionType);
 		writer.Write(data.position);
 		writer.Write(data.scalePosition);
-		writer.Write(data.height);
+		writer.Write(data.equipmentId);
+		writer.Write(data.interactType);
 
 	}
 	
@@ -172,7 +173,8 @@ public class ES2UserType_Pet : ES2Type
 		data.actionType = reader.Read<ActionType>();
 		data.position = reader.Read<UnityEngine.Vector3>();
 		data.scalePosition = reader.Read<UnityEngine.Vector3>();
-		data.height = reader.Read<System.Single>();
+		data.equipmentId = reader.Read<System.Int32>();
+		data.interactType = reader.Read<InteractType>();
 
 	}
 	

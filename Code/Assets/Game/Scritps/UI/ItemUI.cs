@@ -26,6 +26,7 @@ public class ItemUI : MonoBehaviour
     public Image bedIcon;
     public Image strengthIcon;
     public Image plusCoinIcon;
+    public Image toyIcon;
 
     public Text happyText;
     public Text sickText;
@@ -37,6 +38,7 @@ public class ItemUI : MonoBehaviour
     public Text bedText;
     public Text strengthText;
     public Text plusCoinText;
+    public Text toyText;
 
     public Text petLevelText;
     public Text buttonText;
@@ -198,8 +200,8 @@ public class ItemUI : MonoBehaviour
         {
             if (d.value > 0)
             {
-                heartIcon.gameObject.SetActive(true);
-                happyText.text = "+" + d.value.ToString("F0");
+                toyIcon.gameObject.SetActive(true);
+                toyText.text = "+" + d.value.ToString("F0");
             }
         }
         else if (d.itemType == ItemType.Toilet)
@@ -418,6 +420,7 @@ public class ItemUI : MonoBehaviour
         cleanIcon.gameObject.SetActive(false);
         strengthIcon.gameObject.SetActive(false);
         plusCoinIcon.gameObject.SetActive(false);
+        toyIcon.gameObject.SetActive(false);
         tags[0].transform.parent.gameObject.SetActive(false);
         for(int i = 0; i < tags.Length; i++)
         {

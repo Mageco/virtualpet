@@ -63,6 +63,8 @@ public class CharController : MonoBehaviour
     //Pee,Sheet
     public Transform peePosition;
     public Transform shitPosition;
+    EmotionStatus lastEmotionStatus;
+ 
 
 
     //[HideInInspector]
@@ -71,6 +73,9 @@ public class CharController : MonoBehaviour
     public Vector3 originalShadowScale;
 
     TextMeshPro petNameText;
+    public SpriteRenderer petEmotion;
+    EmotionStatus emotionStatus = EmotionStatus.Happy;
+    Sprite[] emotionIcons = new Sprite[3];
 
     #endregion
 
@@ -103,7 +108,9 @@ public class CharController : MonoBehaviour
 
     void Awake()
     {
-
+        charInteract = this.GetComponent<CharInteract>();
+        charScale = this.GetComponent<CharScale>();
+        charCollider = this.GetComponentInChildren<CharCollider>(true);
     }
 
     protected virtual void Start()
@@ -115,7 +122,7 @@ public class CharController : MonoBehaviour
     public void LoadData(PlayerPet pet)
     {
 
-        if (!GameManager.instance.isGuest && ES2.Exists(DataHolder.GetPet(data.iD).GetName(0) + data.realId.ToString()))
+        if (!GameManager.instance.isGuest && ES2.Exists(DataHolder.GetPet(pet.iD).GetName(0) + pet.realId.ToString()))
         {
             if (float.Parse(GameManager.instance.myPlayer.version) < 2.0f)
             {
@@ -126,11 +133,10 @@ public class CharController : MonoBehaviour
             }
             else
             {
-                Pet p = ES2.Load<Pet>(DataHolder.GetPet(data.iD).GetName(0) + data.realId.ToString());
+                Pet p = ES2.Load<Pet>(DataHolder.GetPet(pet.iD).GetName(0) + pet.realId.ToString());
                 p.realId = pet.realId;
                 p.level = pet.level;
                 this.data = p;
-                Debug.Log("Load Pet Data" + "DataHolder.GetPet(data.iD).GetName(0)");
             }
         }
         else
@@ -140,6 +146,8 @@ public class CharController : MonoBehaviour
             p.level = pet.level;
             this.data = p;
         }
+
+
     }
 
     public void LoadPrefab()
@@ -147,11 +155,6 @@ public class CharController : MonoBehaviour
         
 
         LoadCharObject();
-
-        charInteract = this.GetComponent<CharInteract>();
-        charScale = this.GetComponent<CharScale>();
-        charCollider = this.GetComponentInChildren<CharCollider>(true);
-
 
         GameObject go1 = Instantiate(Resources.Load("Prefabs/Pets/Agent")) as GameObject;
         //go1.transform.parent = GameManager.instance.transform;
@@ -212,6 +215,12 @@ public class CharController : MonoBehaviour
             }
         }
 
+        GameObject go1 = GameObject.Instantiate(Resources.Load("Prefabs/Pets/PetEmotion")) as GameObject;
+        petEmotion = go1.GetComponent<SpriteRenderer>();
+        go1.transform.parent = this.transform;
+        go1.transform.localPosition = new Vector3(-4f, iconStatusObject.transform.localPosition.y - 2.5f, -10);
+        petEmotion.gameObject.SetActive(false);
+
         iconStatusObject.transform.parent = charObject.transform.GetChild(0);
         data.petName = GameManager.instance.GetPet(data.realId).petName;
         GameObject nameObject = GameObject.Instantiate(Resources.Load("Prefabs/Pets/PetNamePrefab")) as GameObject;
@@ -220,17 +229,26 @@ public class CharController : MonoBehaviour
         petNameText = nameObject.GetComponent<TextMeshPro>();
         petNameText.text = data.petName;
 
+ 
         nameObject.transform.SetParent(this.transform);
         if (iconStatusObject != null)
         {
             iconStatusObject.enabled = false;
             iconStatusObject.gameObject.SetActive(false);
             originalStatusScale = iconStatusObject.transform.localScale;
+
             GameObject go2 = Instantiate(Resources.Load("Prefabs/Pets/PetStatusPrefab")) as GameObject;
             charStatus = go2.GetComponent<CharStatus>();
             go2.transform.parent = iconStatusObject.transform;
             go2.transform.localPosition = new Vector3(0, 0, -10);
+
+            emotionIcons[0] = Resources.Load<Sprite>("Icons/Status/Happy") as Sprite;
+            emotionIcons[1] = Resources.Load<Sprite>("Icons/Status/Normal") as Sprite;
+            emotionIcons[2] = Resources.Load<Sprite>("Icons/Status/Sad") as Sprite;
+
         }
+
+
     }
 
 
@@ -275,17 +293,27 @@ public class CharController : MonoBehaviour
             }
         }
 
-        if(data.Health > data.MaxHealth * 0.1f && data.Damage < data.MaxDamage * 0.9f && data.Food > 0.1f * data.MaxFood && data.Water > 0.1f * data.MaxWater
-            && data.Pee < data.MaxPee * 0.9f && data.Shit < data.MaxShit * 0.9f && data.Toy > data.MaxToy * 0.1f && data.Sleep > data.MaxSleep * 0.1f && data.Dirty < data.MaxDirty * 0.9f)
+        if(emotionStatus != EmotionStatus.Sad)
         {
             if(timeLove > maxTimeLove)
             {
-                ItemManager.instance.SpawnHeart(data.RateHappy + data.level / 5, this.transform.position);
+                StartCoroutine(OnEmotion());
+                ItemManager.instance.SpawnPetHappy(this,data.RateHappy + data.level / 5);
                 timeLove = 0;
             }else
                 timeLove += Time.deltaTime;
         }
 
+        if(emotionStatus == EmotionStatus.Happy)
+        {
+            petEmotion.sprite = emotionIcons[0];
+        }else if(emotionStatus == EmotionStatus.Normal)
+        {
+            petEmotion.sprite = emotionIcons[1];
+        }else
+        {
+            petEmotion.sprite = emotionIcons[2];
+        }
 
         CalculateDirection();
 
@@ -419,8 +447,11 @@ public class CharController : MonoBehaviour
         data.actionType = this.actionType;
         data.position = this.transform.position;
         data.scalePosition = charScale.scalePosition;
-        data.height = charScale.height;
-
+        if (equipment != null)
+            data.equipmentId = equipment.itemID;
+        else
+            data.equipmentId = 0;
+                
     }
 
 
@@ -639,18 +670,20 @@ public class CharController : MonoBehaviour
 
     protected virtual void CalculateStatus()
     {
-
+        lastEmotionStatus = emotionStatus;
         lastIconStatus = iconStatus;
 
         if (actionType == ActionType.Injured)
         {
             iconStatus = IconStatus.Bandage;
             charStatus.SetProgress((data.MaxDamage - data.Damage) / data.MaxDamage);
+            emotionStatus = EmotionStatus.Sad;
         }
         else if (actionType == ActionType.Sick)
         {
             iconStatus = IconStatus.MedicineBox;
             charStatus.SetProgress(data.Health / data.MaxHealth);
+            emotionStatus = EmotionStatus.Sad;
         }
         else if (actionType == ActionType.OnBath)
         {
@@ -691,95 +724,114 @@ public class CharController : MonoBehaviour
         {
             iconStatus = IconStatus.Bandage;
             charStatus.SetProgress((data.MaxDamage - data.Damage) / data.MaxDamage);
+            emotionStatus = EmotionStatus.Sad;
         }
         else if (data.Health < 0.1f * data.MaxHealth)
         {
             iconStatus = IconStatus.MedicineBox;
             charStatus.SetProgress(data.Health / data.MaxHealth);
+            emotionStatus = EmotionStatus.Sad;
         }
         else if (data.Pee > 0.9f * data.MaxPee)
         {
             iconStatus = IconStatus.Toilet;
             charStatus.SetProgress((data.MaxPee - data.Pee) / data.MaxPee);
+            emotionStatus = EmotionStatus.Sad;
         }
         else if (data.Pee > 0.9f * data.MaxShit)
         {
             iconStatus = IconStatus.Toilet;
             charStatus.SetProgress((data.MaxShit - data.Shit) / data.MaxShit);
+            emotionStatus = EmotionStatus.Sad;
         }
         else if (data.Food < 0.1f * data.MaxFood)
         {
             iconStatus = IconStatus.Food;
             charStatus.SetProgress(data.Food / data.MaxFood);
+            emotionStatus = EmotionStatus.Sad;
         }
         else if (data.Water < 0.1f * data.MaxWater)
         {
             iconStatus = IconStatus.Drink;
             charStatus.SetProgress(data.Water / data.MaxWater);
+            emotionStatus = EmotionStatus.Sad;
         }
         else if (data.Sleep < 0.1f * data.MaxSleep)
         {
             iconStatus = IconStatus.Bed;
             charStatus.SetProgress(data.Sleep / data.MaxSleep);
+            emotionStatus = EmotionStatus.Sad;
         }
         else if (data.Toy < 0.1f * data.MaxToy)
         {
             iconStatus = IconStatus.Toy;
             charStatus.SetProgress(data.Toy / data.MaxToy);
+            emotionStatus = EmotionStatus.Sad;
         }
         else if (data.Dirty > 0.9f * data.MaxDirty)
         {
             iconStatus = IconStatus.Bath;
             charStatus.SetProgress((data.MaxDirty - data.Dirty) / data.MaxDirty);
+            emotionStatus = EmotionStatus.Sad;
         }
         else if (data.Damage > 0.7f * data.MaxDamage)
         {
             iconStatus = IconStatus.Bandage;
             charStatus.SetProgress((data.MaxDamage - data.Damage) / data.MaxDamage);
+            emotionStatus = EmotionStatus.Normal;
         }
         else if (data.Health < 0.3f * data.MaxHealth)
         {
             iconStatus = IconStatus.MedicineBox;
             charStatus.SetProgress(data.Health / data.MaxHealth);
+            emotionStatus = EmotionStatus.Normal;
         }
         else if (data.Pee > 0.7f * data.MaxPee)
         {
             iconStatus = IconStatus.Toilet;
             charStatus.SetProgress((data.MaxPee - data.Pee) / data.MaxPee);
+            emotionStatus = EmotionStatus.Normal;
         }
         else if (data.Pee > 0.7f * data.MaxShit)
         {
             iconStatus = IconStatus.Toilet;
             charStatus.SetProgress((data.MaxShit - data.Shit) / data.MaxShit);
+            emotionStatus = EmotionStatus.Normal;
         }
         else if (data.Food < 0.3f * data.MaxFood)
         {
             iconStatus = IconStatus.Food;
             charStatus.SetProgress(data.Food / data.MaxFood);
+            emotionStatus = EmotionStatus.Normal;
         }
         else if (data.Water < 0.3f * data.MaxWater)
         {
             iconStatus = IconStatus.Drink;
             charStatus.SetProgress(data.Water / data.MaxWater);
+            emotionStatus = EmotionStatus.Normal;
         }
         else if (data.Sleep < 0.3f * data.MaxSleep)
         {
             iconStatus = IconStatus.Bed;
             charStatus.SetProgress(data.Sleep / data.MaxSleep);
+            emotionStatus = EmotionStatus.Normal;
         }
         else if (data.Toy < 0.3f * data.MaxToy)
         {
             iconStatus = IconStatus.Toy;
             charStatus.SetProgress(data.Toy / data.MaxToy);
+            emotionStatus = EmotionStatus.Normal;
         }
         else if (data.Dirty > 0.7f * data.MaxDirty)
         {
             iconStatus = IconStatus.Bath;
             charStatus.SetProgress((data.MaxDirty - data.Dirty) / data.MaxDirty);
+            emotionStatus = EmotionStatus.Normal;
         }
         else
         {
             iconStatus = IconStatus.None;
+            emotionStatus = EmotionStatus.Happy;
         }
 
 
@@ -788,8 +840,19 @@ public class CharController : MonoBehaviour
             LoadIconStatus();
         }
 
+        if(emotionStatus != lastEmotionStatus)
+        {
+            StartCoroutine(OnEmotion());
+        }
         //iconStatusObject.transform.localScale = originalStatusScale / charScale.scaleAgeFactor;
 
+    }
+
+    IEnumerator OnEmotion()
+    {
+        petEmotion.gameObject.SetActive(true);
+        yield return new WaitForSeconds(1);
+        petEmotion.gameObject.SetActive(false);
     }
 
     void LoadIconStatus()
@@ -799,7 +862,6 @@ public class CharController : MonoBehaviour
         {
             iconStatusObject.gameObject.SetActive(true);
             charStatus.Load(iconStatus);
-            iconStatusObject.sprite = Resources.Load<Sprite>("Icons/Status/" + iconStatus.ToString()) as Sprite;
         }
 
         if (iconStatus == IconStatus.None)

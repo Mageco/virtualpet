@@ -647,6 +647,43 @@ public class GameManager : MonoBehaviour
         return realId;
     }
 
+    public int AddItem(int id,int number, string key)
+    {
+        int realId = 0;
+        if (IsOK(key))
+        {
+            if (DataHolder.GetItem(id).consume)
+            {
+                bool isExist = false;
+
+                foreach (PlayerItem item in myPlayer.items)
+                {
+                    if (item.itemId == id)
+                    {
+                        item.state = ItemState.Have;
+                        item.number += number;
+                        isExist = true;
+                        realId = item.realId;
+                    }
+                }
+                if (!isExist)
+                {
+                    PlayerItem item = new PlayerItem();
+                    item.itemId = id;
+                    item.realId = GetRealItemId();
+                    item.state = ItemState.Have;
+                    item.itemType = DataHolder.GetItem(id).itemType;
+                    item.isConsumable = DataHolder.GetItem(id).consume;
+                    item.number = number;
+                    Debug.Log("Not Exist " + id);
+                    myPlayer.items.Add(item);
+                    realId = item.realId;
+                }
+            }
+        }
+        return realId;
+    }
+
     public PlayerItem GetItem(int realId)
     {
         foreach (PlayerItem item in myPlayer.items)

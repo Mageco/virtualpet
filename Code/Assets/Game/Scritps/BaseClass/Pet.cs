@@ -40,7 +40,7 @@ public class Pet : BaseModel
     public float shit = 0;
     public float pee = 0;
     public float dirty = 10;
-    public float toy = 10;
+    public float toy = 50;
     public System.DateTime timeSick;
     public float maxTimeSick = 3600;
     public bool isNew = false;
@@ -80,7 +80,8 @@ public class Pet : BaseModel
     public ActionType actionType = ActionType.None;
     public Vector3 position = Vector3.zero;
     public Vector3 scalePosition = Vector3.zero;
-    public float height = 0;
+    public int equipmentId = 0;
+    public InteractType interactType = InteractType.None;
 
     public Pet()
     {

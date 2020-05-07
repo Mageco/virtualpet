@@ -27,6 +27,7 @@ public class InventoryUI : MonoBehaviour
     public Image bedIcon;
     public Image strengthIcon;
     public Image plusCoinIcon;
+    public Image toyIcon;
 
     public Text happyText;
     public Text sickText;
@@ -38,6 +39,7 @@ public class InventoryUI : MonoBehaviour
     public Text bedText;
     public Text strengthText;
     public Text plusCoinText;
+    public Text toyText;
     bool isBusy = false;
 
     void Awake()
@@ -145,8 +147,8 @@ public class InventoryUI : MonoBehaviour
         {
             if (item.value > 0)
             {
-                heartIcon.gameObject.SetActive(true);
-                happyText.text = "+" + item.value.ToString("F0");
+                toyIcon.gameObject.SetActive(true);
+                toyText.text = "+" + item.value.ToString("F0");
             }
         }
         else if (item.itemType == ItemType.Toilet)
@@ -196,6 +198,7 @@ public class InventoryUI : MonoBehaviour
         cleanIcon.gameObject.SetActive(false);
         strengthIcon.gameObject.SetActive(false);
         plusCoinIcon.gameObject.SetActive(false);
+        toyIcon.gameObject.SetActive(false);
     }
 
     public void OnBuy()

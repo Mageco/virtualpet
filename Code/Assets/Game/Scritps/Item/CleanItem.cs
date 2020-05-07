@@ -49,10 +49,6 @@ public class CleanItem : BaseFloorItem
 			
 	}
 
-    protected override void LateUpdate()
-    {
-        
-    }
 
     void OnTriggerStay2D(Collider2D other) {
 		if (other.GetComponent <ItemDirty>() != null) {

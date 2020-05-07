@@ -22,6 +22,7 @@ public class ItemManager : MonoBehaviour
     public GameObject bandageEffectPrefab;
     public GameObject guidePrefab;
     public GameObject petGiftPrefab;
+    public GameObject petHappyPrefab;
 
     public Vector2 roomBoundX = new Vector2(-50, 80);
     public Vector2 roomBoundY = new Vector2(-26, 0);
@@ -119,7 +120,7 @@ public class ItemManager : MonoBehaviour
             timeDirty += Time.deltaTime;
         }
 
-        if (timeChest > maxTimeChest)
+        if (timeChest > maxTimeChest && GameManager.instance.myPlayer.level >=2)
         {
             SpawnChest();
             timeChest = 0;
@@ -359,6 +360,12 @@ public class ItemManager : MonoBehaviour
             float y = Random.Range(gardenBoundY.x + 3, gardenBoundY.y);
             r = new Vector3(x, y, 0);
         }
+        else if (type == AreaType.GardenRight)
+        {
+            float x = Random.Range(roomBoundX.y + 10,gardenBoundX.y - 10);
+            float y = Random.Range(gardenBoundY.x + 3, gardenBoundY.y);
+            r = new Vector3(x, y, 0);
+        }
         else if(type == AreaType.Room)
         {
             float x = Random.Range(roomBoundX.x + 10, roomBoundX.y - 10);
@@ -472,6 +479,12 @@ public class ItemManager : MonoBehaviour
         go.GetComponent<AutoDestroy>().liveTime = time;
     }
 
+    public void SpawnPetHappy(CharController pet, int value)
+    {
+        GameObject go = Instantiate(petHappyPrefab, pet.transform.position, Quaternion.identity);
+        go.GetComponent<PetHappyItem>().Load(value);
+    }
+
     public void SpawnDirty()
     {
         Vector3 pos = GetRandomPoint(AreaType.All) + new Vector3(Random.Range(-1, 1), Random.Range(-1, 1), 0);
@@ -484,11 +497,11 @@ public class ItemManager : MonoBehaviour
         ChestItem[] chests = FindObjectsOfType<ChestItem>();
         if (chests.Length > 2)
             return;
-        Vector3 pos = GetRandomPoint(AreaType.Garden);
+        Vector3 pos = GetRandomPoint(AreaType.GardenRight);
         bool isOk = false;
         while (!isOk)
         {
-            pos = GetRandomPoint(AreaType.Garden);
+            pos = GetRandomPoint(AreaType.GardenRight);
             isOk = true;
             for(int i = 0; i < chests.Length; i++)
             {
@@ -673,6 +686,8 @@ public class ItemManager : MonoBehaviour
             gardenBoundX = new Vector2(-270, 150);
             cameraBoundX = new Vector2(-320, 200);
         }
+        GetActiveCamera().boundX = cameraBoundX;
+        GetActiveCamera().boundY = cameraBoundY;
     }
 
     #region Pet
@@ -740,5 +755,8 @@ public class ItemManager : MonoBehaviour
 
 
     #endregion
-
+    public void OnSpinWheelPanel()
+    {
+        UIManager.instance.OnSpinWheelPanel();
+    }
 }

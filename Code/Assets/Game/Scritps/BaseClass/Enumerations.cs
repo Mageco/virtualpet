@@ -32,6 +32,7 @@ public enum RewardType {None, Minigame, Chest, Sick, Injured, Map,Welcome,Servic
 public enum ServiceType {Instructor,Doctor,Chef,HouseKeeper,PetSitter,Exp};
 public enum AdDistribute {None,Unity,Admob};
 public enum RareType { Common, Rare,Epic,Legend};
-public enum AreaType {Room,Garden,Lake,All,Camera,Fly,Wall};
+public enum AreaType {Room,Garden,Lake,All,Camera,Fly,Wall,GardenRight};
 public enum ItemTag {None=0,Hot=1,Sale=2,New=3};
 public enum DailyQuestState {None,Started,Ready,Collected};
+public enum EmotionStatus { Happy,Normal,Sad};

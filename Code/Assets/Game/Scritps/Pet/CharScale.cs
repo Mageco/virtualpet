@@ -69,7 +69,7 @@ public class CharScale : MonoBehaviour
 			}
 			if(character.shadow != null){
 				Vector3 pos = scalePosition;
-				pos.z = pos.y * 10;
+				pos.z = pos.y * 10 - 30;
 				character.shadow.transform.position = pos;
 				character.shadow.transform.localScale = character.originalShadowScale * (1f - 0.5f*height/maxHeight); 
             }
