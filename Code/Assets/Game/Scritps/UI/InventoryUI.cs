@@ -40,6 +40,7 @@ public class InventoryUI : MonoBehaviour
     public Text strengthText;
     public Text plusCoinText;
     public Text toyText;
+    public Text number;
     bool isBusy = false;
 
     void Awake()
@@ -69,8 +70,21 @@ public class InventoryUI : MonoBehaviour
         }
         else
         {
-            equipButton.gameObject.SetActive(true);
-            equipButton.interactable = true;
+            if(d.itemType == ItemType.QuestItem)
+            {
+                price.gameObject.SetActive(true);
+                price.text = (item.buyPrice / 2 * d.number).ToString();
+                sellButton.gameObject.SetActive(true);
+                sellButton.interactable = true;
+                number.gameObject.SetActive(true);
+                number.text = d.number.ToString();
+            }
+            else
+            {
+                equipButton.gameObject.SetActive(true);
+                equipButton.interactable = true;
+            }
+
         }
 
         if ((item.itemType == ItemType.Room && GameManager.instance.GetItemNumber(ItemType.Room) == 1) || (item.itemType == ItemType.Gate && GameManager.instance.GetItemNumber(ItemType.Gate) == 1) || (item.itemType == ItemType.Board && GameManager.instance.GetItemNumber(ItemType.Board) == 1))
@@ -199,6 +213,7 @@ public class InventoryUI : MonoBehaviour
         strengthIcon.gameObject.SetActive(false);
         plusCoinIcon.gameObject.SetActive(false);
         toyIcon.gameObject.SetActive(false);
+        number.gameObject.SetActive(false);
     }
 
     public void OnBuy()

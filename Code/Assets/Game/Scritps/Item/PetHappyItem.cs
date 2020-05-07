@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class PetHappyItem : MonoBehaviour
 {
-    int value = 0;
+    public int id = 0;
+    [HideInInspector]
+    public int value = 0;
     MSpriteButton button;
     Animator animator;
 
@@ -36,7 +38,7 @@ public class PetHappyItem : MonoBehaviour
     private void Update()
     {
         Vector3 pos = this.transform.position;
-        pos.z = button.transform.position.y * 10 - 2;
+        pos.z = button.transform.position.y * 10 - 10;
         this.transform.position = pos;
     }
 }

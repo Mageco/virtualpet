@@ -25,9 +25,8 @@ public class InventoryPanel : MonoBehaviour
                 catType.Add(item.itemType);
             }
         }
-
-
     }
+
     void Start()
     {
 

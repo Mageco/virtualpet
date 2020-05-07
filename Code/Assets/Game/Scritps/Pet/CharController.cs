@@ -171,9 +171,21 @@ public class CharController : MonoBehaviour
 
     public void LoadCharObject()
     {
+        iconStatusObject.transform.parent = this.transform;
+
         if (charObject != null)
             Destroy(charObject);
 
+        if (petNameText != null)
+            Destroy(petNameText.gameObject);
+
+        if(petEmotion != null)
+            Destroy(petEmotion.gameObject);
+
+        if (charStatus != null)
+            Destroy(charStatus.gameObject);
+
+        
 
         charObject = Instantiate(skinPrefabs[GameManager.instance.GetPet(data.realId).accessoryId]) as GameObject;
         charObject.transform.parent = this.transform;
@@ -298,7 +310,7 @@ public class CharController : MonoBehaviour
             if(timeLove > maxTimeLove)
             {
                 StartCoroutine(OnEmotion());
-                ItemManager.instance.SpawnPetHappy(this,data.RateHappy + data.level / 5);
+                ItemManager.instance.SpawnPetHappy(this.transform.position,data.RateHappy + data.level / 5);
                 timeLove = 0;
             }else
                 timeLove += Time.deltaTime;
@@ -2078,8 +2090,10 @@ public class CharController : MonoBehaviour
             while (equipment != null && !isAbort && data.Toy < data.MaxToy)
             {
                 equipment.OnActive();
-                    
-                MageManager.instance.PlaySound3D(charType.ToString() + "_Supprised", false,this.transform.position);
+
+                int r = Random.Range(0, 100);
+                if(r > 80)
+                    MageManager.instance.PlaySound3D(charType.ToString() + "_Supprised", false,this.transform.position);
                 MageManager.instance.PlaySound3D("Drag", false,this.transform.position);
                 //anim.Play("Teased", 0);
                 anim.Play("Play_" + equipment.toyType.ToString());

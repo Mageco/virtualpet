@@ -128,6 +128,7 @@ public class UIManager : MonoBehaviour
     public GameObject shopButton;
     public GameObject callButton;
     public GameObject remotePanel;
+    public GameObject inventoryButton;
 
     public AvatarUI avatarUI;
     public AvatarUI remoteAvatarUI;

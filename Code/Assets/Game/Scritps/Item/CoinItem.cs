@@ -18,24 +18,24 @@ public class CoinItem : MonoBehaviour
         else
             coinNumber.text = value.ToString();
 
-        if (value < 0)
-            coinNumber.color = Color.red;
-
         int number = Mathf.Abs(value);
-        if (number > 10)
-            number = 10;
-        emissionModule = particle.emission;
-        burst = emissionModule.GetBurst(0);
-        Debug.Log("Burst Count " + burst.count.constant);
-        burst.minCount = (short)number;
-        burst.maxCount = (short)number;
-        var c = burst.count;
-        c.mode = ParticleSystemCurveMode.Constant;
-        c.constant = number;
-        c.constantMin = number;
-        c.constantMax = number;
-        emissionModule.SetBurst(0, burst);
-        particle.Play();
+
+        if(particle != null)
+        {
+            emissionModule = particle.emission;
+            burst = emissionModule.GetBurst(0);
+            Debug.Log("Burst Count " + burst.count.constant);
+            burst.minCount = (short)number;
+            burst.maxCount = (short)number;
+            var c = burst.count;
+            c.mode = ParticleSystemCurveMode.Constant;
+            c.constant = number;
+            c.constantMin = number;
+            c.constantMax = number;
+            emissionModule.SetBurst(0, burst);
+            particle.Play();
+        }
+
     }
     // Start is called before the first frame update
     IEnumerator Start()

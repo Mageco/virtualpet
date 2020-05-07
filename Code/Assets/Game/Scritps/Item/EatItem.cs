@@ -87,7 +87,7 @@ public class EatItem : BaseFloorItem
 			{
                 if(price > 0)
                 {
-					ItemManager.instance.SpawnCoin(this.transform.position, -price);
+					ItemManager.instance.SpawnCoinPaid(this.transform.position, -price);
 					GameManager.instance.AddCoin(-price, Utils.instance.Md5Sum(GameManager.instance.count.ToString() + GameManager.instance.myPlayer.playTime.ToString() + GameManager.instance.myPlayer.Happy.ToString() + "M@ge2013"));
 				}
 				if (foodAmount < maxfoodAmount - 1)

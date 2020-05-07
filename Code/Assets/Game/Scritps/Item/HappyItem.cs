@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class HappyItem : MonoBehaviour
-{
+{ 
     public TextMesh happyNumber;
     public int lifeTime = 1;
     public ParticleSystem particle;

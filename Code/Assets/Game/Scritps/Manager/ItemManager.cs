@@ -23,6 +23,7 @@ public class ItemManager : MonoBehaviour
     public GameObject guidePrefab;
     public GameObject petGiftPrefab;
     public GameObject petHappyPrefab;
+    public GameObject coinPaidPrefab;
 
     public Vector2 roomBoundX = new Vector2(-50, 80);
     public Vector2 roomBoundY = new Vector2(-26, 0);
@@ -479,10 +480,16 @@ public class ItemManager : MonoBehaviour
         go.GetComponent<AutoDestroy>().liveTime = time;
     }
 
-    public void SpawnPetHappy(CharController pet, int value)
+    public void SpawnPetHappy(Vector3 pos, int value)
     {
-        GameObject go = Instantiate(petHappyPrefab, pet.transform.position, Quaternion.identity);
+        GameObject go = Instantiate(petHappyPrefab, pos, Quaternion.identity);
         go.GetComponent<PetHappyItem>().Load(value);
+    }
+
+    public void SpawnCoinPaid(Vector3 pos, int value)
+    {
+        GameObject go = Instantiate(coinPaidPrefab, pos, Quaternion.identity);
+        go.GetComponent<CoinItem>().Load(value);
     }
 
     public void SpawnDirty()
@@ -554,6 +561,18 @@ public class ItemManager : MonoBehaviour
             GameManager.instance.myPlayer.itemSaveDatas.Add(data);
         }
 
+        PetHappyItem[] happies = FindObjectsOfType<PetHappyItem>();
+        for (int i = 0; i < happies.Length; i++)
+        {
+            ItemSaveData data = new ItemSaveData();
+            data.id = happies[i].id;
+            data.position = happies[i].transform.position;
+            data.itemType = ItemSaveDataType.Happy;
+            data.value = happies[i].value;
+            GameManager.instance.myPlayer.itemSaveDatas.Add(data);
+        }
+
+
         SaveItemData();
     }
 
@@ -606,6 +625,10 @@ public class ItemManager : MonoBehaviour
                             fruits[i].Load();
                         }
                     }
+                }
+                else if (item.itemType == ItemSaveDataType.Happy)
+                {
+                    SpawnPetHappy(item.position, (int)item.value);
                 }
                 else if (item.itemType == ItemSaveDataType.Equipment)
                 {

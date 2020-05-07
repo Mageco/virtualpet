@@ -71,7 +71,7 @@ public class Pet : BaseModel
     [HideInInspector]
     public float maxToy = 100;
     [HideInInspector]
-    public int levelRate = 2;
+    public int levelRate = 5;
 
 
     //public CharController character;

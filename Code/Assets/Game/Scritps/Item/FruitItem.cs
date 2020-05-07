@@ -19,6 +19,8 @@ public class FruitItem : MonoBehaviour
     CircleCollider2D col;
     Vector3 clickPosition;
     public int fruidId = 1;
+    Vector3 originalPosition;
+    Transform parent;
 
     void Awake(){
         col = this.GetComponent<CircleCollider2D>();
@@ -29,7 +31,8 @@ public class FruitItem : MonoBehaviour
         step = Random.Range(0, steps.Length);
         time = Random.Range(0, maxTime[step]);
         OnStep();
-       
+        originalPosition = this.transform.position;
+        parent = this.transform.parent;
     }
     // Start is called before the first frame update
     void Start()
@@ -92,13 +95,7 @@ public class FruitItem : MonoBehaviour
     }
 
     void Pick(){
-        step = 0;
-        time = 0;
-        OnStep();
-        //Item item = DataHolder.GetItem(fruidId);
-        GameManager.instance.AddItem(fruidId,Utils.instance.Md5Sum(GameManager.instance.count.ToString() + GameManager.instance.myPlayer.playTime.ToString() + GameManager.instance.myPlayer.Happy.ToString() + "M@ge2013")); 
-        MageManager.instance.PlaySound("happy_collect_item_01",false);
-        GameManager.instance.LogAchivement(AchivementType.CollectFruit);
+        StartCoroutine(PickCouroutine());
     }
 
     private bool IsPointerOverUIObject()
@@ -142,5 +139,29 @@ public class FruitItem : MonoBehaviour
         {
             steps[step].transform.localScale = new Vector3(minScale, minScale, 1);
         }
+    }
+
+    IEnumerator PickCouroutine()
+    {
+        MageManager.instance.PlaySound("happy_collect_item_01", false);
+
+        this.transform.parent = Camera.main.transform;
+        Vector3 target = Camera.main.ScreenToWorldPoint(UIManager.instance.inventoryButton.transform.position) - Camera.main.transform.position;
+        target.z = -100;
+        while (Vector2.Distance(this.transform.localPosition, target) > 0.5)
+        {
+            this.transform.localPosition = Vector3.Lerp(this.transform.localPosition, target, 5 * Time.deltaTime);
+            yield return new WaitForEndOfFrame();
+        }
+
+        step = 0;
+        time = 0;
+        OnStep();
+        this.transform.parent = parent;
+        this.transform.position = originalPosition;
+
+        //Item item = DataHolder.GetItem(fruidId);
+        GameManager.instance.AddItem(fruidId, Utils.instance.Md5Sum(GameManager.instance.count.ToString() + GameManager.instance.myPlayer.playTime.ToString() + GameManager.instance.myPlayer.Happy.ToString() + "M@ge2013"));
+        GameManager.instance.LogAchivement(AchivementType.CollectFruit);
     }
 }

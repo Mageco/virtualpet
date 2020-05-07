@@ -15,7 +15,6 @@ public class SpinRewardPanel : MonoBehaviour
         icon.sprite = s;
     }
 
-
     public void Close()
     {
         this.GetComponent<Popup>().Close();
