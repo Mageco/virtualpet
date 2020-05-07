@@ -321,7 +321,7 @@ public class ItemUI : MonoBehaviour
         icon.sprite = Resources.Load<Sprite>(url) as Sprite;
         price.text = d.buyPrice.ToString();
         iconType.sprite = Resources.Load<Sprite>("Icons/ItemType/Pet_" + d.rareType.ToString());
-        Debug.Log("Icons/ItemType/Pet_" + d.rareType.ToString());
+        //Debug.Log("Icons/ItemType/Pet_" + d.rareType.ToString());
 
         OffAllIcon();
 

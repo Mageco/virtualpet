@@ -9,19 +9,23 @@ public class FruitItem : MonoBehaviour
     public int id = 0;
     public GameObject[] steps;
     public int step = 0;
-    public float[] maxTime;
+    float[] maxTime;
     public float time = 0;
     public int scaleStepId = 1;
-    public float minScale = 0.1f;
-    public float maxScale = 1f;
-    public float maxTimeCalculated = 1;
+    float minScale = 0.1f;
+    float maxScale = 1f;
+    float maxTimeCalculated = 1;
     float timeCaculated = 0;
-    CircleCollider2D collider;
+    CircleCollider2D col;
     Vector3 clickPosition;
     public int coin = 1;
 
     void Awake(){
-        collider = this.GetComponent<CircleCollider2D>();
+        col = this.GetComponent<CircleCollider2D>();
+        maxTime = new float[3];
+        maxTime[0] = 120;
+        maxTime[1] = 320;
+        maxTime[2] = 10;
         step = Random.Range(0, steps.Length);
         time = Random.Range(0, maxTime[step]);
         OnStep();
@@ -124,10 +128,10 @@ public class FruitItem : MonoBehaviour
 
         if (step < steps.Length - 1)
         {
-            collider.enabled = false;
+            col.enabled = false;
         }
         else
-            collider.enabled = true;
+            col.enabled = true;
     }
 
     void Grow()

@@ -10,7 +10,6 @@ public class Item
 	public string iconUrl = "";
 	public string prefabName = "";
 	public LanguageItem[] languageItem = new LanguageItem[0];
-	public int skinId = 0;
 	public ItemType itemType = ItemType.Diamond;
 	public PriceType priceType = PriceType.Coin;
     public ItemState itemState = ItemState.OnShop;
@@ -21,7 +20,6 @@ public class Item
 	public ItemTag itemTag = ItemTag.None;
 	public int shopOrder = 0;
 	public int levelRequire = 0;
-	public bool isOnShop = true;
 
 	//All item properties
 	public float value = 0; //Value can be food amount, cleaness 

@@ -81,12 +81,17 @@ public class ItemData : BaseData
 			return;
 
 		items[items.Length-1].category = items[index].category;
-		items [items.Length - 1].languageItem = new LanguageItem[ items [index].languageItem.Length];
-		for (int i = 0; i < items [index].languageItem.Length; i++) {
-			items [items.Length - 1].languageItem[i].Description = items [index].languageItem[i].Description;
-			items [items.Length - 1].languageItem[i].Name = items [index].languageItem[i].Name;
-		}
-
+		items[items.Length - 1].buyPrice = items[index].buyPrice;
+		items[items.Length - 1].priceType = items[index].priceType;
+		items[items.Length - 1].sellPrice = items[index].sellPrice;
+		items[items.Length - 1].iconUrl = items[index].iconUrl;
+		items[items.Length - 1].prefabName = items[index].prefabName;
+		items[items.Length - 1].value = items[index].value;
+		items[items.Length - 1].itemType = items[index].itemType;
+		items[items.Length - 1].isAvailable = items[index].isAvailable;
+		items[items.Length - 1].consume = items[index].consume;
+		items[items.Length - 1].itemTag = items[index].itemTag;
+		items[items.Length - 1].levelRequire = items[index].levelRequire;
 	}
 
 	public override int GetDataCount()

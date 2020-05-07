@@ -117,7 +117,7 @@ public class CharController : MonoBehaviour
 
         if (!GameManager.instance.isGuest && ES2.Exists(DataHolder.GetPet(data.iD).GetName(0) + data.realId.ToString()))
         {
-            if (float.Parse(GameManager.instance.myPlayer.version) < 1.20f)
+            if (float.Parse(GameManager.instance.myPlayer.version) < 2.0f)
             {
                 Pet p = new Pet(pet.iD);
                 p.realId = pet.realId;
@@ -130,6 +130,7 @@ public class CharController : MonoBehaviour
                 p.realId = pet.realId;
                 p.level = pet.level;
                 this.data = p;
+                Debug.Log("Load Pet Data" + "DataHolder.GetPet(data.iD).GetName(0)");
             }
         }
         else
@@ -277,7 +278,6 @@ public class CharController : MonoBehaviour
         if(data.Health > data.MaxHealth * 0.1f && data.Damage < data.MaxDamage * 0.9f && data.Food > 0.1f * data.MaxFood && data.Water > 0.1f * data.MaxWater
             && data.Pee < data.MaxPee * 0.9f && data.Shit < data.MaxShit * 0.9f && data.Toy > data.MaxToy * 0.1f && data.Sleep > data.MaxSleep * 0.1f && data.Dirty < data.MaxDirty * 0.9f)
         {
-            Debug.Log("Love");
             if(timeLove > maxTimeLove)
             {
                 ItemManager.instance.SpawnHeart(data.RateHappy + data.level / 5, this.transform.position);
