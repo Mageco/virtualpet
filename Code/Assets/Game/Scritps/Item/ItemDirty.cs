@@ -45,6 +45,7 @@ public class ItemDirty : MonoBehaviour
     {
         if(Vector2.Distance(Camera.main.ScreenToWorldPoint(Input.mousePosition), clickPosition) < 1f)
         {
+			MageManager.instance.PlaySound3D("happy_collect_item_01", false, this.transform.position);
 			ItemManager.instance.SpawnStar(this.transform.position, 1);
 			Destroy(this.gameObject);
         }

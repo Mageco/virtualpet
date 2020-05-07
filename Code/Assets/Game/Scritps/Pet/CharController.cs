@@ -1555,6 +1555,7 @@ public class CharController : MonoBehaviour
             agent.transform.position = equipment.GetAnchorPoint(this).position;
             Debug.Log(equipment.GetAnchorPoint(this).position);
             equipment.OnActive();
+            MageManager.instance.PlaySound3D("Pee", false, this.transform.position);
         }
 
         while (this.data.Dirty > 0 && !isAbort)
@@ -1611,7 +1612,6 @@ public class CharController : MonoBehaviour
         if (!isAbort)
         {
             anim.Play("Pee", 0);
-            int soundid = MageManager.instance.PlaySound3D("Pee", true,this.transform.position);
             MageManager.instance.PlaySound3D("PeeDrop", false,this.transform.position);
             Debug.Log("Pee");
            
@@ -1623,7 +1623,6 @@ public class CharController : MonoBehaviour
                 data.Pee -= 10 * Time.deltaTime;
                 yield return new WaitForEndOfFrame();
             }
-            MageManager.instance.StopSound(soundid);
         }
 
         if (equipment != null && equipment.itemType == ItemType.Toilet)
@@ -1726,7 +1725,7 @@ public class CharController : MonoBehaviour
 
                 if (item != null && isContinue)
                 {
-                    int soundid = MageManager.instance.PlaySound3D("Eat", true, this.transform.position);
+                    MageManager.instance.PlaySound3D("Eat", false, this.transform.position);
                     anim.Play("Eat", 0);
                     yield return StartCoroutine(Wait(0.1f));
                     while (item != null && data.Food < data.MaxFood && !isAbort && isContinue)
@@ -1741,7 +1740,6 @@ public class CharController : MonoBehaviour
                             isContinue = false;
                         yield return new WaitForEndOfFrame();
                     }
-                    MageManager.instance.StopSound(soundid);
                     if (item != null)
                     {
                         equipment.RemovePet(this);
@@ -1795,7 +1793,7 @@ public class CharController : MonoBehaviour
 
                 if (item != null && isContinue)
                 {
-                    int soundid = MageManager.instance.PlaySound3D("Drink", true, this.transform.position);
+                    int soundid = MageManager.instance.PlaySound3D("Drink", false, this.transform.position);
                     anim.Play("Drink", 0);
                     yield return StartCoroutine(Wait(0.1f));
                     while (item != null && data.Water < data.MaxWater && !isAbort && isContinue)

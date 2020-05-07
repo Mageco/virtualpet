@@ -24,7 +24,7 @@ public enum AnimalType{Mouse,Fox,Eagle,Snake,Chicken,Bee};
 public enum RewardState{None,Ready,Received};
 public enum IconStatus{None,Food,Drink, MedicineBox, Bandage,Bath,Toilet,Bed,Toy};
 public enum ToyType{Jump,Ball,Car,Doll,SpaceShip,Wheel,Robot,Slider,Spring,Dance,Swing,Circle,Fun,Seesaw,Carrier,Sprinkler,Flying,None};
-public enum ItemSaveDataType{None,Pee,Shit,Rubbish,Food,Drink,Fruit,Equipment};
+public enum ItemSaveDataType{None,Pee,Shit,Rubbish,Food,Drink,Fruit,Equipment,Happy};
 public enum EquipmentState { Idle,Hold, Drag, Busy, Active }
 //public enum MovementType {TwoDirection,FourDirection,None};
 public enum MapType {House = 0,Forest=1,Lake=2,City=3,Mountain=4,Village=5,Cave=6,SunkenShip=7,Habor=8};
