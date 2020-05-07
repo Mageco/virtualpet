@@ -4,6 +4,9 @@ using UnityEngine;
 using UnityEngine.Purchasing;
 using System;
 using MageSDK.Client;
+using UnityEngine.Purchasing.Security;
+using Mage.Models.Users;
+using MageApi;
 
 public class PurchaseManager : MonoBehaviour, IStoreListener
 {
@@ -322,34 +325,82 @@ public class PurchaseManager : MonoBehaviour, IStoreListener
 
 	public PurchaseProcessingResult ProcessPurchase(PurchaseEventArgs args) 
 	{
-		// A consumable product has been purchased by this user.
-		for (int i = 0; i < consumableIds.Length; i++)
-		{
-			if (String.Equals(args.purchasedProduct.definition.id, consumableIds[i], StringComparison.Ordinal))
+
+		// if any receiver consumed this purchase we return the status
+		bool validPurchase = true;
+
+#if UNITY_ANDROID
+		validPurchase = false;
+		// Prepare the validator with the secrets we prepared in the Editor
+		// obfuscation window.
+		var validator = new CrossPlatformValidator(GooglePlayTangle.Data(),	AppleTangle.Data(), Application.identifier);
+
+		try {
+			// On Google Play, result has a single product ID.
+			// On Apple stores, receipts contain multiple products.
+			var result = validator.Validate(args.purchasedProduct.receipt);
+			string storedTransactionIDs = MageEngine.instance.GetUser().GetUserData(UserBasicData.StoredIAPTransactionIDs);
+			// For informational purposes, we list the receipt(s)
+			ApiUtils.Log("Receipt is valid. Contents:");
+			foreach (IPurchaseReceipt productReceipt in result) {
+
+				GooglePlayReceipt google = productReceipt as GooglePlayReceipt;
+				if (null != google) {
+					// This is Google's Order ID.
+					// Note that it is null when testing in the sandbox
+					// because Google's sandbox does not provide Order IDs.
+					// check if Transaction ID has been used
+					if (productReceipt.productID == args.purchasedProduct.definition.id &&
+                            !IsTransactionIDAlreadyUsed(google.transactionID, storedTransactionIDs))
+                        {
+                            validPurchase = true;
+							// update purchased transaction id
+							storedTransactionIDs += storedTransactionIDs + "#/#" + google.transactionID;
+							UserData purchasedId = new UserData(UserBasicData.StoredIAPTransactionIDs.ToString(), storedTransactionIDs, "MageEngine");
+							MageEngine.instance.UpdateUserData(purchasedId);
+                            break;
+                        }
+				}
+			}
+
+
+		} catch (IAPSecurityException) {
+			ApiUtils.Log("Invalid receipt, not unlocking content");
+			validPurchase = false;
+		}
+#endif
+
+		if (validPurchase) {
+			// A consumable product has been purchased by this user.
+			for (int i = 0; i < consumableIds.Length; i++)
 			{
-				Debug.Log(string.Format("ProcessPurchase: PASS. Product: '{0}'", args.purchasedProduct.definition.id));
-				// TODO: The non-consumable item has been successfully purchased, grant this item to the player.
-				OnPurchaseConsumableComplete(i,GetKey());
+				if (String.Equals(args.purchasedProduct.definition.id, consumableIds[i], StringComparison.Ordinal))
+				{
+					Debug.Log(string.Format("ProcessPurchase: PASS. Product: '{0}'", args.purchasedProduct.definition.id));
+					// TODO: The non-consumable item has been successfully purchased, grant this item to the player.
+					OnPurchaseConsumableComplete(i,GetKey());
+				}
+			}
+
+			// Or ... a subscription product has been purchased by this user.
+
+			for (int i = 0; i < subScriptionIds.Length; i++) {
+				if (String.Equals (args.purchasedProduct.definition.id, subScriptionIds [i], StringComparison.Ordinal)) {
+					Debug.Log (string.Format ("ProcessPurchase: PASS. Product: '{0}'", args.purchasedProduct.definition.id));
+					OnSuscriptionComplete (i);
+				}
+			}
+			// Or ... a non-consumable product has been purchased by this user.
+
+			for (int i = 0; i < nonConsumableIds.Length; i++) {
+				if (String.Equals (args.purchasedProduct.definition.id, nonConsumableIds[i], StringComparison.Ordinal)) {
+					Debug.Log (string.Format ("ProcessPurchase: PASS. Product: '{0}'", args.purchasedProduct.definition.id));
+					// TODO: The non-consumable item has been successfully purchased, grant this item to the player.
+					OnPurchaseComplete(i);
+				}
 			}
 		}
-
-		// Or ... a subscription product has been purchased by this user.
-
-		for (int i = 0; i < subScriptionIds.Length; i++) {
-			if (String.Equals (args.purchasedProduct.definition.id, subScriptionIds [i], StringComparison.Ordinal)) {
-				Debug.Log (string.Format ("ProcessPurchase: PASS. Product: '{0}'", args.purchasedProduct.definition.id));
-				OnSuscriptionComplete (i);
-			}
-		}
-		// Or ... a non-consumable product has been purchased by this user.
-
-		for (int i = 0; i < nonConsumableIds.Length; i++) {
-			if (String.Equals (args.purchasedProduct.definition.id, nonConsumableIds[i], StringComparison.Ordinal)) {
-				Debug.Log (string.Format ("ProcessPurchase: PASS. Product: '{0}'", args.purchasedProduct.definition.id));
-				// TODO: The non-consumable item has been successfully purchased, grant this item to the player.
-				OnPurchaseComplete(i);
-			}
-		}
+		
 
 		/*
 		// Or ... an unknown product has been purchased by this user. Fill in additional products here....
@@ -364,6 +415,19 @@ public class PurchaseManager : MonoBehaviour, IStoreListener
 		return PurchaseProcessingResult.Complete;
 	}
 
+	bool IsTransactionIDAlreadyUsed(string transactionID, string storedTransactionIDs)
+	{
+		string[] storedTransactionIdsSplits = storedTransactionIDs.Split(new string[] { "#/#" }, StringSplitOptions.None);
+
+		foreach (string alreadyUsedTransactionID in storedTransactionIdsSplits)
+		{
+			if (transactionID == alreadyUsedTransactionID)
+			{
+				return true;
+			}
+		}
+		return false;
+	}
 
 	public void OnPurchaseFailed(Product product, PurchaseFailureReason failureReason)
 	{

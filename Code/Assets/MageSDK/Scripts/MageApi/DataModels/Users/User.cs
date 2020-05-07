@@ -155,7 +155,8 @@ namespace Mage.Models.Users{
 	}
 
 	public enum UserBasicData {
-		Version
+		Version,
+		StoredIAPTransactionIDs
 	}
 }
 
