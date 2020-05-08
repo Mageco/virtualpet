@@ -18,6 +18,7 @@ public class Pet : BaseModel
     public ItemTag itemTag = ItemTag.None;
     public int[] requireEquipments = new int[0];
     public int[] requirePets = new int[0];
+    public int[] requireNumber = new int[0];
     public int requireValue = 0;
     public PriceType requireValueType = PriceType.Happy;
     //Common Data

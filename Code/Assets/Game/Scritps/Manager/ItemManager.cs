@@ -49,6 +49,7 @@ public class ItemManager : MonoBehaviour
 
     [HideInInspector]
     public bool isLoad = false;
+    float awayTime = 0;
 
     void Awake()
     {
@@ -67,18 +68,19 @@ public class ItemManager : MonoBehaviour
     {
         float t = 0;
         MageManager.instance.loadingBar.gameObject.SetActive(true);
-        while(!isLoad){
-            if(GameManager.instance.isLoad){
-                LoadItems();
-                LoadItemData();
-                LoadArea();
-                GameManager.instance.LoadPetObjects();
-                isLoad = true;
-            }
+        while(!GameManager.instance.isLoad)
+        {
             t += Time.deltaTime;
             MageManager.instance.loadingBar.UpdateProgress(t);
             yield return new WaitForEndOfFrame();
         }
+
+        awayTime = (float)(ApiManager.instance.GetServerTimeStamp() - startTime).TotalSeconds;
+        LoadItems();
+        LoadItemData(awayTime);
+        LoadArea();
+        GameManager.instance.LoadPetObjects();
+        isLoad = true;
 
         if (ES2.Exists("CameraPosition"))
         {
@@ -554,7 +556,7 @@ public class ItemManager : MonoBehaviour
         for (int i = 0; i < fruits.Length; i++)
         {
             ItemSaveData data = new ItemSaveData();
-            data.id = fruits[i].id;
+            data.id = i;
             data.itemType = ItemSaveDataType.Fruit;
             data.value = fruits[i].step;
             data.time = fruits[i].time;
@@ -582,7 +584,7 @@ public class ItemManager : MonoBehaviour
         GameManager.instance.SavePlayer();
     }
 
-    void LoadItemData(){
+    void LoadItemData(float awayTime){
 
 
         PlayerData data;
@@ -618,7 +620,7 @@ public class ItemManager : MonoBehaviour
                     FruitItem[] fruits = FindObjectsOfType<FruitItem>();
                     for (int i = 0; i < fruits.Length; i++)
                     {
-                        if (fruits[i].id == item.id)
+                        if (fruits[i].id == i)
                         {
                             fruits[i].step = (int)item.value;
                             fruits[i].time = item.time;

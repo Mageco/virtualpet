@@ -129,13 +129,10 @@ public class PetTab : BaseTab
             fold2 = EditorGUILayout.Foldout(fold2, "Collection");
             if (fold2)
             {
-                DataHolder.Pet(selection).requireValueType = (PriceType)EditorTab.EnumToolbar("Collet Price Type", (int)DataHolder.Pet(selection).requireValueType, typeof(PriceType));
-                DataHolder.Pet(selection).requireValue = EditorGUILayout.IntField("Collect price", DataHolder.Pet(selection).requireValue, GUILayout.Width(pw.mWidth));
-
-
                 if (GUILayout.Button("Add Require Equipment", GUILayout.Width(pw.mWidth * 0.7f)))
                 {
                     DataHolder.Pet(selection).requireEquipments = ArrayHelper.Add(1, DataHolder.Pet(selection).requireEquipments);
+                    DataHolder.Pet(selection).requireNumber = ArrayHelper.Add(0, DataHolder.Pet(selection).requireNumber);
                 }
 
 
@@ -143,18 +140,30 @@ public class PetTab : BaseTab
                 {
                     EditorGUILayout.BeginHorizontal();
                     if (lastSellection != selection)
-                        tempId = DataHolder.Items().GetItemPosition(DataHolder.Pet(selection).requireEquipments[i]);
+                        tempId = DataHolder.Items().GetItemPosition(DataHolder.Pet(selection).requireEquipments[i],ItemType.QuestItem);
 
+ 
                     if (tempId == -1)
                         tempId = 0;
 
-                    tempId = EditorGUILayout.Popup("Item", tempId, DataHolder.Items().GetNameList(true), GUILayout.Width(pw.mWidth));
+                    tempId = EditorGUILayout.Popup("Item", tempId, DataHolder.Items().GetNameListFilter(ItemType.QuestItem), GUILayout.Width(pw.mWidth));
 
-                    if (DataHolder.Item(tempId) != null)
-                        DataHolder.Pet(selection).requireEquipments[i] = DataHolder.Item(tempId).iD;
+                    if (DataHolder.Pet(selection).requireNumber.Length-1 < i)
+                    {
+                        DataHolder.Pet(selection).requireNumber = ArrayHelper.Add(0, DataHolder.Pet(selection).requireNumber);
+                    }
+                    DataHolder.Pet(selection).requireNumber[i] = EditorGUILayout.IntField("Number", DataHolder.Pet(selection).requireNumber[i], GUILayout.Width(pw.mWidth));
+
+
+                    if (DataHolder.GetItem(tempId, ItemType.QuestItem) != null)
+                    {
+                        DataHolder.Pet(selection).requireEquipments[i] = DataHolder.GetItem(tempId, ItemType.QuestItem).iD;
+                    }
+                        
                     if (GUILayout.Button("X", GUILayout.Width(pw.mWidth * 0.2f)))
                     {
                         DataHolder.Pet(selection).requireEquipments = ArrayHelper.Remove(i, DataHolder.Pet(selection).requireEquipments);
+                        DataHolder.Pet(selection).requireNumber = ArrayHelper.Remove(i, DataHolder.Pet(selection).requireNumber);
                     }
                     EditorGUILayout.EndHorizontal();
                 }
@@ -163,6 +172,7 @@ public class PetTab : BaseTab
                 EditorGUILayout.Separator();
                 EditorGUILayout.Separator();
 
+                /*
                 if (GUILayout.Button("Add Require Pets", GUILayout.Width(pw.mWidth * 0.7f)))
                 {
                     DataHolder.Pet(selection).requirePets = ArrayHelper.Add(1, DataHolder.Pet(selection).requirePets);
@@ -186,7 +196,7 @@ public class PetTab : BaseTab
                         DataHolder.Pet(selection).requirePets = ArrayHelper.Remove(i, DataHolder.Pet(selection).requirePets);
                     }
                     EditorGUILayout.EndHorizontal();
-                }
+                }*/
             }
             EditorGUILayout.EndVertical();
 
