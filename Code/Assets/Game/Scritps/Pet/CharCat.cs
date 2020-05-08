@@ -5,7 +5,7 @@ using UnityEngine;
 public class CharCat : CharController
 {
   
-
+    /*
     protected override IEnumerator Mouse()
     {
         bool isLove = false;
@@ -27,6 +27,7 @@ public class CharCat : CharController
         charScale.speedFactor = 1;
         CheckAbort();
     }
+
 
     protected override IEnumerator Patrol()
     {
@@ -68,5 +69,6 @@ public class CharCat : CharController
         }
         CheckAbort();
     }
+    */
 
 }

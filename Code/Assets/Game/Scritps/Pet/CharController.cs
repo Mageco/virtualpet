@@ -302,7 +302,7 @@ public class CharController : MonoBehaviour
             if (equipment != null && equipment.IsActive())
             {
                 int value = (int)DataHolder.GetItem(equipment.itemID).value;
-                data.Toy += 2 * value * Time.deltaTime;
+                data.Toy +=  value * Time.deltaTime * (2 - Mathf.Clamp(data.level/20f,0,1.5f));
             }
         }
 
@@ -311,7 +311,7 @@ public class CharController : MonoBehaviour
             if(timeLove > maxTimeLove && actionType != ActionType.Hold)
             {
                 StartCoroutine(OnEmotion());
-                ItemManager.instance.SpawnPetHappy(this.transform.position,data.RateHappy + data.level / 10);
+                ItemManager.instance.SpawnPetHappy(this.transform.position,(int)((data.RateHappy + data.level / 10) * maxTimeLove / 10f));
                 timeLove = 0;
             }else
                 timeLove += Time.deltaTime;
@@ -364,6 +364,7 @@ public class CharController : MonoBehaviour
     #region Data
     protected virtual void CalculateData()
     {
+        maxTimeLove = 10 * (1 + data.level/10);
 
         if (data.Food > 0 && data.Water > 0)
         {
@@ -1118,7 +1119,7 @@ public class CharController : MonoBehaviour
         if (charInteract.interactType != InteractType.None)
             return;
 
-        if (actionType == ActionType.Patrol || actionType == ActionType.Discover || actionType == ActionType.Drink || actionType == ActionType.Eat)
+        if (actionType == ActionType.Patrol || actionType == ActionType.Discover)
         {
             if (charType == CharType.Cat || charType == CharType.Dog || charType == CharType.Shamoyed || charType == CharType.Chihuhu)
             {
@@ -1630,7 +1631,7 @@ public class CharController : MonoBehaviour
             ItemManager.instance.SpawnPee(pos, pee);
             while (data.Pee > 0 && !isAbort)
             {
-                data.Pee -= (5 + value/10) * Time.deltaTime;
+                data.Pee -= (5 + value/10 + data.level/10f) * Time.deltaTime;
                 yield return new WaitForEndOfFrame();
             }
         }
@@ -1677,7 +1678,7 @@ public class CharController : MonoBehaviour
             MageManager.instance.PlaySound3D("Shit", false,this.transform.position);
             while (data.Shit > 0 && !isAbort)
             {
-                data.Shit -= (2 + value/20) * Time.deltaTime;
+                data.Shit -= (2 + value/20 + data.level / 20f) * Time.deltaTime;
                 yield return new WaitForEndOfFrame();
             }
             if (!isAbort)
@@ -1739,8 +1740,8 @@ public class CharController : MonoBehaviour
                     yield return StartCoroutine(Wait(0.1f));
                     while (item != null && data.Food < data.MaxFood && !isAbort && isContinue)
                     {
-                        data.Food += 2 * Time.deltaTime;
-                        item.Eat(2 * Time.deltaTime);
+                        data.Food += 2 * (1 + data.level/10f) * Time.deltaTime;
+                        item.Eat(2 * (1 + data.level / 10f) * Time.deltaTime);
                         if (!item.CanEat())
                         {
                             isContinue = false;
@@ -1807,8 +1808,8 @@ public class CharController : MonoBehaviour
                     yield return StartCoroutine(Wait(0.1f));
                     while (item != null && data.Water < data.MaxWater && !isAbort && isContinue)
                     {
-                        data.Water += 5 * Time.deltaTime;
-                        item.Eat(5 * Time.deltaTime);
+                        data.Water += 5 * (1 + data.level / 10f) * Time.deltaTime;
+                        item.Eat(5 * (1 + data.level / 10f) * Time.deltaTime);
                         if (!item.CanEat())
                         {
                             isContinue = false;
