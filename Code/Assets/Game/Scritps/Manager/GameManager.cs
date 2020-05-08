@@ -702,7 +702,17 @@ public class GameManager : MonoBehaviour
         {
             if (item.realId == realId)
             {
-                if (item.state == ItemState.Equiped)
+                if (item.isConsumable)
+                {
+                    if(item.number == 1)
+                    {
+                        myPlayer.items.Remove(item);
+                        ItemManager.instance.RemoveItem(item.realId);
+                    }else
+                    {
+                        item.number -= 1;
+                    }
+                }else if (item.state == ItemState.Equiped)
                 {
                     myPlayer.items.Remove(item);
                     ItemManager.instance.RemoveItem(item.realId);
@@ -720,7 +730,7 @@ public class GameManager : MonoBehaviour
             {
                 foreach(PlayerItem item1 in myPlayer.items)
                 {
-                    if (item != item1  && item.itemType == item1.itemType && (item.itemType == ItemType.Room || item.itemType == ItemType.Gate || item.itemType == ItemType.Board || item.itemType == ItemType.Clean))
+                    if (item != item1  && item.itemType == item1.itemType && (item.itemType == ItemType.Room || item.itemType == ItemType.Gate || item.itemType == ItemType.Board))
                     {
                         item1.state = ItemState.OnShop;
                         Debug.Log("Have " + item1.realId);
@@ -1104,29 +1114,6 @@ public class GameManager : MonoBehaviour
             Debug.Log("Load data from local");
             Debug.Log(MageEngine.instance.GetUser().ToJson());
             myPlayer = MageEngine.instance.GetUserData<PlayerData>();
-
-            if(myPlayer.pets.Count > 0)
-            {
-                foreach(Pet p in myPlayer.pets)
-                {
-                    PlayerPet pet = new PlayerPet(p.iD);
-                    pet.level = p.level;
-                    pet.realId = GetRealPetId();
-                    pet.itemState = p.itemState;
-                    pet.isNew = p.isNew;
-                    p.petName = DataHolder.GetPet(p.iD).GetName(0);
-                    myPlayer.petDatas.Add(pet);
-                }
-                myPlayer.pets.Clear();
-            }
-
-            if (myPlayer.minigameLevels.Length == 1)
-            {
-                for (int i = 0; i < 20; i++)
-                {
-                    myPlayer.minigameLevels = ArrayHelper.Add(0, myPlayer.minigameLevels);
-                }
-            }
         }
         else
         {
@@ -1134,7 +1121,37 @@ public class GameManager : MonoBehaviour
             LoadNewUser();
         }
 
-        foreach(PlayerItem item in myPlayer.items)
+        ConvertPlayer();
+
+
+    }
+
+    public void ConvertPlayer()
+    {
+        if (myPlayer.pets.Count > 0)
+        {
+            foreach (Pet p in myPlayer.pets)
+            {
+                PlayerPet pet = new PlayerPet(p.iD);
+                pet.level = p.level;
+                pet.realId = GetRealPetId();
+                pet.itemState = p.itemState;
+                pet.isNew = p.isNew;
+                p.petName = DataHolder.GetPet(p.iD).GetName(0);
+                myPlayer.petDatas.Add(pet);
+            }
+            myPlayer.pets.Clear();
+        }
+
+        if (myPlayer.minigameLevels.Length == 1)
+        {
+            for (int i = 0; i < 20; i++)
+            {
+                myPlayer.minigameLevels = ArrayHelper.Add(0, myPlayer.minigameLevels);
+            }
+        }
+
+        foreach (PlayerItem item in myPlayer.items)
         {
             if (item.realId == 0)
                 item.realId = GetRealItemId();
@@ -1154,13 +1171,33 @@ public class GameManager : MonoBehaviour
                 pet.accessories.Add(0);
             }
         }
+
+        if(myPlayer.achivements.Count == 0)
+        {
+            for (int i = 0; i < DataHolder.Achivements().GetDataCount(); i++)
+            {
+                PlayerAchivement a = new PlayerAchivement();
+                a.achivementId = DataHolder.Achivement(i).iD;
+                a.rewardState = RewardState.None;
+                a.achivementType = DataHolder.Achivement(i).achivementType;
+                a.order = DataHolder.Achivement(i).order;
+                myPlayer.achivements.Add(a);
+            }
+        }
+
+        if (GameManager.instance.myPlayer.dailyBonus.Count == 0)
+        {
+            for (int i = 0; i < 7; i++)
+            {
+                PlayerBonus b = new PlayerBonus();
+                GameManager.instance.myPlayer.dailyBonus.Add(b);
+            }
+        }
     }
 
     void LoadNewUser()
     {
-
         myPlayer = new PlayerData();
-        myPlayer.LoadData();
         myPlayer.version = Application.version;
         Debug.Log("Version " + myPlayer.version);
 

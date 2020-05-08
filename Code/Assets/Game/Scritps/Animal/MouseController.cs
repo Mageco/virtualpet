@@ -15,16 +15,18 @@ public class MouseController : MonoBehaviour
     Vector3 lastPosition;
 
     public float initZ = -6;
-    public float scaleFactor = 0.1f;
+    public float scaleFactor = 0.02f;
     Vector3 originalScale;
 
     EatItem foodItem;
 
     public GameObject shitPrefab;
+    public GameObject item;
 
     public MouseState state = MouseState.Idle;
 
     Animator anim;
+    public int minQuestId = -1;
 
     void Awake()
     {
@@ -35,6 +37,8 @@ public class MouseController : MonoBehaviour
         col.enabled = false;
         originalScale = this.transform.localScale;
         anim = this.body.GetComponent<Animator>();
+        item.SetActive(false);
+        item.transform.localPosition = new Vector3(0, 0, -10);
     }
 
     void Start()
@@ -87,7 +91,22 @@ public class MouseController : MonoBehaviour
     }
 
 
-
+    IEnumerator SpawnItem()
+    {
+        GameObject go = GameObject.Instantiate(item) as GameObject;
+        go.SetActive(true);
+        go.transform.position = this.body.transform.position;
+        go.transform.parent = Camera.main.transform;
+        Vector3 target = Camera.main.ScreenToWorldPoint(UIManager.instance.inventoryButton.transform.position) - Camera.main.transform.position;
+        target.z = -100;
+        while (Vector2.Distance(go.transform.localPosition, target) > 0.5)
+        {
+            go.transform.localPosition = Vector3.Lerp(go.transform.localPosition, target, 5 * Time.deltaTime);
+            yield return new WaitForEndOfFrame();
+        }
+        GameManager.instance.AddItem(231, Utils.instance.Md5Sum(GameManager.instance.count.ToString() + GameManager.instance.myPlayer.playTime.ToString() + GameManager.instance.myPlayer.Happy.ToString() + "M@ge2013"));
+        Destroy(go);
+    }
 
     void Run()
     {
@@ -156,7 +175,7 @@ public class MouseController : MonoBehaviour
         else if (state == MouseState.Eat)
         {
 
-            if (GetFoodItem().CanEat() && Vector2.Distance(this.transform.position, GetFoodItem().transform.position) < 1)
+            if (GetFoodItem().CanEat() && Vector2.Distance(this.transform.position, GetFoodItem().transform.position) < 2)
                 GetFoodItem().Eat(0.3f);
             else
                 Run();
@@ -165,7 +184,7 @@ public class MouseController : MonoBehaviour
         {
             if (time > maxTimeSpawn)
             {
-                if (GameManager.instance.myPlayer.questId > 7)
+                if (GameManager.instance.myPlayer.questId > minQuestId)
                     Spawn();
                 time = 0;
             }
@@ -193,13 +212,13 @@ public class MouseController : MonoBehaviour
             MageManager.instance.PlaySound("collect_item_02", false);
             anim.Play("Hit", 0);
             int value = Random.Range(1, 3);
-            ItemManager.instance.SpawnCoin(this.transform.position + new Vector3(0, 2, -1), value, this.gameObject);
-            GameManager.instance.AddCoin(value, Utils.instance.Md5Sum(GameManager.instance.count.ToString() + GameManager.instance.myPlayer.playTime.ToString() + GameManager.instance.myPlayer.Happy.ToString() + "M@ge2013"));
             GameManager.instance.LogAchivement(AchivementType.Tap_Animal, ActionType.None, -1, AnimalType.Mouse);
             if (state == MouseState.Eat || state == MouseState.Seek)
             {
                 Run();
             }
+
+            StartCoroutine(SpawnItem());
         }
     }
 

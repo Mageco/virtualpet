@@ -14,6 +14,7 @@ public class MSpriteButton : MonoBehaviour {
 	public bool interactable = true;
     Vector3 clickPos = Vector3.zero;
 	private Animator anim;
+	public bool isMouseDown = false;
 
 
 	// Use this for initialization
@@ -34,6 +35,12 @@ public class MSpriteButton : MonoBehaviour {
     private void OnMouseDown()
     {
         clickPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        if (isMouseDown && interactable)
+        {
+			MageManager.instance.PlaySound("BubbleButton", false);
+			m_OnClick.Invoke();
+		}
+
     }
 
     void OnMouseUp()
@@ -45,7 +52,7 @@ public class MSpriteButton : MonoBehaviour {
 
 
         Vector3 upPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        if(interactable && Vector3.Distance(upPos,clickPos) < 0.5f)
+        if(interactable && Vector3.Distance(upPos,clickPos) < 1)
         {
 			MageManager.instance.PlaySound("BubbleButton", false);
 			m_OnClick.Invoke();

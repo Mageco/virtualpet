@@ -34,11 +34,4 @@ public class PetHappyItem : MonoBehaviour
         ItemManager.instance.SpawnHeart(value, button.transform.position);
         Destroy(this.gameObject);
     }
-
-    private void Update()
-    {
-        Vector3 pos = this.transform.position;
-        pos.z = button.transform.position.y * 10 - 10;
-        this.transform.position = pos;
-    }
 }

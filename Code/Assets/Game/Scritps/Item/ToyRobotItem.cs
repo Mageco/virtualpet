@@ -6,8 +6,8 @@ using PolyNav;
 
 public class ToyRobotItem : ToyItem
 {
-
-    public CharController target;
+    public PetHappyItem item;
+    public Vector3 target;
     public PolyNavAgent agent;
     public bool isArrived = true;
     public bool isAbort = false;
@@ -28,7 +28,6 @@ public class ToyRobotItem : ToyItem
         agent = go1.GetComponent<PolyNavAgent>();
         agent.OnDestinationReached += OnArrived;
         agent.maxSpeed = this.speed;
-
     }
 
     void OnArrived()
@@ -56,16 +55,22 @@ public class ToyRobotItem : ToyItem
         Debug.Log("Click");
         if(state == EquipmentState.Drag || state == EquipmentState.Hold)
         {
-            if (GameManager.instance.GetRandomPetObject() != null)
+            item = FindObjectOfType<PetHappyItem>();
+            if (item != null)
             {
+                target = item.transform.position;
                 isAbort = false;
                 Debug.Log("Turn on");
                 state = EquipmentState.Active;
                 agent.transform.position = this.transform.position;
 
-                target = GameManager.instance.GetRandomPetObject();
                 StartCoroutine(MoveToPoint());
                 MageManager.instance.PlaySound3D("Item_Robot_TurnOn", false, this.transform.position);
+            }
+            else
+            {
+                state = EquipmentState.Idle;
+                animator.Play("Idle_" + direction.ToString(), 0);
             }
         }
         else if(state == EquipmentState.Active)
@@ -94,17 +99,25 @@ public class ToyRobotItem : ToyItem
 
     IEnumerator Hold()
     {
-        int soundId = MageManager.instance.PlaySound3D("Toy_Robot_Dance", false,this.transform.position);
+        int soundId = MageManager.instance.PlaySound3D("happy_collect_item_01", false,this.transform.position);
         agent.Stop();
-        if (target != null)
-            target.OnSupprised();
+        if (item != null)
+            item.OnClick();
         
-            yield return StartCoroutine(DoAnim("Dance_" + direction.ToString()));
-        if (target != null)
-            ItemManager.instance.SpawnHeart(1, target.transform.position);
-        MageManager.instance.StopSound(soundId);
+        yield return StartCoroutine(DoAnim("Dance_" + direction.ToString()));
         animator.Play("Idle_" + direction.ToString(), 0);
-        state = EquipmentState.Idle;
+        item = FindObjectOfType<PetHappyItem>();
+        if (item != null)
+        {
+            target = item.transform.position;
+            isAbort = false;
+            Debug.Log("Turn on");
+            state = EquipmentState.Active;
+            agent.transform.position = this.transform.position;
+
+            StartCoroutine(MoveToPoint());
+            MageManager.instance.PlaySound3D("Item_Robot_TurnOn", false, this.transform.position);
+        }
     }
 
 
@@ -127,9 +140,9 @@ public class ToyRobotItem : ToyItem
 
         while (target != null && !isArrived && !isAbort)
         {
-            agent.SetDestination(target.transform.position);
+            agent.SetDestination(target);
             animator.Play("Walk_" + this.direction.ToString(), 0);
-            if (Vector2.Distance(this.transform.position, target.transform.position) < 2)
+            if (Vector2.Distance(this.transform.position, target) < 2)
             {
                 StartCoroutine(Hold());
                 isArrived = true;

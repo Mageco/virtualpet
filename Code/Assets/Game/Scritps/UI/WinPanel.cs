@@ -16,6 +16,7 @@ public class WinPanel : MonoBehaviour
     public GameObject replayText;
     public Text completeText;
     int minigameId = 0;
+    int itemId = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -50,14 +51,21 @@ public class WinPanel : MonoBehaviour
             nextText.gameObject.SetActive(true);
             if (minigameId == 0)
             {
+                
                 if ((GameManager.instance.myPlayer.minigameLevels[0] + 1) % 5 == 0 || GameManager.instance.myPlayer.minigameLevels[0] == 0)
                 {
+                    itemId = 72;
                     item.transform.parent.gameObject.SetActive(true);
-                    GameManager.instance.AddItem(72, Utils.instance.Md5Sum(GameManager.instance.count.ToString() + GameManager.instance.myPlayer.playTime.ToString() + GameManager.instance.myPlayer.Happy.ToString() + "M@ge2013"));
-                    GameManager.instance.EquipItem(72);
                 }
                 else
                     item.transform.parent.gameObject.SetActive(false);
+
+                if(itemId != 0)
+                {
+
+                    GameManager.instance.AddItem(itemId, Utils.instance.Md5Sum(GameManager.instance.count.ToString() + GameManager.instance.myPlayer.playTime.ToString() + GameManager.instance.myPlayer.Happy.ToString() + "M@ge2013"));
+                    GameManager.instance.EquipItem(itemId);
+                }
             }
             else
             {
@@ -93,11 +101,12 @@ public class WinPanel : MonoBehaviour
             if (r > 70 && (minigameId == 2))
                 RewardVideoAdManager.instance.ShowIntetestial();
 
-            if (r > 60 && (minigameId == 3))
+            if (r > 60 && (minigameId == 3 || minigameId == 5))
                 RewardVideoAdManager.instance.ShowIntetestial();
 
             if (r > 65 && (minigameId == 4))
                 RewardVideoAdManager.instance.ShowIntetestial();
+
         }
             
     }

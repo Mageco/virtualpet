@@ -4,43 +4,30 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using PolyNav;
 
-public class CleanRobotItem : MonoBehaviour
+public class CleanRobotItem : BaseFloorItem
 {
 	public float clean = 1f;
-    public float initZ = -6;
-	public float scaleFactor = 0.05f;
-	Vector3 originalScale;
-	Vector3 originalPosition;
-	Vector3 lastPosition;
+    //public float initZ = -6;
 	public Vector3 target;
     public PolyNavAgent agent;
     public bool isArrived = true;
 	public bool isAbort = false;
 	public float speed = 10;
 
-	public AnimalState state = AnimalState.None;
+	public AnimalState robotState = AnimalState.None;
 
 	Direction direction = Direction.R;
 
 	ItemDirty dirtyTarget;
 
-
-	protected Animator anim;
-
-	protected BaseFloorItem item;
 	int count = 0;
 	
 
-	protected void Awake(){
-		anim = this.GetComponent<Animator>();
-		originalPosition = this.transform.position;
-		originalScale = this.transform.localScale;
-	}
     // Start is called before the first frame update
-    protected void Start()
+    protected override void Start()
     {
-		item = this.GetComponent<BaseFloorItem>();
-		this.clean = DataHolder.GetItem(item.itemID).value;
+		base.Start();
+		this.clean = DataHolder.GetItem(this.itemID).value;
 		LoadPrefab();
     }
 
@@ -51,7 +38,6 @@ public class CleanRobotItem : MonoBehaviour
 		agent = go1.GetComponent<PolyNavAgent>();
         agent.OnDestinationReached += OnArrived;
 		agent.maxSpeed = this.speed;
-
     }
 
 	void OnArrived()
@@ -61,38 +47,46 @@ public class CleanRobotItem : MonoBehaviour
 
 
     // Update is called once per frame
-    protected void Update()
+    protected override void Update()
     {
-        if(state == AnimalState.None)
-        {
-            Think();
-            DoAction();
-        }
+		base.Update();
 
-        CalculateDirection();
-		this.transform.position = agent.transform.position;
+		if (state == EquipmentState.Idle)
+		{
+			if (robotState == AnimalState.None)
+			{
+				Think();
+				DoAction();
+			}
+
+			CalculateDirection();
+			this.transform.position = agent.transform.position;
+		}
+		else
+			agent.transform.position = this.transform.position;
+
     }
 
 	void Think(){
-		state = AnimalState.Idle;
+		robotState = AnimalState.Idle;
 	}
 
 	void DoAction(){
 		isAbort = false;
 		isArrived = false;
-		if (state == AnimalState.Idle)
+		if (robotState == AnimalState.Idle)
 		{
 			StartCoroutine(Idle());
-		}else if (state == AnimalState.Seek)
+		}else if (robotState == AnimalState.Seek)
 		{
 			StartCoroutine(Seek());
-		}else if (state == AnimalState.Run)
+		}else if (robotState == AnimalState.Run)
 		{
 			StartCoroutine(Run());
-		}else if (state == AnimalState.Flee)
+		}else if (robotState == AnimalState.Flee)
 		{
 			StartCoroutine(Flee());
-		}else if (state == AnimalState.Hold)
+		}else if (robotState == AnimalState.Hold)
 		{
 			StartCoroutine(Hold());
 		}
@@ -105,6 +99,7 @@ public class CleanRobotItem : MonoBehaviour
             direction = Direction.R;
     }
 
+    /*
 	void LateUpdate()
 	{
 		float offset = initZ;
@@ -117,12 +112,12 @@ public class CleanRobotItem : MonoBehaviour
 		Vector3 pos = this.transform.position;
 		pos.z = this.transform.position.y * 10;
 		this.transform.position = pos;
-	}
+	}*/
 
 	IEnumerator Idle(){
 		agent.Stop();
 		count = 0;
-		anim.Play("Idle_" + direction.ToString(),0);
+		animator.Play("Idle_" + direction.ToString(),0);
 		while(!isAbort){
 			yield return new WaitForEndOfFrame();
 		}
@@ -134,7 +129,7 @@ public class CleanRobotItem : MonoBehaviour
 		target = GetDirtyItem().transform.position;
 		yield return StartCoroutine(MoveToPoint());
 		if(!isAbort){
-			state = AnimalState.Hold;
+			robotState = AnimalState.Hold;
 			isAbort = true;
 		}
 		CheckAbort();
@@ -142,7 +137,7 @@ public class CleanRobotItem : MonoBehaviour
 
 	IEnumerator Hold(){
         int soundId = MageManager.instance.PlaySound3D("Item_Robot_Clean", true,this.transform.position);
-        anim.Play("Clean_" + direction.ToString(),0);
+        animator.Play("Clean_" + direction.ToString(),0);
 		float time = 0;
 		while(dirtyTarget != null && time < 10 && !isAbort){
 			time += Time.deltaTime;
@@ -150,11 +145,11 @@ public class CleanRobotItem : MonoBehaviour
 			yield return new WaitForEndOfFrame();
 		}
 		if(dirtyTarget == null){
-			ItemManager.instance.SpawnHeart(1,this.transform.position);
+			ItemManager.instance.SpawnStar(this.transform.position,1);
 			GameManager.instance.LogAchivement(AchivementType.Clean);
 		}
 		if(!isAbort){
-			state = AnimalState.Seek;
+			robotState = AnimalState.Seek;
 			isAbort = true;
 		}
         MageManager.instance.StopSound(soundId);
@@ -162,10 +157,10 @@ public class CleanRobotItem : MonoBehaviour
 	}
 
 	IEnumerator Flee(){
-		target = originalPosition;
+		target = ItemManager.instance.GetRandomPoint(AreaType.All);
 		yield return StartCoroutine(MoveToPoint());
 		if(!isAbort){
-			state = AnimalState.Idle;
+			robotState = AnimalState.Idle;
 			isAbort = true;
 		}
 		CheckAbort();
@@ -173,7 +168,7 @@ public class CleanRobotItem : MonoBehaviour
 
 	IEnumerator Seek(){
 		if(GetDirtyItem() != null){
-			state = AnimalState.Run;
+			robotState = AnimalState.Run;
 			isAbort = true;
 		}else{
 			int ran  = Random.Range(0,100);
@@ -182,13 +177,13 @@ public class CleanRobotItem : MonoBehaviour
 				count = 1;
 				yield return StartCoroutine(MoveToPoint());
 				if(!isAbort){
-					state = AnimalState.Seek;
+					robotState = AnimalState.Seek;
 					isAbort = true;
 				}
 
 			}else{
 				if(!isAbort){
-					state = AnimalState.Flee;
+					robotState = AnimalState.Flee;
 					isAbort = true;
 				}
 
@@ -197,19 +192,32 @@ public class CleanRobotItem : MonoBehaviour
 		CheckAbort();
 	}
 
-	protected virtual void OnMouseUp()
+	protected override void OnMouseDown()
 	{
-        if(IsPointerOverUIObject()){
-            return;
-        }
+		if (IsPointerOverUIObject())
+		{
+			return;
+		}
 
-		if(state == AnimalState.Idle){
+		if (robotState != AnimalState.Idle && (state == EquipmentState.Active || state == EquipmentState.Busy))
+		{
+			return;
+		}
+
+		clickPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+		state = EquipmentState.Hold;
+	}
+
+	protected override void OnClick()
+	{
+		state = EquipmentState.Idle;
+		if(robotState == AnimalState.Idle){
             MageManager.instance.PlaySound("Item_Robot_TurnOn", false);
-            state = AnimalState.Seek;
+            robotState = AnimalState.Seek;
 			isAbort = true;
 		}else{
             MageManager.instance.PlaySound("Item_Robot_TurnOff", false);
-			state = AnimalState.Idle;
+			robotState = AnimalState.Idle;
 			isAbort = true;
 		}
 	}
@@ -222,9 +230,9 @@ public class CleanRobotItem : MonoBehaviour
     protected IEnumerator DoAnim(string a)
     {
         float time = 0;
-        anim.Play(a, 0);
+        animator.Play(a, 0);
         yield return new WaitForEndOfFrame();
-        while (time < anim.GetCurrentAnimatorStateInfo(0).length && !isAbort)
+        while (time < animator.GetCurrentAnimatorStateInfo(0).length && !isAbort)
         {
             time += Time.deltaTime;
             yield return new WaitForEndOfFrame();
@@ -238,7 +246,7 @@ public class CleanRobotItem : MonoBehaviour
         agent.SetDestination(target);
         while (!isArrived && !isAbort)
         {
-            anim.Play("Walk_" + this.direction.ToString(), 0);
+            animator.Play("Walk_" + this.direction.ToString(), 0);
             yield return new WaitForEndOfFrame();
         }
     }
@@ -257,7 +265,7 @@ public class CleanRobotItem : MonoBehaviour
     protected void CheckAbort()
     {
         if (!isAbort)
-            state = AnimalState.None;
+            robotState = AnimalState.None;
         else
         {
             DoAction();
@@ -281,13 +289,5 @@ public class CleanRobotItem : MonoBehaviour
             n++;
         }
         target = pos;
-	}
-
-	private bool IsPointerOverUIObject() {
-		PointerEventData eventDataCurrentPosition = new PointerEventData(EventSystem.current);
-		eventDataCurrentPosition.position = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
-		List<RaycastResult> results = new List<RaycastResult>();
-		EventSystem.current.RaycastAll(eventDataCurrentPosition, results);
-		return results.Count > 0;
 	}
 }

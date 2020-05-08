@@ -128,9 +128,9 @@ public class BaseFloorItem : MonoBehaviour
 		if (state == EquipmentState.Hold)
 		{
 			dragTime += Time.deltaTime;
-			if (dragTime > 0.4f)
+			if (dragTime > 0.2f)
 			{
-				if (Vector2.Distance(Camera.main.ScreenToWorldPoint(Input.mousePosition), clickPosition) < 1f)
+				if (Vector2.Distance(Camera.main.ScreenToWorldPoint(Input.mousePosition), clickPosition) < 2f)
 				{
 					if (arrow == null)
 					{
@@ -151,7 +151,7 @@ public class BaseFloorItem : MonoBehaviour
 				}
 			}
 
-			if (dragTime > 0.5f && Vector2.Distance(Camera.main.ScreenToWorldPoint(Input.mousePosition), clickPosition) < 1f)
+			if (dragTime > 0.5f && Vector2.Distance(Camera.main.ScreenToWorldPoint(Input.mousePosition), clickPosition) < 2f)
 			{
 				OnDrag();
 			}
@@ -251,7 +251,7 @@ public class BaseFloorItem : MonoBehaviour
 	protected virtual void OnMouseDown()
 	{
 
-		if(itemType == ItemType.Room || itemType == ItemType.Gate || itemType == ItemType.Clean)
+		if(itemType == ItemType.Room || itemType == ItemType.Gate)
 			return;
 
 		if (IsPointerOverUIObject())

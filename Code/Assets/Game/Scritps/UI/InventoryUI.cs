@@ -73,7 +73,7 @@ public class InventoryUI : MonoBehaviour
             if(d.itemType == ItemType.QuestItem)
             {
                 price.gameObject.SetActive(true);
-                price.text = (item.buyPrice / 2 * d.number).ToString();
+                price.text = (item.buyPrice / 2).ToString();
                 sellButton.gameObject.SetActive(true);
                 sellButton.interactable = true;
                 number.gameObject.SetActive(true);
@@ -172,24 +172,6 @@ public class InventoryUI : MonoBehaviour
                 cleanIcon.gameObject.SetActive(true);
                 cleanText.text = item.value.ToString("F0");
             }
-        }
-        else if (item.itemType == ItemType.Fruit)
-        {
-
-
-            int v = 0;
-            if (item.priceType == PriceType.Coin)
-                v = item.buyPrice / 50;
-            else if (item.priceType == PriceType.Diamond)
-                v = item.buyPrice * 2;
-
-            if (v > 0)
-            {
-                plusCoinIcon.gameObject.SetActive(true);
-                plusCoinText.text = "+" + v.ToString("F0");
-            }
-
-
         }
     }
 
