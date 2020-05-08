@@ -77,7 +77,7 @@ public class InventoryUI : MonoBehaviour
                 sellButton.gameObject.SetActive(true);
                 sellButton.interactable = true;
                 number.gameObject.SetActive(true);
-                number.text = d.number.ToString();
+                number.text = "x " + d.number.ToString();
             }
             else
             {

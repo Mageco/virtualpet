@@ -9,6 +9,7 @@ public class FruitItem : MonoBehaviour
     public int id = 0;
     public GameObject[] steps;
     public int step = 0;
+    public float timeGrow = 420;
     float[] maxTime;
     public float time = 0;
     public int scaleStepId = 1;
@@ -25,8 +26,8 @@ public class FruitItem : MonoBehaviour
     void Awake(){
         col = this.GetComponent<CircleCollider2D>();
         maxTime = new float[3];
-        maxTime[0] = 120;
-        maxTime[1] = 320;
+        maxTime[0] = timeGrow/2;
+        maxTime[1] = timeGrow/2;
         maxTime[2] = 10;
         step = Random.Range(0, steps.Length);
         time = Random.Range(0, maxTime[step]);
@@ -44,6 +45,7 @@ public class FruitItem : MonoBehaviour
     public void Load()
     {
         OnStep();
+        this.transform.position = originalPosition;
     }
 
     // Update is called once per frame
