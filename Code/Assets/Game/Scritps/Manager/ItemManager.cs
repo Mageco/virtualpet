@@ -24,6 +24,8 @@ public class ItemManager : MonoBehaviour
     public GameObject petGiftPrefab;
     public GameObject petHappyPrefab;
     public GameObject coinPaidPrefab;
+    public Material highlightMaterial;
+    public Material defaultMaterial;
 
     public Vector2 roomBoundX = new Vector2(-50, 80);
     public Vector2 roomBoundY = new Vector2(-26, 0);
@@ -485,7 +487,7 @@ public class ItemManager : MonoBehaviour
     public void SpawnPetHappy(Vector3 pos, int value)
     {
         GameObject go = Instantiate(petHappyPrefab, pos, Quaternion.identity);
-        go.transform.position += new Vector3(Random.Range(-1f, 1f), Random.Range(-1f, 1f), -20);
+        go.transform.position += new Vector3(Random.Range(-1f, 1f), Random.Range(-1f, 1f), -1000);
         go.GetComponent<PetHappyItem>().Load(value);
     }
 

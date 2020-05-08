@@ -5,7 +5,7 @@ using UnityEngine;
 public class CharScale : MonoBehaviour
 {
     [HideInInspector]
-	public float maxHeight = 15;
+	public float maxHeight = 10;
 	float scaleFactor = 0.01f;
 	CharController character;
 	CharInteract interact;
@@ -22,10 +22,8 @@ public class CharScale : MonoBehaviour
 	{
 		character = this.GetComponent <CharController> ();
         originalScale = character.transform.localScale;
-
+		maxHeight = 10;
 		interact = this.GetComponent<CharInteract>();
-
-		
 	}
     // Start is called before the first frame update
     void Start()
@@ -46,31 +44,40 @@ public class CharScale : MonoBehaviour
 		    scalePosition.x = this.transform.position.x;
 			float delta = this.transform.position.y - lastPosition.y;
 			height += delta;
-			if(height <= 0 && this.transform.position.y <= scalePosition.y ){
+			if(height <= 0 || this.transform.position.y <= scalePosition.y ){
 				scalePosition.y = this.transform.position.y;
 				height = 0;
-			}else{
-				if(delta >= 0 && height > maxHeight){
-					scalePosition.y += height - maxHeight;	
-					height = maxHeight;
-					if(scalePosition.y > -1){
-						scalePosition.y = -1;
+			}else {
+				if(delta >= 0){
+					
+					if (height >= maxHeight)
+                    {
+						scalePosition.y += delta;
+						height = maxHeight;
+                    }
+                    else
+                    {
+						//scalePosition.y -= delta;
+						//height += delta;
+                    }
+	
+					if(scalePosition.y > 0){
+						scalePosition.y = 0;
 						Vector3 p = this.transform.position;
 						p.y = lastPosition.y;
 						character.agent.transform.position = p;
 						this.transform.position = p;
 					}
-				}else if(delta < 0 && height > 0){
-                    if(height > maxHeight)
+				}else{
+					if(scalePosition.y < ItemManager.instance.roomBoundY.x + 1){
+						//scalePosition.y += delta;
+						height += delta;
+                    }
+                    else
                     {
 						scalePosition.y += delta;
 						height = maxHeight;
-					}
-
-					if(scalePosition.y > -24){
-						scalePosition.y += delta;
-						height -= delta;
-					}
+                    }
 				}		
 			}
 			if(character.shadow != null){

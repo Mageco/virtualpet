@@ -355,10 +355,17 @@ public class GameManager : MonoBehaviour
 
     public void SellPet(int realId)
     {
+        /*
         if (GetPetObject(realId).actionType == ActionType.Toy)
         {
             MageManager.instance.OnNotificationPopup(DataHolder.Dialog(107).GetName(MageManager.instance.GetLanguage()));
             return;
+        }*/
+
+        if(GetPetObject(realId) != null && GetPetObject(realId).equipment != null)
+        {
+            GetPetObject(realId).equipment.RemovePet(GetPetObject(realId));
+            GetPetObject(realId).equipment.DeActive();
         }
 
         int petId = GetPet(realId).iD;
@@ -450,10 +457,13 @@ public class GameManager : MonoBehaviour
                  if (ItemManager.instance != null)
                 {
                     CharController petObject = GetPetObject(realId);
-                    if (petObject.equipment != null)
+                    if (petObject != null && petObject.equipment != null)
+                    {
                         petObject.equipment.DeActive();
-                    petObjects.Remove(petObject);
-                    ItemManager.instance.UnLoadPetObject(petObject);
+                        petObjects.Remove(petObject);
+                        ItemManager.instance.UnLoadPetObject(petObject);
+                    }
+                       
                 }
                 if(GetPetNumber(p.iD) >= 2)
                 {

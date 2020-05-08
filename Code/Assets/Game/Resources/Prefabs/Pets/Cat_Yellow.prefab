@@ -151,6 +151,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   data:
+    realId: 0
     iD: 5
     iconUrl: 
     languageItem:
@@ -166,6 +167,7 @@ MonoBehaviour:
     itemTag: 0
     requireEquipments: 
     requirePets: 
+    requireNumber: 
     requireValue: 0
     requireValueType: 3
     skills: []
@@ -185,21 +187,10 @@ MonoBehaviour:
     shit: 0
     pee: 0
     dirty: 50
-    itchi: 50
-    fear: 0
-    curious: 70
+    toy: 50
     maxTimeSick: 1800
     isNew: 0
     rareType: 0
-    rateFood: 10
-    rateWater: 10
-    rateSleep: 0.5
-    recoverSleep: 0.1
-    ratePee: 10
-    rateShit: 10
-    recoverDirty: 0.1
-    recoverHealth: 0
-    recoverEnergy: 0
     rateHappy: 1
     maxFood: 100
     maxWater: 100
@@ -210,18 +201,16 @@ MonoBehaviour:
     maxHealth: 100
     maxDamage: 100
     maxDirty: 100
-    maxItchi: 100
-    maxCurious: 100
+    maxToy: 100
     levelRate: 10
     actionType: 0
     position: {x: 0, y: 0, z: 0}
     scalePosition: {x: 0, y: 0, z: 0}
-    height: 0
-    enviromentType: 0
+    equipmentId: 0
+    interactType: 0
   petPrefab: {fileID: 6610547453433390268, guid: eaf2241528edff14abdd9028d3ba7afc,
     type: 3}
   charType: 1
-  enviromentType: 0
   direction: 1
   target: {x: 0, y: 0, z: 0}
   agent: {fileID: 0}
@@ -234,14 +223,18 @@ MonoBehaviour:
   anim: {fileID: 0}
   charInteract: {fileID: 0}
   charScale: {fileID: 0}
+  charCollider: {fileID: 0}
+  charStatus: {fileID: 0}
   peePosition: {fileID: 641704593190365798}
   shitPosition: {fileID: 2279698834381307260}
   shadow: {fileID: 0}
   originalShadowScale: {x: 0, y: 0, z: 0}
+  petEmotion: {fileID: 0}
   currentSkill: 0
   dropPosition: {x: 0, y: 0, z: 0}
   iconStatusObject: {fileID: 3647115547812564642}
   iconStatus: 0
+  equipment: {fileID: 0}
   dirties: []
   dirties_L: []
   dirties_LD: []
@@ -340,7 +333,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3124658378178023059}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 10}
+  m_LocalPosition: {x: 0, y: 0, z: 100}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 3471624260883254357}
@@ -385,6 +378,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pets: []
+  items: []
 --- !u!50 &1840699813136193351
 Rigidbody2D:
   serializedVersion: 4
@@ -484,7 +478,7 @@ SpriteRenderer:
   m_Size: {x: 1.26, y: 1.26}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &3876488138872639653

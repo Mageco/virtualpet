@@ -228,10 +228,10 @@ public class PetRequirementPanel : MonoBehaviour
                 GameManager.instance.AddDiamond(-pet.requireValue);
             }*/
             GameManager.instance.AddHappy(-price, Utils.instance.Md5Sum(GameManager.instance.count.ToString() + GameManager.instance.myPlayer.playTime.ToString() + GameManager.instance.myPlayer.Happy.ToString() + "M@ge2013"));
-            GameManager.instance.AddPet(petId, Utils.instance.Md5Sum(GameManager.instance.count.ToString() + GameManager.instance.myPlayer.playTime.ToString() + GameManager.instance.myPlayer.Happy.ToString() + "M@ge2013"));
-            PlayerPet p = GameManager.instance.GetPet(petId);
+            int realId = GameManager.instance.AddPet(petId, Utils.instance.Md5Sum(GameManager.instance.count.ToString() + GameManager.instance.myPlayer.playTime.ToString() + GameManager.instance.myPlayer.Happy.ToString() + "M@ge2013"));
+            PlayerPet p = GameManager.instance.GetPet(realId);
             p.isNew = true;
-            GameManager.instance.EquipPet(petId);
+            GameManager.instance.EquipPet(realId);
             isBuy = true;
             if (ItemManager.instance != null && ItemManager.instance.GetCharCollector(petId) != null)
                 ItemManager.instance.GetCharCollector(petId).DeActive();

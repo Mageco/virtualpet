@@ -73,7 +73,7 @@ public class ProfileUI : MonoBehaviour
         price = playerPet.level * playerPet.level * 2;
         priceText.text = price.ToString();
         strengthText.text = (pet.maxHealth + playerPet.level * pet.levelRate).ToString();
-        heartText.text = "+" + (pet.RateHappy + playerPet.level/5).ToString();
+        heartText.text = "+" + (pet.RateHappy + playerPet.level/10).ToString();
 
         sellPrice = pet.buyPrice / 2;
         sellText.text = sellPrice.ToString();
@@ -106,7 +106,7 @@ public class ProfileUI : MonoBehaviour
         price = playerPet.level * playerPet.level * 2;
         priceText.text = price.ToString();
         strengthText.text = (pet.maxHealth + playerPet.level * pet.levelRate).ToString();
-        heartText.text = "+" + (pet.RateHappy + playerPet.level / 5).ToString();
+        heartText.text = "+" + (pet.RateHappy + playerPet.level / 10).ToString();
 
         int n = playerPet.level / 5;
         for (int i = 0; i < icons.Length; i++)

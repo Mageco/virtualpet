@@ -24,6 +24,22 @@ public class CharCollider : MonoBehaviour
         
     }
 
+    public void OffAllItem()
+    {
+        foreach(BaseFloorItem item in items)
+        {
+            item.OffHighlight();
+        }
+    }
+
+    public void CheckHighlight()
+    {
+        foreach (BaseFloorItem item in items)
+        {
+            item.OnHighlight();
+        }
+    }
+
     void OnTriggerEnter2D(Collider2D other) {
         if (other.tag == "Mouse") {
            character.OnMouse();     
@@ -51,11 +67,22 @@ public class CharCollider : MonoBehaviour
             BaseFloorItem item = other.transform.parent.GetComponent<BaseFloorItem>();
             if(item != null)
             {
-                items.Add(item);
+                if(character.charInteract.interactType == InteractType.Drag)
+                {
+                    foreach(BaseFloorItem i in items)
+                    {
+                        i.OffHighlight();
+                    }
+                    items.Add(item);
+                    item.OnHighlight();
+                }
+
                 //character.OnToy(item);
             }
         }
     }
+
+
 
     void OnTriggerExit2D(Collider2D other) {
         if (other.tag == "Mouse" && character.actionType == ActionType.Mouse) {
@@ -71,7 +98,12 @@ public class CharCollider : MonoBehaviour
             BaseFloorItem item = other.transform.parent.GetComponent<BaseFloorItem>();
             if (item != null && items.Contains(item))
             {
-                items.Remove(item); 
+                items.Remove(item);
+                item.OffHighlight();
+                foreach(BaseFloorItem i in items)
+                {
+                    i.OnHighlight();
+                }
             }
         }
     }

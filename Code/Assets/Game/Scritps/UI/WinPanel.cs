@@ -49,28 +49,95 @@ public class WinPanel : MonoBehaviour
             completeText.gameObject.SetActive(true);
             replayText.gameObject.SetActive(false);
             nextText.gameObject.SetActive(true);
+            int r = Random.Range(0, 100);
+
             if (minigameId == 0)
             {
-                
                 if ((GameManager.instance.myPlayer.minigameLevels[0] + 1) % 5 == 0 || GameManager.instance.myPlayer.minigameLevels[0] == 0)
-                {
                     itemId = 72;
-                    item.transform.parent.gameObject.SetActive(true);
-                }
                 else
-                    item.transform.parent.gameObject.SetActive(false);
-
-                if(itemId != 0)
-                {
-
-                    GameManager.instance.AddItem(itemId, Utils.instance.Md5Sum(GameManager.instance.count.ToString() + GameManager.instance.myPlayer.playTime.ToString() + GameManager.instance.myPlayer.Happy.ToString() + "M@ge2013"));
-                    GameManager.instance.EquipItem(itemId);
+                { 
+                    if (r < 70)
+                    {
+                        itemId = 216;
+                    }
+                    else if (r < 95)
+                        itemId = 217;
+                    else
+                        itemId = 218;
                 }
+            }
+            else if(minigameId == 1)
+            {
+                if (r < 70)
+                {
+                    itemId = 219;
+                }
+                else if (r < 95)
+                    itemId = 220;
+                else
+                    itemId = 221;
+            }
+            else if (minigameId == 2)
+            {
+                if (r < 70)
+                {
+                    itemId = 219;
+                }
+                else if (r < 95)
+                    itemId = 220;
+                else
+                    itemId = 221;
+            }
+            else if (minigameId == 3)
+            {
+                if (r < 70)
+                {
+                    itemId = 222;
+                }
+                else if (r < 95)
+                    itemId = 223;
+                else
+                    itemId = 224;
+            }
+            else if (minigameId == 4)
+            {
+                if (r < 70)
+                {
+                    itemId = 225;
+                }
+                else if (r < 95)
+                    itemId = 226;
+                else
+                    itemId = 227;
+            }
+            else if (minigameId == 5)
+            {
+                if (r < 70)
+                {
+                    itemId = 228;
+                }
+                else if (r < 95)
+                    itemId = 229;
+                else
+                    itemId = 230;
+            }
+
+            if (itemId != 0)
+            {
+                Item d = DataHolder.GetItem(itemId);
+                string url = d.iconUrl.Replace("Assets/Game/Resources/", "");
+                url = url.Replace(".png", "");
+                item.transform.parent.GetComponent<Image>().sprite = Resources.Load<Sprite>(url) as Sprite;
+                GameManager.instance.AddItem(itemId, Utils.instance.Md5Sum(GameManager.instance.count.ToString() + GameManager.instance.myPlayer.playTime.ToString() + GameManager.instance.myPlayer.Happy.ToString() + "M@ge2013"));
+                GameManager.instance.EquipItem(itemId);
             }
             else
             {
                 item.transform.parent.gameObject.SetActive(false);
             }
+        
+
         }
         else
         {

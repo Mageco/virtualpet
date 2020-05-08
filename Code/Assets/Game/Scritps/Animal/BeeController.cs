@@ -211,12 +211,15 @@ public class BeeController : MonoBehaviour
 		GameManager.instance.LogAchivement(AchivementType.Tap_Animal,ActionType.None,-1,AnimalType.Bee);
 		if(state == BeeState.Fight || state == BeeState.Seek || state == BeeState.Enter || state == BeeState.Patrol) {
 			hitCount ++;
-			StartCoroutine(SpawnItem());
+			int value = Random.Range(2, 5);
+			ItemManager.instance.SpawnCoin(this.transform.position + new Vector3(0, 0, -1), value, this.gameObject);
+			GameManager.instance.AddCoin(value, Utils.instance.Md5Sum(GameManager.instance.count.ToString() + GameManager.instance.myPlayer.playTime.ToString() + GameManager.instance.myPlayer.Happy.ToString() + "M@ge2013"));
+			GameManager.instance.LogAchivement(AchivementType.Tap_Animal, ActionType.None, -1, AnimalType.Mouse);
+			if (hitCount == 3)
+				StartCoroutine(SpawnItem());
 		}
 		if(hitCount >= 3)
 			Run();
-
-
 	}
 
 	IEnumerator SpawnItem()

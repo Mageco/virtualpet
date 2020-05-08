@@ -78,7 +78,7 @@ SpriteRenderer:
   m_Size: {x: 1.26, y: 1.26}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &1654733838
@@ -108,7 +108,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1654733838}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 10}
+  m_LocalPosition: {x: 0, y: 0, z: 100}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 193803885500558729}
@@ -490,6 +490,7 @@ MonoBehaviour:
     itemTag: 0
     requireEquipments: 
     requirePets: 
+    requireNumber: 
     requireValue: 0
     requireValueType: 3
     skills: []
@@ -528,7 +529,8 @@ MonoBehaviour:
     actionType: 0
     position: {x: 0, y: 0, z: 0}
     scalePosition: {x: 0, y: 0, z: 0}
-    height: 0
+    equipmentId: 0
+    interactType: 0
   petPrefab: {fileID: 5300264350508721876, guid: d753a4d13d75f453986199f83f00293e,
     type: 3}
   charType: 0
@@ -550,6 +552,7 @@ MonoBehaviour:
   shitPosition: {fileID: 3260102857673776288}
   shadow: {fileID: 0}
   originalShadowScale: {x: 0, y: 0, z: 0}
+  petEmotion: {fileID: 0}
   currentSkill: 0
   dropPosition: {x: 0, y: 0, z: 0}
   iconStatusObject: {fileID: 853995390}

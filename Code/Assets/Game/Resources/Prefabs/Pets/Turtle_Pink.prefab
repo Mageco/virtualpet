@@ -208,7 +208,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2169005374436768699}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 10}
+  m_LocalPosition: {x: 0, y: 0, z: 100}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 7973791138900112105}
@@ -274,6 +274,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pets: []
+  items: []
 --- !u!1 &5264503480944916839
 GameObject:
   m_ObjectHideFlags: 0
@@ -425,6 +426,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   data:
+    realId: 0
     iD: 0
     iconUrl: 
     languageItem: []
@@ -436,6 +438,7 @@ MonoBehaviour:
     itemTag: 0
     requireEquipments: 
     requirePets: 
+    requireNumber: 
     requireValue: 0
     requireValueType: 3
     skills: []
@@ -455,21 +458,10 @@ MonoBehaviour:
     shit: 0
     pee: 0
     dirty: 50
-    itchi: 50
-    fear: 0
-    curious: 70
+    toy: 50
     maxTimeSick: 1800
     isNew: 0
     rareType: 0
-    rateFood: 10
-    rateWater: 10
-    rateSleep: 0.5
-    recoverSleep: 0.1
-    ratePee: 10
-    rateShit: 10
-    recoverDirty: 0.1
-    recoverHealth: 0
-    recoverEnergy: 0
     rateHappy: 1
     maxFood: 100
     maxWater: 100
@@ -480,18 +472,16 @@ MonoBehaviour:
     maxHealth: 100
     maxDamage: 100
     maxDirty: 100
-    maxItchi: 100
-    maxCurious: 100
+    maxToy: 100
     levelRate: 10
     actionType: 0
     position: {x: 0, y: 0, z: 0}
     scalePosition: {x: 0, y: 0, z: 0}
-    height: 0
-    enviromentType: 0
+    equipmentId: 0
+    interactType: 0
   petPrefab: {fileID: 3085834020186192874, guid: 2fcdd06375df45d45aa708b1603244c7,
     type: 3}
   charType: 3
-  enviromentType: 0
   direction: 1
   target: {x: 0, y: 0, z: 0}
   agent: {fileID: 0}
@@ -504,14 +494,18 @@ MonoBehaviour:
   anim: {fileID: 0}
   charInteract: {fileID: 0}
   charScale: {fileID: 0}
+  charCollider: {fileID: 0}
+  charStatus: {fileID: 0}
   peePosition: {fileID: 6224816882529490138}
   shitPosition: {fileID: 4694484839921091520}
   shadow: {fileID: 0}
   originalShadowScale: {x: 0, y: 0, z: 0}
+  petEmotion: {fileID: 0}
   currentSkill: 0
   dropPosition: {x: 0, y: 0, z: 0}
   iconStatusObject: {fileID: 7789009985856565278}
   iconStatus: 0
+  equipment: {fileID: 0}
   dirties: []
   dirties_L: []
   dirties_LD: []
@@ -752,7 +746,7 @@ SpriteRenderer:
   m_Size: {x: 1.26, y: 1.26}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &8418231560363276522

@@ -214,6 +214,7 @@ public class CharController : MonoBehaviour
             {
                 shadow = child.gameObject;
                 originalShadowScale = shadow.transform.localScale;
+                shadow.GetComponent<SpriteRenderer>().color = new Color(0, 0, 0, 0.3f);
             }
             else if (child.gameObject.tag == "Dirty_L")
             {
@@ -239,7 +240,7 @@ public class CharController : MonoBehaviour
 
         nameObject.transform.position = iconStatusObject.transform.position - new Vector3(0, 2.5f, 10);
         petNameText = nameObject.GetComponent<TextMeshPro>();
-        petNameText.text = data.petName;
+        petNameText.text = "<color=green>" + data.level.ToString() + " </color>" + data.petName;
 
  
         nameObject.transform.SetParent(this.transform);
@@ -310,7 +311,7 @@ public class CharController : MonoBehaviour
             if(timeLove > maxTimeLove && actionType != ActionType.Hold)
             {
                 StartCoroutine(OnEmotion());
-                ItemManager.instance.SpawnPetHappy(this.transform.position,data.RateHappy + data.level / 5);
+                ItemManager.instance.SpawnPetHappy(this.transform.position,data.RateHappy + data.level / 10);
                 timeLove = 0;
             }else
                 timeLove += Time.deltaTime;
@@ -337,6 +338,7 @@ public class CharController : MonoBehaviour
         {
             CalculateData();
             dataTime = 0;
+            petNameText.text = "<color=green>" + data.level.ToString() + " </color>" + data.petName;
         }
         else
             dataTime += Time.deltaTime;
@@ -856,7 +858,7 @@ public class CharController : MonoBehaviour
     IEnumerator OnEmotion()
     {
         petEmotion.gameObject.SetActive(true);
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(2);
         petEmotion.gameObject.SetActive(false);
     }
 
@@ -1298,6 +1300,8 @@ public class CharController : MonoBehaviour
             equipment.DeActive();
             equipment = null;
         }
+
+        charCollider.CheckHighlight();
        
         MageManager.instance.PlaySound("Drag", false);
         if (charInteract.isDrag)
@@ -1335,6 +1339,7 @@ public class CharController : MonoBehaviour
             yield return new WaitForEndOfFrame();
         }
 
+        charCollider.OffAllItem();
         this.charObject.transform.rotation = Quaternion.identity;
         dropPosition = charScale.scalePosition;
         bool dropOutSide = false;
@@ -1366,7 +1371,7 @@ public class CharController : MonoBehaviour
             }
         }
 
-        
+
         float fallSpeed = 0;
 
         while (charInteract.interactType == InteractType.Drop)
@@ -1546,7 +1551,7 @@ public class CharController : MonoBehaviour
             BaseFloorItem item = ItemManager.instance.FindFreeRandomItem(ItemType.Bath);
             if (item != null && item.startPoint != null)
             {
-                target = equipment.startPoint.position;
+                target = item.startPoint.position;
                 yield return StartCoroutine(RunToPoint());
                 JumpIn(item);   
             }
@@ -1558,7 +1563,6 @@ public class CharController : MonoBehaviour
             charInteract.interactType = InteractType.Equipment;
             this.transform.position = equipment.GetAnchorPoint(this).position;
             agent.transform.position = equipment.GetAnchorPoint(this).position;
-            Debug.Log(equipment.GetAnchorPoint(this).position);
             equipment.OnActive();
             MageManager.instance.PlaySound3D("Pee", false, this.transform.position);
         }
@@ -1571,7 +1575,7 @@ public class CharController : MonoBehaviour
                 anim.Play("Injured_L", 0);
             else
                 anim.Play("Soap", 0);
-            this.data.Dirty -= value/60 * Time.deltaTime;
+            this.data.Dirty -= value/10 * Time.deltaTime;
             yield return new WaitForEndOfFrame();
         }
 
@@ -1592,6 +1596,7 @@ public class CharController : MonoBehaviour
 
     protected virtual IEnumerator Pee()
     {
+        float pee = data.Pee;
         float value = 0;
 
         if (data.level >= 5 && (equipment == null || equipment.itemType != ItemType.Toilet))
@@ -1622,10 +1627,10 @@ public class CharController : MonoBehaviour
            
             Vector3 pos = peePosition.position;
             pos.z = 10;
-            ItemManager.instance.SpawnPee(pos, value);
+            ItemManager.instance.SpawnPee(pos, pee);
             while (data.Pee > 0 && !isAbort)
             {
-                data.Pee -= (5 + value) * Time.deltaTime;
+                data.Pee -= (5 + value/10) * Time.deltaTime;
                 yield return new WaitForEndOfFrame();
             }
         }
@@ -1644,6 +1649,7 @@ public class CharController : MonoBehaviour
 
     protected virtual IEnumerator Shit()
     {
+        float shit = data.Shit;
         float value = 0;
         if (data.level >= 5 && (equipment == null || equipment.itemType != ItemType.Toilet))
         {
@@ -1671,14 +1677,14 @@ public class CharController : MonoBehaviour
             MageManager.instance.PlaySound3D("Shit", false,this.transform.position);
             while (data.Shit > 0 && !isAbort)
             {
-                data.Shit -= (2 + value) * Time.deltaTime;
+                data.Shit -= (2 + value/20) * Time.deltaTime;
                 yield return new WaitForEndOfFrame();
             }
             if (!isAbort)
             {
                 Vector3 pos = peePosition.position;
                 pos.z = pos.y * 10 + 10;
-                ItemManager.instance.SpawnShit(shitPosition.position, value);
+                ItemManager.instance.SpawnShit(shitPosition.position, shit);
             }
             else
             {
@@ -1882,7 +1888,7 @@ public class CharController : MonoBehaviour
             else
             {
                 anim.Play("Sleep", 0);
-                data.Sleep += (0.5f + value) * Time.deltaTime;
+                data.Sleep += (0.5f + value/10) * Time.deltaTime;
                 data.Health += 0.1f * Time.deltaTime;
                 data.Damage -= 0.1f * Time.deltaTime;
             }
@@ -2021,15 +2027,10 @@ public class CharController : MonoBehaviour
 
         anim.Play("Sick", 0);
         Debug.Log("Sick");
-        //while ((System.DateTime.Now - data.timeSick).TotalSeconds < data.MaxTimeSick && !isAbort)
         while (data.Health < data.MaxHealth * 0.7f && !isAbort)
         {
             yield return new WaitForEndOfFrame();
         }
-        //yield return StartCoroutine(DoAnim("Love"));
-        //timeWait.gameObject.SetActive(false);
-        //GameManager.instance.LogAchivement(AchivementType.Do_Action, ActionType.Sick);
-        //CheckEnviroment();
         CheckAbort();
     }
 
@@ -2053,9 +2054,6 @@ public class CharController : MonoBehaviour
         {
             yield return new WaitForEndOfFrame();
         }
-
-        GameManager.instance.LogAchivement(AchivementType.Do_Action, ActionType.Injured);
-        CheckEnviroment();
         CheckAbort();
     }
 
@@ -2090,6 +2088,7 @@ public class CharController : MonoBehaviour
                 //anim.Play("Teased", 0);
                 anim.Play("Play_" + equipment.toyType.ToString());
                 shadow.GetComponent<SpriteRenderer>().enabled = false;
+
                 yield return new WaitForEndOfFrame();
                 float ySpeed = 30 * anim.GetCurrentAnimatorStateInfo(0).length / 2;
                 if (anim.GetCurrentAnimatorStateInfo(0).length < 2)
@@ -2415,8 +2414,6 @@ public class CharController : MonoBehaviour
     {
         if (equipment != null)
         {
-            
-            Debug.Log(equipment.itemType);
             if (equipment.itemType == ItemType.Bed)
             {
                 equipment.AddPet(this);

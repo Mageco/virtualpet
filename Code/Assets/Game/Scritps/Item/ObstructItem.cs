@@ -20,7 +20,7 @@ public class ObstructItem : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        if(other.tag == "Equipment" && !itemCollides.Contains(other.gameObject))
+        if(!itemCollides.Contains(other.gameObject))
             itemCollides.Add(other.gameObject);
     }
 

@@ -30,7 +30,7 @@ public class BaseFloorItem : MonoBehaviour
 	public Transform endPoint;
 	public ToyType toyType = ToyType.None;
 	public List<AnchorPoint> points = new List<AnchorPoint>();
-
+	float highlight = 1;
 
 	protected virtual void Awake()
 	{
@@ -68,7 +68,7 @@ public class BaseFloorItem : MonoBehaviour
         {
 
         }
-		else if (itemType == ItemType.Picture || itemType == ItemType.Clock)
+		else if (itemType == ItemType.Picture || itemType == ItemType.Clock || itemType == ItemType.MedicineBox)
 		{
 			boundX = ItemManager.instance.roomBoundX;
 			boundY = ItemManager.instance.roomWallBoundY;
@@ -130,7 +130,7 @@ public class BaseFloorItem : MonoBehaviour
 			dragTime += Time.deltaTime;
 			if (dragTime > 0.2f)
 			{
-				if (Vector2.Distance(Camera.main.ScreenToWorldPoint(Input.mousePosition), clickPosition) < 2f)
+				if (Vector2.Distance(Camera.main.ScreenToWorldPoint(Input.mousePosition), clickPosition) < 5f)
 				{
 					if (arrow == null)
 					{
@@ -146,15 +146,18 @@ public class BaseFloorItem : MonoBehaviour
 				}
 				else
 				{
-					if (arrow != null)
+					if (arrow != null && state != EquipmentState.Drag)
 						Destroy(arrow);
 				}
 			}
 
-			if (dragTime > 0.5f && Vector2.Distance(Camera.main.ScreenToWorldPoint(Input.mousePosition), clickPosition) < 2f)
+			if (dragTime > 0.3f && Vector2.Distance(Camera.main.ScreenToWorldPoint(Input.mousePosition), clickPosition) > 2f && Vector2.Distance(Camera.main.ScreenToWorldPoint(Input.mousePosition), clickPosition) < 5f)
 			{
 				OnDrag();
-			}
+			}else if(dragTime > 0.5f && Vector2.Distance(Camera.main.ScreenToWorldPoint(Input.mousePosition), clickPosition) < 2f)
+            {
+				OnDrag();
+            }
 			else if (dragTime > 0.5f)
 				OffDrag();
 
@@ -192,9 +195,9 @@ public class BaseFloorItem : MonoBehaviour
 
 	protected virtual void LateUpdate()
 	{
-		if (itemType != ItemType.Picture && itemType != ItemType.Clock && itemType != ItemType.Room && itemType != ItemType.Gate)
+		if (itemType != ItemType.Clock && itemType != ItemType.MedicineBox && itemType != ItemType.Picture && itemType != ItemType.Clock && itemType != ItemType.Room && itemType != ItemType.Gate)
 		{
-			transform.localScale = originalScale * (1 + (-transform.position.y) * scaleFactor);
+			transform.localScale = originalScale * (1 + (-transform.position.y) * scaleFactor) * highlight;
 			Vector3 pos = this.transform.position;
 			pos.z = this.transform.position.y * 10;
 			this.transform.position = pos;
@@ -205,7 +208,7 @@ public class BaseFloorItem : MonoBehaviour
 	{
 		if (state == EquipmentState.Drag || state == EquipmentState.Hold)
 		{
-			if (dragTime < 0.4f)
+			if (dragTime < 0.4f && Vector2.Distance(Camera.main.ScreenToWorldPoint(Input.mousePosition), clickPosition) < 2f)
 			{
 				OnClick();
 			}
@@ -429,6 +432,26 @@ public class BaseFloorItem : MonoBehaviour
 		else
 			return false;
     }
+
+    public void OnHighlight()
+    {
+		highlight = 1.1f;
+        for(int i = 0; i < sprites.Length; i++)
+        {
+            if(sprites[i] != null)
+			    sprites[i].sharedMaterial = ItemManager.instance.highlightMaterial;
+        }
+    }
+
+    public void OffHighlight()
+    {
+		highlight = 1;
+		for (int i = 0; i < sprites.Length; i++)
+		{
+			if (sprites[i] != null)
+				sprites[i].sharedMaterial = ItemManager.instance.defaultMaterial;
+		}
+	}
 
 	protected bool IsPointerOverUIObject()
 	{

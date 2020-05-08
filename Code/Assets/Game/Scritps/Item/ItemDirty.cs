@@ -39,18 +39,12 @@ public class ItemDirty : MonoBehaviour
     private void OnMouseDown()
     {
 		clickPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+		MageManager.instance.PlaySound3D("happy_collect_item_01", false, this.transform.position);
+		ItemManager.instance.SpawnStar(this.transform.position, 1);
+		GameManager.instance.LogAchivement(AchivementType.Clean);
+		Destroy(this.gameObject);
 	}
 
-    private void OnMouseUp()
-    {
-        if(Vector2.Distance(Camera.main.ScreenToWorldPoint(Input.mousePosition), clickPosition) < 1f)
-        {
-			MageManager.instance.PlaySound3D("happy_collect_item_01", false, this.transform.position);
-			ItemManager.instance.SpawnStar(this.transform.position, 1);
-			GameManager.instance.LogAchivement(AchivementType.Clean);
-			Destroy(this.gameObject);
-        }
-    }
 
     void OnTriggerEnter2D(Collider2D other) {
         if (other.tag == "Player") {
