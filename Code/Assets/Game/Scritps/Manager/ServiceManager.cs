@@ -36,14 +36,7 @@ public class ServiceManager : MonoBehaviour
 
         }
 
-        if(GameManager.instance.myPlayer.dailyBonus.Count == 0)
-        {
-            for (int i = 0; i < 7; i++)
-            {
-                PlayerBonus b = new PlayerBonus();
-                GameManager.instance.myPlayer.dailyBonus.Add(b);
-            }
-        }
+
 
         LoadServiceUI();
     }

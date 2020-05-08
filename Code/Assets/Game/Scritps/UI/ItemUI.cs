@@ -101,7 +101,7 @@ public class ItemUI : MonoBehaviour
             price.text = d.buyPrice.ToString();
             buyButton.gameObject.SetActive(true);
 
-            if(d.itemType == ItemType.Room || d.itemType == ItemType.Gate || d.itemType == ItemType.Board || d.itemType == ItemType.Clean ||
+            if(d.itemType == ItemType.Room || d.itemType == ItemType.Gate || d.itemType == ItemType.Board ||
                 d.iD == 1 || d.iD == 96 || d.iD == 97 || d.iD == 98)
             {
                 if (GameManager.instance.IsHaveItem(d.iD))
@@ -211,24 +211,6 @@ public class ItemUI : MonoBehaviour
                 cleanIcon.gameObject.SetActive(true);
                 cleanText.text = d.value.ToString("F0");
             }
-        }
-        else if (d.itemType == ItemType.Fruit)
-        {
-
-            
-            int v = 0;
-            if (d.priceType == PriceType.Coin)
-                v = d.buyPrice / 50;
-            else if(d.priceType == PriceType.Diamond)
-                v = d.buyPrice * 2;
-
-            if(v > 0)
-            {
-                plusCoinIcon.gameObject.SetActive(true);
-                plusCoinText.text = "+" + v.ToString("F0");
-            }
-
-            
         }
 
         //SuperSale

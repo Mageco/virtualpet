@@ -47,6 +47,7 @@ public class ItemDirty : MonoBehaviour
         {
 			MageManager.instance.PlaySound3D("happy_collect_item_01", false, this.transform.position);
 			ItemManager.instance.SpawnStar(this.transform.position, 1);
+			GameManager.instance.LogAchivement(AchivementType.Clean);
 			Destroy(this.gameObject);
         }
     }

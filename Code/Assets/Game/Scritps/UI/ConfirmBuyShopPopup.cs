@@ -39,7 +39,7 @@ public class ConfirmBuyShopPopup : MonoBehaviour
         icon.sprite = Resources.Load<Sprite>(url) as Sprite;
         replacePanel.SetActive(false);
 
-        if (d.itemType == ItemType.Room || d.itemType == ItemType.Gate || d.itemType == ItemType.Clean || d.itemType == ItemType.Board)
+        if (d.itemType == ItemType.Room || d.itemType == ItemType.Gate || d.itemType == ItemType.Board)
         {
             foreach(PlayerItem item in GameManager.instance.myPlayer.items)
             {

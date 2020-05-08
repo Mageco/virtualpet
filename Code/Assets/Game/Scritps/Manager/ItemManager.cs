@@ -278,7 +278,7 @@ public class ItemManager : MonoBehaviour
 
     void AddItem(PlayerItem playerItem)
     {
-        if(DataHolder.GetItem(playerItem.itemId) != null)
+        if(DataHolder.GetItem(playerItem.itemId) != null && DataHolder.GetItem(playerItem.itemId).prefabName != "")
         {
             string url = DataHolder.GetItem(playerItem.itemId).prefabName.Replace("Assets/Game/Resources/", "");
             url = url.Replace(".prefab", "");
@@ -485,6 +485,7 @@ public class ItemManager : MonoBehaviour
     public void SpawnPetHappy(Vector3 pos, int value)
     {
         GameObject go = Instantiate(petHappyPrefab, pos, Quaternion.identity);
+        go.transform.position += new Vector3(Random.Range(-1f, 1f), Random.Range(-1f, 1f), -20);
         go.GetComponent<PetHappyItem>().Load(value);
     }
 

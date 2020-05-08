@@ -16,15 +16,17 @@ public class BeeController : MonoBehaviour
 	Vector3 lastPosition;
 
 	public float initZ = -6;
-	public float scaleFactor = 0.1f;
+	public float scaleFactor = 0.02f;
 	Vector3 originalScale;
     public BeeState state = BeeState.Idle;
 	CharController target;
+	public int minQuestId = -1;
 
 	int hitCount = 0;
     int maxCount = 3;
 
 	Animator anim;
+	public GameObject item;
 
 	void Awake()
 	{
@@ -36,6 +38,8 @@ public class BeeController : MonoBehaviour
 		originalScale = this.transform.localScale;
 		anim = this.body.GetComponent<Animator>();
 		speed = initSpeed;
+		item.SetActive(false);
+		item.transform.localPosition = new Vector3(0, 0, -10);
 	}
 
 	void Start()
@@ -181,14 +185,14 @@ public class BeeController : MonoBehaviour
 				{
 					anim.Play("Attack");
 					target.OnSupprised();
-					target.data.Health -= 5;
+					target.data.Damage += Random.Range(30,50);
 				}
 			}
 			Patrol();
 		}
 		else {
 			if (time > maxTimeSpawn) {
-                if(GameManager.instance.myPlayer.questId > 7)
+                if(GameManager.instance.myPlayer.questId > minQuestId)
                     Spawn ();
 				time = 0;
 			} else
@@ -204,19 +208,36 @@ public class BeeController : MonoBehaviour
 		MageManager.instance.PlaySound3D("Punch1",false, this.transform.position);
 		MageManager.instance.PlaySound3D("collect_item_02",false, this.transform.position);
 		anim.Play("Hit",0);
-		int value = Random.Range(2, 6);
-		ItemManager.instance.SpawnCoin(this.transform.position + new Vector3(0, 2, -1), value, this.gameObject);
-		GameManager.instance.AddCoin(value, Utils.instance.Md5Sum(GameManager.instance.count.ToString() + GameManager.instance.myPlayer.playTime.ToString() + GameManager.instance.myPlayer.Happy.ToString() + "M@ge2013"));
 		GameManager.instance.LogAchivement(AchivementType.Tap_Animal,ActionType.None,-1,AnimalType.Bee);
 		if(state == BeeState.Fight || state == BeeState.Seek || state == BeeState.Enter || state == BeeState.Patrol) {
 			hitCount ++;
+			StartCoroutine(SpawnItem());
 		}
 		if(hitCount >= 3)
 			Run();
+
+
+	}
+
+	IEnumerator SpawnItem()
+	{
+		GameObject go = GameObject.Instantiate(item) as GameObject;
+		go.SetActive(true);
+		go.transform.position = this.body.transform.position;
+		go.transform.parent = Camera.main.transform;
+		Vector3 target = Camera.main.ScreenToWorldPoint(UIManager.instance.inventoryButton.transform.position) - Camera.main.transform.position;
+		target.z = -100;
+		while (Vector2.Distance(go.transform.localPosition, target) > 0.5)
+		{
+			go.transform.localPosition = Vector3.Lerp(go.transform.localPosition, target, 5 * Time.deltaTime);
+			yield return new WaitForEndOfFrame();
+		}
+		GameManager.instance.AddItem(232, Utils.instance.Md5Sum(GameManager.instance.count.ToString() + GameManager.instance.myPlayer.playTime.ToString() + GameManager.instance.myPlayer.Happy.ToString() + "M@ge2013"));
+		Destroy(go);
 	}
 
 
-    void OnTriggerEnter2D(Collider2D other) {
+	void OnTriggerEnter2D(Collider2D other) {
         if (other.tag == "Player") {
 
 		}

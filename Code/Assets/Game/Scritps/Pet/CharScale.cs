@@ -61,6 +61,12 @@ public class CharScale : MonoBehaviour
 						this.transform.position = p;
 					}
 				}else if(delta < 0 && height > 0){
+                    if(height > maxHeight)
+                    {
+						scalePosition.y += delta;
+						height = maxHeight;
+					}
+
 					if(scalePosition.y > -24){
 						scalePosition.y += delta;
 						height -= delta;

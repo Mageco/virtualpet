@@ -15149,15 +15149,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7238236c5845e416ebae7c1d19142407, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  realID: 0
+  itemID: 0
+  itemType: -1
+  state: 0
+  pets: []
+  anchorPoints:
+  - {fileID: 3628198617659697281}
+  startPoint: {fileID: 3628198617659697281}
+  endPoint: {fileID: 3628198617659697281}
+  toyType: 17
+  points: []
   clean: 1
-  initZ: -6
-  scaleFactor: 0.05
   target: {x: 0, y: 0, z: 0}
   agent: {fileID: 0}
   isArrived: 1
   isAbort: 0
   speed: 10
-  state: 0
+  robotState: 0
 --- !u!60 &7236039905741249657
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -15184,11 +15193,12 @@ PolygonCollider2D:
   m_Points:
     m_Paths:
     - - {x: 3.842476, y: 4.955487}
-      - {x: 1.8504333, y: 4.776278}
-      - {x: 1.7612762, y: 11.77993}
+      - {x: 2.7133865, y: 4.9090395}
+      - {x: 2.7569885, y: 11.979073}
       - {x: -3.2948837, y: 11.591701}
       - {x: -3.3544693, y: 4.453336}
       - {x: -6.196945, y: 4.4070225}
-      - {x: -6.1819687, y: -2.0521708}
-      - {x: 5.44738, y: -2.108677}
+      - {x: -8.70443, y: 2.926385}
+      - {x: -4.45607, y: -0.7909364}
+      - {x: 5.845665, y: -0.84744257}
       - {x: 5.4151077, y: 2.7388153}

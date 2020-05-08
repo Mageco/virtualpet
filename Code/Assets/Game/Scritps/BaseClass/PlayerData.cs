@@ -53,17 +53,6 @@ public class PlayerData : BaseModel
 		startGameTime = System.DateTime.Now.ToString();
 	}
 
-	public void LoadData(){
-		for(int i=0;i<DataHolder.Achivements().GetDataCount();i++){
-			PlayerAchivement a = new PlayerAchivement();
-			a.achivementId = DataHolder.Achivement(i).iD;
-			a.rewardState = RewardState.None;
-			a.achivementType = DataHolder.Achivement(i).achivementType;
-			a.order = DataHolder.Achivement(i).order;
-			achivements.Add(a);
-		}
-	}
-
 	public int Coin
 	{
 		get
