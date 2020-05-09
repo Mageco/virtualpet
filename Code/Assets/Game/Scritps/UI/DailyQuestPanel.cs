@@ -82,7 +82,7 @@ public class DailyQuestPanel : MonoBehaviour
             {
                 quest.startValue = GameManager.instance.GetAchivement(quest.achivementId);
                 int petNumber = GameManager.instance.GetPets().Count;
-                quest.bonus = petNumber * 10;
+                quest.bonus = 100;
                 quest.state = DailyQuestState.Started;
                 if (quest.achivementId == 3)
                     quest.requireValue = 1;
@@ -169,7 +169,7 @@ public class DailyQuestPanel : MonoBehaviour
 #endif
 
         GameManager.instance.myPlayer.isCompleteDailyQuest = true;
-        GameManager.instance.AddDiamond(10, Utils.instance.Md5Sum(GameManager.instance.count.ToString() + GameManager.instance.myPlayer.playTime.ToString() + GameManager.instance.myPlayer.Happy.ToString() + "M@ge2013"));
+        GameManager.instance.AddDiamond(5, Utils.instance.Md5Sum(GameManager.instance.count.ToString() + GameManager.instance.myPlayer.playTime.ToString() + GameManager.instance.myPlayer.Happy.ToString() + "M@ge2013"));
         MageManager.instance.PlaySound("Collect_Achivement", false);
         LoadUI();
     }

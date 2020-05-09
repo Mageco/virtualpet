@@ -49,13 +49,7 @@ public class SpinWheelPanel : MonoBehaviour
 
     void LoadButton()
     {
-        if (GameManager.instance.myPlayer.spinCount >= 2)
-        {
-            buttonFree.gameObject.SetActive(true);
-            buttonAd.gameObject.SetActive(false);
-            buttonFree.interactable = true;
-        }
-        else if (GameManager.instance.myPlayer.spinCount == 1)
+        if (GameManager.instance.myPlayer.spinCount == 1)
         {
             buttonFree.gameObject.SetActive(false);
             buttonAd.gameObject.SetActive(true);
@@ -132,103 +126,95 @@ public class SpinWheelPanel : MonoBehaviour
         
 
         LoadButton();
+        List<int> items = new List<int>();
+        int id = 0;
+        int value = 2;
 
-        if(n==4)
+        if (n==4)
             MageManager.instance.PlaySound("Win", false);
         else
             MageManager.instance.PlaySound("collect_item_02", false);
 
         if (n == 0)
         {
-            int value = 100;
+            value = 100;
             GameManager.instance.AddCoin(value, Utils.instance.Md5Sum(GameManager.instance.count.ToString() + GameManager.instance.myPlayer.playTime.ToString() + GameManager.instance.myPlayer.Happy.ToString() + "M@ge2013"));
             UIManager.instance.OnSpinRewardPanel(icons[n].sprite, value.ToString());
         }else if(n == 1)
         {
-            int value = 2;
-            GameManager.instance.AddDiamond(value, Utils.instance.Md5Sum(GameManager.instance.count.ToString() + GameManager.instance.myPlayer.playTime.ToString() + GameManager.instance.myPlayer.Happy.ToString() + "M@ge2013"));
-            UIManager.instance.OnSpinRewardPanel(icons[n].sprite, value.ToString());
+            value = 100;
+            for (int i = 231; i <= 238; i++)
+            {
+                items.Add(i);
+            }
+            items.Add(244);
+            id = Random.Range(0, items.Count);
+            GameManager.instance.AddItem(items[id],value, Utils.instance.Md5Sum(GameManager.instance.count.ToString() + GameManager.instance.myPlayer.playTime.ToString() + GameManager.instance.myPlayer.Happy.ToString() + "M@ge2013"));
+            string url = DataHolder.GetItem(items[id]).iconUrl.Replace("Assets/Game/Resources/", "");
+            url = url.Replace(".png", "");
+            UIManager.instance.OnSpinRewardPanel(Resources.Load<Sprite>(url) as Sprite, value.ToString());
         }
         else if (n == 2)
         {
-            int value = 300;
+            value = 100;
             GameManager.instance.AddHappy(value, Utils.instance.Md5Sum(GameManager.instance.count.ToString() + GameManager.instance.myPlayer.playTime.ToString() + GameManager.instance.myPlayer.Happy.ToString() + "M@ge2013"));
             UIManager.instance.OnSpinRewardPanel(icons[n].sprite, value.ToString());
         }
         else if (n == 3)
         {
-            int value = 10;
-            GameManager.instance.AddDiamond(value, Utils.instance.Md5Sum(GameManager.instance.count.ToString() + GameManager.instance.myPlayer.playTime.ToString() + GameManager.instance.myPlayer.Happy.ToString() + "M@ge2013"));
-            UIManager.instance.OnSpinRewardPanel(icons[n].sprite, value.ToString());
+            value = 100;
+            for (int i = 204; i <= 215; i++)
+            {
+                items.Add(i);
+            }
+            id = Random.Range(0, items.Count);
+            GameManager.instance.AddItem(items[id], value, Utils.instance.Md5Sum(GameManager.instance.count.ToString() + GameManager.instance.myPlayer.playTime.ToString() + GameManager.instance.myPlayer.Happy.ToString() + "M@ge2013"));
+            string url = DataHolder.GetItem(items[id]).iconUrl.Replace("Assets/Game/Resources/", "");
+            url = url.Replace(".png", "");
+            UIManager.instance.OnSpinRewardPanel(Resources.Load<Sprite>(url) as Sprite, value.ToString());
         }
         else if (n == 4)
         {
-            int value = 1;
-            List<Item> items = new List<Item>();
-            for(int i = 0; i < DataHolder.Items().GetDataCount(); i++)
+            value = 100;
+            for (int i = 239; i <= 241; i++)
             {
-                if (DataHolder.Item(i).isAvailable && DataHolder.Item(i).itemType != ItemType.Animal && DataHolder.Item(i).itemType != ItemType.Diamond
-                    && DataHolder.Item(i).itemType != ItemType.Chest && DataHolder.Item(i).itemType != ItemType.Coin && DataHolder.Item(i).itemType != ItemType.MagicBox)
-                {
-                    bool isAdd = true;
-                    foreach (PlayerItem p in GameManager.instance.myPlayer.items)
-                    {
-                        if (p.itemId == DataHolder.Item(i).iD && p.state != ItemState.OnShop)
-                        {
-                            isAdd = false;
-                        }
-                    }
-                    if (isAdd)
-                    {
-                        items.Add(DataHolder.Item(i));
-                    }
-                }
+                items.Add(i);
             }
-            items.Sort((p1, p2) => (p1.levelRequire).CompareTo(p2.levelRequire));
-            if(items.Count > 1)
-            {
-                bool isAdopt = false;
-                int id = 0;
-                while (!isAdopt)
-                {
-                    int ran = Random.Range(0, 100);
-                    if (ran > 60)
-                    {
-                        isAdopt = true;
-                    }
-                    else
-                    {
-                        id++;
-                        if (id >= items.Count)
-                            id = 0;
-                    }
-                }
-                GameManager.instance.AddItem(items[id].iD, Utils.instance.Md5Sum(GameManager.instance.count.ToString() + GameManager.instance.myPlayer.playTime.ToString() + GameManager.instance.myPlayer.Happy.ToString() + "M@ge2013"));
-                GameManager.instance.EquipItem(items[id].iD);
-                string url = items[id].iconUrl.Replace("Assets/Game/Resources/", "");
-                url = url.Replace(".png", "");
-                UIManager.instance.OnSpinRewardPanel(Resources.Load<Sprite>(url) as Sprite, value.ToString());
-            }
+            id = Random.Range(0, items.Count);
+            GameManager.instance.AddItem(items[id], value, Utils.instance.Md5Sum(GameManager.instance.count.ToString() + GameManager.instance.myPlayer.playTime.ToString() + GameManager.instance.myPlayer.Happy.ToString() + "M@ge2013"));
+            string url = DataHolder.GetItem(items[id]).iconUrl.Replace("Assets/Game/Resources/", "");
+            url = url.Replace(".png", "");
+            UIManager.instance.OnSpinRewardPanel(Resources.Load<Sprite>(url) as Sprite, value.ToString());
         }
         else if (n == 5)
         {
-            int value = 5;
+            value = 10;
             GameManager.instance.AddExp(value, Utils.instance.Md5Sum(GameManager.instance.count.ToString() + GameManager.instance.myPlayer.playTime.ToString() + GameManager.instance.myPlayer.Happy.ToString() + "M@ge2013"));
             UIManager.instance.OnSpinRewardPanel(icons[n].sprite, value.ToString());
         }
         else if (n == 6)
         {
-            int value = 500;
+            value = 500;
             GameManager.instance.AddCoin(value, Utils.instance.Md5Sum(GameManager.instance.count.ToString() + GameManager.instance.myPlayer.playTime.ToString() + GameManager.instance.myPlayer.Happy.ToString() + "M@ge2013"));
             UIManager.instance.OnSpinRewardPanel(icons[n].sprite, value.ToString());
         }
         else if (n == 7)
         {
-            int value = 50;
-            GameManager.instance.AddHappy(value, Utils.instance.Md5Sum(GameManager.instance.count.ToString() + GameManager.instance.myPlayer.playTime.ToString() + GameManager.instance.myPlayer.Happy.ToString() + "M@ge2013"));
-            UIManager.instance.OnSpinRewardPanel(icons[n].sprite, value.ToString());
-        }
+            value = 100;
+            for (int i = 216; i <= 230; i++)
+            {
+                items.Add(i);
+            }
+            items.Add(242);
+            items.Add(243);
+            items.Add(245);
 
+            id = Random.Range(0, items.Count);
+            GameManager.instance.AddItem(items[id], value, Utils.instance.Md5Sum(GameManager.instance.count.ToString() + GameManager.instance.myPlayer.playTime.ToString() + GameManager.instance.myPlayer.Happy.ToString() + "M@ge2013"));
+            string url = DataHolder.GetItem(items[id]).iconUrl.Replace("Assets/Game/Resources/", "");
+            url = url.Replace(".png", "");
+            UIManager.instance.OnSpinRewardPanel(Resources.Load<Sprite>(url) as Sprite, value.ToString());
+        }
     }
 
     public void OnWatch()

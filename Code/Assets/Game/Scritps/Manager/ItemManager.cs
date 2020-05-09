@@ -289,11 +289,14 @@ public class ItemManager : MonoBehaviour
             {
                 GameObject go = Instantiate((Resources.Load(url) as GameObject), Vector3.zero, Quaternion.identity) as GameObject;
                 BaseFloorItem item = go.GetComponentInChildren<BaseFloorItem>(true);
-                item.itemType = playerItem.itemType;
-                item.itemID = playerItem.itemId;
-                item.realID = playerItem.realId;
-                items.Add(item);
-                go.transform.parent = this.transform;
+                if(item != null)
+                {
+                    item.itemType = playerItem.itemType;
+                    item.itemID = playerItem.itemId;
+                    item.realID = playerItem.realId;
+                    items.Add(item);
+                    go.transform.parent = this.transform;
+                }
             }
         }       
     }
@@ -517,7 +520,7 @@ public class ItemManager : MonoBehaviour
     public void SpawnChest()
     {
         ChestItem[] chests = FindObjectsOfType<ChestItem>();
-        if (chests.Length > 2)
+        if (chests.Length > 0)
             return;
         Vector3 pos = GetRandomPoint(AreaType.GardenRight);
         bool isOk = false;

@@ -42,7 +42,7 @@ public class RewardItemPanel : MonoBehaviour
         {
             diamondIcon.SetActive(true);
         }
-        priceText.text = chestItem.value.ToString();
+        priceText.text = "??";
     }
 
     public void ShowAd()

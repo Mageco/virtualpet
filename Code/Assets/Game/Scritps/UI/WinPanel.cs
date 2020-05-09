@@ -49,25 +49,39 @@ public class WinPanel : MonoBehaviour
             completeText.gameObject.SetActive(true);
             replayText.gameObject.SetActive(false);
             nextText.gameObject.SetActive(true);
-            int r = Random.Range(0, 100);
+
 
             if (minigameId == 0)
             {
                 if ((GameManager.instance.myPlayer.minigameLevels[0] + 1) % 5 == 0 || GameManager.instance.myPlayer.minigameLevels[0] == 0)
                     itemId = 72;
-                else
-                { 
-                    if (r < 70)
-                    {
-                        itemId = 216;
-                    }
-                    else if (r < 95)
-                        itemId = 217;
-                    else
-                        itemId = 218;
-                }
             }
-            else if(minigameId == 1)
+        }
+        else
+        {
+            animator.Play("Minigame_Lose_Open", 0);
+           completeText.gameObject.SetActive(false);
+            replayText.gameObject.SetActive(true);
+            nextText.gameObject.SetActive(false);
+        }
+
+        int r = Random.Range(0, 100);
+
+        if(c >= 2)
+        {
+            if (minigameId == 0 && itemId == 0)
+            {
+
+                if (r < 70)
+                {
+                    itemId = 216;
+                }
+                else if (r < 95)
+                    itemId = 217;
+                else
+                    itemId = 218;
+            }
+            else if (minigameId == 1)
             {
                 if (r < 70)
                 {
@@ -122,32 +136,23 @@ public class WinPanel : MonoBehaviour
                 else
                     itemId = 230;
             }
+        }
+       
 
-            if (itemId != 0)
-            {
-                Item d = DataHolder.GetItem(itemId);
-                string url = d.iconUrl.Replace("Assets/Game/Resources/", "");
-                url = url.Replace(".png", "");
-                item.transform.parent.GetComponent<Image>().sprite = Resources.Load<Sprite>(url) as Sprite;
-                GameManager.instance.AddItem(itemId, Utils.instance.Md5Sum(GameManager.instance.count.ToString() + GameManager.instance.myPlayer.playTime.ToString() + GameManager.instance.myPlayer.Happy.ToString() + "M@ge2013"));
-                GameManager.instance.EquipItem(itemId);
-            }
-            else
-            {
-                item.transform.parent.gameObject.SetActive(false);
-            }
-        
-
+        if (itemId != 0)
+        {
+            Item d = DataHolder.GetItem(itemId);
+            string url = d.iconUrl.Replace("Assets/Game/Resources/", "");
+            url = url.Replace(".png", "");
+            item.transform.parent.GetComponentInChildren<Image>().sprite = Resources.Load<Sprite>(url) as Sprite;
+            GameManager.instance.AddItem(itemId, Utils.instance.Md5Sum(GameManager.instance.count.ToString() + GameManager.instance.myPlayer.playTime.ToString() + GameManager.instance.myPlayer.Happy.ToString() + "M@ge2013"));
+            GameManager.instance.EquipItem(itemId);
         }
         else
         {
-            animator.Play("Minigame_Lose_Open", 0);
             item.transform.parent.gameObject.SetActive(false);
-           completeText.gameObject.SetActive(false);
-            replayText.gameObject.SetActive(true);
-            nextText.gameObject.SetActive(false);
         }
-            
+
 
         if (c > 0){
             coin.text = c.ToString();
@@ -161,17 +166,17 @@ public class WinPanel : MonoBehaviour
 
         if (!isWin)
         {
-            int r = Random.Range(0, 100);
-            if(r > 50 && (minigameId == 0 || minigameId == 1))
+            int r1 = Random.Range(0, 100);
+            if(r1 > 50 && (minigameId == 0 || minigameId == 1))
                 RewardVideoAdManager.instance.ShowIntetestial();
 
-            if (r > 70 && (minigameId == 2))
+            if (r1 > 70 && (minigameId == 2))
                 RewardVideoAdManager.instance.ShowIntetestial();
 
-            if (r > 60 && (minigameId == 3 || minigameId == 5))
+            if (r1 > 60 && (minigameId == 3 || minigameId == 5))
                 RewardVideoAdManager.instance.ShowIntetestial();
 
-            if (r > 65 && (minigameId == 4))
+            if (r1 > 65 && (minigameId == 4))
                 RewardVideoAdManager.instance.ShowIntetestial();
 
         }

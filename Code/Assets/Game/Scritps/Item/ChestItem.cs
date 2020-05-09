@@ -20,6 +20,7 @@ public class ChestItem : MonoBehaviour
     {
         int n = Random.Range(0, 100);
 
+        /*
         if (n < 20)
         {
             priceType = PriceType.Coin;
@@ -31,10 +32,10 @@ public class ChestItem : MonoBehaviour
             value = Random.Range(GameManager.instance.myPlayer.petCount * 10, GameManager.instance.myPlayer.petCount * 20);
         }
         else
-        {
-            priceType = PriceType.Diamond;
-            value = Random.Range(2,3);
-        }
+        {*/
+        priceType = PriceType.Diamond;
+        value = Random.Range(2,4);
+        //}
 
         animator = this.GetComponent<Animator>();
             

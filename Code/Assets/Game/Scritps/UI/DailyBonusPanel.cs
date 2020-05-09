@@ -98,7 +98,7 @@ public class DailyBonusPanel : MonoBehaviour
             GameManager.instance.AddCoin(100,GetKey());
         }else if(id == 1)
         {
-            GameManager.instance.AddDiamond(10, GetKey());
+            GameManager.instance.AddDiamond(5, GetKey());
         }
         else if (id == 2)
         {
@@ -106,7 +106,7 @@ public class DailyBonusPanel : MonoBehaviour
         }
         else if (id == 3)
         {
-            GameManager.instance.AddDiamond(20, GetKey());
+            GameManager.instance.AddDiamond(10, GetKey());
         }
         else if (id == 4)
         {
@@ -114,7 +114,7 @@ public class DailyBonusPanel : MonoBehaviour
         }
         else if (id == 5)
         {
-            GameManager.instance.AddDiamond(50, GetKey());
+            GameManager.instance.AddDiamond(15, GetKey());
         }
         else if (id == 6)
         {
