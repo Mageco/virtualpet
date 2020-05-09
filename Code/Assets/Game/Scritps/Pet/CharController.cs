@@ -105,13 +105,13 @@ public class CharController : MonoBehaviour
     GameObject charObject;
 
     //Balance
-    float eatRate = 20;
-    float drinkRate = 10;
-    float peeRate = 10;
-    float shitRate = 20;
-    float sleepRate = 90;
-    float bathRate = 30;
-    float toyRate = 45;
+    float eatRate = 30;
+    float drinkRate = 15;
+    float peeRate = 15;
+    float shitRate = 30;
+    float sleepRate = 120;
+    float bathRate = 45;
+    float toyRate = 60;
 
 
     #region Load
