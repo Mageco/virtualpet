@@ -104,6 +104,16 @@ public class CharController : MonoBehaviour
     public List<GameObject> skinPrefabs = new List<GameObject>();
     GameObject charObject;
 
+    //Balance
+    float eatRate = 20;
+    float drinkRate = 10;
+    float peeRate = 10;
+    float shitRate = 20;
+    float sleepRate = 90;
+    float bathRate = 30;
+    float toyRate = 45;
+
+
     #region Load
 
     void Awake()
@@ -301,8 +311,7 @@ public class CharController : MonoBehaviour
             //petNameText.gameObject.SetActive(false);
             if (equipment != null && equipment.IsActive())
             {
-                int value = (int)DataHolder.GetItem(equipment.itemID).value;
-                data.Toy +=  value * Time.deltaTime * (2 - Mathf.Clamp(data.level/20f,0,1.5f));
+                data.Toy +=  data.MaxToy/toyRate * Time.deltaTime;
             }
         }
 
@@ -311,7 +320,10 @@ public class CharController : MonoBehaviour
             if(timeLove > maxTimeLove && actionType != ActionType.Hold)
             {
                 StartCoroutine(OnEmotion());
-                ItemManager.instance.SpawnPetHappy(this.transform.position,(int)((data.RateHappy + data.level / 10) * maxTimeLove / 10f));
+                if(data.level < 15)
+                    ItemManager.instance.SpawnPetHappy(this.transform.position,data.RateHappy + data.level / 1);
+                else
+                    ItemManager.instance.SpawnHeart(data.RateHappy + data.level / 10, this.transform.position);
                 timeLove = 0;
             }else
                 timeLove += Time.deltaTime;
@@ -364,12 +376,10 @@ public class CharController : MonoBehaviour
     #region Data
     protected virtual void CalculateData()
     {
-        maxTimeLove = 10 * (1 + data.level/10);
-
         if (data.Food > 0 && data.Water > 0)
         {
             data.Food -= 0.4f;
-            data.Water -= 0.4f;
+            data.Water -= 0.3f;
             data.Shit += 0.2f;
             data.Pee += 0.25f;
         }
@@ -859,7 +869,7 @@ public class CharController : MonoBehaviour
     IEnumerator OnEmotion()
     {
         petEmotion.gameObject.SetActive(true);
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(3);
         petEmotion.gameObject.SetActive(false);
     }
 
@@ -1545,9 +1555,8 @@ public class CharController : MonoBehaviour
 
     protected virtual IEnumerator Bath()
     {
-        float value = 0;
-
-        if (data.level >= 20 && (equipment == null || equipment.itemType != ItemType.Bath))
+        float value = Random.Range(0, 0.3f * data.MaxDirty);
+        if (data.level >= 25 && (equipment == null || equipment.itemType != ItemType.Bath))
         {
             BaseFloorItem item = ItemManager.instance.FindFreeRandomItem(ItemType.Bath);
             if (item != null && item.startPoint != null)
@@ -1560,7 +1569,6 @@ public class CharController : MonoBehaviour
 
         if (equipment != null && equipment.itemType == ItemType.Bath)
         {
-            value = DataHolder.GetItem(equipment.itemID).value;
             charInteract.interactType = InteractType.Equipment;
             this.transform.position = equipment.GetAnchorPoint(this).position;
             agent.transform.position = equipment.GetAnchorPoint(this).position;
@@ -1568,7 +1576,7 @@ public class CharController : MonoBehaviour
             MageManager.instance.PlaySound3D("Pee", false, this.transform.position);
         }
 
-        while (this.data.Dirty > 0 && !isAbort)
+        while (this.data.Dirty > value && !isAbort)
         {
             if (data.Health < 0.1f * data.MaxHealth)
                 anim.Play("Sick", 0);
@@ -1576,7 +1584,7 @@ public class CharController : MonoBehaviour
                 anim.Play("Injured_L", 0);
             else
                 anim.Play("Soap", 0);
-            this.data.Dirty -= value/10 * Time.deltaTime;
+            this.data.Dirty -= data.MaxDirty/bathRate * Time.deltaTime;
             yield return new WaitForEndOfFrame();
         }
 
@@ -1598,7 +1606,7 @@ public class CharController : MonoBehaviour
     protected virtual IEnumerator Pee()
     {
         float pee = data.Pee;
-        float value = 0;
+        float value = Random.Range(0, 0.3f * data.MaxPee);
 
         if (data.level >= 5 && (equipment == null || equipment.itemType != ItemType.Toilet))
         {
@@ -1613,7 +1621,6 @@ public class CharController : MonoBehaviour
 
         if (equipment != null && equipment.itemType == ItemType.Toilet)
         {
-            value = DataHolder.GetItem(equipment.itemID).value;
             charInteract.interactType = InteractType.Equipment;
             this.transform.position = equipment.GetAnchorPoint(this).position;
             agent.transform.position = equipment.GetAnchorPoint(this).position;
@@ -1629,9 +1636,9 @@ public class CharController : MonoBehaviour
             Vector3 pos = peePosition.position;
             pos.z = 10;
             ItemManager.instance.SpawnPee(pos, pee);
-            while (data.Pee > 0 && !isAbort)
+            while (data.Pee > value && !isAbort)
             {
-                data.Pee -= (5 + value/10 + data.level/10f) * Time.deltaTime;
+                data.Pee -= data.MaxPee/peeRate * Time.deltaTime;
                 yield return new WaitForEndOfFrame();
             }
         }
@@ -1651,7 +1658,7 @@ public class CharController : MonoBehaviour
     protected virtual IEnumerator Shit()
     {
         float shit = data.Shit;
-        float value = 0;
+        float value = Random.Range(0, 0.3f * data.MaxShit);
         if (data.level >= 5 && (equipment == null || equipment.itemType != ItemType.Toilet))
         {
             BaseFloorItem item = ItemManager.instance.FindFreeRandomItem(ItemType.Toilet);
@@ -1665,7 +1672,6 @@ public class CharController : MonoBehaviour
 
         if (equipment != null && equipment.itemType == ItemType.Toilet)
         {
-            value = DataHolder.GetItem(equipment.itemID).value;
             charInteract.interactType = InteractType.Equipment;
             this.transform.position = equipment.GetAnchorPoint(this).position;
             agent.transform.position = equipment.GetAnchorPoint(this).position;
@@ -1676,9 +1682,9 @@ public class CharController : MonoBehaviour
         {
             anim.Play("Shit", 0);
             MageManager.instance.PlaySound3D("Shit", false,this.transform.position);
-            while (data.Shit > 0 && !isAbort)
+            while (data.Shit > value && !isAbort)
             {
-                data.Shit -= (2 + value/20 + data.level / 20f) * Time.deltaTime;
+                data.Shit -= data.MaxShit/shitRate * Time.deltaTime;
                 yield return new WaitForEndOfFrame();
             }
             if (!isAbort)
@@ -1689,7 +1695,7 @@ public class CharController : MonoBehaviour
             }
             else
             {
-                data.Shit = value;
+                data.Shit = shit;
             }
         }
 
@@ -1711,6 +1717,7 @@ public class CharController : MonoBehaviour
 
     protected virtual IEnumerator Eat()
     {
+        float value = Random.Range(0.7f * data.MaxFood,data.MaxFood);
         if (equipment == null || equipment.itemType != ItemType.Food)
         {
             BaseFloorItem item = ItemManager.instance.FindFreeRandomItem(ItemType.Food);
@@ -1727,10 +1734,6 @@ public class CharController : MonoBehaviour
             EatItem item = equipment.GetComponent<EatItem>();
             if (item != null)
             {
-                if (data.level >= 25)
-                {
-                    item.Fill();
-                }
                 bool isContinue = true;
 
                 if (item != null && isContinue)
@@ -1738,10 +1741,10 @@ public class CharController : MonoBehaviour
                     MageManager.instance.PlaySound3D("Eat", false, this.transform.position);
                     anim.Play("Eat", 0);
                     yield return StartCoroutine(Wait(0.1f));
-                    while (item != null && data.Food < data.MaxFood && !isAbort && isContinue)
+                    while (item != null && data.Food < value && !isAbort && isContinue)
                     {
-                        data.Food += 2 * (1 + data.level/10f) * Time.deltaTime;
-                        item.Eat(2 * (1 + data.level / 10f) * Time.deltaTime);
+                        data.Food += data.MaxFood/eatRate * Time.deltaTime;
+                        item.Eat(data.MaxFood / eatRate * Time.deltaTime);
                         if (!item.CanEat())
                         {
                             isContinue = false;
@@ -1754,7 +1757,7 @@ public class CharController : MonoBehaviour
                     {
                         equipment.RemovePet(this);
                     }
-                    if (data.Food >= data.MaxFood - 10)
+                    if (data.Food >= data.MaxFood - 1)
                     {
                         GameManager.instance.LogAchivement(AchivementType.Do_Action, ActionType.Eat);
                     }
@@ -1779,7 +1782,8 @@ public class CharController : MonoBehaviour
 
     protected virtual IEnumerator Drink()
     {
-        if(equipment == null || equipment.itemType != ItemType.Drink)
+        float value = Random.Range(0.7f * data.MaxWater, data.MaxWater);
+        if (equipment == null || equipment.itemType != ItemType.Drink)
         {
             BaseFloorItem item = ItemManager.instance.FindFreeRandomItem(ItemType.Drink);
             if (item != null && item.startPoint != null)
@@ -1795,10 +1799,10 @@ public class CharController : MonoBehaviour
             EatItem item = equipment.GetComponentInChildren<EatItem>();
             if (item != null)
             {
-                if (data.level >= 25)
-                {
-                    item.Fill();
-                }
+                //if (data.level >= 25)
+                //{
+                //    item.Fill();
+                //}
                 bool isContinue = true;
 
                 if (item != null && isContinue)
@@ -1806,10 +1810,10 @@ public class CharController : MonoBehaviour
                     int soundid = MageManager.instance.PlaySound3D("Drink", false, this.transform.position);
                     anim.Play("Drink", 0);
                     yield return StartCoroutine(Wait(0.1f));
-                    while (item != null && data.Water < data.MaxWater && !isAbort && isContinue)
+                    while (item != null && data.Water < value && !isAbort && isContinue)
                     {
-                        data.Water += 5 * (1 + data.level / 10f) * Time.deltaTime;
-                        item.Eat(5 * (1 + data.level / 10f) * Time.deltaTime);
+                        data.Water += data.MaxWater / drinkRate * Time.deltaTime;
+                        item.Eat(data.MaxWater / drinkRate * Time.deltaTime);
                         if (!item.CanEat())
                         {
                             isContinue = false;
@@ -1849,9 +1853,9 @@ public class CharController : MonoBehaviour
     protected virtual IEnumerator Sleep()
     {
 
-        float value = 0;
+        float value = Random.Range(0.7f * data.MaxSleep, data.MaxSleep); ;
 
-        if (data.level >= 15 && (equipment == null || equipment.itemType != ItemType.Bed))
+        if (data.level >= 20 && (equipment == null || equipment.itemType != ItemType.Bed))
         {
             BaseFloorItem bed = ItemManager.instance.FindFreeRandomItem(ItemType.Bed);
             if (bed != null)
@@ -1867,16 +1871,12 @@ public class CharController : MonoBehaviour
 
         if (equipment != null && equipment.itemType == ItemType.Bed)
         {
-            value = DataHolder.GetItem(equipment.itemID).value;
             charInteract.interactType = InteractType.Equipment;
             this.transform.position = equipment.GetAnchorPoint(this).position;
             agent.transform.position = equipment.GetAnchorPoint(this).position;
         }
 
-
-        
-
-        while (data.Sleep < data.MaxSleep && !isAbort)
+        while (data.Sleep < value && !isAbort)
         {
             if (data.Health < data.MaxHealth * 0.1f)
             {
@@ -1889,9 +1889,9 @@ public class CharController : MonoBehaviour
             else
             {
                 anim.Play("Sleep", 0);
-                data.Sleep += (0.5f + value/10) * Time.deltaTime;
-                data.Health += 0.1f * Time.deltaTime;
-                data.Damage -= 0.1f * Time.deltaTime;
+                data.Sleep += data.MaxSleep / sleepRate * Time.deltaTime;
+                data.Health += 0.1f * data.MaxSleep / sleepRate * Time.deltaTime;
+                data.Damage -= 0.1f * data.MaxSleep / sleepRate * Time.deltaTime;
             }
 
             yield return new WaitForEndOfFrame();
@@ -2015,6 +2015,7 @@ public class CharController : MonoBehaviour
 
     protected virtual IEnumerator Sick()
     {
+        /*
         if (data.level >= 30)
         {
             BaseFloorItem item = ItemManager.instance.GetRandomItem(ItemType.MedicineBox);
@@ -2024,7 +2025,7 @@ public class CharController : MonoBehaviour
                 yield return StartCoroutine(RunToPoint());
                 OnHealth(SickType.Sick, data.MaxHealth);
             }
-        }
+        }*/
 
         anim.Play("Sick", 0);
         Debug.Log("Sick");
@@ -2037,6 +2038,7 @@ public class CharController : MonoBehaviour
 
     protected virtual IEnumerator Injured()
     {
+        /*
         if(data.level >= 30)
         {
             BaseFloorItem item = ItemManager.instance.GetRandomItem(ItemType.MedicineBox);
@@ -2047,7 +2049,7 @@ public class CharController : MonoBehaviour
                 Debug.Log(data.MaxDamage);
                 OnHealth(SickType.Injured, data.MaxDamage);
             }
-        }
+        }*/
 
         anim.Play("Injured_L", 0);
         Debug.Log("Injured");
@@ -2072,13 +2074,13 @@ public class CharController : MonoBehaviour
 
     protected virtual IEnumerator Toy()
     {
-        
+        float value = Random.Range(0.7f * data.MaxToy, data.MaxToy);
         if (equipment.toyType == ToyType.Jump)
         {
             dropPosition = equipment.GetAnchorPoint(this).position + new Vector3(0, Random.Range(-1f, 1f), 0);
             agent.transform.position = dropPosition;
             yield return new WaitForEndOfFrame();
-            while (equipment != null && !isAbort && data.Toy < data.MaxToy)
+            while (equipment != null && !isAbort && data.Toy < value)
             {
                 equipment.OnActive();
 
@@ -2105,7 +2107,7 @@ public class CharController : MonoBehaviour
                     Vector3 pos1 = agent.transform.position;
                     pos1.y += ySpeed * Time.deltaTime;
 
-                    if (data.Toy == data.MaxToy)
+                    if (data.Toy == value)
                     {
                         pos1.x += 15 * Time.deltaTime;
                     }
@@ -2113,7 +2115,7 @@ public class CharController : MonoBehaviour
 
                     if (ySpeed < 0 && this.transform.position.y < dropPosition.y)
                     {
-                        if (data.Toy == data.MaxToy)
+                        if (data.Toy == value)
                         {
                             MageManager.instance.PlaySound3D("whoosh_swish_med_03", false,this.transform.position);
                             yield return StartCoroutine(DoAnim("Drop"));
@@ -2133,7 +2135,7 @@ public class CharController : MonoBehaviour
         else if (equipment.toyType == ToyType.Ball || equipment.toyType == ToyType.Car)
         {
             charScale.speedFactor = 1.5f;
-            while (equipment != null && data.Toy < data.MaxToy && !isAbort)
+            while (equipment != null && data.Toy < value && !isAbort)
             {
                 anim.speed = 1.5f;
                     
@@ -2161,7 +2163,7 @@ public class CharController : MonoBehaviour
             anim.speed = 2f;
             SetDirection(Direction.L);
             equipment.OnActive();
-            while (equipment != null && data.Toy < data.MaxToy && !isAbort)
+            while (equipment != null && data.Toy < value && !isAbort)
             {
                 agent.transform.position = equipment.GetAnchorPoint(this).position;
                 anim.Play("Run_" + this.direction.ToString(), 0);
@@ -2171,7 +2173,7 @@ public class CharController : MonoBehaviour
         }
         else if (equipment.toyType == ToyType.Slider || equipment.toyType == ToyType.Circle)
         {
-            while (equipment != null && data.Toy < data.MaxToy && !isAbort)
+            while (equipment != null && data.Toy < value && !isAbort)
             {
                 equipment.OnActive();
                 charInteract.interactType = InteractType.Equipment;
@@ -2194,7 +2196,7 @@ public class CharController : MonoBehaviour
         {
             equipment.OnActive();
             charInteract.interactType = InteractType.Equipment;
-            while (equipment != null && data.Toy < data.MaxToy && !isAbort)
+            while (equipment != null && data.Toy < value && !isAbort)
             {
                 if (equipment.GetAnchorPoint(this) != null)
                 {
@@ -2223,7 +2225,7 @@ public class CharController : MonoBehaviour
             }
 
             Transform anchorPoint = equipment.GetAnchorPoint(this);
-            while (anchorPoint != null && !isAbort && data.Toy < data.MaxToy)
+            while (anchorPoint != null && !isAbort && data.Toy < value)
             {
                 agent.transform.position = anchorPoint.position;
                 if(n == 0)
@@ -2266,7 +2268,6 @@ public class CharController : MonoBehaviour
         if (!isAbort)
         {
             yield return StartCoroutine(DoAnim("Love"));
-            int value = (int)DataHolder.GetItem(equipment.itemID).value;
         }
 
         charScale.speedFactor = 1f;

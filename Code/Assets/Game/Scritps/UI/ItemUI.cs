@@ -161,6 +161,7 @@ public class ItemUI : MonoBehaviour
                 drinkText.text = d.value.ToString("F0");
             }
         }
+        /*
         else if (d.itemType == ItemType.Bath)
         {
             if (d.value > 0)
@@ -169,7 +170,7 @@ public class ItemUI : MonoBehaviour
                 bathIcon.gameObject.SetActive(true);
                 bathText.text = d.value.ToString("F0");
             }
-        }
+        }*/
         else if (d.itemType == ItemType.Clean)
         {
             if (d.value > 0)
@@ -178,7 +179,7 @@ public class ItemUI : MonoBehaviour
                 cleanText.text = d.value.ToString("F0");
             }
         }
-
+        /*
         else if (d.itemType == ItemType.Bed)
         {
             if (d.value > 0)
@@ -186,7 +187,7 @@ public class ItemUI : MonoBehaviour
                 bedIcon.gameObject.SetActive(true);
                 bedText.text = d.value.ToString("F0");
             }
-        }
+        }*/
         else if (d.itemType == ItemType.MedicineBox)
         {
             if (d.value > 0)
@@ -195,7 +196,7 @@ public class ItemUI : MonoBehaviour
                 sickText.text = d.value.ToString("F0");
             }
         }
-        
+        /*
         else if (d.itemType == ItemType.Toy)
         {
             if (d.value > 0)
@@ -203,7 +204,8 @@ public class ItemUI : MonoBehaviour
                 toyIcon.gameObject.SetActive(true);
                 toyText.text = "+" + d.value.ToString("F0");
             }
-        }
+        }*/
+        /*
         else if (d.itemType == ItemType.Toilet)
         {
             if (d.value > 0)
@@ -211,7 +213,7 @@ public class ItemUI : MonoBehaviour
                 cleanIcon.gameObject.SetActive(true);
                 cleanText.text = d.value.ToString("F0");
             }
-        }
+        }*/
 
         //SuperSale
         if (!isLevelRequire)
