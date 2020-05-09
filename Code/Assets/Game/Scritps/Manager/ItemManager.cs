@@ -398,6 +398,16 @@ public class ItemManager : MonoBehaviour
         return r;
     }
 
+    public Vector3 GetPatrolPoint(Vector3 pos)
+    {
+        Vector3 r = pos + new Vector3(Random.Range(-30f,30f),Random.Range(-10,10),0);
+        while (r.x > gardenBoundX.y - 10 || r.x < gardenBoundX.x + 10 || r.y > gardenBoundY.y - 3 || r.y < gardenBoundY.x + 3)
+        {
+            r = pos + new Vector3(Random.Range(-30f, 30f), Random.Range(-10, 10), 0);
+        }
+        return r;
+    }
+
     public CharCollector GetCharCollector(int id)
     {
         CharCollector[] chars = FindObjectsOfType<CharCollector>();

@@ -79,7 +79,6 @@ public class ES2UserType_Pet : ES2Type
 		writer.Write(data.maxDamage);
 		writer.Write(data.maxDirty);
 		writer.Write(data.maxToy);
-		writer.Write(data.levelRate);
 		writer.Write(data.actionType);
 		writer.Write(data.position);
 		writer.Write(data.scalePosition);
@@ -169,7 +168,6 @@ public class ES2UserType_Pet : ES2Type
 		data.maxDamage = reader.Read<System.Single>();
 		data.maxDirty = reader.Read<System.Single>();
 		data.maxToy = reader.Read<System.Single>();
-		data.levelRate = reader.Read<System.Int32>();
 		data.actionType = reader.Read<ActionType>();
 		data.position = reader.Read<UnityEngine.Vector3>();
 		data.scalePosition = reader.Read<UnityEngine.Vector3>();

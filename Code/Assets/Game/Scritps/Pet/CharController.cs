@@ -563,6 +563,77 @@ public class CharController : MonoBehaviour
             return;
         }
 
+        if (data.Shit > data.MaxShit * 0.7f && data.level >= 5)
+        {
+            int ran = Random.Range(0, 100);
+            if (ran > 70)
+            {
+                actionType = ActionType.Shit;
+                return;
+            }
+        }
+
+        if (data.Pee > data.MaxPee * 0.7f && data.level >= 5)
+        {
+            int ran = Random.Range(0, 100);
+            if (ran > 70)
+            {
+                actionType = ActionType.Pee;
+                return;
+            }
+        }
+
+        if (data.Dirty > data.MaxDirty * 0.7f && data.level > 15)
+        {
+            int ran = Random.Range(0, 100);
+            if (ran > 70)
+            {
+                actionType = ActionType.OnBath;
+                return;
+            }
+        }
+
+        if (data.Food < data.MaxFood * 0.3f)
+        {
+            int ran = Random.Range(0, 100);
+            if (ran > 70)
+            {
+                actionType = ActionType.Eat;
+                return;
+            }
+        }
+
+
+        if (data.Water < data.MaxWater * 0.3f)
+        {
+            int ran = Random.Range(0, 100);
+            if (ran > 70)
+            {
+                actionType = ActionType.Drink;
+                return;
+            }
+        }
+
+        if (data.Sleep < data.MaxSleep * 0.3f && data.level >= 20)
+        {
+            int ran = Random.Range(0, 100);
+            if (ran > 70)
+            {
+                actionType = ActionType.Sleep;
+                return;
+            }
+        }
+
+        if (data.Toy < data.MaxToy * 0.3f && data.level >= 10)
+        {
+            int ran = Random.Range(0, 100);
+            if (ran > 70)
+            {
+                actionType = ActionType.Discover;
+                return;
+            }
+        }
+
         /*
         if (data.Energy < data.MaxEnergy * 0.1f)
         {
@@ -570,7 +641,7 @@ public class CharController : MonoBehaviour
             return;
         }*/
 
-        
+
 
         int n = Random.Range(1, 100);
         if (n > 20)
@@ -1853,7 +1924,7 @@ public class CharController : MonoBehaviour
     protected virtual IEnumerator Sleep()
     {
 
-        float value = Random.Range(0.7f * data.MaxSleep, data.MaxSleep); ;
+        float value = Random.Range(0.7f * data.MaxSleep, data.MaxSleep);
 
         if (data.level >= 20 && (equipment == null || equipment.itemType != ItemType.Bed))
         {
@@ -1874,6 +1945,10 @@ public class CharController : MonoBehaviour
             charInteract.interactType = InteractType.Equipment;
             this.transform.position = equipment.GetAnchorPoint(this).position;
             agent.transform.position = equipment.GetAnchorPoint(this).position;
+        }
+        else
+        {
+            value = Random.Range(0.3f * data.MaxSleep, 0.5f * data.MaxSleep);
         }
 
         while (data.Sleep < value && !isAbort)
@@ -1911,16 +1986,16 @@ public class CharController : MonoBehaviour
     protected virtual IEnumerator Patrol()
     {
         int n = 0;
-        int maxCount = Random.Range(1, 3);
+        int maxCount = Random.Range(3, 7);
         while (!isAbort && n < maxCount)
         {
             int ran = Random.Range(0, 100);
-            if (ran < 30)
+            if (ran < 60)
             {
-                SetTarget(AreaType.All);
+                target = ItemManager.instance.GetPatrolPoint(this.transform.position);
                 yield return StartCoroutine(RunToPoint());
             }
-            else if (ran < 60)
+            else if (ran < 70)
             {
                 anim.Play("Standby", 0);
                 yield return StartCoroutine(Wait(Random.Range(1, 10)));
