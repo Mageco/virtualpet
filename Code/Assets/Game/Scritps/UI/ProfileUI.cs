@@ -70,9 +70,9 @@ public class ProfileUI : MonoBehaviour
         string url = a.iconUrl.Replace("Assets/Game/Resources/", "");
         url = url.Replace(".png", "");
         icon.sprite = Resources.Load<Sprite>(url) as Sprite;
-        price = playerPet.level * playerPet.level * 2;
+        price = playerPet.level * playerPet.level * 5;
         priceText.text = price.ToString();
-        //strengthText.text = (pet.maxHealth + playerPet.level * pet.levelRate).ToString();
+        strengthText.text = (pet.maxHealth + playerPet.level * 20).ToString();
         heartText.text = "+" + (pet.RateHappy + playerPet.level/5).ToString();
 
         sellPrice = pet.buyPrice / 2;
@@ -103,9 +103,9 @@ public class ProfileUI : MonoBehaviour
             dirtyText.text = data.MaxDirty.ToString();
         }*/
         Pet pet = DataHolder.GetPet(playerPet.iD);
-        price = playerPet.level * playerPet.level * 2;
+        price = playerPet.level * playerPet.level * 5;
         priceText.text = price.ToString();
-        //strengthText.text = (pet.maxHealth + playerPet.level * pet.levelRate).ToString();
+        strengthText.text = (pet.maxHealth + playerPet.level * 20).ToString();
         heartText.text = "+" + (pet.RateHappy + playerPet.level / 5).ToString();
 
         int n = playerPet.level / 5;

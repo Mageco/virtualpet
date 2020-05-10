@@ -51,9 +51,20 @@ public class CharCollider : MonoBehaviour
         }else if(other.tag == "Pet"){
             CharController p = other.transform.parent.GetComponent<CharController>();
             pets.Add(p);
-            if(p.actionType != ActionType.Hold && (character.isMoving && character.actionType != ActionType.OnCall && character.actionType != ActionType.Discover) || character.actionType == ActionType.Mouse)
+            if((p.actionType != ActionType.Hold && (character.isMoving && p.actionType != ActionType.Tease && p.actionType != ActionType.Teased && character.actionType != ActionType.Tease && character.actionType != ActionType.Teased)) || character.actionType == ActionType.Mouse)
             {
-                character.OnStop();
+                int ran = Random.Range(0, 100);
+                if(ran < 50)
+                    character.OnStop();
+                else if(ran < 80)
+                {
+                    character.OnLove();
+                }
+                else
+                {
+                    p.OnTease(character);
+                    character.OnTeased();
+                }
             }
         }else if(other.tag == "Car"){
             if(character.actionType == ActionType.Patrol)

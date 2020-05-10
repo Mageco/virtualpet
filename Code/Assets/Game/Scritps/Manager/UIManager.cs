@@ -38,6 +38,7 @@ public class UIManager : MonoBehaviour
     public GameObject dailyQuestPanelPrefab;
     public GameObject accessoryPanelPrefab;
     public GameObject inventoryPanelPrefab;
+    public GameObject newVersionPanel;
 
     public static UIManager instance;
 	public Text coinText;
@@ -108,6 +109,7 @@ public class UIManager : MonoBehaviour
 
     public GameObject achivementNotification;
     public GameObject giftNotification;
+    public GameObject dailyQuestNotification;
 
     [HideInInspector]
     public AchivementPanel achivementPanel;
@@ -165,6 +167,7 @@ public class UIManager : MonoBehaviour
             yield return new WaitForEndOfFrame();
         }
         Load();
+        newVersionPanel.SetActive(true);
     }
 
     public void Load()
@@ -227,6 +230,24 @@ public class UIManager : MonoBehaviour
             if (GameManager.instance.gameTime > 400 && !ES2.Exists("RateUs") && (int)GameManager.instance.gameTime % 400 == 0 && UIManager.instance.settingPanel == null)
             {
                 OnRatingPopup();
+            }
+
+            dailyQuestNotification.SetActive(false);
+            int n = 0;
+            foreach (DailyQuestData dailyQuest in GameManager.instance.myPlayer.dailyQuests)
+            {
+                if(dailyQuest.state == DailyQuestState.Ready)
+                {
+                    dailyQuestNotification.SetActive(true);
+                }else if(dailyQuest.state == DailyQuestState.Collected)
+                {
+                    n++;
+                }
+            }
+
+            if(n == 3 && !GameManager.instance.myPlayer.isCompleteDailyQuest)
+            {
+                dailyQuestNotification.SetActive(true);
             }
         }
         else
@@ -628,7 +649,7 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    public void OnWelcomeBack(int c,int h)
+    public void OnWelcomeBack(int c,int h,int e)
     {
         if (welcomeBackPanel == null)
         {
@@ -638,7 +659,7 @@ public class UIManager : MonoBehaviour
             popup.transform.SetParent(GameObject.Find("Canvas").transform, false);
             popup.GetComponent<Popup>().Open();
             welcomeBackPanel = popup.GetComponent<WelcomeBackPanel>();
-            welcomeBackPanel.Load(c,h);
+            welcomeBackPanel.Load(c,h,e);
         }
     }
 

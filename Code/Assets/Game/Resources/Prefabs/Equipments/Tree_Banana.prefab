@@ -10264,8 +10264,8 @@ GameObject:
   - component: {fileID: 8458131891293945121}
   - component: {fileID: 1260530029}
   - component: {fileID: 8648184835394969127}
-  - component: {fileID: 2937254339560767044}
   - component: {fileID: 1862349747453718198}
+  - component: {fileID: 2539148886460604884}
   m_Layer: 15
   m_Name: Banana_Tree
   m_TagString: Untagged
@@ -10365,29 +10365,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &2937254339560767044
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8458131891293945134}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: db1fa7cb65fcb46b1874697b63836cad, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  realID: 0
-  itemID: 0
-  itemType: -1
-  state: 0
-  pets: []
-  anchorPoints:
-  - {fileID: 1809365526048220458}
-  startPoint: {fileID: 1446754224819522215}
-  endPoint: {fileID: 1446754224819522215}
-  toyType: 17
-  points: []
 --- !u!60 &1862349747453718198
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -10457,6 +10434,29 @@ PolygonCollider2D:
       - {x: -0.29116547, y: -0.3006055}
       - {x: 0.981175, y: -0.26526272}
       - {x: 2.2181726, y: -0.15923434}
+--- !u!114 &2539148886460604884
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8458131891293945134}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8c620ddf372014868944dc54acf67095, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  realID: 0
+  itemID: 0
+  itemType: -1
+  state: 0
+  pets: []
+  anchorPoints:
+  - {fileID: 1809365526048220458}
+  startPoint: {fileID: 1446754224819522215}
+  endPoint: {fileID: 1446754224819522215}
+  toyType: 17
+  points: []
 --- !u!1 &8921120000624941109
 GameObject:
   m_ObjectHideFlags: 0

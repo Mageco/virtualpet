@@ -15082,11 +15082,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8458131891293945121}
-  - component: {fileID: 884509007101593957}
   - component: {fileID: 3604890594918160827}
   - component: {fileID: 1260530029}
   - component: {fileID: 8648184835394969127}
   - component: {fileID: 1492072782796798606}
+  - component: {fileID: 130058685598355476}
   m_Layer: 15
   m_Name: Big_Tree (1)
   m_TagString: Untagged
@@ -15118,29 +15118,6 @@ Transform:
   m_Father: {fileID: 844761480878142586}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &884509007101593957
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8458131891293945134}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: db1fa7cb65fcb46b1874697b63836cad, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  realID: 0
-  itemID: 0
-  itemType: -1
-  state: 0
-  pets: []
-  anchorPoints:
-  - {fileID: 6645206840155610426}
-  startPoint: {fileID: 4883761841493401620}
-  endPoint: {fileID: 4883761841493401620}
-  toyType: 17
-  points: []
 --- !u!50 &3604890594918160827
 Rigidbody2D:
   serializedVersion: 4
@@ -15257,6 +15234,29 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 8, y: 4}
   m_EdgeRadius: 0
+--- !u!114 &130058685598355476
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8458131891293945134}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8c620ddf372014868944dc54acf67095, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  realID: 0
+  itemID: 0
+  itemType: -1
+  state: 0
+  pets: []
+  anchorPoints:
+  - {fileID: 6645206840155610426}
+  startPoint: {fileID: 4883761841493401620}
+  endPoint: {fileID: 4883761841493401620}
+  toyType: 17
+  points: []
 --- !u!1001 &1403203666666214783
 PrefabInstance:
   m_ObjectHideFlags: 0

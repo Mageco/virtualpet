@@ -14333,10 +14333,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4689828656045061591}
-  - component: {fileID: 4049479565554581907}
   - component: {fileID: 464970897137553741}
   - component: {fileID: 3779870788238909851}
   - component: {fileID: 4689828656045061593}
+  - component: {fileID: 6342539504467313784}
   m_Layer: 15
   m_Name: Big_Tree
   m_TagString: Untagged
@@ -14365,29 +14365,6 @@ Transform:
   m_Father: {fileID: 4597610498275785868}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4049479565554581907
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4689828656045061592}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: db1fa7cb65fcb46b1874697b63836cad, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  realID: 0
-  itemID: 0
-  itemType: -1
-  state: 0
-  pets: []
-  anchorPoints:
-  - {fileID: 6684706835833080412}
-  startPoint: {fileID: 8403199722784427498}
-  endPoint: {fileID: 8403199722784427498}
-  toyType: 17
-  points: []
 --- !u!50 &464970897137553741
 Rigidbody2D:
   serializedVersion: 4
@@ -14467,6 +14444,29 @@ PolygonCollider2D:
       - {x: 5.398786, y: 4.009212}
       - {x: 4.898683, y: 8.922077}
       - {x: 2.0864553, y: 13.237135}
+--- !u!114 &6342539504467313784
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4689828656045061592}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8c620ddf372014868944dc54acf67095, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  realID: 0
+  itemID: 0
+  itemType: -1
+  state: 0
+  pets: []
+  anchorPoints:
+  - {fileID: 6684706835833080412}
+  startPoint: {fileID: 8403199722784427498}
+  endPoint: {fileID: 8403199722784427498}
+  toyType: 17
+  points: []
 --- !u!1 &4689828656089983186
 GameObject:
   m_ObjectHideFlags: 0

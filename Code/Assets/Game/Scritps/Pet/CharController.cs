@@ -64,8 +64,9 @@ public class CharController : MonoBehaviour
     public Transform peePosition;
     public Transform shitPosition;
     EmotionStatus lastEmotionStatus;
-    
 
+    //Tease
+    CharController petTarget;
 
     //[HideInInspector]
     public GameObject shadow;
@@ -74,7 +75,7 @@ public class CharController : MonoBehaviour
 
     TextMeshPro petNameText;
     public SpriteRenderer petEmotion;
-    EmotionStatus emotionStatus = EmotionStatus.Happy;
+    public EmotionStatus emotionStatus = EmotionStatus.Happy;
     Sprite[] emotionIcons = new Sprite[3];
 
     #endregion
@@ -110,7 +111,7 @@ public class CharController : MonoBehaviour
     float drinkRate = 15;
     float peeRate = 15;
     float shitRate = 30;
-    float sleepRate = 120;
+    float sleepRate = 180;
     float bathRate = 45;
     float toyRate = 60;
 
@@ -160,6 +161,33 @@ public class CharController : MonoBehaviour
         }
 
         LoadSkill();
+        if(data.actionType == ActionType.OnBath)
+        {
+            data.Dirty = Random.Range(0, data.MaxDirty * 0.3f);
+        }else if(data.actionType == ActionType.Sleep)
+        {
+            data.Sleep = Random.Range(data.MaxSleep * 0.7f, data.MaxSleep);
+        }
+        else if (data.actionType == ActionType.Toy)
+        {
+            data.Sleep = Random.Range(data.MaxToy * 0.7f, data.MaxToy);
+        }
+        else if (data.actionType == ActionType.Pee)
+        {
+            data.Dirty = Random.Range(0, data.MaxPee * 0.3f);
+        }
+        else if (data.actionType == ActionType.Shit)
+        {
+            data.Dirty = Random.Range(0, data.MaxShit * 0.3f);
+        }
+        else if (data.actionType == ActionType.Eat)
+        {
+            data.Sleep = Random.Range(data.MaxFood * 0.7f, data.MaxFood);
+        }
+        else if (data.actionType == ActionType.Drink)
+        {
+            data.Sleep = Random.Range(data.MaxWater * 0.7f, data.MaxWater);
+        }
     }
 
     public void LoadPrefab()
@@ -244,7 +272,8 @@ public class CharController : MonoBehaviour
         petEmotion = go1.GetComponent<SpriteRenderer>();
         go1.transform.parent = this.transform;
         go1.transform.localPosition = new Vector3(-4f, iconStatusObject.transform.localPosition.y - 2.5f, -10);
-        petEmotion.gameObject.SetActive(false);
+        petEmotion.gameObject.SetActive(true);
+
 
         iconStatusObject.transform.parent = charObject.transform.GetChild(0);
         data.petName = GameManager.instance.GetPet(data.realId).petName;
@@ -272,8 +301,6 @@ public class CharController : MonoBehaviour
             emotionIcons[2] = Resources.Load<Sprite>("Icons/Status/Sad") as Sprite;
 
         }
-
-
     }
 
     void LoadSkill()
@@ -293,8 +320,10 @@ public class CharController : MonoBehaviour
             else if (i == 4)
                 s.type = SkillType.Bath;
 
-            if (data.level >= 5 * (i+1))
+            if (data.level >= 5 * (i + 1))
                 s.isLearn = true;
+            else
+                s.isLearn = false;
             skills.Add(s);
         }
     }
@@ -320,7 +349,6 @@ public class CharController : MonoBehaviour
     }
 
 
-
     // Use this for initialization
 
     #endregion
@@ -341,7 +369,9 @@ public class CharController : MonoBehaviour
         else if(actionType == ActionType.Toy)
         {
             petNameText.transform.position = iconStatusObject.transform.position - new Vector3(0, 2.5f, 10);
+            petEmotion.transform.position = iconStatusObject.transform.position - new Vector3(4f, 2.5f, 10);
             petNameText.transform.rotation = Quaternion.identity;
+
             if (equipment != null && equipment.IsActive())
             {
                 data.Toy +=  data.MaxToy/toyRate * Time.deltaTime;
@@ -352,8 +382,8 @@ public class CharController : MonoBehaviour
         {
             if(timeLove > maxTimeLove && actionType != ActionType.Hold)
             {
-                StartCoroutine(OnEmotion());
-                if(!IsLearnSkill(SkillType.Toy))
+                //StartCoroutine(OnEmotion());
+                if(!IsLearnSkill(SkillType.Happy))
                     ItemManager.instance.SpawnPetHappy(this.transform.position,data.RateHappy + data.level / 5);
                 else
                     ItemManager.instance.SpawnHeart(data.RateHappy + data.level / 5, this.transform.position);
@@ -395,8 +425,6 @@ public class CharController : MonoBehaviour
             saveTime = 0;
             if (!GameManager.instance.isGuest)
                 ES2.Save(this.data, DataHolder.GetPet(data.iD).GetName(0) + data.realId.ToString());
-
-            GameManager.instance.myPlayer.version = Application.version;
         }
         else
             saveTime += Time.deltaTime;
@@ -411,18 +439,18 @@ public class CharController : MonoBehaviour
     {
         if (data.Food > 0 && data.Water > 0)
         {
-            data.Food -= 0.4f;
-            data.Water -= 0.3f;
-            data.Shit += 0.2f;
-            data.Pee += 0.25f;
+            data.Food -= 0.1f;
+            data.Water -= 0.15f;
+            data.Shit += 0.05f;
+            data.Pee += 0.1f;
         }
 
 
-        data.Dirty += 0.2f;
-        data.Sleep -= 0.1f;
+        data.Dirty += 0.1f;
+        data.Sleep -= 0.05f;
 
         if(actionType != ActionType.Toy)
-            data.Toy -= 0.5f;
+            data.Toy -= 0.3f;
 
         float deltaHealth = 0;
 
@@ -784,6 +812,18 @@ public class CharController : MonoBehaviour
         {
             StartCoroutine(Gift());
         }
+        else if (actionType == ActionType.Love)
+        {
+            StartCoroutine(Love());
+        }
+        else if (actionType == ActionType.Tease)
+        {
+            StartCoroutine(Tease());
+        }
+        else if (actionType == ActionType.Teased)
+        {
+            StartCoroutine(Teased());
+        }
     }
 
     #endregion
@@ -955,7 +995,7 @@ public class CharController : MonoBehaviour
 
         if(emotionStatus != lastEmotionStatus)
         {
-            StartCoroutine(OnEmotion());
+            //StartCoroutine(OnEmotion());
         }
         //iconStatusObject.transform.localScale = originalStatusScale / charScale.scaleAgeFactor;
 
@@ -1071,6 +1111,28 @@ public class CharController : MonoBehaviour
         Abort();
         actionType = ActionType.OnCall;
     }
+
+    public virtual void OnLove()
+    {
+        Abort();
+        actionType = ActionType.Love;
+    }
+
+    public virtual void OnTease(CharController c)
+    {
+        petTarget = c;
+        Abort();
+        actionType = ActionType.Tease;
+    }
+
+    public virtual void OnTeased()
+    {
+        if (actionType == ActionType.Hold || actionType == ActionType.Sick || actionType == ActionType.Injured || equipment != null || actionType == ActionType.Tease)
+            return;
+        Abort();
+        actionType = ActionType.Teased;
+    }
+
 
     public virtual void OnSupprised()
     {
@@ -1644,8 +1706,13 @@ public class CharController : MonoBehaviour
     protected virtual IEnumerator Stop()
     {
         yield return StartCoroutine(Wait(anim.GetCurrentAnimatorStateInfo(0).length));
-        anim.Play("Idle_" + direction.ToString());
-        yield return StartCoroutine(Wait(Random.Range(1f, 2f)));
+        yield return StartCoroutine(DoAnim("Idle_" + direction.ToString()));
+        CheckAbort();
+    }
+
+    protected virtual IEnumerator Love()
+    {
+        yield return StartCoroutine(DoAnim("Love"));
         CheckAbort();
     }
 
@@ -1670,30 +1737,53 @@ public class CharController : MonoBehaviour
             agent.transform.position = equipment.GetAnchorPoint(this).position;
             equipment.OnActive();
             MageManager.instance.PlaySound3D("Pee", false, this.transform.position);
-        }
 
-        while (this.data.Dirty > value && !isAbort)
-        {
-            if (data.Health < 0.1f * data.MaxHealth)
-                anim.Play("Sick", 0);
-            else if(data.Damage > 0.9f * data.MaxDamage)
-                anim.Play("Injured_L", 0);
-            else
-                anim.Play("Soap", 0);
-            this.data.Dirty -= data.MaxDirty/bathRate * Time.deltaTime;
-            yield return new WaitForEndOfFrame();
-        }
-
-        if (equipment != null && equipment.itemType == ItemType.Bath)
-        {
-            if (data.Dirty <= 1 && !isAbort)
+            float maxTime = Random.Range(1, 5);
+            float t = 0;
+            int n = 0;
+            while (this.data.Dirty > value && !isAbort)
             {
-                GameManager.instance.LogAchivement(AchivementType.Do_Action, ActionType.OnBath);
+                if (data.Health < 0.1f * data.MaxHealth)
+                    anim.Play("Sick", 0);
+                else if (data.Damage > 0.9f * data.MaxDamage)
+                    anim.Play("Injured_L", 0);
+                else
+                {
+                    if (t > maxTime)
+                    {
+                        if (n < 30)
+                            anim.Play("Soap", 0);
+                        else if(n < 70)
+                            anim.Play("Shower", 0);
+                        else
+                            anim.Play("Shake", 0);
+ 
+                        t = 0;
+                        maxTime = Random.Range(1, 5);
+                        n = Random.Range(0, 100);
+                    }
+                    else
+                        t += Time.deltaTime;
+                    
+                }
+                    
+                this.data.Dirty -= data.MaxDirty / bathRate * Time.deltaTime;
+                yield return new WaitForEndOfFrame();
             }
 
-            yield return StartCoroutine(DoAnim("Shake"));
-            JumpOut();
+            if (equipment != null && equipment.itemType == ItemType.Bath)
+            {
+                if (data.Dirty <= 1 && !isAbort)
+                {
+                    GameManager.instance.LogAchivement(AchivementType.Do_Action, ActionType.OnBath);
+                }
+
+                yield return StartCoroutine(DoAnim("Shake"));
+                JumpOut();
+            }
         }
+
+
 
         CheckAbort();
     }
@@ -1734,6 +1824,10 @@ public class CharController : MonoBehaviour
             ItemManager.instance.SpawnPee(pos, pee);
             while (data.Pee > value && !isAbort)
             {
+                if (equipment != null && equipment.itemType == ItemType.Toilet && !isAbort)
+                {
+                    this.transform.position = equipment.GetAnchorPoint(this).position;
+                }
                 data.Pee -= data.MaxPee/peeRate * Time.deltaTime;
                 yield return new WaitForEndOfFrame();
             }
@@ -1781,6 +1875,10 @@ public class CharController : MonoBehaviour
             while (data.Shit > value && !isAbort)
             {
                 data.Shit -= data.MaxShit/shitRate * Time.deltaTime;
+                if (equipment != null && equipment.itemType == ItemType.Toilet && !isAbort)
+                {
+                    this.transform.position = equipment.GetAnchorPoint(this).position;
+                }
                 yield return new WaitForEndOfFrame();
             }
             if (!isAbort)
@@ -1950,6 +2048,7 @@ public class CharController : MonoBehaviour
     {
 
         float value = Random.Range(0.7f * data.MaxSleep, data.MaxSleep);
+        float sleepValue = 0;
 
         if (IsLearnSkill(SkillType.Sleep) && (equipment == null || equipment.itemType != ItemType.Bed))
         {
@@ -1970,10 +2069,12 @@ public class CharController : MonoBehaviour
             charInteract.interactType = InteractType.Equipment;
             this.transform.position = equipment.GetAnchorPoint(this).position;
             agent.transform.position = equipment.GetAnchorPoint(this).position;
+            sleepValue = data.MaxSleep / sleepRate;
         }
         else
         {
             value = Random.Range(0.3f * data.MaxSleep, 0.5f * data.MaxSleep);
+            sleepValue = data.MaxSleep / sleepRate / 2;
         }
 
         while (data.Sleep < value && !isAbort)
@@ -1989,9 +2090,9 @@ public class CharController : MonoBehaviour
             else
             {
                 anim.Play("Sleep", 0);
-                data.Sleep += data.MaxSleep / sleepRate * Time.deltaTime;
-                data.Health += 0.1f * data.MaxSleep / sleepRate * Time.deltaTime;
-                data.Damage -= 0.1f * data.MaxSleep / sleepRate * Time.deltaTime;
+                data.Sleep += sleepValue * Time.deltaTime;
+                data.Health += 0.1f * sleepValue * Time.deltaTime;
+                data.Damage -= 0.1f * sleepValue * Time.deltaTime;
             }
 
             yield return new WaitForEndOfFrame();
@@ -2010,22 +2111,27 @@ public class CharController : MonoBehaviour
 
     protected virtual IEnumerator Patrol()
     {
+        int d = Random.Range(0, 100);
+        if (d > 50)
+            SetDirection(Direction.L);
+        else
+            SetDirection(Direction.R);
         int n = 0;
         int maxCount = Random.Range(3, 7);
         while (!isAbort && n < maxCount)
         {
             int ran = Random.Range(0, 100);
-            if (ran < 60)
+            if (ran < 50)
             {
                 target = ItemManager.instance.GetPatrolPoint(this.transform.position);
                 yield return StartCoroutine(RunToPoint());
             }
-            else if (ran < 70)
+            else if (ran < 60)
             {
                 anim.Play("Standby", 0);
                 yield return StartCoroutine(Wait(Random.Range(1, 10)));
             }
-            else if (ran < 80)
+            else if (ran < 70)
             {
                 anim.Play("Idle_" + this.direction.ToString(), 0);
                 yield return StartCoroutine(Wait(Random.Range(1, 10)));
@@ -2048,7 +2154,58 @@ public class CharController : MonoBehaviour
         CheckAbort();
     }
 
+    protected virtual IEnumerator Tease()
+    {
+        yield return StartCoroutine(DoAnim("Tease"));
+        if (petTarget != null)
+        {
+            charScale.speedFactor = 2f;
+            anim.speed = 1.5f;
+            target = petTarget.transform.position;
+            yield return StartCoroutine(RunToPoint());
+            bool isSpeak = false;
+            data.Energy = Random.Range(50,200);
+            while (petTarget != null && data.Energy > 0 && !isAbort)
+            {
+                agent.SetDestination(petTarget.transform.position);
+                anim.Play("Run_" + this.direction.ToString(), 0);
+                data.Energy -= 5 * Time.deltaTime;
+                if (Vector2.Distance(this.transform.position, petTarget.transform.position) < 3 && !isSpeak)
+                {
+                    petTarget.OnTeased();
+                    int r = Random.Range(0, 100);
+                    if (r < 30)
+                    {
+                        yield return StartCoroutine(DoAnim("Speak_" + direction.ToString()));
+                        MageManager.instance.PlaySound3D(charType.ToString() + "_Speak", false, this.transform.position);
+                    }
 
+                    isSpeak = true;
+
+                }
+                if (Vector2.Distance(this.transform.position, petTarget.transform.position) > 4 && isSpeak)
+                {
+                    isSpeak = false;
+                }
+                yield return new WaitForEndOfFrame();
+            }
+        }
+        charScale.speedFactor = 1f;
+        anim.speed = 1;
+        CheckAbort();
+    }
+
+    protected virtual IEnumerator Teased()
+    {
+        yield return StartCoroutine(DoAnim("Teased"));
+        Vector3 target = ItemManager.instance.GetRandomPoint(AreaType.All);
+        charScale.speedFactor = 3f;
+        anim.speed = 1.5f;
+        yield return StartCoroutine(RunToPoint());
+        charScale.speedFactor = 1f;
+        anim.speed = 1;
+        CheckAbort();
+    }
 
     protected virtual void JumpOut()
     {
@@ -2239,7 +2396,7 @@ public class CharController : MonoBehaviour
             {
                 anim.speed = 1.5f;
                     
-                if (equipment.state != EquipmentState.Active)
+                if (equipment.state != EquipmentState.Active && Vector2.Distance(this.transform.position,equipment.transform.position) < 5)
                 {
                     agent.Stop();
                     equipment.OnActive();

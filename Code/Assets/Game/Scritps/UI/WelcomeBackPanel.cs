@@ -7,25 +7,18 @@ public class WelcomeBackPanel : MonoBehaviour
 {
     public Text coinText;
     public Text happyText;
+    public Text expText;
     int coin = 1;
     int happy = 1;
+    int exp = 1;
     public Button AdButton;
     // Start is called before the first frame update
 
-    public void Load(int c,int h)
+    public void Load(int c,int h,int e)
     {
-        foreach(PlayerItem item in GameManager.instance.myPlayer.items)
-        {
-            if(item.itemType == ItemType.Fruit)
-            {
-                coin += c * DataHolder.GetItem(item.itemId).buyPrice / 100;
-            }
-        }
-
-        foreach (PlayerPet p in GameManager.instance.myPlayer.petDatas)
-        {
-            happy += h * DataHolder.GetPet(p.iD).RateHappy;
-        }
+        coin = c;
+        happy = h;
+        exp = e;
     }
 
     // Update is called once per frame
@@ -33,6 +26,7 @@ public class WelcomeBackPanel : MonoBehaviour
     {
         coinText.text = coin.ToString();
         happyText.text = happy.ToString();
+        expText.text = exp.ToString();
         if (RewardVideoAdManager.instance.isUnityVideoLoaded)
             AdButton.interactable = true;
         else
@@ -51,7 +45,7 @@ public class WelcomeBackPanel : MonoBehaviour
     {
         coin = coin * 2;
         happy = happy * 2;
-        
+        exp = exp * 2;
     }
 
     public void Close()
@@ -59,6 +53,8 @@ public class WelcomeBackPanel : MonoBehaviour
         MageManager.instance.PlaySound("Collect_Achivement", false);
         GameManager.instance.AddCoin(coin,Utils.instance.Md5Sum(GameManager.instance.count.ToString() + GameManager.instance.myPlayer.playTime.ToString() + GameManager.instance.myPlayer.Happy.ToString() + "M@ge2013"));
         GameManager.instance.AddHappy(happy, Utils.instance.Md5Sum(GameManager.instance.count.ToString() + GameManager.instance.myPlayer.playTime.ToString() + GameManager.instance.myPlayer.Happy.ToString() + "M@ge2013"));
+        GameManager.instance.AddExp(exp, Utils.instance.Md5Sum(GameManager.instance.count.ToString() + GameManager.instance.myPlayer.playTime.ToString() + GameManager.instance.myPlayer.Happy.ToString() + "M@ge2013"));
+
         this.GetComponent<Popup>().Close();
     }
 }

@@ -86,10 +86,26 @@ public class BaseFloorItem : MonoBehaviour
 
 	}
 
+    public virtual void Load(PlayerItem item)
+    {
+		this.itemType = item.itemType;
+		this.itemID = item.itemId;
+		this.realID = item.realId;
+	}
+
 	IEnumerator CheckCollide()
 	{
 		yield return new WaitForSeconds(1);
 		int n = 0;
+
+        if(obstructItem != null && obstructItem.itemCollides.Count > 0)
+        {
+            for(int i = 0; i < sprites.Length; i++)
+            {
+				sprites[i].enabled = false;
+            }
+        }
+
 		while (obstructItem != null && obstructItem.itemCollides.Count > 0 && n < 100)
 		{
 			if (itemType == ItemType.Bath || itemType == ItemType.Bed || itemType == ItemType.Toilet || itemType == ItemType.Food ||
@@ -107,7 +123,12 @@ public class BaseFloorItem : MonoBehaviour
 			yield return new WaitForEndOfFrame();
 		}
 
-        if(n >= 1)
+		for (int i = 0; i < sprites.Length; i++)
+		{
+			sprites[i].enabled = true;
+		}
+
+		if (n >= 1)
 		    animator.Play("Appear");
 
         if(n >= 100)

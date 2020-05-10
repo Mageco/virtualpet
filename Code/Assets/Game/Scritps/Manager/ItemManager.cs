@@ -79,17 +79,18 @@ public class ItemManager : MonoBehaviour
 
         awayTime = (float)(ApiManager.instance.GetServerTimeStamp() - startTime).TotalSeconds;
         LoadItems();
-        if (GameManager.instance.myPlayer.version != ""  &&  float.Parse(GameManager.instance.myPlayer.version) < 2.0f)
+        LoadArea();
+        GameManager.instance.LoadPetObjects();
+        if (GameManager.instance.myPlayer.version == ""  ||  float.Parse(GameManager.instance.myPlayer.version) < 2.0f)
         {
             //Popup info here
+            MageManager.instance.OnNotificationPopup("Updated");
         }
         else
         {
             LoadItemData(awayTime);
         }
            
-        LoadArea();
-        GameManager.instance.LoadPetObjects();
         isLoad = true;
 
         if (ES2.Exists("CameraPosition"))
@@ -103,9 +104,14 @@ public class ItemManager : MonoBehaviour
         MageManager.instance.loadingBar.UpdateProgress(t);
         yield return new WaitForEndOfFrame();
         MageManager.instance.loadingBar.gameObject.SetActive(false);
+
+        while (!ApiManager.instance.IsLogin() || !RewardVideoAdManager.instance.isUnityVideoLoaded || UIManager.instance.newVersionPanel != null)
+        {
+            yield return new WaitForEndOfFrame();
+        }
         yield return new WaitForSeconds(1);
         if(!GameManager.instance.isGuest)
-            LoadWelcome((float)(System.DateTime.Now - startTime).TotalSeconds);
+            LoadWelcome(awayTime);
         
     }
 
@@ -120,6 +126,7 @@ public class ItemManager : MonoBehaviour
             time = 0;
             playTime = System.DateTime.Now;
             ES2.Save(playTime, "PlayTime");
+            GameManager.instance.myPlayer.version = Application.version;
         }
         else{
             time += Time.deltaTime;
@@ -299,9 +306,7 @@ public class ItemManager : MonoBehaviour
                 BaseFloorItem item = go.GetComponentInChildren<BaseFloorItem>(true);
                 if(item != null)
                 {
-                    item.itemType = playerItem.itemType;
-                    item.itemID = playerItem.itemId;
-                    item.realID = playerItem.realId;
+                    item.Load(playerItem);
                     items.Add(item);
                     go.transform.parent = this.transform;
                 }
@@ -580,10 +585,9 @@ public class ItemManager : MonoBehaviour
         for (int i = 0; i < fruits.Length; i++)
         {
             ItemSaveData data = new ItemSaveData();
-            data.id = i;
+            data.id = fruits[i].id;
             data.itemType = ItemSaveDataType.Fruit;
-            data.value = fruits[i].step;
-            data.time = fruits[i].time;
+            data.value = fruits[i].time;
             GameManager.instance.myPlayer.itemSaveDatas.Add(data);
         }
 
@@ -640,14 +644,14 @@ public class ItemManager : MonoBehaviour
             }
             else if (item.itemType == ItemSaveDataType.Fruit)
             {
+                //Debug.Log(item.id);
                 FruitItem[] fruits = FindObjectsOfType<FruitItem>();
                 for (int i = 0; i < fruits.Length; i++)
                 {
-                    if (fruits[i].id == i)
+                    if (fruits[i].id == item.id)
                     {
-                        fruits[i].step = (int)item.value;
-                        fruits[i].time = item.time;
-                        fruits[i].Load();
+                        fruits[i].Load(item.value + awayTime);
+                        break;
                     }
                 }
             }
@@ -662,55 +666,35 @@ public class ItemManager : MonoBehaviour
                     GetItem(item.id).transform.position = item.position;
                 }
             }
-                
-            
-                
         }
     }
 
     public void LoadWelcome(float t)
     {
-        int c = 0;
-        int h = 0;
+        int coin = 0;
+        int happy = 0;
+        int exp = 0;
         #if UNITY_EDITOR
                 if (MageEngine.instance.resetUserDataOnStart)
                     return;
         #endif
         //Debug.Log(t);
-        if (t > 10800)
+
+        foreach(CharController c in GameManager.instance.GetPetObjects())
         {
-            c = 20;
-            h = 60;
-        }
-        else if (t > 7200)
-        {
-            c = 15;
-            h = 40;
-        }
-        else if (t > 3600)
-        {
-            c = 10;
-            h = 20;
-        }
-        else if (t > 1800)
-        {
-            c = 6;
-            h = 10;
-        }
-        else if (t > 600)
-        {
-            c = 4;
-            h = 4;
-        }
-        else 
-        {
-            c = 2;
-            h = 2;
+            if(c.emotionStatus == EmotionStatus.Happy)
+            {
+                happy += (c.data.RateHappy + c.data.level / 5) / 2;
+            }
         }
 
-        if (t >= 300)
-            UIManager.instance.OnWelcomeBack(c, h);
 
+        coin = (int)Mathf.Clamp(t/15,1,1000);
+        happy = Mathf.Clamp(60 * happy,1,1000);
+        exp = (int)Mathf.Clamp(t / 150, 1, 100);
+
+        if(t > 60)
+            UIManager.instance.OnWelcomeBack(coin, happy, exp);
     }
 
     public int GetFruitId()

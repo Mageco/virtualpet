@@ -1054,7 +1054,7 @@ public class GameManager : MonoBehaviour
     {
         if (GetPet(realId) != null)
         {
-            AddHappy(-10 * GetPet(realId).level * GetPet(realId).level,GetKey());
+            AddHappy(-5 * GetPet(realId).level * GetPet(realId).level,GetKey());
             GetPet(realId).level++;
 
             if (GetPetObject(realId) != null)
@@ -1195,6 +1195,20 @@ public class GameManager : MonoBehaviour
                 pet.accessories = new List<int>();
                 pet.accessories.Add(0);
             }
+        }
+
+        List<PlayerItem> removes = new List<PlayerItem>();
+        foreach(PlayerItem item in myPlayer.items)
+        {
+            if(item.itemId == 59 || item.itemId == 73 || item.itemId == 74)
+            {
+                removes.Add(item);
+            }
+        }
+
+        foreach(PlayerItem item in removes)
+        {
+            myPlayer.items.Remove(item);
         }
 
         if(myPlayer.achivements.Count == 0)

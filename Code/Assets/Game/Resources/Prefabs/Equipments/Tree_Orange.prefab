@@ -130,9 +130,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2922657648664982577}
-  - component: {fileID: 5884066990441087093}
   - component: {fileID: 6768364339194323069}
   - component: {fileID: 2922657648664982591}
+  - component: {fileID: 8524777745247300085}
   m_Layer: 15
   m_Name: Big_Tree
   m_TagString: Untagged
@@ -161,29 +161,6 @@ Transform:
   m_Father: {fileID: 6221509127048789354}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5884066990441087093
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2922657648664982590}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: db1fa7cb65fcb46b1874697b63836cad, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  realID: 0
-  itemID: 0
-  itemType: -1
-  state: 0
-  pets: []
-  anchorPoints:
-  - {fileID: 4557418541210291161}
-  startPoint: {fileID: 890723478120667013}
-  endPoint: {fileID: 890723478120667013}
-  toyType: 17
-  points: []
 --- !u!95 &6768364339194323069
 Animator:
   serializedVersion: 3
@@ -242,6 +219,29 @@ PolygonCollider2D:
       - {x: 1.9323959, y: 4.476899}
       - {x: 4.9812164, y: 5.4556866}
       - {x: 6.1580887, y: 9.990832}
+--- !u!114 &8524777745247300085
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2922657648664982590}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8c620ddf372014868944dc54acf67095, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  realID: 0
+  itemID: 0
+  itemType: -1
+  state: 0
+  pets: []
+  anchorPoints:
+  - {fileID: 4557418541210291161}
+  startPoint: {fileID: 890723478120667013}
+  endPoint: {fileID: 890723478120667013}
+  toyType: 17
+  points: []
 --- !u!1 &2922657648693389620
 GameObject:
   m_ObjectHideFlags: 0

@@ -5,78 +5,72 @@ using UnityEngine.EventSystems;
 
 public class FruitItem : MonoBehaviour
 {
-    [HideInInspector]
     public int id = 0;
     public GameObject[] steps;
     public int step = 0;
     public float timeGrow = 420;
-    float[] maxTime;
     public float time = 0;
-    public int scaleStepId = 1;
     float minScale = 0.1f;
     float maxScale = 1f;
-    float maxTimeCalculated = 1;
-    float timeCaculated = 0;
     CircleCollider2D col;
     Vector3 clickPosition;
     public int fruidId = 1;
     Vector3 originalPosition;
     Transform parent;
+    int lastStep = 0;
+    
 
     void Awake(){
         col = this.GetComponent<CircleCollider2D>();
-        maxTime = new float[3];
-        maxTime[0] = timeGrow/2;
-        maxTime[1] = timeGrow/2;
-        maxTime[2] = 10;
-        step = Random.Range(0, steps.Length);
-        time = Random.Range(0, maxTime[step]);
-        OnStep();
+        time = Random.Range(0, timeGrow);
         originalPosition = this.transform.position;
         parent = this.transform.parent;
     }
     // Start is called before the first frame update
     void Start()
     {
-        if (id == 0)
-            id = ItemManager.instance.GetFruitId();
+        //if (id == 0)
+        //    id = ItemManager.instance.GetFruitId();
     }
 
-    public void Load()
+    public void Load(float t)
     {
-        OnStep();
-        this.transform.position = originalPosition;
+        time = t;
+        Grow();
     }
+
+
 
     // Update is called once per frame
     void Update()
     {
-        if(time < maxTime[step])
+        lastStep = step;
+        time += Time.deltaTime;
+
+        if (time > timeGrow)
         {
-            time += Time.deltaTime;
+            step = 2;
+        }
+        else if (time > 10)
+        {
+            step = 1;
         }
         else
-        {
-            if(step < steps.Length - 1)
-                Grow();
-        }
+            step = 0;
 
-        if(timeCaculated > maxTimeCalculated)
+        if(step != lastStep)
         {
-            if (step == scaleStepId)
-            {
-                float s = steps[step].transform.localScale.x;
-                s += (maxScale - minScale)/maxTime[scaleStepId]*Time.deltaTime;
-                if (s > maxScale)
-                    s = maxScale;
-                steps[step].transform.localScale = new Vector3(s, s, 1);
-            }
+            Grow();
         }
-        else
+ 
+        if (step == 1)
         {
-            timeCaculated += Time.deltaTime;
+            float s = (maxScale - minScale)/timeGrow*time;
+            if (s > maxScale)
+                s = maxScale;
+            steps[1].transform.localScale = new Vector3(s, s, 1);
         }
-
+  
     }
 
     private void OnMouseDown()
@@ -93,7 +87,6 @@ public class FruitItem : MonoBehaviour
         {
             Pick();
         }
-        
     }
 
     void Pick(){
@@ -109,19 +102,15 @@ public class FruitItem : MonoBehaviour
         return results.Count > 0;
     }
 
-    void OnStep()
-    {
-        for(int i = 0; i < steps.Length; i++)
-        {
-            if (i != step)
-                steps[i].SetActive(false);
-            else
-                steps[i].SetActive(true);
-        }
 
-        if (step == scaleStepId)
+    void Grow()
+    {
+        for (int i = 0; i < steps.Length; i++)
         {
-            steps[step].transform.localScale = new Vector3(minScale, minScale, 1);
+            if (i == step)
+                steps[i].SetActive(true);
+            else
+                steps[i].SetActive(false);
         }
 
         if (step < steps.Length - 1)
@@ -130,17 +119,6 @@ public class FruitItem : MonoBehaviour
         }
         else
             col.enabled = true;
-    }
-
-    void Grow()
-    {
-        step++;
-        time = 0;
-        OnStep();
-        if(step == scaleStepId)
-        {
-            steps[step].transform.localScale = new Vector3(minScale, minScale, 1);
-        }
     }
 
     IEnumerator PickCouroutine()
@@ -156,9 +134,7 @@ public class FruitItem : MonoBehaviour
             yield return new WaitForEndOfFrame();
         }
 
-        step = 0;
         time = 0;
-        OnStep();
         this.transform.parent = parent;
         this.transform.position = originalPosition;
 
