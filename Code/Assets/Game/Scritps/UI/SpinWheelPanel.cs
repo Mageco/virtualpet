@@ -14,6 +14,7 @@ public class SpinWheelPanel : MonoBehaviour
     public GameObject spin;
     public Button buttonFree;
     public Button buttonAd;
+    public Button buttonCost;
     System.DateTime timeSpin = System.DateTime.Now;
     public Image[] icons;
 
@@ -33,13 +34,13 @@ public class SpinWheelPanel : MonoBehaviour
             timeSpin = System.DateTime.Parse(GameManager.instance.myPlayer.spinedTime);
         }
         else
-            GameManager.instance.myPlayer.spinCount = 2;
+            GameManager.instance.myPlayer.spinCount = 1;
 
 
 
-        if (timeSpin.Year < MageEngine.instance.GetServerTimeStamp().Year || timeSpin.Month < MageEngine.instance.GetServerTimeStamp().Month || timeSpin.Day < MageEngine.instance.GetServerTimeStamp().Day)
+        if (GameManager.instance.IsYesterDay(timeSpin))
         {
-            GameManager.instance.myPlayer.spinCount = 2;
+            GameManager.instance.myPlayer.spinCount = 1;
         }
 
 
@@ -51,15 +52,18 @@ public class SpinWheelPanel : MonoBehaviour
     {
         if (GameManager.instance.myPlayer.spinCount >= 1)
         {
-            buttonFree.gameObject.SetActive(false);
-            buttonAd.gameObject.SetActive(true);
-            buttonAd.interactable = true;
+            buttonFree.gameObject.SetActive(true);
+            buttonAd.gameObject.SetActive(false);
+            buttonFree.interactable = true;
+            buttonCost.gameObject.SetActive(false);
         }
         else
         {
             buttonFree.gameObject.SetActive(false);
             buttonAd.gameObject.SetActive(true);
-            buttonAd.interactable = false;
+            buttonAd.interactable = true;
+            buttonCost.gameObject.SetActive(true);
+            buttonCost.interactable = true;
         }
     }
 
@@ -222,9 +226,26 @@ public class SpinWheelPanel : MonoBehaviour
         RewardVideoAdManager.instance.ShowAd(RewardType.SpinWheel);
     }
 
+    public void OnCost()
+    {
+        if(GameManager.instance.GetDiamond() > 5)
+        {
+            buttonAd.interactable = false;
+            buttonCost.interactable = false;
+            GameManager.instance.AddDiamond(-5, GetKey());
+            StartCoroutine(DoSpin());
+        }
+        else
+        {
+            MageManager.instance.OnNotificationPopup(DataHolder.Dialog(7).GetDescription(MageManager.instance.GetLanguage()));
+        }
+
+    }
+
     public void OnWatched()
     {
         buttonAd.interactable = false;
+        buttonCost.interactable = false;
         StartCoroutine(DoSpin());
     }
 
@@ -232,5 +253,10 @@ public class SpinWheelPanel : MonoBehaviour
     {
         StopAllCoroutines();
         this.GetComponent<Popup>().Close();
+    }
+
+    string GetKey()
+    {
+        return Utils.instance.Md5Sum(GameManager.instance.count.ToString() + GameManager.instance.myPlayer.playTime.ToString() + GameManager.instance.myPlayer.Happy.ToString() + "M@ge2013");
     }
 }

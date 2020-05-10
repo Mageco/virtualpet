@@ -1431,4 +1431,11 @@ public class GameManager : MonoBehaviour
         return isCollect;
     }
 
+    public bool IsYesterDay(System.DateTime time)
+    {
+        if (time.Year < MageEngine.instance.GetServerTimeStamp().Year || (time.Year == MageEngine.instance.GetServerTimeStamp().Year && time.Month < MageEngine.instance.GetServerTimeStamp().Month) || (time.Year == MageEngine.instance.GetServerTimeStamp().Year && time.Month == MageEngine.instance.GetServerTimeStamp().Month && time.Day < MageEngine.instance.GetServerTimeStamp().Day))
+            return true;
+        else return false;
+    }
+
 }

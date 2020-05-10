@@ -32,8 +32,9 @@ public class GuideUI : MonoBehaviour
         MageManager.instance.PlaySound("BubbleButton", false);
         currentPage ++;
         if(currentPage > pages.Length - 1){
-            Close(); 
-            Minigame.instance.StartGame();
+            Close();
+            if(Minigame.instance != null)
+                Minigame.instance.StartGame();
         }else
             OnPage(currentPage);
     }
