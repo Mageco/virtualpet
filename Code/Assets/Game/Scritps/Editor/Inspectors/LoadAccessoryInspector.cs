@@ -121,12 +121,12 @@ public class LoadAccessoryInspector : Editor
                                 if (n > 80)
                                 {
                                     a.priceType = PriceType.Coin;
-                                    a.buyPrice = 999;
+                                    a.buyPrice = Random.Range(800,1000);
                                 }
                                 else
                                 {
                                     a.priceType = PriceType.Diamond;
-                                    a.buyPrice = 10;
+                                    a.buyPrice = Random.Range(8,15);
                                 }
                             }
  

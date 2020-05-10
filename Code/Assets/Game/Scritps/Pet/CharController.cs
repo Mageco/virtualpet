@@ -64,7 +64,7 @@ public class CharController : MonoBehaviour
     public Transform peePosition;
     public Transform shitPosition;
     EmotionStatus lastEmotionStatus;
- 
+    
 
 
     //[HideInInspector]
@@ -82,6 +82,7 @@ public class CharController : MonoBehaviour
     //Skill
     [HideInInspector]
     public SkillType currentSkill = SkillType.NONE;
+    public List<Skill> skills = new List<Skill>();
     MouseController mouse;
 
     [HideInInspector]
@@ -121,6 +122,7 @@ public class CharController : MonoBehaviour
         charInteract = this.GetComponent<CharInteract>();
         charScale = this.GetComponent<CharScale>();
         charCollider = this.GetComponentInChildren<CharCollider>(true);
+        timeLove = Random.Range(0, 10f);
     }
 
     protected virtual void Start()
@@ -134,7 +136,7 @@ public class CharController : MonoBehaviour
 
         if (!GameManager.instance.isGuest && ES2.Exists(DataHolder.GetPet(pet.iD).GetName(0) + pet.realId.ToString()))
         {
-            if (float.Parse(GameManager.instance.myPlayer.version) < 2.0f)
+            if (GameManager.instance.myPlayer.version != "" && float.Parse(GameManager.instance.myPlayer.version) < 2.0f)
             {
                 Pet p = new Pet(pet.iD);
                 p.realId = pet.realId;
@@ -157,7 +159,7 @@ public class CharController : MonoBehaviour
             this.data = p;
         }
 
-
+        LoadSkill();
     }
 
     public void LoadPrefab()
@@ -274,12 +276,47 @@ public class CharController : MonoBehaviour
 
     }
 
+    void LoadSkill()
+    {
+        skills.Clear();
+        for(int i = 0; i < 5; i++)
+        {
+            Skill s = new Skill();
+            if (i == 0)
+                s.type = SkillType.Toy;
+            else if (i == 1)
+                s.type = SkillType.Happy;
+            else if (i == 2)
+                s.type = SkillType.Toilet;
+            else if (i == 3)
+                s.type = SkillType.Sleep;
+            else if (i == 4)
+                s.type = SkillType.Bath;
+
+            if (data.level >= 5 * (i+1))
+                s.isLearn = true;
+            skills.Add(s);
+        }
+    }
+
+    public bool IsLearnSkill(SkillType type)
+    {
+        foreach(Skill s in skills)
+        {
+            if(s.type == type)
+            {
+                return s.isLearn;
+            }
+        }
+        return false;
+    }
+
 
     public void SetName()
     {
         data.petName = GameManager.instance.GetPet(data.realId).petName;
         Debug.Log(data.petName);
-        petNameText.text = data.petName;
+        petNameText.text = "<color=green>" + data.level.ToString() + " </color>" + data.petName;
     }
 
 
@@ -296,9 +333,6 @@ public class CharController : MonoBehaviour
         if (agent == null)
             return;
 
-
-        //petNameText.gameObject.SetActive(true);
-        //Debug.Log(actionType.ToString() + "  " + charInteract.interactType.ToString());
         if (actionType == ActionType.None)
         {
             Think();
@@ -308,7 +342,6 @@ public class CharController : MonoBehaviour
         {
             petNameText.transform.position = iconStatusObject.transform.position - new Vector3(0, 2.5f, 10);
             petNameText.transform.rotation = Quaternion.identity;
-            //petNameText.gameObject.SetActive(false);
             if (equipment != null && equipment.IsActive())
             {
                 data.Toy +=  data.MaxToy/toyRate * Time.deltaTime;
@@ -320,10 +353,10 @@ public class CharController : MonoBehaviour
             if(timeLove > maxTimeLove && actionType != ActionType.Hold)
             {
                 StartCoroutine(OnEmotion());
-                if(data.level < 15)
-                    ItemManager.instance.SpawnPetHappy(this.transform.position,data.RateHappy + data.level / 1);
+                if(!IsLearnSkill(SkillType.Toy))
+                    ItemManager.instance.SpawnPetHappy(this.transform.position,data.RateHappy + data.level / 5);
                 else
-                    ItemManager.instance.SpawnHeart(data.RateHappy + data.level / 10, this.transform.position);
+                    ItemManager.instance.SpawnHeart(data.RateHappy + data.level / 5, this.transform.position);
                 timeLove = 0;
             }else
                 timeLove += Time.deltaTime;
@@ -350,7 +383,6 @@ public class CharController : MonoBehaviour
         {
             CalculateData();
             dataTime = 0;
-            petNameText.text = "<color=green>" + data.level.ToString() + " </color>" + data.petName;
         }
         else
             dataTime += Time.deltaTime;
@@ -364,6 +396,7 @@ public class CharController : MonoBehaviour
             if (!GameManager.instance.isGuest)
                 ES2.Save(this.data, DataHolder.GetPet(data.iD).GetName(0) + data.realId.ToString());
 
+            GameManager.instance.myPlayer.version = Application.version;
         }
         else
             saveTime += Time.deltaTime;
@@ -513,7 +546,7 @@ public class CharController : MonoBehaviour
 
         if (data.Dirty > data.MaxDirty * 0.9f)
         {
-            if(data.level >= 15)
+            if(IsLearnSkill(SkillType.Bath))
             {
                 actionType = ActionType.OnBath;
                 return;
@@ -557,13 +590,13 @@ public class CharController : MonoBehaviour
             }
         }
 
-        if (data.Toy < data.MaxToy * 0.1f && data.level >= 10) 
+        if (data.Toy < data.MaxToy * 0.1f && IsLearnSkill(SkillType.Toy)) 
         {
             actionType = ActionType.Discover;
             return;
         }
 
-        if (data.Shit > data.MaxShit * 0.7f && data.level >= 5)
+        if (data.Shit > data.MaxShit * 0.7f && IsLearnSkill(SkillType.Toilet))
         {
             int ran = Random.Range(0, 100);
             if (ran > 70)
@@ -573,7 +606,7 @@ public class CharController : MonoBehaviour
             }
         }
 
-        if (data.Pee > data.MaxPee * 0.7f && data.level >= 5)
+        if (data.Pee > data.MaxPee * 0.7f && IsLearnSkill(SkillType.Toilet))
         {
             int ran = Random.Range(0, 100);
             if (ran > 70)
@@ -583,7 +616,7 @@ public class CharController : MonoBehaviour
             }
         }
 
-        if (data.Dirty > data.MaxDirty * 0.7f && data.level > 15)
+        if (data.Dirty > data.MaxDirty * 0.7f && IsLearnSkill(SkillType.Bath))
         {
             int ran = Random.Range(0, 100);
             if (ran > 70)
@@ -614,7 +647,7 @@ public class CharController : MonoBehaviour
             }
         }
 
-        if (data.Sleep < data.MaxSleep * 0.3f && data.level >= 20)
+        if (data.Sleep < data.MaxSleep * 0.3f && IsLearnSkill(SkillType.Sleep))
         {
             int ran = Random.Range(0, 100);
             if (ran > 70)
@@ -624,7 +657,7 @@ public class CharController : MonoBehaviour
             }
         }
 
-        if (data.Toy < data.MaxToy * 0.3f && data.level >= 10)
+        if (data.Toy < data.MaxToy * 0.3f && IsLearnSkill(SkillType.Toy))
         {
             int ran = Random.Range(0, 100);
             if (ran > 70)
@@ -633,15 +666,6 @@ public class CharController : MonoBehaviour
                 return;
             }
         }
-
-        /*
-        if (data.Energy < data.MaxEnergy * 0.1f)
-        {
-            actionType = ActionType.Tired;
-            return;
-        }*/
-
-
 
         int n = Random.Range(1, 100);
         if (n > 20)
@@ -1225,7 +1249,8 @@ public class CharController : MonoBehaviour
 
     public virtual void OnLevelUp()
     {
-        
+        SetName();
+        LoadSkill();
     }
 
     public virtual void OnTreatment(SickType sickType)
@@ -1627,7 +1652,7 @@ public class CharController : MonoBehaviour
     protected virtual IEnumerator Bath()
     {
         float value = Random.Range(0, 0.3f * data.MaxDirty);
-        if (data.level >= 25 && (equipment == null || equipment.itemType != ItemType.Bath))
+        if (IsLearnSkill(SkillType.Bath) && (equipment == null || equipment.itemType != ItemType.Bath))
         {
             BaseFloorItem item = ItemManager.instance.FindFreeRandomItem(ItemType.Bath);
             if (item != null && item.startPoint != null)
@@ -1679,7 +1704,7 @@ public class CharController : MonoBehaviour
         float pee = data.Pee;
         float value = Random.Range(0, 0.3f * data.MaxPee);
 
-        if (data.level >= 5 && (equipment == null || equipment.itemType != ItemType.Toilet))
+        if (IsLearnSkill(SkillType.Toilet) && (equipment == null || equipment.itemType != ItemType.Toilet))
         {
             BaseFloorItem item = ItemManager.instance.FindFreeRandomItem(ItemType.Toilet);
             if (item != null && item.startPoint != null)
@@ -1730,7 +1755,7 @@ public class CharController : MonoBehaviour
     {
         float shit = data.Shit;
         float value = Random.Range(0, 0.3f * data.MaxShit);
-        if (data.level >= 5 && (equipment == null || equipment.itemType != ItemType.Toilet))
+        if (IsLearnSkill(SkillType.Toilet) && (equipment == null || equipment.itemType != ItemType.Toilet))
         {
             BaseFloorItem item = ItemManager.instance.FindFreeRandomItem(ItemType.Toilet);
             if (item != null && item.startPoint != null)
@@ -1926,7 +1951,7 @@ public class CharController : MonoBehaviour
 
         float value = Random.Range(0.7f * data.MaxSleep, data.MaxSleep);
 
-        if (data.level >= 20 && (equipment == null || equipment.itemType != ItemType.Bed))
+        if (IsLearnSkill(SkillType.Sleep) && (equipment == null || equipment.itemType != ItemType.Bed))
         {
             BaseFloorItem bed = ItemManager.instance.FindFreeRandomItem(ItemType.Bed);
             if (bed != null)
@@ -2465,7 +2490,7 @@ public class CharController : MonoBehaviour
     {
         MageManager.instance.PlaySound3D("Fall", false,this.transform.position);
 
-        data.Damage += Random.Range(2, 10)/data.level;
+        data.Damage += Random.Range(10, 30);
         MageManager.instance.PlaySound3D("Drop", false, this.transform.position);
         yield return StartCoroutine(DoAnim("Fall_" + direction.ToString()));
 

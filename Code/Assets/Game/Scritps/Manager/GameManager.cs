@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Mage.Models.Users;
 using MageSDK.Client;
 using UnityEngine;
 
@@ -1063,6 +1064,7 @@ public class GameManager : MonoBehaviour
                 go.transform.parent = GetPetObject(realId).transform;
                 go.transform.position = GetPetObject(realId).transform.position + new Vector3(0, 2, -1);
                 GetPetObject(realId).data.level = GetPet(realId).level;
+                GetPetObject(realId).OnLevelUp();
             }
         }
     }
@@ -1122,7 +1124,7 @@ public class GameManager : MonoBehaviour
         if (MageEngine.instance.GetUserData<PlayerData>() != null)
         {
             Debug.Log("Load data from local");
-            Debug.Log(MageEngine.instance.GetUser().ToJson());
+            //Debug.Log(MageEngine.instance.GetUser().ToJson());
             myPlayer = MageEngine.instance.GetUserData<PlayerData>();
         }
         else
@@ -1132,12 +1134,25 @@ public class GameManager : MonoBehaviour
         }
 
         ConvertPlayer();
-
-
     }
 
     public void ConvertPlayer()
     {
+
+        if (myPlayer.originalVersion == "" || float.Parse(myPlayer.originalVersion) < 2.0f)
+        {
+            Debug.Log("Set quest id 100");
+            myPlayer.questId = 100;
+        }
+
+        if (myPlayer.playerName == "")
+        {
+            GameManager.instance.myPlayer.playerName = "Player" + Random.Range(100000, 1000000).ToString();
+            User u = MageEngine.instance.GetUser();
+            u.fullname = GameManager.instance.myPlayer.playerName;
+            MageEngine.instance.UpdateUserProfile(u);
+        }
+
         if (myPlayer.pets.Count > 0)
         {
             foreach (Pet p in myPlayer.pets)
@@ -1203,21 +1218,31 @@ public class GameManager : MonoBehaviour
                 GameManager.instance.myPlayer.dailyBonus.Add(b);
             }
         }
+
+        SavePlayer();
     }
 
     void LoadNewUser()
     {
         myPlayer = new PlayerData();
-        myPlayer.version = Application.version;
+        myPlayer.originalVersion = Application.version;
         Debug.Log("Version " + myPlayer.version);
 
-        
-        AddCoin(100000000, GetKey());
-        AddDiamond(10000000, GetKey());
-        AddHappy(100000000, GetKey());
-        //AddExp(100000, GetKey());
+        if (isTest)
+        {
+            AddCoin(100000000, GetKey());
+            AddDiamond(10000000, GetKey());
+            AddHappy(100000000, GetKey());
+        }
+        else
+        {
+            AddCoin(100, GetKey());
+            AddDiamond(1, GetKey());
+            AddHappy(10, GetKey());
+        }
+
         AddItem(17, GetKey());
-        AddItem(41, GetKey());
+        //AddItem(41, GetKey());
         AddItem(170, GetKey());
 
         /*

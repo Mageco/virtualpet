@@ -79,7 +79,15 @@ public class ItemManager : MonoBehaviour
 
         awayTime = (float)(ApiManager.instance.GetServerTimeStamp() - startTime).TotalSeconds;
         LoadItems();
-        LoadItemData(awayTime);
+        if (GameManager.instance.myPlayer.version != ""  &&  float.Parse(GameManager.instance.myPlayer.version) < 2.0f)
+        {
+            //Popup info here
+        }
+        else
+        {
+            LoadItemData(awayTime);
+        }
+           
         LoadArea();
         GameManager.instance.LoadPetObjects();
         isLoad = true;
@@ -500,7 +508,7 @@ public class ItemManager : MonoBehaviour
     public void SpawnPetHappy(Vector3 pos, int value)
     {
         GameObject go = Instantiate(petHappyPrefab, pos, Quaternion.identity);
-        go.transform.position += new Vector3(Random.Range(-1f, 1f), Random.Range(-1f, 1f), -1000);
+        go.transform.position += new Vector3(Random.Range(-1f, 1f), Random.Range(-1f, 1f), -20);
         go.GetComponent<PetHappyItem>().Load(value);
     }
 
@@ -613,50 +621,49 @@ public class ItemManager : MonoBehaviour
                 
         foreach (ItemSaveData item in data.itemSaveDatas){
 
-            if (float.Parse(GameManager.instance.myPlayer.version) >= 1.20f)
-            { 
-                if (item.itemType == ItemSaveDataType.Pee)
-                {
-                    SpawnPee(item.position, item.value);
-                }
-                else if (item.itemType == ItemSaveDataType.Shit)
-                {
-                    SpawnShit(item.position, item.value);
-                }
-                else if (item.itemType == ItemSaveDataType.Food || item.itemType == ItemSaveDataType.Drink)
-                {
-                    if (GetItem(item.id) != null)
-                    {
-                        GetItem(item.id).GetComponent<EatItem>().foodAmount = item.value;
-                        GetItem(item.id).GetComponent<EatItem>().transform.position = item.position;
-                    }
-                }
-                else if (item.itemType == ItemSaveDataType.Fruit)
-                {
-                    FruitItem[] fruits = FindObjectsOfType<FruitItem>();
-                    for (int i = 0; i < fruits.Length; i++)
-                    {
-                        if (fruits[i].id == i)
-                        {
-                            fruits[i].step = (int)item.value;
-                            fruits[i].time = item.time;
-                            fruits[i].Load();
-                        }
-                    }
-                }
-                else if (item.itemType == ItemSaveDataType.Happy)
-                {
-                    SpawnPetHappy(item.position, (int)item.value);
-                }
-                else if (item.itemType == ItemSaveDataType.Equipment)
-                {
-                    if (GetItem(item.id) != null)
-                    {
-                        GetItem(item.id).transform.position = item.position;
-                    }
-                }
-                
+
+            if (item.itemType == ItemSaveDataType.Pee)
+            {
+                SpawnPee(item.position, item.value);
             }
+            else if (item.itemType == ItemSaveDataType.Shit)
+            {
+                SpawnShit(item.position, item.value);
+            }
+            else if (item.itemType == ItemSaveDataType.Food || item.itemType == ItemSaveDataType.Drink)
+            {
+                if (GetItem(item.id) != null)
+                {
+                    GetItem(item.id).GetComponent<EatItem>().foodAmount = item.value;
+                    GetItem(item.id).GetComponent<EatItem>().transform.position = item.position;
+                }
+            }
+            else if (item.itemType == ItemSaveDataType.Fruit)
+            {
+                FruitItem[] fruits = FindObjectsOfType<FruitItem>();
+                for (int i = 0; i < fruits.Length; i++)
+                {
+                    if (fruits[i].id == i)
+                    {
+                        fruits[i].step = (int)item.value;
+                        fruits[i].time = item.time;
+                        fruits[i].Load();
+                    }
+                }
+            }
+            else if (item.itemType == ItemSaveDataType.Happy)
+            {
+                SpawnPetHappy(item.position, (int)item.value);
+            }
+            else if (item.itemType == ItemSaveDataType.Equipment)
+            {
+                if (GetItem(item.id) != null)
+                {
+                    GetItem(item.id).transform.position = item.position;
+                }
+            }
+                
+            
                 
         }
     }

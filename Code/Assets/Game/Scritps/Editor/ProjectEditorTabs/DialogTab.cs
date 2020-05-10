@@ -65,6 +65,14 @@ public class DialogTab : BaseTab
 
 
         }
+        if (GUILayout.Button("Clear All", GUILayout.Width(pw.mWidth)))
+        {
+            for (int i = 1; i < DataHolder.Languages().GetDataCount(); i++)
+            {
+                DataHolder.Dialog(selection).languageItem[i].Name = "";
+                DataHolder.Dialog(selection).languageItem[i].Description = "";
+            }
+        }
         this.EndTab();
     }
 }

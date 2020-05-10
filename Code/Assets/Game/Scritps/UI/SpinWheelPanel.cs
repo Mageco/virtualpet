@@ -49,7 +49,7 @@ public class SpinWheelPanel : MonoBehaviour
 
     void LoadButton()
     {
-        if (GameManager.instance.myPlayer.spinCount == 1)
+        if (GameManager.instance.myPlayer.spinCount >= 1)
         {
             buttonFree.gameObject.SetActive(false);
             buttonAd.gameObject.SetActive(true);
