@@ -65,7 +65,7 @@ public class ForestCoinItem : MonoBehaviour
         GameManager.instance.LogAchivement(AchivementType.CollectFruit);
         yield return new WaitForEndOfFrame();
         yield return new WaitForSeconds(animator.GetCurrentAnimatorStateInfo(0).length);
-        Destroy(this.gameObject);
+        
     }
 
     IEnumerator SpawnItem()
@@ -83,6 +83,7 @@ public class ForestCoinItem : MonoBehaviour
         }
         GameManager.instance.AddItem(itemId, Utils.instance.Md5Sum(GameManager.instance.count.ToString() + GameManager.instance.myPlayer.playTime.ToString() + GameManager.instance.myPlayer.Happy.ToString() + "M@ge2013"));
         Destroy(go);
+        Destroy(this.gameObject);
     }
 
     private bool IsPointerOverUIObject()
