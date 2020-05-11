@@ -378,7 +378,7 @@ public class CharController : MonoBehaviour
         }
 
         petNameText.transform.position = iconStatusObject.transform.position - new Vector3(0, 2.5f, 10);
-        petEmotion.transform.position = iconStatusObject.transform.position - new Vector3(4f, 2.5f, 10);
+        petEmotion.transform.position = iconStatusObject.transform.position - new Vector3(4f, 2.3f, 10);
 
         if (emotionStatus != EmotionStatus.Sad)
         {
@@ -1034,21 +1034,18 @@ public class CharController : MonoBehaviour
             else
                 direction = Direction.R;
         } 
-       // if(charInteract.interactType != InteractType.Drag)
-        //{
-            if (direction == Direction.R)
-            {
-                this.charObject.transform.rotation = Quaternion.Euler(new Vector3(0, 180, 0));
-                this.charObject.transform.localScale = new Vector3(this.charObject.transform.localScale.x, this.charObject.transform.localScale.y, -1);
 
-            }
-            else
-            {
-                this.charObject.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
-                this.charObject.transform.localScale = new Vector3(this.charObject.transform.localScale.x, this.charObject.transform.localScale.y, 1);
-            }
-        //}
+        if (direction == Direction.R)
+        {
+            this.charObject.transform.rotation = Quaternion.Euler(new Vector3(0, 180, 0));
+            this.charObject.transform.localScale = new Vector3(this.charObject.transform.localScale.x, this.charObject.transform.localScale.y, -1);
 
+        }
+        else
+        {
+            this.charObject.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
+            this.charObject.transform.localScale = new Vector3(this.charObject.transform.localScale.x, this.charObject.transform.localScale.y, 1);
+        }
     }
 
 
@@ -1431,7 +1428,7 @@ public class CharController : MonoBehaviour
 
         while (!isArrived && !isAbort)
         {
-            anim.Play("Run_" + "L", 0);
+            anim.Play("Run_L", 0);
             yield return new WaitForEndOfFrame();
         }
         isMoving = false;
@@ -1446,7 +1443,7 @@ public class CharController : MonoBehaviour
 
         while (!isArrived && !isAbort)
         {
-            anim.Play("Walk_" + "L", 0);
+            anim.Play("Walk_L", 0);
             yield return new WaitForEndOfFrame();
         }
         isMoving = false;
@@ -1472,7 +1469,7 @@ public class CharController : MonoBehaviour
         while (GetMouse() != null && GetMouse().state != MouseState.Idle && !isAbort)
         {
             agent.SetDestination(GetMouse().transform.position);
-            anim.Play("Run_Angry_" + "L", 0);
+            anim.Play("Run_Angry_L", 0);
             yield return new WaitForEndOfFrame();
         }
         isMoving = false;
@@ -1658,11 +1655,11 @@ public class CharController : MonoBehaviour
                     if (ran < 30)
                     {
                         MageManager.instance.PlaySound3D(charType.ToString() + "_Speak", false, this.transform.position);
-                        yield return StartCoroutine(DoAnim("Speak_" + "L"));
+                        yield return StartCoroutine(DoAnim("Speak_L"));
                     }
                     else if (ran < 60)
                     {
-                        anim.Play("Idle_" + "L", 0);
+                        anim.Play("Idle_L", 0);
                         yield return StartCoroutine(Wait(Random.Range(5, 15)));
                     }
                     else
@@ -1707,7 +1704,7 @@ public class CharController : MonoBehaviour
         else if(ran < 60)
         {
             MageManager.instance.PlaySound3D(charType.ToString() + "_Speak", false,this.transform.position);
-            yield return DoAnim("Speak_" + "L");
+            yield return DoAnim("Speak_L");
         }
         else
         {
@@ -1718,7 +1715,7 @@ public class CharController : MonoBehaviour
         float maxTime = Random.Range(3,5);
         while (t < maxTime && !isAbort)
         {
-            anim.Play("Idle_" + "L", 0);
+            anim.Play("Idle_L", 0);
             t += Time.deltaTime;
             yield return new WaitForEndOfFrame();
         }
@@ -1745,7 +1742,7 @@ public class CharController : MonoBehaviour
     protected virtual IEnumerator Stop()
     {
         yield return StartCoroutine(Wait(anim.GetCurrentAnimatorStateInfo(0).length));
-        yield return StartCoroutine(DoAnim("Idle_" + "L"));
+        yield return StartCoroutine(DoAnim("Idle_L"));
         CheckAbort();
     }
 
@@ -1986,10 +1983,6 @@ public class CharController : MonoBehaviour
                             isContinue = false;
                         yield return new WaitForEndOfFrame();
                     }
-                    if (item != null)
-                    {
-                        equipment.RemovePet(this);
-                    }
                     if (data.Food >= data.MaxFood - 1)
                     {
                         GameManager.instance.LogAchivement(AchivementType.Do_Action, ActionType.Eat);
@@ -2001,7 +1994,7 @@ public class CharController : MonoBehaviour
                     if (ran < 30)
                     {
                         MageManager.instance.PlaySound3D(charType.ToString() + "_Speak", false, this.transform.position);
-                        yield return StartCoroutine(DoAnim("Speak_" + "L"));
+                        yield return StartCoroutine(DoAnim("Speak_L"));
                     }
                     else
                     {
@@ -2074,7 +2067,7 @@ public class CharController : MonoBehaviour
                     if (ran < 30)
                     {
                         MageManager.instance.PlaySound3D(charType.ToString() + "_Speak", false, this.transform.position);
-                        yield return StartCoroutine(DoAnim("Speak_" + "L"));
+                        yield return StartCoroutine(DoAnim("Speak_L"));
                     }
                     else
                     {
@@ -2176,13 +2169,13 @@ public class CharController : MonoBehaviour
             }
             else if (ran < 70)
             {
-                anim.Play("Idle_" + "L", 0);
+                anim.Play("Idle_L", 0);
                 yield return StartCoroutine(Wait(Random.Range(1, 10)));
             }
             else
             {
                 MageManager.instance.PlaySound3D(charType.ToString() + "_Speak", false,this.transform.position);
-                yield return DoAnim("Speak_" + "L");
+                yield return DoAnim("Speak_L");
             }
 
             n++;
@@ -2193,7 +2186,7 @@ public class CharController : MonoBehaviour
 
     protected virtual IEnumerator Listening()
     {
-        yield return StartCoroutine(DoAnim("Idle_" + "L"));
+        yield return StartCoroutine(DoAnim("Idle_L"));
         CheckAbort();
     }
 
@@ -2205,21 +2198,23 @@ public class CharController : MonoBehaviour
             charScale.speedFactor = 2f;
             anim.speed = 1.5f;
             yield return StartCoroutine(RunToPoint());
-            int n = Random.Range(300, 1000);
+            int n = Random.Range(100, 500);
             while (petTarget != null && n > 0 && !isAbort)
             {
+                agent.Stop();
                 agent.SetDestination(petTarget.transform.position);
-                anim.Play("Run_" + "L", 0);
+                anim.Play("Run_L", 0);
                 
                if (Vector2.Distance(this.transform.position, petTarget.transform.position) < 5)
                 {                    
                     petTarget.OnTeased();
-                    yield return StartCoroutine(DoAnim("Speak_" + "L"));
+                    agent.Stop();
+                    yield return StartCoroutine(DoAnim("Speak_L"));
                     MageManager.instance.PlaySound3D(charType.ToString() + "_Speak", false, this.transform.position);
                 }
 
                 n--;
-                yield return new WaitForEndOfFrame();
+                yield return StartCoroutine(Wait(0.1f));
             }
         }
         charScale.speedFactor = 1f;
@@ -2456,7 +2451,7 @@ public class CharController : MonoBehaviour
             while (equipment != null && data.Toy < value && !isAbort)
             {
                 agent.transform.position = equipment.GetAnchorPoint(this).position;
-                anim.Play("Run_" + "L", 0);
+                anim.Play("Run_L", 0);
                 yield return new WaitForEndOfFrame();
             }
             charInteract.interactType = InteractType.None;
@@ -2577,7 +2572,7 @@ public class CharController : MonoBehaviour
 
     protected virtual IEnumerator Itchi()
     {
-        anim.Play("Itching_" + "L", 0);
+        anim.Play("Itching_L", 0);
         Debug.Log("Itchi");
         while (!isAbort)
         {
@@ -2682,7 +2677,7 @@ public class CharController : MonoBehaviour
 
         data.Damage += Random.Range(10, 30);
         MageManager.instance.PlaySound3D("Drop", false, this.transform.position);
-        yield return StartCoroutine(DoAnim("Fall_" + "L"));
+        yield return StartCoroutine(DoAnim("Fall_L"));
 
         CheckAbort();
     }

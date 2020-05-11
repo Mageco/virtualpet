@@ -24,6 +24,7 @@ public class BeeController : MonoBehaviour
 
 	int hitCount = 0;
     int maxCount = 3;
+	int fight = 0;
 
 	Animator anim;
 	public GameObject item;
@@ -64,7 +65,8 @@ public class BeeController : MonoBehaviour
 
 	void Enter(){
 		hitCount = 0;
-        maxCount = Random.Range(3, 10);
+		fight = 0;
+        maxCount = Random.Range(1, 3);
 		state = BeeState.Enter;
 		paths = new Vector3[3];
 		paths [0] = originalPosition;
@@ -128,6 +130,7 @@ public class BeeController : MonoBehaviour
 
 
 	void Fight(){
+		fight++;
 		state = BeeState.Fight;
 	}
 
@@ -188,7 +191,10 @@ public class BeeController : MonoBehaviour
 					target.data.Damage += Random.Range(30,50);
 				}
 			}
-			Patrol();
+			if (fight > maxCount)
+				Run();
+            else
+			    Patrol();
 		}
 		else {
 			if (time > maxTimeSpawn) {

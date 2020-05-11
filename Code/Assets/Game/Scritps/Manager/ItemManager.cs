@@ -685,20 +685,14 @@ public class ItemManager : MonoBehaviour
         #endif
         //Debug.Log(t);
 
-        foreach(CharController c in GameManager.instance.GetPetObjects())
-        {
-            if(c.emotionStatus == EmotionStatus.Happy)
-            {
-                happy += (c.data.RateHappy + c.data.level / 5) / 2;
-            }
-        }
+        if (t > 36000)
+            t = 36000;
 
+        coin = (int)t/3600 * 50;
+        happy = (int)t/3600 * 10 * GameManager.instance.myPlayer.pets.Count;
+        exp = (int)t / 3600 * 5;
 
-        coin = (int)Mathf.Clamp(t/15,1,1000);
-        happy = Mathf.Clamp(60 * happy,1,1000);
-        exp = (int)Mathf.Clamp(t / 150, 1, 100);
-
-        if(t > 120)
+        if (t >= 3600)
             UIManager.instance.OnWelcomeBack(coin, happy, exp);
     }
 
