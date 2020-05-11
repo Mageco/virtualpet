@@ -2164,21 +2164,14 @@ public class CharController : MonoBehaviour
         {
             charScale.speedFactor = 2f;
             anim.speed = 1.5f;
-            //target = petTarget.transform.position;
             yield return StartCoroutine(RunToPoint());
-            int n = Random.Range(200, 1000);
+            int n = Random.Range(300, 1000);
             while (petTarget != null && n > 0 && !isAbort)
             {
-                //target = petTarget.transform.position + new Vector3(Random.Range(-2f,2f), Random.Range(-2f, 2f),0);
-                //yield return StartCoroutine(RunToPoint());
                 agent.SetDestination(petTarget.transform.position);
                 anim.Play("Run_" + this.direction.ToString(), 0);
                 
-                //petTarget.OnTeased();
-                //yield return StartCoroutine(DoAnim("Speak_" + direction.ToString()));
-                //MageManager.instance.PlaySound3D(charType.ToString() + "_Speak", false, this.transform.position);
-                
-                if (Vector2.Distance(this.transform.position, petTarget.transform.position) < 5)
+               if (Vector2.Distance(this.transform.position, petTarget.transform.position) < 5)
                 {                    
                     petTarget.OnTeased();
                     yield return StartCoroutine(DoAnim("Speak_" + direction.ToString()));
