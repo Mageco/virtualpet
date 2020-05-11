@@ -730,12 +730,13 @@ public class GameManager : MonoBehaviour
                     if(item.number == 1)
                     {
                         myPlayer.items.Remove(item);
-                        ItemManager.instance.RemoveItem(item.realId);
                     }else
                     {
                         item.number -= 1;
                     }
-                }else if (item.state == ItemState.Equiped)
+                    ItemManager.instance.LoadItems();
+                }
+                else if (item.state == ItemState.Equiped)
                 {
                     myPlayer.items.Remove(item);
                     ItemManager.instance.RemoveItem(item.realId);
@@ -869,8 +870,10 @@ public class GameManager : MonoBehaviour
     #region Accessory
     public void BuyAccessory(int itemId,int realId)
     {
-        PriceType type = DataHolder.GetAccessory(itemId).priceType;
-        int price = DataHolder.GetAccessory(itemId).buyPrice;
+        Accessory a = DataHolder.GetAccessory(itemId);
+        PriceType type = a.priceType;
+        int price = a.buyPrice;
+        Debug.Log(type);
         if (type == PriceType.Coin)
         {
             if (price > GetCoin())
@@ -879,7 +882,7 @@ public class GameManager : MonoBehaviour
                 return;
             }
             AddCoin(-price, GetKey());
-            AddAccessory(itemId, realId, GetKey());
+            AddAccessory(a.accessoryId, realId, GetKey());
         }
         else if (type == PriceType.Diamond)
         {
@@ -889,7 +892,7 @@ public class GameManager : MonoBehaviour
                 return;
             }
             AddDiamond(-price, GetKey());
-            AddAccessory(itemId, realId, GetKey());
+            AddAccessory(a.accessoryId, realId, GetKey());
         }
         else if (type == PriceType.Happy)
         {
@@ -899,7 +902,7 @@ public class GameManager : MonoBehaviour
                 return;
             }
             AddHappy(-price, GetKey());
-            AddAccessory(itemId,realId,GetKey());
+            AddAccessory(a.accessoryId, realId,GetKey());
         }
         CharController pet = GetPetObject(realId);
         if(pet != null)
@@ -1148,7 +1151,7 @@ public class GameManager : MonoBehaviour
         ConvertPlayer();
     }
 
-    public bool IsOldVersion(float v)
+    public bool IsOldVersion()
     {
         if (myPlayer.originalVersion == null || myPlayer.originalVersion == "" || float.Parse(myPlayer.originalVersion) < 2.0f)
         {
@@ -1161,7 +1164,7 @@ public class GameManager : MonoBehaviour
     public void ConvertPlayer()
     {
         Debug.Log(myPlayer.ToJson());
-        if (IsOldVersion(2.0f))
+        if (IsOldVersion())
         {
             Debug.Log("Set quest id 100");
             myPlayer.questId = 100;
@@ -1202,6 +1205,12 @@ public class GameManager : MonoBehaviour
         {
             if (item.realId == 0)
                 item.realId = GetRealItemId();
+
+            if (item.itemType == ItemType.Animal)
+                item.itemType = ItemType.QuestItem;
+
+            if (item.itemId == 71 || item.itemId == 104 || item.itemId == 105 || item.itemId == 106)
+                item.itemType = ItemType.Clean;
         }
 
         foreach (PlayerPet pet in myPlayer.petDatas)

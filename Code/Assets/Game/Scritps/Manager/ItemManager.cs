@@ -196,6 +196,11 @@ public class ItemManager : MonoBehaviour
                 Debug.Log(item.name);
                 removes.Add(item);
             }
+
+            if (DataHolder.GetItem(item.itemID).consume)
+            {
+                removes.Add(item);
+            }
         }
 
 

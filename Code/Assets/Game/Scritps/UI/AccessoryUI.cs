@@ -38,7 +38,7 @@ public class AccessoryUI : MonoBehaviour
             state = ItemState.OnShop;
 
         realId = p.realId;
-        itemId = d.accessoryId;
+        itemId = d.iD;
         string url = d.iconUrl.Replace("Assets/Game/Resources/", "");
         url = url.Replace(".png", "");
         icon.sprite = Resources.Load<Sprite>(url) as Sprite;
@@ -73,41 +73,13 @@ public class AccessoryUI : MonoBehaviour
         else
         {
 
-                if (state == ItemState.OnShop)
-                {
-                    price.gameObject.SetActive(true);
-                    price.text = d.buyPrice.ToString();
-                    buyButton.gameObject.SetActive(true);
-                    buyButton.interactable = true;
-                    if (d.itemTag == ItemTag.Hot)
-                    {
-                        tags[0].transform.parent.gameObject.SetActive(true);
-                        tags[0].SetActive(true);
-                    }
-                    else if (d.itemTag == ItemTag.Sale)
-                    {
-                        tags[0].transform.parent.gameObject.SetActive(true);
-                        tags[1].SetActive(true);
-                    }
-                    else if (d.itemTag == ItemTag.New)
-                    {
-                        tags[0].transform.parent.gameObject.SetActive(true);
-                        tags[2].SetActive(true);
-                    }
-
-                }
-                else if (state == ItemState.Have)
-                {
-                    equipButton.gameObject.SetActive(true);
-                    equipButton.interactable = true;
-                }else if(state == ItemState.Equiped)
-                {
-                    equipButton.gameObject.SetActive(true);
-                    equipButton.interactable = false;
-                }
-
             if (state == ItemState.OnShop)
             {
+                price.gameObject.SetActive(true);
+                price.text = d.buyPrice.ToString();
+                buyButton.gameObject.SetActive(true);
+                buyButton.interactable = true;
+
                 if (d.priceType == PriceType.Coin)
                 {
                     coinIcon.SetActive(true);
@@ -138,6 +110,15 @@ public class AccessoryUI : MonoBehaviour
                         buyButton.interactable = false;
                     }
                 }
+            }
+            else if (state == ItemState.Have)
+            {
+                equipButton.gameObject.SetActive(true);
+                equipButton.interactable = true;
+            }else if(state == ItemState.Equiped)
+            {
+                equipButton.gameObject.SetActive(true);
+                equipButton.interactable = false;
             }
             
         }

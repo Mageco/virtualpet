@@ -67,6 +67,11 @@ public class InventoryUI : MonoBehaviour
             price.text = (item.buyPrice / 2).ToString();
             sellButton.gameObject.SetActive(true);
             sellButton.interactable = true;
+            if (d.isConsumable)
+            {
+                number.gameObject.SetActive(true);
+                number.text = "x " + d.number.ToString();
+            }
         }
         else
         {
