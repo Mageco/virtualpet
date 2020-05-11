@@ -1127,7 +1127,7 @@ public class CharController : MonoBehaviour
 
     public virtual void OnTeased()
     {
-        if (actionType == ActionType.Hold || actionType == ActionType.Sick || actionType == ActionType.Injured || equipment != null || actionType == ActionType.Tease)
+        if (actionType == ActionType.Hold || actionType == ActionType.Sick || actionType == ActionType.Injured || equipment != null || actionType == ActionType.Teased)
             return;
         Abort();
         actionType = ActionType.Teased;
@@ -1970,7 +1970,9 @@ public class CharController : MonoBehaviour
                     }
                 }
             }
+            JumpOut();
         }
+
         CheckAbort();
     }
 
@@ -2040,6 +2042,7 @@ public class CharController : MonoBehaviour
                     }
                 }
             }
+            JumpOut();
         }
         CheckAbort();
     }
@@ -2161,32 +2164,28 @@ public class CharController : MonoBehaviour
         {
             charScale.speedFactor = 2f;
             anim.speed = 1.5f;
-            target = petTarget.transform.position;
+            //target = petTarget.transform.position;
             yield return StartCoroutine(RunToPoint());
-            bool isSpeak = false;
-            data.Energy = Random.Range(50,200);
-            while (petTarget != null && data.Energy > 0 && !isAbort)
+            int n = Random.Range(200, 1000);
+            while (petTarget != null && n > 0 && !isAbort)
             {
+                //target = petTarget.transform.position + new Vector3(Random.Range(-2f,2f), Random.Range(-2f, 2f),0);
+                //yield return StartCoroutine(RunToPoint());
                 agent.SetDestination(petTarget.transform.position);
                 anim.Play("Run_" + this.direction.ToString(), 0);
-                data.Energy -= 5 * Time.deltaTime;
-                if (Vector2.Distance(this.transform.position, petTarget.transform.position) < 3 && !isSpeak)
-                {
+                
+                //petTarget.OnTeased();
+                //yield return StartCoroutine(DoAnim("Speak_" + direction.ToString()));
+                //MageManager.instance.PlaySound3D(charType.ToString() + "_Speak", false, this.transform.position);
+                
+                if (Vector2.Distance(this.transform.position, petTarget.transform.position) < 5)
+                {                    
                     petTarget.OnTeased();
-                    int r = Random.Range(0, 100);
-                    if (r < 30)
-                    {
-                        yield return StartCoroutine(DoAnim("Speak_" + direction.ToString()));
-                        MageManager.instance.PlaySound3D(charType.ToString() + "_Speak", false, this.transform.position);
-                    }
-
-                    isSpeak = true;
-
+                    yield return StartCoroutine(DoAnim("Speak_" + direction.ToString()));
+                    MageManager.instance.PlaySound3D(charType.ToString() + "_Speak", false, this.transform.position);
                 }
-                if (Vector2.Distance(this.transform.position, petTarget.transform.position) > 4 && isSpeak)
-                {
-                    isSpeak = false;
-                }
+
+                n--;
                 yield return new WaitForEndOfFrame();
             }
         }
@@ -2198,8 +2197,8 @@ public class CharController : MonoBehaviour
     protected virtual IEnumerator Teased()
     {
         yield return StartCoroutine(DoAnim("Teased"));
-        Vector3 target = ItemManager.instance.GetRandomPoint(AreaType.All);
-        charScale.speedFactor = 3f;
+        target = ItemManager.instance.GetRandomPoint(AreaType.All);
+        charScale.speedFactor = 1.5f;
         anim.speed = 1.5f;
         yield return StartCoroutine(RunToPoint());
         charScale.speedFactor = 1f;
