@@ -46,6 +46,8 @@ public class ApiManager : MageEngine {
         {
             Debug.Log("Load data from server");
             GameManager.instance.myPlayer = GetUserData<PlayerData>();
+			GameManager.instance.UnLoadPets();
+			Debug.Log(GameManager.instance.myPlayer.ToJson());
 			GameManager.instance.ConvertPlayer();
 			if (ItemManager.instance != null)
 			{

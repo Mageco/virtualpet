@@ -1148,10 +1148,20 @@ public class GameManager : MonoBehaviour
         ConvertPlayer();
     }
 
+    public bool IsOldVersion(float v)
+    {
+        if (myPlayer.originalVersion == null || myPlayer.originalVersion == "" || float.Parse(myPlayer.originalVersion) < 2.0f)
+        {
+            return true;
+        }
+        else
+            return false;
+    }
+
     public void ConvertPlayer()
     {
-
-        if (myPlayer.originalVersion == "" || float.Parse(myPlayer.originalVersion) < 2.0f)
+        Debug.Log(myPlayer.ToJson());
+        if (IsOldVersion(2.0f))
         {
             Debug.Log("Set quest id 100");
             myPlayer.questId = 100;
