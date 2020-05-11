@@ -23,7 +23,7 @@ public class CharUnicorn : CharController
             }
             else if (ran < 60)
             {
-                anim.Play("Idle_" + this.direction.ToString(), 0);
+                anim.Play("Idle_L", 0);
                 yield return StartCoroutine(Wait(Random.Range(1, 10)));
             }
             else if(ran < 80)
@@ -35,7 +35,7 @@ public class CharUnicorn : CharController
             else
             {
                 MageManager.instance.PlaySound3D(charType.ToString() + "_Speak", false,this.transform.position);
-                yield return DoAnim("Speak_" + direction.ToString());
+                yield return DoAnim("Speak_L");
             }
 
             n++;

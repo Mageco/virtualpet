@@ -20,7 +20,7 @@ public class CharParrot : CharController
             agent.SetDestination(target);
             while (!isArrived && !isAbort)
             {
-                anim.Play("Walk_" + this.direction.ToString(), 0);
+                anim.Play("Walk_L" , 0);
                 //data.Energy -= Time.deltaTime;
                 yield return new WaitForEndOfFrame();
             }
@@ -45,7 +45,7 @@ public class CharParrot : CharController
             Vector3 startPoint = this.transform.position;
             //iTween.StopByName("RunToPoint" + this.gameObject.name);
             iTween.MoveTo(this.gameObject, iTween.Hash("name", "RunToPoint" + this.gameObject.name, "path", paths, "speed", data.Speed * 5, "orienttopath", false, "easetype", "linear", "oncomplete", "CompleteFly"));
-            anim.Play("Run_" + this.direction.ToString(), 0);
+            anim.Play("Run_L", 0);
             //Debug.Log("Start Fly " + data.Speed);
             while (charInteract.interactType == InteractType.Fly)
                     {
@@ -86,7 +86,7 @@ public class CharParrot : CharController
                 SetTarget(AreaType.All);
                 yield return StartCoroutine(RunToPoint());
                 MageManager.instance.PlaySound3D(charType.ToString() + "_Speak",false,this.transform.position);
-                yield return DoAnim("Speak_" + direction.ToString());
+                yield return DoAnim("Speak_L");
             }if(ran < 40){
                 SetTarget(AreaType.All);
                 yield return StartCoroutine(WalkToPoint());
@@ -96,7 +96,7 @@ public class CharParrot : CharController
                 yield return StartCoroutine(Wait(Random.Range(1, 10)));
             }
             else {
-                anim.Play("Idle_" + this.direction.ToString(), 0);
+                anim.Play("Idle_L", 0);
                 yield return StartCoroutine(Wait(Random.Range(1, 10)));
             }
             
@@ -104,49 +104,4 @@ public class CharParrot : CharController
     }
 }
 
-    /*
-     float length = Vector2.Distance(this.transform.position,target);
-            float t = 0;
-            charInteract.interactType = InteractType.Fly;
-            if(target.x > this.transform.position.x){
-                SetDirection(Direction.R);
-            }else
-                SetDirection(Direction.L);
-        
-            while (!isArrived && !isAbort)
-            {
-                if(t < 0.01f * (length + targetHeight)){
-                    charScale.height = Mathf.Lerp(charScale.height,targetHeight + 20,Time.deltaTime*5);
-                }else{
-                    charScale.height = Mathf.Lerp(charScale.height,targetHeight,Time.deltaTime*4);
-                    
-                }
-                if(charScale.height > 0.5f)
-                    anim.Play("Run_" + this.direction.ToString(), 0);
-                else
-                    anim.Play("Idle_" + this.direction.ToString(), 0);
-
-                data.Energy -= 0.5f*Time.deltaTime;
-                
-                charScale.scalePosition = Vector3.Lerp(charScale.scalePosition,target,Time.deltaTime*2);
-
-                if(charScale.height < 0)
-                    charScale.height = 0;
-                Vector3 p = charScale.scalePosition + new Vector3(0,charScale.height,0);
-                this.transform.position = p;
-                agent.transform.position = p;
-
-
-
-                if(Vector2.Distance(charScale.scalePosition,target) < 2 && Mathf.Abs(charScale.height - targetHeight) < 0.5f){
-                    charScale.height = targetHeight;
-                    charScale.scalePosition = target;
-                    
-                    this.transform.position = target + new Vector3(0,targetHeight,0);
-                    agent.transform.position = target + new Vector3(0,targetHeight,0);
-                    
-                    isArrived = true;
-                }
-                t+=Time.deltaTime;
-                yield return new WaitForEndOfFrame();
-                                                     */
+   

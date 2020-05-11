@@ -15,7 +15,7 @@ public class CharTurtle : CharController
 
     protected override IEnumerator Fall()
     {
-        anim.Play("Fall_" + direction.ToString(),0);
+        anim.Play("Fall_L",0);
         while(!isAbort){
             yield return new WaitForEndOfFrame();
         }

@@ -190,10 +190,7 @@ public class UIManager : MonoBehaviour
 
         if (callButton != null)
         {
-            if (GameManager.instance.myPlayer.questId > 7)
-                callButton.SetActive(true);
-            else
-                callButton.SetActive(false);
+
         }
 
         

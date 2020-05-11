@@ -1028,10 +1028,27 @@ public class CharController : MonoBehaviour
 
     protected virtual void CalculateDirection()
     {
-        if (agent.transform.eulerAngles.z < 180f && agent.transform.eulerAngles.z > 0f || (agent.transform.eulerAngles.z > -360f && agent.transform.eulerAngles.z < -180f))
-            direction = Direction.L;
-        else
-            direction = Direction.R;
+        if (charInteract.interactType != InteractType.Drag) {
+            if (agent.transform.eulerAngles.z < 180f && agent.transform.eulerAngles.z > 0f || (agent.transform.eulerAngles.z > -360f && agent.transform.eulerAngles.z < -180f))
+                direction = Direction.L;
+            else
+                direction = Direction.R;
+        } 
+       // if(charInteract.interactType != InteractType.Drag)
+        //{
+            if (direction == Direction.R)
+            {
+                this.charObject.transform.rotation = Quaternion.Euler(new Vector3(0, 180, 0));
+                this.charObject.transform.localScale = new Vector3(this.charObject.transform.localScale.x, this.charObject.transform.localScale.y, -1);
+
+            }
+            else
+            {
+                this.charObject.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
+                this.charObject.transform.localScale = new Vector3(this.charObject.transform.localScale.x, this.charObject.transform.localScale.y, 1);
+            }
+        //}
+
     }
 
 
@@ -1414,7 +1431,7 @@ public class CharController : MonoBehaviour
 
         while (!isArrived && !isAbort)
         {
-            anim.Play("Run_" + this.direction.ToString(), 0);
+            anim.Play("Run_" + "L", 0);
             yield return new WaitForEndOfFrame();
         }
         isMoving = false;
@@ -1429,7 +1446,7 @@ public class CharController : MonoBehaviour
 
         while (!isArrived && !isAbort)
         {
-            anim.Play("Walk_" + this.direction.ToString(), 0);
+            anim.Play("Walk_" + "L", 0);
             yield return new WaitForEndOfFrame();
         }
         isMoving = false;
@@ -1455,7 +1472,7 @@ public class CharController : MonoBehaviour
         while (GetMouse() != null && GetMouse().state != MouseState.Idle && !isAbort)
         {
             agent.SetDestination(GetMouse().transform.position);
-            anim.Play("Run_Angry_" + this.direction.ToString(), 0);
+            anim.Play("Run_Angry_" + "L", 0);
             yield return new WaitForEndOfFrame();
         }
         isMoving = false;
@@ -1502,16 +1519,36 @@ public class CharController : MonoBehaviour
             else if (pos.x < ItemManager.instance.gardenBoundX.x)
                 pos.x = ItemManager.instance.gardenBoundX.x;
 
-            targetRotation = Quaternion.Euler(new Vector3(0, 0, -(this.transform.position.x - lastPosition.x) * 10));
-            this.charObject.transform.rotation = Quaternion.Lerp(this.charObject.transform.rotation, targetRotation, Time.deltaTime * 5);
+            /*
+            if (direction == Direction.R)
+            {
+                targetRotation = Quaternion.Euler(new Vector3(0, 0, -(this.transform.position.x - lastPosition.x) * 10));
+                this.charObject.transform.localScale = new Vector3(this.charObject.transform.localScale.x, this.charObject.transform.localScale.y, -1);
+            }
+            else
+            {
+                targetRotation = Quaternion.Euler(new Vector3(0, 0, -(this.transform.position.x - lastPosition.x) * 10));
+                this.charObject.transform.localScale = new Vector3(this.charObject.transform.localScale.x, this.charObject.transform.localScale.y, 1);
+            }*/
+
+            //this.charObject.transform.rotation = Quaternion.Lerp(this.charObject.transform.rotation, targetRotation, Time.deltaTime * 5);
+
+
+
+
             pos.z = -50;
             agent.transform.position = Vector3.Lerp(this.transform.position,pos,Time.deltaTime * 5);
+            if(agent.transform.position.x >= lastPosition.x)
+            {
+                SetDirection(Direction.R);
+            }else
+                SetDirection(Direction.L);
             lastPosition = this.transform.position;
             yield return new WaitForEndOfFrame();
         }
 
         charCollider.OffAllItem();
-        this.charObject.transform.rotation = Quaternion.identity;
+        //this.charObject.transform.rotation = Quaternion.identity;
         dropPosition = charScale.scalePosition;
         bool dropOutSide = false;
         //Start Drop
@@ -1621,11 +1658,11 @@ public class CharController : MonoBehaviour
                     if (ran < 30)
                     {
                         MageManager.instance.PlaySound3D(charType.ToString() + "_Speak", false, this.transform.position);
-                        yield return StartCoroutine(DoAnim("Speak_" + direction.ToString()));
+                        yield return StartCoroutine(DoAnim("Speak_" + "L"));
                     }
                     else if (ran < 60)
                     {
-                        anim.Play("Idle_" + this.direction.ToString(), 0);
+                        anim.Play("Idle_" + "L", 0);
                         yield return StartCoroutine(Wait(Random.Range(5, 15)));
                     }
                     else
@@ -1670,7 +1707,7 @@ public class CharController : MonoBehaviour
         else if(ran < 60)
         {
             MageManager.instance.PlaySound3D(charType.ToString() + "_Speak", false,this.transform.position);
-            yield return DoAnim("Speak_" + direction.ToString());
+            yield return DoAnim("Speak_" + "L");
         }
         else
         {
@@ -1681,7 +1718,7 @@ public class CharController : MonoBehaviour
         float maxTime = Random.Range(3,5);
         while (t < maxTime && !isAbort)
         {
-            anim.Play("Idle_" + this.direction.ToString(), 0);
+            anim.Play("Idle_" + "L", 0);
             t += Time.deltaTime;
             yield return new WaitForEndOfFrame();
         }
@@ -1708,7 +1745,7 @@ public class CharController : MonoBehaviour
     protected virtual IEnumerator Stop()
     {
         yield return StartCoroutine(Wait(anim.GetCurrentAnimatorStateInfo(0).length));
-        yield return StartCoroutine(DoAnim("Idle_" + direction.ToString()));
+        yield return StartCoroutine(DoAnim("Idle_" + "L"));
         CheckAbort();
     }
 
@@ -1931,7 +1968,7 @@ public class CharController : MonoBehaviour
             if (item != null)
             {
                 bool isContinue = true;
-
+                SetDirection(Direction.L);
                 if (item != null && isContinue)
                 {
                     MageManager.instance.PlaySound3D("Eat", false, this.transform.position);
@@ -1964,7 +2001,7 @@ public class CharController : MonoBehaviour
                     if (ran < 30)
                     {
                         MageManager.instance.PlaySound3D(charType.ToString() + "_Speak", false, this.transform.position);
-                        yield return StartCoroutine(DoAnim("Speak_" + direction.ToString()));
+                        yield return StartCoroutine(DoAnim("Speak_" + "L"));
                     }
                     else
                     {
@@ -2005,6 +2042,7 @@ public class CharController : MonoBehaviour
 
                 if (item != null && isContinue)
                 {
+                    SetDirection(Direction.L);
                     int soundid = MageManager.instance.PlaySound3D("Drink", false, this.transform.position);
                     anim.Play("Drink", 0);
                     yield return StartCoroutine(Wait(0.1f));
@@ -2036,7 +2074,7 @@ public class CharController : MonoBehaviour
                     if (ran < 30)
                     {
                         MageManager.instance.PlaySound3D(charType.ToString() + "_Speak", false, this.transform.position);
-                        yield return StartCoroutine(DoAnim("Speak_" + direction.ToString()));
+                        yield return StartCoroutine(DoAnim("Speak_" + "L"));
                     }
                     else
                     {
@@ -2138,13 +2176,13 @@ public class CharController : MonoBehaviour
             }
             else if (ran < 70)
             {
-                anim.Play("Idle_" + this.direction.ToString(), 0);
+                anim.Play("Idle_" + "L", 0);
                 yield return StartCoroutine(Wait(Random.Range(1, 10)));
             }
             else
             {
                 MageManager.instance.PlaySound3D(charType.ToString() + "_Speak", false,this.transform.position);
-                yield return DoAnim("Speak_" + direction.ToString());
+                yield return DoAnim("Speak_" + "L");
             }
 
             n++;
@@ -2155,7 +2193,7 @@ public class CharController : MonoBehaviour
 
     protected virtual IEnumerator Listening()
     {
-        yield return StartCoroutine(DoAnim("Idle_" + direction.ToString()));
+        yield return StartCoroutine(DoAnim("Idle_" + "L"));
         CheckAbort();
     }
 
@@ -2171,12 +2209,12 @@ public class CharController : MonoBehaviour
             while (petTarget != null && n > 0 && !isAbort)
             {
                 agent.SetDestination(petTarget.transform.position);
-                anim.Play("Run_" + this.direction.ToString(), 0);
+                anim.Play("Run_" + "L", 0);
                 
                if (Vector2.Distance(this.transform.position, petTarget.transform.position) < 5)
                 {                    
                     petTarget.OnTeased();
-                    yield return StartCoroutine(DoAnim("Speak_" + direction.ToString()));
+                    yield return StartCoroutine(DoAnim("Speak_" + "L"));
                     MageManager.instance.PlaySound3D(charType.ToString() + "_Speak", false, this.transform.position);
                 }
 
@@ -2326,6 +2364,7 @@ public class CharController : MonoBehaviour
     protected virtual IEnumerator Toy()
     {
         float value = Random.Range(0.7f * data.MaxToy, data.MaxToy);
+        SetDirection(Direction.L);
         if (equipment.toyType == ToyType.Jump)
         {
             dropPosition = equipment.GetAnchorPoint(this).position + new Vector3(0, Random.Range(-1f, 1f), 0);
@@ -2417,7 +2456,7 @@ public class CharController : MonoBehaviour
             while (equipment != null && data.Toy < value && !isAbort)
             {
                 agent.transform.position = equipment.GetAnchorPoint(this).position;
-                anim.Play("Run_" + this.direction.ToString(), 0);
+                anim.Play("Run_" + "L", 0);
                 yield return new WaitForEndOfFrame();
             }
             charInteract.interactType = InteractType.None;
@@ -2538,7 +2577,7 @@ public class CharController : MonoBehaviour
 
     protected virtual IEnumerator Itchi()
     {
-        anim.Play("Itching_" + direction.ToString(), 0);
+        anim.Play("Itching_" + "L", 0);
         Debug.Log("Itchi");
         while (!isAbort)
         {
@@ -2643,7 +2682,7 @@ public class CharController : MonoBehaviour
 
         data.Damage += Random.Range(10, 30);
         MageManager.instance.PlaySound3D("Drop", false, this.transform.position);
-        yield return StartCoroutine(DoAnim("Fall_" + direction.ToString()));
+        yield return StartCoroutine(DoAnim("Fall_" + "L"));
 
         CheckAbort();
     }
