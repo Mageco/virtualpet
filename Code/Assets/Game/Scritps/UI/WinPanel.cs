@@ -96,12 +96,12 @@ public class WinPanel : MonoBehaviour
             {
                 if (r < 70)
                 {
-                    itemId = 219;
+                    itemId = 242;
                 }
                 else if (r < 95)
-                    itemId = 220;
+                    itemId = 243;
                 else
-                    itemId = 221;
+                    itemId = 245;
             }
             else if (minigameId == 3)
             {
