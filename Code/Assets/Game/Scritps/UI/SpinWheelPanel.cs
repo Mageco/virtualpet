@@ -146,13 +146,14 @@ public class SpinWheelPanel : MonoBehaviour
             UIManager.instance.OnSpinRewardPanel(icons[n].sprite, value.ToString());
         }else if(n == 1)
         {
-            value = 100;
+            
             for (int i = 231; i <= 238; i++)
             {
                 items.Add(i);
             }
             items.Add(244);
             id = Random.Range(0, items.Count);
+            value = (int)DataHolder.GetItem(items[id]).value;
             GameManager.instance.AddItem(items[id],value, Utils.instance.Md5Sum(GameManager.instance.count.ToString() + GameManager.instance.myPlayer.playTime.ToString() + GameManager.instance.myPlayer.Happy.ToString() + "M@ge2013"));
             string url = DataHolder.GetItem(items[id]).iconUrl.Replace("Assets/Game/Resources/", "");
             url = url.Replace(".png", "");
@@ -166,12 +167,13 @@ public class SpinWheelPanel : MonoBehaviour
         }
         else if (n == 3)
         {
-            value = 100;
+            
             for (int i = 204; i <= 215; i++)
             {
                 items.Add(i);
             }
             id = Random.Range(0, items.Count);
+            value = (int)DataHolder.GetItem(items[id]).value;
             GameManager.instance.AddItem(items[id], value, Utils.instance.Md5Sum(GameManager.instance.count.ToString() + GameManager.instance.myPlayer.playTime.ToString() + GameManager.instance.myPlayer.Happy.ToString() + "M@ge2013"));
             string url = DataHolder.GetItem(items[id]).iconUrl.Replace("Assets/Game/Resources/", "");
             url = url.Replace(".png", "");
@@ -179,12 +181,14 @@ public class SpinWheelPanel : MonoBehaviour
         }
         else if (n == 4)
         {
-            value = 100;
+            
             for (int i = 239; i <= 241; i++)
             {
                 items.Add(i);
             }
+            
             id = Random.Range(0, items.Count);
+            value = (int)DataHolder.GetItem(items[id]).value;
             GameManager.instance.AddItem(items[id], value, Utils.instance.Md5Sum(GameManager.instance.count.ToString() + GameManager.instance.myPlayer.playTime.ToString() + GameManager.instance.myPlayer.Happy.ToString() + "M@ge2013"));
             string url = DataHolder.GetItem(items[id]).iconUrl.Replace("Assets/Game/Resources/", "");
             url = url.Replace(".png", "");
@@ -204,7 +208,6 @@ public class SpinWheelPanel : MonoBehaviour
         }
         else if (n == 7)
         {
-            value = 100;
             for (int i = 216; i <= 230; i++)
             {
                 items.Add(i);
@@ -212,8 +215,9 @@ public class SpinWheelPanel : MonoBehaviour
             items.Add(242);
             items.Add(243);
             items.Add(245);
-
+            
             id = Random.Range(0, items.Count);
+            value = (int)DataHolder.GetItem(items[id]).value;
             GameManager.instance.AddItem(items[id], value, Utils.instance.Md5Sum(GameManager.instance.count.ToString() + GameManager.instance.myPlayer.playTime.ToString() + GameManager.instance.myPlayer.Happy.ToString() + "M@ge2013"));
             string url = DataHolder.GetItem(items[id]).iconUrl.Replace("Assets/Game/Resources/", "");
             url = url.Replace(".png", "");
