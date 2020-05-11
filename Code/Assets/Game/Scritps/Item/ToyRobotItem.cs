@@ -128,7 +128,9 @@ public class ToyRobotItem : ToyItem
         
         yield return StartCoroutine(DoAnim("Dance_" + direction.ToString()));
         animator.Play("Idle_" + direction.ToString(), 0);
-        item = FindObjectOfType<PetHappyItem>();
+        PetHappyItem[] items = FindObjectsOfType<PetHappyItem>();
+        if (items.Length > 0)
+            item = items[Random.Range(0, items.Length)];
         if (item != null && state == EquipmentState.Active)
         {
             target = item.transform.position;
