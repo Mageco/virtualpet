@@ -165,6 +165,10 @@ public class ItemTab : BaseTab
             {
                 DataHolder.Items().GetItem(selection, temcategory).value = EditorGUILayout.FloatField("Time grow", DataHolder.Items().GetItem(selection, temcategory).value, GUILayout.Width(pw.mWidth));
             }
+            else if (DataHolder.Items().GetItem(selection, temcategory).itemType == ItemType.QuestItem)
+            {
+                DataHolder.Items().GetItem(selection, temcategory).value = EditorGUILayout.FloatField("Spin Number", DataHolder.Items().GetItem(selection, temcategory).value, GUILayout.Width(pw.mWidth));
+            }
 
             EditorGUILayout.EndHorizontal();
             EditorGUILayout.EndVertical();
