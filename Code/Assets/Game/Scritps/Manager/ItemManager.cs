@@ -698,7 +698,7 @@ public class ItemManager : MonoBehaviour
         happy = Mathf.Clamp(60 * happy,1,1000);
         exp = (int)Mathf.Clamp(t / 150, 1, 100);
 
-        if(t > 60)
+        if(t > 120)
             UIManager.instance.OnWelcomeBack(coin, happy, exp);
     }
 

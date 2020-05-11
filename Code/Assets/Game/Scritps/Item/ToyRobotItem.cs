@@ -77,7 +77,9 @@ public class ToyRobotItem : ToyItem
         Debug.Log("Click");
         if(state == EquipmentState.Drag || state == EquipmentState.Hold || state == EquipmentState.Idle)
         {
-            item = FindObjectOfType<PetHappyItem>();
+            PetHappyItem[] items = FindObjectsOfType<PetHappyItem>();
+            if (items.Length > 0)
+                item = items[Random.Range(0, items.Length)];
             if (item != null)
             {
                 target = item.transform.position;
