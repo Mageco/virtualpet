@@ -171,6 +171,7 @@ public class ItemUI : MonoBehaviour
                 bathText.text = d.value.ToString("F0");
             }
         }*/
+        /*
         else if (d.itemType == ItemType.Clean)
         {
             if (d.value > 0)
@@ -178,7 +179,7 @@ public class ItemUI : MonoBehaviour
                 cleanIcon.gameObject.SetActive(true);
                 cleanText.text = d.value.ToString("F0");
             }
-        }
+        }*/
         /*
         else if (d.itemType == ItemType.Bed)
         {

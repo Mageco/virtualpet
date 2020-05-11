@@ -121,7 +121,7 @@ public class InventoryUI : MonoBehaviour
                 drinkIcon.gameObject.SetActive(true);
                 drinkText.text = item.value.ToString("F0");
             }
-        }
+        }/*
         else if (item.itemType == ItemType.Bath)
         {
             if (item.value > 0)
@@ -147,7 +147,7 @@ public class InventoryUI : MonoBehaviour
                 bedIcon.gameObject.SetActive(true);
                 bedText.text = item.value.ToString("F0");
             }
-        }
+        }*/
         else if (item.itemType == ItemType.MedicineBox)
         {
             if (item.value > 0)
@@ -156,7 +156,7 @@ public class InventoryUI : MonoBehaviour
                 sickText.text = item.value.ToString("F0");
             }
         }
-
+        /*
         else if (item.itemType == ItemType.Toy)
         {
             if (item.value > 0)
@@ -172,7 +172,7 @@ public class InventoryUI : MonoBehaviour
                 cleanIcon.gameObject.SetActive(true);
                 cleanText.text = item.value.ToString("F0");
             }
-        }
+        }*/
     }
 
     void OffAllIcon()
