@@ -31,6 +31,8 @@ public class ProfileUI : MonoBehaviour
     PlayerPet playerPet;
     public Button editButton;
     public InputField input;
+    public GameObject sellCoin;
+    public GameObject sellDiamond;
 
     public Image[] icons;
 
@@ -75,6 +77,15 @@ public class ProfileUI : MonoBehaviour
         strengthText.text = (pet.maxHealth + playerPet.level * 20).ToString();
         heartText.text = "+" + (pet.RateHappy + playerPet.level/5).ToString();
 
+        if(pet.priceType == PriceType.Coin)
+        {
+            sellCoin.SetActive(true);
+            sellDiamond.SetActive(false);
+        }else if(pet.priceType == PriceType.Diamond)
+        {
+            sellCoin.SetActive(false);
+            sellDiamond.SetActive(true);
+        }
         sellPrice = pet.buyPrice / 2;
         sellText.text = sellPrice.ToString();
     }

@@ -8,13 +8,9 @@ public class PetRequirementUI : MonoBehaviour
     public Image icon;
     public Text number;
     public GameObject done;
-    int tabId = 0;
-    int petId = 0;
 
-    public void Load(int petId,string url,int num,int maxNum,int id)
+    public void Load(string url,int num,int maxNum)
     {
-        this.petId = petId;
-        tabId = id;
         icon.sprite = Resources.Load<Sprite>(url) as Sprite;
         number.text = num.ToString() + "/" + maxNum.ToString();
         if (num >= maxNum)
@@ -23,12 +19,10 @@ public class PetRequirementUI : MonoBehaviour
         }
         else
             done.SetActive(false);
-        
     }
 
     public void OnClick()
     {
-        UIManager.instance.OnShopPanel(tabId);
-        UIManager.instance.shopPanel.ScrollToItem(petId);
+        MageManager.instance.OnNotificationPopup("Find the items by collecting or completing challenges");
     }
 }

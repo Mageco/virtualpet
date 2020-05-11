@@ -510,6 +510,18 @@ public class GameManager : MonoBehaviour
         return false;
     }
 
+    public bool IsHavedPet(int petId)
+    {
+        foreach (PlayerPet p in myPlayer.petDatas)
+        {
+            if (p.iD == petId)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public bool IsEquipPet(int petId)
     {
         foreach (PlayerPet p in myPlayer.petDatas)

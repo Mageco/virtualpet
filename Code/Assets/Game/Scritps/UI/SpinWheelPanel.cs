@@ -192,7 +192,7 @@ public class SpinWheelPanel : MonoBehaviour
         }
         else if (n == 5)
         {
-            value = 10;
+            value = 50;
             GameManager.instance.AddExp(value, Utils.instance.Md5Sum(GameManager.instance.count.ToString() + GameManager.instance.myPlayer.playTime.ToString() + GameManager.instance.myPlayer.Happy.ToString() + "M@ge2013"));
             UIManager.instance.OnSpinRewardPanel(icons[n].sprite, value.ToString());
         }
@@ -228,7 +228,7 @@ public class SpinWheelPanel : MonoBehaviour
 
     public void OnCost()
     {
-        if(GameManager.instance.GetDiamond() > 5)
+        if(GameManager.instance.GetDiamond() >= 5)
         {
             buttonAd.interactable = false;
             buttonCost.interactable = false;

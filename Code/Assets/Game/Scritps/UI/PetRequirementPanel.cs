@@ -60,20 +60,19 @@ public class PetRequirementPanel : MonoBehaviour
         petName.text = pet.GetName(0);
         //petDescription.text = pet.GetDescription(MageManager.instance.GetLanguage(0));
         requireText.text = DataHolder.Dialog(15).GetDescription(MageManager.instance.GetLanguage());
-        int petNumber = GameManager.instance.GetPets().Count;
-        price  = (petNumber * petNumber * petNumber * 10);
+        price  = pet.requireValue;
         petPrice.text = price.ToString();
 
         /*
         for (int i = 0; i < pet.requirePets.Length; i++)
         {
             LoadPet(pet.requirePets[i]);
-        }
+        }*/
 
         for (int i = 0; i < pet.requireEquipments.Length; i++)
         {
-            LoadEquipment(pet.requireEquipments[i]);
-        }*/
+            LoadEquipment(pet.requireEquipments[i],pet.requireNumber[i]);
+        }
 
         if (canBuy)
         {
@@ -125,7 +124,7 @@ public class PetRequirementPanel : MonoBehaviour
             */
     }
 
-    void LoadEquipment(int id)
+    void LoadEquipment(int id,int number)
     {
         GameObject go = Instantiate(petRequirementUIPrefab);
         go.transform.SetParent(this.anchor);
@@ -134,31 +133,11 @@ public class PetRequirementPanel : MonoBehaviour
         Item i = DataHolder.GetItem(id);
         string url = i.iconUrl.Replace("Assets/Game/Resources/", "");
         url = url.Replace(".png", "");
-        if (GameManager.instance.IsHaveItem(id) || GameManager.instance.IsEquipItem(id))
-        {
-            if(i.itemType == ItemType.Toy)
-                item.Load(id,url, 1, 1,4);
-            else if(i.itemType == ItemType.Food || i.itemType == ItemType.Drink)
-                item.Load(id, url, 1, 1, 2);
-            else if (i.itemType == ItemType.Fruit)
-                item.Load(id, url, 1, 1, 5);
-            else
-                item.Load(id, url, 1, 1, 3);
-        }
-        else
-        {
-            if (i.itemType == ItemType.Toy)
-                item.Load(id, url, 0, 1, 4);
-            else if (i.itemType == ItemType.Food || i.itemType == ItemType.Drink)
-                item.Load(id, url, 0, 1, 2);
-            else if (i.itemType == ItemType.Fruit)
-                item.Load(id, url, 0, 1, 5);
-            else
-                item.Load(id, url, 0, 1, 3);
+        int n = GameManager.instance.GetItemNumber(id);
+        item.Load(url,n,number);
 
+        if (n < number)
             canBuy = false;
-        }
-            
         
         items.Add(item);
         
@@ -166,23 +145,6 @@ public class PetRequirementPanel : MonoBehaviour
 
     void LoadPet(int id)
     {
-        GameObject go = Instantiate(petRequirementUIPrefab);
-
-        go.transform.SetParent(this.anchor);
-        go.transform.localScale = Vector3.one;
-        PetRequirementUI item = go.GetComponent<PetRequirementUI>();
-        string url = DataHolder.GetPet(id).iconUrl.Replace("Assets/Game/Resources/", "");
-        url = url.Replace(".png", "");
-        if (GameManager.instance.IsEquipPet(id))
-        {
-            item.Load(id,url, 1, 1,1);
-        }
-        else
-        {
-            item.Load(id,url, 0, 1,1);
-            canBuy = false;
-        }
-        items.Add(item);
         
     }
 
@@ -228,6 +190,11 @@ public class PetRequirementPanel : MonoBehaviour
                 GameManager.instance.AddDiamond(-pet.requireValue);
             }*/
             GameManager.instance.AddHappy(-price, Utils.instance.Md5Sum(GameManager.instance.count.ToString() + GameManager.instance.myPlayer.playTime.ToString() + GameManager.instance.myPlayer.Happy.ToString() + "M@ge2013"));
+            for (int i = 0; i < pet.requireEquipments.Length; i++)
+            {
+                GameManager.instance.AddItem(pet.requireEquipments[i],pet.requireNumber[i], Utils.instance.Md5Sum(GameManager.instance.count.ToString() + GameManager.instance.myPlayer.playTime.ToString() + GameManager.instance.myPlayer.Happy.ToString() + "M@ge2013"));
+            }
+
             int realId = GameManager.instance.AddPet(petId, Utils.instance.Md5Sum(GameManager.instance.count.ToString() + GameManager.instance.myPlayer.playTime.ToString() + GameManager.instance.myPlayer.Happy.ToString() + "M@ge2013"));
             PlayerPet p = GameManager.instance.GetPet(realId);
             p.isNew = true;
