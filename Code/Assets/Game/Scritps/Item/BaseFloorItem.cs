@@ -59,30 +59,36 @@ public class BaseFloorItem : MonoBehaviour
 		{
 			colors.Add(sprites[i].color);
 		}
-		
 	}
 
 	protected virtual void Start()
 	{
-        if(itemType == ItemType.Room || itemType == ItemType.Gate)
-        {
-
-        }
-		else if (itemType == ItemType.Picture || itemType == ItemType.Clock || itemType == ItemType.MedicineBox)
+		if (itemType == ItemType.Room || itemType == ItemType.Gate)
 		{
-			boundX = ItemManager.instance.roomBoundX;
-			boundY = ItemManager.instance.roomWallBoundY;
-			StartCoroutine(CheckCollide());
+
 		}
 		else
 		{
-			boundX = ItemManager.instance.gardenBoundX;
-			boundY = ItemManager.instance.gardenBoundY;
-			Vector3 pos = this.transform.position;
-			pos.z = pos.y * 10;
-			this.transform.position = pos;
+			if (itemType == ItemType.Picture || itemType == ItemType.Clock || itemType == ItemType.MedicineBox)
+			{
+				boundX = ItemManager.instance.roomBoundX;
+				boundY = ItemManager.instance.roomWallBoundY;				
+			}
+			else
+			{
+				boundX = ItemManager.instance.gardenBoundX;
+				boundY = ItemManager.instance.gardenBoundY;
+				Vector3 pos = this.transform.position;
+				pos.z = pos.y * 10;
+				this.transform.position = pos;
+			}
+			for (int i = 0; i < sprites.Length; i++)
+			{
+				sprites[i].enabled = false;
+			}
 			StartCoroutine(CheckCollide());
 		}
+
 
 	}
 
@@ -95,17 +101,8 @@ public class BaseFloorItem : MonoBehaviour
 
 	IEnumerator CheckCollide()
 	{
-		yield return new WaitForSeconds(1);
+		yield return new WaitForEndOfFrame();
 		int n = 0;
-
-        if(obstructItem != null && obstructItem.itemCollides.Count > 0)
-        {
-            for(int i = 0; i < sprites.Length; i++)
-            {
-				sprites[i].enabled = false;
-            }
-        }
-
 		while (obstructItem != null && obstructItem.itemCollides.Count > 0 && n < 100)
 		{
 			if (itemType == ItemType.Bath || itemType == ItemType.Bed || itemType == ItemType.Toilet || itemType == ItemType.Food ||

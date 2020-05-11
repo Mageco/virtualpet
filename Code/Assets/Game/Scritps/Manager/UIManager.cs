@@ -158,6 +158,8 @@ public class UIManager : MonoBehaviour
 
         DontDestroyOnLoad(this.gameObject);
 
+
+
     }
     // Start is called before the first frame update
     IEnumerator Start()
@@ -173,6 +175,7 @@ public class UIManager : MonoBehaviour
     public void Load()
     {
         toolUI.gameObject.SetActive(true);
+        saleButton.SetActive(false);
         UpdateUI();
         coin = GameManager.instance.GetCoin();
         happy = GameManager.instance.GetHappy();

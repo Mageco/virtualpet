@@ -315,6 +315,18 @@ public class ItemManager : MonoBehaviour
                     item.Load(playerItem);
                     items.Add(item);
                     go.transform.parent = this.transform;
+                    if (item.itemType == ItemType.Bath || item.itemType == ItemType.Bed || item.itemType == ItemType.Toilet || item.itemType == ItemType.Food ||
+                        item.itemType == ItemType.Drink || item.itemType == ItemType.Table)
+                        item.transform.position = ItemManager.instance.GetRandomPoint(AreaType.Room);
+                    else if (item.itemType == ItemType.Fruit)
+                        item.transform.position = ItemManager.instance.GetRandomPoint(AreaType.Garden);
+                    else if (item.itemType == ItemType.MedicineBox || item.itemType == ItemType.Picture || item.itemType == ItemType.Clock)
+                        item.transform.position = ItemManager.instance.GetRandomPoint(AreaType.Wall);
+                    else if(item.itemType != ItemType.Room && item.itemType != ItemType.Gate)
+                        item.transform.position = ItemManager.instance.GetRandomPoint(AreaType.All);
+
+                    if (item.GetComponent<Animator>() != null)
+                        item.GetComponent<Animator>().Play("Idle", 0);
                 }
             }
         }       
@@ -378,19 +390,19 @@ public class ItemManager : MonoBehaviour
         {
 
             float x = Random.Range(gardenBoundX.x + 10, gardenBoundX.y - 10);
-            float y = Random.Range(gardenBoundY.x + 3, gardenBoundY.y);
+            float y = Random.Range(gardenBoundY.x + 5, gardenBoundY.y);
             r = new Vector3(x, y, 0);
         }
         else if (type == AreaType.Garden)
         {
             float x = Random.Range(gardenBoundX.x + 10, roomBoundX.x - 10);
-            float y = Random.Range(gardenBoundY.x + 3, gardenBoundY.y);
+            float y = Random.Range(gardenBoundY.x + 5, gardenBoundY.y);
             r = new Vector3(x, y, 0);
         }
         else if (type == AreaType.GardenRight)
         {
             float x = Random.Range(roomBoundX.y + 10,gardenBoundX.y - 10);
-            float y = Random.Range(gardenBoundY.x + 3, gardenBoundY.y);
+            float y = Random.Range(gardenBoundY.x + 5, gardenBoundY.y-2);
             r = new Vector3(x, y, 0);
         }
         else if(type == AreaType.Room)
@@ -413,8 +425,8 @@ public class ItemManager : MonoBehaviour
         }
         else if (type == AreaType.Wall)
         {
-            float x = Random.Range(roomBoundX.x, roomBoundX.y);
-            float y = Random.Range(roomWallBoundY.x + 3, roomWallBoundY.y);
+            float x = Random.Range(roomBoundX.x + 10, roomBoundX.y - 10);
+            float y = Random.Range(roomWallBoundY.x + 5, roomWallBoundY.y-5);
             r = new Vector3(x, y, 0);
         }
         return r;
