@@ -10,9 +10,12 @@ public class ForestCoinItem : MonoBehaviour
     Vector3 clickPosition;
     bool isClick = false;
     public bool isOrder = true;
+    public int itemId = 0;
+    public GameObject item;
 
     private void Awake()
     {
+        item.SetActive(false);
         animator = this.GetComponent<Animator>();
     }
     // Start is called before the first frame update
@@ -55,13 +58,31 @@ public class ForestCoinItem : MonoBehaviour
     {
         isClick = true;
         animator.Play("Active", 0);
-        ForestManager.instance.SpawnCoin(this.transform.position + new Vector3(0, 2, -1), value, this.gameObject);
-        GameManager.instance.AddCoin(value, Utils.instance.Md5Sum(GameManager.instance.count.ToString() + GameManager.instance.myPlayer.playTime.ToString() + GameManager.instance.myPlayer.Happy.ToString() + "M@ge2013"));
-        MageManager.instance.PlaySound("collect_item_02", false);
+        //ForestManager.instance.SpawnCoin(this.transform.position + new Vector3(0, 2, -1), value, this.gameObject);
+        //GameManager.instance.AddCoin(value, Utils.instance.Md5Sum(GameManager.instance.count.ToString() + GameManager.instance.myPlayer.playTime.ToString() + GameManager.instance.myPlayer.Happy.ToString() + "M@ge2013"));
+        //MageManager.instance.PlaySound("collect_item_02", false);
+        StartCoroutine(SpawnItem());
         GameManager.instance.LogAchivement(AchivementType.CollectFruit);
         yield return new WaitForEndOfFrame();
         yield return new WaitForSeconds(animator.GetCurrentAnimatorStateInfo(0).length);
         Destroy(this.gameObject);
+    }
+
+    IEnumerator SpawnItem()
+    {
+        GameObject go = GameObject.Instantiate(item) as GameObject;
+        go.SetActive(true);
+        go.transform.position = this.transform.position;
+        go.transform.parent = Camera.main.transform;
+        Vector3 target = Camera.main.ScreenToWorldPoint(UIManager.instance.inventoryButton.transform.position) - Camera.main.transform.position;
+        target.z = -100;
+        while (Vector2.Distance(go.transform.localPosition, target) > 0.5)
+        {
+            go.transform.localPosition = Vector3.Lerp(go.transform.localPosition, target, 5 * Time.deltaTime);
+            yield return new WaitForEndOfFrame();
+        }
+        GameManager.instance.AddItem(itemId, Utils.instance.Md5Sum(GameManager.instance.count.ToString() + GameManager.instance.myPlayer.playTime.ToString() + GameManager.instance.myPlayer.Happy.ToString() + "M@ge2013"));
+        Destroy(go);
     }
 
     private bool IsPointerOverUIObject()

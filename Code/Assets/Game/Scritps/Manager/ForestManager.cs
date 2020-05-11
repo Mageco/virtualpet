@@ -140,7 +140,7 @@ public class ForestManager : MonoBehaviour
         {
             timeCoin = 0;
             SpawnForestCoin();
-            maxTimeCoin = Random.Range(10, 30);
+            maxTimeCoin = Random.Range(30, 60);
         }
         else
             timeCoin += Time.deltaTime;
@@ -154,6 +154,7 @@ public class ForestManager : MonoBehaviour
         else
             timeFish += Time.deltaTime;
 
+        /*
         if (timeAnimal > maxTimeAnimal)
         {
             timeAnimal = 0;
@@ -161,7 +162,7 @@ public class ForestManager : MonoBehaviour
             maxTimeAnimal = Random.Range(20, 60);
         }
         else
-            timeAnimal += Time.deltaTime;
+            timeAnimal += Time.deltaTime;*/
     }
 
     void CheckDayNight(){

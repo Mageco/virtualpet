@@ -127,6 +127,7 @@ public class PetTab : BaseTab
 
             EditorGUILayout.BeginVertical("box");
             fold2 = EditorGUILayout.Foldout(fold2, "Collection");
+            DataHolder.Pet(selection).requireValue = EditorGUILayout.IntField("Require Heart", DataHolder.Pet(selection).requireValue, GUILayout.Width(pw.mWidth));
             if (fold2)
             {
                 if (GUILayout.Button("Add Require Equipment", GUILayout.Width(pw.mWidth * 0.7f)))
