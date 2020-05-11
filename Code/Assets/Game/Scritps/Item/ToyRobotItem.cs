@@ -49,11 +49,33 @@ public class ToyRobotItem : ToyItem
 
     }
 
+    protected override void OnMouseDown()
+    {
+
+        if (IsPointerOverUIObject())
+        {
+            return;
+        }
+
+        clickPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+
+        if(state == EquipmentState.Active)
+        {
+            isAbort = true;
+            agent.Stop();
+            Debug.Log("Turn off");
+            state = EquipmentState.Idle;
+            MageManager.instance.PlaySound3D("Item_Robot_TurnOff", false, this.transform.position);
+            animator.Play("Idle_" + direction.ToString(), 0);
+            return;
+        }else
+            state = EquipmentState.Hold;
+    }
 
     protected override void OnClick()
     {
         Debug.Log("Click");
-        if(state == EquipmentState.Drag || state == EquipmentState.Hold)
+        if(state == EquipmentState.Drag || state == EquipmentState.Hold || state == EquipmentState.Idle)
         {
             item = FindObjectOfType<PetHappyItem>();
             if (item != null)
@@ -107,7 +129,7 @@ public class ToyRobotItem : ToyItem
         yield return StartCoroutine(DoAnim("Dance_" + direction.ToString()));
         animator.Play("Idle_" + direction.ToString(), 0);
         item = FindObjectOfType<PetHappyItem>();
-        if (item != null)
+        if (item != null && state == EquipmentState.Active)
         {
             target = item.transform.position;
             isAbort = false;
@@ -152,6 +174,14 @@ public class ToyRobotItem : ToyItem
             yield return new WaitForEndOfFrame();
         }
         
+    }
+
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.tag == "Happy")
+        {
+            other.transform.parent.GetComponent<PetHappyItem>().OnClick();
+        }
     }
 
 }
