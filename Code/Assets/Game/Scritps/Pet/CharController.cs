@@ -368,8 +368,7 @@ public class CharController : MonoBehaviour
         }
         else if(actionType == ActionType.Toy)
         {
-            petNameText.transform.position = iconStatusObject.transform.position - new Vector3(0, 2.5f, 10);
-            petEmotion.transform.position = iconStatusObject.transform.position - new Vector3(4f, 2.5f, 10);
+
             petNameText.transform.rotation = Quaternion.identity;
 
             if (equipment != null && equipment.IsActive())
@@ -378,7 +377,10 @@ public class CharController : MonoBehaviour
             }
         }
 
-        if(emotionStatus != EmotionStatus.Sad)
+        petNameText.transform.position = iconStatusObject.transform.position - new Vector3(0, 2.5f, 10);
+        petEmotion.transform.position = iconStatusObject.transform.position - new Vector3(4f, 2.5f, 10);
+
+        if (emotionStatus != EmotionStatus.Sad)
         {
             if(timeLove > maxTimeLove && actionType != ActionType.Hold)
             {
