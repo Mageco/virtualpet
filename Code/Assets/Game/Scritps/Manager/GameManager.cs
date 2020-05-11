@@ -1271,6 +1271,7 @@ public class GameManager : MonoBehaviour
     {
         myPlayer = new PlayerData();
         myPlayer.originalVersion = Application.version;
+        myPlayer.version = Application.version;
         Debug.Log("Version " + myPlayer.version);
 
         if (isTest)

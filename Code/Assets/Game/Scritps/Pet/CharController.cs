@@ -137,7 +137,7 @@ public class CharController : MonoBehaviour
 
         if (!GameManager.instance.isGuest && ES2.Exists(DataHolder.GetPet(pet.iD).GetName(0) + pet.realId.ToString()))
         {
-            if (GameManager.instance.myPlayer.version != "" && float.Parse(GameManager.instance.myPlayer.version) < 2.0f)
+            if (GameManager.instance.IsOldVersion())
             {
                 Pet p = new Pet(pet.iD);
                 p.realId = pet.realId;

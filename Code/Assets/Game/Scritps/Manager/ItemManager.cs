@@ -81,7 +81,7 @@ public class ItemManager : MonoBehaviour
         LoadItems();
         LoadArea();
         GameManager.instance.LoadPetObjects();
-        if (GameManager.instance.myPlayer.version == ""  ||  float.Parse(GameManager.instance.myPlayer.version) < 2.0f)
+        if (GameManager.instance.IsOldVersion())
         {
             //Popup info here
             MageManager.instance.OnNotificationPopup("Updated");
@@ -105,6 +105,7 @@ public class ItemManager : MonoBehaviour
         yield return new WaitForEndOfFrame();
         MageManager.instance.loadingBar.gameObject.SetActive(false);
 
+        /*
         while (!ApiManager.instance.IsLogin() || !RewardVideoAdManager.instance.isUnityVideoLoaded || UIManager.instance.newVersionPanel != null)
         {
             yield return new WaitForEndOfFrame();
@@ -112,7 +113,7 @@ public class ItemManager : MonoBehaviour
         yield return new WaitForSeconds(1);
         if(!GameManager.instance.isGuest)
             LoadWelcome(awayTime);
-        
+        */
     }
 
     // Update is called once per frame

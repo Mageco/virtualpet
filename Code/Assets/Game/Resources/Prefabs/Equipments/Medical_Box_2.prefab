@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 6528541522270471788}
   - component: {fileID: 6757574786105695234}
   - component: {fileID: 2527100501562290346}
+  - component: {fileID: 1235307200155485935}
   m_Layer: 0
   m_Name: Pill
   m_TagString: Untagged
@@ -107,6 +108,27 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 2.5, y: 1.2}
   m_EdgeRadius: 0
+--- !u!50 &1235307200155485935
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 103117437522547105}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1 &595988553715393778
 GameObject:
   m_ObjectHideFlags: 0
@@ -119,6 +141,7 @@ GameObject:
   - component: {fileID: 9201175492196738370}
   - component: {fileID: 4260657845213706646}
   - component: {fileID: 5644154427330361420}
+  - component: {fileID: 5070365662135109364}
   m_Layer: 0
   m_Name: Bandage
   m_TagString: Untagged
@@ -214,6 +237,27 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 3, y: 3}
   m_EdgeRadius: 0
+--- !u!50 &5070365662135109364
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 595988553715393778}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1 &2234367134257265727
 GameObject:
   m_ObjectHideFlags: 0
