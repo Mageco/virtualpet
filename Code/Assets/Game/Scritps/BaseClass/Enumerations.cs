@@ -36,3 +36,4 @@ public enum AreaType {Room,Garden,Lake,All,Camera,Fly,Wall,GardenRight};
 public enum ItemTag {None=0,Hot=1,Sale=2,New=3};
 public enum DailyQuestState {None,Started,Ready,Collected};
 public enum EmotionStatus { Happy,Normal,Sad};
+public enum QuestState {None,Ready,Start,Complete,Rewarded}

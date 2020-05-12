@@ -229,7 +229,7 @@ public class UIManager : MonoBehaviour
             else
                 giftNotification.SetActive(false);
 
-            if (GameManager.instance.gameTime > 400 && !ES2.Exists("RateUs") && (int)GameManager.instance.gameTime % 400 == 0 && UIManager.instance.settingPanel == null)
+            if (GameManager.instance.gameTime > 400 && !ES2.Exists("RateUs") && (int)GameManager.instance.gameTime % 400 == 0 && UIManager.instance.settingPanel == null && ItemManager.instance != null)
             {
                 OnRatingPopup();
             }

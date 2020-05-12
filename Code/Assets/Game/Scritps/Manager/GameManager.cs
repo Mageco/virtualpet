@@ -821,7 +821,7 @@ public class GameManager : MonoBehaviour
     {
         foreach (PlayerItem item in myPlayer.items)
         {
-            if (item.realId == itemId && item.state == ItemState.Equiped)
+            if (item.itemId == itemId && item.state == ItemState.Equiped)
             {
                 return true;
             }
@@ -1170,9 +1170,18 @@ public class GameManager : MonoBehaviour
         ConvertPlayer();
     }
 
-    public bool IsOldVersion()
+    public bool IsPreviousData()
     {
         if (myPlayer.version == null || myPlayer.version == "" || float.Parse(myPlayer.version) < 2.0f)
+        {
+            return true;
+        }
+        else
+            return false;
+    }
+    public bool IsOldVersion()
+    {
+        if (myPlayer.originalVersion == null || myPlayer.originalVersion == "" || float.Parse(myPlayer.originalVersion) < 2.0f)
         {
             return true;
         }
@@ -1183,7 +1192,7 @@ public class GameManager : MonoBehaviour
     public void ConvertPlayer()
     {
         Debug.Log(myPlayer.ToJson());
-        if (IsOldVersion())
+        if (IsPreviousData())
         {
             Debug.Log("Set quest id 100");
             myPlayer.questId = 100;

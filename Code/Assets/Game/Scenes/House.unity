@@ -3701,7 +3701,7 @@ Camera:
   far clip plane: 20000
   field of view: 2.3
   orthographic: 1
-  orthographic size: 30
+  orthographic size: 26
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -4170,7 +4170,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1307597351
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4183,8 +4183,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6879d5e0abcac42d8a90bccbdbe60ec1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isStartQuest: 0
-  isEndQuest: 0
+  state: 0
 --- !u!4 &1307597352
 Transform:
   m_ObjectHideFlags: 0
@@ -5165,10 +5164,10 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: -0.947551, y: 0.022270648}
-      - {x: -0.9456013, y: -0.265462}
-      - {x: 0.60888493, y: -0.28000373}
-      - {x: 0.60891074, y: 0.02129362}
+    - - {x: -0.6025914, y: 0.15797983}
+      - {x: -0.6043003, y: -0.24675342}
+      - {x: 0.3521841, y: -0.22199912}
+      - {x: 0.351021, y: 0.1514434}
 --- !u!212 &1568686994
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -6214,7 +6213,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1795921002
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12678,17 +12677,17 @@ PrefabInstance:
     - target: {fileID: 5453886026327393268, guid: 2690067ddedd64631953f52f26e327fb,
         type: 3}
       propertyPath: isWorkingOnline
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5453886026327393268, guid: 2690067ddedd64631953f52f26e327fb,
         type: 3}
       propertyPath: resetUserDataOnStart
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5453886026327393268, guid: 2690067ddedd64631953f52f26e327fb,
         type: 3}
       propertyPath: isLocalApplicationData
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5946030510101734352, guid: 2690067ddedd64631953f52f26e327fb,
         type: 3}

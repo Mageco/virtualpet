@@ -81,7 +81,7 @@ public class ItemManager : MonoBehaviour
         LoadItems();
         LoadArea();
         GameManager.instance.LoadPetObjects();
-        if (GameManager.instance.IsOldVersion())
+        if (GameManager.instance.IsPreviousData())
         {
             UIManager.instance.OnNewVersionPanel();
             MageManager.instance.OnNotificationPopup("Updated");

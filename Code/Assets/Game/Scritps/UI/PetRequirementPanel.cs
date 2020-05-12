@@ -152,22 +152,6 @@ public class PetRequirementPanel : MonoBehaviour
     {
         Pet pet = DataHolder.GetPet(petId);
 
-        /*
-        if(pet.requireValueType == PriceType.Coin && pet.requireValue > GameManager.instance.GetCoin())
-        {
-            MageManager.instance.OnNotificationPopup(DataHolder.Dialog(6).GetDescription(MageManager.instance.GetLanguage()));
-            return;
-        }else if (pet.requireValueType == PriceType.Happy && pet.requireValue > GameManager.instance.GetHappy())
-        {
-            MageManager.instance.OnNotificationPopup(DataHolder.Dialog(8).GetDescription(MageManager.instance.GetLanguage()));
-            return;
-        }
-        else if (pet.requireValueType == PriceType.Diamond && pet.requireValue > GameManager.instance.GetDiamond())
-        {
-            MageManager.instance.OnNotificationPopup(DataHolder.Dialog(7).GetDescription(MageManager.instance.GetLanguage()));
-            return;
-        }*/
-
         if (price > GameManager.instance.GetHappy())
         {
             MageManager.instance.OnNotificationPopup(DataHolder.Dialog(8).GetDescription(MageManager.instance.GetLanguage()));
@@ -176,19 +160,7 @@ public class PetRequirementPanel : MonoBehaviour
 
         if (!isBuy)
         {
-            /*
-            if (pet.requireValueType == PriceType.Coin)
-            {
-                GameManager.instance.AddCoin(-pet.requireValue);
-            }
-            else if (pet.requireValueType == PriceType.Happy)
-            {
-                GameManager.instance.AddHappy(-pet.requireValue);
-            }
-            else if (pet.requireValueType == PriceType.Diamond)
-            {
-                GameManager.instance.AddDiamond(-pet.requireValue);
-            }*/
+            isBuy = true;
             GameManager.instance.AddHappy(-price, Utils.instance.Md5Sum(GameManager.instance.count.ToString() + GameManager.instance.myPlayer.playTime.ToString() + GameManager.instance.myPlayer.Happy.ToString() + "M@ge2013"));
             for (int i = 0; i < pet.requireEquipments.Length; i++)
             {
@@ -199,7 +171,7 @@ public class PetRequirementPanel : MonoBehaviour
             PlayerPet p = GameManager.instance.GetPet(realId);
             p.isNew = true;
             GameManager.instance.EquipPet(realId);
-            isBuy = true;
+            
             if (ItemManager.instance != null && ItemManager.instance.GetCharCollector(petId) != null)
                 ItemManager.instance.GetCharCollector(petId).DeActive();
 

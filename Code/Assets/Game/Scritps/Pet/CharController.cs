@@ -137,7 +137,7 @@ public class CharController : MonoBehaviour
 
         if (!GameManager.instance.isGuest && ES2.Exists(DataHolder.GetPet(pet.iD).GetName(0) + pet.realId.ToString()))
         {
-            if (GameManager.instance.IsOldVersion())
+            if (GameManager.instance.IsPreviousData())
             {
                 Pet p = new Pet(pet.iD);
                 p.realId = pet.realId;
@@ -622,8 +622,12 @@ public class CharController : MonoBehaviour
 
         if (data.Toy < data.MaxToy * 0.1f && IsLearnSkill(SkillType.Toy)) 
         {
-            actionType = ActionType.Discover;
-            return;
+            int ran = Random.Range(0, 100);
+            if (ran > 30)
+            {
+                actionType = ActionType.Discover;
+                return;
+            }
         }
 
         if (data.Shit > data.MaxShit * 0.7f && IsLearnSkill(SkillType.Toilet))
@@ -1966,32 +1970,31 @@ public class CharController : MonoBehaviour
         if (equipment != null && equipment.itemType == ItemType.Food)
         {
             EatItem item = equipment.GetComponent<EatItem>();
-            if (item != null && item.CanEat())
+            if (item != null && item.CanEat() && Vector2.Distance(this.transform.position, item.GetAnchorPoint(this).position) <= 1f)
             {
                 bool isContinue = true;
                 SetDirection(Direction.L);
-                if (item != null && isContinue)
+
+                MageManager.instance.PlaySound3D("Eat", false, this.transform.position);
+                anim.Play("Eat", 0);
+                //yield return StartCoroutine(Wait(0.1f));
+                while (item != null && data.Food < value && !isAbort && isContinue)
                 {
-                    MageManager.instance.PlaySound3D("Eat", false, this.transform.position);
-                    anim.Play("Eat", 0);
-                    yield return StartCoroutine(Wait(0.1f));
-                    while (item != null && data.Food < value && !isAbort && isContinue)
+                    data.Food += data.MaxFood/eatRate * Time.deltaTime;
+                    item.Eat(data.MaxFood / eatRate * Time.deltaTime);
+                    if (!item.CanEat())
                     {
-                        data.Food += data.MaxFood/eatRate * Time.deltaTime;
-                        item.Eat(data.MaxFood / eatRate * Time.deltaTime);
-                        if (!item.CanEat())
-                        {
-                            isContinue = false;
-                        }
-                        if (Vector2.Distance(this.transform.position, item.GetAnchorPoint(this).position) > 1f)
-                            isContinue = false;
-                        yield return new WaitForEndOfFrame();
+                        isContinue = false;
                     }
-                    if (data.Food >= data.MaxFood - 1)
-                    {
-                        GameManager.instance.LogAchivement(AchivementType.Do_Action, ActionType.Eat);
-                    }
+                    if (Vector2.Distance(this.transform.position, item.GetAnchorPoint(this).position) > 1f)
+                        isContinue = false;
+                    yield return new WaitForEndOfFrame();
                 }
+                if (data.Food >= data.MaxFood - 1)
+                {
+                    GameManager.instance.LogAchivement(AchivementType.Do_Action, ActionType.Eat);
+                }
+                
                 JumpOut();
             }
             else
@@ -2030,38 +2033,36 @@ public class CharController : MonoBehaviour
         if (equipment != null && equipment.itemType == ItemType.Drink)
         {
             EatItem item = equipment.GetComponentInChildren<EatItem>();
-            if (item != null && item.CanEat())
+            if (item != null && item.CanEat() && Vector2.Distance(this.transform.position, item.GetAnchorPoint(this).position) <= 1f)
             {
                 bool isContinue = true;
 
-                if (item != null && isContinue)
+                SetDirection(Direction.L);
+                int soundid = MageManager.instance.PlaySound3D("Drink", false, this.transform.position);
+                anim.Play("Drink", 0);
+                yield return StartCoroutine(Wait(0.1f));
+                while (item != null && data.Water < value && !isAbort && isContinue)
                 {
-                    SetDirection(Direction.L);
-                    int soundid = MageManager.instance.PlaySound3D("Drink", false, this.transform.position);
-                    anim.Play("Drink", 0);
-                    yield return StartCoroutine(Wait(0.1f));
-                    while (item != null && data.Water < value && !isAbort && isContinue)
+                    data.Water += data.MaxWater / drinkRate * Time.deltaTime;
+                    item.Eat(data.MaxWater / drinkRate * Time.deltaTime);
+                    if (!item.CanEat())
                     {
-                        data.Water += data.MaxWater / drinkRate * Time.deltaTime;
-                        item.Eat(data.MaxWater / drinkRate * Time.deltaTime);
-                        if (!item.CanEat())
-                        {
-                            isContinue = false;
-                        }
-                        if (Vector2.Distance(this.transform.position, item.GetAnchorPoint(this).position) > 1f)
-                            isContinue = false;
-                        yield return new WaitForEndOfFrame();
+                        isContinue = false;
                     }
-                    MageManager.instance.StopSound(soundid);
-                    if(item != null)
-                    {
-                        equipment.RemovePet(this);
-                    }
-                    if (data.Water >= data.MaxWater - 10)
-                    {
-                        GameManager.instance.LogAchivement(AchivementType.Do_Action, ActionType.Drink);
-                    }
+                    if (Vector2.Distance(this.transform.position, item.GetAnchorPoint(this).position) > 1f)
+                        isContinue = false;
+                    yield return new WaitForEndOfFrame();
                 }
+                MageManager.instance.StopSound(soundid);
+                if(item != null)
+                {
+                    equipment.RemovePet(this);
+                }
+                if (data.Water >= data.MaxWater - 10)
+                {
+                    GameManager.instance.LogAchivement(AchivementType.Do_Action, ActionType.Drink);
+                }
+
                 JumpOut();
             }
             else
@@ -2781,6 +2782,18 @@ public class CharController : MonoBehaviour
     {
         if (agent != null)
             GameObject.Destroy(agent.gameObject);
+    }
+
+    public void ResetData()
+    {
+        data.Health = data.MaxHealth;
+        data.Damage = 0;
+        data.Food = data.MaxFood;
+        data.Water = data.MaxWater;
+        data.Dirty = 0;
+        data.Pee = 0;
+        data.Shit = 0;
+        data.Sleep = data.MaxSleep;
     }
 
 }

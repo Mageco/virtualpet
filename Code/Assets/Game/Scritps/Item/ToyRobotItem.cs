@@ -93,8 +93,14 @@ public class ToyRobotItem : ToyItem
             }
             else
             {
-                state = EquipmentState.Idle;
-                animator.Play("Idle_" + direction.ToString(), 0);
+                target = ItemManager.instance.GetRandomPoint(AreaType.All);
+                isAbort = false;
+                Debug.Log("Turn on");
+                state = EquipmentState.Active;
+                agent.transform.position = this.transform.position;
+
+                StartCoroutine(MoveToPoint());
+                MageManager.instance.PlaySound3D("Item_Robot_TurnOn", false, this.transform.position);
             }
         }
         else if(state == EquipmentState.Active)
@@ -143,6 +149,15 @@ public class ToyRobotItem : ToyItem
 
             StartCoroutine(MoveToPoint());
             MageManager.instance.PlaySound3D("Item_Robot_TurnOn", false, this.transform.position);
+        }
+        else
+        {
+            isAbort = true;
+            agent.Stop();
+            Debug.Log("Turn off");
+            state = EquipmentState.Idle;
+            MageManager.instance.PlaySound3D("Item_Robot_TurnOff", false, this.transform.position);
+            animator.Play("Idle_" + direction.ToString(), 0);
         }
     }
 
