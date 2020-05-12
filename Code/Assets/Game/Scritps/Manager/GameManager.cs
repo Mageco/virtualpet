@@ -1153,7 +1153,7 @@ public class GameManager : MonoBehaviour
 
     public bool IsOldVersion()
     {
-        if (myPlayer.originalVersion == null || myPlayer.originalVersion == "" || float.Parse(myPlayer.originalVersion) < 2.0f)
+        if (myPlayer.version == null || myPlayer.version == "" || float.Parse(myPlayer.version) < 2.0f)
         {
             return true;
         }

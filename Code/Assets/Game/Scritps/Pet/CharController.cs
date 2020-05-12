@@ -28,7 +28,7 @@ public class CharController : MonoBehaviour
     float maxTimeLove = 10;
 
     //Movement
-    [HideInInspector]
+    //[HideInInspector]
     public Vector3 target;
 
     [HideInInspector]
@@ -66,7 +66,7 @@ public class CharController : MonoBehaviour
     EmotionStatus lastEmotionStatus;
 
     //Tease
-    CharController petTarget;
+    public CharController petTarget;
 
     //[HideInInspector]
     public GameObject shadow;
@@ -1959,10 +1959,11 @@ public class CharController : MonoBehaviour
             }
         }
 
+
         if (equipment != null && equipment.itemType == ItemType.Food)
         {
             EatItem item = equipment.GetComponent<EatItem>();
-            if (item != null)
+            if (item != null && item.CanEat())
             {
                 bool isContinue = true;
                 SetDirection(Direction.L);
@@ -1988,21 +1989,22 @@ public class CharController : MonoBehaviour
                         GameManager.instance.LogAchivement(AchivementType.Do_Action, ActionType.Eat);
                     }
                 }
+                JumpOut();
+            }
+            else
+            {
+                int ran = Random.Range(0, 100);
+                if (ran < 30)
+                {
+                    MageManager.instance.PlaySound3D(charType.ToString() + "_Speak", false, this.transform.position);
+                    yield return StartCoroutine(DoAnim("Speak_L"));
+                }
                 else
                 {
-                    int ran = Random.Range(0, 100);
-                    if (ran < 30)
-                    {
-                        MageManager.instance.PlaySound3D(charType.ToString() + "_Speak", false, this.transform.position);
-                        yield return StartCoroutine(DoAnim("Speak_L"));
-                    }
-                    else
-                    {
-                        yield return StartCoroutine(DoAnim("Standby"));
-                    }
+                    yield return StartCoroutine(DoAnim("Standby"));
                 }
             }
-            JumpOut();
+            
         }
 
         CheckAbort();
@@ -2025,12 +2027,8 @@ public class CharController : MonoBehaviour
         if (equipment != null && equipment.itemType == ItemType.Drink)
         {
             EatItem item = equipment.GetComponentInChildren<EatItem>();
-            if (item != null)
+            if (item != null && item.CanEat())
             {
-                //if (data.level >= 25)
-                //{
-                //    item.Fill();
-                //}
                 bool isContinue = true;
 
                 if (item != null && isContinue)
@@ -2061,21 +2059,22 @@ public class CharController : MonoBehaviour
                         GameManager.instance.LogAchivement(AchivementType.Do_Action, ActionType.Drink);
                     }
                 }
+                JumpOut();
+            }
+            else
+            {
+                int ran = Random.Range(0, 100);
+                if (ran < 30)
+                {
+                    MageManager.instance.PlaySound3D(charType.ToString() + "_Speak", false, this.transform.position);
+                    yield return StartCoroutine(DoAnim("Speak_L"));
+                }
                 else
                 {
-                    int ran = Random.Range(0, 100);
-                    if (ran < 30)
-                    {
-                        MageManager.instance.PlaySound3D(charType.ToString() + "_Speak", false, this.transform.position);
-                        yield return StartCoroutine(DoAnim("Speak_L"));
-                    }
-                    else
-                    {
-                        yield return StartCoroutine(DoAnim("Standby"));
-                    }
+                    yield return StartCoroutine(DoAnim("Standby"));
                 }
             }
-            JumpOut();
+           
         }
         CheckAbort();
     }

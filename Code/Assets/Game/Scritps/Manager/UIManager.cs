@@ -38,7 +38,8 @@ public class UIManager : MonoBehaviour
     public GameObject dailyQuestPanelPrefab;
     public GameObject accessoryPanelPrefab;
     public GameObject inventoryPanelPrefab;
-    public GameObject newVersionPanel;
+    public GameObject newVersionPanelPrefab;
+    
 
     public static UIManager instance;
 	public Text coinText;
@@ -77,7 +78,7 @@ public class UIManager : MonoBehaviour
     [HideInInspector]
     public WelcomeBackPanel welcomeBackPanel;
     [HideInInspector]
-    public ServicePanel servicePanel;
+    public ExpertPanel servicePanel;
     [HideInInspector]
     public SettingPopUp settingPanel;
     [HideInInspector]
@@ -106,6 +107,8 @@ public class UIManager : MonoBehaviour
     public AccessoryPanel accessoryPanel;
     [HideInInspector]
     public InventoryPanel inventoryPanel;
+    [HideInInspector]
+    public GuideUI newVersionPanel;
 
     public GameObject achivementNotification;
     public GameObject giftNotification;
@@ -169,7 +172,6 @@ public class UIManager : MonoBehaviour
             yield return new WaitForEndOfFrame();
         }
         Load();
-        newVersionPanel.SetActive(true);
     }
 
     public void Load()
@@ -663,7 +665,7 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    public void OnServicePanel(ServiceType type)
+    public void OnServicePanel()
     {
         if (servicePanel == null)
         {
@@ -672,8 +674,7 @@ public class UIManager : MonoBehaviour
             popup.transform.localScale = Vector3.zero;
             popup.transform.SetParent(GameObject.Find("Canvas").transform, false);
             popup.GetComponent<Popup>().Open();
-            servicePanel = popup.GetComponent<ServicePanel>();
-            servicePanel.Load(type);
+            servicePanel = popup.GetComponent<ExpertPanel>();
         }
     }
 
@@ -869,6 +870,19 @@ public class UIManager : MonoBehaviour
             popup.GetComponent<Popup>().Open();
             inventoryPanel = popup.GetComponent<InventoryPanel>();
             inventoryPanel.Load();
+        }
+    }
+
+    public void OnNewVersionPanel()
+    {
+        if (newVersionPanel == null)
+        {
+            var popup = Instantiate(newVersionPanelPrefab) as GameObject;
+            popup.SetActive(true);
+            popup.transform.localScale = Vector3.zero;
+            popup.transform.SetParent(GameObject.Find("Canvas").transform, false);
+            popup.GetComponent<Popup>().Open();
+            newVersionPanel = popup.GetComponent<GuideUI>();
         }
     }
 

@@ -46,6 +46,6 @@ public class ServiceUI : MonoBehaviour
 
     public void OnService()
     {
-        UIManager.instance.OnServicePanel(serviceType);
+        UIManager.instance.OnServicePanel();
     }
 }

@@ -83,7 +83,7 @@ public class ItemManager : MonoBehaviour
         GameManager.instance.LoadPetObjects();
         if (GameManager.instance.IsOldVersion())
         {
-            //Popup info here
+            UIManager.instance.OnNewVersionPanel();
             MageManager.instance.OnNotificationPopup("Updated");
         }
         else
@@ -105,15 +105,15 @@ public class ItemManager : MonoBehaviour
         yield return new WaitForEndOfFrame();
         MageManager.instance.loadingBar.gameObject.SetActive(false);
 
-        /*
+        yield return new WaitForSeconds(1);
         while (!ApiManager.instance.IsLogin() || !RewardVideoAdManager.instance.isUnityVideoLoaded || UIManager.instance.newVersionPanel != null)
         {
             yield return new WaitForEndOfFrame();
         }
-        yield return new WaitForSeconds(1);
+        
         if(!GameManager.instance.isGuest)
             LoadWelcome(awayTime);
-        */
+        
     }
 
     // Update is called once per frame

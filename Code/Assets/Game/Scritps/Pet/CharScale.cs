@@ -29,7 +29,6 @@ public class CharScale : MonoBehaviour
     void Start()
     {
         lastPosition = this.transform.position;
-        
     }
 
     // Update is called once per frame
@@ -37,22 +36,22 @@ public class CharScale : MonoBehaviour
     {
 		if (interact.interactType == InteractType.Drag || interact.interactType == InteractType.Touch)
         {
-			if (scalePosition.y > -1)
+			if (scalePosition.y > 0)
 			{
-				scalePosition.y = -1;
+				scalePosition.y = 0;
 			}
 		    scalePosition.x = this.transform.position.x;
 			float delta = this.transform.position.y - lastPosition.y;
 			height += delta;
-			if(height <= 0 || this.transform.position.y <= scalePosition.y ){
+			if(height < 0 || this.transform.position.y < scalePosition.y ){
 				scalePosition.y = this.transform.position.y;
 				height = 0;
 			}else {
 				if(delta >= 0){
-					
+					Debug.Log(height);
 					if (height >= maxHeight)
                     {
-						scalePosition.y += delta;
+						scalePosition.y += this.transform.position.y - height;
 						height = maxHeight;
                     }
                     else
