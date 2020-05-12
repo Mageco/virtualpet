@@ -386,7 +386,7 @@ public class CharController : MonoBehaviour
             {
                 //StartCoroutine(OnEmotion());
                 if(!IsLearnSkill(SkillType.Happy))
-                    ItemManager.instance.SpawnPetHappy(this.transform.position,data.RateHappy + data.level / 5);
+                    ItemManager.instance.SpawnPetHappy(this.charScale.scalePosition,data.RateHappy + data.level / 5);
                 else
                     ItemManager.instance.SpawnHeart(data.RateHappy + data.level / 5, this.transform.position);
                 timeLove = 0;
@@ -1136,6 +1136,8 @@ public class CharController : MonoBehaviour
 
     public virtual void OnTease(CharController c)
     {
+        if (actionType == ActionType.Hold || actionType == ActionType.Sick || actionType == ActionType.Injured || equipment != null || actionType == ActionType.Teased | actionType == ActionType.Tease)
+            return;
         petTarget = c;
         Abort();
         actionType = ActionType.Tease;
@@ -1143,7 +1145,7 @@ public class CharController : MonoBehaviour
 
     public virtual void OnTeased()
     {
-        if (actionType == ActionType.Hold || actionType == ActionType.Sick || actionType == ActionType.Injured || equipment != null || actionType == ActionType.Teased)
+        if (actionType == ActionType.Hold || actionType == ActionType.Sick || actionType == ActionType.Injured || equipment != null || actionType == ActionType.Teased | actionType == ActionType.Tease)
             return;
         Abort();
         actionType = ActionType.Teased;
