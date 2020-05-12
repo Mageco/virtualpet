@@ -346,8 +346,6 @@ public class UIManager : MonoBehaviour
             GameManager.instance.EquipPet(realId);
         if (shopPanel != null)
             shopPanel.Close();
-        if (petRequirementPanel != null)
-            petRequirementPanel.ReLoad();
 
         //OnPetCollectionPanel();
         //petCollectionPanel.OnActive(itemID);

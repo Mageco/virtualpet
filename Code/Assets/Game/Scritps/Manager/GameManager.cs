@@ -243,16 +243,18 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void EquipPet(int itemId)
+    public void EquipPet(int realId)
     {
         foreach (PlayerPet p in myPlayer.petDatas)
         {
-            if (p.realId == itemId)
+            if (p.realId == realId && p.itemState != ItemState.Equiped)
             {
                 p.itemState = ItemState.Equiped;
+                ItemManager.instance.LoadPetObject(p);
+               
             }
         }
-        LoadPetObjects();
+        
     }
 
     public void EquipPets()
@@ -458,13 +460,19 @@ public class GameManager : MonoBehaviour
                  if (ItemManager.instance != null)
                 {
                     CharController petObject = GetPetObject(realId);
-                    if (petObject != null && petObject.equipment != null)
+                    if (petObject != null)
                     {
-                        petObject.equipment.DeActive();
+                        if(petObject.equipment != null)
+                        {
+                            petObject.equipment.RemovePet(petObject);
+                            petObject.equipment.DeActive();
+                        }
+                            
                         petObjects.Remove(petObject);
                         ItemManager.instance.UnLoadPetObject(petObject);
                     }
-                       
+
+
                 }
                 if(GetPetNumber(p.iD) >= 2)
                 {
@@ -738,8 +746,19 @@ public class GameManager : MonoBehaviour
                 }
                 else if (item.state == ItemState.Equiped)
                 {
+                    if(item.itemType == ItemType.Room || item.itemType == ItemType.Gate)
+                    {
+                        foreach(PlayerItem item1 in myPlayer.items)
+                        {
+                            if(item1 != item && item1.itemType == item.itemType)
+                            {
+                                item1.state = ItemState.Equiped;
+                            }
+                        }
+                    }
                     myPlayer.items.Remove(item);
-                    ItemManager.instance.RemoveItem(item.realId);
+                    ItemManager.instance.LoadItems();
+                    
                 }
                 return;
             }

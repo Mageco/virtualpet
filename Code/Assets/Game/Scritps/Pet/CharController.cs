@@ -1193,6 +1193,7 @@ public class CharController : MonoBehaviour
     {
         Abort();
         actionType = ActionType.OnGift;
+        DoAction();
     }
 
 
@@ -1652,7 +1653,7 @@ public class CharController : MonoBehaviour
                 {
 
                     int ran = Random.Range(0, 100);
-                    if (ran < 30)
+                    if (ran < 10)
                     {
                         MageManager.instance.PlaySound3D(charType.ToString() + "_Speak", false, this.transform.position);
                         yield return StartCoroutine(DoAnim("Speak_L"));
@@ -1697,7 +1698,7 @@ public class CharController : MonoBehaviour
         else
             yield return StartCoroutine(RunToPoint());
         int ran = Random.Range(0, 100);
-        if (ran < 30)
+        if (ran < 40)
         {
             yield return StartCoroutine(DoAnim("Standby"));
         }
@@ -2156,20 +2157,20 @@ public class CharController : MonoBehaviour
         while (!isAbort && n < maxCount)
         {
             int ran = Random.Range(0, 100);
-            if (ran < 50)
+            if (ran < 60)
             {
                 target = ItemManager.instance.GetPatrolPoint(this.transform.position);
                 yield return StartCoroutine(RunToPoint());
             }
-            else if (ran < 60)
-            {
-                anim.Play("Standby", 0);
-                yield return StartCoroutine(Wait(Random.Range(1, 10)));
-            }
             else if (ran < 70)
             {
+                anim.Play("Standby", 0);
+                yield return StartCoroutine(Wait(Random.Range(1, 5)));
+            }
+            else if (ran < 90)
+            {
                 anim.Play("Idle_L", 0);
-                yield return StartCoroutine(Wait(Random.Range(1, 10)));
+                yield return StartCoroutine(Wait(Random.Range(1, 5)));
             }
             else
             {
@@ -2205,11 +2206,13 @@ public class CharController : MonoBehaviour
                 anim.Play("Run_L", 0);
                 
                if (Vector2.Distance(this.transform.position, petTarget.transform.position) < 5)
-                {                    
+                {
+                    int r = Random.Range(0, 100);
                     petTarget.OnTeased();
                     agent.Stop();
                     yield return StartCoroutine(DoAnim("Speak_L"));
-                    MageManager.instance.PlaySound3D(charType.ToString() + "_Speak", false, this.transform.position);
+                    if(r > 70)
+                        MageManager.instance.PlaySound3D(charType.ToString() + "_Speak", false, this.transform.position);
                 }
 
                 n--;
@@ -2667,6 +2670,8 @@ public class CharController : MonoBehaviour
     {
         yield return StartCoroutine(JumpDown(0, 20, 30));
         yield return StartCoroutine(DoAnim("Love"));
+        actionType = ActionType.None;
+        isAbort = false;
         CheckAbort();
     }
 

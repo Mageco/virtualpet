@@ -101,7 +101,7 @@ public class BaseFloorItem : MonoBehaviour
 
 	IEnumerator CheckCollide()
 	{
-		yield return new WaitForEndOfFrame();
+		yield return new WaitForSeconds(0.5f);
 		int n = 0;
 		while (obstructItem != null && obstructItem.itemCollides.Count > 0 && n < 100)
 		{

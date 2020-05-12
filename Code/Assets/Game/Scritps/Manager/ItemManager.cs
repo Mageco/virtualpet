@@ -752,6 +752,7 @@ public class ItemManager : MonoBehaviour
     {
         pet.isNew = false;
         CharController petObject = SpawnPet(pet);
+        petObject.actionType = ActionType.Init;
         petObject.agent.transform.position = new Vector3(10000,00,0);
         GameObject gift = GameObject.Instantiate(petGiftPrefab);
         Vector3 pos = new Vector3(Camera.main.transform.position.x, Random.Range(-15, -10), 0);
