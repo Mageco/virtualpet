@@ -1772,7 +1772,7 @@ public class CharController : MonoBehaviour
             this.transform.position = equipment.GetAnchorPoint(this).position;
             agent.transform.position = equipment.GetAnchorPoint(this).position;
             equipment.OnActive();
-            MageManager.instance.PlaySound3D("Pee", false, this.transform.position);
+            int soundId = MageManager.instance.PlaySound3D("Pee", false, this.transform.position);
 
             float maxTime = Random.Range(1, 5);
             float t = 0;
@@ -1806,7 +1806,7 @@ public class CharController : MonoBehaviour
                 this.data.Dirty -= data.MaxDirty / bathRate * Time.deltaTime;
                 yield return new WaitForEndOfFrame();
             }
-
+            MageManager.instance.StopSound(soundId);
             if (equipment != null && equipment.itemType == ItemType.Bath)
             {
                 if (data.Dirty <= 1 && !isAbort)

@@ -35,56 +35,54 @@ public class CharScale : MonoBehaviour
     void LateUpdate()
     {
 		if (interact.interactType == InteractType.Drag || interact.interactType == InteractType.Touch)
-        {
+		{
 			if (scalePosition.y > 0)
 			{
 				scalePosition.y = 0;
 			}
-		    scalePosition.x = this.transform.position.x;
+			scalePosition.x = this.transform.position.x;
 			float delta = this.transform.position.y - lastPosition.y;
-			height += delta;
-			if(height < 0 || this.transform.position.y < scalePosition.y ){
+
+			if (this.transform.position.y < scalePosition.y)
+			{
 				scalePosition.y = this.transform.position.y;
 				height = 0;
-			}else {
-				if(delta >= 0){
-					Debug.Log(height);
-					if (height >= maxHeight)
-                    {
-						scalePosition.y += this.transform.position.y - height;
-						height = maxHeight;
-                    }
-                    else
-                    {
-						//scalePosition.y -= delta;
-						//height += delta;
-                    }
-	
-					if(scalePosition.y > 0){
-						scalePosition.y = 0;
-						Vector3 p = this.transform.position;
-						p.y = lastPosition.y;
-						character.agent.transform.position = p;
-						this.transform.position = p;
-					}
-				}else{
-					if(scalePosition.y < ItemManager.instance.roomBoundY.x + 1){
-						//scalePosition.y += delta;
-						height += delta;
-                    }
-                    else
-                    {
-						scalePosition.y += delta;
-						height = maxHeight;
-                    }
-				}		
 			}
-			if(character.shadow != null){
+
+			if (delta >= 0) {
+				height += delta;
+				if (height >= maxHeight)
+				{
+					height = maxHeight;
+					scalePosition.y = this.transform.position.y - height;
+				}
+
+				if (scalePosition.y > 0) {
+					scalePosition.y = 0;
+					Vector3 p = this.transform.position;
+					p.y = lastPosition.y;
+					character.agent.transform.position = p;
+					this.transform.position = p;
+				}
+			} else {
+				scalePosition.y += delta;
+				if (scalePosition.y < ItemManager.instance.roomBoundY.x + 1)
+				{
+					scalePosition.y = ItemManager.instance.roomBoundY.x + 1;
+					height += delta;
+				} else
+					height = this.transform.position.y - scalePosition.y;
+				if (height < 0)
+					height = 0;
+			}
+
+			if (character.shadow != null)
+			{
 				Vector3 pos = scalePosition;
 				pos.z = pos.y * 10 - 30;
 				character.shadow.transform.position = pos;
-				character.shadow.transform.localScale = character.originalShadowScale * (1f - 0.5f*height/maxHeight); 
-            }
+				character.shadow.transform.localScale = character.originalShadowScale * (1f - 0.5f * height / maxHeight);
+			}
 		}else if(interact.interactType == InteractType.Drop){
 			scalePosition.x = this.transform.position.x;
 			height = this.transform.position.y - scalePosition.y;
