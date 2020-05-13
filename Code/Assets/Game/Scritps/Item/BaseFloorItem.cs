@@ -125,9 +125,6 @@ public class BaseFloorItem : MonoBehaviour
 			sprites[i].enabled = true;
 		}
 
-		if (n >= 1)
-		    animator.Play("Appear");
-
         if(n >= 100)
         {
 			MageManager.instance.OnNotificationPopup(DataHolder.Dialog(158).GetName(MageManager.instance.GetLanguage()));

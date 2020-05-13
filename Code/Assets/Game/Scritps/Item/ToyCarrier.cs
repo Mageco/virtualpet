@@ -10,7 +10,7 @@ public class ToyCarrier : BaseFloorItem
     public bool isArrived = true;
     public bool isAbort = false;
     public float speed = 10;
-    Direction direction = Direction.R;
+    public Direction direction = Direction.R;
     public Vector3 target;
     ObstructItem obstructItem;
 

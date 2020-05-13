@@ -63,16 +63,14 @@ public class BoarFruitGame : MonoBehaviour
 
         if(state != AnimalState.Cached)
         {
-
+            if (isPower)
+            {
+                animator.Play("Head_PowerUp", 1);
+            }else 
             if (isEat)
             {
                 animator.Play("Head_Eat", 1);
             }
-            else if (isPower)
-            {
-                animator.Play("Head_PowerUp", 1);
-            }
-
             else if (isMove)
             {
                 animator.Play("Head_Run", 1);

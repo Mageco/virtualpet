@@ -74,7 +74,7 @@ public class BeeController : MonoBehaviour
 		paths [2] = ItemManager.instance.GetRandomPoint(AreaType.Fly);
 
 		iTween.MoveTo (this.gameObject, iTween.Hash ("name","Bee_Enter","path", paths, "speed", speed, "orienttopath", false, "easetype", "linear","oncomplete", "CompleteEnter"));
-		maxTimeSpawn = Random.Range (200, 600);
+		maxTimeSpawn = Random.Range (300, 600);
 		this.body.gameObject.SetActive (true);
 		col.enabled = true;
 		anim.Play("Fly",0);

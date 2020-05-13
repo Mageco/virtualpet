@@ -74,7 +74,7 @@ public class MouseController : MonoBehaviour
         paths[2] = foodPoint;
 
         iTween.MoveTo(this.gameObject, iTween.Hash("name", "Mouse", "path", paths, "speed", speed, "orienttopath", false, "easetype", "linear", "oncomplete", "CompleteSeek"));
-        maxTimeSpawn = Random.Range(100, 400);
+        maxTimeSpawn = Random.Range(250, 500);
         this.body.gameObject.SetActive(true);
         col.enabled = true;
         anim.Play("Run", 0);

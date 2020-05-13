@@ -2368,9 +2368,10 @@ public class CharController : MonoBehaviour
     {
         float startValue = data.Toy;
         float value = Random.Range(0.7f * data.MaxToy, data.MaxToy);
-        SetDirection(Direction.L);
+        
         if (equipment.toyType == ToyType.Jump)
         {
+            SetDirection(Direction.L);
             dropPosition = equipment.GetAnchorPoint(this).position + new Vector3(0, Random.Range(-1f, 1f), 0);
             agent.transform.position = dropPosition;
             yield return new WaitForEndOfFrame();
@@ -2428,6 +2429,7 @@ public class CharController : MonoBehaviour
         }
         else if (equipment.toyType == ToyType.Ball || equipment.toyType == ToyType.Car)
         {
+            
             charScale.speedFactor = 1.5f;
             while (equipment != null && data.Toy < value && !isAbort)
             {
@@ -2467,8 +2469,10 @@ public class CharController : MonoBehaviour
         }
         else if (equipment.toyType == ToyType.Slider || equipment.toyType == ToyType.Circle)
         {
+            
             while (equipment != null && data.Toy < value && !isAbort)
             {
+                SetDirection(Direction.L);
                 equipment.OnActive();
                 charInteract.interactType = InteractType.Equipment;
                 agent.transform.position = equipment.startPoint.position;
@@ -2507,7 +2511,7 @@ public class CharController : MonoBehaviour
         }
         else if (equipment.toyType == ToyType.Seesaw || equipment.toyType == ToyType.Sprinkler || equipment.toyType == ToyType.Carrier || equipment.toyType == ToyType.Flying)
         {
-            
+            ToyCarrier carrier = equipment.GetComponent<ToyCarrier>();
             charInteract.interactType = InteractType.Equipment;
             if (equipment.toyType != ToyType.Sprinkler)
                 shadow.GetComponent<SpriteRenderer>().enabled = false;
@@ -2522,15 +2526,26 @@ public class CharController : MonoBehaviour
             while (anchorPoint != null && !isAbort && data.Toy < value)
             {
                 agent.transform.position = anchorPoint.position;
-                if(n == 0)
+                
+
+
+                if(equipment.toyType == ToyType.Seesaw)
                 {
                     this.transform.rotation = anchorPoint.rotation;
                     this.transform.localScale = new Vector3(this.transform.localScale.x, this.transform.localScale.y, anchorPoint.localScale.z);
-                }else
+                }else if(equipment.toyType == ToyType.Carrier || equipment.toyType == ToyType.Flying)
                 {
-                    this.transform.rotation = Quaternion.Euler(new Vector3(anchorPoint.rotation.x,anchorPoint.rotation.y + 180,anchorPoint.rotation.z));
-                    this.transform.localScale = new Vector3(this.transform.localScale.x, this.transform.localScale.y, -anchorPoint.localScale.z);
+                    SetDirection(carrier.direction);
                 }
+                //if(n == 0)
+                //{
+                //    this.transform.rotation = anchorPoint.rotation;
+                //    this.transform.localScale = new Vector3(this.transform.localScale.x, this.transform.localScale.y, anchorPoint.localScale.z);
+                //}else
+                //{
+                //    this.transform.rotation = Quaternion.Euler(new Vector3(anchorPoint.rotation.x,anchorPoint.rotation.y + 180,anchorPoint.rotation.z));
+                //    this.transform.localScale = new Vector3(this.transform.localScale.x, this.transform.localScale.y, -anchorPoint.localScale.z);
+                //}
                 if (equipment.pets.Count == equipment.anchorPoints.Length)
                 {
                     anim.Play("Play_" + equipment.toyType.ToString(), 0);
@@ -2789,14 +2804,14 @@ public class CharController : MonoBehaviour
 
     public void ResetData()
     {
-        data.Health = data.MaxHealth;
-        data.Damage = 0;
-        data.Food = data.MaxFood;
-        data.Water = data.MaxWater;
-        data.Dirty = 0;
-        data.Pee = 0;
-        data.Shit = 0;
-        data.Sleep = data.MaxSleep;
+        data.Health = data.MaxHealth * 0.7f;
+        data.Damage = data.MaxDamage * 0.7f;
+        data.Food = data.MaxFood * 0.7f;
+        data.Water = data.MaxWater * 0.7f;
+        data.Dirty = data.MaxDirty * 0.6f;
+        data.Pee = data.MaxPee * 0.3f;
+        data.Shit = data.MaxShit * 0.3f;
+        data.Sleep = data.MaxSleep * 0.7f;
     }
 
 }
