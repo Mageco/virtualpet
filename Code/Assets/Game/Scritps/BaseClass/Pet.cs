@@ -75,6 +75,9 @@ public class Pet : BaseModel
     int levelRate = 30;
 
 
+    [HideInInspector]
+    public float timeLove = 0;
+
     //public CharController character;
     //PolyNavAgent agent;
 

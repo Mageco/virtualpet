@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using TMPro;
 
 public class HappyItem : MonoBehaviour
 { 
-    public TextMesh happyNumber;
+    public TextMeshPro happyNumber;
     public int lifeTime = 1;
     public ParticleSystem particle;
     ParticleSystem.EmissionModule emissionModule;
@@ -19,6 +20,8 @@ public class HappyItem : MonoBehaviour
         emissionModule = particle.emission;
         burst = emissionModule.GetBurst(0);
         //Debug.Log("Burst Count " + burst.count.constant);
+        if (value >= 6)
+            value = 6;
         burst.minCount = (short)value;
         burst.maxCount = (short)value;
         var c = burst.count;

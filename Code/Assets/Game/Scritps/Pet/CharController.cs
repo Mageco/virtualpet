@@ -23,9 +23,8 @@ public class CharController : MonoBehaviour
 
     float saveTime = 0;
     float maxSaveTime = 1;
-
-    float timeLove = 0;
-    float maxTimeLove = 10;
+    
+    float maxTimeLove = 30;
 
     //Movement
     //[HideInInspector]
@@ -123,7 +122,6 @@ public class CharController : MonoBehaviour
         charInteract = this.GetComponent<CharInteract>();
         charScale = this.GetComponent<CharScale>();
         charCollider = this.GetComponentInChildren<CharCollider>(true);
-        timeLove = Random.Range(0, 10f);
     }
 
     protected virtual void Start()
@@ -143,6 +141,7 @@ public class CharController : MonoBehaviour
                 p.realId = pet.realId;
                 p.level = pet.level;
                 this.data = p;
+                this.ResetData();
             }
             else
             {
@@ -158,6 +157,7 @@ public class CharController : MonoBehaviour
             p.realId = pet.realId;
             p.level = pet.level;
             this.data = p;
+            this.ResetData();
         }
 
         LoadSkill();
@@ -382,16 +382,16 @@ public class CharController : MonoBehaviour
 
         if (emotionStatus != EmotionStatus.Sad)
         {
-            if(timeLove > maxTimeLove && actionType != ActionType.Hold)
+            if(data.timeLove > maxTimeLove && actionType != ActionType.Hold)
             {
                 //StartCoroutine(OnEmotion());
                 if(!IsLearnSkill(SkillType.Happy))
-                    ItemManager.instance.SpawnPetHappy(this.charScale.scalePosition,data.RateHappy + data.level / 5);
+                    ItemManager.instance.SpawnPetHappy(this.charScale.scalePosition,3 * (data.RateHappy + data.level / 5));
                 else
-                    ItemManager.instance.SpawnHeart(data.RateHappy + data.level / 5, this.transform.position);
-                timeLove = 0;
+                    ItemManager.instance.SpawnHeart(3*(data.RateHappy + data.level / 5), this.transform.position);
+                data.timeLove = 0;
             }else
-                timeLove += Time.deltaTime;
+                data.timeLove += Time.deltaTime;
         }
 
         if(emotionStatus == EmotionStatus.Happy)

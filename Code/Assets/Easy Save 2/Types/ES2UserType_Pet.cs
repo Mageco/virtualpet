@@ -45,6 +45,7 @@ public class ES2UserType_Pet : ES2Type
 		writer.Write(data.itemTag);
 		writer.Write(data.requireEquipments);
 		writer.Write(data.requirePets);
+		writer.Write(data.requireNumber);
 		writer.Write(data.requireValue);
 		writer.Write(data.requireValueType);
 		writer.Write(data.petName);
@@ -79,6 +80,7 @@ public class ES2UserType_Pet : ES2Type
 		writer.Write(data.maxDamage);
 		writer.Write(data.maxDirty);
 		writer.Write(data.maxToy);
+		writer.Write(data.timeLove);
 		writer.Write(data.actionType);
 		writer.Write(data.position);
 		writer.Write(data.scalePosition);
@@ -134,6 +136,7 @@ public class ES2UserType_Pet : ES2Type
 		data.itemTag = reader.Read<ItemTag>();
 		data.requireEquipments = reader.ReadArray<System.Int32>();
 		data.requirePets = reader.ReadArray<System.Int32>();
+		data.requireNumber = reader.ReadArray<System.Int32>();
 		data.requireValue = reader.Read<System.Int32>();
 		data.requireValueType = reader.Read<PriceType>();
 		data.petName = reader.Read<System.String>();
@@ -168,6 +171,7 @@ public class ES2UserType_Pet : ES2Type
 		data.maxDamage = reader.Read<System.Single>();
 		data.maxDirty = reader.Read<System.Single>();
 		data.maxToy = reader.Read<System.Single>();
+		data.timeLove = reader.Read<System.Single>();
 		data.actionType = reader.Read<ActionType>();
 		data.position = reader.Read<UnityEngine.Vector3>();
 		data.scalePosition = reader.Read<UnityEngine.Vector3>();
