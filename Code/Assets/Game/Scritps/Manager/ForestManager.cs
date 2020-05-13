@@ -94,8 +94,6 @@ public class ForestManager : MonoBehaviour
         collector = GameObject.Instantiate(charCollectors[id]) as GameObject;
         CharCollectorTimeline c = collector.GetComponentInChildren<CharCollectorTimeline>();
         collector.transform.parent = this.transform;
-        if (GameManager.instance.IsHavePet(c.petId))
-            GameObject.Destroy(collector);
         if (collector != null)
             collectorTimelines.Add(collector.GetComponentInChildren<CharCollectorTimeline>());
         AudioSource[] audios = FindObjectsOfType<AudioSource>();

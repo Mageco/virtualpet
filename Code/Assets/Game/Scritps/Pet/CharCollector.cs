@@ -30,7 +30,7 @@ public class CharCollector : MonoBehaviour
 
     public void Load()
     {
-        //if (!GameManager.instance.IsHavedPet(petId) && GameManager.instance.myPlayer.questId > quesId)
+        if (!GameManager.instance.IsHavedPet(petId) && GameManager.instance.myPlayer.questId > quesId)
             Active();
     }
 

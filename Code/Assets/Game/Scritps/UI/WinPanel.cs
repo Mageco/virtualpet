@@ -189,6 +189,8 @@ public class WinPanel : MonoBehaviour
         GameManager.instance.AddExp(bonus / 10, Utils.instance.Md5Sum(GameManager.instance.count.ToString() + GameManager.instance.myPlayer.playTime.ToString() + GameManager.instance.myPlayer.Happy.ToString() + "M@ge2013"));
         if (minigameId == 2 || minigameId == 3)
             UIManager.instance.OnMap(MapType.Forest);
+        else if (minigameId == 4 || minigameId == 5)
+            UIManager.instance.OnMap(MapType.Lake);
         else
             Minigame.instance.OnHome();
         this.GetComponent<Popup>().Close();

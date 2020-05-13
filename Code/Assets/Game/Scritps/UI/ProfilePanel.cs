@@ -6,7 +6,8 @@ using UnityEngine.UI;
 public class ProfilePanel : MonoBehaviour
 {
     public Transform anchor;
-    List<ProfileUI> items = new List<ProfileUI>();
+    [HideInInspector]
+    public List<ProfileUI> items = new List<ProfileUI>();
     public GameObject itemUIPrefab;
     
     

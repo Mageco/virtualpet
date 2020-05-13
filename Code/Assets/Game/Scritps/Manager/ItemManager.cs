@@ -702,7 +702,7 @@ public class ItemManager : MonoBehaviour
             t = 36000;
 
         coin = (int)t/3600 * 50;
-        happy = (int)t/3600 * 10 * GameManager.instance.myPlayer.pets.Count;
+        happy = (int)t/3600 * 20 * GameManager.instance.GetTotalPetNumber();
         exp = (int)t / 3600 * 5;
 
         if (t >= 3600)

@@ -542,6 +542,19 @@ public class GameManager : MonoBehaviour
         return false;
     }
 
+    public int GetTotalPetNumber()
+    {
+        int count = 0;
+        foreach (PlayerPet p in myPlayer.petDatas)
+        {
+            if (p.itemState == ItemState.Equiped)
+            {
+                count++;
+            }
+        }
+        return count;
+    }
+
     public int GetPetNumber(int petId)
     {
         int count = 0;

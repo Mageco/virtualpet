@@ -134,6 +134,7 @@ public class UIManager : MonoBehaviour
     public GameObject callButton;
     public GameObject remotePanel;
     public GameObject inventoryButton;
+    public GameObject petButton;
 
     public AvatarUI avatarUI;
     public AvatarUI remoteAvatarUI;
@@ -956,7 +957,7 @@ public class UIManager : MonoBehaviour
         else
         {
             int n = Random.Range(0, 100);
-            if(n > 80)
+            if(n > 70)
             {
                 RewardVideoAdManager.instance.ShowIntetestial();
             }

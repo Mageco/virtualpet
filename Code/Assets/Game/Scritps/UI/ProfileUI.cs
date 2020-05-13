@@ -33,6 +33,7 @@ public class ProfileUI : MonoBehaviour
     public InputField input;
     public GameObject sellCoin;
     public GameObject sellDiamond;
+    public Button upgradeButton;
 
     public Image[] icons;
 
