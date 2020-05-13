@@ -441,18 +441,18 @@ public class CharController : MonoBehaviour
     {
         if (data.Food > 0 && data.Water > 0)
         {
-            data.Food -= 0.1f;
-            data.Water -= 0.15f;
-            data.Shit += 0.05f;
-            data.Pee += 0.1f;
+            data.Food -= 0.2f;
+            data.Water -= 0.3f;
+            data.Shit += 0.1f;
+            data.Pee += 0.2f;
         }
 
 
-        data.Dirty += 0.1f;
-        data.Sleep -= 0.05f;
+        data.Dirty += 0.15f;
+        data.Sleep -= 0.1f;
 
         if(actionType != ActionType.Toy)
-            data.Toy -= 0.3f;
+            data.Toy -= 0.4f;
 
         float deltaHealth = 0;
 
