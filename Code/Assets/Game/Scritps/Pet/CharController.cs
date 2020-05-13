@@ -1761,6 +1761,7 @@ public class CharController : MonoBehaviour
 
     protected virtual IEnumerator Bath()
     {
+        float startValue = data.Dirty;
         float value = Random.Range(0, 0.3f * data.MaxDirty);
         if (IsLearnSkill(SkillType.Bath) && (equipment == null || equipment.itemType != ItemType.Bath))
         {
@@ -1816,7 +1817,7 @@ public class CharController : MonoBehaviour
             MageManager.instance.StopSound(soundId);
             if (equipment != null && equipment.itemType == ItemType.Bath)
             {
-                if (data.Dirty <= 1 && !isAbort)
+                if (startValue - data.Dirty > data.MaxDirty * 0.1f && !isAbort)
                 {
                     GameManager.instance.LogAchivement(AchivementType.Do_Action, ActionType.OnBath);
                 }
@@ -1878,7 +1879,7 @@ public class CharController : MonoBehaviour
 
         if (equipment != null && equipment.itemType == ItemType.Toilet)
         {
-            if (data.pee <= 1 && !isAbort)
+            if (pee - data.Pee > data.MaxPee * 0.1f && !isAbort)
             {
                 GameManager.instance.LogAchivement(AchivementType.Do_Action, ActionType.Pee);
             }
@@ -1938,7 +1939,7 @@ public class CharController : MonoBehaviour
 
         if (equipment != null && equipment.itemType == ItemType.Toilet && !isAbort)
         {
-            if (data.shit <= 1 && !isAbort)
+            if (shit - data.Shit > 0.1f * data.MaxShit && !isAbort)
             {
                 GameManager.instance.LogAchivement(AchivementType.Do_Action, ActionType.Shit);
             }
@@ -1954,6 +1955,7 @@ public class CharController : MonoBehaviour
 
     protected virtual IEnumerator Eat()
     {
+        float startValue = data.Food;
         float value = Random.Range(0.7f * data.MaxFood,data.MaxFood);
         if (equipment == null || equipment.itemType != ItemType.Food)
         {
@@ -1990,7 +1992,7 @@ public class CharController : MonoBehaviour
                         isContinue = false;
                     yield return new WaitForEndOfFrame();
                 }
-                if (data.Food >= data.MaxFood - 1)
+                if (data.Food - startValue >= 0.1f * data.MaxFood && !isAbort)
                 {
                     GameManager.instance.LogAchivement(AchivementType.Do_Action, ActionType.Eat);
                 }
@@ -2018,6 +2020,7 @@ public class CharController : MonoBehaviour
 
     protected virtual IEnumerator Drink()
     {
+        float startValue = data.Water;
         float value = Random.Range(0.7f * data.MaxWater, data.MaxWater);
         if (equipment == null || equipment.itemType != ItemType.Drink)
         {
@@ -2058,7 +2061,7 @@ public class CharController : MonoBehaviour
                 {
                     equipment.RemovePet(this);
                 }
-                if (data.Water >= data.MaxWater - 10)
+                if (data.Water - startValue > 0.1f * data.MaxWater && !isAbort)
                 {
                     GameManager.instance.LogAchivement(AchivementType.Do_Action, ActionType.Drink);
                 }
@@ -2085,7 +2088,7 @@ public class CharController : MonoBehaviour
 
     protected virtual IEnumerator Sleep()
     {
-
+        float startValue = data.Sleep;
         float value = Random.Range(0.7f * data.MaxSleep, data.MaxSleep);
         float sleepValue = 0;
 
@@ -2139,7 +2142,7 @@ public class CharController : MonoBehaviour
 
         if (equipment != null && equipment.itemType == ItemType.Bed && !isAbort)
         {
-            if (data.Sleep > data.MaxSleep - 1)
+            if (data.Sleep - startValue > data.MaxSleep * 0.1f)
             {
                 GameManager.instance.LogAchivement(AchivementType.Do_Action, ActionType.Sleep);
             }
@@ -2363,6 +2366,7 @@ public class CharController : MonoBehaviour
 
     protected virtual IEnumerator Toy()
     {
+        float startValue = data.Toy;
         float value = Random.Range(0.7f * data.MaxToy, data.MaxToy);
         SetDirection(Direction.L);
         if (equipment.toyType == ToyType.Jump)
@@ -2557,15 +2561,14 @@ public class CharController : MonoBehaviour
 
         if (!isAbort)
         {
+            if(data.Toy - startValue > data.MaxToy * 0.1f)
+                 GameManager.instance.LogAchivement(AchivementType.Do_Action, ActionType.Toy);
             yield return StartCoroutine(DoAnim("Love"));
         }
 
         charScale.speedFactor = 1f;
         anim.speed = 1f;
         equipment = null;
-
-        
-        
         CheckAbort();
     }
 

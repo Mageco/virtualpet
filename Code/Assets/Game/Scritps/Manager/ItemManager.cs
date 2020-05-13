@@ -432,6 +432,46 @@ public class ItemManager : MonoBehaviour
         return r;
     }
 
+    public bool IsInBound(AreaType type,Vector3 pos)
+    {
+        if (type == AreaType.All)
+        {
+            if (pos.x < gardenBoundX.x || pos.x > gardenBoundX.y || pos.y < gardenBoundY.x || pos.y > gardenBoundY.y)
+                return false;
+        }
+        else if (type == AreaType.Garden)
+        {
+            if (pos.x < gardenBoundX.x || pos.x > roomBoundX.x || pos.y < gardenBoundY.x || pos.y > gardenBoundY.y)
+                return false;
+        }
+        else if (type == AreaType.GardenRight)
+        {
+            if (pos.x < roomBoundX.y || pos.x > gardenBoundX.y || pos.y < gardenBoundY.x || pos.y > gardenBoundY.y)
+                return false;
+        }
+        else if (type == AreaType.Room)
+        {
+            if (pos.x < roomBoundX.x || pos.x > roomBoundX.y || pos.y < roomBoundY.x || pos.y > roomBoundY.y)
+                return false;
+        }
+        else if (type == AreaType.Camera)
+        {
+            if (pos.x < cameraBoundX.x || pos.x > cameraBoundX.y || pos.y < cameraBoundY.x || pos.y > cameraBoundY.y)
+                return false;
+        }
+        else if (type == AreaType.Fly)
+        {
+            if (pos.x < gardenBoundX.x || pos.x > gardenBoundX.y || pos.y < gardenBoundY.x || pos.y > gardenBoundY.y)
+                return false;
+        }
+        else if (type == AreaType.Wall)
+        {
+            if (pos.x < roomBoundX.x || pos.x > roomBoundX.y || pos.y < roomWallBoundY.x || pos.y > roomWallBoundY.y)
+                return false;
+        }
+        return true;
+    }
+
     public Vector3 GetPatrolPoint(Vector3 pos)
     {
         Vector3 r = pos + new Vector3(Random.Range(-30f,30f),Random.Range(-10,10),0);

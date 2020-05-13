@@ -80,7 +80,7 @@ public class ToyRobotItem : ToyItem
             PetHappyItem[] items = FindObjectsOfType<PetHappyItem>();
             if (items.Length > 0)
                 item = items[Random.Range(0, items.Length)];
-            if (item != null)
+            if (item != null && ItemManager.instance.IsInBound(AreaType.All,item.transform.position))
             {
                 target = item.transform.position;
                 isAbort = false;
@@ -143,7 +143,6 @@ public class ToyRobotItem : ToyItem
         {
             target = item.transform.position;
             isAbort = false;
-            Debug.Log("Turn on");
             state = EquipmentState.Active;
             agent.transform.position = this.transform.position;
 
@@ -154,7 +153,6 @@ public class ToyRobotItem : ToyItem
         {
             isAbort = true;
             agent.Stop();
-            Debug.Log("Turn off");
             state = EquipmentState.Idle;
             MageManager.instance.PlaySound3D("Item_Robot_TurnOff", false, this.transform.position);
             animator.Play("Idle_" + direction.ToString(), 0);

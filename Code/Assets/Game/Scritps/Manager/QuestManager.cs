@@ -47,13 +47,14 @@ public class QuestManager : MonoBehaviour
         {
             if (questId == 0)
             {
-                petObject.data.Water = petObject.data.MaxWater;
+                petObject.ResetData();
                 yield return new WaitForSeconds(1);
                 UIManager.instance.OnQuestNotificationPopup("Congratulation");
                 yield return new WaitForSeconds(6);
                 if (TutorialManager.instance != null)
                     TutorialManager.instance.StartQuest();
                 OnQuestNotification();
+                petObject.data.Food = 0;
             }
             else if (questId == 1)
             {
@@ -139,23 +140,44 @@ public class QuestManager : MonoBehaviour
             TutorialManager.instance.StartQuest();
     }
 
-    public void StartCompleteQuest()
+    IEnumerator StartCompleteQuest()
     {
-        GameManager.instance.myPlayer.questId++;
+        
         if (UIManager.instance.questNotification != null)
             UIManager.instance.questNotification.Close();
-
         UIManager.instance.OnQuestNotificationPopup("Good Job");
 
+        Quest quest = DataHolder.Quest(GameManager.instance.myPlayer.questId);
+        if (quest.coinValue > 0)
+        {
+            UIManager.instance.OnSpinRewardPanel(coinIcons[0], quest.coinValue.ToString());
+            GameManager.instance.AddCoin(quest.coinValue, GetKey());
+        } else if (quest.diamondValue > 0)
+        {
+            UIManager.instance.OnSpinRewardPanel(coinIcons[1], quest.diamondValue.ToString());
+            GameManager.instance.AddDiamond(quest.diamondValue, GetKey());
+        }
+        else if(quest.haveItem)
+        {
+            Item item = DataHolder.GetItem(quest.itemId);
+            string url = item.iconUrl.Replace("Assets/Game/Resources/", "");
+            url = url.Replace(".png", "");
+            UIManager.instance.OnSpinRewardPanel(Resources.Load<Sprite>(url), quest.itemNumber.ToString());
+            GameManager.instance.AddItem(quest.itemId,quest.itemNumber, GetKey());
+        }
+        
         if (TutorialManager.instance != null)
             TutorialManager.instance.EndQuest();
+        yield return new WaitForSeconds(2);
+        if (UIManager.instance.spinRewardPanel != null)
+            UIManager.instance.spinRewardPanel.Close();
 
+        GameManager.instance.myPlayer.questId++;
         state = QuestState.Rewarded;
     }
 
     public void EndCompleteQuest()
     {
-        
         state = QuestState.Ready;
         delayTime = 0;
         replayTime = 0;
@@ -341,7 +363,7 @@ public class QuestManager : MonoBehaviour
             }
             else if (state == QuestState.Complete)
             {
-                StartCompleteQuest();
+                StartCoroutine(StartCompleteQuest());
             }
             else if (state == QuestState.Rewarded)
             {
@@ -372,5 +394,9 @@ public class QuestManager : MonoBehaviour
             UIManager.instance.OnQuestNotificationPopup(DataHolder.Quest(GameManager.instance.myPlayer.questId).GetName(MageManager.instance.GetLanguage()));
     }
 
+    string GetKey()
+    {
+        return Utils.instance.Md5Sum(GameManager.instance.count.ToString() + GameManager.instance.myPlayer.playTime.ToString() + GameManager.instance.myPlayer.Happy.ToString() + "M@ge2013");
+    }
 
 }
