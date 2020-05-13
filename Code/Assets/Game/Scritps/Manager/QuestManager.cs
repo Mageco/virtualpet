@@ -14,7 +14,7 @@ public class QuestManager : MonoBehaviour
     float replayTime = 0;
     float maxReplayTime = 30;
     bool isReplay = true;
-    GameObject guideItem;
+    public Sprite[] coinIcons;
 
     void Awake()
     {
@@ -31,7 +31,7 @@ public class QuestManager : MonoBehaviour
         {
             yield return new WaitForEndOfFrame();
         }
-        if(GameManager.instance.myPlayer.originalVersion != Application.version)
+        if(!GameManager.instance.IsOldVersion())
             StartCoroutine(StartQuest());
     }    
 
@@ -48,7 +48,6 @@ public class QuestManager : MonoBehaviour
             if (questId == 0)
             {
                 petObject.data.Water = petObject.data.MaxWater;
-
                 yield return new WaitForSeconds(1);
                 UIManager.instance.OnQuestNotificationPopup("Congratulation");
                 yield return new WaitForSeconds(6);
@@ -129,10 +128,6 @@ public class QuestManager : MonoBehaviour
             {
             }
         }
-
-
-
-
         state = QuestState.Start;
     }
 

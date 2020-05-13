@@ -17,9 +17,10 @@ public class Quest
 	public int coinValue = 0;
     public int diamondValue = 0;
     public int expValue = 0;
-    //Dialog
+	public int itemNumber = 0;
+	//Dialog
 
-    public Quest()
+	public Quest()
 	{
 		iD = DataHolder.LastQuestID() + 1;
 		languageItem = new LanguageItem[DataHolder.Languages ().GetDataCount ()];

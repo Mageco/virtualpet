@@ -80,13 +80,15 @@ public class QuestTab : BaseTab
                    if(DataHolder.Item(tempId) != null)
                         DataHolder.Quest(selection).itemId = DataHolder.Item(tempId).iD;
                    lastSellection = selection;
-                    
+                    DataHolder.Quest(selection).itemNumber = EditorGUILayout.IntField("Number", DataHolder.Quest(selection).itemNumber, GUILayout.Width(pw.mWidth));
+
                 }
+                /*
                 DataHolder.Quest(selection).havePet = EditorGUILayout.Toggle("Item Reward", DataHolder.Quest(selection).havePet, GUILayout.Width(pw.mWidth));
                 if (DataHolder.Quest(selection).havePet)
                 {
                     DataHolder.Quest(selection).petId = EditorGUILayout.Popup("Pet", DataHolder.Quest(selection).petId, DataHolder.Pets().GetNameList(true), GUILayout.Width(pw.mWidth));
-                }
+                }*/
                 EditorGUILayout.Separator();
 			}
 			EditorGUILayout.EndVertical();
