@@ -131,9 +131,14 @@ public class TutorialManager : MonoBehaviour
             if (UIManager.instance.profilePanel == null)
             {
                 blackScreenUI.SetActive(true);
-                GameObject go = UIManager.instance.shopButton;
+                GameObject go = UIManager.instance.petButton;
                 AddSorting(go);
             }
+        }
+        //Do lucky spin
+        else if(questId == 14)
+        {
+            ItemManager.instance.SetCameraTarget(GameObject.FindGameObjectWithTag("LuckySpin").gameObject);
         }
     }
 
@@ -203,6 +208,8 @@ public class TutorialManager : MonoBehaviour
         }
         else if (questId == 13)
         {
+            Destroy(UIManager.instance.petButton.gameObject.GetComponent<Canvas>());
+            UIManager.instance.OnProfilePanel();
             handClickUI.transform.SetParent(blackScreenUI.transform);
             blackScreenUI.SetActive(false);
             handClickUI.SetActive(false);

@@ -170,11 +170,20 @@ public class QuestManager : MonoBehaviour
             {
                 yield return new WaitForSeconds(10);
                 OnQuestNotification();
+                yield return new WaitForSeconds(4);
+                if (UIManager.instance.questNotification != null)
+                    UIManager.instance.questNotification.Close();
                 if (TutorialManager.instance != null)
                     TutorialManager.instance.StartQuest();
             }
             else if (questId == 14)
             {
+                yield return new WaitForSeconds(10);
+                OnQuestNotification();
+                if (TutorialManager.instance != null)
+                    TutorialManager.instance.StartQuest();
+                
+
             }
             else if (questId == 15)
             {
@@ -386,7 +395,8 @@ public class QuestManager : MonoBehaviour
         }
         else if (questId == 14)
         {
-
+            if (GameManager.instance.myPlayer.spinedTime != "" && UIManager.instance.spinWheelPanel == null)
+                state = QuestState.Complete;
         }
         else if (questId == 15)
         {
