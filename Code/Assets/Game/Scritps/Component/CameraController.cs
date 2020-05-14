@@ -140,8 +140,7 @@ public class CameraController : MonoBehaviour
 			float x = this.transform.position.x;
 			float y = this.transform.position.y;
 			float delta1 = this.target.position.x - (this.transform.position.x - width * screenOffset);
-			if (delta1 < 0)
-				x = this.transform.position.x + delta1;
+
 
 			//	if (this.target.position.x < this.transform.position.x - width * screenOffset || this.target.position.x > this.transform.position.x + width * screenOffset)
 			//	x = Mathf.Lerp(this.transform.position.x, target.position.x + offset.x, damping * Time.deltaTime);
@@ -151,7 +150,23 @@ public class CameraController : MonoBehaviour
 
 			float delta2 = this.target.position.x - (this.transform.position.x + width * screenOffset);
 			if (delta2 > 0)
-				x = this.transform.position.x + delta2;
+            {
+                if(Vector2.Distance(target.transform.position,this.transform.position) > 1)
+					x = Mathf.Lerp(this.transform.position.x, this.transform.position.x + delta2, damping * Time.deltaTime);
+                else
+				    x = this.transform.position.x + delta2;
+			}
+			if (delta1 < 0)
+            {
+				if (Vector2.Distance(target.transform.position, this.transform.position) > 1)
+					x = Mathf.Lerp(this.transform.position.x, x = this.transform.position.x + delta1, damping * Time.deltaTime);
+				else
+					x = this.transform.position.x + delta1;
+			}
+				
+
+
+
 
 			x = Mathf.Clamp(x, boundX.x + width, boundX.y - width);
 			y = Mathf.Clamp(y, boundY.x + height, boundY.y - height);

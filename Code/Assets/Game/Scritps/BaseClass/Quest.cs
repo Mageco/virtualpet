@@ -16,6 +16,7 @@ public class Quest
 	public int petId = 0;
 	public int coinValue = 0;
     public int diamondValue = 0;
+	public int happyValue = 0;
     public int expValue = 0;
 	public int itemNumber = 0;
 	//Dialog

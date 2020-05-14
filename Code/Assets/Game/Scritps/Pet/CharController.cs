@@ -2805,13 +2805,14 @@ public class CharController : MonoBehaviour
     public void ResetData()
     {
         data.Health = data.MaxHealth * 0.7f;
-        data.Damage = data.MaxDamage * 0.7f;
+        data.Damage = data.MaxDamage * 0.3f;
         data.Food = data.MaxFood * 0.7f;
         data.Water = data.MaxWater * 0.7f;
         data.Dirty = data.MaxDirty * 0.6f;
         data.Pee = data.MaxPee * 0.3f;
         data.Shit = data.MaxShit * 0.3f;
         data.Sleep = data.MaxSleep * 0.7f;
+        data.Toy = data.MaxToy * 0.7f;
     }
 
 }

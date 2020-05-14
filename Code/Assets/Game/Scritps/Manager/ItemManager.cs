@@ -315,18 +315,23 @@ public class ItemManager : MonoBehaviour
                     item.Load(playerItem);
                     items.Add(item);
                     go.transform.parent = this.transform;
-                    if (item.itemType == ItemType.Bath || item.itemType == ItemType.Bed || item.itemType == ItemType.Toilet || item.itemType == ItemType.Food ||
-                        item.itemType == ItemType.Drink || item.itemType == ItemType.Table)
-                        item.transform.position = ItemManager.instance.GetRandomPoint(AreaType.Room);
-                    else if (item.itemType == ItemType.Fruit)
-                        item.transform.position = ItemManager.instance.GetRandomPoint(AreaType.Garden);
-                    else if (item.itemType == ItemType.MedicineBox || item.itemType == ItemType.Picture || item.itemType == ItemType.Clock)
-                        item.transform.position = ItemManager.instance.GetRandomPoint(AreaType.Wall);
-                    else if(item.itemType != ItemType.Room && item.itemType != ItemType.Gate && item.itemType != ItemType.Board)
-                        item.transform.position = ItemManager.instance.GetRandomPoint(AreaType.All);
 
+                    if(ES2.Exists("PlayTime"))
+                    {
+                        if (item.itemType == ItemType.Bath || item.itemType == ItemType.Bed || item.itemType == ItemType.Toilet || item.itemType == ItemType.Food ||
+                            item.itemType == ItemType.Drink || item.itemType == ItemType.Table)
+                            item.transform.position = ItemManager.instance.GetRandomPoint(AreaType.Room);
+                        else if (item.itemType == ItemType.Fruit)
+                            item.transform.position = ItemManager.instance.GetRandomPoint(AreaType.Garden);
+                        else if (item.itemType == ItemType.MedicineBox || item.itemType == ItemType.Picture || item.itemType == ItemType.Clock)
+                            item.transform.position = ItemManager.instance.GetRandomPoint(AreaType.Wall);
+                        else if (item.itemType != ItemType.Room && item.itemType != ItemType.Gate && item.itemType != ItemType.Board)
+                            item.transform.position = ItemManager.instance.GetRandomPoint(AreaType.All);
+
+                    }
                     if (item.GetComponent<Animator>() != null)
                         item.GetComponent<Animator>().Play("Idle", 0);
+
                 }
             }
         }       

@@ -39,7 +39,7 @@ public class QuestManager : MonoBehaviour
     IEnumerator StartQuest()
     {
         state = QuestState.Ready;
-        isReplay = false;
+        
         int questId = GameManager.instance.myPlayer.questId;
         CharController petObject = GameManager.instance.GetActivePetObject();
 
@@ -47,14 +47,15 @@ public class QuestManager : MonoBehaviour
         {
             if (questId == 0)
             {
+                isReplay = false;
                 petObject.ResetData();
                 yield return new WaitForSeconds(1);
-                UIManager.instance.OnQuestNotificationPopup("Congratulation");
-                yield return new WaitForSeconds(6);
+                UIManager.instance.OnQuestNotificationPopup(DataHolder.Dialog(187).GetName(MageManager.instance.GetLanguage()));
+                yield return new WaitForSeconds(8);
                 if (TutorialManager.instance != null)
                     TutorialManager.instance.StartQuest();
                 OnQuestNotification();
-                petObject.data.Food = 0;
+                petObject.data.Food = petObject.data.MaxFood * 0.09f;
             }
             else if (questId == 1)
             {
@@ -65,16 +66,38 @@ public class QuestManager : MonoBehaviour
             }
             else if (questId == 2)
             {
+                yield return new WaitForSeconds(10);
+                OnQuestNotification();
+                if (TutorialManager.instance != null)
+                    TutorialManager.instance.StartQuest();
+                petObject.data.Water = petObject.data.MaxWater * 0.09f;
             }
             else if (questId == 3)
             {
+                yield return new WaitForSeconds(5);
+                OnQuestNotification();
+                if (TutorialManager.instance != null)
+                    TutorialManager.instance.StartQuest();
+                MouseController mouse = FindObjectOfType<MouseController>();
+                if (mouse != null)
+                    mouse.maxTimeSpawn = 0;
             }
             else if (questId == 4)
             {
-
+                isReplay = false;
+                yield return new WaitForSeconds(5);
+                OnQuestNotification();
+                if (TutorialManager.instance != null)
+                    TutorialManager.instance.StartQuest();
+                petObject.data.Dirty = petObject.data.MaxDirty * 0.6f;
             }
             else if (questId == 5)
             {
+                yield return new WaitForSeconds(1);
+                OnQuestNotification();
+                if (TutorialManager.instance != null)
+                    TutorialManager.instance.StartQuest();
+                petObject.data.Dirty = petObject.data.MaxDirty * 0.75f;
             }
             else if (questId == 6)
             {
@@ -129,6 +152,7 @@ public class QuestManager : MonoBehaviour
             {
             }
         }
+        yield return new WaitForSeconds(2);
         state = QuestState.Start;
     }
 
@@ -142,23 +166,35 @@ public class QuestManager : MonoBehaviour
 
     IEnumerator StartCompleteQuest()
     {
+        state = QuestState.Rewarded;
         
-        if (UIManager.instance.questNotification != null)
-            UIManager.instance.questNotification.Close();
-        UIManager.instance.OnQuestNotificationPopup("Good Job");
 
         Quest quest = DataHolder.Quest(GameManager.instance.myPlayer.questId);
         if (quest.coinValue > 0)
         {
+            UIManager.instance.OnQuestNotificationPopup(DataHolder.Dialog(186).GetName(MageManager.instance.GetLanguage()));
+            yield return new WaitForSeconds(1);
             UIManager.instance.OnSpinRewardPanel(coinIcons[0], quest.coinValue.ToString());
             GameManager.instance.AddCoin(quest.coinValue, GetKey());
+            
         } else if (quest.diamondValue > 0)
         {
+            UIManager.instance.OnQuestNotificationPopup(DataHolder.Dialog(186).GetName(MageManager.instance.GetLanguage()));
+            yield return new WaitForSeconds(1);
             UIManager.instance.OnSpinRewardPanel(coinIcons[1], quest.diamondValue.ToString());
             GameManager.instance.AddDiamond(quest.diamondValue, GetKey());
         }
+        else if (quest.happyValue > 0)
+        {
+            UIManager.instance.OnQuestNotificationPopup(DataHolder.Dialog(186).GetName(MageManager.instance.GetLanguage()));
+            yield return new WaitForSeconds(1);
+            UIManager.instance.OnSpinRewardPanel(coinIcons[2], quest.happyValue.ToString());
+            GameManager.instance.AddHappy(quest.happyValue, GetKey());
+        }
         else if(quest.haveItem)
         {
+            UIManager.instance.OnQuestNotificationPopup(DataHolder.Dialog(186).GetName(MageManager.instance.GetLanguage()));
+            yield return new WaitForSeconds(1);
             Item item = DataHolder.GetItem(quest.itemId);
             string url = item.iconUrl.Replace("Assets/Game/Resources/", "");
             url = url.Replace(".png", "");
@@ -172,8 +208,12 @@ public class QuestManager : MonoBehaviour
         if (UIManager.instance.spinRewardPanel != null)
             UIManager.instance.spinRewardPanel.Close();
 
+        if (UIManager.instance.questNotification != null)
+             UIManager.instance.questNotification.Close();
+
+
         GameManager.instance.myPlayer.questId++;
-        state = QuestState.Rewarded;
+        EndCompleteQuest();
     }
 
     public void EndCompleteQuest()
@@ -181,8 +221,14 @@ public class QuestManager : MonoBehaviour
         state = QuestState.Ready;
         delayTime = 0;
         replayTime = 0;
+        isReplay = true;
         GameManager.instance.myPlayer.questValue = 0;
         StartCoroutine(StartQuest());
+    }
+
+    public void OnCompleteQuest()
+    {
+        state = QuestState.Complete;
     }
 
     public void CheckQuestComplete()
@@ -199,10 +245,7 @@ public class QuestManager : MonoBehaviour
             }
         }
         else if (questId == 1) {
-            if (GameManager.instance.GetAchivement(1) >= 1)
-            {
-                state = QuestState.Complete;
-            }
+
         } 
         else if (questId == 2)
         {
@@ -213,20 +256,22 @@ public class QuestManager : MonoBehaviour
         }
         else if (questId == 3)
         {
-
+            if (GameManager.instance.GetAchivement(18) >= 1)
+            {
                 state = QuestState.Complete;
-            
+            }
         }
         else if (questId == 4)
         {
-            if (FindObjectOfType<ItemDirty>() == null)
+            if (GameManager.instance.IsEquipItem(2))
             {
                 state = QuestState.Complete;
             }
         }
         else if (questId == 5)
         {
-            if (GameManager.instance.GetAchivement(4) >= 1)
+            Debug.Log(GameManager.instance.GetAchivement(5));
+            if (GameManager.instance.GetAchivement(5) >= 1)
             {
                 state = QuestState.Complete;
             }
@@ -335,20 +380,6 @@ public class QuestManager : MonoBehaviour
                 state = QuestState.Complete;
             }
         }
-        else if (questId == 21)
-        {
-            if (GameManager.instance.GetAchivement(20) >= 1)
-            {
-                state = QuestState.Complete;
-            }
-        }
-        else if (questId == 22)
-        {
-            if (GameManager.instance.GetAchivement(20) >= 1)
-            {
-                state = QuestState.Complete;
-            }
-        }
     }
 
     // Update is called once per frame
@@ -365,15 +396,11 @@ public class QuestManager : MonoBehaviour
             {
                 StartCoroutine(StartCompleteQuest());
             }
-            else if (state == QuestState.Rewarded)
-            {
-                EndCompleteQuest();
-            }
         }
         else
             time += Time.deltaTime;
 
-        if(state == QuestState.Start)
+        if(state == QuestState.Start && isReplay)
         {
             if (replayTime > maxReplayTime)
             {

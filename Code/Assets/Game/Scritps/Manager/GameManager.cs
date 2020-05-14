@@ -1323,15 +1323,17 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            AddCoin(100, GetKey());
+            AddCoin(200, GetKey());
             AddDiamond(1, GetKey());
-            AddHappy(10, GetKey());
+            AddHappy(0, GetKey());
         }
 
         AddItem(17, GetKey());
         //AddItem(41, GetKey());
         AddItem(170, GetKey());
-
+        AddItem(8, GetKey());
+        AddItem(13, GetKey());
+        AddItem(7, GetKey());
         /*
         AddItem(77, GetKey());
         AddItem(8, GetKey());
