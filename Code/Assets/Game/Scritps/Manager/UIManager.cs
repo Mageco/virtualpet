@@ -39,6 +39,7 @@ public class UIManager : MonoBehaviour
     public GameObject accessoryPanelPrefab;
     public GameObject inventoryPanelPrefab;
     public GameObject newVersionPanelPrefab;
+    public GameObject itemInfoUIPrefab;
     
 
     public static UIManager instance;
@@ -109,6 +110,8 @@ public class UIManager : MonoBehaviour
     public InventoryPanel inventoryPanel;
     [HideInInspector]
     public GuideUI newVersionPanel;
+    [HideInInspector]
+    public ItemInfoUI itemInfoUI;
 
     public GameObject achivementNotification;
     public GameObject giftNotification;
@@ -117,8 +120,6 @@ public class UIManager : MonoBehaviour
     [HideInInspector]
     public AchivementPanel achivementPanel;
 
-
-    ItemInfoUI itemInfoUI;
     TreatmentPopup treatmentPopup;
 
     public GameObject homeUI;
@@ -869,6 +870,23 @@ public class UIManager : MonoBehaviour
             popup.GetComponent<Popup>().Open();
             inventoryPanel = popup.GetComponent<InventoryPanel>();
             inventoryPanel.Load();
+        }
+    }
+
+    public void OnItemInfoUIPanel(int itemId,bool isCharacter)
+    {
+        if (itemInfoUI == null)
+        {
+            var popup = Instantiate(itemInfoUIPrefab) as GameObject;
+            popup.SetActive(true);
+            popup.transform.localScale = Vector3.zero;
+            popup.transform.SetParent(GameObject.Find("Canvas").transform, false);
+            popup.GetComponent<Popup>().Open();
+            itemInfoUI = popup.GetComponent<ItemInfoUI>();
+            if(isCharacter)
+                itemInfoUI.LoadPet(itemId);
+            else
+                itemInfoUI.LoadItem(itemId);
         }
     }
 

@@ -56,19 +56,23 @@ public class PetTab : BaseTab
 
             DataHolder.Pet(selection).shopOrder = EditorGUILayout.IntField("Shop Order", DataHolder.Pet(selection).shopOrder, GUILayout.Width(pw.mWidth));
 
-            //EditorGUILayout.BeginVertical("box");
-            //fold4 = EditorGUILayout.Foldout(fold4, "Pet Name");
-            //if (fold4)
-            //{
-            //    for (int i = 0; i < DataHolder.Languages().GetDataCount(); i++)
-            //    {
+            EditorGUILayout.BeginVertical("box");
+            fold4 = EditorGUILayout.Foldout(fold4, "Pet Name");
+            if (fold4)
+
+            {
+                EditorGUILayout.LabelField(DataHolder.Language(0));
+                DataHolder.Pet(selection).languageItem[0].Name = EditorGUILayout.TextField("Name", DataHolder.Pet(selection).languageItem[0].Name, GUILayout.Width(pw.mWidth * 2));
+
+                for (int i = 0; i < DataHolder.Languages().GetDataCount(); i++)
+                {
                     EditorGUILayout.LabelField(DataHolder.Language(0));
-                    DataHolder.Pet(selection).languageItem[0].Name = EditorGUILayout.TextField("Name", DataHolder.Pet(selection).languageItem[0].Name, GUILayout.Width(pw.mWidth * 2));
-                    //DataHolder.Pet(selection).languageItem[i].Description = EditorGUILayout.TextField("Description", DataHolder.Pet(selection).languageItem[i].Description, GUILayout.Width(pw.mWidth * 2));
+                    //DataHolder.Pet(selection).languageItem[0].Name = EditorGUILayout.TextField("Name", DataHolder.Pet(selection).languageItem[0].Name, GUILayout.Width(pw.mWidth * 2));
+                    DataHolder.Pet(selection).languageItem[i].Description = EditorGUILayout.TextField("Description", DataHolder.Pet(selection).languageItem[i].Description, GUILayout.Width(pw.mWidth * 2));
                     EditorGUILayout.Separator();
-             //   }
-            //}
-            //EditorGUILayout.EndVertical();
+                }
+            }
+            EditorGUILayout.EndVertical();
             
             
 

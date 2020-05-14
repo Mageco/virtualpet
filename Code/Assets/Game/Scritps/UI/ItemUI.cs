@@ -475,23 +475,26 @@ public class ItemUI : MonoBehaviour
 
     public void OnItemInfo()
     {
-
-        if(!isCharacter && !isLevelRequire)
+        MageManager.instance.PlaySound("BubbleButton", false);
+        if (!isCharacter && !isLevelRequire)
         {
             if(itemId == 128)
             {
                 UIManager.instance.OnChestSalePanel(RareType.Common);
+                return;
             }else if(itemId == 129)
             {
                 UIManager.instance.OnChestSalePanel(RareType.Rare);
+                return;
             }
             else if (itemId == 130)
             {
                 UIManager.instance.OnChestSalePanel(RareType.Epic);
+                return;
             }
         }
-        //MageManager.instance.PlaySoundName("BubbleButton", false);
-        //UIManager.instance.OnItemInfoPanel(itemId, isCharacter);
+
+        UIManager.instance.OnItemInfoUIPanel(itemId, isCharacter);
     }
 
 }

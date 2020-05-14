@@ -741,9 +741,9 @@ public class ItemManager : MonoBehaviour
         if (t > 36000)
             t = 36000;
 
-        coin = (int)t/3600 * 50;
+        coin = (int)t/3600 * 100;
         happy = (int)t/3600 * 20 * GameManager.instance.GetTotalPetNumber();
-        exp = (int)t / 3600 * 5;
+        exp = (int)t / 3600 * 10;
 
         if (t >= 3600)
             UIManager.instance.OnWelcomeBack(coin, happy, exp);
