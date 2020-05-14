@@ -222,4 +222,10 @@ public class InventoryUI : MonoBehaviour
         if (UIManager.instance.inventoryPanel != null)
             UIManager.instance.inventoryPanel.Load();
     }
+
+    public void OnItemInfo()
+    {
+        MageManager.instance.PlaySound("BubbleButton", false);
+        UIManager.instance.OnItemInfoUIPanel(itemId, false);
+    }
 }

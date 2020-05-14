@@ -197,4 +197,10 @@ public class ProfileUI : MonoBehaviour
             MageManager.instance.OnNotificationPopup(DataHolder.Dialog(151).GetName(MageManager.instance.GetLanguage()));
         }
     }
+
+    public void OnItemInfo()
+    {
+        MageManager.instance.PlaySound("BubbleButton", false);
+        UIManager.instance.OnItemInfoUIPanel(playerPet.iD, true);
+    }
 }

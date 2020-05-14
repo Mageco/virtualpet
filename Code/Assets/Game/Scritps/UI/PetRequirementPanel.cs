@@ -92,7 +92,7 @@ public class PetRequirementPanel : MonoBehaviour
     void OffAllIcon()
     {
         //petPrice.gameObject.SetActive(false);
-        happyIcon.SetActive(false);
+        //happyIcon.SetActive(false);
         diamonIcon.SetActive(false);
         coinIcon.SetActive(false);
     }
@@ -134,7 +134,7 @@ public class PetRequirementPanel : MonoBehaviour
         string url = i.iconUrl.Replace("Assets/Game/Resources/", "");
         url = url.Replace(".png", "");
         int n = GameManager.instance.GetItemNumber(id);
-        item.Load(url,n,number);
+        item.Load(id,url,n,number);
 
         if (n < number)
             canBuy = false;
