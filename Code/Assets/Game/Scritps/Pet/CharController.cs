@@ -1796,16 +1796,19 @@ public class CharController : MonoBehaviour
                 {
                     if (t > maxTime)
                     {
+                        t = 0;
+                        maxTime = Random.Range(1, 5);
+                        n = Random.Range(0, 100);
+
                         if (n < 30)
                             anim.Play("Soap", 0);
                         else if(n < 70)
                             anim.Play("Shower", 0);
                         else
+                        {
                             anim.Play("Shake", 0);
- 
-                        t = 0;
-                        maxTime = Random.Range(1, 5);
-                        n = Random.Range(0, 100);
+                            maxTime = 1;
+                        }
                     }
                     else
                         t += Time.deltaTime;
@@ -1983,9 +1986,21 @@ public class CharController : MonoBehaviour
 
                 MageManager.instance.PlaySound3D("Eat", false, this.transform.position);
                 anim.Play("Eat", 0);
+                float time = 0;
+                float maxTime = Random.Range(6, 10);
                 //yield return StartCoroutine(Wait(0.1f));
                 while (item != null && data.Food < value && !isAbort && isContinue)
                 {
+                    if(time > maxTime)
+                    {
+                        anim.Play("Idle_L", 0);
+                        yield return StartCoroutine(Wait(Random.Range(1f, 1.5f)));
+                        time = 0;
+                    }else
+                    {
+                        anim.Play("Eat", 0);
+                        time += Time.deltaTime;
+                    }
                     data.Food += data.MaxFood/eatRate * Time.deltaTime;
                     item.Eat(data.MaxFood / eatRate * Time.deltaTime);
                     if (!item.CanEat())
@@ -2376,12 +2391,17 @@ public class CharController : MonoBehaviour
         
         if (equipment.toyType == ToyType.Jump)
         {
-            SetDirection(Direction.L);
+            
             dropPosition = equipment.GetAnchorPoint(this).position + new Vector3(0, Random.Range(-1f, 1f), 0);
             agent.transform.position = dropPosition;
             yield return new WaitForEndOfFrame();
             while (equipment != null && !isAbort && data.Toy < value)
             {
+                int ran = Random.Range(0, 100);
+                if (ran > 50)
+                    SetDirection(Direction.L);
+                else
+                    SetDirection(Direction.R);
                 equipment.OnActive();
 
                 int r = Random.Range(0, 100);
@@ -2462,7 +2482,7 @@ public class CharController : MonoBehaviour
             MageManager.instance.PlaySound3D("Wheel", false,this.transform.position);
             charScale.speedFactor = 2f;
             anim.speed = 2f;
-            SetDirection(Direction.L);
+            //SetDirection(Direction.L);
             equipment.OnActive();
             while (equipment != null && data.Toy < value && !isAbort)
             {
@@ -2935,8 +2955,8 @@ public class CharController : MonoBehaviour
     {
         data.Health = data.MaxHealth * 0.7f;
         data.Damage = data.MaxDamage * 0.3f;
-        data.Food = data.MaxFood * 0.7f;
-        data.Water = data.MaxWater * 0.7f;
+        data.Food = data.MaxFood * 0.3f;
+        data.Water = data.MaxWater * 0.3f;
         data.Dirty = data.MaxDirty * 0.6f;
         data.Pee = data.MaxPee * 0.3f;
         data.Shit = data.MaxShit * 0.3f;

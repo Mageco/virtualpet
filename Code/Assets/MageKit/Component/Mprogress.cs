@@ -10,13 +10,21 @@ public class Mprogress : MonoBehaviour {
 	float progress = 0;
     public Image icon;
     public Image loadingImage;
-	public int[] tipIds;
+	List<int> tipIds = new List<int>();
 
-	// Use this for initialization
-	void OnEnable () {
+    private void Awake()
+    {
+		for (int i = 165; i <= 185; i++)
+		{
+			tipIds.Add(i);
+		}
+	}
+
+    // Use this for initialization
+    void OnEnable () {
 		progress = 0;
 		fill.fillAmount = 0;
-        int id = Random.Range(0,tipIds.Length);
+        int id = Random.Range(0,tipIds.Count);
         tip.text = DataHolder.Dialog(tipIds[id]).GetName(MageManager.instance.GetLanguage());
         int n = Random.Range(0, DataHolder.Pets().GetDataCount());
 		string url = DataHolder.Pet(n).iconUrl.Replace("Assets/Game/Resources/", "");

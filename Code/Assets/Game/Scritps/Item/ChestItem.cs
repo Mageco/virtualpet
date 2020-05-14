@@ -15,28 +15,32 @@ public class ChestItem : MonoBehaviour
     bool isActive = false;
     public TextMesh valueText;
     Vector3 clickPosition;
-
+    int itemId = 0;
     void Awake()
     {
         int n = Random.Range(0, 100);
 
-        /*
-        if (n < 20)
+        int ran = Random.Range(0, 100);
+        if (ran < 40)
         {
-            priceType = PriceType.Coin;
-            value = Random.Range(150, 250);
+            itemId = 0;
+            value = Random.Range(2,4);
         }
-        else if(n < 40)
+        else if (ran < 60)
         {
-            priceType = PriceType.Happy;
-            value = Random.Range(GameManager.instance.myPlayer.petCount * 10, GameManager.instance.myPlayer.petCount * 20);
+            itemId = 239;
+            value = Random.Range(1, 3);
+        }
+        else if (ran < 80)
+        {
+            itemId = 240;
+            value = Random.Range(1, 3);
         }
         else
-        {*/
-        priceType = PriceType.Diamond;
-        value = Random.Range(2,4);
-        //}
-
+        {
+            itemId = 241;
+            value = Random.Range(1, 3);
+        }
         animator = this.GetComponent<Animator>();
             
     }
@@ -92,6 +96,7 @@ public class ChestItem : MonoBehaviour
         isActive = true;
         valueText.text = "+" + value.ToString();
         MageManager.instance.PlaySound3D("Tinerbell", false,this.transform.position);
+        /*
         if (priceType == PriceType.Coin)
         {
             animator.Play("Active_Coin",0);
@@ -104,13 +109,20 @@ public class ChestItem : MonoBehaviour
         }
         else if (priceType == PriceType.Diamond)
         {
-            animator.Play("Active_Diamond", 0);
-            GameManager.instance.AddDiamond(value, Utils.instance.Md5Sum(GameManager.instance.count.ToString() + GameManager.instance.myPlayer.playTime.ToString() + GameManager.instance.myPlayer.Happy.ToString() + "M@ge2013"));
-        }
-        
-        
+        }*/
+        animator.Play("Active_Diamond", 0);
         yield return new WaitForEndOfFrame();
         yield return new WaitForSeconds(animator.GetCurrentAnimatorStateInfo(0).length);
+        if (itemId == 0)
+            GameManager.instance.AddDiamond(value, GetKey());
+        else
+        {
+            Item item = DataHolder.GetItem(itemId);
+            string url = item.iconUrl.Replace("Assets/Game/Resources/", "");
+            url = url.Replace(".png", "");
+            UIManager.instance.OnSpinRewardPanel(Resources.Load<Sprite>(url), value.ToString());
+            GameManager.instance.AddItem(itemId, value, GetKey());
+        }
         Destroy(this.gameObject);
     }
 
@@ -121,5 +133,10 @@ public class ChestItem : MonoBehaviour
         List<RaycastResult> results = new List<RaycastResult>();
         EventSystem.current.RaycastAll(eventDataCurrentPosition, results);
         return results.Count > 0;
+    }
+
+    string GetKey()
+    {
+        return Utils.instance.Md5Sum(GameManager.instance.count.ToString() + GameManager.instance.myPlayer.playTime.ToString() + GameManager.instance.myPlayer.Happy.ToString() + "M@ge2013");
     }
 }

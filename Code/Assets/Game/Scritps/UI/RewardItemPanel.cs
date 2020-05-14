@@ -5,9 +5,7 @@ using UnityEngine.UI;
 
 public class RewardItemPanel : MonoBehaviour
 {
-    public GameObject happyIcon;
-    public GameObject coinIcon;
-    public GameObject diamondIcon;
+    int itemId = 0;
     public Text priceText;
     RewardType rewardType = RewardType.Chest;
     ChestItem chestItem;
@@ -26,22 +24,8 @@ public class RewardItemPanel : MonoBehaviour
 
     public void Load(RewardType type,ChestItem item)
     {
-        coinIcon.SetActive(false);
-        happyIcon.SetActive(false);
-        diamondIcon.SetActive(false);
         rewardType = type;
         chestItem = item;
-        if(item.priceType == PriceType.Coin)
-        {
-            coinIcon.SetActive(true);
-        }else if(item.priceType == PriceType.Happy)
-        {
-            happyIcon.SetActive(true);
-        }
-        else if (item.priceType == PriceType.Diamond)
-        {
-            diamondIcon.SetActive(true);
-        }
         priceText.text = "??";
     }
 

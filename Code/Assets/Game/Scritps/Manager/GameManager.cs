@@ -1191,7 +1191,7 @@ public class GameManager : MonoBehaviour
 
     public void ConvertPlayer()
     {
-        Debug.Log(myPlayer.ToJson());
+        //Debug.Log(myPlayer.ToJson());
         if (IsPreviousData())
         {
             Debug.Log("Set quest id 100");
@@ -1358,7 +1358,7 @@ public class GameManager : MonoBehaviour
         foreach (PlayerAchivement a in myPlayer.achivements)
         {
             Achivement achivement = DataHolder.GetAchivement(a.achivementId);
-            if (achivement.achivementType == achivementType)
+            if (achivement != null && achivement.achivementType == achivementType)
             {
                 if (achivement.achivementType == AchivementType.Do_Action)
                 {

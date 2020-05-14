@@ -144,6 +144,7 @@ public class TutorialManager : MonoBehaviour
         //Go to the forest
         else if (questId == 18)
         {
+            /*
             if(ItemManager.instance != null)
             {
                 if (UIManager.instance.mapRequirementPanel == null && ItemManager.instance != null)
@@ -152,17 +153,17 @@ public class TutorialManager : MonoBehaviour
 
                     if (forest != null)
                     {
-                        blackScreen.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, 0);
-                        blackScreen.SetActive(true);
-                        handClick.SetActive(true);
+                       // blackScreen.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, 0);
+                       // blackScreen.SetActive(true);
+                       // handClick.SetActive(true);
                         ItemManager.instance.SetCameraTarget(forest.gameObject);
-                        Camera.main.GetComponent<CameraController>().screenOffset = 0;
-                        blackScreenButton.SetActive(true);
-                        handClick.transform.position = forest.transform.position + new Vector3(0,0, -1000);
-                        handClick.GetComponent<Animator>().Play("Click", 0);
+                      //  Camera.main.GetComponent<CameraController>().screenOffset = 0;
+                      //  blackScreenButton.SetActive(true);
+                      //  handClick.transform.position = forest.transform.position + new Vector3(0,0, -1000);
+                      //  handClick.GetComponent<Animator>().Play("Click", 0);
                     }                   
                 }
-            }
+            }*/
 
         }
     }

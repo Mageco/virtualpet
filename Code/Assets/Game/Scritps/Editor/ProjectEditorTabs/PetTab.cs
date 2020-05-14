@@ -66,7 +66,7 @@ public class PetTab : BaseTab
 
                 for (int i = 0; i < DataHolder.Languages().GetDataCount(); i++)
                 {
-                    EditorGUILayout.LabelField(DataHolder.Language(0));
+                    EditorGUILayout.LabelField(DataHolder.Language(i));
                     //DataHolder.Pet(selection).languageItem[0].Name = EditorGUILayout.TextField("Name", DataHolder.Pet(selection).languageItem[0].Name, GUILayout.Width(pw.mWidth * 2));
                     DataHolder.Pet(selection).languageItem[i].Description = EditorGUILayout.TextField("Description", DataHolder.Pet(selection).languageItem[i].Description, GUILayout.Width(pw.mWidth * 2));
                     EditorGUILayout.Separator();

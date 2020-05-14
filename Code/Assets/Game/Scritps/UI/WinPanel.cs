@@ -41,26 +41,17 @@ public class WinPanel : MonoBehaviour
         bonus = c;
         animator = this.GetComponent<Animator>();
        
-
-
         if (isWin)
         {
             animator.Play("Minigame_Win_Open", 0);
             completeText.gameObject.SetActive(true);
             replayText.gameObject.SetActive(false);
             nextText.gameObject.SetActive(true);
-
-
-            if (minigameId == 0)
-            {
-                if ((GameManager.instance.myPlayer.minigameLevels[0] + 1) % 5 == 0 || GameManager.instance.myPlayer.minigameLevels[0] == 0)
-                    itemId = 72;
-            }
         }
         else
         {
             animator.Play("Minigame_Lose_Open", 0);
-           completeText.gameObject.SetActive(false);
+            completeText.gameObject.SetActive(false);
             replayText.gameObject.SetActive(true);
             nextText.gameObject.SetActive(false);
         }
@@ -69,17 +60,18 @@ public class WinPanel : MonoBehaviour
 
         if(c >= 2)
         {
-            if (minigameId == 0 && itemId == 0)
+            if (minigameId == 0)
             {
-
-                if (r < 70)
+                if (r < 60)
                 {
                     itemId = 216;
                 }
-                else if (r < 95)
+                else if (r < 85)
                     itemId = 217;
-                else
+                else if (r < 95)
                     itemId = 218;
+                else
+                    itemId = 72;
             }
             else if (minigameId == 1)
             {

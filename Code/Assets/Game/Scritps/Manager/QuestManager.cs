@@ -92,7 +92,7 @@ public class QuestManager : MonoBehaviour
                 if (TutorialManager.instance != null)
                     TutorialManager.instance.StartQuest();
                 petObject.ResetData();
-                petObject.data.Dirty = petObject.data.MaxDirty * 0.6f;
+                petObject.data.Dirty = petObject.data.MaxDirty * 0.75f;
             }
             else if (questId == 5)
             {
@@ -187,15 +187,15 @@ public class QuestManager : MonoBehaviour
             {
                 yield return new WaitForSeconds(3);
                 OnQuestNotification();
-                UIManager.instance.OnQuestNotificationPopup(DataHolder.Dialog(190).GetName(MageManager.instance.GetLanguage()));
-                ItemManager.instance.SetCameraTarget(ItemManager.instance.GetRandomItem(ItemType.Board).gameObject);
-                yield return new WaitForSeconds(3);
                 ItemManager.instance.ResetCameraTarget();
                 if (TutorialManager.instance != null)
                     TutorialManager.instance.StartQuest();
             }
             else if (questId == 16)
             {
+                yield return new WaitForSeconds(5);
+                UIManager.instance.OnQuestNotificationPopup(DataHolder.Dialog(190).GetName(MageManager.instance.GetLanguage()));
+                ItemManager.instance.SetCameraTarget(ItemManager.instance.GetRandomItem(ItemType.Board).gameObject);    
                 yield return new WaitForSeconds(5);
                 OnQuestNotification();
                 if (TutorialManager.instance != null)

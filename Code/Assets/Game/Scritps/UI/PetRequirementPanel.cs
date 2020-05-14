@@ -16,6 +16,7 @@ public class PetRequirementPanel : MonoBehaviour
     public GameObject coinIcon;
     public GameObject diamonIcon;
     public GameObject happyIcon;
+    public Text description;
 
     public Transform anchor;
     List<PetRequirementUI> items = new List<PetRequirementUI>();
@@ -36,7 +37,7 @@ public class PetRequirementPanel : MonoBehaviour
         string url = pet.iconUrl.Replace("Assets/Game/Resources/", "");
         url = url.Replace(".png", "");
         petAvatar.sprite = Resources.Load<Sprite>(url) as Sprite;
-
+        
         OffAllIcon();
 
         /*
@@ -58,6 +59,8 @@ public class PetRequirementPanel : MonoBehaviour
         }*/
         
         petName.text = pet.GetName(0);
+        Debug.Log(pet.GetDescription(MageManager.instance.GetLanguage()));
+        description.text = pet.GetDescription(MageManager.instance.GetLanguage());
         //petDescription.text = pet.GetDescription(MageManager.instance.GetLanguage(0));
         requireText.text = DataHolder.Dialog(15).GetDescription(MageManager.instance.GetLanguage());
         price  = pet.requireValue;

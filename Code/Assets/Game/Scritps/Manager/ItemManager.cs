@@ -89,6 +89,7 @@ public class ItemManager : MonoBehaviour
         else
         {
             LoadItemData(awayTime);
+            Debug.Log("AwayTime " + awayTime);
         }
            
         isLoad = true;
@@ -727,6 +728,22 @@ public class ItemManager : MonoBehaviour
                 if (GetItem(item.id) != null && GetItem(item.id).itemType != ItemType.Room && GetItem(item.id).itemType != ItemType.Gate)
                 {
                     GetItem(item.id).transform.position = item.position;
+                }
+            }
+        }
+
+        if (awayTime < 3600)
+        {
+            foreach (CharController pet in GameManager.instance.GetPetObjects())
+            {
+                Debug.Log(pet.name);
+                if (pet.emotionStatus != EmotionStatus.Sad)
+                {
+                    int value = Mathf.Clamp((int)awayTime / 30, 0, 10);
+                    for (int i = 0; i < value; i++)
+                    {
+                        SpawnPetHappy(GetRandomPoint(AreaType.All),3*(pet.data.rateHappy + pet.data.level / 5));
+                    }
                 }
             }
         }
