@@ -138,7 +138,10 @@ public class ItemData : BaseData
 			for(int i=0; i<items.Length; i++)
 			{
 				if (category == -1 || (int)items [i].itemType == category) {
-					string text = items[i].iD.ToString() + " : " + items [i].GetName(0); 
+					string text = items[i].iD.ToString() + " : " + items [i].prefabName;
+                    if(items[i].prefabName == "")
+						text = items[i].iD.ToString() + " : " + items[i].GetName(0);
+
 					result.Add (text);
 				}
 			}
@@ -155,7 +158,7 @@ public class ItemData : BaseData
 			{
 				if (items[i].itemType == itemType)
 				{
-					string text = items[i].iD.ToString() + " : " + items[i].GetName(0);
+					string text = items[i].iD.ToString() + " : " + items[i].prefabName;
 					result.Add(text);
 				}
 			}

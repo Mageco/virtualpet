@@ -7,6 +7,7 @@ using MageApi;
 public class TranslateManager : MonoBehaviour
 {
     public static TranslateManager instance;
+    public bool isResetItem = false;
     int loadCount = 0;
     int loadProgress = 0;
     private void Awake()
@@ -157,6 +158,76 @@ public class TranslateManager : MonoBehaviour
 
                             DataHolder.Achivement(m).SetName(n, result.translations[0].translatedText);
                             Debug.Log(m + " " + n + "  " + DataHolder.Achivement(m).GetName(n));
+                            loadProgress++;
+                        },
+                            (errorStatus) => {
+                                ApiUtils.Log("Error: " + errorStatus);
+                                //do some other processing here
+                            },
+                            () => {
+                                //timeout handler here
+                                ApiUtils.Log("Api call is timeout");
+                            }
+                        );
+                    yield return new WaitForEndOfFrame();
+                }
+            }
+        }
+
+        //Item 
+        for (int i = 0; i < DataHolder.Items().GetDataCount(); i++)
+        {
+            for (int j = 1; j < DataHolder.Languages().GetDataCount(); j++)
+            {
+                if (DataHolder.Item(i).languageItem.Length < j)
+                {
+                    DataHolder.Item(i).AddLanguageItem();
+                }
+
+                //Name
+                if ((DataHolder.Item(i).GetName(j) == "" || isResetItem) && DataHolder.Item(i).GetName(0) != "")
+                {
+                    int m = i;
+                    int n = j;
+                    loadCount++;
+                    GoogleTranslationRequest request = new GoogleTranslationRequest(DataHolder.Languages().GetLanguageCode(j), DataHolder.Item(i).GetName(0));
+
+                    //call to login api
+                    GoogleHelper.instance.SendTranslationApi(
+                        request,
+                        (result) => {
+
+                            DataHolder.Item(m).SetName(n, result.translations[0].translatedText);
+                            Debug.Log(m + " " + n + "  " + DataHolder.Item(m).GetName(n));
+                            loadProgress++;
+                        },
+                            (errorStatus) => {
+                                ApiUtils.Log("Error: " + errorStatus);
+                                //do some other processing here
+                            },
+                            () => {
+                                //timeout handler here
+                                ApiUtils.Log("Api call is timeout");
+                            }
+                        );
+                    yield return new WaitForEndOfFrame();
+                }
+
+                //Description
+                if ((DataHolder.Item(i).GetDescription(j) == "" || isResetItem) && DataHolder.Item(i).GetDescription(0) != "")
+                {
+                    int m = i;
+                    int n = j;
+                    loadCount++;
+                    GoogleTranslationRequest request = new GoogleTranslationRequest(DataHolder.Languages().GetLanguageCode(j), DataHolder.Item(i).GetDescription(0));
+
+                    //call to login api
+                    GoogleHelper.instance.SendTranslationApi(
+                        request,
+                        (result) => {
+
+                            DataHolder.Item(m).SetDescription(n, result.translations[0].translatedText);
+                            Debug.Log(m + " " + n + "  " + DataHolder.Item(m).GetDescription(n));
                             loadProgress++;
                         },
                             (errorStatus) => {
