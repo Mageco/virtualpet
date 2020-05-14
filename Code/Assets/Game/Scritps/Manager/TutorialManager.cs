@@ -67,6 +67,16 @@ public class TutorialManager : MonoBehaviour
                 StartCoroutine(HoldToBath());
             }
         }
+        //Buy Toy
+        else if (questId == 7)
+        {
+            OnShop(4, 16);
+        }
+        //Buy Medical Box
+        else if (questId == 9)
+        {
+            OnShop(3, 77);
+        }
         //Chicken defend
         else if (questId == 11)
         {
@@ -133,8 +143,8 @@ public class TutorialManager : MonoBehaviour
             QuestManager.instance.OnCompleteQuest();
             handClick.SetActive(false);
             FindObjectOfType<EatItem>().Fill();
-            if (GameManager.instance.GetPetObject(0) != null)
-                GameManager.instance.GetPetObject(0).OnEat();
+            if (GameManager.instance.GetActivePetObject() != null)
+                GameManager.instance.GetActivePetObject().OnEat();
         }
         else if (questId == 4)
         {
@@ -142,16 +152,15 @@ public class TutorialManager : MonoBehaviour
         }
         else if (questId == 7)
         {
-            handClick.SetActive(false);
-            blackScreen.SetActive(false);
-            blackScreenButton.SetActive(false);
-            Pet pet = DataHolder.GetPet(1);
-            UIManager.instance.OnPetRequirementPanel(pet);
-            ItemManager.instance.ResetCameraTarget();
+            ClickOnShop(4, 16);
         }
-        else if (questId == 8)
+        else if (questId == 9)
         {
-
+            ClickOnShop(3, 77);
+            if(step == 4)
+            {
+                UIManager.instance.OnQuestNotificationPopup(DataHolder.Dialog(189).GetName(MageManager.instance.GetLanguage()));
+            }
         }
         else if (questId == 11)
         {
@@ -172,6 +181,15 @@ public class TutorialManager : MonoBehaviour
                     eventPanel.OnEvent(0);
             }
 
+        }
+        else if (questId == 12)
+        {
+            handClick.SetActive(false);
+            blackScreen.SetActive(false);
+            blackScreenButton.SetActive(false);
+            Pet pet = DataHolder.GetPet(1);
+            UIManager.instance.OnPetRequirementPanel(pet);
+            ItemManager.instance.ResetCameraTarget();
         }
     }
 
@@ -261,6 +279,7 @@ public class TutorialManager : MonoBehaviour
             blackScreenUI.SetActive(false);
             handClickUI.SetActive(false);
             UIManager.instance.BuyItem(itemId);
+            step = 4;
         }
     }
 
@@ -291,33 +310,41 @@ public class TutorialManager : MonoBehaviour
 
     protected virtual IEnumerator HoldToBath()
     {
-        blackScreen.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, 0);
-        blackScreen.SetActive(true);
+        //blackScreen.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, 0);
+        //blackScreen.SetActive(true);
         CharController pet = GameManager.instance.GetActivePetObject();
         while (pet != null && pet.charInteract.interactType != InteractType.None)
         {
             yield return new WaitForEndOfFrame();
         }
         
-        if (pet != null && (pet.equipment == null || pet.equipment.itemType != ItemType.Bath))
+        if (pet != null && (pet.equipment == null || pet.equipment.itemType != ItemType.Bath) && GameManager.instance.GetAchivement(5) == 0)
         {
             pet.OnControl();
             handClick.SetActive(true);
             handClick.transform.position = pet.transform.position + new Vector3(0, 3, -10);
             handClick.GetComponent<Animator>().Play("Hold", 0);
-            Vector3 holdPosition = ItemManager.instance.GetRandomItem(ItemType.Bath).transform.position + new Vector3(0, 10f, 0);
+            Vector3 holdPosition = pet.charScale.scalePosition + new Vector3(0, 10, 0);
             pet.target = pet.transform.position;
-            while (Vector2.Distance(pet.transform.position, holdPosition) > 1f)
+            while (Vector2.Distance(pet.transform.position, holdPosition) > 0.5f)
             {
-                pet.target = Vector3.Lerp(pet.target, holdPosition, Time.deltaTime);
+                pet.target = Vector3.Lerp(pet.target, holdPosition, Time.deltaTime* 2);
                 handClick.transform.position = pet.transform.position + new Vector3(0, 3, -10);
                 yield return new WaitForEndOfFrame();
             }
+            holdPosition = ItemManager.instance.GetRandomItem(ItemType.Bath).transform.position + new Vector3(0, 10f, 0);
+            while (Vector2.Distance(pet.transform.position, holdPosition) > 0.5f)
+            {
+                pet.target = Vector3.Lerp(pet.target, holdPosition, Time.deltaTime * 2);
+                handClick.transform.position = pet.transform.position + new Vector3(0, 3, -10);
+                yield return new WaitForEndOfFrame();
+            }
+            pet.transform.position = holdPosition;
             handClick.SetActive(false);
             yield return new WaitForEndOfFrame();
             pet.charInteract.interactType = InteractType.Drop;
         }
-        blackScreen.SetActive(false);
+        //blackScreen.SetActive(false);
 
     }
 

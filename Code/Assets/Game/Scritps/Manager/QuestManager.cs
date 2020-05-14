@@ -43,19 +43,21 @@ public class QuestManager : MonoBehaviour
         int questId = GameManager.instance.myPlayer.questId;
         CharController petObject = GameManager.instance.GetActivePetObject();
 
-        if (petObject != null)
+        CheckQuestComplete();
+        
+        if (petObject != null && state != QuestState.Complete)
         {
             if (questId == 0)
             {
                 isReplay = false;
-                petObject.ResetData();
                 yield return new WaitForSeconds(1);
+                petObject.ResetData();
+                petObject.data.Food = petObject.data.MaxFood * 0.09f;
                 UIManager.instance.OnQuestNotificationPopup(DataHolder.Dialog(187).GetName(MageManager.instance.GetLanguage()));
-                yield return new WaitForSeconds(8);
+                yield return new WaitForSeconds(10);
                 if (TutorialManager.instance != null)
                     TutorialManager.instance.StartQuest();
                 OnQuestNotification();
-                petObject.data.Food = petObject.data.MaxFood * 0.09f;
             }
             else if (questId == 1)
             {
@@ -85,10 +87,11 @@ public class QuestManager : MonoBehaviour
             else if (questId == 4)
             {
                 isReplay = false;
-                yield return new WaitForSeconds(5);
+                yield return new WaitForSeconds(10);
                 OnQuestNotification();
                 if (TutorialManager.instance != null)
                     TutorialManager.instance.StartQuest();
+                petObject.ResetData();
                 petObject.data.Dirty = petObject.data.MaxDirty * 0.6f;
             }
             else if (questId == 5)
@@ -97,32 +100,78 @@ public class QuestManager : MonoBehaviour
                 OnQuestNotification();
                 if (TutorialManager.instance != null)
                     TutorialManager.instance.StartQuest();
+                petObject.ResetData();
                 petObject.data.Dirty = petObject.data.MaxDirty * 0.75f;
             }
             else if (questId == 6)
             {
+                yield return new WaitForSeconds(6);
+                OnQuestNotification();
+                if (TutorialManager.instance != null)
+                    TutorialManager.instance.StartQuest();
+                BeeController bee = FindObjectOfType<BeeController>();
+                if (bee != null)
+                    bee.maxTimeSpawn = 0;
             }
             else if (questId == 7)
             {
+                petObject.ResetData();
+                petObject.data.Toy = petObject.data.MaxToy * 0.25f;
+                isReplay = false;
+                yield return new WaitForSeconds(2);
+                petObject.OnCall();
+                yield return new WaitForSeconds(3);
+                petObject.OnCall();
+                OnQuestNotification();
+                if (TutorialManager.instance != null)
+                    TutorialManager.instance.StartQuest();
             }
             else if (questId == 8)
             {
-
+                yield return new WaitForSeconds(1);
+                OnQuestNotification();
+                if (TutorialManager.instance != null)
+                    TutorialManager.instance.StartQuest();
+                petObject.ResetData();
+                petObject.data.Toy = petObject.data.MaxToy * 0.25f;
             }
             else if (questId == 9)
             {
+                yield return new WaitForSeconds(10);
+                OnQuestNotification();
+                if (TutorialManager.instance != null)
+                    TutorialManager.instance.StartQuest();
+                petObject.data.Health = petObject.data.MaxHealth * 0.09f;
             }
             else if (questId == 10)
             {
+                yield return new WaitForSeconds(2);
+                OnQuestNotification();
+                if (TutorialManager.instance != null)
+                    TutorialManager.instance.StartQuest();
             }
             else if (questId == 11)
             {
+                yield return new WaitForSeconds(1);
+                UIManager.instance.OnQuestNotificationPopup(DataHolder.Dialog(188).GetName(MageManager.instance.GetLanguage()));
+                yield return new WaitForSeconds(5);
+                OnQuestNotification();
+                if (TutorialManager.instance != null)
+                    TutorialManager.instance.StartQuest();
             }
             else if (questId == 12)
             {
+                yield return new WaitForSeconds(5);
+                OnQuestNotification();
+                if (TutorialManager.instance != null)
+                    TutorialManager.instance.StartQuest();
             }
             else if (questId == 13)
             {
+                yield return new WaitForSeconds(10);
+                OnQuestNotification();
+                if (TutorialManager.instance != null)
+                    TutorialManager.instance.StartQuest();
             }
             else if (questId == 14)
             {
@@ -152,7 +201,6 @@ public class QuestManager : MonoBehaviour
             {
             }
         }
-        yield return new WaitForSeconds(2);
         state = QuestState.Start;
     }
 
@@ -166,8 +214,9 @@ public class QuestManager : MonoBehaviour
 
     IEnumerator StartCompleteQuest()
     {
+        CharController petObject = GameManager.instance.GetActivePetObject();
         state = QuestState.Rewarded;
-        
+        yield return new WaitForSeconds(1);
 
         Quest quest = DataHolder.Quest(GameManager.instance.myPlayer.questId);
         if (quest.coinValue > 0)
@@ -199,9 +248,11 @@ public class QuestManager : MonoBehaviour
             string url = item.iconUrl.Replace("Assets/Game/Resources/", "");
             url = url.Replace(".png", "");
             UIManager.instance.OnSpinRewardPanel(Resources.Load<Sprite>(url), quest.itemNumber.ToString());
-            GameManager.instance.AddItem(quest.itemId,quest.itemNumber, GetKey());
+            int realId = GameManager.instance.AddItem(quest.itemId,quest.itemNumber, GetKey());
+            GameManager.instance.EquipItem(realId);
         }
-        
+
+        ItemManager.instance.SpawnStar(petObject.transform.position, 1);
         if (TutorialManager.instance != null)
             TutorialManager.instance.EndQuest();
         yield return new WaitForSeconds(2);
@@ -270,7 +321,6 @@ public class QuestManager : MonoBehaviour
         }
         else if (questId == 5)
         {
-            Debug.Log(GameManager.instance.GetAchivement(5));
             if (GameManager.instance.GetAchivement(5) >= 1)
             {
                 state = QuestState.Complete;
@@ -278,34 +328,35 @@ public class QuestManager : MonoBehaviour
         }
         else if (questId == 6)
         {
-
+            if (GameManager.instance.IsHaveItem(232))
+            {
                 state = QuestState.Complete;
-            
+            }
         }
         else if (questId == 7)
         {
-            if (UIManager.instance.petRequirementPanel != null)
+            if (GameManager.instance.IsEquipItem(16))
             {
                 state = QuestState.Complete;
             }
         }
         else if (questId == 8)
         {
-            if (GameManager.instance.IsHaveItem(1))
+            if (GameManager.instance.GetAchivement(17) >= 1)
             {
                 state = QuestState.Complete;
             }
 
         }
-        else if (questId == 9) { 
-            if (GameManager.instance.IsHavePet(1))
+        else if (questId == 9) {
+            if (GameManager.instance.GetAchivement(8) >= 1)
             {
                 state = QuestState.Complete;
             }
         }
         else if (questId == 10)
         {
-            if (GameManager.instance.GetAchivement(20) >= 1)
+            if (GameManager.instance.myPlayer.level >= 2)
             {
                 state = QuestState.Complete;
             }
@@ -319,7 +370,7 @@ public class QuestManager : MonoBehaviour
         }
         else if (questId == 12)
         {
-            if (GameManager.instance.GetAchivement(20) >= 1)
+            if (GameManager.instance.IsHavePet(1))
             {
                 state = QuestState.Complete;
             }

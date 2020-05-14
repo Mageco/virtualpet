@@ -468,7 +468,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   petId: 1
-  quesId: 0
+  quesId: 11
   petPrefab: {fileID: 6610547453433390268, guid: 5bb041999e6ce4b62a1144199ba27ef2,
     type: 3}
 --- !u!1 &101011509
@@ -1607,7 +1607,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 40e4016454aaa4ae68850b2126257342, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxTimeSpawn: 100
+  maxTimeSpawn: 3600
   speed: 60
   body: {fileID: 967158082}
   initZ: -6
@@ -3992,7 +3992,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 661e27b51944f42ccab6c54f52db27bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxTimeSpawn: 200
+  maxTimeSpawn: 3600
   initSpeed: 30
   body: {fileID: 181262762}
   initZ: -6
@@ -4198,7 +4198,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   state: 0
-  coinIcons: []
+  coinIcons:
+  - {fileID: 21300000, guid: c16d863625fb16e4fbe3863535632106, type: 3}
+  - {fileID: 21300000, guid: 7bdfa6e5c2aa47549b567978bb12ceca, type: 3}
+  - {fileID: 21300000, guid: a71ce4869e20e9142a0daf0d2aef9836, type: 3}
 --- !u!4 &1307597352
 Transform:
   m_ObjectHideFlags: 0
@@ -12582,6 +12585,11 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 1611859885966554841, guid: 944810598c3091f45bd614bd218336e8,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0.000022888184
+      objectReference: {fileID: 0}
     - target: {fileID: 2480844473344558071, guid: 944810598c3091f45bd614bd218336e8,
         type: 3}
       propertyPath: m_AnchorMin.y
@@ -13945,7 +13953,7 @@ PrefabInstance:
     - target: {fileID: 5453886026327393268, guid: 2690067ddedd64631953f52f26e327fb,
         type: 3}
       propertyPath: resetUserDataOnStart
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5453886026327393268, guid: 2690067ddedd64631953f52f26e327fb,
         type: 3}

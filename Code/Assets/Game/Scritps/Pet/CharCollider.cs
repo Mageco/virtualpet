@@ -78,7 +78,7 @@ public class CharCollider : MonoBehaviour
             BaseFloorItem item = other.transform.parent.GetComponent<BaseFloorItem>();
             if(item != null)
             {
-                if(character.charInteract.interactType == InteractType.Drag)
+                if(character.charInteract.interactType == InteractType.Drag || character.charInteract.interactType == InteractType.Touch)
                 {
                     foreach(BaseFloorItem i in items)
                     {

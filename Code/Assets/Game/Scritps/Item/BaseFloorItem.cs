@@ -24,7 +24,7 @@ public class BaseFloorItem : MonoBehaviour
 	GameObject arrow;
 	List<Color> colors = new List<Color>();
 	SpriteRenderer[] sprites;
-	ObstructItem obstructItem;
+	public ObstructItem obstructItem;
 	public Transform[] anchorPoints;
 	public Transform startPoint;
 	public Transform endPoint;
