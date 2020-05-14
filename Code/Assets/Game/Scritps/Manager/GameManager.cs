@@ -1088,7 +1088,6 @@ public class GameManager : MonoBehaviour
                 UIManager.instance.OnLevelUpPanel();
                 if (ItemManager.instance != null)
                     ItemManager.instance.LoadArea();
-                OnTip();
                 UIManager.instance.OnSale();
                 Debug.Log("Level Up");
             }
@@ -1116,18 +1115,6 @@ public class GameManager : MonoBehaviour
         }
     }
 
-
-    void OnTip()
-    {
-        if (myPlayer.level == 2)
-        {
-            UIManager.instance.OnQuestNotificationPopup(DataHolder.Dialog(77).GetName(MageManager.instance.GetLanguage()));
-        }
-        else if (myPlayer.level == 3)
-        {
-            UIManager.instance.OnQuestNotificationPopup(DataHolder.Dialog(143).GetName(MageManager.instance.GetLanguage()));
-        }
-    }
 
     public void CollectAchivementRewards(int achivementId)
     {
@@ -1334,6 +1321,7 @@ public class GameManager : MonoBehaviour
         AddItem(8, GetKey());
         AddItem(13, GetKey());
         AddItem(7, GetKey());
+        AddItem(163, GetKey());
         /*
         AddItem(77, GetKey());
         AddItem(8, GetKey());

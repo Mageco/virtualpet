@@ -139,6 +139,31 @@ public class TutorialManager : MonoBehaviour
         else if(questId == 14)
         {
             ItemManager.instance.SetCameraTarget(GameObject.FindGameObjectWithTag("LuckySpin").gameObject);
+            Camera.main.GetComponent<CameraController>().screenOffset = 0;
+        }
+        //Go to the forest
+        else if (questId == 18)
+        {
+            if(ItemManager.instance != null)
+            {
+                if (UIManager.instance.mapRequirementPanel == null && ItemManager.instance != null)
+                {
+                    OnMapButton forest = FindObjectOfType<OnMapButton>();
+
+                    if (forest != null)
+                    {
+                        blackScreen.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, 0);
+                        blackScreen.SetActive(true);
+                        handClick.SetActive(true);
+                        ItemManager.instance.SetCameraTarget(forest.gameObject);
+                        Camera.main.GetComponent<CameraController>().screenOffset = 0;
+                        blackScreenButton.SetActive(true);
+                        handClick.transform.position = forest.transform.position + new Vector3(0,0, -1000);
+                        handClick.GetComponent<Animator>().Play("Click", 0);
+                    }                   
+                }
+            }
+
         }
     }
 
@@ -213,6 +238,14 @@ public class TutorialManager : MonoBehaviour
             handClickUI.transform.SetParent(blackScreenUI.transform);
             blackScreenUI.SetActive(false);
             handClickUI.SetActive(false);
+        }
+        else if (questId == 18)
+        {
+            blackScreen.SetActive(false);
+            blackScreenUI.SetActive(false);
+            handClick.SetActive(false);
+            UIManager.instance.OnMapRequirement(MapType.Forest);
+            ItemManager.instance.ResetCameraTarget();
         }
     }
 

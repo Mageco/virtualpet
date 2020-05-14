@@ -156,7 +156,7 @@ public class WinPanel : MonoBehaviour
 
         if (c > 0){
             coin.text = c.ToString();
-            exp.text = (c/10).ToString();
+            exp.text = (c/5).ToString();
         }
         else
         {

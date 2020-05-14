@@ -22,7 +22,7 @@ public class StarItem : MonoBehaviour
         Vector3 pos = this.transform.position;
         pos.z = (this.transform.position.y - 2) * 10;
         this.transform.position = pos;
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.1f);
         if (CheckPositionOutBound())
             StartCoroutine(Pick());
         else

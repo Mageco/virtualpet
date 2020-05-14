@@ -182,32 +182,49 @@ public class QuestManager : MonoBehaviour
                 OnQuestNotification();
                 if (TutorialManager.instance != null)
                     TutorialManager.instance.StartQuest();
-                
-
             }
             else if (questId == 15)
             {
+                yield return new WaitForSeconds(3);
+                OnQuestNotification();
+                UIManager.instance.OnQuestNotificationPopup(DataHolder.Dialog(190).GetName(MageManager.instance.GetLanguage()));
+                ItemManager.instance.SetCameraTarget(ItemManager.instance.GetRandomItem(ItemType.Board).gameObject);
+                yield return new WaitForSeconds(3);
+                ItemManager.instance.ResetCameraTarget();
+                if (TutorialManager.instance != null)
+                    TutorialManager.instance.StartQuest();
             }
             else if (questId == 16)
             {
+                yield return new WaitForSeconds(5);
+                OnQuestNotification();
+                if (TutorialManager.instance != null)
+                    TutorialManager.instance.StartQuest();
+                
             }
             else if (questId == 17)
             {
+                yield return new WaitForSeconds(5);               
+                OnQuestNotification();
+                if (TutorialManager.instance != null)
+                    TutorialManager.instance.StartQuest();
             }
             else if (questId == 18)
             {
+                isReplay = false;
+                yield return new WaitForSeconds(3);
+                UIManager.instance.OnQuestNotificationPopup(DataHolder.Dialog(77).GetName(MageManager.instance.GetLanguage()));               
+                yield return new WaitForSeconds(5);
+                OnQuestNotification();
+                if (TutorialManager.instance != null)
+                    TutorialManager.instance.StartQuest();
             }
             else if (questId == 19)
             {
-            }
-            else if (questId == 20)
-            {
-            }
-            else if (questId == 21)
-            {
-            }
-            else if (questId == 22)
-            {
+                yield return new WaitForSeconds(5);
+                OnQuestNotification();
+                if (TutorialManager.instance != null)
+                    TutorialManager.instance.StartQuest();
             }
         }
         state = QuestState.Start;
@@ -248,6 +265,13 @@ public class QuestManager : MonoBehaviour
             yield return new WaitForSeconds(1);
             UIManager.instance.OnSpinRewardPanel(coinIcons[2], quest.happyValue.ToString());
             GameManager.instance.AddHappy(quest.happyValue, GetKey());
+        }
+        else if (quest.expValue > 0)
+        {
+            UIManager.instance.OnQuestNotificationPopup(DataHolder.Dialog(186).GetName(MageManager.instance.GetLanguage()));
+            yield return new WaitForSeconds(1);
+            UIManager.instance.OnSpinRewardPanel(coinIcons[3], quest.expValue.ToString());
+            GameManager.instance.AddExp(quest.expValue, GetKey());
         }
         else if(quest.haveItem)
         {
@@ -400,27 +424,38 @@ public class QuestManager : MonoBehaviour
         }
         else if (questId == 15)
         {
-
+            if (GameManager.instance.myPlayer.level >= 3)
+            {
+                state = QuestState.Complete;
+            }
         }
         else if (questId == 16)
         {
-
+            if (GameManager.instance.IsHaveItem(204))
+            {
+                state = QuestState.Complete;
+            }
         }
         else if (questId == 17)
         {
-
+            if (GameManager.instance.myPlayer.level >= 4)
+            {
+                state = QuestState.Complete;
+            }
         }
         else if (questId == 18)
         {
-
+            if (GameManager.instance.GetItemNumber(233) >= 5)
+            {
+                state = QuestState.Complete;
+            }
         }
         else if (questId == 19)
         {
-
-        }
-        else if (questId == 20)
-        {
-
+            if (GameManager.instance.GetAchivement(27) >= 1)
+            {
+                state = QuestState.Complete;
+            }
         }
     }
 

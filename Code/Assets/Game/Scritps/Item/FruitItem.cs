@@ -124,7 +124,7 @@ public class FruitItem : MonoBehaviour
     IEnumerator PickCouroutine()
     {
         MageManager.instance.PlaySound("happy_collect_item_01", false);
-
+        ItemManager.instance.SpawnStar(this.transform.position, 1);
         this.transform.parent = Camera.main.transform;
         Vector3 target = Camera.main.ScreenToWorldPoint(UIManager.instance.inventoryButton.transform.position) - Camera.main.transform.position;
         target.z = -100;

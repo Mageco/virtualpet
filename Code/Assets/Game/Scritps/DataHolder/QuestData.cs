@@ -114,7 +114,7 @@ public class QuestData : BaseData
 			{
 				if(showIDs)
 				{
-					result[i] = quests[i].iD.ToString() + ":" + quests[i].languageItem[0].Name;
+					result[i] = i.ToString() + ":" + quests[i].languageItem[0].Name;
 				}
 				else
 				{

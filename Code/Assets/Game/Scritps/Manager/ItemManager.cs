@@ -769,21 +769,21 @@ public class ItemManager : MonoBehaviour
         }else if(GameManager.instance.myPlayer.level <= 2)
         {
             gardenBoundX = new Vector2(-50, 150);
-            cameraBoundX = new Vector2(-50, 200);
+            cameraBoundX = new Vector2(-50, 170);
         }else if (GameManager.instance.myPlayer.level <= 3)
         {
             gardenBoundX = new Vector2(-130, 150);
-            cameraBoundX = new Vector2(-130, 200);
+            cameraBoundX = new Vector2(-130, 170);
         }
         else if (GameManager.instance.myPlayer.level <= 5)
         {
             gardenBoundX = new Vector2(-200, 150);
-            cameraBoundX = new Vector2(-200, 200);
+            cameraBoundX = new Vector2(-200, 170);
         }
         else
         {
             gardenBoundX = new Vector2(-270, 150);
-            cameraBoundX = new Vector2(-320, 200);
+            cameraBoundX = new Vector2(-320, 170);
         }
         GetActiveCamera().boundX = cameraBoundX;
         GetActiveCamera().boundY = cameraBoundY;
