@@ -377,59 +377,40 @@ public class QuestManager : MonoBehaviour
         }
         else if (questId == 13)
         {
-            if (GameManager.instance.GetAchivement(20) >= 1)
+            foreach(PlayerPet pet in GameManager.instance.myPlayer.petDatas)
             {
-                state = QuestState.Complete;
+                if (pet.level >= 5)
+                    state = QuestState.Complete;
+                return;
             }
         }
         else if (questId == 14)
         {
-            if (GameManager.instance.GetAchivement(20) >= 1)
-            {
-                state = QuestState.Complete;
-            }
+
         }
         else if (questId == 15)
         {
-            if (GameManager.instance.GetAchivement(20) >= 1)
-            {
-                state = QuestState.Complete;
-            }
+
         }
         else if (questId == 16)
         {
-            if (GameManager.instance.GetAchivement(20) >= 1)
-            {
-                state = QuestState.Complete;
-            }
+
         }
         else if (questId == 17)
         {
-            if (GameManager.instance.GetAchivement(20) >= 1)
-            {
-                state = QuestState.Complete;
-            }
+
         }
         else if (questId == 18)
         {
-            if (GameManager.instance.GetAchivement(20) >= 1)
-            {
-                state = QuestState.Complete;
-            }
+
         }
         else if (questId == 19)
         {
-            if (GameManager.instance.GetAchivement(20) >= 1)
-            {
-                state = QuestState.Complete;
-            }
+
         }
         else if (questId == 20)
         {
-            if (GameManager.instance.GetAchivement(20) >= 1)
-            {
-                state = QuestState.Complete;
-            }
+
         }
     }
 

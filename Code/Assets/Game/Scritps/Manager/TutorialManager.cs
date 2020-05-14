@@ -125,6 +125,16 @@ public class TutorialManager : MonoBehaviour
                 handClick.GetComponent<Animator>().Play("Click", 0);
             }
         }
+        //Upgrade pet
+        else if (questId == 13)
+        {
+            if (UIManager.instance.profilePanel == null)
+            {
+                blackScreenUI.SetActive(true);
+                GameObject go = UIManager.instance.shopButton;
+                AddSorting(go);
+            }
+        }
     }
 
     
@@ -190,6 +200,12 @@ public class TutorialManager : MonoBehaviour
             Pet pet = DataHolder.GetPet(1);
             UIManager.instance.OnPetRequirementPanel(pet);
             ItemManager.instance.ResetCameraTarget();
+        }
+        else if (questId == 13)
+        {
+            handClickUI.transform.SetParent(blackScreenUI.transform);
+            blackScreenUI.SetActive(false);
+            handClickUI.SetActive(false);
         }
     }
 
