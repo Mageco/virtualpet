@@ -16,6 +16,7 @@ public class AchivementUI : MonoBehaviour
     public Text rewardValue;
     public Button collect;
     public Animator rewardAnim;
+    public Text expText;
     void Awake(){
 
     }
@@ -42,6 +43,8 @@ public class AchivementUI : MonoBehaviour
             rewardIcon.sprite = diamonIcon;
             rewardValue.text = d.diamondValue[level].ToString();           
         }
+
+        expText.text = "+" + (a.level + 1).ToString();
 
         if(a.rewardState == RewardState.Ready){
             collect.interactable = true;

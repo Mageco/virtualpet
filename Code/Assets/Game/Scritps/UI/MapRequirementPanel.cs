@@ -46,7 +46,7 @@ public class MapRequirementPanel : MonoBehaviour
         else if (mapType == MapType.Lake)
         {
             mapName.text = DataHolder.Dialog(97).GetName(MageManager.instance.GetLanguage());
-            levelRequire = 7;
+            levelRequire = 10;
         }
         else
             levelRequire = 99;

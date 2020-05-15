@@ -1103,7 +1103,7 @@ public class GameManager : MonoBehaviour
                     UIManager.instance.OnQuestNotificationPopup(DataHolder.Dialog(190).GetName(MageManager.instance.GetLanguage()));
                 else if (myPlayer.level == 6)
                     UIManager.instance.OnQuestNotificationPopup(DataHolder.Dialog(190).GetName(MageManager.instance.GetLanguage()));
-                else if (myPlayer.level == 7)
+                else if (myPlayer.level == 10)
                     UIManager.instance.OnQuestNotificationPopup(DataHolder.Dialog(193).GetName(MageManager.instance.GetLanguage()));
 
                 UIManager.instance.OnSale();
@@ -1148,6 +1148,7 @@ public class GameManager : MonoBehaviour
         {
             if (a.achivementId == achivementId)
             {
+                AddExp(a.level+1, GetKey());
                 AddCoin(DataHolder.GetAchivement(achivementId).coinValue[a.level], GetKey());
                 AddDiamond(DataHolder.GetAchivement(achivementId).diamondValue[a.level], GetKey());
                 a.rewardState = RewardState.Received;
