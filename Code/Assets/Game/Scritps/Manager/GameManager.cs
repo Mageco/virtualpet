@@ -723,8 +723,12 @@ public class GameManager : MonoBehaviour
                     myPlayer.items.Add(item);
                     realId = item.realId;
                 }
-            } else
-                AddItem(id, key);
+            }
+            else
+            {
+                realId = AddItem(id, GetKey());
+            }
+                
         }
         return realId;
     }

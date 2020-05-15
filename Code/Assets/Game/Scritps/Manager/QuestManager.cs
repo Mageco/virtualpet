@@ -289,6 +289,7 @@ public class QuestManager : MonoBehaviour
             UIManager.instance.OnSpinRewardPanel(Resources.Load<Sprite>(url), quest.itemNumber.ToString());
             int realId = GameManager.instance.AddItem(quest.itemId,quest.itemNumber, GetKey());
             GameManager.instance.EquipItem(realId);
+            Debug.Log("Reward " + realId);
         }
 
         ItemManager.instance.SpawnStar(petObject.transform.position, 1);
