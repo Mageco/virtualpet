@@ -107,14 +107,13 @@ public class ItemManager : MonoBehaviour
         MageManager.instance.loadingBar.gameObject.SetActive(false);
 
         yield return new WaitForSeconds(1);
-        while (!ApiManager.instance.IsLogin() || !RewardVideoAdManager.instance.isUnityVideoLoaded || UIManager.instance.newVersionPanel != null)
+        while (!ApiManager.instance.IsLogin() || !RewardVideoAdManager.instance.isUnityVideoLoaded || UIManager.instance.IsPopUpOpen())
         {
             yield return new WaitForEndOfFrame();
         }
         
         if(!GameManager.instance.isGuest)
             LoadWelcome(awayTime);
-        
     }
 
     // Update is called once per frame

@@ -44,7 +44,7 @@ public class QuestManager : MonoBehaviour
         CharController petObject = GameManager.instance.GetActivePetObject();
 
         CheckQuestComplete();
-        
+        maxReplayTime = 30;
         if (petObject != null && state != QuestState.Complete)
         {
             if (questId == 0)
@@ -142,9 +142,12 @@ public class QuestManager : MonoBehaviour
                 if (TutorialManager.instance != null)
                     TutorialManager.instance.StartQuest();
                 petObject.data.Health = petObject.data.MaxHealth * 0.09f;
+                yield return new WaitForSeconds(5);
+                UIManager.instance.OnQuestNotificationPopup(DataHolder.Dialog(189).GetName(MageManager.instance.GetLanguage()));
             }
             else if (questId == 10)
             {
+                isReplay = false;
                 yield return new WaitForSeconds(2);
                 OnQuestNotification();
                 if (TutorialManager.instance != null)
@@ -152,9 +155,7 @@ public class QuestManager : MonoBehaviour
             }
             else if (questId == 11)
             {
-                yield return new WaitForSeconds(1);
-                UIManager.instance.OnQuestNotificationPopup(DataHolder.Dialog(188).GetName(MageManager.instance.GetLanguage()));
-                yield return new WaitForSeconds(5);
+                yield return new WaitForSeconds(10);
                 OnQuestNotification();
                 if (TutorialManager.instance != null)
                     TutorialManager.instance.StartQuest();
@@ -185,25 +186,27 @@ public class QuestManager : MonoBehaviour
             }
             else if (questId == 15)
             {
+                isReplay = false;
                 yield return new WaitForSeconds(3);
                 OnQuestNotification();
-                ItemManager.instance.ResetCameraTarget();
                 if (TutorialManager.instance != null)
                     TutorialManager.instance.StartQuest();
             }
             else if (questId == 16)
             {
-                yield return new WaitForSeconds(5);
-                UIManager.instance.OnQuestNotificationPopup(DataHolder.Dialog(190).GetName(MageManager.instance.GetLanguage()));
-                ItemManager.instance.SetCameraTarget(ItemManager.instance.GetRandomItem(ItemType.Board).gameObject);    
-                yield return new WaitForSeconds(5);
-                OnQuestNotification();
+                maxReplayTime = 60;
+                yield return new WaitForSeconds(10);
+                if(GameManager.instance.IsHaveItem(87))
+                    UIManager.instance.OnQuestNotificationPopup(DataHolder.Dialog(194).GetName(MageManager.instance.GetLanguage()));
+                else
+                    OnQuestNotification();
                 if (TutorialManager.instance != null)
                     TutorialManager.instance.StartQuest();
                 
             }
             else if (questId == 17)
             {
+                isReplay = false;
                 yield return new WaitForSeconds(5);               
                 OnQuestNotification();
                 if (TutorialManager.instance != null)
@@ -212,15 +215,14 @@ public class QuestManager : MonoBehaviour
             else if (questId == 18)
             {
                 isReplay = false;
-                yield return new WaitForSeconds(3);
-                UIManager.instance.OnQuestNotificationPopup(DataHolder.Dialog(77).GetName(MageManager.instance.GetLanguage()));               
-                yield return new WaitForSeconds(5);
+                yield return new WaitForSeconds(10);
                 OnQuestNotification();
                 if (TutorialManager.instance != null)
                     TutorialManager.instance.StartQuest();
             }
             else if (questId == 19)
             {
+                maxReplayTime = 60;
                 yield return new WaitForSeconds(5);
                 OnQuestNotification();
                 if (TutorialManager.instance != null)
@@ -243,6 +245,10 @@ public class QuestManager : MonoBehaviour
         CharController petObject = GameManager.instance.GetActivePetObject();
         state = QuestState.Rewarded;
         yield return new WaitForSeconds(1);
+        while (UIManager.instance.IsPopUpOpen())
+        {
+            yield return new WaitForEndOfFrame();
+        }
 
         Quest quest = DataHolder.Quest(GameManager.instance.myPlayer.questId);
         if (quest.coinValue > 0)

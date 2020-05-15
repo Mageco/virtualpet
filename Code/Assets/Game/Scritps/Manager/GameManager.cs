@@ -723,7 +723,8 @@ public class GameManager : MonoBehaviour
                     myPlayer.items.Add(item);
                     realId = item.realId;
                 }
-            }
+            } else
+                AddItem(id, key);
         }
         return realId;
     }
@@ -1085,15 +1086,36 @@ public class GameManager : MonoBehaviour
             if (l > myPlayer.level)
             {
                 myPlayer.level = l;
-                UIManager.instance.OnLevelUpPanel();
+                StartCoroutine(OnLevelUpPanel());
                 if (ItemManager.instance != null)
                     ItemManager.instance.LoadArea();
+                if(myPlayer.level == 2)
+                    UIManager.instance.OnQuestNotificationPopup(DataHolder.Dialog(188).GetName(MageManager.instance.GetLanguage()));
+                else if(myPlayer.level == 3)
+                    UIManager.instance.OnQuestNotificationPopup(DataHolder.Dialog(190).GetName(MageManager.instance.GetLanguage()));
+                else if (myPlayer.level == 4)
+                    UIManager.instance.OnQuestNotificationPopup(DataHolder.Dialog(77).GetName(MageManager.instance.GetLanguage()));
+                else if (myPlayer.level == 5)
+                    UIManager.instance.OnQuestNotificationPopup(DataHolder.Dialog(190).GetName(MageManager.instance.GetLanguage()));
+                else if (myPlayer.level == 6)
+                    UIManager.instance.OnQuestNotificationPopup(DataHolder.Dialog(190).GetName(MageManager.instance.GetLanguage()));
+                else if (myPlayer.level == 7)
+                    UIManager.instance.OnQuestNotificationPopup(DataHolder.Dialog(193).GetName(MageManager.instance.GetLanguage()));
+
                 UIManager.instance.OnSale();
                 Debug.Log("Level Up");
             }
-        }
-        
+        }   
         //Force
+    }
+
+    IEnumerator OnLevelUpPanel()
+    {
+        while (UIManager.instance.IsPopUpOpen())
+        {
+            yield return new WaitForEndOfFrame();
+        }
+        UIManager.instance.OnLevelUpPanel();
     }
 
     public void LevelUp(int realId)

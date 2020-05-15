@@ -154,6 +154,9 @@ public class UIManager : MonoBehaviour
     float maxTimeSale = 15;
     bool isSale = false;
 
+    float timeRate = 0;
+    float maxTimeRate = 600;
+
     void Awake()
 	{
 		if (instance == null)
@@ -231,10 +234,13 @@ public class UIManager : MonoBehaviour
             else
                 giftNotification.SetActive(false);
 
-            if (GameManager.instance.gameTime > 400 && !ES2.Exists("RateUs") && (int)GameManager.instance.gameTime % 400 == 0 && UIManager.instance.settingPanel == null && ItemManager.instance != null)
+            if (timeRate > maxTimeRate && !ES2.Exists("RateUs") && !IsPopUpOpen() && ItemManager.instance != null)
             {
+                timeRate = 0;
                 OnRatingPopup();
             }
+            else
+                timeRate += maxTimeUpdate;
 
             dailyQuestNotification.SetActive(false);
             int n = 0;
@@ -1061,6 +1067,18 @@ public class UIManager : MonoBehaviour
             saleButton.SetActive(true);
         }
         Debug.Log(rareType);
+    }
+
+    public bool IsPopUpOpen()
+    {
+        if (shopPanel != null || inventoryPanel != null || settingPanel != null || profilePanel != null || leaderBoardPanel != null ||
+            dailyBonusPanel != null || dailyQuestPanel != null || takePhotoUI != null || petRequirementPanel != null || spinRewardPanel != null
+            || spinWheelPanel != null || confirmBuyShopPopup != null || mapRequirementPanel != null || levelUpPanel != null || welcomeBackPanel != null
+            || houseNamePanel != null || chestSalePanel != null || eventPanel != null || ratingWindow != null || itemInfoUI != null ||
+            newVersionPanel != null || rewardItemPanel != null || accessoryPanel != null)
+            return true;
+        else
+            return false;
     }
 
     void OffSale()

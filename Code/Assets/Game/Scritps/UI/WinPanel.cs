@@ -201,7 +201,7 @@ public class WinPanel : MonoBehaviour
     {
         bonus = bonus * 2;
         coin.text = bonus.ToString();
-        exp.text = (bonus / 10).ToString();
+        exp.text = (bonus / 5).ToString();
         watchAd.interactable = false;
     }
 
@@ -218,7 +218,7 @@ public class WinPanel : MonoBehaviour
     public void Close(){
         MageManager.instance.PlaySound("Collect_Achivement", false);
         GameManager.instance.AddCoin(bonus,Utils.instance.Md5Sum(GameManager.instance.count.ToString() + GameManager.instance.myPlayer.playTime.ToString() + GameManager.instance.myPlayer.Happy.ToString() + "M@ge2013"));
-        GameManager.instance.AddExp(bonus/10, Utils.instance.Md5Sum(GameManager.instance.count.ToString() + GameManager.instance.myPlayer.playTime.ToString() + GameManager.instance.myPlayer.Happy.ToString() + "M@ge2013"));
+        GameManager.instance.AddExp(bonus/5, Utils.instance.Md5Sum(GameManager.instance.count.ToString() + GameManager.instance.myPlayer.playTime.ToString() + GameManager.instance.myPlayer.Happy.ToString() + "M@ge2013"));
         Minigame.instance.OnHome();
         this.GetComponent<Popup>().Close();
     }

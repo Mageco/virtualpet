@@ -119,7 +119,7 @@ public class ItemData : BaseData
 			{
 				if(showIDs)
 				{
-					result[i] = i.ToString() + ":" + items[i].languageItem[0].Name;
+					result[i] = items[i].iD.ToString() + ":" + items[i].languageItem[0].Name;
 				}
 				else
 				{

@@ -20,7 +20,7 @@ public class TranslateManager : MonoBehaviour
     {
         DataHolder.Instance().Init();
 
-
+        
         //Dialog 
         for(int i = 0; i < DataHolder.Dialogs().GetDataCount(); i++)
         {
@@ -103,20 +103,20 @@ public class TranslateManager : MonoBehaviour
                 }
 
                 //Description
-                if (DataHolder.Quest(i).GetDescription(j) == "" && DataHolder.Quest(i).GetDescription(0) != "")
+                if (DataHolder.Quest(i).GetName(j) == "" && DataHolder.Quest(i).GetName(0) != "")
                 {
                     int m = i;
                     int n = j;
                     loadCount++;
-                    GoogleTranslationRequest request = new GoogleTranslationRequest(DataHolder.Languages().GetLanguageCode(j), DataHolder.Quest(i).GetDescription(0));
+                    GoogleTranslationRequest request = new GoogleTranslationRequest(DataHolder.Languages().GetLanguageCode(j), DataHolder.Quest(i).GetName(0));
 
                     //call to login api
                     GoogleHelper.instance.SendTranslationApi(
                         request,
                         (result) => {
 
-                            DataHolder.Quest(m).SetDescription(n, result.translations[0].translatedText);
-                            Debug.Log(m + " " + n + "  " + DataHolder.Quest(m).GetDescription(n));
+                            DataHolder.Quest(m).SetName(n, result.translations[0].translatedText);
+                            Debug.Log(m + " " + n + "  " + DataHolder.Quest(m).GetName(n));
                             loadProgress++;
                         },
                             (errorStatus) => {
@@ -173,7 +173,56 @@ public class TranslateManager : MonoBehaviour
                 }
             }
         }
+        
 
+        //Pet 
+        for (int i = 0; i < DataHolder.Pets().GetDataCount(); i++)
+        {
+            for (int j = 1; j < DataHolder.Languages().GetDataCount(); j++)
+            {
+                if (DataHolder.Pet(i).languageItem.Length < j)
+                {
+                    DataHolder.Pet(i).AddLanguageItem();
+                }
+
+                //Name
+                if (DataHolder.Pet(i).GetName(j) == "" && DataHolder.Pet(i).GetName(0) != "")
+                {
+                    DataHolder.Pet(i).SetName(j, DataHolder.Pet(i).GetName(0));
+                }
+
+                //Description
+                if (DataHolder.Pet(i).GetDescription(j) == "" && DataHolder.Pet(i).GetDescription(0) != "")
+                {
+                    int m = i;
+                    int n = j;
+                    loadCount++;
+                    GoogleTranslationRequest request = new GoogleTranslationRequest(DataHolder.Languages().GetLanguageCode(j), DataHolder.Pet(i).GetDescription(0));
+
+                    //call to login api
+                    GoogleHelper.instance.SendTranslationApi(
+                        request,
+                        (result) => {
+
+                            DataHolder.Pet(m).SetDescription(n, result.translations[0].translatedText);
+                            Debug.Log(m + " " + n + "  " + DataHolder.Pet(m).GetDescription(n));
+                            loadProgress++;
+                        },
+                            (errorStatus) => {
+                                ApiUtils.Log("Error: " + errorStatus);
+                                //do some other processing here
+                            },
+                            () => {
+                                //timeout handler here
+                                ApiUtils.Log("Api call is timeout");
+                            }
+                        );
+                    yield return new WaitForEndOfFrame();
+                }
+            }
+        }
+
+        
         //Item 
         for (int i = 0; i < DataHolder.Items().GetDataCount(); i++)
         {
@@ -243,8 +292,7 @@ public class TranslateManager : MonoBehaviour
                 }
             }
         }
-
-
+        
         //Check complete 
         Debug.Log("Total " + loadCount);
         while(loadCount > loadProgress)
@@ -256,6 +304,8 @@ public class TranslateManager : MonoBehaviour
         DataHolder.Dialogs().SaveData();
         DataHolder.Quests().SaveData();
         DataHolder.Achivements().SaveData();
+        DataHolder.Items().SaveData();
+        DataHolder.Pets().SaveData();
         Debug.Log("All Translate completed");
     }
 
