@@ -1470,7 +1470,7 @@ public class GameManager : MonoBehaviour
     {
         foreach (var item in myPlayer.achivements)
         {
-            if (DataHolder.GetAchivement(item.achivementId).isAvailable && item.rewardState == RewardState.Ready)
+            if (DataHolder.GetAchivement(item.achivementId) != null && DataHolder.GetAchivement(item.achivementId).isAvailable && item.rewardState == RewardState.Ready)
                 return true;
         }
         return false;
