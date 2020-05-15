@@ -82,6 +82,8 @@ public class TutorialManager : MonoBehaviour
                 {
                     if (minigames[i].gameId == 0)
                     {
+                        blackScreenUI.SetActive(true);
+                        blackScreenUI.GetComponent<Image>().color = new Color(0.2f, 0.2f, 0.2f, 0f);
                         blackScreen.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, 0);
                         blackScreen.SetActive(true);
                         handClick.SetActive(true);
@@ -97,6 +99,7 @@ public class TutorialManager : MonoBehaviour
             else
             {
                 blackScreenUI.SetActive(true);
+                blackScreenUI.GetComponent<Image>().color = new Color(0.2f, 0.2f, 0.2f, 0.2f);
                 EventPanel eventPanel = UIManager.instance.OnEventPanel(0);
                 GameObject go = eventPanel.playButton.gameObject;
                 AddSorting(go);
@@ -109,6 +112,8 @@ public class TutorialManager : MonoBehaviour
             CharCollector cat = ItemManager.instance.GetCharCollector(1);
             if (cat != null)
             {
+                blackScreenUI.SetActive(true);
+                blackScreenUI.GetComponent<Image>().color = new Color(0.2f, 0.2f, 0.2f, 0f);
                 ItemManager.instance.SetCameraTarget(cat.gameObject);
                 Camera.main.GetComponent<CameraController>().screenOffset = 0;
                 cat.Load();
@@ -177,6 +182,8 @@ public class TutorialManager : MonoBehaviour
         else if (questId == 1)
         {
             QuestManager.instance.OnCompleteQuest();
+            blackScreenUI.SetActive(false);
+            blackScreen.SetActive(false);
             handClick.SetActive(false);
             FindObjectOfType<EatItem>().Fill();
             if (GameManager.instance.GetActivePetObject() != null)
@@ -212,6 +219,7 @@ public class TutorialManager : MonoBehaviour
         }
         else if (questId == 12)
         {
+            blackScreenUI.SetActive(false);
             handClick.SetActive(false);
             blackScreen.SetActive(false);
             blackScreenButton.SetActive(false);
@@ -243,6 +251,8 @@ public class TutorialManager : MonoBehaviour
     {
         ItemManager.instance.ResetCameraTarget();
         step = 0;
+        blackScreenUI.GetComponent<Image>().color = new Color(0.2f, 0.2f, 0.2f, 0.2f);
+        blackScreen.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, 0.2f);
         blackScreenUI.SetActive(false);
         blackScreen.SetActive(false);
         handClickUI.SetActive(false);
@@ -330,7 +340,8 @@ public class TutorialManager : MonoBehaviour
     IEnumerator TapToFoodBowl()
     {
         blackScreenUI.SetActive(true);
-        blackScreen.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, 0);
+        blackScreenUI.GetComponent<Image>().color = new Color(0.2f, 0.2f, 0.2f, 0);
+        blackScreen.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, 0.2f);
         blackScreen.SetActive(true);    
         EatItem item = FindObjectOfType<EatItem>();
         int price = (int)((item.maxfoodAmount - item.foodAmount) / 10);
@@ -340,7 +351,7 @@ public class TutorialManager : MonoBehaviour
 
         if (item != null)
         {
-            blackScreen.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, 0);
+            blackScreen.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, 0.2f);
             blackScreen.SetActive(true);
             handClick.SetActive(true);
             //Camera.main.GetComponent<CameraController>().screenOffset = 0;

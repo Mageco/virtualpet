@@ -2020,6 +2020,8 @@ public class CharController : MonoBehaviour
             }
             else
             {
+                equipment.RemovePet(this);
+                equipment = null;
                 int ran = Random.Range(0, 100);
                 if (ran < 30)
                 {
@@ -2030,6 +2032,7 @@ public class CharController : MonoBehaviour
                 {
                     yield return StartCoroutine(DoAnim("Standby"));
                 }
+
             }
             
         }
