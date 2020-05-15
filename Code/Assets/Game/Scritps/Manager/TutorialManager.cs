@@ -139,7 +139,6 @@ public class TutorialManager : MonoBehaviour
                 blackScreenUI.SetActive(true);
                 blackScreenUI.GetComponent<Image>().color = new Color(0.2f, 0.2f, 0.2f, 0.2f);
                 UIManager.instance.OnProfilePanel();
-            
                 GameObject go = UIManager.instance.profilePanel.items[0].upgradeButton.gameObject;
                 AddSorting(go);
                 step = 1;
@@ -148,32 +147,11 @@ public class TutorialManager : MonoBehaviour
         //Do lucky spin
         else if(questId == 14)
         {
-            ItemManager.instance.SetCameraTarget(GameObject.FindGameObjectWithTag("LuckySpin").gameObject);
-            Camera.main.GetComponent<CameraController>().screenOffset = 0;
+
         }
         //Go to the forest
         else if (questId == 18)
         {
-            /*
-            if(ItemManager.instance != null)
-            {
-                if (UIManager.instance.mapRequirementPanel == null && ItemManager.instance != null)
-                {
-                    OnMapButton forest = FindObjectOfType<OnMapButton>();
-
-                    if (forest != null)
-                    {
-                       // blackScreen.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, 0);
-                       // blackScreen.SetActive(true);
-                       // handClick.SetActive(true);
-                        ItemManager.instance.SetCameraTarget(forest.gameObject);
-                      //  Camera.main.GetComponent<CameraController>().screenOffset = 0;
-                      //  blackScreenButton.SetActive(true);
-                      //  handClick.transform.position = forest.transform.position + new Vector3(0,0, -1000);
-                      //  handClick.GetComponent<Animator>().Play("Click", 0);
-                    }                   
-                }
-            }*/
 
         }
     }
@@ -240,6 +218,7 @@ public class TutorialManager : MonoBehaviour
         {
             if (step == 0)
             {
+                Destroy(UIManager.instance.petButton.GetComponent<Canvas>());
                 blackScreenUI.SetActive(true);
                 blackScreenUI.GetComponent<Image>().color = new Color(0.2f, 0.2f, 0.2f, 0.2f);
                 UIManager.instance.OnProfilePanel();

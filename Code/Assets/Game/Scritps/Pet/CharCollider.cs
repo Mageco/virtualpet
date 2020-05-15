@@ -84,9 +84,9 @@ public class CharCollider : MonoBehaviour
                     {
                         i.OffHighlight();
                     }
-                    items.Add(item);
                     item.OnHighlight();
                 }
+                items.Add(item);
 
                 //character.OnToy(item);
             }

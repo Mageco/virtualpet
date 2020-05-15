@@ -11,10 +11,11 @@ public class QuestManager : MonoBehaviour
     float time;
     float maxTimeCheck = 0.2f;
     float delayTime = 0;
-    float replayTime = 0;
-    float maxReplayTime = 30;
-    bool isReplay = true;
+    public float replayTime = 0;
+    public float maxReplayTime = 30;
+    public bool isReplay = true;
     public Sprite[] coinIcons;
+    bool isReplaying = false;
 
     void Awake()
     {
@@ -51,8 +52,12 @@ public class QuestManager : MonoBehaviour
             {
                 isReplay = false;
                 yield return new WaitForSeconds(1);
-                petObject.ResetData();
-                petObject.data.Food = petObject.data.MaxFood * 0.09f;
+                if (!isReplaying)
+                {
+                    petObject.ResetData();
+                    petObject.data.Food = petObject.data.MaxFood * 0.09f;
+                }
+
                 UIManager.instance.OnQuestNotificationPopup(DataHolder.Dialog(187).GetName(MageManager.instance.GetLanguage()));
                 yield return new WaitForSeconds(15);
                 while(UIManager.instance.IsPopUpOpen())
@@ -85,7 +90,8 @@ public class QuestManager : MonoBehaviour
                     OnQuestNotification();
                 if (TutorialManager.instance != null)
                     TutorialManager.instance.StartQuest();
-                petObject.data.Water = petObject.data.MaxWater * 0.09f;
+                if(!isReplaying)
+                    petObject.data.Water = petObject.data.MaxWater * 0.09f;
             }
             else if (questId == 3)
             {
@@ -112,8 +118,11 @@ public class QuestManager : MonoBehaviour
                 OnQuestNotification();
                 if (TutorialManager.instance != null)
                     TutorialManager.instance.StartQuest();
-                petObject.ResetData();
-                petObject.data.Dirty = petObject.data.MaxDirty * 0.91f;
+                if (!isReplaying)
+                {
+                    petObject.ResetData();
+                    petObject.data.Dirty = petObject.data.MaxDirty * 0.91f;
+                }
             }
             else if (questId == 5)
             {
@@ -126,8 +135,11 @@ public class QuestManager : MonoBehaviour
                     OnQuestNotification();
                 if (TutorialManager.instance != null)
                     TutorialManager.instance.StartQuest();
-                petObject.ResetData();
-                petObject.data.Dirty = petObject.data.MaxDirty * 0.91f;
+                if (!isReplaying)
+                {
+                    petObject.ResetData();
+                    petObject.data.Dirty = petObject.data.MaxDirty * 0.91f;
+                }
             }
             else if (questId == 6)
             {
@@ -145,8 +157,12 @@ public class QuestManager : MonoBehaviour
             }
             else if (questId == 7)
             {
-                petObject.ResetData();
-                petObject.data.Toy = petObject.data.MaxToy * 0.25f;
+                if (!isReplaying)
+                {
+                    petObject.ResetData();
+                    petObject.data.Toy = petObject.data.MaxToy * 0.25f;
+                }
+
                 isReplay = false;
                 yield return new WaitForSeconds(2);
                 petObject.OnCall();
@@ -171,8 +187,11 @@ public class QuestManager : MonoBehaviour
                     OnQuestNotification();
                 if (TutorialManager.instance != null)
                     TutorialManager.instance.StartQuest();
-                petObject.ResetData();
-                petObject.data.Toy = petObject.data.MaxToy * 0.25f;
+                if (!isReplaying)
+                {
+                    petObject.ResetData();
+                    petObject.data.Toy = petObject.data.MaxToy * 0.25f;
+                }
             }
             else if (questId == 9)
             {
@@ -184,7 +203,11 @@ public class QuestManager : MonoBehaviour
                 OnQuestNotification();
                 if (TutorialManager.instance != null)
                     TutorialManager.instance.StartQuest();
-                petObject.data.Health = petObject.data.MaxHealth * 0.09f;
+                if (!isReplaying)
+                {
+                    petObject.data.Health = petObject.data.MaxHealth * 0.09f;
+                }
+
                 yield return new WaitForSeconds(5);
                 UIManager.instance.OnQuestNotificationPopup(DataHolder.Dialog(189).GetName(MageManager.instance.GetLanguage()));
             }
@@ -205,6 +228,7 @@ public class QuestManager : MonoBehaviour
             }
             else if (questId == 11)
             {
+                isReplay = false;
                 yield return new WaitForSeconds(10);
                 while (UIManager.instance.IsPopUpOpen())
                 {
@@ -216,6 +240,7 @@ public class QuestManager : MonoBehaviour
             }
             else if (questId == 12)
             {
+                isReplay = false;
                 yield return new WaitForSeconds(5);
                 while (UIManager.instance.IsPopUpOpen())
                 {
@@ -227,6 +252,7 @@ public class QuestManager : MonoBehaviour
             }
             else if (questId == 13)
             {
+                isReplay = false;
                 yield return new WaitForSeconds(10);
                 while (UIManager.instance.IsPopUpOpen())
                 {
@@ -304,7 +330,7 @@ public class QuestManager : MonoBehaviour
             }
             else if (questId == 19)
             {
-                maxReplayTime = 60;
+                maxReplayTime = 120;
                 yield return new WaitForSeconds(5);
                 while (UIManager.instance.IsPopUpOpen())
                 {
@@ -320,9 +346,9 @@ public class QuestManager : MonoBehaviour
 
     public void ReplayQuest()
     {
+        isReplaying = true;
         replayTime = 0;
-        if (TutorialManager.instance != null)
-            TutorialManager.instance.StartQuest();
+        StartCoroutine(StartQuest());
     }
 
     IEnumerator StartCompleteQuest()
@@ -397,6 +423,7 @@ public class QuestManager : MonoBehaviour
         state = QuestState.Ready;
         delayTime = 0;
         replayTime = 0;
+        isReplaying = false;
         isReplay = true;
         GameManager.instance.myPlayer.questValue = 0;
         StartCoroutine(StartQuest());

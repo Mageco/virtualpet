@@ -47,7 +47,7 @@ public class FirstAidItem : BaseFloorItem
         }
         animator.Play("Open",0);
         collide.size = new Vector2(9, 5);
-        collide.offset = new Vector2(-2, 2.7f);
+        collide.offset = new Vector2(-2, 0);
     }
 
     void Close(){
@@ -59,6 +59,6 @@ public class FirstAidItem : BaseFloorItem
 
         animator.Play("Idle",0);
         collide.size = new Vector2(4.5f, 5);
-        collide.offset = new Vector2(0, 2.7f);
+        collide.offset = new Vector2(0, 0);
     }
 }

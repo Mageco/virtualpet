@@ -431,7 +431,7 @@ public class ItemManager : MonoBehaviour
         else if (type == AreaType.Wall)
         {
             float x = Random.Range(roomBoundX.x + 10, roomBoundX.y - 10);
-            float y = Random.Range(roomWallBoundY.x + 5, roomWallBoundY.y-5);
+            float y = Random.Range(roomWallBoundY.x + 15, roomWallBoundY.y-5);
             r = new Vector3(x, y, 100);
         }
         return r;

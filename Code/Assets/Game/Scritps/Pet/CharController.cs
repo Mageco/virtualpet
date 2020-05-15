@@ -2541,7 +2541,7 @@ public class CharController : MonoBehaviour
             }
             charInteract.interactType = InteractType.None;
         }
-        else if (equipment.toyType == ToyType.Spring || equipment.toyType == ToyType.Swing || equipment.toyType == ToyType.Dance || equipment.toyType == ToyType.Fun)
+        else if (equipment.toyType == ToyType.Spring || equipment.toyType == ToyType.Swing)
         {
             equipment.OnActive();
             charInteract.interactType = InteractType.Equipment;
@@ -2552,6 +2552,37 @@ public class CharController : MonoBehaviour
                     agent.transform.position = equipment.GetAnchorPoint(this).position;
                 }
                 anim.Play("Play_" + equipment.toyType.ToString(), 0);
+                yield return new WaitForEndOfFrame();
+            }
+            charInteract.interactType = InteractType.None;
+            if (equipment.endPoint != null && !isAbort)
+            {
+                agent.transform.position = equipment.endPoint.position;
+            }
+        }
+        else if (equipment.toyType == ToyType.Dance || equipment.toyType == ToyType.Fun)
+        {
+            equipment.OnActive();
+            charInteract.interactType = InteractType.Equipment;
+            float time = 0;
+            float maxTime = Random.Range(3, 7);
+            while (equipment != null && data.Toy < value && !isAbort)
+            {
+                if (equipment.GetAnchorPoint(this) != null)
+                {
+                    agent.transform.position = equipment.GetAnchorPoint(this).position;
+                }
+                anim.Play("Play_" + equipment.toyType.ToString(), 0);
+                if(time > maxTime)
+                {
+                    time = 0;
+                    maxTime = Random.Range(3, 7);
+                    if (direction == Direction.L)
+                        SetDirection(Direction.R);
+                    else if (direction == Direction.R)
+                        SetDirection(Direction.L);
+                }
+                time += Time.deltaTime;
                 yield return new WaitForEndOfFrame();
             }
             charInteract.interactType = InteractType.None;
