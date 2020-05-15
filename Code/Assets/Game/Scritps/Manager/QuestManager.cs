@@ -69,7 +69,8 @@ public class QuestManager : MonoBehaviour
             else if (questId == 2)
             {
                 yield return new WaitForSeconds(10);
-                OnQuestNotification();
+                if(petObject.actionType != ActionType.Drink)
+                    OnQuestNotification();
                 if (TutorialManager.instance != null)
                     TutorialManager.instance.StartQuest();
                 petObject.data.Water = petObject.data.MaxWater * 0.09f;
@@ -92,16 +93,17 @@ public class QuestManager : MonoBehaviour
                 if (TutorialManager.instance != null)
                     TutorialManager.instance.StartQuest();
                 petObject.ResetData();
-                petObject.data.Dirty = petObject.data.MaxDirty * 0.75f;
+                petObject.data.Dirty = petObject.data.MaxDirty * 0.09f;
             }
             else if (questId == 5)
             {
                 yield return new WaitForSeconds(1);
-                OnQuestNotification();
+                if(petObject.equipment == null || petObject.equipment.itemType != ItemType.Bath)
+                    OnQuestNotification();
                 if (TutorialManager.instance != null)
                     TutorialManager.instance.StartQuest();
                 petObject.ResetData();
-                petObject.data.Dirty = petObject.data.MaxDirty * 0.75f;
+                petObject.data.Dirty = petObject.data.MaxDirty * 0.09f;
             }
             else if (questId == 6)
             {
@@ -129,7 +131,8 @@ public class QuestManager : MonoBehaviour
             else if (questId == 8)
             {
                 yield return new WaitForSeconds(1);
-                OnQuestNotification();
+                if (petObject.equipment == null || petObject.equipment.itemType != ItemType.Toy)
+                    OnQuestNotification();
                 if (TutorialManager.instance != null)
                     TutorialManager.instance.StartQuest();
                 petObject.ResetData();
@@ -235,7 +238,6 @@ public class QuestManager : MonoBehaviour
     public void ReplayQuest()
     {
         replayTime = 0;
-        OnQuestNotification();
         if (TutorialManager.instance != null)
             TutorialManager.instance.StartQuest();
     }
