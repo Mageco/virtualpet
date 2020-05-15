@@ -12,11 +12,12 @@ public class DailyQuestPanel : MonoBehaviour
     public GameObject colectActive;
     public GameObject collectDeActive;
     public Text completedText;
+    public GameObject doneIcon;
 
     // Start is called before the first frame update
     void Awake()
     {
-
+        doneIcon.SetActive(false);
     }
 
     public void Load()
@@ -138,11 +139,13 @@ public class DailyQuestPanel : MonoBehaviour
             {
                 colectActive.GetComponent<Button>().interactable = true;
                 colectActive.SetActive(true);
+                
             }
             else
             {
                 colectActive.SetActive(true);
                 colectActive.GetComponent<Button>().interactable = false;
+                doneIcon.SetActive(true);
             }
                 
 
