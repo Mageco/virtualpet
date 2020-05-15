@@ -93,7 +93,7 @@ public class QuestManager : MonoBehaviour
                 if (TutorialManager.instance != null)
                     TutorialManager.instance.StartQuest();
                 petObject.ResetData();
-                petObject.data.Dirty = petObject.data.MaxDirty * 0.09f;
+                petObject.data.Dirty = petObject.data.MaxDirty * 0.91f;
             }
             else if (questId == 5)
             {
@@ -103,7 +103,7 @@ public class QuestManager : MonoBehaviour
                 if (TutorialManager.instance != null)
                     TutorialManager.instance.StartQuest();
                 petObject.ResetData();
-                petObject.data.Dirty = petObject.data.MaxDirty * 0.09f;
+                petObject.data.Dirty = petObject.data.MaxDirty * 0.91f;
             }
             else if (questId == 6)
             {
