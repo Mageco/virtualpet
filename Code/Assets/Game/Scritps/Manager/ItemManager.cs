@@ -76,6 +76,13 @@ public class ItemManager : MonoBehaviour
             MageManager.instance.loadingBar.UpdateProgress(t);
             yield return new WaitForEndOfFrame();
         }
+        if (ES2.Exists("CameraPosition"))
+        {
+            GetActiveCamera().transform.position = ES2.Load<Vector3>("CameraPosition");
+        }
+        GetActiveCamera().boundX = cameraBoundX;
+        GetActiveCamera().boundY = cameraBoundY;
+
 
         awayTime = (float)(ApiManager.instance.GetServerTimeStamp() - startTime).TotalSeconds;
         LoadItems();
@@ -94,12 +101,7 @@ public class ItemManager : MonoBehaviour
            
         isLoad = true;
 
-        if (ES2.Exists("CameraPosition"))
-        {
-            GetActiveCamera().transform.position = ES2.Load<Vector3>("CameraPosition");
-        }
-        GetActiveCamera().boundX = cameraBoundX;
-        GetActiveCamera().boundY = cameraBoundY;
+        
         GameManager.instance.rateCount++;
         t += Time.deltaTime;
         MageManager.instance.loadingBar.UpdateProgress(t);

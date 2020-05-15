@@ -250,8 +250,8 @@ public class GameManager : MonoBehaviour
             if (p.realId == realId && p.itemState != ItemState.Equiped)
             {
                 p.itemState = ItemState.Equiped;
-                ItemManager.instance.LoadPetObject(p);
-               
+                if(ItemManager.instance != null)
+                    ItemManager.instance.LoadPetObject(p);              
             }
         }
         
@@ -1272,6 +1272,12 @@ public class GameManager : MonoBehaviour
         {
             if (pet.realId == 0)
                 pet.realId = GetRealPetId();
+        }
+
+        foreach (PlayerPet pet in myPlayer.petDatas)
+        {
+            if (pet.itemState == ItemState.Have)
+                pet.itemState = ItemState.Equiped;
         }
 
         foreach (PlayerPet pet in myPlayer.petDatas)

@@ -358,8 +358,7 @@ public class UIManager : MonoBehaviour
         MageEngine.instance.OnEvent(Mage.Models.Application.MageEventType.CheckOutItem, DataHolder.GetPet(itemID).GetName(MageManager.instance.GetLanguage()));
 
         int realId = GameManager.instance.BuyPet(itemID);
-        if(ItemManager.instance != null)
-            GameManager.instance.EquipPet(realId);
+        GameManager.instance.EquipPet(realId);
         if (shopPanel != null)
             shopPanel.Close();
 
@@ -1083,7 +1082,7 @@ public class UIManager : MonoBehaviour
             dailyBonusPanel != null || dailyQuestPanel != null || takePhotoUI != null || petRequirementPanel != null || spinRewardPanel != null
             || spinWheelPanel != null || confirmBuyShopPopup != null || mapRequirementPanel != null || levelUpPanel != null || welcomeBackPanel != null
             || houseNamePanel != null || chestSalePanel != null || eventPanel != null || ratingWindow != null || itemInfoUI != null ||
-            newVersionPanel != null || rewardItemPanel != null || accessoryPanel != null)
+            newVersionPanel != null || rewardItemPanel != null || accessoryPanel != null || achivementPanel != null)
             return true;
         else
             return false;
