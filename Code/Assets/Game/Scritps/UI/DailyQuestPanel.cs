@@ -33,7 +33,7 @@ public class DailyQuestPanel : MonoBehaviour
         List<Achivement> achivements = new List<Achivement>();
         for(int i = 0; i < DataHolder.Achivements().GetDataCount(); i++)
         {
-            if (DataHolder.Achivement(i).isAvailable)
+            if (DataHolder.Achivement(i).isAvailable && GameManager.instance.myPlayer.level >= DataHolder.Achivement(i).levelRequire)
             {
                 achivements.Add(DataHolder.Achivement(i));
             }
@@ -90,7 +90,6 @@ public class DailyQuestPanel : MonoBehaviour
             if (quest.state == DailyQuestState.None)
             {
                 quest.startValue = GameManager.instance.GetAchivement(quest.achivementId);
-                int petNumber = GameManager.instance.GetPets().Count;
                 quest.bonus = 100;
                 quest.state = DailyQuestState.Started;
                 if (quest.achivementId == 3)

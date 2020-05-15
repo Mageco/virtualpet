@@ -346,28 +346,33 @@ public class TutorialManager : MonoBehaviour
 
     IEnumerator TapToFoodBowl()
     {
-        blackScreenUI.SetActive(true);
-        blackScreenUI.GetComponent<Image>().color = new Color(0.2f, 0.2f, 0.2f, 0);
-        blackScreen.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, 0.2f);
-        blackScreen.SetActive(true);    
         EatItem item = FindObjectOfType<EatItem>();
-        int price = item.GetPrice();
-        ItemManager.instance.SetCameraTarget(item.gameObject);
-        if (GameManager.instance.GetCoin() < price)
-            GameManager.instance.AddCoin(price, GetKey());
-
-        if (item != null)
+        if(item != null && item.foodAmount < 10)
         {
+            blackScreenUI.SetActive(true);
+            blackScreenUI.GetComponent<Image>().color = new Color(0.2f, 0.2f, 0.2f, 0);
             blackScreen.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, 0.2f);
             blackScreen.SetActive(true);
-            handClick.SetActive(true);
-            //Camera.main.GetComponent<CameraController>().screenOffset = 0;
-            blackScreenButton.SetActive(true);
-            handClick.transform.position = item.transform.position + new Vector3(0, 0, -1000);
-            handClick.GetComponent<Animator>().Play("Click", 0);
-            yield return new WaitForSeconds(1);
 
+            int price = item.GetPrice();
+            ItemManager.instance.SetCameraTarget(item.gameObject);
+            if (GameManager.instance.GetCoin() < price)
+                GameManager.instance.AddCoin(price, GetKey());
+
+            if (item != null)
+            {
+                blackScreen.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, 0.2f);
+                blackScreen.SetActive(true);
+                handClick.SetActive(true);
+                //Camera.main.GetComponent<CameraController>().screenOffset = 0;
+                blackScreenButton.SetActive(true);
+                handClick.transform.position = item.transform.position + new Vector3(0, 0, -1000);
+                handClick.GetComponent<Animator>().Play("Click", 0);
+                yield return new WaitForSeconds(1);
+
+            }
         }
+
     }
 
     protected virtual IEnumerator HoldToBath()

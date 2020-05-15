@@ -26,7 +26,7 @@ public class ForestCoinItem : MonoBehaviour
             Vector3 pos = this.transform.position;
             pos.z = pos.y * 10;
             this.transform.position = pos;
-            this.transform.localScale = this.transform.localScale * (1 - this.transform.position.y * 0.1f);
+            this.transform.localScale = this.transform.localScale * 1.5f;
 
         }
     }

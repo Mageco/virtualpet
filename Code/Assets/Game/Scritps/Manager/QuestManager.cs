@@ -448,7 +448,11 @@ public class QuestManager : MonoBehaviour
             }
         }
         else if (questId == 1) {
-
+            EatItem food = FindObjectOfType<EatItem>();
+            if (food != null && food.foodAmount > food.maxfoodAmount - 10)
+            {
+                state = QuestState.Complete;
+            }
         } 
         else if (questId == 2)
         {
