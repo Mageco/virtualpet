@@ -377,7 +377,7 @@ public class QuestManager : MonoBehaviour
             Debug.Log("Reward " + realId);
         }
 
-        ItemManager.instance.SpawnStar(petObject.transform.position, 1);
+        ItemManager.instance.SpawnStar(petObject.transform.position, 2);
         if (TutorialManager.instance != null)
             TutorialManager.instance.EndQuest();
         yield return new WaitForSeconds(2);
