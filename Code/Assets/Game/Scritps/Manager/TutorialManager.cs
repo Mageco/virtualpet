@@ -70,7 +70,7 @@ public class TutorialManager : MonoBehaviour
         //Buy Toy
         else if (questId == 7)
         {
-            OnShop(4, 16);
+            OnShop(4, 85);
         }
         //Chicken defend
         else if (questId == 11)
@@ -134,6 +134,16 @@ public class TutorialManager : MonoBehaviour
                 GameObject go = UIManager.instance.petButton;
                 AddSorting(go);
             }
+            else
+            {
+                blackScreenUI.SetActive(true);
+                blackScreenUI.GetComponent<Image>().color = new Color(0.2f, 0.2f, 0.2f, 0.2f);
+                UIManager.instance.OnProfilePanel();
+            
+                GameObject go = UIManager.instance.profilePanel.items[0].upgradeButton.gameObject;
+                AddSorting(go);
+                step = 1;
+            }
         }
         //Do lucky spin
         else if(questId == 14)
@@ -195,7 +205,7 @@ public class TutorialManager : MonoBehaviour
         }
         else if (questId == 7)
         {
-            ClickOnShop(4, 16);
+            ClickOnShop(4, 85);
         }
         else if (questId == 11)
         {
@@ -215,7 +225,6 @@ public class TutorialManager : MonoBehaviour
                 if (eventPanel != null)
                     eventPanel.OnEvent(0);
             }
-
         }
         else if (questId == 12)
         {
@@ -229,11 +238,30 @@ public class TutorialManager : MonoBehaviour
         }
         else if (questId == 13)
         {
-            Destroy(UIManager.instance.petButton.gameObject.GetComponent<Canvas>());
-            UIManager.instance.OnProfilePanel();
-            handClickUI.transform.SetParent(blackScreenUI.transform);
-            blackScreenUI.SetActive(false);
-            handClickUI.SetActive(false);
+            if (step == 0)
+            {
+                blackScreenUI.SetActive(true);
+                blackScreenUI.GetComponent<Image>().color = new Color(0.2f, 0.2f, 0.2f, 0.2f);
+                UIManager.instance.OnProfilePanel();
+                GameObject go = UIManager.instance.profilePanel.items[0].upgradeButton.gameObject;
+                AddSorting(go);
+                step = 1;
+            }
+            else if (step < 5)
+            {
+                blackScreenUI.SetActive(true);
+
+                if (UIManager.instance.profilePanel != null && UIManager.instance.profilePanel.items.Count > 0)
+                    UIManager.instance.profilePanel.items[0].Upgrade();
+                step++;
+                if(step == 5)
+                {
+                    handClickUI.transform.SetParent(blackScreenUI.transform);
+                    blackScreenUI.SetActive(false);
+                    handClickUI.SetActive(false);
+                    UIManager.instance.profilePanel.Close();
+                }
+            }
         }
         else if (questId == 18)
         {
@@ -332,7 +360,7 @@ public class TutorialManager : MonoBehaviour
             UIManager.instance.shopPanel.Close();
             blackScreenUI.SetActive(false);
             handClickUI.SetActive(false);
-            UIManager.instance.BuyItem(itemId);
+            int realId = UIManager.instance.BuyItem(itemId);
             step = 4;
         }
     }

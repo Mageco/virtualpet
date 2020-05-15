@@ -15,12 +15,12 @@ public class ProfilePanel : MonoBehaviour
 
     void Awake(){
 
-       
+        Load();
 
     }
     void Start()
     {
-        Load();
+        
     }
 
     

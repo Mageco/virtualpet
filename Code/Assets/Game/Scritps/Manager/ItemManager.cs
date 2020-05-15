@@ -316,7 +316,7 @@ public class ItemManager : MonoBehaviour
                     items.Add(item);
                     go.transform.parent = this.transform;
 
-                    if(ES2.Exists("PlayTime"))
+                    if (ES2.Exists("PlayTime"))
                     {
                         if (item.itemType == ItemType.Bath || item.itemType == ItemType.Bed || item.itemType == ItemType.Toilet || item.itemType == ItemType.Food ||
                             item.itemType == ItemType.Drink || item.itemType == ItemType.Table)
@@ -413,7 +413,7 @@ public class ItemManager : MonoBehaviour
         else if(type == AreaType.Room)
         {
             float x = Random.Range(roomBoundX.x + 10, roomBoundX.y - 10);
-            float y = Random.Range(roomBoundY.x + 3, roomBoundY.y);
+            float y = Random.Range(roomBoundY.x + 10, roomBoundY.y-5);
             r = new Vector3(x, y, 0);
         }
         else if (type == AreaType.Camera)
@@ -432,7 +432,7 @@ public class ItemManager : MonoBehaviour
         {
             float x = Random.Range(roomBoundX.x + 10, roomBoundX.y - 10);
             float y = Random.Range(roomWallBoundY.x + 5, roomWallBoundY.y-5);
-            r = new Vector3(x, y, 0);
+            r = new Vector3(x, y, 100);
         }
         return r;
     }

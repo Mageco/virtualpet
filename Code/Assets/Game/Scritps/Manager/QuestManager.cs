@@ -54,7 +54,7 @@ public class QuestManager : MonoBehaviour
                 petObject.ResetData();
                 petObject.data.Food = petObject.data.MaxFood * 0.09f;
                 UIManager.instance.OnQuestNotificationPopup(DataHolder.Dialog(187).GetName(MageManager.instance.GetLanguage()));
-                yield return new WaitForSeconds(10);
+                yield return new WaitForSeconds(15);
                 while(UIManager.instance.IsPopUpOpen())
                 {
                     yield return new WaitForEndOfFrame();
@@ -199,6 +199,9 @@ public class QuestManager : MonoBehaviour
                 OnQuestNotification();
                 if (TutorialManager.instance != null)
                     TutorialManager.instance.StartQuest();
+
+                petObject.data.Shit = petObject.data.MaxShit * 0.7f;
+                petObject.data.Pee = petObject.data.MaxPee * 0.7f;
             }
             else if (questId == 11)
             {
@@ -457,7 +460,7 @@ public class QuestManager : MonoBehaviour
         }
         else if (questId == 7)
         {
-            if (GameManager.instance.IsEquipItem(16))
+            if (GameManager.instance.IsEquipItem(85))
             {
                 state = QuestState.Complete;
             }
@@ -501,9 +504,12 @@ public class QuestManager : MonoBehaviour
         {
             foreach(PlayerPet pet in GameManager.instance.myPlayer.petDatas)
             {
-                if (pet.level >= 5)
+                Debug.Log(pet.level);
+                if (pet.level >= 5 && pet.itemState == ItemState.Equiped)
+                {
                     state = QuestState.Complete;
-                return;
+                    return;
+                }
             }
         }
         else if (questId == 14)

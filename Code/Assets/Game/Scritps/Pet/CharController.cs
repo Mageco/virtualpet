@@ -443,8 +443,8 @@ public class CharController : MonoBehaviour
         {
             data.Food -= 0.2f;
             data.Water -= 0.3f;
-            data.Shit += 0.1f;
-            data.Pee += 0.2f;
+            data.Shit += 0.2f;
+            data.Pee += 0.3f;
         }
 
 

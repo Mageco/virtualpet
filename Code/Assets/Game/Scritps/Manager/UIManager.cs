@@ -306,7 +306,7 @@ public class UIManager : MonoBehaviour
         }
     }
 
-	public void BuyItem(int itemID){
+	public int BuyItem(int itemID){
         MageEngine.instance.OnEvent(Mage.Models.Application.MageEventType.CheckoutIAPWindow ,DataHolder.GetItem(itemID).GetName(MageManager.instance.GetLanguage()));
         int realId = GameManager.instance.BuyItem(itemID);
       GameManager.instance.EquipItem(realId);
@@ -317,6 +317,7 @@ public class UIManager : MonoBehaviour
             shopPanel.ReLoad();
         if (petRequirementPanel != null)
             petRequirementPanel.ReLoad();
+        return realId;
     }
 
     public void EquipItem(int itemId)
