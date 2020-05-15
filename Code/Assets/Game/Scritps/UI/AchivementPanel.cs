@@ -43,7 +43,7 @@ public Transform anchor;
 
         ClearItems();
         foreach(PlayerAchivement a in GameManager.instance.GetPlayer().achivements){
-            if(DataHolder.GetAchivement(a.achivementId).isAvailable)
+            if(DataHolder.GetAchivement(a.achivementId) != null && DataHolder.GetAchivement(a.achivementId).isAvailable)
                 items.Add(a);
         }   
 

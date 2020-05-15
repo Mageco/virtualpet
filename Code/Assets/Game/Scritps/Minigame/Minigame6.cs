@@ -49,8 +49,9 @@ public class Minigame6 : Minigame
             {
                 timeSpawn = 0;
                 SpawnFruit();
-                timeDuration = Random.Range(0.5f, 2.5f);
-
+                float max = Mathf.Clamp(2.5f - time / 30, 1f, 2.5f);
+                timeDuration = Random.Range(0.5f, max);
+ 
             }
             else
                 timeSpawn += Time.deltaTime;

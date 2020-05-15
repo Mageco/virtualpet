@@ -16,10 +16,13 @@ public class ConfirmBuyShopPopup : MonoBehaviour
     public Text priceText;
     public Text question;
     public GameObject replacePanel;
+    public GameObject quatityPanel;
     public Image replaceIcon;
     ItemState state = ItemState.OnShop;
     public GameObject okButton;
     bool isBuy = false;
+    int quantity = 1;
+    public InputField quantityEdit;
 
     public void LoadItem(int id, bool isBuy)
     {
@@ -38,6 +41,7 @@ public class ConfirmBuyShopPopup : MonoBehaviour
         url = url.Replace(".png", "");
         icon.sprite = Resources.Load<Sprite>(url) as Sprite;
         replacePanel.SetActive(false);
+        quatityPanel.SetActive(false);
 
         if (d.itemType == ItemType.Room || d.itemType == ItemType.Gate || d.itemType == ItemType.Board)
         {
@@ -53,7 +57,12 @@ public class ConfirmBuyShopPopup : MonoBehaviour
             }
             
         }
-            
+
+        quantityEdit.text = quantity.ToString();
+        if (d.consume)
+        {
+            quatityPanel.SetActive(true);
+        }
 
         if (isBuy)
         {
@@ -63,7 +72,7 @@ public class ConfirmBuyShopPopup : MonoBehaviour
         else
         {
             question.text = DataHolder.Dialog(4).GetDescription(MageManager.instance.GetLanguage()) + " ";
-            priceText.text = (d.buyPrice / 2).ToString();
+            priceText.text = (d.buyPrice / 2 * quantity).ToString();
         }
 
         if (d.priceType == PriceType.Coin)
@@ -175,9 +184,35 @@ public class ConfirmBuyShopPopup : MonoBehaviour
                 UIManager.instance.BuyItem(itemId);
             }
             else
-                UIManager.instance.SellItem(realId);
+            {
+                if(quantity <= 1)
+                    UIManager.instance.SellItem(realId);
+                else
+                    UIManager.instance.SellItem(realId,quantity);
+            }
+                
         }
         this.Close();
+    }
+
+    public void OnEdit()
+    {
+        Item d = DataHolder.GetItem(itemId);
+        PlayerItem item = GameManager.instance.GetItem(realId);
+        
+        quantity = int.Parse(quantityEdit.text);
+        if (quantity < 1)
+        {
+            quantity = 1;
+            quantityEdit.text = quantity.ToString();
+        }     
+        else if (quantity > item.number)
+        {
+            quantity = item.number;
+            quantityEdit.text = quantity.ToString();
+        }
+            
+        priceText.text = (d.buyPrice / 2 * quantity).ToString();
     }
 
     public void Close()

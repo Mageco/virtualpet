@@ -91,7 +91,6 @@ public class ItemManager : MonoBehaviour
         if (GameManager.instance.IsPreviousData())
         {
             UIManager.instance.OnNewVersionPanel();
-            MageManager.instance.OnNotificationPopup("Updated");
         }
         else
         {

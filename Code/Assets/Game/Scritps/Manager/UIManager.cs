@@ -156,6 +156,7 @@ public class UIManager : MonoBehaviour
 
     float timeRate = 0;
     float maxTimeRate = 600;
+    List<int> tipIds = new List<int>();
 
     void Awake()
 	{
@@ -195,24 +196,21 @@ public class UIManager : MonoBehaviour
                 if(texture2D != null)
                     UIManager.instance.avatarUI.LoadAvatar(Utils.instance.CreateSprite(texture2D));
             });
-                
-        
 
-        if (callButton != null)
+
+
+        for (int i = 165; i <= 185; i++)
         {
-
+            tipIds.Add(i);
         }
 
-        
+
     }
 
     // Update is called once per frame
     void Update()
     {
         UpdateUI();
-
-        if (GameManager.instance.myPlayer.questId >= DataHolder.Quests().GetDataCount() && notificationIcon != null)
-            notificationIcon.SetActive(false);
 
         if (timeUpdate > maxTimeUpdate)
         {
@@ -353,8 +351,17 @@ public class UIManager : MonoBehaviour
             petRequirementPanel.ReLoad();
     }
 
+    public void SellItem(int itemID,int number)
+    {
+        GameManager.instance.SellItem(itemID,number);
+        if (inventoryPanel != null)
+            inventoryPanel.Load();
+        if (petRequirementPanel != null)
+            petRequirementPanel.ReLoad();
+    }
 
-	public void BuyPet(int itemID){
+
+    public void BuyPet(int itemID){
         MageEngine.instance.OnEvent(Mage.Models.Application.MageEventType.CheckOutItem, DataHolder.GetPet(itemID).GetName(MageManager.instance.GetLanguage()));
 
         int realId = GameManager.instance.BuyPet(itemID);
@@ -397,8 +404,18 @@ public class UIManager : MonoBehaviour
 
     public void OnQuestNotification()
     {
-        if(QuestManager.instance != null && (GameManager.instance.myPlayer.questId < DataHolder.Quests().GetDataCount()))
-            OnQuestNotificationPopup(DataHolder.Quest(GameManager.instance.myPlayer.questId).GetName(MageManager.instance.GetLanguage()));
+        if (QuestManager.instance != null)
+        {
+            if (GameManager.instance.myPlayer.questId < DataHolder.Quests().GetDataCount())
+            {
+                OnQuestNotificationPopup(DataHolder.Quest(GameManager.instance.myPlayer.questId).GetName(MageManager.instance.GetLanguage()));
+            }
+            else
+            {
+                int id = Random.Range(0, tipIds.Count);
+                OnQuestNotificationPopup(DataHolder.Dialog(tipIds[id]).GetName(MageManager.instance.GetLanguage()));
+            }
+        }
     }
 
 	public NotificationPopup OnQuestNotificationPopup(string description)
@@ -414,7 +431,9 @@ public class UIManager : MonoBehaviour
             questNotification.Load("", description);
         }
         else
-            questNotification.description.text = description;
+        {
+            questNotification.Load("", description);
+        }
 		return questNotification;
 	}
 

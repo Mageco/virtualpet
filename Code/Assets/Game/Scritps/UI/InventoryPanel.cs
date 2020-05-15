@@ -91,7 +91,8 @@ public class InventoryPanel : MonoBehaviour
 
         foreach (PlayerItem item in temp)
         {
-            LoadItem(item);
+            if(DataHolder.GetItem(item.itemId) != null)
+                LoadItem(item);
         }
     }
 

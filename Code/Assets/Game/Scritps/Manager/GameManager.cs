@@ -629,6 +629,26 @@ public class GameManager : MonoBehaviour
         RemoveItem(realId);
     }
 
+    public void SellItem(int realId,int number)
+    {
+        int itemId = GetItem(realId).itemId;
+        PriceType type = DataHolder.GetItem(itemId).priceType;
+        int price = DataHolder.GetItem(itemId).buyPrice * number / 2;
+        if (type == PriceType.Coin)
+        {
+            AddCoin(price, GetKey());
+        }
+        else if (type == PriceType.Diamond)
+        {
+            AddDiamond(price, GetKey());
+        }
+        else if (type == PriceType.Happy)
+        {
+            AddHappy(price, GetKey());
+        }
+        RemoveItem(realId,number);
+    }
+
     public int AddItem(int id,string key)
     {
         int realId = 0;
@@ -762,8 +782,9 @@ public class GameManager : MonoBehaviour
                     }
                     ItemManager.instance.LoadItems();
                 }
-                else if (item.state == ItemState.Equiped)
+                else if (item.state == ItemState.Equiped || item.state == ItemState.Have)
                 {
+                    /*
                     if(item.itemType == ItemType.Room || item.itemType == ItemType.Gate)
                     {
                         foreach(PlayerItem item1 in myPlayer.items)
@@ -773,11 +794,34 @@ public class GameManager : MonoBehaviour
                                 item1.state = ItemState.Equiped;
                             }
                         }
-                    }
+                    }*/
                     myPlayer.items.Remove(item);
                     ItemManager.instance.LoadItems();
                     
                 }
+                return;
+            }
+        }
+    }
+
+    public void RemoveItem(int realId,int number)
+    {
+        foreach (PlayerItem item in myPlayer.items)
+        {
+            if (item.realId == realId)
+            {
+                if (item.isConsumable)
+                {
+                    if (item.number <= number)
+                    {
+                        myPlayer.items.Remove(item);
+                    }
+                    else
+                    {
+                        item.number -= number;
+                    }
+                    ItemManager.instance.LoadItems();
+                }              
                 return;
             }
         }
@@ -1218,13 +1262,6 @@ public class GameManager : MonoBehaviour
 
     public void ConvertPlayer()
     {
-        //Debug.Log(myPlayer.ToJson());
-        if (IsPreviousData())
-        {
-            Debug.Log("Set quest id 100");
-            myPlayer.questId = 100;
-        }
-
         if (myPlayer.playerName == "")
         {
             GameManager.instance.myPlayer.playerName = "Player" + Random.Range(100000, 1000000).ToString();
@@ -1266,6 +1303,25 @@ public class GameManager : MonoBehaviour
 
             if (item.itemId == 71 || item.itemId == 104 || item.itemId == 105 || item.itemId == 106)
                 item.itemType = ItemType.Clean;
+        }
+
+        List<PlayerItem> sellItems = new List<PlayerItem>();
+        foreach (PlayerItem item in myPlayer.items)
+        {
+            if ((item.itemType == ItemType.Room || item.itemType == ItemType.Gate || item.itemType == ItemType.Board) && item.state == ItemState.Have)
+                sellItems.Add(item);
+        }
+
+        foreach(PlayerItem item in sellItems)
+        {
+            SellItem(item.realId);
+        }
+
+
+        foreach (PlayerItem item in myPlayer.items)
+        {
+            if (!item.isConsumable && item.state == ItemState.Have)
+                item.state = ItemState.Equiped;
         }
 
         foreach (PlayerPet pet in myPlayer.petDatas)

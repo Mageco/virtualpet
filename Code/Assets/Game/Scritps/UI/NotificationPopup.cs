@@ -34,6 +34,7 @@ public class NotificationPopup : MonoBehaviour {
 			title.text = t;
 		if(description != null)
 			description.text = d;
+		time = 0;
 	}
 
 	public void Close(){
