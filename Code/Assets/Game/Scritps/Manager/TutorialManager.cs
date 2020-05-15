@@ -72,11 +72,6 @@ public class TutorialManager : MonoBehaviour
         {
             OnShop(4, 16);
         }
-        //Buy Medical Box
-        else if (questId == 9)
-        {
-            OnShop(3, 77);
-        }
         //Chicken defend
         else if (questId == 11)
         {
@@ -194,14 +189,6 @@ public class TutorialManager : MonoBehaviour
         else if (questId == 7)
         {
             ClickOnShop(4, 16);
-        }
-        else if (questId == 9)
-        {
-            ClickOnShop(3, 77);
-            if(step == 4)
-            {
-                UIManager.instance.OnQuestNotificationPopup(DataHolder.Dialog(189).GetName(MageManager.instance.GetLanguage()));
-            }
         }
         else if (questId == 11)
         {
