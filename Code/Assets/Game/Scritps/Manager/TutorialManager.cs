@@ -351,7 +351,7 @@ public class TutorialManager : MonoBehaviour
         blackScreen.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, 0.2f);
         blackScreen.SetActive(true);    
         EatItem item = FindObjectOfType<EatItem>();
-        int price = (int)((item.maxfoodAmount - item.foodAmount) / 10);
+        int price = item.GetPrice();
         ItemManager.instance.SetCameraTarget(item.gameObject);
         if (GameManager.instance.GetCoin() < price)
             GameManager.instance.AddCoin(price, GetKey());

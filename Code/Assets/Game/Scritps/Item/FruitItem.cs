@@ -23,7 +23,7 @@ public class FruitItem : MonoBehaviour
     void Awake(){
         col = this.GetComponent<CircleCollider2D>();
         time = Random.Range(timeGrow, timeGrow * 2);
-        originalPosition = this.transform.position;
+        originalPosition = this.transform.localPosition;
         parent = this.transform.parent;
     }
     // Start is called before the first frame update
@@ -123,8 +123,8 @@ public class FruitItem : MonoBehaviour
 
     IEnumerator PickCouroutine()
     {
+        ItemManager.instance.SpawnCoin(this.transform.position, Random.Range(1, 4));
         MageManager.instance.PlaySound("happy_collect_item_01", false);
-        ItemManager.instance.SpawnStar(this.transform.position, 1);
         this.transform.parent = Camera.main.transform;
         Vector3 target = Camera.main.ScreenToWorldPoint(UIManager.instance.inventoryButton.transform.position) - Camera.main.transform.position;
         target.z = -100;
@@ -136,10 +136,16 @@ public class FruitItem : MonoBehaviour
 
         time = 0;
         this.transform.parent = parent;
-        this.transform.position = originalPosition;
+        this.transform.localPosition = originalPosition;
 
         //Item item = DataHolder.GetItem(fruidId);
+
         GameManager.instance.AddItem(fruidId, Utils.instance.Md5Sum(GameManager.instance.count.ToString() + GameManager.instance.myPlayer.playTime.ToString() + GameManager.instance.myPlayer.Happy.ToString() + "M@ge2013"));
         GameManager.instance.LogAchivement(AchivementType.CollectFruit);
+    }
+
+    string GetKey()
+    {
+        return Utils.instance.Md5Sum(GameManager.instance.count.ToString() + GameManager.instance.myPlayer.playTime.ToString() + GameManager.instance.myPlayer.Happy.ToString() + "M@ge2013");
     }
 }

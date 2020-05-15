@@ -120,7 +120,7 @@ public class ChestItem : MonoBehaviour
             Item item = DataHolder.GetItem(itemId);
             string url = item.iconUrl.Replace("Assets/Game/Resources/", "");
             url = url.Replace(".png", "");
-            UIManager.instance.OnSpinRewardPanel(Resources.Load<Sprite>(url), value.ToString());
+            UIManager.instance.OnSpinRewardPanel(Resources.Load<Sprite>(url), value.ToString(),item.GetName(MageManager.instance.GetLanguage()));
             GameManager.instance.AddItem(itemId, value, GetKey());
         }
         Destroy(this.gameObject);

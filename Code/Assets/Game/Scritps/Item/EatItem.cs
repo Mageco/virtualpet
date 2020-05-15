@@ -78,7 +78,7 @@ public class EatItem : BaseFloorItem
 	{
         if(foodAmount < maxfoodAmount - 1)
         {
-			int price = (int)((maxfoodAmount - foodAmount)/10);
+			int price = (int)((maxfoodAmount - foodAmount)/20);
 			if (GameManager.instance.GetCoin() < price)
 			{
 				MageManager.instance.OnNotificationPopup(DataHolder.Dialog(6).GetDescription(MageManager.instance.GetLanguage()));
@@ -96,6 +96,11 @@ public class EatItem : BaseFloorItem
 				foodAmount = maxfoodAmount - 1;
 			}
 		}
+	}
+
+    public int GetPrice()
+    {
+		return (int)((maxfoodAmount - foodAmount) / 20);
 	}
 
 

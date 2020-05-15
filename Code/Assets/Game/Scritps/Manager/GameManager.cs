@@ -1115,7 +1115,7 @@ public class GameManager : MonoBehaviour
 
     IEnumerator OnLevelUpPanel()
     {
-        while (UIManager.instance.IsPopUpOpen())
+        while (UIManager.instance.IsPopUpOpen() || ItemManager.instance == null)
         {
             yield return new WaitForEndOfFrame();
         }

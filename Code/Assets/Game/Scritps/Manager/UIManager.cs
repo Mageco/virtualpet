@@ -823,7 +823,7 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    public void OnSpinRewardPanel(Sprite s, string t)
+    public void OnSpinRewardPanel(Sprite s, string t,string n)
     {
         if (spinRewardPanel == null)
         {
@@ -833,7 +833,7 @@ public class UIManager : MonoBehaviour
             popup.transform.SetParent(GameObject.Find("Canvas").transform, false);
             popup.GetComponent<Popup>().Open();
             spinRewardPanel = popup.GetComponent<SpinRewardPanel>();
-            spinRewardPanel.Load(s, t);
+            spinRewardPanel.Load(s, t,n);
         }
     }
 

@@ -98,6 +98,7 @@ public class AchivementTab : BaseTab
 
 			EditorGUILayout.Separator();
 			EditorGUILayout.Separator();
+			DataHolder.Achivement(selection).levelRequire = EditorGUILayout.IntField("Require Level", DataHolder.Achivement(selection).levelRequire, GUILayout.Width(pw.mWidth));
 			DataHolder.Achivement(selection).achivementType = (AchivementType)EditorGUILayout.EnumPopup("Achivement Type", DataHolder.Achivement(selection).achivementType, GUILayout.Width (pw.mWidth));
 			if(DataHolder.Achivement(selection).achivementType == AchivementType.Do_Action){
 				DataHolder.Achivement(selection).actionType = (ActionType)EditorGUILayout.EnumPopup("Action Type", DataHolder.Achivement(selection).actionType, GUILayout.Width (pw.mWidth));

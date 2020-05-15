@@ -366,28 +366,28 @@ public class QuestManager : MonoBehaviour
         {
             UIManager.instance.OnQuestNotificationPopup(DataHolder.Dialog(186).GetName(MageManager.instance.GetLanguage()));
             yield return new WaitForSeconds(1);
-            UIManager.instance.OnSpinRewardPanel(coinIcons[0], quest.coinValue.ToString());
+            UIManager.instance.OnSpinRewardPanel(coinIcons[0], quest.coinValue.ToString(), DataHolder.Dialog(6).GetName(MageManager.instance.GetLanguage()));
             GameManager.instance.AddCoin(quest.coinValue, GetKey());
             
         } else if (quest.diamondValue > 0)
         {
             UIManager.instance.OnQuestNotificationPopup(DataHolder.Dialog(186).GetName(MageManager.instance.GetLanguage()));
             yield return new WaitForSeconds(1);
-            UIManager.instance.OnSpinRewardPanel(coinIcons[1], quest.diamondValue.ToString());
+            UIManager.instance.OnSpinRewardPanel(coinIcons[1], quest.diamondValue.ToString(), DataHolder.Dialog(7).GetName(MageManager.instance.GetLanguage()));
             GameManager.instance.AddDiamond(quest.diamondValue, GetKey());
         }
         else if (quest.happyValue > 0)
         {
             UIManager.instance.OnQuestNotificationPopup(DataHolder.Dialog(186).GetName(MageManager.instance.GetLanguage()));
             yield return new WaitForSeconds(1);
-            UIManager.instance.OnSpinRewardPanel(coinIcons[2], quest.happyValue.ToString());
+            UIManager.instance.OnSpinRewardPanel(coinIcons[2], quest.happyValue.ToString(), DataHolder.Dialog(8).GetName(MageManager.instance.GetLanguage()));
             GameManager.instance.AddHappy(quest.happyValue, GetKey());
         }
         else if (quest.expValue > 0)
         {
             UIManager.instance.OnQuestNotificationPopup(DataHolder.Dialog(186).GetName(MageManager.instance.GetLanguage()));
             yield return new WaitForSeconds(1);
-            UIManager.instance.OnSpinRewardPanel(coinIcons[3], quest.expValue.ToString());
+            UIManager.instance.OnSpinRewardPanel(coinIcons[3], quest.expValue.ToString(),"Exp");
             GameManager.instance.AddExp(quest.expValue, GetKey());
         }
         else if(quest.haveItem)
@@ -397,7 +397,7 @@ public class QuestManager : MonoBehaviour
             Item item = DataHolder.GetItem(quest.itemId);
             string url = item.iconUrl.Replace("Assets/Game/Resources/", "");
             url = url.Replace(".png", "");
-            UIManager.instance.OnSpinRewardPanel(Resources.Load<Sprite>(url), quest.itemNumber.ToString());
+            UIManager.instance.OnSpinRewardPanel(Resources.Load<Sprite>(url), quest.itemNumber.ToString(), item.GetName(MageManager.instance.GetLanguage()));
             int realId = GameManager.instance.AddItem(quest.itemId,quest.itemNumber, GetKey());
             GameManager.instance.EquipItem(realId);
             Debug.Log("Reward " + realId);
@@ -567,7 +567,7 @@ public class QuestManager : MonoBehaviour
         }
         else if (questId == 18)
         {
-            if (GameManager.instance.GetItemNumber(233) >= 5)
+            if (GameManager.instance.GetItemNumber(233) >= 3)
             {
                 state = QuestState.Complete;
             }
