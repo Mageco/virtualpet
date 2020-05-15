@@ -55,6 +55,10 @@ public class QuestManager : MonoBehaviour
                 petObject.data.Food = petObject.data.MaxFood * 0.09f;
                 UIManager.instance.OnQuestNotificationPopup(DataHolder.Dialog(187).GetName(MageManager.instance.GetLanguage()));
                 yield return new WaitForSeconds(10);
+                while(UIManager.instance.IsPopUpOpen())
+                {
+                    yield return new WaitForEndOfFrame();
+                }
                 if (TutorialManager.instance != null)
                     TutorialManager.instance.StartQuest();
                 OnQuestNotification();
@@ -62,6 +66,10 @@ public class QuestManager : MonoBehaviour
             else if (questId == 1)
             {
                 yield return new WaitForSeconds(1);
+                while (UIManager.instance.IsPopUpOpen())
+                {
+                    yield return new WaitForEndOfFrame();
+                }
                 OnQuestNotification();
                 if (TutorialManager.instance != null)
                     TutorialManager.instance.StartQuest();
@@ -69,7 +77,11 @@ public class QuestManager : MonoBehaviour
             else if (questId == 2)
             {
                 yield return new WaitForSeconds(10);
-                if(petObject.actionType != ActionType.Drink)
+                while (UIManager.instance.IsPopUpOpen())
+                {
+                    yield return new WaitForEndOfFrame();
+                }
+                if (petObject.actionType != ActionType.Drink)
                     OnQuestNotification();
                 if (TutorialManager.instance != null)
                     TutorialManager.instance.StartQuest();
@@ -78,6 +90,10 @@ public class QuestManager : MonoBehaviour
             else if (questId == 3)
             {
                 yield return new WaitForSeconds(5);
+                while (UIManager.instance.IsPopUpOpen())
+                {
+                    yield return new WaitForEndOfFrame();
+                }
                 OnQuestNotification();
                 if (TutorialManager.instance != null)
                     TutorialManager.instance.StartQuest();
@@ -89,6 +105,10 @@ public class QuestManager : MonoBehaviour
             {
                 isReplay = false;
                 yield return new WaitForSeconds(10);
+                while (UIManager.instance.IsPopUpOpen())
+                {
+                    yield return new WaitForEndOfFrame();
+                }
                 OnQuestNotification();
                 if (TutorialManager.instance != null)
                     TutorialManager.instance.StartQuest();
@@ -98,7 +118,11 @@ public class QuestManager : MonoBehaviour
             else if (questId == 5)
             {
                 yield return new WaitForSeconds(1);
-                if(petObject.equipment == null || petObject.equipment.itemType != ItemType.Bath)
+                while (UIManager.instance.IsPopUpOpen())
+                {
+                    yield return new WaitForEndOfFrame();
+                }
+                if (petObject.equipment == null || petObject.equipment.itemType != ItemType.Bath)
                     OnQuestNotification();
                 if (TutorialManager.instance != null)
                     TutorialManager.instance.StartQuest();
@@ -108,6 +132,10 @@ public class QuestManager : MonoBehaviour
             else if (questId == 6)
             {
                 yield return new WaitForSeconds(6);
+                while (UIManager.instance.IsPopUpOpen())
+                {
+                    yield return new WaitForEndOfFrame();
+                }
                 OnQuestNotification();
                 if (TutorialManager.instance != null)
                     TutorialManager.instance.StartQuest();
@@ -124,6 +152,10 @@ public class QuestManager : MonoBehaviour
                 petObject.OnCall();
                 yield return new WaitForSeconds(3);
                 petObject.OnCall();
+                while (UIManager.instance.IsPopUpOpen())
+                {
+                    yield return new WaitForEndOfFrame();
+                }
                 OnQuestNotification();
                 if (TutorialManager.instance != null)
                     TutorialManager.instance.StartQuest();
@@ -131,6 +163,10 @@ public class QuestManager : MonoBehaviour
             else if (questId == 8)
             {
                 yield return new WaitForSeconds(1);
+                while (UIManager.instance.IsPopUpOpen())
+                {
+                    yield return new WaitForEndOfFrame();
+                }
                 if (petObject.equipment == null || petObject.equipment.itemType != ItemType.Toy)
                     OnQuestNotification();
                 if (TutorialManager.instance != null)
@@ -141,6 +177,10 @@ public class QuestManager : MonoBehaviour
             else if (questId == 9)
             {
                 yield return new WaitForSeconds(10);
+                while (UIManager.instance.IsPopUpOpen())
+                {
+                    yield return new WaitForEndOfFrame();
+                }
                 OnQuestNotification();
                 if (TutorialManager.instance != null)
                     TutorialManager.instance.StartQuest();
@@ -152,6 +192,10 @@ public class QuestManager : MonoBehaviour
             {
                 isReplay = false;
                 yield return new WaitForSeconds(2);
+                while (UIManager.instance.IsPopUpOpen())
+                {
+                    yield return new WaitForEndOfFrame();
+                }
                 OnQuestNotification();
                 if (TutorialManager.instance != null)
                     TutorialManager.instance.StartQuest();
@@ -159,6 +203,10 @@ public class QuestManager : MonoBehaviour
             else if (questId == 11)
             {
                 yield return new WaitForSeconds(10);
+                while (UIManager.instance.IsPopUpOpen())
+                {
+                    yield return new WaitForEndOfFrame();
+                }
                 OnQuestNotification();
                 if (TutorialManager.instance != null)
                     TutorialManager.instance.StartQuest();
@@ -166,6 +214,10 @@ public class QuestManager : MonoBehaviour
             else if (questId == 12)
             {
                 yield return new WaitForSeconds(5);
+                while (UIManager.instance.IsPopUpOpen())
+                {
+                    yield return new WaitForEndOfFrame();
+                }
                 OnQuestNotification();
                 if (TutorialManager.instance != null)
                     TutorialManager.instance.StartQuest();
@@ -173,6 +225,10 @@ public class QuestManager : MonoBehaviour
             else if (questId == 13)
             {
                 yield return new WaitForSeconds(10);
+                while (UIManager.instance.IsPopUpOpen())
+                {
+                    yield return new WaitForEndOfFrame();
+                }
                 OnQuestNotification();
                 yield return new WaitForSeconds(4);
                 if (UIManager.instance.questNotification != null)
@@ -183,6 +239,10 @@ public class QuestManager : MonoBehaviour
             else if (questId == 14)
             {
                 yield return new WaitForSeconds(10);
+                while (UIManager.instance.IsPopUpOpen())
+                {
+                    yield return new WaitForEndOfFrame();
+                }
                 OnQuestNotification();
                 if (TutorialManager.instance != null)
                     TutorialManager.instance.StartQuest();
@@ -191,6 +251,10 @@ public class QuestManager : MonoBehaviour
             {
                 isReplay = false;
                 yield return new WaitForSeconds(3);
+                while (UIManager.instance.IsPopUpOpen())
+                {
+                    yield return new WaitForEndOfFrame();
+                }
                 OnQuestNotification();
                 if (TutorialManager.instance != null)
                     TutorialManager.instance.StartQuest();
@@ -199,7 +263,11 @@ public class QuestManager : MonoBehaviour
             {
                 maxReplayTime = 60;
                 yield return new WaitForSeconds(10);
-                if(GameManager.instance.IsHaveItem(87))
+                while (UIManager.instance.IsPopUpOpen())
+                {
+                    yield return new WaitForEndOfFrame();
+                }
+                if (GameManager.instance.IsHaveItem(87))
                     UIManager.instance.OnQuestNotificationPopup(DataHolder.Dialog(194).GetName(MageManager.instance.GetLanguage()));
                 else
                     OnQuestNotification();
@@ -210,7 +278,11 @@ public class QuestManager : MonoBehaviour
             else if (questId == 17)
             {
                 isReplay = false;
-                yield return new WaitForSeconds(5);               
+                yield return new WaitForSeconds(5);
+                while (UIManager.instance.IsPopUpOpen())
+                {
+                    yield return new WaitForEndOfFrame();
+                }
                 OnQuestNotification();
                 if (TutorialManager.instance != null)
                     TutorialManager.instance.StartQuest();
@@ -219,6 +291,10 @@ public class QuestManager : MonoBehaviour
             {
                 isReplay = false;
                 yield return new WaitForSeconds(10);
+                while (UIManager.instance.IsPopUpOpen())
+                {
+                    yield return new WaitForEndOfFrame();
+                }
                 OnQuestNotification();
                 if (TutorialManager.instance != null)
                     TutorialManager.instance.StartQuest();
@@ -227,6 +303,10 @@ public class QuestManager : MonoBehaviour
             {
                 maxReplayTime = 60;
                 yield return new WaitForSeconds(5);
+                while (UIManager.instance.IsPopUpOpen())
+                {
+                    yield return new WaitForEndOfFrame();
+                }
                 OnQuestNotification();
                 if (TutorialManager.instance != null)
                     TutorialManager.instance.StartQuest();

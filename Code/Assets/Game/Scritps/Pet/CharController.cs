@@ -2092,6 +2092,8 @@ public class CharController : MonoBehaviour
             }
             else
             {
+                equipment.RemovePet(this);
+                equipment = null;
                 int ran = Random.Range(0, 100);
                 if (ran < 30)
                 {
