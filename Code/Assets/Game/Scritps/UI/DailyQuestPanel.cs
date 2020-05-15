@@ -55,24 +55,32 @@ public class DailyQuestPanel : MonoBehaviour
             {
                 DailyQuestData quest = new DailyQuestData();
                 quest.achivementId = achivements[ids[i]].iD;
+                quest.timeCollected = MageEngine.instance.GetServerTimeStamp().ToString();
                 GameManager.instance.myPlayer.dailyQuests.Add(quest);
                 GameManager.instance.myPlayer.isCompleteDailyQuest = false;
             }
         }
 
+
+        bool isRenewQuest = false;
         int count = 0;
         foreach(DailyQuestData quest in GameManager.instance.myPlayer.dailyQuests)
         {
-            if (quest.timeCollected != "")
+            if (quest.timeCollected != "" && GameManager.instance.IsYesterDay(System.DateTime.Parse(quest.timeCollected)))
             {
-                if (System.DateTime.Parse(quest.timeCollected).Year < MageEngine.instance.GetServerTimeStamp().Year || System.DateTime.Parse(quest.timeCollected).Month < MageEngine.instance.GetServerTimeStamp().Month || System.DateTime.Parse(quest.timeCollected).Day < MageEngine.instance.GetServerTimeStamp().Day)
-                {
-                    quest.achivementId = achivements[ids[count]].iD;
-                    quest.state = DailyQuestState.None;
-                    quest.timeCollected = MageEngine.instance.GetServerTimeStamp().ToString();
-                    GameManager.instance.myPlayer.isCompleteDailyQuest = false;
-                    count++;
-                }
+                isRenewQuest = true;
+            }   
+        }
+
+        foreach (DailyQuestData quest in GameManager.instance.myPlayer.dailyQuests)
+        {
+            if (isRenewQuest)
+            { 
+                quest.achivementId = achivements[ids[count]].iD;
+                quest.state = DailyQuestState.None;
+                quest.timeCollected = MageEngine.instance.GetServerTimeStamp().ToString();
+                GameManager.instance.myPlayer.isCompleteDailyQuest = false;
+                count++;   
             }
         }
 

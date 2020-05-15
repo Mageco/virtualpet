@@ -217,6 +217,7 @@ public class DailyQuestData : BaseModel
 	public int bonus = 100;
 	public DailyQuestState state = DailyQuestState.None;
 	public string timeCollected = "";
+	public string timeStarted = "";
 }
 
 

@@ -1167,12 +1167,16 @@ public class CharController : MonoBehaviour
 
     public virtual void OnEat()
     {
+        if (actionType == ActionType.Eat)
+            return;
         actionType = ActionType.Eat;
         isAbort = true;        
     }
 
     public virtual void OnDrink()
     {
+        if (actionType == ActionType.Drink)
+            return;
         actionType = ActionType.Drink;
         isAbort = true;   
     }
@@ -1430,15 +1434,25 @@ public class CharController : MonoBehaviour
         agent.Stop();
         isMoving = true;
         isArrived = false;
-        agent.SetDestination(target);
         charScale.speedFactor = 1;
-
-        while (!isArrived && !isAbort)
+        if (Vector2.Distance(this.transform.position,target) > 1)
         {
-            anim.Play("Run_L", 0);
-            yield return new WaitForEndOfFrame();
+            agent.SetDestination(target);
+            while (!isArrived && !isAbort)
+            {
+                anim.Play("Run_L", 0);
+                yield return new WaitForEndOfFrame();
+            }
+            
         }
+        else
+        {
+            isArrived = true;
+        }
+
+        
         isMoving = false;
+
     }
 
     protected IEnumerator WalkToPoint()
@@ -2020,8 +2034,11 @@ public class CharController : MonoBehaviour
             }
             else
             {
-                equipment.RemovePet(this);
-                equipment = null;
+                if (equipment != null)
+                {
+                    equipment.RemovePet(this);
+                    equipment = null;
+                }
                 int ran = Random.Range(0, 100);
                 if (ran < 30)
                 {
@@ -2092,8 +2109,12 @@ public class CharController : MonoBehaviour
             }
             else
             {
-                equipment.RemovePet(this);
-                equipment = null;
+                if(equipment != null)
+                {
+                    equipment.RemovePet(this);
+                    equipment = null;
+                }
+
                 int ran = Random.Range(0, 100);
                 if (ran < 30)
                 {

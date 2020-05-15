@@ -22,7 +22,7 @@ public class FruitItem : MonoBehaviour
 
     void Awake(){
         col = this.GetComponent<CircleCollider2D>();
-        time = Random.Range(0, timeGrow);
+        time = Random.Range(timeGrow, timeGrow * 2);
         originalPosition = this.transform.position;
         parent = this.transform.parent;
     }

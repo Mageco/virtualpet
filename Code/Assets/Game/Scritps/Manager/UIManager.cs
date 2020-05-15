@@ -244,12 +244,19 @@ public class UIManager : MonoBehaviour
 
             dailyQuestNotification.SetActive(false);
             int n = 0;
+
+            if(GameManager.instance.myPlayer.dailyQuests.Count == 0)
+                dailyQuestNotification.SetActive(true);
             foreach (DailyQuestData dailyQuest in GameManager.instance.myPlayer.dailyQuests)
             {
-                if(dailyQuest.state == DailyQuestState.Ready)
+                if (dailyQuest.timeCollected != "" && GameManager.instance.IsYesterDay(System.DateTime.Parse(dailyQuest.timeCollected)))
                 {
                     dailyQuestNotification.SetActive(true);
-                }else if(dailyQuest.state == DailyQuestState.Collected)
+                }
+                else if (dailyQuest.state == DailyQuestState.Ready)
+                {
+                    dailyQuestNotification.SetActive(true);
+                } else if (dailyQuest.state == DailyQuestState.Collected)
                 {
                     n++;
                 }
