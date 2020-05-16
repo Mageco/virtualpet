@@ -326,6 +326,9 @@ public class ItemManager : MonoBehaviour
                             item.transform.position = ItemManager.instance.GetRandomPoint(AreaType.Garden);
                         else if (item.itemType == ItemType.MedicineBox || item.itemType == ItemType.Picture || item.itemType == ItemType.Clock)
                             item.transform.position = ItemManager.instance.GetRandomPoint(AreaType.Wall);
+                        else if(item.itemType == ItemType.Toy && (item.toyType == ToyType.Slider || item.toyType == ToyType.Seesaw || item.toyType == ToyType.Carrier ||
+                            item.toyType == ToyType.Flying || item.toyType == ToyType.Spring || item.toyType == ToyType.Sprinkler || item.toyType == ToyType.Swing))
+                            item.transform.position = ItemManager.instance.GetRandomPoint(AreaType.Garden);
                         else if (item.itemType != ItemType.Room && item.itemType != ItemType.Gate && item.itemType != ItemType.Board)
                             item.transform.position = ItemManager.instance.GetRandomPoint(AreaType.All);
 

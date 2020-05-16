@@ -1310,6 +1310,9 @@ public class GameManager : MonoBehaviour
         {
             if ((item.itemType == ItemType.Room || item.itemType == ItemType.Gate || item.itemType == ItemType.Board) && item.state == ItemState.Have)
                 sellItems.Add(item);
+
+            if (item.itemId == 1 || item.itemId == 96 || item.itemId == 97 || item.itemId == 98)
+                sellItems.Add(item);
         }
 
         foreach(PlayerItem item in sellItems)
