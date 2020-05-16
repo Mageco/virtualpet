@@ -204,7 +204,10 @@ public class UIManager : MonoBehaviour
             tipIds.Add(i);
         }
 
-
+        for (int i = 197; i <= 205; i++)
+        {
+            tipIds.Add(i);
+        }
     }
 
     // Update is called once per frame

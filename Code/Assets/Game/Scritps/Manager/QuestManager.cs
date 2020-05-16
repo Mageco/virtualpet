@@ -631,4 +631,9 @@ public class QuestManager : MonoBehaviour
         return Utils.instance.Md5Sum(GameManager.instance.count.ToString() + GameManager.instance.myPlayer.playTime.ToString() + GameManager.instance.myPlayer.Happy.ToString() + "M@ge2013");
     }
 
+    public void OnGift()
+    {
+        UIManager.instance.OnSpinRewardPanel(coinIcons[1],"20", DataHolder.Dialog(7).GetName(MageManager.instance.GetLanguage()));
+        GameManager.instance.AddDiamond(20, GetKey());
+    }
 }
