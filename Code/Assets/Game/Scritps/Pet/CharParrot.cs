@@ -41,8 +41,11 @@ public class CharParrot : CharController
             float h = Mathf.Clamp(Vector2.Distance(target, this.transform.position)/3, 2, 15);
             paths = new Vector3[3];
             paths[0] = this.transform.position;
+            paths[0].z = 0;
             paths[1] = (this.transform.position + target) / 2 + new Vector3(0, h, 0);
+            paths[1].z = 0;
             paths[2] = target;
+            paths[2].z = 0;
             Vector3 startPoint = this.transform.position;
             //iTween.StopByName("RunToPoint" + this.gameObject.name);
             iTween.MoveTo(this.gameObject, iTween.Hash("name", "RunToPoint" + this.gameObject.name, "path", paths, "speed", data.Speed * 5, "orienttopath", false, "easetype", "linear", "oncomplete", "CompleteFly"));
@@ -57,7 +60,7 @@ public class CharParrot : CharController
                 float x2 = target.x;
                 float y2 = target.y;
                 float x1 = this.transform.position.x;
-                float y1 = (y0 + y2)/2;
+                float y1 = y0;
                 if (Mathf.Abs(x2-x0) > 0.1f)
                     y1 = (x1 - x0) * (y2 - y0) / (x2 - x0) + y0;
                 charScale.scalePosition = new Vector3(x1, y1, this.transform.position.z);

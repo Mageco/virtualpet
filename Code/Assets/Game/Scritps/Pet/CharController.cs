@@ -2238,7 +2238,9 @@ public class CharController : MonoBehaviour
             while (petTarget != null && n > 0 && !isAbort)
             {
                 agent.Stop();
-                agent.SetDestination(petTarget.transform.position);
+                Vector3 pos = petTarget.transform.position;
+                pos.z = 0;
+                agent.SetDestination(pos);
                 anim.Play("Run_L", 0);
                 
                if (Vector2.Distance(this.transform.position, petTarget.transform.position) < 5)

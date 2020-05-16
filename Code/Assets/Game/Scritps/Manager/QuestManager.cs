@@ -59,8 +59,10 @@ public class QuestManager : MonoBehaviour
                 }
 
                 UIManager.instance.OnQuestNotificationPopup(DataHolder.Dialog(187).GetName(MageManager.instance.GetLanguage()));
-                yield return new WaitForSeconds(15);
-                while(UIManager.instance.IsPopUpOpen())
+                yield return new WaitForSeconds(5);
+                UIManager.instance.OnQuestNotificationPopup(DataHolder.Dialog(196).GetName(MageManager.instance.GetLanguage()));
+                yield return new WaitForSeconds(6);
+                while (UIManager.instance.IsPopUpOpen())
                 {
                     yield return new WaitForEndOfFrame();
                 }
