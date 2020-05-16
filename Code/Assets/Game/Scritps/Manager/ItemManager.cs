@@ -91,8 +91,8 @@ public class ItemManager : MonoBehaviour
         if (GameManager.instance.IsPreviousData())
         {
             UIManager.instance.OnNewVersionPanel();
-            QuestManager.instance.OnGift();
-            MageManager.instance.OnNotificationPopup(DataHolder.Dialog(206).GetName(MageManager.instance.GetLanguage()));
+            //QuestManager.instance.OnGift();
+            //MageManager.instance.OnNotificationPopup(DataHolder.Dialog(206).GetName(MageManager.instance.GetLanguage()));
         }
         else
         {
