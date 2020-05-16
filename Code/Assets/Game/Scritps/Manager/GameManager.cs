@@ -1337,6 +1337,12 @@ public class GameManager : MonoBehaviour
         {
             if (pet.itemState == ItemState.Have)
                 pet.itemState = ItemState.Equiped;
+
+            if (pet.iD == 43)
+                pet.iD = 42;
+
+            if (pet.iD == 45)
+                pet.iD = 34;
         }
 
         foreach (PlayerPet pet in myPlayer.petDatas)

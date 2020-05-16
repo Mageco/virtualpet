@@ -68,6 +68,7 @@ public class ProfileUI : MonoBehaviour
            dirtyText.text = data.MaxDirty.ToString();
        }*/
         Pet pet = DataHolder.GetPet(playerPet.iD);
+        Debug.Log(pet.GetName(0));
         Accessory a = DataHolder.GetAccessory(playerPet.iD,playerPet.accessoryId);
         petName.text = playerPet.petName;
         string url = a.iconUrl.Replace("Assets/Game/Resources/", "");
