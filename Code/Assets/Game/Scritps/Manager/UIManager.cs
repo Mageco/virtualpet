@@ -404,18 +404,17 @@ public class UIManager : MonoBehaviour
 
     public void OnQuestNotification()
     {
-        if (QuestManager.instance != null)
+
+        if (GameManager.instance.myPlayer.questId < DataHolder.Quests().GetDataCount())
         {
-            if (GameManager.instance.myPlayer.questId < DataHolder.Quests().GetDataCount())
-            {
-                OnQuestNotificationPopup(DataHolder.Quest(GameManager.instance.myPlayer.questId).GetName(MageManager.instance.GetLanguage()));
-            }
-            else
-            {
-                int id = Random.Range(0, tipIds.Count);
-                OnQuestNotificationPopup(DataHolder.Dialog(tipIds[id]).GetName(MageManager.instance.GetLanguage()));
-            }
+            OnQuestNotificationPopup(DataHolder.Quest(GameManager.instance.myPlayer.questId).GetName(MageManager.instance.GetLanguage()));
         }
+        else
+        {
+            int id = Random.Range(0, tipIds.Count);
+            OnQuestNotificationPopup(DataHolder.Dialog(tipIds[id]).GetName(MageManager.instance.GetLanguage()));
+        }
+        
     }
 
 	public NotificationPopup OnQuestNotificationPopup(string description)
