@@ -116,6 +116,7 @@ public class ConfirmBuyShopPopup : MonoBehaviour
             itemId = GameManager.instance.GetPet(realId).iD;
         }
 
+        quatityPanel.SetActive(false);
         isCharacter = true;
         this.isBuy = isBuy;
         Pet d = DataHolder.GetPet(itemId);

@@ -27,7 +27,8 @@ public class CharParrot : CharController
         }
         else
         {
-
+            if (shadow != null)
+                shadow.SetActive(true);
 
             charInteract.interactType = InteractType.Fly;
             if (target.x > this.transform.position.x)
@@ -56,8 +57,9 @@ public class CharParrot : CharController
                 float x2 = target.x;
                 float y2 = target.y;
                 float x1 = this.transform.position.x;
-                float y1 = (x1 - x0) * (y2 - y0) / (x2 - x0) + y0;
-
+                float y1 = (y0 + y2)/2;
+                if (Mathf.Abs(x2-x0) > 0.1f)
+                    y1 = (x1 - x0) * (y2 - y0) / (x2 - x0) + y0;
                 charScale.scalePosition = new Vector3(x1, y1, this.transform.position.z);
                 charScale.height = this.transform.position.y - y1;
                 //agent.transform.position = this.transform.position;

@@ -1520,7 +1520,6 @@ public class CharController : MonoBehaviour
         if (shadow != null)
             shadow.SetActive(true);
         Vector3 lastPosition = this.transform.position;
-        Quaternion targetRotation;
         while (charInteract.interactType == InteractType.Drag && !isAbort)
         {
 
@@ -1537,22 +1536,7 @@ public class CharController : MonoBehaviour
             else if (pos.x < ItemManager.instance.gardenBoundX.x)
                 pos.x = ItemManager.instance.gardenBoundX.x;
 
-            /*
-            if (direction == Direction.R)
-            {
-                targetRotation = Quaternion.Euler(new Vector3(0, 0, -(this.transform.position.x - lastPosition.x) * 10));
-                this.charObject.transform.localScale = new Vector3(this.charObject.transform.localScale.x, this.charObject.transform.localScale.y, -1);
-            }
-            else
-            {
-                targetRotation = Quaternion.Euler(new Vector3(0, 0, -(this.transform.position.x - lastPosition.x) * 10));
-                this.charObject.transform.localScale = new Vector3(this.charObject.transform.localScale.x, this.charObject.transform.localScale.y, 1);
-            }*/
-
-            //this.charObject.transform.rotation = Quaternion.Lerp(this.charObject.transform.rotation, targetRotation, Time.deltaTime * 5);
-
-
-
+ 
 
             pos.z = -50;
             agent.transform.position = Vector3.Lerp(this.transform.position,pos,Time.deltaTime * 5);
@@ -2421,6 +2405,7 @@ public class CharController : MonoBehaviour
             dropPosition = equipment.GetAnchorPoint(this).position + new Vector3(0, Random.Range(-1f, 1f), 0);
             agent.transform.position = dropPosition;
             yield return new WaitForEndOfFrame();
+
             while (equipment != null && !isAbort && data.Toy < value)
             {
                 int ran = Random.Range(0, 100);
@@ -2593,6 +2578,7 @@ public class CharController : MonoBehaviour
         }
         else if (equipment.toyType == ToyType.Seesaw || equipment.toyType == ToyType.Sprinkler || equipment.toyType == ToyType.Carrier || equipment.toyType == ToyType.Flying)
         {
+            float t = 0;
             ToyCarrier carrier = equipment.GetComponent<ToyCarrier>();
             charInteract.interactType = InteractType.Equipment;
             if (equipment.toyType != ToyType.Sprinkler)
@@ -2608,9 +2594,6 @@ public class CharController : MonoBehaviour
             while (anchorPoint != null && !isAbort && data.Toy < value)
             {
                 agent.transform.position = anchorPoint.position;
-                
-
-
                 if(equipment.toyType == ToyType.Seesaw)
                 {
                     this.transform.rotation = anchorPoint.rotation;
@@ -2619,15 +2602,7 @@ public class CharController : MonoBehaviour
                 {
                     SetDirection(carrier.direction);
                 }
-                //if(n == 0)
-                //{
-                //    this.transform.rotation = anchorPoint.rotation;
-                //    this.transform.localScale = new Vector3(this.transform.localScale.x, this.transform.localScale.y, anchorPoint.localScale.z);
-                //}else
-                //{
-                //    this.transform.rotation = Quaternion.Euler(new Vector3(anchorPoint.rotation.x,anchorPoint.rotation.y + 180,anchorPoint.rotation.z));
-                //    this.transform.localScale = new Vector3(this.transform.localScale.x, this.transform.localScale.y, -anchorPoint.localScale.z);
-                //}
+
                 if (equipment.pets.Count == equipment.anchorPoints.Length)
                 {
                     anim.Play("Play_" + equipment.toyType.ToString(), 0);
@@ -2635,9 +2610,13 @@ public class CharController : MonoBehaviour
                 }
                 else
                 {
+                    if (t > 15)
+                        OnCall();
                     anim.Play("Wait_" + equipment.toyType.ToString(), 0);
                     equipment.DeActive();
+                    t += Time.deltaTime;
                 }
+                
                 yield return new WaitForEndOfFrame();
             }
 

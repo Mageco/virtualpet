@@ -320,7 +320,7 @@ public class ItemManager : MonoBehaviour
                     if (ES2.Exists("PlayTime"))
                     {
                         if (item.itemType == ItemType.Bath || item.itemType == ItemType.Bed || item.itemType == ItemType.Toilet || item.itemType == ItemType.Food ||
-                            item.itemType == ItemType.Drink || item.itemType == ItemType.Table)
+                            item.itemType == ItemType.Drink || item.itemType == ItemType.Table || item.itemType == ItemType.Clean)
                             item.transform.position = ItemManager.instance.GetRandomPoint(AreaType.Room);
                         else if (item.itemType == ItemType.Fruit)
                             item.transform.position = ItemManager.instance.GetRandomPoint(AreaType.Garden);
@@ -742,7 +742,7 @@ public class ItemManager : MonoBehaviour
                 Debug.Log(pet.name);
                 if (pet.emotionStatus != EmotionStatus.Sad)
                 {
-                    int value = Mathf.Clamp((int)awayTime / 30, 0, 10);
+                    int value = Mathf.Clamp((int)awayTime / 30, 0, 5);
                     for (int i = 0; i < value; i++)
                     {
                         SpawnPetHappy(GetRandomPoint(AreaType.All),3*(pet.data.rateHappy + pet.data.level / 5));
