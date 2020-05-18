@@ -53,6 +53,10 @@ public class TutorialManager : MonoBehaviour
         else if (questId == 1)
         {
             StartCoroutine(TapToFoodBowl());
+        }        //Tap to the food bowl
+        else if (questId == 2)
+        {
+            StartCoroutine(TapToWaterBowl());
         }
         //Buy Bath
         else if (questId == 4)
@@ -71,6 +75,14 @@ public class TutorialManager : MonoBehaviour
         else if (questId == 7)
         {
             OnShop(4, 85);
+        }
+        //Hold To Toy
+        else if (questId == 8)
+        {
+            if (step == 0)
+            {
+                StartCoroutine(HoldToToy());
+            }
         }
         //Chicken defend
         else if (questId == 11)
@@ -149,6 +161,11 @@ public class TutorialManager : MonoBehaviour
         {
 
         }
+        //Buy apple tree
+        else if (questId == 16)
+        {
+            OnShop(5, 87);
+        }
         //Go to the forest
         else if (questId == 18)
         {
@@ -176,6 +193,16 @@ public class TutorialManager : MonoBehaviour
             FindObjectOfType<EatItem>().Fill();
             if (GameManager.instance.GetActivePetObject() != null)
                 GameManager.instance.GetActivePetObject().OnEat();
+        }
+        else if (questId == 2)
+        {
+            QuestManager.instance.OnCompleteQuest();
+            blackScreenUI.SetActive(false);
+            blackScreen.SetActive(false);
+            handClick.SetActive(false);
+            ItemManager.instance.GetRandomItem(ItemType.Drink).GetComponent<EatItem>().Fill();
+            if (GameManager.instance.GetActivePetObject() != null)
+                GameManager.instance.GetActivePetObject().OnDrink();
         }
         else if (questId == 4)
         {
@@ -241,6 +268,10 @@ public class TutorialManager : MonoBehaviour
                     UIManager.instance.profilePanel.Close();
                 }
             }
+        }
+        else if (questId == 16)
+        {
+            ClickOnShop(5, 87);
         }
         else if (questId == 18)
         {
@@ -375,6 +406,37 @@ public class TutorialManager : MonoBehaviour
 
     }
 
+    IEnumerator TapToWaterBowl()
+    {
+        EatItem item = ItemManager.instance.GetRandomItem(ItemType.Drink).GetComponent<EatItem>();
+        if (item != null && item.foodAmount < 10)
+        {
+            blackScreenUI.SetActive(true);
+            blackScreenUI.GetComponent<Image>().color = new Color(0.2f, 0.2f, 0.2f, 0);
+            blackScreen.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, 0.2f);
+            blackScreen.SetActive(true);
+
+            int price = item.GetPrice();
+            ItemManager.instance.SetCameraTarget(item.gameObject);
+            if (GameManager.instance.GetCoin() < price)
+                GameManager.instance.AddCoin(price, GetKey());
+
+            if (item != null)
+            {
+                blackScreen.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, 0.2f);
+                blackScreen.SetActive(true);
+                handClick.SetActive(true);
+                //Camera.main.GetComponent<CameraController>().screenOffset = 0;
+                blackScreenButton.SetActive(true);
+                handClick.transform.position = item.transform.position + new Vector3(0, 0, -1000);
+                handClick.GetComponent<Animator>().Play("Click", 0);
+                yield return new WaitForSeconds(1);
+
+            }
+        }
+
+    }
+
     protected virtual IEnumerator HoldToBath()
     {
         //blackScreen.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, 0);
@@ -400,6 +462,46 @@ public class TutorialManager : MonoBehaviour
                 yield return new WaitForEndOfFrame();
             }
             holdPosition = ItemManager.instance.GetRandomItem(ItemType.Bath).transform.position + new Vector3(0, 10f, 0);
+            while (Vector2.Distance(pet.transform.position, holdPosition) > 0.5f)
+            {
+                pet.target = Vector3.Lerp(pet.target, holdPosition, Time.deltaTime * 2);
+                handClick.transform.position = pet.transform.position + new Vector3(0, 3, -10);
+                yield return new WaitForEndOfFrame();
+            }
+            pet.transform.position = holdPosition;
+            handClick.SetActive(false);
+            yield return new WaitForEndOfFrame();
+            pet.charInteract.interactType = InteractType.Drop;
+        }
+        //blackScreen.SetActive(false);
+
+    }
+
+    protected virtual IEnumerator HoldToToy()
+    {
+        //blackScreen.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, 0);
+        //blackScreen.SetActive(true);
+        CharController pet = GameManager.instance.GetActivePetObject();
+        while (pet != null && pet.charInteract.interactType != InteractType.None)
+        {
+            yield return new WaitForEndOfFrame();
+        }
+
+        if (pet != null && (pet.equipment == null || pet.equipment.itemType != ItemType.Toy) && GameManager.instance.GetAchivement(17) == 0)
+        {
+            pet.OnControl();
+            handClick.SetActive(true);
+            handClick.transform.position = pet.transform.position + new Vector3(0, 3, -10);
+            handClick.GetComponent<Animator>().Play("Hold", 0);
+            Vector3 holdPosition = pet.charScale.scalePosition + new Vector3(0, 10, 0);
+            pet.target = pet.transform.position;
+            while (Vector2.Distance(pet.transform.position, holdPosition) > 0.5f)
+            {
+                pet.target = Vector3.Lerp(pet.target, holdPosition, Time.deltaTime * 2);
+                handClick.transform.position = pet.transform.position + new Vector3(0, 3, -10);
+                yield return new WaitForEndOfFrame();
+            }
+            holdPosition = ItemManager.instance.GetRandomItem(ItemType.Toy).transform.position + new Vector3(0, 10f, 0);
             while (Vector2.Distance(pet.transform.position, holdPosition) > 0.5f)
             {
                 pet.target = Vector3.Lerp(pet.target, holdPosition, Time.deltaTime * 2);

@@ -115,7 +115,7 @@ public class BaseFloorItem : MonoBehaviour
             else
 				this.transform.position = ItemManager.instance.GetRandomPoint(AreaType.All);
 
-			Debug.Log(ItemManager.instance.GetRandomPoint(AreaType.All));
+			//Debug.Log(ItemManager.instance.GetRandomPoint(AreaType.All));
 			n++;
 			yield return new WaitForEndOfFrame();
 		}
