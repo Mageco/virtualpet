@@ -31,6 +31,8 @@ public class GameManager : MonoBehaviour
     string passWord = "M@ge2013";
     [HideInInspector]
     public int count = 14536;
+    public int questMax = 20;
+
 
     void Awake()
     {
@@ -374,6 +376,9 @@ public class GameManager : MonoBehaviour
         int petId = GetPet(realId).iD;
         PriceType type = DataHolder.GetPet(petId).priceType;
         int price = DataHolder.GetPet(petId).buyPrice / 2;
+        if(type == PriceType.Diamond)
+            price = 100 * DataHolder.GetPet(petId).buyPrice / 2;
+        /*
         if (type == PriceType.Coin)
         {
             AddCoin(price, GetKey());
@@ -385,7 +390,9 @@ public class GameManager : MonoBehaviour
         else if (type == PriceType.Happy)
         {
             AddHappy(price, GetKey());
-        }
+        }*/
+
+        AddCoin(price, GetKey());
         RemovePet(realId);
         if (UIManager.instance.profilePanel != null)
             UIManager.instance.profilePanel.Load();

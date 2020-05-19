@@ -15,8 +15,8 @@ public class QuestManager : MonoBehaviour
     public float maxReplayTime = 30;
     public bool isReplay = true;
     public Sprite[] coinIcons;
-    bool isReplaying = false;
-
+    public bool isReplaying = false;
+    public int questId = 0;
     void Awake()
     {
         if (instance == null)
@@ -32,7 +32,8 @@ public class QuestManager : MonoBehaviour
         {
             yield return new WaitForEndOfFrame();
         }
-        if(!GameManager.instance.IsOldVersion())
+
+        if (!GameManager.instance.IsOldVersion())
             StartCoroutine(StartQuest());
     }    
 
@@ -41,12 +42,12 @@ public class QuestManager : MonoBehaviour
     {
         state = QuestState.Ready;
         
-        int questId = GameManager.instance.myPlayer.questId;
+        questId = GameManager.instance.myPlayer.questId;
         CharController petObject = GameManager.instance.GetActivePetObject();
 
         CheckQuestComplete();
         maxReplayTime = 30;
-        if (petObject != null && state != QuestState.Complete)
+        if (petObject != null && state != QuestState.Complete && questId < GameManager.instance.questMax)
         {
             if (questId == 0)
             {
@@ -97,17 +98,26 @@ public class QuestManager : MonoBehaviour
             }
             else if (questId == 3)
             {
-                yield return new WaitForSeconds(5);
-                while (UIManager.instance.IsPopUpOpen())
+                if (isReplaying)
                 {
-                    yield return new WaitForEndOfFrame();
+                    yield return new WaitForSeconds(1);
+                    OnCompleteQuest();
+                } 
+                else
+                {
+                    yield return new WaitForSeconds(5);
+                    while (UIManager.instance.IsPopUpOpen())
+                    {
+                        yield return new WaitForEndOfFrame();
+                    }
+                    OnQuestNotification();
+                    if (TutorialManager.instance != null)
+                        TutorialManager.instance.StartQuest();
+                    MouseController mouse = FindObjectOfType<MouseController>();
+                    if (mouse != null)
+                        mouse.maxTimeSpawn = 0;
                 }
-                OnQuestNotification();
-                if (TutorialManager.instance != null)
-                    TutorialManager.instance.StartQuest();
-                MouseController mouse = FindObjectOfType<MouseController>();
-                if (mouse != null)
-                    mouse.maxTimeSpawn = 0;
+
             }
             else if (questId == 4)
             {
@@ -128,34 +138,44 @@ public class QuestManager : MonoBehaviour
             }
             else if (questId == 5)
             {
-                yield return new WaitForSeconds(1);
-                while (UIManager.instance.IsPopUpOpen())
+                if (isReplaying)
+                    OnCompleteQuest();
+                else
                 {
-                    yield return new WaitForEndOfFrame();
-                }
-                if (petObject.equipment == null || petObject.equipment.itemType != ItemType.Bath)
-                    OnQuestNotification();
-                if (TutorialManager.instance != null)
-                    TutorialManager.instance.StartQuest();
-                if (!isReplaying)
-                {
-                    petObject.ResetData();
-                    petObject.data.Dirty = petObject.data.MaxDirty * 0.91f;
+                    yield return new WaitForSeconds(1);
+                    while (UIManager.instance.IsPopUpOpen())
+                    {
+                        yield return new WaitForEndOfFrame();
+                    }
+                    if (petObject.equipment == null || petObject.equipment.itemType != ItemType.Bath)
+                        OnQuestNotification();
+                    if (TutorialManager.instance != null)
+                        TutorialManager.instance.StartQuest();
+                    if (!isReplaying)
+                    {
+                        petObject.ResetData();
+                        petObject.data.Dirty = petObject.data.MaxDirty * 0.91f;
+                    }
                 }
             }
             else if (questId == 6)
             {
-                yield return new WaitForSeconds(6);
-                while (UIManager.instance.IsPopUpOpen())
+                if (isReplaying)
+                    OnCompleteQuest();
+                else
                 {
-                    yield return new WaitForEndOfFrame();
+                    yield return new WaitForSeconds(6);
+                    while (UIManager.instance.IsPopUpOpen())
+                    {
+                        yield return new WaitForEndOfFrame();
+                    }
+                    OnQuestNotification();
+                    if (TutorialManager.instance != null)
+                        TutorialManager.instance.StartQuest();
+                    BeeController bee = FindObjectOfType<BeeController>();
+                    if (bee != null)
+                        bee.maxTimeSpawn = 0;
                 }
-                OnQuestNotification();
-                if (TutorialManager.instance != null)
-                    TutorialManager.instance.StartQuest();
-                BeeController bee = FindObjectOfType<BeeController>();
-                if (bee != null)
-                    bee.maxTimeSpawn = 0;
             }
             else if (questId == 7)
             {
@@ -180,34 +200,49 @@ public class QuestManager : MonoBehaviour
             }
             else if (questId == 8)
             {
-                yield return new WaitForSeconds(1);
-                while (UIManager.instance.IsPopUpOpen())
+                if (isReplaying)
+                    OnCompleteQuest();
+                else
                 {
-                    yield return new WaitForEndOfFrame();
-                }
-                if (petObject.equipment == null || petObject.equipment.itemType != ItemType.Toy)
-                    OnQuestNotification();
-                if (TutorialManager.instance != null)
-                    TutorialManager.instance.StartQuest();
-                if (!isReplaying)
-                {
-                    petObject.ResetData();
-                    petObject.data.Toy = petObject.data.MaxToy * 0.25f;
+                    yield return new WaitForSeconds(1);
+                    while (UIManager.instance.IsPopUpOpen())
+                    {
+                        yield return new WaitForEndOfFrame();
+                    }
+                    if (petObject.equipment == null || petObject.equipment.itemType != ItemType.Toy)
+                        OnQuestNotification();
+                    if (TutorialManager.instance != null)
+                        TutorialManager.instance.StartQuest();
+                    if (!isReplaying)
+                    {
+                        petObject.ResetData();
+                        petObject.data.Toy = petObject.data.MaxToy * 0.25f;
+                    }
                 }
             }
             else if (questId == 9)
             {
-                yield return new WaitForSeconds(10);
-                while (UIManager.instance.IsPopUpOpen())
+                if (isReplaying)
                 {
-                    yield return new WaitForEndOfFrame();
+                    petObject.OnHealth(SickType.Sick, 100);
+                    OnCompleteQuest();
                 }
-                OnQuestNotification();
-                if (TutorialManager.instance != null)
-                    TutorialManager.instance.StartQuest();
-                if (!isReplaying)
+                else
                 {
+                    yield return new WaitForSeconds(10);
+                    while (UIManager.instance.IsPopUpOpen())
+                    {
+                        yield return new WaitForEndOfFrame();
+                    }
+                    OnQuestNotification();
+                    ItemManager.instance.SetCameraTarget(ItemManager.instance.GetRandomItem(ItemType.MedicineBox).gameObject);
+                    yield return new WaitForSeconds(1);
+                    ItemManager.instance.ResetCameraTarget();
+                    if (TutorialManager.instance != null)
+                        TutorialManager.instance.StartQuest();
+                    
                     petObject.data.Health = petObject.data.MaxHealth * 0.09f;
+                    
                 }
 
                 yield return new WaitForSeconds(5);
@@ -242,15 +277,22 @@ public class QuestManager : MonoBehaviour
             }
             else if (questId == 12)
             {
-                isReplay = false;
-                yield return new WaitForSeconds(5);
-                while (UIManager.instance.IsPopUpOpen())
+                if (isReplaying)
                 {
-                    yield return new WaitForEndOfFrame();
+                    OnCompleteQuest();
                 }
-                OnQuestNotification();
-                if (TutorialManager.instance != null)
-                    TutorialManager.instance.StartQuest();
+                else
+                {
+                    yield return new WaitForSeconds(5);
+                    while (UIManager.instance.IsPopUpOpen())
+                    {
+                        yield return new WaitForEndOfFrame();
+                    }
+                    OnQuestNotification();
+                    if (TutorialManager.instance != null)
+                        TutorialManager.instance.StartQuest();
+                }
+
             }
             else if (questId == 13)
             {
@@ -269,14 +311,24 @@ public class QuestManager : MonoBehaviour
             }
             else if (questId == 14)
             {
-                yield return new WaitForSeconds(10);
-                while (UIManager.instance.IsPopUpOpen())
+                if (isReplaying)
                 {
-                    yield return new WaitForEndOfFrame();
+                    OnCompleteQuest();
                 }
-                OnQuestNotification();
-                if (TutorialManager.instance != null)
-                    TutorialManager.instance.StartQuest();
+                else
+                {
+                    yield return new WaitForSeconds(10);
+                    while (UIManager.instance.IsPopUpOpen())
+                    {
+                        yield return new WaitForEndOfFrame();
+                    }
+                    OnQuestNotification();
+                    ItemManager.instance.SetCameraTarget(GameObject.FindGameObjectWithTag("LuckySpin"));
+                    yield return new WaitForSeconds(1);
+                    ItemManager.instance.ResetCameraTarget();
+                    if (TutorialManager.instance != null)
+                        TutorialManager.instance.StartQuest();
+                }
             }
             else if (questId == 15)
             {
@@ -292,7 +344,6 @@ public class QuestManager : MonoBehaviour
             }
             else if (questId == 16)
             {
-                maxReplayTime = 60;
                 yield return new WaitForSeconds(10);
                 while (UIManager.instance.IsPopUpOpen())
                 {
@@ -301,9 +352,12 @@ public class QuestManager : MonoBehaviour
                 if (GameManager.instance.IsHaveItem(87))
                     UIManager.instance.OnQuestNotificationPopup(DataHolder.Dialog(194).GetName(MageManager.instance.GetLanguage()));
                 else
+                {
                     OnQuestNotification();
-                if (TutorialManager.instance != null)
-                    TutorialManager.instance.StartQuest();
+                    if (TutorialManager.instance != null)
+                        TutorialManager.instance.StartQuest();
+                }
+
                 
             }
             else if (questId == 17)
@@ -327,23 +381,15 @@ public class QuestManager : MonoBehaviour
                     yield return new WaitForEndOfFrame();
                 }
                 OnQuestNotification();
-                if (TutorialManager.instance != null)
-                    TutorialManager.instance.StartQuest();
-            }
-            else if (questId == 19)
-            {
-                maxReplayTime = 120;
-                yield return new WaitForSeconds(5);
-                while (UIManager.instance.IsPopUpOpen())
-                {
-                    yield return new WaitForEndOfFrame();
-                }
-                OnQuestNotification();
+                ItemManager.instance.SetCameraTarget(FindObjectOfType<OnMapButton>().gameObject);
+                yield return new WaitForSeconds(1);
+                ItemManager.instance.ResetCameraTarget();
                 if (TutorialManager.instance != null)
                     TutorialManager.instance.StartQuest();
             }
         }
-        state = QuestState.Start;
+        if(state != QuestState.Complete)
+            state = QuestState.Start;
     }
 
     public void ReplayQuest()
@@ -438,7 +484,7 @@ public class QuestManager : MonoBehaviour
 
     public void CheckQuestComplete()
     {
-        int questId = GameManager.instance.myPlayer.questId;
+        questId = GameManager.instance.myPlayer.questId;
 
         if (!ItemManager.instance.isLoad)
             return;
@@ -573,14 +619,7 @@ public class QuestManager : MonoBehaviour
         }
         else if (questId == 18)
         {
-            if (GameManager.instance.GetItemNumber(233) >= 3)
-            {
-                state = QuestState.Complete;
-            }
-        }
-        else if (questId == 19)
-        {
-            if (GameManager.instance.GetAchivement(27) >= 1)
+            if (GameManager.instance.GetItemNumber(233) >= 1)
             {
                 state = QuestState.Complete;
             }

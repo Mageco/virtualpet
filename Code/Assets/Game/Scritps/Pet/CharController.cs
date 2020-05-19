@@ -1984,21 +1984,9 @@ public class CharController : MonoBehaviour
 
                 MageManager.instance.PlaySound3D("Eat", false, this.transform.position);
                 anim.Play("Eat", 0);
-                float time = 0;
-                float maxTime = Random.Range(6, 10);
-                //yield return StartCoroutine(Wait(0.1f));
+               //yield return StartCoroutine(Wait(0.1f));
                 while (item != null && data.Food < value && !isAbort && isContinue)
                 {
-                    if(time > maxTime)
-                    {
-                        anim.Play("Idle_L", 0);
-                        yield return StartCoroutine(Wait(Random.Range(1f, 1.5f)));
-                        time = 0;
-                    }else
-                    {
-                        anim.Play("Eat", 0);
-                        time += Time.deltaTime;
-                    }
                     data.Food += data.MaxFood/eatRate * Time.deltaTime;
                     item.Eat(data.MaxFood / eatRate * Time.deltaTime);
                     if (!item.CanEat())
