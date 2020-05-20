@@ -787,9 +787,27 @@ namespace MageSDK.Client {
 			return result;
 		}
 
-		///<summary>Get Application Data item store locally - value as list object</summary>
-		public void AdminSetApplicationData(List<ApplicationData> applicationDatas) {
+		///<summary>Save Application Data to server</summary>
+		public void AdminSaveApplicationDataToServer(List<ApplicationData> applicationDatas, string unityAdminToken, Action successCallback = null) {
+			UpdateApplicationDataRequest r = new UpdateApplicationDataRequest (applicationDatas, unityAdminToken);
 
+			//call to login api
+			ApiHandler.instance.SendApi<UpdateApplicationDataResponse>(
+				ApiSettings.API_UPDATE_APPLICATION_DATA,
+				r, 
+				(result) => {
+					if (null != successCallback) {
+						successCallback();
+					}
+				},
+				(errorStatus) => {
+					//ApiUtils.Log("Error: " + errorStatus);
+					//do some other processing here
+				},
+				() => {
+					TimeoutHandler();
+				}
+			);
 		}
 
 		#endregion
