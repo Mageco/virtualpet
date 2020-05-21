@@ -602,7 +602,7 @@ public class ItemManager : MonoBehaviour
     public void SpawnChest()
     {
         ChestItem[] chests = FindObjectsOfType<ChestItem>();
-        if (chests.Length > 0)
+        if (chests.Length > 2)
             return;
         Vector3 pos = GetRandomPoint(AreaType.GardenRight);
         bool isOk = false;
@@ -737,6 +737,7 @@ public class ItemManager : MonoBehaviour
             }
         }
 
+        /*
         if (awayTime < 3600)
         {
             foreach (CharController pet in GameManager.instance.GetPetObjects())
@@ -751,7 +752,7 @@ public class ItemManager : MonoBehaviour
                     }
                 }
             }
-        }
+        }*/
     }
 
     public void LoadWelcome(float t)
@@ -768,9 +769,9 @@ public class ItemManager : MonoBehaviour
         if (t > 36000)
             t = 36000;
 
-        coin = (int)t/3600 * 100;
-        happy = (int)t/3600 * 20 * GameManager.instance.GetTotalPetNumber();
-        exp = (int)t / 3600 * 10;
+        coin = (int)t/3600 * 50;
+        happy = (int)t/3600 * 5 * GameManager.instance.GetTotalPetNumber();
+        exp = (int)t / 3600 * 5;
 
         if (t >= 3600)
             UIManager.instance.OnWelcomeBack(coin, happy, exp);

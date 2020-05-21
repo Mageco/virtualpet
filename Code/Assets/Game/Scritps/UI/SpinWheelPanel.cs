@@ -64,7 +64,7 @@ public class SpinWheelPanel : MonoBehaviour
             buttonFree.gameObject.SetActive(false);
             buttonAd.gameObject.SetActive(true);
             buttonAd.interactable = true;
-            buttonCost.gameObject.SetActive(true);
+            buttonCost.gameObject.SetActive(false);
             buttonCost.interactable = true;
         }
     }
@@ -144,7 +144,7 @@ public class SpinWheelPanel : MonoBehaviour
         if (n == 0)
         {
             value = 100;
-            GameManager.instance.AddCoin(value, Utils.instance.Md5Sum(GameManager.instance.count.ToString() + GameManager.instance.myPlayer.playTime.ToString() + GameManager.instance.myPlayer.Happy.ToString() + "M@ge2013"));
+            GameManager.instance.AddCoin(value, GetKey());
             UIManager.instance.OnSpinRewardPanel(icons[n].sprite, value.ToString(),DataHolder.Dialog(6).GetName(MageManager.instance.GetLanguage()));
         }
         else if(n == 1)
@@ -157,7 +157,7 @@ public class SpinWheelPanel : MonoBehaviour
             items.Add(244);
             id = Random.Range(0, items.Count);
             value = (int)DataHolder.GetItem(items[id]).value;
-            GameManager.instance.AddItem(items[id],value, Utils.instance.Md5Sum(GameManager.instance.count.ToString() + GameManager.instance.myPlayer.playTime.ToString() + GameManager.instance.myPlayer.Happy.ToString() + "M@ge2013"));
+            GameManager.instance.AddItem(items[id],value, GetKey());
             string url = DataHolder.GetItem(items[id]).iconUrl.Replace("Assets/Game/Resources/", "");
             url = url.Replace(".png", "");
             string itemName = DataHolder.GetItem(items[id]).GetName(MageManager.instance.GetLanguage());
@@ -165,9 +165,9 @@ public class SpinWheelPanel : MonoBehaviour
         }
         else if (n == 2)
         {
-            value = 100;
-            GameManager.instance.AddHappy(value, Utils.instance.Md5Sum(GameManager.instance.count.ToString() + GameManager.instance.myPlayer.playTime.ToString() + GameManager.instance.myPlayer.Happy.ToString() + "M@ge2013"));
-            UIManager.instance.OnSpinRewardPanel(icons[n].sprite, value.ToString(),DataHolder.Dialog(8).GetName(MageManager.instance.GetLanguage()));
+            value = 3;
+            GameManager.instance.AddDiamond(value, GetKey());
+            UIManager.instance.OnSpinRewardPanel(icons[n].sprite, value.ToString(),DataHolder.Dialog(7).GetName(MageManager.instance.GetLanguage()));
         }
         else if (n == 3)
         {
@@ -178,7 +178,7 @@ public class SpinWheelPanel : MonoBehaviour
             }
             id = Random.Range(0, items.Count);
             value = (int)DataHolder.GetItem(items[id]).value;
-            GameManager.instance.AddItem(items[id], value, Utils.instance.Md5Sum(GameManager.instance.count.ToString() + GameManager.instance.myPlayer.playTime.ToString() + GameManager.instance.myPlayer.Happy.ToString() + "M@ge2013"));
+            GameManager.instance.AddItem(items[id], value, GetKey());
             string url = DataHolder.GetItem(items[id]).iconUrl.Replace("Assets/Game/Resources/", "");
             url = url.Replace(".png", "");
             string itemName = DataHolder.GetItem(items[id]).GetName(MageManager.instance.GetLanguage());
@@ -194,7 +194,7 @@ public class SpinWheelPanel : MonoBehaviour
             
             id = Random.Range(0, items.Count);
             value = (int)DataHolder.GetItem(items[id]).value;
-            GameManager.instance.AddItem(items[id], value, Utils.instance.Md5Sum(GameManager.instance.count.ToString() + GameManager.instance.myPlayer.playTime.ToString() + GameManager.instance.myPlayer.Happy.ToString() + "M@ge2013"));
+            GameManager.instance.AddItem(items[id], value, GetKey());
             string url = DataHolder.GetItem(items[id]).iconUrl.Replace("Assets/Game/Resources/", "");
             url = url.Replace(".png", "");
             string itemName = DataHolder.GetItem(items[id]).GetName(MageManager.instance.GetLanguage());
@@ -203,13 +203,13 @@ public class SpinWheelPanel : MonoBehaviour
         else if (n == 5)
         {
             value = 50;
-            GameManager.instance.AddExp(value, Utils.instance.Md5Sum(GameManager.instance.count.ToString() + GameManager.instance.myPlayer.playTime.ToString() + GameManager.instance.myPlayer.Happy.ToString() + "M@ge2013"));
+            GameManager.instance.AddExp(value, GetKey());
             UIManager.instance.OnSpinRewardPanel(icons[n].sprite, value.ToString(),"Exp");
         }
         else if (n == 6)
         {
             value = 500;
-            GameManager.instance.AddCoin(value, Utils.instance.Md5Sum(GameManager.instance.count.ToString() + GameManager.instance.myPlayer.playTime.ToString() + GameManager.instance.myPlayer.Happy.ToString() + "M@ge2013"));
+            GameManager.instance.AddCoin(value, GetKey());
             UIManager.instance.OnSpinRewardPanel(icons[n].sprite, value.ToString(), DataHolder.Dialog(6).GetName(MageManager.instance.GetLanguage()));
         }
         else if (n == 7)
@@ -224,7 +224,7 @@ public class SpinWheelPanel : MonoBehaviour
             
             id = Random.Range(0, items.Count);
             value = (int)DataHolder.GetItem(items[id]).value;
-            GameManager.instance.AddItem(items[id], value, Utils.instance.Md5Sum(GameManager.instance.count.ToString() + GameManager.instance.myPlayer.playTime.ToString() + GameManager.instance.myPlayer.Happy.ToString() + "M@ge2013"));
+            GameManager.instance.AddItem(items[id], value, GetKey());
             string url = DataHolder.GetItem(items[id]).iconUrl.Replace("Assets/Game/Resources/", "");
             url = url.Replace(".png", "");
             string itemName = DataHolder.GetItem(items[id]).GetName(MageManager.instance.GetLanguage());

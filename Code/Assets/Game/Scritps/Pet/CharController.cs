@@ -2981,8 +2981,8 @@ public class CharController : MonoBehaviour
     {
         data.Health = data.MaxHealth * 0.7f;
         data.Damage = data.MaxDamage * 0.3f;
-        data.Food = data.MaxFood * 0.3f;
-        data.Water = data.MaxWater * 0.3f;
+        data.Food = data.MaxFood * 0.5f;
+        data.Water = data.MaxWater * 0.5f;
         data.Dirty = data.MaxDirty * 0.6f;
         data.Pee = data.MaxPee * 0.3f;
         data.Shit = data.MaxShit * 0.3f;

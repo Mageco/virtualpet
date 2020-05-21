@@ -26,7 +26,7 @@ public class RewardItemPanel : MonoBehaviour
     {
         rewardType = type;
         chestItem = item;
-        priceText.text = "??";
+        //priceText.text = "??";
     }
 
     public void ShowAd()

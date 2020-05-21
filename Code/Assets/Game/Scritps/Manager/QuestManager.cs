@@ -222,6 +222,27 @@ public class QuestManager : MonoBehaviour
             }
             else if (questId == 9)
             {
+
+                if (isReplaying)
+                {
+                    yield return new WaitForSeconds(1);
+                    OnCompleteQuest();
+                }
+                else
+                {
+                    yield return new WaitForSeconds(5);
+                    while (UIManager.instance.IsPopUpOpen())
+                    {
+                        yield return new WaitForEndOfFrame();
+                    }
+                    OnQuestNotification();
+                    if (TutorialManager.instance != null)
+                        TutorialManager.instance.StartQuest();
+                    MouseController mouse = FindObjectOfType<MouseController>();
+                    if (mouse != null)
+                        mouse.maxTimeSpawn = 0;
+                }
+                /*
                 if (isReplaying)
                 {
                     petObject.OnHealth(SickType.Sick, 100);
@@ -247,9 +268,33 @@ public class QuestManager : MonoBehaviour
 
                 yield return new WaitForSeconds(5);
                 UIManager.instance.OnQuestNotificationPopup(DataHolder.Dialog(189).GetName(MageManager.instance.GetLanguage()));
+                */
             }
             else if (questId == 10)
             {
+
+                if (isReplaying)
+                {
+                    OnCompleteQuest();
+                }
+                else
+                {
+                    CharCollector[] charCollectors = FindObjectsOfType<CharCollector>();
+                    for(int i = 0; i < charCollectors.Length; i++)
+                    {
+                        if (charCollectors[i].petId == 1)
+                            charCollectors[i].Active();
+                    }
+                    yield return new WaitForSeconds(5);
+                    while (UIManager.instance.IsPopUpOpen())
+                    {
+                        yield return new WaitForEndOfFrame();
+                    }
+                    OnQuestNotification();
+                    if (TutorialManager.instance != null)
+                        TutorialManager.instance.StartQuest();
+                }
+                /*
                 isReplay = false;
                 yield return new WaitForSeconds(2);
                 while (UIManager.instance.IsPopUpOpen())
@@ -262,6 +307,7 @@ public class QuestManager : MonoBehaviour
 
                 petObject.data.Shit = petObject.data.MaxShit * 0.7f;
                 petObject.data.Pee = petObject.data.MaxPee * 0.7f;
+                */
             }
             else if (questId == 11)
             {
@@ -277,21 +323,15 @@ public class QuestManager : MonoBehaviour
             }
             else if (questId == 12)
             {
-                if (isReplaying)
+                isReplay = false;
+                yield return new WaitForSeconds(10);
+                while (UIManager.instance.IsPopUpOpen())
                 {
-                    OnCompleteQuest();
+                    yield return new WaitForEndOfFrame();
                 }
-                else
-                {
-                    yield return new WaitForSeconds(5);
-                    while (UIManager.instance.IsPopUpOpen())
-                    {
-                        yield return new WaitForEndOfFrame();
-                    }
-                    OnQuestNotification();
-                    if (TutorialManager.instance != null)
-                        TutorialManager.instance.StartQuest();
-                }
+                OnQuestNotification();
+                if (TutorialManager.instance != null)
+                    TutorialManager.instance.StartQuest();
 
             }
             else if (questId == 13)
@@ -461,8 +501,24 @@ public class QuestManager : MonoBehaviour
         if (UIManager.instance.questNotification != null)
              UIManager.instance.questNotification.Close();
 
+        if(GameManager.instance.myPlayer.questId == 1)
+        {
+            GameManager.instance.myPlayer.questId = 4;
+        }else if(GameManager.instance.myPlayer.questId == 5)
+        {
+            GameManager.instance.myPlayer.questId = 7;
+        }
+        else if (GameManager.instance.myPlayer.questId == 5)
+        {
+            GameManager.instance.myPlayer.questId = 7;
+        }
+        else if (GameManager.instance.myPlayer.questId == 12)
+        {
+            UIManager.instance.OnQuestNotificationPopup(DataHolder.Dialog(142).GetName(MageManager.instance.GetLanguage()));
+            GameManager.instance.myPlayer.questId = 20;
+        }else
+            GameManager.instance.myPlayer.questId++;
 
-        GameManager.instance.myPlayer.questId++;
         EndCompleteQuest();
     }
 
@@ -553,28 +609,28 @@ public class QuestManager : MonoBehaviour
 
         }
         else if (questId == 9) {
-            if (GameManager.instance.GetAchivement(8) >= 1)
+            if (GameManager.instance.GetAchivement(18) >= 1)
             {
                 state = QuestState.Complete;
             }
         }
         else if (questId == 10)
         {
-            if (GameManager.instance.myPlayer.level >= 2)
+            if (GameManager.instance.IsHavePet(1))
             {
                 state = QuestState.Complete;
             }
         }
         else if (questId == 11)
         {
-            if (GameManager.instance.GetAchivement(20) >= 1)
+            if (GameManager.instance.myPlayer.level >= 2)
             {
                 state = QuestState.Complete;
             }
         }
         else if (questId == 12)
         {
-            if (GameManager.instance.IsHavePet(1))
+            if (GameManager.instance.GetAchivement(20) >= 1)
             {
                 state = QuestState.Complete;
             }

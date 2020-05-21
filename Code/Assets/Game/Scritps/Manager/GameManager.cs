@@ -1415,9 +1415,9 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            AddCoin(200, GetKey());
+            AddCoin(500, GetKey());
             AddDiamond(1, GetKey());
-            AddHappy(0, GetKey());
+            AddHappy(100, GetKey());
         }
 
         AddItem(17, GetKey());
@@ -1568,7 +1568,7 @@ public class GameManager : MonoBehaviour
             {
                 quest.state = DailyQuestState.Collected;
                 quest.timeCollected = MageEngine.instance.GetServerTimeStamp().ToString();
-                GameManager.instance.AddHappy(quest.bonus,GetKey());
+                GameManager.instance.AddCoin(quest.bonus,GetKey());
             }
         }
 
