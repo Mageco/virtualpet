@@ -165,7 +165,7 @@ public class SpinWheelPanel : MonoBehaviour
         }
         else if (n == 2)
         {
-            value = 3;
+            value = 5;
             GameManager.instance.AddDiamond(value, GetKey());
             UIManager.instance.OnSpinRewardPanel(icons[n].sprite, value.ToString(),DataHolder.Dialog(7).GetName(MageManager.instance.GetLanguage()));
         }

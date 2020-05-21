@@ -1322,6 +1322,8 @@ public class GameManager : MonoBehaviour
                 sellItems.Add(item);
         }
 
+        
+
         foreach(PlayerItem item in sellItems)
         {
             SellItem(item.realId);

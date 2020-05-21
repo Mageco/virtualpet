@@ -142,12 +142,13 @@ public class CameraController : MonoBehaviour
 			float delta1 = this.target.position.x - (this.transform.position.x - width * screenOffset);
 
 
-			//	if (this.target.position.x < this.transform.position.x - width * screenOffset || this.target.position.x > this.transform.position.x + width * screenOffset)
-			//	x = Mathf.Lerp(this.transform.position.x, target.position.x + offset.x, damping * Time.deltaTime);
+			if (this.target.position.x < this.transform.position.x - width * screenOffset || this.target.position.x > this.transform.position.x + width * screenOffset)
+				x = Mathf.Lerp(this.transform.position.x, target.position.x + offset.x, damping * Time.deltaTime);
 
 			if (this.target.position.y < this.transform.position.y - height * screenOffset || this.target.position.y > this.transform.position.y + height * screenOffset)
 				y = Mathf.Lerp(this.transform.position.y, target.position.y + offset.y, damping * Time.deltaTime);
 
+            /*
 			float delta2 = this.target.position.x - (this.transform.position.x + width * screenOffset);
 			if (delta2 > 0)
             {
@@ -162,7 +163,7 @@ public class CameraController : MonoBehaviour
 					x = Mathf.Lerp(this.transform.position.x, x = this.transform.position.x + delta1, damping * Time.deltaTime);
 				else
 					x = this.transform.position.x + delta1;
-			}
+			}*/
 				
 
 
