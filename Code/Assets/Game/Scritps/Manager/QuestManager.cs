@@ -514,8 +514,9 @@ public class QuestManager : MonoBehaviour
         }
         else if (GameManager.instance.myPlayer.questId == 12)
         {
-            UIManager.instance.OnQuestNotificationPopup(DataHolder.Dialog(142).GetName(MageManager.instance.GetLanguage()));
             GameManager.instance.myPlayer.questId = 20;
+            yield return new WaitForSeconds(3);
+            UIManager.instance.OnQuestNotificationPopup(DataHolder.Dialog(142).GetName(MageManager.instance.GetLanguage()));
         }else
             GameManager.instance.myPlayer.questId++;
 
