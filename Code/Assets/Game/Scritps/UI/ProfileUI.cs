@@ -34,6 +34,7 @@ public class ProfileUI : MonoBehaviour
     public GameObject sellCoin;
     public GameObject sellDiamond;
     public Button upgradeButton;
+    public Button sellButton;
 
     public Image[] icons;
 
@@ -79,17 +80,22 @@ public class ProfileUI : MonoBehaviour
         strengthText.text = (pet.maxHealth + playerPet.level * 20).ToString();
         heartText.text = "+" + (pet.RateHappy + playerPet.level/5).ToString();
 
-        if(pet.priceType == PriceType.Coin)
+        sellCoin.SetActive(true);
+        sellDiamond.SetActive(false);
+
+        if (pet.priceType == PriceType.Coin)
         {
-            sellCoin.SetActive(true);
-            sellDiamond.SetActive(false);
-        }else if(pet.priceType == PriceType.Diamond)
-        {
-            sellCoin.SetActive(false);
-            sellDiamond.SetActive(true);
+            sellPrice = pet.buyPrice / 2;
         }
-        sellPrice = pet.buyPrice / 2;
+        else if(pet.priceType == PriceType.Diamond)
+        {
+            sellPrice = 100 * pet.buyPrice / 2;
+        }
+       
         sellText.text = sellPrice.ToString();
+
+        if (GameManager.instance.myPlayer.petDatas.Count == 1)
+            sellButton.interactable = false;
     }
 
     void Update() {
@@ -130,6 +136,11 @@ public class ProfileUI : MonoBehaviour
                 icons[i].transform.parent.GetComponent<Image>().enabled = false;
             }
         }
+
+        if (GameManager.instance.GetTotalPetNumber() <= 1)
+            sellButton.interactable = false;
+        else
+            sellButton.interactable = true;
     }
 
     public void Upgrade()

@@ -59,6 +59,15 @@ public class QuestTab : BaseTab
                 EditorGUILayout.Separator();
             }
 
+            if (GUILayout.Button("Clear All", GUILayout.Width(pw.mWidth)))
+            {
+                for (int i = 1; i < DataHolder.Languages().GetDataCount(); i++)
+                {
+                    DataHolder.Quest(selection).languageItem[i].Name = "";
+                    DataHolder.Quest(selection).languageItem[i].Description = "";
+                }
+            }
+
             EditorGUILayout.BeginVertical("box");
 			fold2 = EditorGUILayout.Foldout(fold2, "Quest Reward");
 			if(fold2)

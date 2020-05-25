@@ -134,10 +134,13 @@ public class ConfirmBuyShopPopup : MonoBehaviour
         {
             question.text = DataHolder.Dialog(4).GetDescription(MageManager.instance.GetLanguage()) + " ";
             replacePanel.SetActive(false);
-            priceText.text = (d.buyPrice / 2).ToString();
+            if(d.priceType == PriceType.Coin)
+                priceText.text = (d.buyPrice / 2).ToString();
+            else if(d.priceType == PriceType.Diamond)
+                priceText.text = (100 * d.buyPrice / 2).ToString();
         }
 
-        if (d.priceType == PriceType.Coin)
+        if (d.priceType == PriceType.Coin || !isBuy)
         {
             coinIcon.SetActive(true);
             diamonIcon.SetActive(false);

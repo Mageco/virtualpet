@@ -44,6 +44,7 @@ namespace MageApi {
 		public const string API_CONFIRM_LINK_FB_ACCOUNT = "ConfirmLinkFacebookAccount";
 		public const string API_DELETE_USER_DATA = "DeleteUserData";
 		public const string API_GET_APPLICATION_DATA = "GetApplicationData";
+		public const string API_UPDATE_APPLICATION_DATA = "UpdateApplicationData";
 		public const string API_GET_LEADER_BOARD = "GetLeaderBoard";
 		public const string API_GET_USER_MESSAGE = "GetUserMessage";
 		public const string API_GET_USER_PROFILE = "GetUserProfile";

@@ -24,4 +24,9 @@ namespace Mage.Models.Application{
 		}
 
 	}
+
+	public enum ApplicationBasicData {
+		Version,
+		AdminUserList
+	}
 }

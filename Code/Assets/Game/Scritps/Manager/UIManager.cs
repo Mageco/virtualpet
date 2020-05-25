@@ -408,7 +408,7 @@ public class UIManager : MonoBehaviour
     public void OnQuestNotification()
     {
 
-        if (GameManager.instance.myPlayer.questId < DataHolder.Quests().GetDataCount())
+        if (GameManager.instance.myPlayer.questId < DataHolder.Quests().GetDataCount() && GameManager.instance.myPlayer.questId < GameManager.instance.questMax)
         {
             OnQuestNotificationPopup(DataHolder.Quest(GameManager.instance.myPlayer.questId).GetName(MageManager.instance.GetLanguage()));
         }
@@ -417,7 +417,6 @@ public class UIManager : MonoBehaviour
             int id = Random.Range(0, tipIds.Count);
             OnQuestNotificationPopup(DataHolder.Dialog(tipIds[id]).GetName(MageManager.instance.GetLanguage()));
         }
-        
     }
 
 	public NotificationPopup OnQuestNotificationPopup(string description)

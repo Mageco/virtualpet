@@ -18,6 +18,7 @@ public class ChestItem : MonoBehaviour
     int itemId = 0;
     void Awake()
     {
+        /*
         int n = Random.Range(0, 100);
 
         int ran = Random.Range(0, 100);
@@ -40,9 +41,11 @@ public class ChestItem : MonoBehaviour
         {
             itemId = 241;
             value = Random.Range(1, 3);
-        }
+        }*/
         animator = this.GetComponent<Animator>();
-            
+
+        itemId = 0;
+        value = 3;
     }
     // Start is called before the first frame update
     void Start()

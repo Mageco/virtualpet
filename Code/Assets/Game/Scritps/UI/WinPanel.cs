@@ -11,6 +11,7 @@ public class WinPanel : MonoBehaviour
     public Text item;
     public Text priceText;
     int bonus = 0;
+    int itemNumber = 1;
     public Button watchAd;
     public GameObject nextText;
     public GameObject replayText;
@@ -133,12 +134,11 @@ public class WinPanel : MonoBehaviour
 
         if (itemId != 0)
         {
+            item.text = itemNumber.ToString();
             Item d = DataHolder.GetItem(itemId);
             string url = d.iconUrl.Replace("Assets/Game/Resources/", "");
             url = url.Replace(".png", "");
             item.transform.parent.GetComponentInChildren<Image>().sprite = Resources.Load<Sprite>(url) as Sprite;
-            GameManager.instance.AddItem(itemId, Utils.instance.Md5Sum(GameManager.instance.count.ToString() + GameManager.instance.myPlayer.playTime.ToString() + GameManager.instance.myPlayer.Happy.ToString() + "M@ge2013"));
-            GameManager.instance.EquipItem(itemId);
         }
         else
         {
@@ -179,6 +179,11 @@ public class WinPanel : MonoBehaviour
         MageManager.instance.PlaySound("Collect_Achivement", false);
         GameManager.instance.AddCoin(bonus, Utils.instance.Md5Sum(GameManager.instance.count.ToString() + GameManager.instance.myPlayer.playTime.ToString() + GameManager.instance.myPlayer.Happy.ToString() + "M@ge2013"));
         GameManager.instance.AddExp(bonus / 5, Utils.instance.Md5Sum(GameManager.instance.count.ToString() + GameManager.instance.myPlayer.playTime.ToString() + GameManager.instance.myPlayer.Happy.ToString() + "M@ge2013"));
+        if (itemId != 0)
+        {
+            int realId = GameManager.instance.AddItem(itemId, itemNumber, Utils.instance.Md5Sum(GameManager.instance.count.ToString() + GameManager.instance.myPlayer.playTime.ToString() + GameManager.instance.myPlayer.Happy.ToString() + "M@ge2013"));
+            GameManager.instance.EquipItem(realId);
+        }
         if (minigameId == 2 || minigameId == 3)
             UIManager.instance.OnMap(MapType.Forest);
         else if (minigameId == 4 || minigameId == 5)
@@ -193,6 +198,11 @@ public class WinPanel : MonoBehaviour
         MageManager.instance.PlaySound("Collect_Achivement", false);
         GameManager.instance.AddCoin(bonus, Utils.instance.Md5Sum(GameManager.instance.count.ToString() + GameManager.instance.myPlayer.playTime.ToString() + GameManager.instance.myPlayer.Happy.ToString() + "M@ge2013"));
         GameManager.instance.AddExp(bonus / 5, Utils.instance.Md5Sum(GameManager.instance.count.ToString() + GameManager.instance.myPlayer.playTime.ToString() + GameManager.instance.myPlayer.Happy.ToString() + "M@ge2013"));
+        if (itemId != 0)
+        {
+            int realId = GameManager.instance.AddItem(itemId, itemNumber, Utils.instance.Md5Sum(GameManager.instance.count.ToString() + GameManager.instance.myPlayer.playTime.ToString() + GameManager.instance.myPlayer.Happy.ToString() + "M@ge2013"));
+            GameManager.instance.EquipItem(realId);
+        }
         MageManager.instance.LoadScene(SceneManager.GetActiveScene().name, 0.5f);
             this.GetComponent<Popup>().Close();
     }
@@ -200,8 +210,10 @@ public class WinPanel : MonoBehaviour
     public void OnWatchedAd()
     {
         bonus = bonus * 2;
+        itemNumber = 2;
         coin.text = bonus.ToString();
         exp.text = (bonus / 5).ToString();
+        item.text = itemNumber.ToString();
         watchAd.interactable = false;
     }
 
@@ -219,6 +231,12 @@ public class WinPanel : MonoBehaviour
         MageManager.instance.PlaySound("Collect_Achivement", false);
         GameManager.instance.AddCoin(bonus,Utils.instance.Md5Sum(GameManager.instance.count.ToString() + GameManager.instance.myPlayer.playTime.ToString() + GameManager.instance.myPlayer.Happy.ToString() + "M@ge2013"));
         GameManager.instance.AddExp(bonus/5, Utils.instance.Md5Sum(GameManager.instance.count.ToString() + GameManager.instance.myPlayer.playTime.ToString() + GameManager.instance.myPlayer.Happy.ToString() + "M@ge2013"));
+        if(itemId != 0)
+        {
+            int realId = GameManager.instance.AddItem(itemId,itemNumber,Utils.instance.Md5Sum(GameManager.instance.count.ToString() + GameManager.instance.myPlayer.playTime.ToString() + GameManager.instance.myPlayer.Happy.ToString() + "M@ge2013"));
+            GameManager.instance.EquipItem(realId);
+        }
+
         Minigame.instance.OnHome();
         this.GetComponent<Popup>().Close();
     }

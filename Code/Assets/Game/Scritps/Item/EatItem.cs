@@ -62,7 +62,6 @@ public class EatItem : BaseFloorItem
 		if (foodAmount < 0){
 			foodAmount = 0;
 		}
-			
 	}
 
 	public bool CanEat()

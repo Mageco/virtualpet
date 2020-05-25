@@ -158,7 +158,7 @@ public class ItemData : BaseData
 			{
 				if (items[i].itemType == itemType)
 				{
-					string text = items[i].iD.ToString() + " : " + items[i].prefabName;
+					string text = items[i].iD.ToString() + " : " + items[i].GetName(0);
 					result.Add(text);
 				}
 			}

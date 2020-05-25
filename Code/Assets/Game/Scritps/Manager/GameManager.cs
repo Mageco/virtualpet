@@ -31,6 +31,8 @@ public class GameManager : MonoBehaviour
     string passWord = "M@ge2013";
     [HideInInspector]
     public int count = 14536;
+    public int questMax = 20;
+
 
     void Awake()
     {
@@ -374,6 +376,9 @@ public class GameManager : MonoBehaviour
         int petId = GetPet(realId).iD;
         PriceType type = DataHolder.GetPet(petId).priceType;
         int price = DataHolder.GetPet(petId).buyPrice / 2;
+        if(type == PriceType.Diamond)
+            price = 100 * DataHolder.GetPet(petId).buyPrice / 2;
+        /*
         if (type == PriceType.Coin)
         {
             AddCoin(price, GetKey());
@@ -385,7 +390,9 @@ public class GameManager : MonoBehaviour
         else if (type == PriceType.Happy)
         {
             AddHappy(price, GetKey());
-        }
+        }*/
+
+        AddCoin(price, GetKey());
         RemovePet(realId);
         if (UIManager.instance.profilePanel != null)
             UIManager.instance.profilePanel.Load();
@@ -1315,6 +1322,8 @@ public class GameManager : MonoBehaviour
                 sellItems.Add(item);
         }
 
+        
+
         foreach(PlayerItem item in sellItems)
         {
             SellItem(item.realId);
@@ -1408,9 +1417,9 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            AddCoin(200, GetKey());
+            AddCoin(500, GetKey());
             AddDiamond(1, GetKey());
-            AddHappy(0, GetKey());
+            AddHappy(100, GetKey());
         }
 
         AddItem(17, GetKey());
@@ -1561,7 +1570,7 @@ public class GameManager : MonoBehaviour
             {
                 quest.state = DailyQuestState.Collected;
                 quest.timeCollected = MageEngine.instance.GetServerTimeStamp().ToString();
-                GameManager.instance.AddHappy(quest.bonus,GetKey());
+                GameManager.instance.AddCoin(quest.bonus,GetKey());
             }
         }
 

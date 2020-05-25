@@ -84,8 +84,27 @@ public class TutorialManager : MonoBehaviour
                 StartCoroutine(HoldToToy());
             }
         }
+        //Take Cat
+        else if(questId == 10)
+        {
+            CharCollector cat = ItemManager.instance.GetCharCollector(1);
+            if (cat != null)
+            {
+                blackScreenUI.SetActive(true);
+                blackScreenUI.GetComponent<Image>().color = new Color(0.2f, 0.2f, 0.2f, 0f);
+                ItemManager.instance.SetCameraTarget(cat.gameObject);
+                Camera.main.GetComponent<CameraController>().screenOffset = 0;
+                cat.Load();
+                blackScreen.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, 0);
+                blackScreen.SetActive(true);
+                handClick.SetActive(true);
+                blackScreenButton.SetActive(true);
+                handClick.transform.position = cat.transform.position + new Vector3(0, 0, -1000);
+                handClick.GetComponent<Animator>().Play("Click", 0);
+            }
+        }
         //Chicken defend
-        else if (questId == 11)
+        else if (questId == 12)
         {
             if (UIManager.instance.eventPanel == null)
             {
@@ -116,25 +135,6 @@ public class TutorialManager : MonoBehaviour
                 GameObject go = eventPanel.playButton.gameObject;
                 AddSorting(go);
                 step = 1;
-            }
-        }
-        //Talk with Cat
-        else if (questId == 12)
-        {
-            CharCollector cat = ItemManager.instance.GetCharCollector(1);
-            if (cat != null)
-            {
-                blackScreenUI.SetActive(true);
-                blackScreenUI.GetComponent<Image>().color = new Color(0.2f, 0.2f, 0.2f, 0f);
-                ItemManager.instance.SetCameraTarget(cat.gameObject);
-                Camera.main.GetComponent<CameraController>().screenOffset = 0;
-                cat.Load();
-                blackScreen.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f, 0);
-                blackScreen.SetActive(true);
-                handClick.SetActive(true);
-                blackScreenButton.SetActive(true);
-                handClick.transform.position = cat.transform.position + new Vector3(0, 0, -1000);
-                handClick.GetComponent<Animator>().Play("Click", 0);
             }
         }
         //Upgrade pet
@@ -212,7 +212,17 @@ public class TutorialManager : MonoBehaviour
         {
             ClickOnShop(4, 85);
         }
-        else if (questId == 11)
+        else if (questId == 10)
+        {
+            blackScreenUI.SetActive(false);
+            handClick.SetActive(false);
+            blackScreen.SetActive(false);
+            blackScreenButton.SetActive(false);
+            Pet pet = DataHolder.GetPet(1);
+            UIManager.instance.OnPetRequirementPanel(pet);
+            ItemManager.instance.ResetCameraTarget();
+        }
+        else if (questId == 12)
         {
             if (step == 0)
             {
@@ -231,16 +241,7 @@ public class TutorialManager : MonoBehaviour
                     eventPanel.OnEvent(0);
             }
         }
-        else if (questId == 12)
-        {
-            blackScreenUI.SetActive(false);
-            handClick.SetActive(false);
-            blackScreen.SetActive(false);
-            blackScreenButton.SetActive(false);
-            Pet pet = DataHolder.GetPet(1);
-            UIManager.instance.OnPetRequirementPanel(pet);
-            ItemManager.instance.ResetCameraTarget();
-        }
+
         else if (questId == 13)
         {
             if (step == 0)

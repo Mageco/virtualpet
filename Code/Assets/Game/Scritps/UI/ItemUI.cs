@@ -11,6 +11,7 @@ public class ItemUI : MonoBehaviour
     public Text price;
     public Button buyButton;
     public Text levelText;
+    public Text itemName;
     public GameObject coinIcon;
     public GameObject diamonIcon;
     public GameObject moneyIcon;
@@ -65,7 +66,7 @@ public class ItemUI : MonoBehaviour
         url = url.Replace(".png", "");
         icon.sprite = Resources.Load<Sprite>(url) as Sprite;
         iconType.sprite = Resources.Load<Sprite>("Icons/ItemType/" + d.itemType.ToString());
-
+        itemName.text = d.GetName(MageManager.instance.GetLanguage());
 
         if (d.levelRequire > GameManager.instance.myPlayer.level)
             isLevelRequire = true;
@@ -309,7 +310,7 @@ public class ItemUI : MonoBehaviour
         price.text = d.buyPrice.ToString();
         iconType.sprite = Resources.Load<Sprite>("Icons/ItemType/Pet_" + d.rareType.ToString());
         //Debug.Log("Icons/ItemType/Pet_" + d.rareType.ToString());
-
+        itemName.text = d.GetName(0);
         OffAllIcon();
 
         statPanel.SetActive(true);

@@ -77,8 +77,13 @@ public class RewardVideoAdManager : MonoBehaviour , IUnityAdsListener
 		else if (MageEngine.instance.GetApplicationDataItem("CurrentAdDistrubution") == "Admob")
 			adDistribute = AdDistribute.Admob;
 
+        //Get quest
+		if (MageEngine.instance.GetApplicationDataItem("QuestMax") != null)
+		{
+			GameManager.instance.questMax = int.Parse(MageEngine.instance.GetApplicationDataItem("QuestMax"));
+		}
 
-        if(adDistribute == AdDistribute.Admob)
+		if (adDistribute == AdDistribute.Admob)
         {
 
 			// Initialize the Google Mobile Ads SDK.
