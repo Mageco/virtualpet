@@ -86,7 +86,7 @@ public class ApiManager : MageEngine {
                 #if UNITY_ANDROID
 				url = newMessages[i].action_android;
                 #elif UNITY_IOS
-                url = newMessages[i].action_android;
+                url = newMessages[i].action_ios;
                 #endif
 				confirm.okButton.onClick.AddListener(delegate {
 					OnClick(url);

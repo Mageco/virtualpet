@@ -221,12 +221,11 @@ public class GameManager : MonoBehaviour
                 int itemId = Random.Range(0, pets.Count);
                 PlayerPet p = new PlayerPet(pets[itemId].iD);
                 p.realId = GetRealPetId();
-                p.itemState = ItemState.Equiped;
+                p.itemState = ItemState.Have;
                 p.isNew = true;
                 p.petName = DataHolder.GetPet(itemId).GetName(0);
-                myPlayer.petDatas.Add(p);
-                if (ItemManager.instance != null)
-                    GameManager.instance.EquipPet(itemId);
+                myPlayer.petDatas.Add(p);                
+                GameManager.instance.EquipPet(p.realId);
             }
             else
             {
