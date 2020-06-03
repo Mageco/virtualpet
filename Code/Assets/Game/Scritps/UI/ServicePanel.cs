@@ -78,7 +78,7 @@ public class ServicePanel : MonoBehaviour
     public void WatchAd()
     {
         MageManager.instance.PlaySound("BubbleButton", false);
-        RewardVideoAdManager.instance.ShowAd(RewardType.Service);
+        RewardVideoAdManager.instance.ShowVideoAd(RewardType.Service);
     }
 
     public void OnWatchedAd()

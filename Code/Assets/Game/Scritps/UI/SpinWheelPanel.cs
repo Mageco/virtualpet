@@ -31,7 +31,7 @@ public class SpinWheelPanel : MonoBehaviour
     {
 
 
-        if (GameManager.instance.myPlayer.spinedTime != "") 
+        if (GameManager.instance.myPlayer.spinedTime != "")
         {
             timeSpin = System.DateTime.Parse(GameManager.instance.myPlayer.spinedTime);
         }
@@ -77,7 +77,7 @@ public class SpinWheelPanel : MonoBehaviour
         animator.speed = 0;
     }
 
-   
+
 
     public void Spin()
     {
@@ -94,27 +94,27 @@ public class SpinWheelPanel : MonoBehaviour
 
     private IEnumerator DoSpin()
     {
-        int soundId = MageManager.instance.PlaySound("Wheel_Loop",false);
+        int soundId = MageManager.instance.PlaySound("Wheel_Loop", false);
         GameManager.instance.myPlayer.spinedTime = MageEngine.instance.GetServerTimeStamp().ToString();
         GameManager.instance.myPlayer.spinCount -= 1;
-        speed = Random.Range(2f,5f);
+        speed = Random.Range(2f, 5f);
         float a = Random.Range(0.5f, 1f);
         Debug.Log(speed);
         bool isStop = false;
 
         while (speed > 0)
         {
-            if(speed < 1.2f && !isStop)
+            if (speed < 1.2f && !isStop)
             {
                 isStop = true;
                 MageManager.instance.StopSound(soundId);
                 MageManager.instance.PlaySound("Wheel_Stop", false);
             }
-                
+
 
 
             speed -= a * Time.deltaTime;
-            if(speed < 0.1f && spinArrow.transform.rotation.eulerAngles.z > 0)
+            if (speed < 0.1f && spinArrow.transform.rotation.eulerAngles.z > 0)
             {
                 speed = 0.1f;
             }
@@ -129,14 +129,14 @@ public class SpinWheelPanel : MonoBehaviour
             n = 0;
         Debug.Log(n);
 
-        
+
 
         LoadButton();
         List<int> items = new List<int>();
         int id = 0;
         int value = 2;
 
-        if (n==4)
+        if (n == 4)
             MageManager.instance.PlaySound("Win", false);
         else
             MageManager.instance.PlaySound("collect_item_02", false);
@@ -145,11 +145,11 @@ public class SpinWheelPanel : MonoBehaviour
         {
             value = 100;
             GameManager.instance.AddCoin(value, GetKey());
-            UIManager.instance.OnSpinRewardPanel(icons[n].sprite, value.ToString(),DataHolder.Dialog(6).GetName(MageManager.instance.GetLanguage()));
+            UIManager.instance.OnSpinRewardPanel(icons[n].sprite, value.ToString(), DataHolder.Dialog(6).GetName(MageManager.instance.GetLanguage()));
         }
-        else if(n == 1)
+        else if (n == 1)
         {
-            
+
             for (int i = 231; i <= 238; i++)
             {
                 items.Add(i);
@@ -157,7 +157,7 @@ public class SpinWheelPanel : MonoBehaviour
             items.Add(244);
             id = Random.Range(0, items.Count);
             value = (int)DataHolder.GetItem(items[id]).value;
-            GameManager.instance.AddItem(items[id],value, GetKey());
+            GameManager.instance.AddItem(items[id], value, GetKey());
             string url = DataHolder.GetItem(items[id]).iconUrl.Replace("Assets/Game/Resources/", "");
             url = url.Replace(".png", "");
             string itemName = DataHolder.GetItem(items[id]).GetName(MageManager.instance.GetLanguage());
@@ -167,11 +167,11 @@ public class SpinWheelPanel : MonoBehaviour
         {
             value = 5;
             GameManager.instance.AddDiamond(value, GetKey());
-            UIManager.instance.OnSpinRewardPanel(icons[n].sprite, value.ToString(),DataHolder.Dialog(7).GetName(MageManager.instance.GetLanguage()));
+            UIManager.instance.OnSpinRewardPanel(icons[n].sprite, value.ToString(), DataHolder.Dialog(7).GetName(MageManager.instance.GetLanguage()));
         }
         else if (n == 3)
         {
-            
+
             for (int i = 204; i <= 215; i++)
             {
                 items.Add(i);
@@ -186,12 +186,12 @@ public class SpinWheelPanel : MonoBehaviour
         }
         else if (n == 4)
         {
-            
+
             for (int i = 239; i <= 241; i++)
             {
                 items.Add(i);
             }
-            
+
             id = Random.Range(0, items.Count);
             value = (int)DataHolder.GetItem(items[id]).value;
             GameManager.instance.AddItem(items[id], value, GetKey());
@@ -204,7 +204,7 @@ public class SpinWheelPanel : MonoBehaviour
         {
             value = 50;
             GameManager.instance.AddExp(value, GetKey());
-            UIManager.instance.OnSpinRewardPanel(icons[n].sprite, value.ToString(),"Exp");
+            UIManager.instance.OnSpinRewardPanel(icons[n].sprite, value.ToString(), "Exp");
         }
         else if (n == 6)
         {
@@ -221,7 +221,7 @@ public class SpinWheelPanel : MonoBehaviour
             items.Add(242);
             items.Add(243);
             items.Add(245);
-            
+
             id = Random.Range(0, items.Count);
             value = (int)DataHolder.GetItem(items[id]).value;
             GameManager.instance.AddItem(items[id], value, GetKey());
@@ -234,12 +234,12 @@ public class SpinWheelPanel : MonoBehaviour
 
     public void OnWatch()
     {
-        RewardVideoAdManager.instance.ShowAd(RewardType.SpinWheel);
+        RewardVideoAdManager.instance.ShowVideoAd(RewardType.SpinWheel);
     }
 
     public void OnCost()
     {
-        if(GameManager.instance.GetDiamond() >= price)
+        if (GameManager.instance.GetDiamond() >= price)
         {
             buttonAd.interactable = false;
             buttonCost.interactable = false;

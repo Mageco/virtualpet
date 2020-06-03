@@ -57,9 +57,9 @@ public class TreatmentPopup : MonoBehaviour
     public void OnAd()
     {
         if (sickType == SickType.Sick)
-            RewardVideoAdManager.instance.ShowAd(RewardType.Sick, pet.iD);
+            RewardVideoAdManager.instance.ShowVideoAd(RewardType.Sick, pet.iD);
         else if(sickType == SickType.Injured)
-            RewardVideoAdManager.instance.ShowAd(RewardType.Injured,pet.iD);
+            RewardVideoAdManager.instance.ShowVideoAd(RewardType.Injured,pet.iD);
 
         Close();
     }

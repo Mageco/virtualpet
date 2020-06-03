@@ -38,7 +38,7 @@ public class WelcomeBackPanel : MonoBehaviour
     {
         AdButton.gameObject.SetActive(false);
         MageManager.instance.PlaySound("BubbleButton", false);
-        RewardVideoAdManager.instance.ShowAd(RewardType.Welcome);
+        RewardVideoAdManager.instance.ShowVideoAd(RewardType.Welcome);
     }
 
     public void WatchedAd()

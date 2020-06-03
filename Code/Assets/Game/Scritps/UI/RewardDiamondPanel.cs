@@ -28,7 +28,7 @@ public class RewardDiamondPanel : MonoBehaviour
     public void WatchAd()
     {
         MageManager.instance.PlaySound("BubbleButton", false);
-        RewardVideoAdManager.instance.ShowAd(RewardType.ForestDiamond);
+        RewardVideoAdManager.instance.ShowVideoAd(RewardType.ForestDiamond);
     }
 
     public void WatchedAd()
