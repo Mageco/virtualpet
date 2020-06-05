@@ -7,8 +7,9 @@ using MageSDK.Client;
 using UnityEngine.Advertisements;
 using MageSDK.Client.Helper;
 using Mage.Models.Application;
+using MageApi;
 
-public class RewardVideoAdManager : MonoBehaviour , IUnityAdsListener
+public class RewardVideoAdManager : MonoBehaviour
 {
 
 	public static RewardVideoAdManager instance;
@@ -20,10 +21,8 @@ public class RewardVideoAdManager : MonoBehaviour , IUnityAdsListener
 	public bool isRemoveAd = false;
 	[HideInInspector]
 	public bool isUnityVideoLoaded = false;
-    //unity banner
 	public string bannerPlacementId = "bannerForest";
 
-    //Unity ID
 #if UNITY_IOS
 	private string gameId = "3508454";
 #elif UNITY_ANDROID
@@ -36,7 +35,6 @@ public class RewardVideoAdManager : MonoBehaviour , IUnityAdsListener
 	public AdDistribute adDistribute = AdDistribute.Unity;
 
 
-    //Admob Id
 #if UNITY_ANDROID
 	string appId = "ca-app-pub-6818802678275174~2905900525";
 #elif UNITY_IPHONE
@@ -45,13 +43,11 @@ public class RewardVideoAdManager : MonoBehaviour , IUnityAdsListener
 	string appId = "unexpected_platform";
 #endif
 
-
-	//Admob Id
-#if UNITY_ANDROID
+    #if UNITY_ANDROID
 	string adUnitId = "ca-app-pub-6818802678275174/9014893744";
     //Test unit
 	//string adUnitId = "ca-app-pub-3940256099942544/5224354917";
-#elif UNITY_IPHONE
+	#elif UNITY_IPHONE
 	string adUnitId = "ca-app-pub-6818802678275174/5961180954";
 	#else
 	string adUnitId = "unexpected_platform";
@@ -68,24 +64,29 @@ public class RewardVideoAdManager : MonoBehaviour , IUnityAdsListener
 		DontDestroyOnLoad (this.gameObject);
 	}
 
-
-    #region Start
-    // Use this for initialization
-    IEnumerator Start () {
-
-        //Wait Data
+	// Use this for initialization
+	IEnumerator Start () {
         while (!MageEngine.instance.IsApplicationDataLoaded())
         {
 			yield return new WaitForEndOfFrame();
         }
 		Debug.Log(MageEngine.instance.GetApplicationDataItem("CurrentAdDistrubution"));
-
-        if (MageEngine.instance.GetApplicationDataItem("CurrentAdDistrubution") == "Unity")
+		if (MageEngine.instance.GetApplicationDataItem("CurrentAdDistrubution") == "Unity")
 		{
 			adDistribute = AdDistribute.Unity;
 		}
 		else if (MageEngine.instance.GetApplicationDataItem("CurrentAdDistrubution") == "Admob")
+		{
 			adDistribute = AdDistribute.Admob;
+		}
+		else if (MageEngine.instance.GetApplicationDataItem("CurrentAdDistrubution") == "Yodo1MAS")
+		{
+			adDistribute = AdDistribute.Yodo1MAS;
+		}
+
+		// for testing, hardcode to Yodo1MAS
+		adDistribute = AdDistribute.Yodo1MAS;
+			
 
         //Get quest
 		if (MageEngine.instance.GetApplicationDataItem("QuestMax") != null)
@@ -93,7 +94,6 @@ public class RewardVideoAdManager : MonoBehaviour , IUnityAdsListener
 			GameManager.instance.questMax = int.Parse(MageEngine.instance.GetApplicationDataItem("QuestMax"));
 		}
 
-        //Admob
 		if (adDistribute == AdDistribute.Admob)
         {
 
@@ -119,185 +119,82 @@ public class RewardVideoAdManager : MonoBehaviour , IUnityAdsListener
 			// Called when the ad click caused the user to leave the application.
 			rewardBasedVideo.OnAdLeavingApplication += HandleRewardBasedVideoLeftApplication;
 
-			this.RequestAdmobRewardBasedVideo();
-        //Unity   
-		}else if(adDistribute == AdDistribute.Unity)
+			this.RequestRewardBasedVideo();
+		}
+		else if(adDistribute == AdDistribute.Yodo1MAS)
         {
-			Advertisement.AddListener(this);
-			Advertisement.Initialize(gameId, testMode);
+			ApiUtils.Log("Initialize Yodo1MAS");
+			
+			// dont' collect user information
+			Yodo1U3dAds.SetUserConsent(false);
+			Yodo1U3dAds.SetLogEnable(true);
+			// set user age restriction
+			Yodo1U3dAds.SetTagForUnderAgeOfConsent(true);
+			// don't sell personal information
+			Yodo1U3dAds.SetDoNotSell(true);
+			// for Yodo1
+			Yodo1U3dAds.InitializeSdk();
+			//set callback to handle video reward
+			Yodo1U3dSDK.setRewardVideoDelegate(OnYodoVideoAdsHandler);
+			//set callback to handle interstitial
+			Yodo1U3dSDK.setInterstitialAdDelegate(OnYodoInterstitialAdsHandler);
 		}
 
 		if (MageEventHelper.GetInstance().GetEventCounter(MageEventType.ConfirmPaymentItem.ToString()) > 0)
 			isRemoveAd = true;
 	}
-    #endregion
 
-    
-
-    #region Banner Video
-    public void ShowBanner()
+	private void RequestRewardBasedVideo()
 	{
-		if (isRemoveAd)
-			return;
-		if (adDistribute == AdDistribute.Unity)
-        {
-			Advertisement.Banner.SetPosition(BannerPosition.BOTTOM_CENTER);
-			StartCoroutine(ShowBannerWhenReady());
-		}
+		// Create an empty ad request.
+		AdRequest request = new AdRequest.Builder().TagForChildDirectedTreatment(true).AddExtra("is_designed_for_families", "true").Build();
 
-		MageEngine.instance.OnEvent(Mage.Models.Application.MageEventType.BannerAdShow, "Scene");
+		// Load the rewarded video ad with the request.
+		this.rewardBasedVideo.LoadAd(request, adUnitId);
+	}
+	
+	// Update is called once per frame
+	void Update () {
+		
 	}
 
-	public void HideBanner()
+	public void HandleRewardBasedVideoLoaded(object sender, EventArgs args)
 	{
-		if (adDistribute == AdDistribute.Unity)
-			Advertisement.Banner.Hide();
+		Debug.Log("HandleRewardBasedVideoLoaded event received");
+		MageEngine.instance.OnEvent(Mage.Models.Application.MageEventType.VideoAdLoaded,rewardType.ToString());
 	}
 
-	IEnumerator ShowBannerWhenReady()
+	public void HandleRewardBasedVideoFailedToLoad(object sender, AdFailedToLoadEventArgs args)
 	{
-		while (!Advertisement.IsReady(bannerPlacementId))
-		{
-			yield return new WaitForEndOfFrame();
-		}
-		Advertisement.Banner.Show(bannerPlacementId);
+		Debug.Log("HandleRewardBasedVideoFailedToLoad event received with message: "+ args.Message);
+		MageEngine.instance.OnEvent(Mage.Models.Application.MageEventType.VideoAdFailtoLoaded, rewardType.ToString());
 	}
-	#endregion
 
-	#region Intetestial
-	public void ShowIntetestial()
+	public void HandleRewardBasedVideoOpened(object sender, EventArgs args)
 	{
-		if (isRemoveAd)
-			return;
-		rewardType = RewardType.None;
-
-        if(adDistribute == AdDistribute.Unity)
-		    Advertisement.Show("Interstitial");
-
-        MageEngine.instance.OnEvent(Mage.Models.Application.MageEventType.InterstitialAdShow, "Minigame");
+		Debug.Log("HandleRewardBasedVideoOpened event received");
+		MageEngine.instance.OnEvent(Mage.Models.Application.MageEventType.VideoAdOpened, rewardType.ToString());
 	}
 
-
-	#endregion
-
-	#region Reward Video
-
-
-	public void ShowVideoAd()
+	public void HandleRewardBasedVideoStarted(object sender, EventArgs args)
 	{
-		if (adDistribute == AdDistribute.Admob)
-		{
-			if (rewardBasedVideo.IsLoaded())
-			{
-				rewardBasedVideo.Show();
-			}
-		}
-		else if (adDistribute == AdDistribute.Unity)
-		{
-			Advertisement.Show(myPlacementId);
-		}
-
+		Debug.Log("HandleRewardBasedVideoStarted event received");
+		MageEngine.instance.OnEvent(Mage.Models.Application.MageEventType.VideoAdStarted, rewardType.ToString());
 	}
 
-	public void ShowVideoAd(RewardType type)
+	public void HandleRewardBasedVideoClosed(object sender, EventArgs args)
 	{
-		if (adDistribute == AdDistribute.Admob)
-		{
-			if (rewardBasedVideo.IsLoaded())
-			{
-				rewardType = type;
-				rewardBasedVideo.Show();
-			}
-		}
-		else if (adDistribute == AdDistribute.Unity)
-		{
-			rewardType = type;
-			Advertisement.Show(myPlacementId);
-		}
+		Debug.Log("HandleRewardBasedVideoClosed event received");
+		MageEngine.instance.OnEvent(Mage.Models.Application.MageEventType.VideoAdClosed, rewardType.ToString());
+		RequestRewardBasedVideo ();
 	}
 
-	public void ShowVideoAd(RewardType type, int petId)
+	public void HandleRewardBasedVideoRewarded(object sender, Reward args)
 	{
-		if (adDistribute == AdDistribute.Admob)
-		{
-			if (rewardBasedVideo.IsLoaded())
-			{
-				rewardType = type;
-				rewardBasedVideo.Show();
-				this.petId = petId;
-			}
-		}
-		else if (adDistribute == AdDistribute.Unity)
-		{
-			rewardType = type;
-			this.petId = petId;
-			Advertisement.Show(myPlacementId);
-		}
-
-
+		ProcessReward(MageEventType.VideoAdRewarded);
 	}
 
-	public void ShowVideoAd(RewardType type, ChestItem item)
-	{
-		if (adDistribute == AdDistribute.Admob)
-		{
-			if (rewardBasedVideo.IsLoaded())
-			{
-				rewardType = type;
-				rewardBasedVideo.Show();
-				chestItem = item;
-			}
-		}
-		else if (adDistribute == AdDistribute.Unity)
-		{
-			rewardType = type;
-			chestItem = item;
-			Advertisement.Show(myPlacementId);
-		}
-	}
-	#endregion
-
-	#region Reward
-    void OnVideoRewarded()
-    {
-		// Reward the user for watching the ad to completion.
-		MageEngine.instance.OnEvent(Mage.Models.Application.MageEventType.VideoAdRewarded, rewardType.ToString());
-		if (rewardType == RewardType.Minigame)
-		{
-			StartCoroutine(OnMinigame());
-		}
-		else if (rewardType == RewardType.Chest)
-		{
-			StartCoroutine(OnRewardChest());
-		}
-		else if (rewardType == RewardType.Sick)
-		{
-			StartCoroutine(OnTreatment());
-		}
-		else if (rewardType == RewardType.Map)
-		{
-			StartCoroutine(OnMap());
-		}
-		else if (rewardType == RewardType.Welcome)
-		{
-			StartCoroutine(OnWelcome());
-		}
-		else if (rewardType == RewardType.Service)
-		{
-			StartCoroutine(OnService());
-		}
-		else if (rewardType == RewardType.ForestDiamond)
-		{
-			StartCoroutine(OnForestDiamond());
-		}
-		else if (rewardType == RewardType.SpinWheel)
-		{
-			StartCoroutine(OnSpinWheel());
-		}
-	}
-
-
-	IEnumerator OnRewardChest()
+    IEnumerator OnRewardChest()
     {
 		yield return new WaitForSeconds(0.5f);
 		if (chestItem != null)
@@ -367,75 +264,120 @@ public class RewardVideoAdManager : MonoBehaviour , IUnityAdsListener
 			UIManager.instance.spinWheelPanel.OnWatched();
 		}
 	}
-	#endregion
-
-	#region Admob
-	private void RequestAdmobRewardBasedVideo()
-	{
-		// Create an empty ad request.
-		AdRequest request = new AdRequest.Builder().TagForChildDirectedTreatment(true).AddExtra("is_designed_for_families", "true").Build();
-
-		// Load the rewarded video ad with the request.
-		this.rewardBasedVideo.LoadAd(request, adUnitId);
-	}
-
-	// Update is called once per frame
-	void Update()
-	{
-
-	}
-
-	public void HandleRewardBasedVideoLoaded(object sender, EventArgs args)
-	{
-		Debug.Log("HandleRewardBasedVideoLoaded event received");
-		MageEngine.instance.OnEvent(Mage.Models.Application.MageEventType.VideoAdLoaded, rewardType.ToString());
-	}
-
-	public void HandleRewardBasedVideoFailedToLoad(object sender, AdFailedToLoadEventArgs args)
-	{
-		Debug.Log("HandleRewardBasedVideoFailedToLoad event received with message: " + args.Message);
-		MageEngine.instance.OnEvent(Mage.Models.Application.MageEventType.VideoAdFailtoLoaded, rewardType.ToString());
-	}
-
-	public void HandleRewardBasedVideoOpened(object sender, EventArgs args)
-	{
-		Debug.Log("HandleRewardBasedVideoOpened event received");
-		MageEngine.instance.OnEvent(Mage.Models.Application.MageEventType.VideoAdOpened, rewardType.ToString());
-	}
-
-	public void HandleRewardBasedVideoStarted(object sender, EventArgs args)
-	{
-		Debug.Log("HandleRewardBasedVideoStarted event received");
-		MageEngine.instance.OnEvent(Mage.Models.Application.MageEventType.VideoAdStarted, rewardType.ToString());
-	}
-
-	public void HandleRewardBasedVideoClosed(object sender, EventArgs args)
-	{
-		Debug.Log("HandleRewardBasedVideoClosed event received");
-		MageEngine.instance.OnEvent(Mage.Models.Application.MageEventType.VideoAdClosed, rewardType.ToString());
-		RequestAdmobRewardBasedVideo();
-	}
-
-	public void HandleRewardBasedVideoRewarded(object sender, Reward args)
-	{
-		OnVideoRewarded();
-	}
 
 	public void HandleRewardBasedVideoLeftApplication(object sender, EventArgs args)
 	{
+
 		Debug.Log("HandleRewardBasedVideoLeftApplication event received");
 	}
-	#endregion
+
+	public void ShowVideoAd()
+	{
+        if(adDistribute == AdDistribute.Admob)
+        {
+			if (rewardBasedVideo.IsLoaded())
+			{
+				rewardBasedVideo.Show();
+			}
+		}
+		else if(adDistribute == AdDistribute.Yodo1MAS)
+        {
+			Yodo1U3dAds.ShowVideo();
+		} 
+
+	}
+
+	public void ShowVideoAd(RewardType type)
+	{
+		if (adDistribute == AdDistribute.Admob)
+		{
+			if (rewardBasedVideo.IsLoaded())
+			{
+				rewardType = type;
+				rewardBasedVideo.Show();
+			}
+		}
+		else if(adDistribute == AdDistribute.Yodo1MAS)
+        {
+			ApiUtils.Log("Show Yodo1MAS VideoAds");
+			rewardType = type;
+			Yodo1U3dAds.ShowVideo();
+		} 
+	}
+
+	public void ShowVideoAd(RewardType type,int petId)
+	{
+		if (adDistribute == AdDistribute.Admob)
+		{
+			if (rewardBasedVideo.IsLoaded())
+			{
+				rewardType = type;
+				rewardBasedVideo.Show();
+				this.petId = petId;
+			}
+		}
+		else if(adDistribute == AdDistribute.Yodo1MAS)
+        {
+			ApiUtils.Log("Show Yodo1MAS VideoAds - Pet");
+			rewardType = type;
+			this.petId = petId;
+			Yodo1U3dAds.ShowVideo();
+		} 
+	}
+
+	public void ShowVideoAd(RewardType type,ChestItem item)
+	{
+		if (adDistribute == AdDistribute.Admob)
+		{
+			if (rewardBasedVideo.IsLoaded())
+			{
+				rewardType = type;
+				rewardBasedVideo.Show();
+				chestItem = item;
+			}
+		}
+		else if(adDistribute == AdDistribute.Yodo1MAS)
+        {
+			ApiUtils.Log("Show Yodo1MAS VideoAds - Chest");
+			rewardType = type;
+			Yodo1U3dAds.ShowVideo();
+			chestItem = item;
+		} 
+	}
+
+	public void ShowIntetestial()
+	{
+		if (isRemoveAd)
+			return;
+		if(adDistribute == AdDistribute.Yodo1MAS)
+        {
+			ApiUtils.Log("Show Yodo1MAS Interstitial");
+			rewardType = RewardType.None;
+			Yodo1U3dAds.ShowInterstitial();
+			MageEngine.instance.OnEvent(Mage.Models.Application.MageEventType.InterstitialAdShow, "Minigame");
+		} 
+	}
+
+    public void ShowBanner()
+    {
+		if (isRemoveAd)
+			return;
+	}
+
+    public void HideBanner()
+    {
+    }
+
 
 	#region Unity Ad
 
 	// Implement IUnityAdsListener interface methods:
-	public void OnUnityAdsDidFinish(string placementId, ShowResult showResult)
+	/*public void OnUnityAdsDidFinish(string placementId, ShowResult showResult)
 	{
 		// Define conditional logic for each ad completion status:
 		if (showResult == ShowResult.Finished)
 		{
-			OnVideoRewarded();
+			ProcessReward(MageEventType.VideoAdRewarded);
 		}
 		else if (showResult == ShowResult.Skipped)
 		{
@@ -445,7 +387,7 @@ public class RewardVideoAdManager : MonoBehaviour , IUnityAdsListener
 		{
 			Debug.LogWarning("The ad did not finish due to an error.");
 		}
-	}
+	}*/
 
 	public void OnUnityAdsReady(string placementId)
 	{
@@ -465,6 +407,91 @@ public class RewardVideoAdManager : MonoBehaviour , IUnityAdsListener
 		// Optional actions to take when the end-users triggers an ad.
 	}
     #endregion
+
+
+	#region Yodo1MAS
+
+	public void OnYodoInterstitialAdsHandler(Yodo1U3dConstants.AdEvent adEvent,string error)
+	{
+		Debug.Log ("InterstitialAdDelegate:" + adEvent + "\n" + error);
+		switch (adEvent)
+		{
+			case Yodo1U3dConstants.AdEvent.AdEventClick:
+				break;
+			case Yodo1U3dConstants.AdEvent.AdEventClose:
+				break;
+			case Yodo1U3dConstants.AdEvent.AdEventShowSuccess:
+					this.ProcessReward(MageEventType.InterstitialAdShow);
+				break;
+			case Yodo1U3dConstants.AdEvent.AdEventShowFail:
+				ApiUtils.Log("Interstital ad has been show failed, the error message:" + error);
+				break;
+		}
+	}
+
+	public void OnYodoVideoAdsHandler(Yodo1U3dConstants.AdEvent adEvent,string error)
+	{
+		ApiUtils.Log("RewardVideoDelegate:" + adEvent + "\n" + error);
+		switch (adEvent)
+		{
+			case Yodo1U3dConstants.AdEvent.AdEventClick:
+				ApiUtils.Log("Rewarded video ad has been clicked.");
+				break;
+			case Yodo1U3dConstants.AdEvent.AdEventClose:
+				ApiUtils.Log("Rewarded video ad has been closed.");
+				break;
+			case Yodo1U3dConstants.AdEvent.AdEventShowSuccess:
+				ApiUtils.Log("Rewarded video ad has shown successful.");
+				break;
+			case Yodo1U3dConstants.AdEvent.AdEventShowFail:
+				ApiUtils.Log("Rewarded video ad show failed, the error message:" + error);
+				break;
+			case Yodo1U3dConstants.AdEvent.AdEventFinish:
+				ApiUtils.Log("Rewarded video ad has been played finish, give rewards to the player.");
+				this.ProcessReward(MageEventType.VideoAdRewarded);
+			break;
+		}
+	}
+
+	private void ProcessReward(MageEventType adsType)
+	{
+		// Reward the user for watching the ad to completion.
+		MageEngine.instance.OnEvent(adsType, rewardType.ToString());
+		if (rewardType == RewardType.Minigame)
+		{
+			StartCoroutine(OnMinigame());
+		}
+		else if (rewardType == RewardType.Chest)
+		{
+			StartCoroutine(OnRewardChest());
+		}
+		else if (rewardType == RewardType.Sick)
+		{
+			StartCoroutine(OnTreatment());
+		}
+		else if (rewardType == RewardType.Map)
+		{
+			StartCoroutine(OnMap());
+		}
+		else if (rewardType == RewardType.Welcome)
+		{
+			StartCoroutine(OnWelcome());
+		}
+		else if (rewardType == RewardType.Service)
+		{
+			StartCoroutine(OnService());
+		}
+		else if (rewardType == RewardType.ForestDiamond)
+		{
+			StartCoroutine(OnForestDiamond());
+		}
+		else if (rewardType == RewardType.SpinWheel)
+		{
+			StartCoroutine(OnSpinWheel());
+		}
+	}
+
+	#endregion
     
 }
 
