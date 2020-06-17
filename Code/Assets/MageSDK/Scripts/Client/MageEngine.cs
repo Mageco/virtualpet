@@ -165,40 +165,16 @@ namespace MageSDK.Client {
 		#region Login & user handling
 		///<summary>Login using device id</summary>
 		public void LoginWithDeviceID() {
-			//text.text += RuntimeParameters.GetInstance().ToString();
-			LoginRequest r = new LoginRequest (ApiSettings.LOGIN_DEVICE_UUID);
+			MageAdaptor.LoginWithDeviceID(OnCompleteMageLogin, null, TimeoutHandler);
 
-			//text.text += "-----\r\n" + r.ToJson();
-
-			//call to login api
-			ApiHandler.instance.SendApi<LoginResponse>(
-				ApiSettings.API_LOGIN, 
-				r, 
-				(result) => {
-					//do some other processing here
-					ApiUtils.Log("Login: " + result.ToJson());
-					OnCompleteLogin (result);
-					
-					//pass the call to UI level to continue process data
-					OnLoginCompleteCallback();
-					
-					// also login to firebase, if the application uses Firebase analytic
-					if (this.useFirebaseAnalytic) {
-						StartCoroutine(FirebaseAdaptor.LoginAnonymous((x) => {
-							ApiUtils.Log("Firebase Login: " + x.UserId);
-							//StartCoroutine(FirebaseAdaptor.InitializeFirebaseAnalyticWithResolveDependency());
-							FirebaseAdaptor.InitializeAnalytic();
-						}));
-					}
-				},
-				(errorStatus) => {
-					ApiUtils.Log("Error: " + errorStatus);
-					//do some other processing here
-				}, 
-				() => {
-					TimeoutHandler();
-				}
-			);
+			// also login to firebase, if the application uses Firebase analytic
+			if (this.useFirebaseAnalytic) {
+				StartCoroutine(FirebaseAdaptor.LoginAnonymous((x) => {
+					ApiUtils.Log("Firebase Login: " + x.UserId);
+					//StartCoroutine(FirebaseAdaptor.InitializeFirebaseAnalyticWithResolveDependency());
+					FirebaseAdaptor.InitializeAnalytic();
+				}));
+			}
 		}
 
 		///<summary>Init default user, based on input data from Unity</summary>
@@ -252,7 +228,7 @@ namespace MageSDK.Client {
 		}
 
 		///<summary>On completed logged in</summary>
-		private void OnCompleteLogin(LoginResponse result) {
+		private void OnCompleteMageLogin(LoginResponse result) {
 			//update information after login
 			_isLogin = true;
 			RuntimeParameters.GetInstance().SetParam(ApiSettings.SESSION_LOGIN_TOKEN, result.Token);
@@ -285,7 +261,7 @@ namespace MageSDK.Client {
 				}
 			#endif
 
-			//test callback
+			//pass the call to UI level to continue process data
 			OnLoginCompleteCallback();
 
 			#if UNITY_ANDROID && !UNITY_EDITOR
@@ -298,8 +274,9 @@ namespace MageSDK.Client {
 						this._completedSignatureCheckForAndroid = true;
 					}
 				}
-				
+			
 			#endif
+
 		}
 
 		///<summary>If this is new user then it will need to create a default profile</summary>
@@ -612,8 +589,6 @@ namespace MageSDK.Client {
 						ES2.SaveRaw("{\"Company\": \"Mage Co. Ltd.,\"}", MageEngineSettings.GAME_ENGINE_OWNER);
 						ApiUtils.Log("Convert data to encrypt");
 						ApiUtils.Log("Encrypted data: " + u.ToEncryptedJson(this._encryptKey));
-						//ES2.Delete(MageEngineSettings.GAME_ENGINE_USER);
-						//ES2.Save(u.ToEncryptedJson(this._encryptKey), MageEngineSettings.GAME_ENGINE_USER);
 
 						ES2.SaveRaw(u.ToEncryptedJson(this._encryptKey), MageEngineSettings.GAME_ENGINE_USER);
 					}
@@ -628,8 +603,6 @@ namespace MageSDK.Client {
 					ES2.SaveRaw("{\"Company\": \"Mage Co. Ltd.,\"}", MageEngineSettings.GAME_ENGINE_OWNER);
 					ApiUtils.Log("Convert data to encrypt");
 					ApiUtils.Log("Encrypted data: " + u.ToEncryptedJson(this._encryptKey));
-					//ES2.Delete(MageEngineSettings.GAME_ENGINE_USER);
-					//ES2.Save(u.ToEncryptedJson(this._encryptKey), MageEngineSettings.GAME_ENGINE_USER);
 
 					ES2.SaveRaw(u.ToEncryptedJson(this._encryptKey), MageEngineSettings.GAME_ENGINE_USER);
 				}
@@ -802,114 +775,48 @@ namespace MageSDK.Client {
 
 		///<summary>Save Application Data to server</summary>
 		public void AdminSaveApplicationDataToServer(List<ApplicationData> applicationDatas, string unityAdminToken, Action successCallback = null) {
-			UpdateApplicationDataRequest r = new UpdateApplicationDataRequest (applicationDatas, unityAdminToken);
-
-			//call to login api
-			ApiHandler.instance.SendApi<UpdateApplicationDataResponse>(
-				ApiSettings.API_UPDATE_APPLICATION_DATA,
-				r, 
-				(result) => {
-					if (null != successCallback) {
-						successCallback();
-					}
-				},
-				(errorStatus) => {
-					//ApiUtils.Log("Error: " + errorStatus);
-					//do some other processing here
-				},
-				() => {
-					TimeoutHandler();
-				}
-			);
+			MageAdaptor.AdminSaveApplicationDataToServer(applicationDatas, unityAdminToken, successCallback, (x)=>{}, TimeoutHandler);
 		}
 
 		#endregion
 
 		#region Event 
-		private void SendAppEvents() {
+		///<summary>Save User Event to Mage Servers</summary>
+		private void SendUserEventsToMage() {
 			#if PLATFORM_TEST
 				if (this.resetUserDataOnStart || !this.isWorkingOnline) {
 					return;
 				}
 			#endif
 			ApiUtils.Log(" Queue size: " + ((OnlineCacheCounter)this.apiCounter["SendUserEventListRequest"]).GetMax());
+
+			/// if the size of user events queue reachs limit
 			if (this.IsSendable("SendUserEventListRequest")) {
 				ApiUtils.Log("Event can be sent");
 				List<MageEvent> cachedEvent = MageEventHelper.GetInstance().GetMageEventsList();
 				ApiUtils.Log("Size of Event queue: " + cachedEvent.Count);
 				if (cachedEvent.Count > 1) {
-					SendUserEventListRequest r = new SendUserEventListRequest (cachedEvent);
-
-					//call to login api
-					ApiHandler.instance.SendApi<SendUserEventListResponse>(
-						ApiSettings.API_SEND_USER_EVENT_LIST,
-						r, 
-						(result) => {
-							cachedEvent = new List<MageEvent>();
-							MageEventHelper.GetInstance().SaveMageEventsList(cachedEvent);
-						},
-						(errorStatus) => {
-							//ApiUtils.Log("Error: " + errorStatus);
-							//do some other processing here
-						},
-						() => {
-							TimeoutHandler();
-						}
-					);
+					MageAdaptor.SendUserEventList(cachedEvent, ClearCachedEvent, (x)=>{}, TimeoutHandler);
 				} else {
 					MageEvent t = cachedEvent[0];
 					SendUserEventRequest r = new SendUserEventRequest(t.eventName, t.eventDetail);
 					//call to login api
-					ApiHandler.instance.SendApi<SendUserEventResponse>(
-						ApiSettings.API_SEND_USER_EVENT,
-						r, 
-						(result) => {
-							cachedEvent = new List<MageEvent>();
-							MageEventHelper.GetInstance().SaveMageEventsList(cachedEvent);
-						},
-						(errorStatus) => {
-							//ApiUtils.Log("Error: " + errorStatus);
-							//do some other processing here
-						},
-						() => {
-							TimeoutHandler();
-						}
-					);
+					MageAdaptor.SendUserEvent(t, ClearCachedEvent, (x)=>{}, TimeoutHandler);
 				}
 				
 			}
 		}
 
-		private void SendAppEvent(MageEvent t) {
-
-			#if PLATFORM_TEST
-				if (this.resetUserDataOnStart || !this.isWorkingOnline) {
-					return;
-				}
-			#endif
-			
-			SendUserEventRequest r = new SendUserEventRequest(t.eventName, t.eventDetail);
-			//call to login api
-			ApiHandler.instance.SendApi<SendUserEventResponse>(
-				ApiSettings.API_SEND_USER_EVENT,
-				r, 
-				(result) => {
-					//this.cachedEvent = new List<MageEvent>();
-					//SaveEvents();
-				},
-				(errorStatus) => {
-					//ApiUtils.Log("Error: " + errorStatus);
-					//do some other processing here
-				},
-				() => {
-					TimeoutHandler();
-				}
-			);
+		///<summary>Clear local event cache</summary>
+		private void ClearCachedEvent() {
+			List<MageEvent> cachedEvent = new List<MageEvent>();
+			MageEventHelper.GetInstance().SaveMageEventsList(cachedEvent);
 		}
 
+		///<summary>Capture app event</summary>
 		public void OnEvent(MageEventType type, string eventDetail = "") {
 			ApiUtils.Log("OnEvent: " + type);
-			MageEventHelper.GetInstance().OnEvent(type, this.SendAppEvents, eventDetail);
+			MageEventHelper.GetInstance().OnEvent(type, this.SendUserEventsToMage, eventDetail);
 
 			// send event to firebase
 			if (useFirebaseAnalytic) {
@@ -918,18 +825,19 @@ namespace MageSDK.Client {
 			
 		}
 
+		///<summary>Capture app event</summary>
 		public void OnEvent<T>(MageEventType type, T obj) where T:BaseModel {
 			ApiUtils.Log("OnEvent: " + type);
-			MageEventHelper.GetInstance().OnEvent(type, obj, this.SendAppEvents);
+			MageEventHelper.GetInstance().OnEvent(type, obj, this.SendUserEventsToMage);
 			
 			// send event to firebase
 			if (useFirebaseAnalytic) {
-				FirebaseAdaptor.OnEvent(type);
+				FirebaseAdaptor.OnEvent(type, obj.ToJson());
 			}
 		}
 
 		
-
+		///<summary>Load local engine cache</summary>
 		private void LoadEngineCache(){
 			// load screen cache
 			SceneTrackerHelper.GetInstance().LoadSceneCacheListData();
@@ -980,9 +888,6 @@ namespace MageSDK.Client {
 			}
 
 		}
-
-		
-
 
 		#endregion
 
