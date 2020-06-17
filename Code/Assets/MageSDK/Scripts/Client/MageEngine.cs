@@ -29,6 +29,7 @@ using UnityEngine.SceneManagement;
 using MageSDK.Client.Helper;
 using System.Security.Cryptography;
 using System.Text;
+using MageSDK.Client.Adaptors;
 #if BUNNY_CDN
 using BunnyCDN.Net.Storage;
 #endif
@@ -46,6 +47,11 @@ namespace MageSDK.Client {
 		public bool resetUserDataOnStart = true;
 
 		public bool isWorkingOnline = false;
+
+		public bool useFirebaseAnalytic = false;
+
+		public bool useFirebaseApplicationData = false;
+
 		public ClientLoginMethod loginMethod;
 
 		#region private variables
@@ -172,8 +178,18 @@ namespace MageSDK.Client {
 					//do some other processing here
 					ApiUtils.Log("Login: " + result.ToJson());
 					OnCompleteLogin (result);
-					//GetApplicationData ();
+					
+					//pass the call to UI level to continue process data
 					OnLoginCompleteCallback();
+					
+					// also login to firebase, if the application uses Firebase analytic
+					if (this.useFirebaseAnalytic) {
+						StartCoroutine(FirebaseAdaptor.LoginAnonymous((x) => {
+							ApiUtils.Log("Firebase Login: " + x.UserId);
+							//StartCoroutine(FirebaseAdaptor.InitializeFirebaseAnalyticWithResolveDependency());
+							FirebaseAdaptor.InitializeAnalytic();
+						}));
+					}
 				},
 				(errorStatus) => {
 					ApiUtils.Log("Error: " + errorStatus);
@@ -434,6 +450,13 @@ namespace MageSDK.Client {
 					TimeoutHandler();
 				}
 			);
+
+			// save user properties to firebase
+			if (useFirebaseAnalytic) {
+				foreach(UserData d in u.user_datas) {
+					FirebaseAdaptor.UpdateUserData(d);
+				}
+			}
 		}
 
 
@@ -641,6 +664,7 @@ namespace MageSDK.Client {
 			if (ES2.Exists(MageEngineSettings.GAME_ENGINE_OWNER)) {
 				this._hasDataEncrypted = true;
 			} 
+
 		}
 
 		///<summary>Get Application Data configured in Resources/Data</summary>
@@ -671,25 +695,14 @@ namespace MageSDK.Client {
 
 		///<summary>Get Application Data configured in Server</summary>
 		private void LoadApplicationDataFromServer() {
-			GetApplicationDataRequest r = new GetApplicationDataRequest ();
-			//call to login api
-			ApiHandler.instance.SendApi<GetApplicationDataResponse>(
-				ApiSettings.API_GET_APPLICATION_DATA,
-				r, 
-				(result) => {
-					// store application data
-					MergeApplicationDataFromServer(result.ApplicationDatas);
-				},
-				(errorStatus) => {
-					ApiUtils.Log("Error: " + errorStatus);
-					//do some other processing here
-				},
-				() => {
-					TimeoutHandler();
-				}
-			);
+			if (useFirebaseApplicationData) {
+				StartCoroutine(FirebaseAdaptor.GetApplicationDataFromServer(MergeApplicationDataFromServer));
+			} else {
+				MageAdaptor.GetApplicationDataFromServer(MergeApplicationDataFromServer, null, TimeoutHandler);
+			}
 		}
 
+		///<summary>After get Application data, it needs to merge with data from local</summary>
 		private void MergeApplicationDataFromServer(List<ApplicationData> serverList) {
 			List<ApplicationData> localList = RuntimeParameters.GetInstance().GetParam<List<ApplicationData>>(MageEngineSettings.GAME_ENGINE_APPLICATION_DATA);
 
@@ -895,21 +908,24 @@ namespace MageSDK.Client {
 		}
 
 		public void OnEvent(MageEventType type, string eventDetail = "") {
-			/*this.cachedEvent.Add(new MageEvent(type, eventDetail));
-			SaveEvents();
-			SendAppEvents();*/
-			// temporary fix to send single event
 			ApiUtils.Log("OnEvent: " + type);
 			MageEventHelper.GetInstance().OnEvent(type, this.SendAppEvents, eventDetail);
+
+			// send event to firebase
+			if (useFirebaseAnalytic) {
+				FirebaseAdaptor.OnEvent(type, eventDetail);
+			}
+			
 		}
 
 		public void OnEvent<T>(MageEventType type, T obj) where T:BaseModel {
-			/*this.cachedEvent.Add(new MageEvent(type, obj.ToJson()));
-			SaveEvents();
-			SendAppEvents();*/
-			// temporary fix to send single event
 			ApiUtils.Log("OnEvent: " + type);
 			MageEventHelper.GetInstance().OnEvent(type, obj, this.SendAppEvents);
+			
+			// send event to firebase
+			if (useFirebaseAnalytic) {
+				FirebaseAdaptor.OnEvent(type);
+			}
 		}
 
 		
@@ -971,6 +987,7 @@ namespace MageSDK.Client {
 		#endregion
 
 		#region ApiCache
+		
 		private void InitApiCache() {
 			this.apiCounter.Add("UpdateUserDataRequest", new OnlineCacheCounter(0, 10));
 			this.apiCounter.Add("UpdateGameCharacterDataRequest", new OnlineCacheCounter(0, 10));

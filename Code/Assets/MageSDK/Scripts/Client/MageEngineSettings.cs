@@ -36,7 +36,8 @@ namespace MageSDK.Client {
 		public const string GAME_ENGINE_EVENT_COUNTER_CACHE= "MageEventCounterCache";
 		public const string GAME_ENGINE_EVENT_COUNTER_CACHE_PREFIX= "eventCounter_";
 		public const string GAME_ENGINE_MAX_EVENT_COUNTER_QUEUE = "MaxEventCounterQueue";
-
+		public const string GAME_ENGINE_FB_LIST_OF_REMOTE_CONFIG_KEYS = "FirebaseListOfRemoteConfigKeys";
+		public const string GAME_ENGINE_FB_USER_ID = "FirebaseUserId";
 		// messages sexxion
 		public const string GAME_ENGINE_USER_MESSAGE = "GameEngineUserMessages";
 		public static string[] GAME_ENGINE_APPLICATION_DATA_ITEM = {
