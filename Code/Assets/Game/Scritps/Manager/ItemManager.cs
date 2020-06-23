@@ -83,6 +83,7 @@ public class ItemManager : MonoBehaviour
         GetActiveCamera().boundX = cameraBoundX;
         GetActiveCamera().boundY = cameraBoundY;
 
+        
 
         awayTime = (float)(ApiManager.instance.GetServerTimeStamp() - startTime).TotalSeconds;
         LoadItems();
@@ -117,6 +118,15 @@ public class ItemManager : MonoBehaviour
         
         if(!GameManager.instance.isGuest)
             LoadWelcome(awayTime);
+
+        while (UIManager.instance.IsPopUpOpen())
+        {
+            yield return new WaitForEndOfFrame();
+        }
+
+        if (!GameManager.instance.isGuest)
+            UIManager.instance.OnDailyBonusPanel();
+
     }
 
     // Update is called once per frame
@@ -182,7 +192,7 @@ public class ItemManager : MonoBehaviour
 
     public void LoadItems()
     {
-        
+        Debug.Log("Load Item");
         List<PlayerItem> data = GameManager.instance.GetEquipedPLayerItems();
         List<BaseFloorItem> removes = new List<BaseFloorItem>();
         foreach (BaseFloorItem item in items)

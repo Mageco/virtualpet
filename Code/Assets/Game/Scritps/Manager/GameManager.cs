@@ -162,6 +162,7 @@ public class GameManager : MonoBehaviour
             {
                 if (guest.petDatas[i].itemState == ItemState.Equiped)
                 {
+                    Debug.Log(guest.petDatas[i].petName);
                     ItemManager.instance.LoadPetObject(guest.petDatas[i]);
                 }
             }

@@ -1034,7 +1034,7 @@ public class UIManager : MonoBehaviour
             callButton.SetActive(false);
             remotePanel.SetActive(true);
             remoteAvatarUI.avatar.sprite = null;
-            RewardVideoAdManager.instance.ShowBanner();
+            //RewardVideoAdManager.instance.ShowBanner();
             GameManager.instance.RemoveAllPetObjects();
             GameManager.instance.guest = u.GetUserData<PlayerData>();
             MageManager.instance.LoadSceneWithLoading("House");
