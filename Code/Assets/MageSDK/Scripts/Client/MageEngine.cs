@@ -37,49 +37,37 @@ using BunnyCDN.Net.Storage;
 namespace MageSDK.Client {
 	public class MageEngine : MonoBehaviour {
 
+		#region public variables
         public static MageEngine instance;
-
         ///<summary>isLocalApplicationData is using to indicate where to get Application Data.</summary>
         // this is used to test application in Editor mode, if this is true then Application Data will be load from local resources
         public bool isLocalApplicationData = true;
 		///<summary>resetUserDataOnStart is used during test in Unity editor to reset user data whenever editor is running.</summary>
 		// if this variable is false, then data will be save to local storage and server accordingly
 		public bool resetUserDataOnStart = true;
-
 		public bool isWorkingOnline = false;
-
 		public bool useFirebaseAnalytic = false;
-
 		public bool useFirebaseApplicationData = false;
-
+		public string signatureHashAndroid = "";
 		public ClientLoginMethod loginMethod;
+		[HideInInspector]
+		public Hashtable apiCounter = new Hashtable();
+		[HideInInspector]
+		public bool isAppActive = true;
+		#endregion
 
 		#region private variables
 		private bool _isLogin = false;
-
 		private bool _isLoginRequestSent = false;
-
 		private bool _isReloadRequired = false;
 		private bool _isApplicationDataLoaded = false;
 		private static bool _isLoaded = false;
-
-		[HideInInspector]
-		public Hashtable apiCounter = new Hashtable();
-
-		[HideInInspector]
-		public bool isAppActive = true;
-
-		private DateTime lastUserDataUpdate = DateTime.Now;
-
-		public string signatureHashAndroid = "";
-
+		private DateTime _lastUserDataUpdate = DateTime.Now;
 		private bool _completedSignatureCheckForAndroid = false;
 		#if BUNNY_CDN
 		private BunnyCDNStorage bunnyCDNStorage = new BunnyCDNStorage("virtupet", "877b185e-3517-42e0-a21b-04dc7feb9ea24feacd2d-4ac1-4bc6-993e-da1838d60ed5");
 		#endif
-
 		private bool _hasDataEncrypted = false;
-
 		private string _encryptKey = "wgIl3ZjLdwYviMeTPo90QhVk1BHLA4YgWt5ES1avh8Lace8wqp5SfetYqRFJvg2xh6Kn1pIrHRyVBGCtgCSn3V8FbsVROZSosJEN5CcHQpX6Roj89TDk0sRYzxPKzbqjzPbjk7PxZhVYAO8vg6kFPF7px8Hwl5yDxElhwxRdlpvmU9La96qelkXyAuTK55JuYOvohN0zdEJp5MSlkfpYxAMcudeB7dxL973Y6B835RIKB8Yq7Usr0IaxvF8QostF";
 
 		#endregion
@@ -96,6 +84,7 @@ namespace MageSDK.Client {
             if (!_isLoaded) {
 				_isLoaded = true;
 
+				// Call to override load function
 				Load();
 
 				// get application data from server
@@ -106,7 +95,7 @@ namespace MageSDK.Client {
 
 				// init api cache
 				InitApiCache();
-
+				// load engine cache data from local storage
 				LoadEngineCache();
 
 			}
@@ -154,7 +143,6 @@ namespace MageSDK.Client {
 
 		///<summary>Other implementation will override this function</summary>
 		protected virtual void Load() {
-
 		}
 
 		// Test callback first, needs to implement event handler
@@ -171,7 +159,6 @@ namespace MageSDK.Client {
 			if (this.useFirebaseAnalytic) {
 				StartCoroutine(FirebaseAdaptor.LoginAnonymous((x) => {
 					ApiUtils.Log("Firebase Login: " + x.UserId);
-					//StartCoroutine(FirebaseAdaptor.InitializeFirebaseAnalyticWithResolveDependency());
 					FirebaseAdaptor.InitializeAnalytic();
 				}));
 			}
@@ -394,12 +381,12 @@ namespace MageSDK.Client {
             if (this.isWorkingOnline && IsLogin() && (this.IsSendable("UpdateUserDataRequest") || forceUpdate)) {
 				/* decided when to send data */
 				DateTime now = DateTime.Now;
-				double timeToAdd = now.Subtract(this.lastUserDataUpdate).TotalSeconds;
+				double timeToAdd = now.Subtract(this._lastUserDataUpdate).TotalSeconds;
 
 				/* for this we only send if the last update is more than X seconds ago */
 				if (u.GetUserDataInt(UserBasicData.Version) < 500 || timeToAdd > GetApplicationDataItemInt(MageEngineSettings.GAME_ENGINE_MIN_USER_DATA_UPDATE_DURATION) || forceUpdate) {
 					SaveUserDataToServer(u);
-					this.lastUserDataUpdate = now;
+					this._lastUserDataUpdate = now;
 				}
 			}
 		}
