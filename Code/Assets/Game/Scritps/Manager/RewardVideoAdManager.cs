@@ -129,6 +129,7 @@ public class RewardVideoAdManager : MonoBehaviour
 
 			this.RequestRewardBasedVideo();
 		}
+		#if YODO1MAS_ENABLED
 		else if(adDistribute == AdDistribute.Yodo1MAS)
         {
 			ApiUtils.Log("Initialize Yodo1MAS");
@@ -147,6 +148,7 @@ public class RewardVideoAdManager : MonoBehaviour
 			//set callback to handle interstitial
 			Yodo1U3dSDK.setInterstitialAdDelegate(OnYodoInterstitialAdsHandler);
 		}
+		#endif
 
 		if (MageEventHelper.GetInstance().GetEventCounter(MageEventType.ConfirmPaymentItem.ToString()) > 0)
 			isRemoveAd = true;
@@ -288,10 +290,12 @@ public class RewardVideoAdManager : MonoBehaviour
 				rewardBasedVideo.Show();
 			}
 		}
+		#if YODO1MAS_ENABLED
 		else if(adDistribute == AdDistribute.Yodo1MAS)
         {
 			Yodo1U3dAds.ShowVideo();
 		} 
+		#endif
 
 	}
 
@@ -305,12 +309,14 @@ public class RewardVideoAdManager : MonoBehaviour
 				rewardBasedVideo.Show();
 			}
 		}
+		#if YODO1MAS_ENABLED
 		else if(adDistribute == AdDistribute.Yodo1MAS)
         {
 			ApiUtils.Log("Show Yodo1MAS VideoAds");
 			rewardType = type;
 			Yodo1U3dAds.ShowVideo();
 		} 
+		#endif
 	}
 
 	public void ShowVideoAd(RewardType type,int petId)
@@ -324,6 +330,7 @@ public class RewardVideoAdManager : MonoBehaviour
 				this.petId = petId;
 			}
 		}
+		#if YODO1MAS_ENABLED
 		else if(adDistribute == AdDistribute.Yodo1MAS)
         {
 			ApiUtils.Log("Show Yodo1MAS VideoAds - Pet");
@@ -331,6 +338,7 @@ public class RewardVideoAdManager : MonoBehaviour
 			this.petId = petId;
 			Yodo1U3dAds.ShowVideo();
 		} 
+		#endif
 	}
 
 	public void ShowVideoAd(RewardType type,ChestItem item)
@@ -344,6 +352,7 @@ public class RewardVideoAdManager : MonoBehaviour
 				chestItem = item;
 			}
 		}
+		#if YODO1MAS_ENABLED
 		else if(adDistribute == AdDistribute.Yodo1MAS)
         {
 			ApiUtils.Log("Show Yodo1MAS VideoAds - Chest");
@@ -351,6 +360,7 @@ public class RewardVideoAdManager : MonoBehaviour
 			Yodo1U3dAds.ShowVideo();
 			chestItem = item;
 		} 
+		#endif
 	}
 
 	public void ShowIntetestial()
@@ -362,6 +372,7 @@ public class RewardVideoAdManager : MonoBehaviour
 		if (GameManager.instance.gameTime - timeAd < adDuration)
 			return;
 
+		#if YODO1MAS_ENABLED
 		if(adDistribute == AdDistribute.Yodo1MAS)
         {
 			ApiUtils.Log("Show Yodo1MAS Interstitial");
@@ -369,6 +380,7 @@ public class RewardVideoAdManager : MonoBehaviour
 			Yodo1U3dAds.ShowInterstitial();
 			MageEngine.instance.OnEvent(Mage.Models.Application.MageEventType.InterstitialAdShow, "Minigame");
 		} 
+		#endif
 	}
 
     public void ShowBanner()
@@ -423,7 +435,7 @@ public class RewardVideoAdManager : MonoBehaviour
 
 
 	#region Yodo1MAS
-
+	#if YODO1MAS_ENABLED
 	public void OnYodoInterstitialAdsHandler(Yodo1U3dConstants.AdEvent adEvent,string error)
 	{
 		Debug.Log ("InterstitialAdDelegate:" + adEvent + "\n" + error);
@@ -466,6 +478,7 @@ public class RewardVideoAdManager : MonoBehaviour
 			break;
 		}
 	}
+	#endif
 
 	private void ProcessReward(MageEventType adsType)
 	{
