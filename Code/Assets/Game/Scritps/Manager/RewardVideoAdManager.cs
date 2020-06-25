@@ -22,6 +22,8 @@ public class RewardVideoAdManager : MonoBehaviour
 	[HideInInspector]
 	public bool isUnityVideoLoaded = false;
 	public string bannerPlacementId = "bannerForest";
+	float timeAd = 0;
+	float adDuration = 120;
 
 #if UNITY_IOS
 	private string gameId = "3508454";
@@ -92,6 +94,11 @@ public class RewardVideoAdManager : MonoBehaviour
 		if (MageEngine.instance.GetApplicationDataItem("QuestMax") != null)
 		{
 			GameManager.instance.questMax = int.Parse(MageEngine.instance.GetApplicationDataItem("QuestMax"));
+		}
+
+		if (MageEngine.instance.GetApplicationDataItem("TimeLapInterstitial") != null)
+		{
+			adDuration = float.Parse(MageEngine.instance.GetApplicationDataItem("TimeLapInterstitial"));
 		}
 
 		if (adDistribute == AdDistribute.Admob)
@@ -349,6 +356,10 @@ public class RewardVideoAdManager : MonoBehaviour
 	{
 		if (isRemoveAd)
 			return;
+
+		if (GameManager.instance.gameTime - timeAd < adDuration)
+			return;
+
 		if(adDistribute == AdDistribute.Yodo1MAS)
         {
 			ApiUtils.Log("Show Yodo1MAS Interstitial");
@@ -422,6 +433,7 @@ public class RewardVideoAdManager : MonoBehaviour
 				break;
 			case Yodo1U3dConstants.AdEvent.AdEventShowSuccess:
 					this.ProcessReward(MageEventType.InterstitialAdShow);
+				timeAd = GameManager.instance.gameTime;
 				break;
 			case Yodo1U3dConstants.AdEvent.AdEventShowFail:
 				ApiUtils.Log("Interstital ad has been show failed, the error message:" + error);

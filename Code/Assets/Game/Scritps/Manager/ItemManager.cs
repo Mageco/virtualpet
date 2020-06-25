@@ -111,7 +111,7 @@ public class ItemManager : MonoBehaviour
         MageManager.instance.loadingBar.gameObject.SetActive(false);
 
         yield return new WaitForSeconds(1);
-        while (!ApiManager.instance.IsLogin() || !RewardVideoAdManager.instance.isUnityVideoLoaded || UIManager.instance.IsPopUpOpen())
+        while (!ApiManager.instance.IsLogin() || UIManager.instance.IsPopUpOpen())
         {
             yield return new WaitForEndOfFrame();
         }

@@ -310,20 +310,43 @@ public class CharController : MonoBehaviour
         {
             Skill s = new Skill();
             if (i == 0)
+            {
                 s.type = SkillType.Toy;
-            else if (i == 1)
-                s.type = SkillType.Happy;
-            else if (i == 2)
-                s.type = SkillType.Toilet;
-            else if (i == 3)
-                s.type = SkillType.Sleep;
-            else if (i == 4)
-                s.type = SkillType.Bath;
-
-            if (data.level >= 5 * (i + 1))
                 s.isLearn = true;
-            else
-                s.isLearn = false;
+            }
+            else if (i == 1)
+            {
+                s.type = SkillType.Happy;
+                s.isLearn = true;
+            }
+            else if (i == 2)
+            {
+                s.type = SkillType.Toilet;
+                if (data.level >= 5 * (i + 1))
+                    s.isLearn = true;
+                else
+                    s.isLearn = false;
+            }
+            else if (i == 3)
+            {
+                s.type = SkillType.Sleep;
+                if (data.level >= 5 * (i + 1))
+                    s.isLearn = true;
+                else
+                    s.isLearn = false;
+            }
+                
+            else if (i == 4)
+            {
+                s.type = SkillType.Bath;
+                if (data.level >= 5 * (i + 1))
+                    s.isLearn = true;
+                else
+                    s.isLearn = false;
+            }
+                
+
+
             skills.Add(s);
         }
     }

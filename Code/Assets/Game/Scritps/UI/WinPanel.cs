@@ -161,19 +161,7 @@ public class WinPanel : MonoBehaviour
 
         if (!isWin)
         {
-            int r1 = Random.Range(0, 100);
-            if (r1 > 50 && (minigameId == 0 || minigameId == 1))
-                RewardVideoAdManager.instance.ShowIntetestial();
-
-            if (r1 > 70 && (minigameId == 2))
-                RewardVideoAdManager.instance.ShowIntetestial();
-
-            if (r1 > 60 && (minigameId == 3 || minigameId == 5))
-                RewardVideoAdManager.instance.ShowIntetestial();
-
-            if (r1 > 65 && (minigameId == 4))
-                RewardVideoAdManager.instance.ShowIntetestial();
-
+            RewardVideoAdManager.instance.ShowIntetestial();
         }
 
     }

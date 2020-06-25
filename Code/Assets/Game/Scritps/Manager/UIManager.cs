@@ -1000,15 +1000,11 @@ public class UIManager : MonoBehaviour
         }
         else
         {
-            int n = Random.Range(0, 100);
-            if(n > 70)
-            {
-                RewardVideoAdManager.instance.ShowIntetestial();
-            }
             callButton.SetActive(false);
             RewardVideoAdManager.instance.ShowBanner();
         }
-            
+
+        RewardVideoAdManager.instance.ShowIntetestial();
 
         if (type == MapType.Forest || type == MapType.Lake)
             homeUI.SetActive(true);
@@ -1024,11 +1020,8 @@ public class UIManager : MonoBehaviour
             Minigame.instance.winPanel.Close();
 
         MageEngine.instance.GetRandomFriend((User u) => {
-            int n = Random.Range(0, 100);
-            if (n > 70)
-            {
-                RewardVideoAdManager.instance.ShowIntetestial();
-            }
+
+            RewardVideoAdManager.instance.ShowIntetestial();
             GameManager.instance.isGuest = true;
             toolUI.gameObject.SetActive(false);
             callButton.SetActive(false);

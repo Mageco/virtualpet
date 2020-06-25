@@ -26,6 +26,8 @@ public class PetHappyItem : MonoBehaviour
         }
         else
             animator.Play("Drop_R", 0);
+
+        OnClick();
     }
 
     public void OnClick()
