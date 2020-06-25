@@ -118,15 +118,6 @@ public class ItemManager : MonoBehaviour
         
         if(!GameManager.instance.isGuest)
             LoadWelcome(awayTime);
-
-        while (UIManager.instance.IsPopUpOpen())
-        {
-            yield return new WaitForEndOfFrame();
-        }
-
-        if (!GameManager.instance.isGuest)
-            UIManager.instance.OnDailyBonusPanel();
-
     }
 
     // Update is called once per frame

@@ -178,6 +178,14 @@ public class UIManager : MonoBehaviour
             yield return new WaitForEndOfFrame();
         }
         Load();
+
+        while (IsPopUpOpen())
+        {
+            yield return new WaitForEndOfFrame();
+        }
+
+        if (!GameManager.instance.isGuest)
+            UIManager.instance.OnDailyBonusPanel();
     }
 
     public void Load()

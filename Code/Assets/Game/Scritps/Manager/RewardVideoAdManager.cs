@@ -99,10 +99,11 @@ public class RewardVideoAdManager : MonoBehaviour
 		if (MageEngine.instance.GetApplicationDataItem("TimeLapInterstitial") != null)
 		{
 			adDuration = float.Parse(MageEngine.instance.GetApplicationDataItem("TimeLapInterstitial"));
+			Debug.Log("TimeLapInterstitial " + MageEngine.instance.GetApplicationDataItem("TimeLapInterstitial"));
 		}
 
 		if (adDistribute == AdDistribute.Admob)
-        {
+		{ 
 
 			// Initialize the Google Mobile Ads SDK.
 			MobileAds.Initialize(appId);
@@ -354,9 +355,10 @@ public class RewardVideoAdManager : MonoBehaviour
 
 	public void ShowIntetestial()
 	{
-		if (isRemoveAd)
-			return;
+		//if (isRemoveAd)
+		//	return;
 
+		Debug.Log(GameManager.instance.gameTime - timeAd + " " + adDuration);
 		if (GameManager.instance.gameTime - timeAd < adDuration)
 			return;
 
