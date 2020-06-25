@@ -27,10 +27,10 @@ public class WelcomeBackPanel : MonoBehaviour
         coinText.text = coin.ToString();
         happyText.text = happy.ToString();
         expText.text = exp.ToString();
-        if (RewardVideoAdManager.instance.isUnityVideoLoaded)
-            AdButton.interactable = true;
-        else
-            AdButton.interactable = false;
+        //if (RewardVideoAdManager.instance.isUnityVideoLoaded)
+        AdButton.interactable = true;
+        //else
+        //    AdButton.interactable = false;
     }
 
 
