@@ -8,6 +8,7 @@ using UnityEngine.Advertisements;
 using MageSDK.Client.Helper;
 using Mage.Models.Application;
 using MageApi;
+using MageSDK.Client.Adaptors;
 
 public class RewardVideoAdManager : MonoBehaviour
 {
@@ -85,10 +86,14 @@ public class RewardVideoAdManager : MonoBehaviour
 		{
 			adDistribute = AdDistribute.Yodo1MAS;
 		}
+		else if (MageEngine.instance.GetApplicationDataItem("CurrentAdDistrubution") == "IronSource")
+		{
+			adDistribute = AdDistribute.IronSource;
+		}
 
-		// for testing, hardcode to Yodo1MAS
-		adDistribute = AdDistribute.Yodo1MAS;
-			
+		// for testing, hardcode to IronSource 
+		adDistribute = AdDistribute.IronSource;
+		
 
         //Get quest
 		if (MageEngine.instance.GetApplicationDataItem("QuestMax") != null)
@@ -149,6 +154,9 @@ public class RewardVideoAdManager : MonoBehaviour
 			Yodo1U3dSDK.setInterstitialAdDelegate(OnYodoInterstitialAdsHandler);
 		}
 		#endif
+		else if (adDistribute == AdDistribute.IronSource) {
+			IronSourceAdaptor.Initialize(ProcessReward);
+		}
 
 		if (MageEventHelper.GetInstance().GetEventCounter(MageEventType.ConfirmPaymentItem.ToString()) > 0)
 			isRemoveAd = true;
@@ -317,6 +325,11 @@ public class RewardVideoAdManager : MonoBehaviour
 			Yodo1U3dAds.ShowVideo();
 		} 
 		#endif
+		else if(adDistribute == AdDistribute.IronSource) {
+			ApiUtils.Log("Show Iron Source VideoAds");
+			rewardType = type;
+			IronSource.Agent.showRewardedVideo();
+		}
 	}
 
 	public void ShowVideoAd(RewardType type,int petId)
@@ -339,6 +352,13 @@ public class RewardVideoAdManager : MonoBehaviour
 			Yodo1U3dAds.ShowVideo();
 		} 
 		#endif
+		else if(adDistribute == AdDistribute.IronSource)
+        {
+			ApiUtils.Log("Show Ironsource VideoAds - Pet");
+			rewardType = type;
+			this.petId = petId;
+			IronSource.Agent.showRewardedVideo();
+		} 
 	}
 
 	public void ShowVideoAd(RewardType type,ChestItem item)
@@ -361,6 +381,13 @@ public class RewardVideoAdManager : MonoBehaviour
 			chestItem = item;
 		} 
 		#endif
+		else if(adDistribute == AdDistribute.IronSource)
+        {
+			ApiUtils.Log("Show IronSource VideoAds - Chest");
+			rewardType = type;
+			IronSource.Agent.showRewardedVideo();
+			chestItem = item;
+		} 
 	}
 
 	public void ShowIntetestial()
@@ -381,6 +408,13 @@ public class RewardVideoAdManager : MonoBehaviour
 			MageEngine.instance.OnEvent(Mage.Models.Application.MageEventType.InterstitialAdShow, "Minigame");
 		} 
 		#endif
+		if(adDistribute == AdDistribute.IronSource)
+        {
+			ApiUtils.Log("Show IronSource Interstitial");
+			rewardType = RewardType.None;
+			IronSource.Agent.showInterstitial();
+			MageEngine.instance.OnEvent(Mage.Models.Application.MageEventType.InterstitialAdShow, "Minigame");
+		} 
 	}
 
     public void ShowBanner()
@@ -446,8 +480,7 @@ public class RewardVideoAdManager : MonoBehaviour
 			case Yodo1U3dConstants.AdEvent.AdEventClose:
 				break;
 			case Yodo1U3dConstants.AdEvent.AdEventShowSuccess:
-					this.ProcessReward(MageEventType.InterstitialAdShow);
-				timeAd = GameManager.instance.gameTime;
+				this.ProcessReward(MageEventType.InterstitialAdShow);
 				break;
 			case Yodo1U3dConstants.AdEvent.AdEventShowFail:
 				ApiUtils.Log("Interstital ad has been show failed, the error message:" + error);
@@ -480,8 +513,11 @@ public class RewardVideoAdManager : MonoBehaviour
 	}
 	#endif
 
-	private void ProcessReward(MageEventType adsType)
+	public void ProcessReward(MageEventType adsType)
 	{
+		if (adsType == MageEventType.InterstitialAdShow) {
+			timeAd = GameManager.instance.gameTime;
+		}
 		// Reward the user for watching the ad to completion.
 		MageEngine.instance.OnEvent(adsType, rewardType.ToString());
 		if (rewardType == RewardType.Minigame)
