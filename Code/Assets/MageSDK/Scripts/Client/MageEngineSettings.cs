@@ -40,6 +40,8 @@ namespace MageSDK.Client {
 		public const string GAME_ENGINE_FB_USER_ID = "FirebaseUserId";
 		// messages sexxion
 		public const string GAME_ENGINE_USER_MESSAGE = "GameEngineUserMessages";
+
+		public const string GAME_ENGINE_ADS_DISTRIBUTION = "CurrentAdDistribution";
 		public static string[] GAME_ENGINE_APPLICATION_DATA_ITEM = {
 			"DialogData",
 			"ItemData",

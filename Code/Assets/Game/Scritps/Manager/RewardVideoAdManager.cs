@@ -39,22 +39,34 @@ public class RewardVideoAdManager : MonoBehaviour
         {
 			yield return new WaitForEndOfFrame();
         }
-		Debug.Log(MageEngine.instance.GetApplicationDataItem("CurrentAdDistrubution"));
-		if (MageEngine.instance.GetApplicationDataItem("CurrentAdDistrubution") == "Unity")
+
+		// select ads distribution network
+		Debug.Log(MageEngine.instance.GetApplicationDataItem(MageEngineSettings.GAME_ENGINE_ADS_DISTRIBUTION));
+		switch (MageEngine.instance.GetApplicationDataItem(MageEngineSettings.GAME_ENGINE_ADS_DISTRIBUTION))
 		{
-			adDistribute = AdDistribute.Unity;
+			case "Unity" : adDistribute = AdDistribute.Unity; break;
+			case "Admob" : adDistribute = AdDistribute.Admob; break;
+			case "Yodo1MAS" : adDistribute = AdDistribute.Yodo1MAS; break;
+			case "IronSource" : adDistribute = AdDistribute.IronSource; break;
+			default: adDistribute = AdDistribute.Unity; break;
 		}
-		else if (MageEngine.instance.GetApplicationDataItem("CurrentAdDistrubution") == "Admob")
+		
+		// Initialize correspondent Ads network
+		switch (adDistribute)
 		{
-			adDistribute = AdDistribute.Admob;
-		}
-		else if (MageEngine.instance.GetApplicationDataItem("CurrentAdDistrubution") == "Yodo1MAS")
-		{
-			adDistribute = AdDistribute.Yodo1MAS;
-		}
-		else if (MageEngine.instance.GetApplicationDataItem("CurrentAdDistrubution") == "IronSource")
-		{
-			adDistribute = AdDistribute.IronSource;
+			case AdDistribute.Admob: 
+				AdmobAdaptor.GetInstance().Initialize(ProcessReward);
+			break;
+			case AdDistribute.Yodo1MAS: 
+				YodoMASAdaptor.GetInstance().Initialize(ProcessReward);
+			break;
+			case AdDistribute.IronSource: 
+				IronSourceAdaptor.GetInstance().Initialize(ProcessReward);
+			break;
+			case AdDistribute.Unity: 
+			default: 
+				UnityAdsAdaptor.GetInstance().Initialize(ProcessReward);
+			break;
 		}
 
         //Get quest max value
@@ -70,125 +82,117 @@ public class RewardVideoAdManager : MonoBehaviour
 			Debug.Log("TimeLapInterstitial " + MageEngine.instance.GetApplicationDataItem("TimeLapInterstitial"));
 		}
 
-		if (adDistribute == AdDistribute.Admob)
-		{ 
-			AdmobAdaptor.GetInstance().Initialize(ProcessReward);
-		}
-		else if(adDistribute == AdDistribute.Yodo1MAS)
-        {
-			YodoMASAdaptor.GetInstance().Initialize(ProcessReward);
-		}
-		else if (adDistribute == AdDistribute.IronSource) {
-			IronSourceAdaptor.Initialize(ProcessReward);
-		}
-		else if (adDistribute == AdDistribute.Unity) {
-			UnityAdsAdaptor.GetInstance().Initialize(ProcessReward);
-		}
-
 		if (MageEventHelper.GetInstance().GetEventCounter(MageEventType.ConfirmPaymentItem.ToString()) > 0)
 			isRemoveAd = true;
 	}
 
+	void OnApplicationPause(bool isPaused) {      
+		if (adDistribute == AdDistribute.IronSource) {
+			IronSource.Agent.onApplicationPause(isPaused);
+		}           
+	}
+
 	public void ShowVideoAd(RewardType type)
 	{
-		if (adDistribute == AdDistribute.Admob)
+		switch (adDistribute)
 		{
-			if (AdmobAdaptor.GetInstance().rewardBasedVideo.IsLoaded())
-			{
+			case AdDistribute.Admob: 
+				if (AdmobAdaptor.GetInstance().rewardBasedVideo.IsLoaded())
+				{
+					rewardType = type;
+					AdmobAdaptor.GetInstance().rewardBasedVideo.Show();
+				}
+			break;
+			case AdDistribute.Yodo1MAS: 
+				#if YODO1MAS_ENABLED
+				ApiUtils.Log("Show Yodo1MAS VideoAds");
 				rewardType = type;
-				AdmobAdaptor.GetInstance().rewardBasedVideo.Show();
-			}
-		}
-		#if YODO1MAS_ENABLED
-		else if(adDistribute == AdDistribute.Yodo1MAS)
-        {
-			ApiUtils.Log("Show Yodo1MAS VideoAds");
-			rewardType = type;
-			Yodo1U3dAds.ShowVideo();
-		} 
-		#endif
-		else if(adDistribute == AdDistribute.IronSource) {
-			ApiUtils.Log("Show Iron Source VideoAds");
-			rewardType = type;
-			IronSource.Agent.showRewardedVideo();
-		}
-		else if (adDistribute == AdDistribute.Unity)
-		{
-			ApiUtils.Log("Show Unity Ads VideoAds");
-			rewardType = type;
-			Advertisement.Show(UnityAdsAdaptor.rewardedVideoPlacementId);
+				Yodo1U3dAds.ShowVideo();
+				#endif
+			break;
+			case AdDistribute.IronSource: 
+				ApiUtils.Log("Show Iron Source VideoAds");
+				rewardType = type;
+				IronSource.Agent.showRewardedVideo();
+			break;
+			case AdDistribute.Unity: 
+			default: 
+				ApiUtils.Log("Show Unity Ads VideoAds");
+				rewardType = type;
+				Advertisement.Show(UnityAdsAdaptor.rewardedVideoPlacementId);
+			break;
 		}
 	}
 
 	public void ShowVideoAd(RewardType type,int petId)
 	{
-		if (adDistribute == AdDistribute.Admob)
+		switch (adDistribute)
 		{
-			if (AdmobAdaptor.GetInstance().rewardBasedVideo.IsLoaded())
-			{
+			case AdDistribute.Admob: 
+				if (AdmobAdaptor.GetInstance().rewardBasedVideo.IsLoaded())
+				{
+					rewardType = type;
+					AdmobAdaptor.GetInstance().rewardBasedVideo.Show();
+					this.petId = petId;
+				}
+			break;
+			case AdDistribute.Yodo1MAS: 
+				#if YODO1MAS_ENABLED
+				ApiUtils.Log("Show Yodo1MAS VideoAds - Pet");
 				rewardType = type;
-				AdmobAdaptor.GetInstance().rewardBasedVideo.Show();
 				this.petId = petId;
-			}
-		}
-		#if YODO1MAS_ENABLED
-		else if(adDistribute == AdDistribute.Yodo1MAS)
-        {
-			ApiUtils.Log("Show Yodo1MAS VideoAds - Pet");
-			rewardType = type;
-			this.petId = petId;
-			Yodo1U3dAds.ShowVideo();
-		} 
-		#endif
-		else if(adDistribute == AdDistribute.IronSource)
-        {
-			ApiUtils.Log("Show Ironsource VideoAds - Pet");
-			rewardType = type;
-			this.petId = petId;
-			IronSource.Agent.showRewardedVideo();
-		} 
-		else if (adDistribute == AdDistribute.Unity)
-		{
-			rewardType = type;
-			this.petId = petId;
-			Advertisement.Show(UnityAdsAdaptor.rewardedVideoPlacementId);
+				Yodo1U3dAds.ShowVideo();
+				#endif
+			break;
+			case AdDistribute.IronSource: 
+				ApiUtils.Log("Show Ironsource VideoAds - Pet");
+				rewardType = type;
+				this.petId = petId;
+				IronSource.Agent.showRewardedVideo();
+			break;
+			case AdDistribute.Unity: 
+			default: 
+				rewardType = type;
+				this.petId = petId;
+				Advertisement.Show(UnityAdsAdaptor.rewardedVideoPlacementId);
+			break;
 		}
 	}
 
 	public void ShowVideoAd(RewardType type, ChestItem item)
 	{
-		if (adDistribute == AdDistribute.Admob)
+		switch (adDistribute)
 		{
-			if (AdmobAdaptor.GetInstance().rewardBasedVideo.IsLoaded())
-			{
+			case AdDistribute.Admob: 
+				if (AdmobAdaptor.GetInstance().rewardBasedVideo.IsLoaded())
+				{
+					rewardType = type;
+					AdmobAdaptor.GetInstance().rewardBasedVideo.Show();
+					chestItem = item;
+				}
+			break;
+			case AdDistribute.Yodo1MAS: 
+				#if YODO1MAS_ENABLED
+				ApiUtils.Log("Show Yodo1MAS VideoAds - Chest");
 				rewardType = type;
-				AdmobAdaptor.GetInstance().rewardBasedVideo.Show();
+				Yodo1U3dAds.ShowVideo();
 				chestItem = item;
-			}
+				#endif
+			break;
+			case AdDistribute.IronSource: 
+				ApiUtils.Log("Show IronSource VideoAds - Chest");
+				rewardType = type;
+				IronSource.Agent.showRewardedVideo();
+				chestItem = item;
+			break;
+			case AdDistribute.Unity: 
+			default: 
+				ApiUtils.Log("Show Unity VideoAds - Chest");
+				rewardType = type;
+				Advertisement.Show(UnityAdsAdaptor.rewardedVideoPlacementId);
+				chestItem = item;
+			break;
 		}
-		#if YODO1MAS_ENABLED
-		else if(adDistribute == AdDistribute.Yodo1MAS)
-        {
-			ApiUtils.Log("Show Yodo1MAS VideoAds - Chest");
-			rewardType = type;
-			Yodo1U3dAds.ShowVideo();
-			chestItem = item;
-		} 
-		#endif
-		else if(adDistribute == AdDistribute.IronSource)
-        {
-			ApiUtils.Log("Show IronSource VideoAds - Chest");
-			rewardType = type;
-			IronSource.Agent.showRewardedVideo();
-			chestItem = item;
-		} 
-		else if(adDistribute == AdDistribute.Unity)
-        {
-			ApiUtils.Log("Show Unity VideoAds - Chest");
-			rewardType = type;
-			Advertisement.Show(UnityAdsAdaptor.rewardedVideoPlacementId);
-			chestItem = item;
-		} 
 	}
 
 	public void ShowIntetestial(RewardType type = RewardType.Minigame)
@@ -200,32 +204,35 @@ public class RewardVideoAdManager : MonoBehaviour
 		if (GameManager.instance.gameTime - timeAd < adDuration)
 			return;
 
-		#if YODO1MAS_ENABLED
-		if(adDistribute == AdDistribute.Yodo1MAS)
-        {
-			ApiUtils.Log("Show Yodo1MAS Interstitial");
-			rewardType = type;
-			Yodo1U3dAds.ShowInterstitial();
-		} 
-		#endif
-		if(adDistribute == AdDistribute.IronSource)
-        {
-			ApiUtils.Log("Show IronSource Interstitial");
-			rewardType = type;
-			IronSource.Agent.showInterstitial();
-		} else if (adDistribute == AdDistribute.Unity)
-        {
-			ApiUtils.Log("Show UnityAds Interstitial");
-			rewardType = type;
-			Advertisement.Show(UnityAdsAdaptor.interstitialPlacementId);
-		} 
+		switch (adDistribute)
+		{
+			case AdDistribute.Admob: 
+				// do nothing
+			break;
+			case AdDistribute.Yodo1MAS: 
+				#if YODO1MAS_ENABLED
+				ApiUtils.Log("Show Yodo1MAS Interstitial");
+				rewardType = type;
+				Yodo1U3dAds.ShowInterstitial();
+				#endif
+			break;
+			case AdDistribute.IronSource: 
+				ApiUtils.Log("Show IronSource Interstitial");
+				rewardType = type;
+				IronSource.Agent.showInterstitial();
+			break;
+			case AdDistribute.Unity: 
+			default: 
+				ApiUtils.Log("Show UnityAds Interstitial");
+				rewardType = type;
+				Advertisement.Show(UnityAdsAdaptor.interstitialPlacementId);
+			break;
+		}
 
 	}
 
     public void ShowBanner()
     {
-		if (isRemoveAd)
-			return;
 	}
 
     public void HideBanner()

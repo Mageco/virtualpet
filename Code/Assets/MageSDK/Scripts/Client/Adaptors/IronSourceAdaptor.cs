@@ -23,11 +23,22 @@ namespace MageSDK.Client.Adaptors
             private static string appKey = "cab81bed";
         #endif
 		
+        private static IronSourceAdaptor _instance;
         public static Action<MageEventType> processMageEventType;
 
+        public IronSourceAdaptor() {
+		}
+
+		public static IronSourceAdaptor GetInstance() {
+			if (null == _instance) {
+				_instance = new IronSourceAdaptor ();
+			} 
+			return _instance;
+		}
+
 		///<summary>Initialize IronSource Ads</summary>
-		public static void Initialize(Action<MageEventType> processMageEventTypeCallback) {
-			ApiUtils.Log ("unity-script: MyAppStart Start called");
+		public void Initialize(Action<MageEventType> processMageEventTypeCallback) {
+			ApiUtils.Log ("unity-script: Initialize Iron source called");
 
             //Dynamic config example
             IronSourceConfig.Instance.setClientSideCallbacks (true);
@@ -36,7 +47,6 @@ namespace MageSDK.Client.Adaptors
 
             string id = IronSource.Agent.getAdvertiserId ();
             ApiUtils.Log ("unity-script: IronSource.Agent.getAdvertiserId : " + id);
-            
             ApiUtils.Log ("unity-script: IronSource.Agent.validateIntegration");
             IronSource.Agent.validateIntegration ();
 
@@ -65,58 +75,57 @@ namespace MageSDK.Client.Adaptors
             // SDK init
             ApiUtils.Log ("unity-script: IronSource.Agent.init");
             IronSource.Agent.init (appKey);
-
 		}
 
         /************* Video Delegates *************/ 
-        public static void RewardedVideoAdOpenedEvent ()
+        public void RewardedVideoAdOpenedEvent ()
         {
             ApiUtils.Log ("unity-script: I got RewardedVideoAdOpenedEvent");
         }
 
-        public static void RewardedVideoAdRewardedEvent (IronSourcePlacement ssp)
+        public void RewardedVideoAdRewardedEvent (IronSourcePlacement ssp)
         {
             ApiUtils.Log ("unity-script: I got RewardedVideoAdRewardedEvent, amount = " + ssp.getRewardAmount () + " name = " + ssp.getRewardName ());
             processMageEventType(MageEventType.VideoAdRewarded);
         }
         
-        public static void RewardedVideoAdClosedEvent ()
+        public void RewardedVideoAdClosedEvent ()
         {
             ApiUtils.Log ("unity-script: I got RewardedVideoAdClosedEvent");
         }
 
-        public static void RewardedVideoAdStartedEvent ()
+        public void RewardedVideoAdStartedEvent ()
         {
             ApiUtils.Log ("unity-script: I got RewardedVideoAdStartedEvent");
         }
 
-        public static void RewardedVideoAdEndedEvent ()
+        public void RewardedVideoAdEndedEvent ()
         {
             ApiUtils.Log ("unity-script: I got RewardedVideoAdEndedEvent");
         }
         
-        public static void RewardedVideoAdShowFailedEvent (IronSourceError error)
+        public void RewardedVideoAdShowFailedEvent (IronSourceError error)
         {
             ApiUtils.Log ("unity-script: I got RewardedVideoAdShowFailedEvent, code :  " + error.getCode () + ", description : " + error.getDescription ());
         }
 
-        public static void RewardedVideoAdClickedEvent (IronSourcePlacement ssp)
+        public void RewardedVideoAdClickedEvent (IronSourcePlacement ssp)
         {
             ApiUtils.Log ("unity-script: I got RewardedVideoAdClickedEvent, name = " + ssp.getRewardName ());
         }
 
         /************* Interstitial Delegates *************/ 
-        public static void InterstitialAdReadyEvent ()
+        public void InterstitialAdReadyEvent ()
         {
             ApiUtils.Log ("unity-script: I got InterstitialAdReadyEvent");
         }
         
-        public static void InterstitialAdLoadFailedEvent (IronSourceError error)
+        public void InterstitialAdLoadFailedEvent (IronSourceError error)
         {
             ApiUtils.Log ("unity-script: I got InterstitialAdLoadFailedEvent, code: " + error.getCode () + ", description : " + error.getDescription ());
         }
         
-        public static void InterstitialAdShowSucceededEvent ()
+        public void InterstitialAdShowSucceededEvent ()
         {
             ApiUtils.Log ("unity-script: I got InterstitialAdShowSucceededEvent");
             processMageEventType(MageEventType.InterstitialAdShow);
@@ -127,17 +136,17 @@ namespace MageSDK.Client.Adaptors
             ApiUtils.Log ("unity-script: I got InterstitialAdShowFailedEvent, code :  " + error.getCode () + ", description : " + error.getDescription ());
         }
         
-        public static void InterstitialAdClickedEvent ()
+        public void InterstitialAdClickedEvent ()
         {
             ApiUtils.Log ("unity-script: I got InterstitialAdClickedEvent");
         }
         
-        public static void InterstitialAdOpenedEvent ()
+        public void InterstitialAdOpenedEvent ()
         {
             ApiUtils.Log ("unity-script: I got InterstitialAdOpenedEvent");
         }
 
-        public static void InterstitialAdClosedEvent ()
+        public void InterstitialAdClosedEvent ()
         {
             ApiUtils.Log ("unity-script: I got InterstitialAdClosedEvent");
         }

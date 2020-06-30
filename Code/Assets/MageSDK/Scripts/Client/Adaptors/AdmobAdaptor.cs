@@ -29,13 +29,11 @@ namespace MageSDK.Client.Adaptors
         #endif
 
         #if UNITY_ANDROID
-        string adUnitId = "ca-app-pub-6818802678275174/9014893744";
-        //Test unit
-        //string adUnitId = "ca-app-pub-3940256099942544/5224354917";
+            string adUnitId = "ca-app-pub-6818802678275174/9014893744";
         #elif UNITY_IPHONE
-        string adUnitId = "ca-app-pub-6818802678275174/5961180954";
+            string adUnitId = "ca-app-pub-6818802678275174/5961180954";
         #else
-        string adUnitId = "unexpected_platform";
+            string adUnitId = "unexpected_platform";
         #endif
         private static AdmobAdaptor _instance;
         public RewardBasedVideoAd rewardBasedVideo;
@@ -49,7 +47,6 @@ namespace MageSDK.Client.Adaptors
 			} 
 			return _instance;
 		}
-        private static bool testMode = false;
 
         public static Action<MageEventType> processMageEventType;
 
