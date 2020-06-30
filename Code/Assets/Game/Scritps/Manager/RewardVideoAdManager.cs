@@ -81,9 +81,12 @@ public class RewardVideoAdManager : MonoBehaviour
 			adDuration = float.Parse(MageEngine.instance.GetApplicationDataItem("TimeLapInterstitial"));
 			Debug.Log("TimeLapInterstitial " + MageEngine.instance.GetApplicationDataItem("TimeLapInterstitial"));
 		}
-
+		
+		// remove ad for paid user
 		if (MageEventHelper.GetInstance().GetEventCounter(MageEventType.ConfirmPaymentItem.ToString()) > 0)
 			isRemoveAd = true;
+		// start calculate time for Interstitial
+		timeAd = GameManager.instance.gameTime;
 	}
 
 	void OnApplicationPause(bool isPaused) {      

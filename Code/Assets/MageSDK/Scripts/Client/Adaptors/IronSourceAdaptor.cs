@@ -69,7 +69,10 @@ namespace MageSDK.Client.Adaptors
             IronSourceEvents.onInterstitialAdClickedEvent += InterstitialAdClickedEvent;
             IronSourceEvents.onInterstitialAdOpenedEvent += InterstitialAdOpenedEvent;
             IronSourceEvents.onInterstitialAdClosedEvent += InterstitialAdClosedEvent;
-            
+            // start loading Interstitial for 1st time
+            IronSource.Agent.loadInterstitial();
+
+            // asign call back
             processMageEventType = processMageEventTypeCallback;
 
             // SDK init
@@ -128,7 +131,6 @@ namespace MageSDK.Client.Adaptors
         public void InterstitialAdShowSucceededEvent ()
         {
             ApiUtils.Log ("unity-script: I got InterstitialAdShowSucceededEvent");
-            processMageEventType(MageEventType.InterstitialAdShow);
         }
         
         public static  void InterstitialAdShowFailedEvent (IronSourceError error)
@@ -149,6 +151,10 @@ namespace MageSDK.Client.Adaptors
         public void InterstitialAdClosedEvent ()
         {
             ApiUtils.Log ("unity-script: I got InterstitialAdClosedEvent");
+            processMageEventType(MageEventType.InterstitialAdShow);
+            
+            // prepare for next time
+            IronSource.Agent.loadInterstitial();
         }
 
 	}
