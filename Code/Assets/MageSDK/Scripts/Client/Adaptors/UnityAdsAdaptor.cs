@@ -63,7 +63,7 @@ namespace MageSDK.Client.Adaptors
                      processMageEventType(MageEventType.VideoAdRewarded);
                 }
                 if (placementId == interstitialPlacementId) {
-                     processMageEventType(MageEventType.VideoAdRewarded);
+                     processMageEventType(MageEventType.InterstitialAdShow);
                 }
                
             }

@@ -126,6 +126,8 @@ namespace MageSDK.Client.Adaptors
         public void InterstitialAdLoadFailedEvent (IronSourceError error)
         {
             ApiUtils.Log ("unity-script: I got InterstitialAdLoadFailedEvent, code: " + error.getCode () + ", description : " + error.getDescription ());
+            // prepare for next time
+            IronSource.Agent.loadInterstitial();
         }
         
         public void InterstitialAdShowSucceededEvent ()
@@ -136,6 +138,8 @@ namespace MageSDK.Client.Adaptors
         public static  void InterstitialAdShowFailedEvent (IronSourceError error)
         {
             ApiUtils.Log ("unity-script: I got InterstitialAdShowFailedEvent, code :  " + error.getCode () + ", description : " + error.getDescription ());
+            // prepare for next time
+            IronSource.Agent.loadInterstitial();
         }
         
         public void InterstitialAdClickedEvent ()

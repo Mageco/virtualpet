@@ -200,9 +200,6 @@ public class RewardVideoAdManager : MonoBehaviour
 
 	public void ShowIntetestial(RewardType type = RewardType.Minigame)
 	{
-		if (isRemoveAd)
-			return;
-
 		Debug.Log(GameManager.instance.gameTime - timeAd + " " + adDuration);
 		if (GameManager.instance.gameTime - timeAd < adDuration)
 			return;
