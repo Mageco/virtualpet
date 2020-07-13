@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Mage.Models.Attributes;
 using Mage.Models.Users;
 using MageSDK.Client;
 using UnityEngine;

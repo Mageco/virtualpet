@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using Mage.Models;
+using Mage.Models.Attributes;
 using MageSDK.Client;
 using UnityEngine;
 
@@ -8,15 +9,21 @@ using UnityEngine;
 public class PlayerData : BaseModel
 {
 	public string playerName = "House's ...";
+	
     public int coin = 0;
 	public string version = "";
 	public string originalVersion = "";
-    public int diamond = 0;
+	
+	public int diamond = 0;
 	public int happy = 0;
+	[FBUserProperty(FBUserPropertyCategory.Level)]
 	public int level = 1;
 	[ExtractField]
+	[FBUserProperty(FBUserPropertyCategory.Currency)]
 	public int collectedHappy = 0;
+	[FBUserProperty(FBUserPropertyCategory.Currency)]
     public int collectedCoin = 0;
+	[FBUserProperty(FBUserPropertyCategory.Currency)]
 	public int collectedDiamond = 0;
 	[ExtractField]
 	public int petCount = 1;

@@ -30,6 +30,7 @@ using MageSDK.Client.Helper;
 using System.Security.Cryptography;
 using System.Text;
 using MageSDK.Client.Adaptors;
+using Mage.Models.Attributes;
 #if BUNNY_CDN
 using BunnyCDN.Net.Storage;
 #endif
@@ -337,7 +338,7 @@ namespace MageSDK.Client {
 			};
 
 			// do background enrich data first
-			BackgroundEnrichData(d.ExtractFields<T>(obj));
+			BackgroundEnrichData(MageAttributeHelper.ExtractFields<T>(obj));
 			UpdateUserData(d, forceUpdate);
 
 
@@ -346,8 +347,8 @@ namespace MageSDK.Client {
 		private void BackgroundEnrichData(List<UserData> userDatas) {
 			User u = GetUser();
 			if (null != u && null != userDatas && userDatas.Count > 0) {
-				//ApiUtils.Log("Backround update");
 				foreach(UserData d in userDatas) {
+					Debug.Log("Enrich: " + d.ToJson());
 					u.SetUserData(d);
 				}
 			}
@@ -418,7 +419,9 @@ namespace MageSDK.Client {
 			// save user properties to firebase
 			if (useFirebaseAnalytic) {
 				foreach(UserData d in u.user_datas) {
-					FirebaseAdaptor.UpdateUserData(d);
+					if (d.attr_type == "Firebase") {
+						FirebaseAdaptor.UpdateUserData(d);
+					}	
 				}
 			}
 		}

@@ -31,12 +31,12 @@ namespace MageSDK.Client.Adaptors
 		}
         private static bool testMode = false;
 
-        public static Action<MageEventType> processMageEventType;
+        public Action<MageEventType> processMageEventType;
 
 		///<summary>Initialize YodoMAS Ads</summary>
 		public void Initialize(Action<MageEventType> processMageEventTypeCallback) {
             processMageEventType = processMageEventTypeCallback;
-            #if YODO1MAS_ENABLED
+
             ApiUtils.Log("Initialize Yodo1MAS");
 			
 			// dont' collect user information
@@ -52,11 +52,11 @@ namespace MageSDK.Client.Adaptors
 			Yodo1U3dSDK.setRewardVideoDelegate(OnYodoVideoAdsHandler);
 			//set callback to handle interstitial
 			Yodo1U3dSDK.setInterstitialAdDelegate(OnYodoInterstitialAdsHandler);
-            #endif
+
 		}
 
         #region Yodo1MAS
-        #if YODO1MAS_ENABLED
+
         public void OnYodoInterstitialAdsHandler(Yodo1U3dConstants.AdEvent adEvent,string error)
         {
             Debug.Log ("InterstitialAdDelegate:" + adEvent + "\n" + error);
@@ -67,7 +67,7 @@ namespace MageSDK.Client.Adaptors
                 case Yodo1U3dConstants.AdEvent.AdEventClose:
                     break;
                 case Yodo1U3dConstants.AdEvent.AdEventShowSuccess:
-                    this.ProcessReward(MageEventType.InterstitialAdShow);
+                    this.processMageEventType(MageEventType.InterstitialAdShow);
                     break;
                 case Yodo1U3dConstants.AdEvent.AdEventShowFail:
                     ApiUtils.Log("Interstital ad has been show failed, the error message:" + error);
@@ -94,11 +94,11 @@ namespace MageSDK.Client.Adaptors
                     break;
                 case Yodo1U3dConstants.AdEvent.AdEventFinish:
                     ApiUtils.Log("Rewarded video ad has been played finish, give rewards to the player.");
-                    this.ProcessReward(MageEventType.VideoAdRewarded);
+                    this.processMageEventType(MageEventType.VideoAdRewarded);
                 break;
             }
         }
-        #endif
+
         #endregion
         
 	}

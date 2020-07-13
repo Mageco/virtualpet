@@ -3,12 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using MageApi;
+using Mage.Models.Attributes;
 
 namespace Mage.Models {
 	[Serializable]
-	public class BaseModel : ExtractFieldAttribute {
+	public class BaseModel {
 
+		private Hashtable _valueTracker = new Hashtable();
+		private bool _valueTrackerLoaded = false;
 		public BaseModel() {
+			_valueTracker = new Hashtable ();
 		}
 
 		public string ToJson() {
@@ -48,5 +52,42 @@ namespace Mage.Models {
 				return default(TResult);
 			}
 		}
+
+		#region OldValueTracking
+		public T GetMemberOldValue<T>(string key) {
+
+			if (_valueTracker.Contains(key)) {
+				return (T)_valueTracker [key];
+			} else {
+				return default(T);
+			}
+		}
+
+
+		public void SetMemberOldValue(string key, object obj) {
+			if (_valueTracker.Contains(key)) {
+				_valueTracker [key] = obj;
+			} else {
+				_valueTracker.Add(key, obj);
+			}
+		}
+
+		public void LoadValueTracker<T>(T obj) where T:BaseModel {
+			//if (!_valueTrackerLoaded) {
+			_valueTracker = MageAttributeHelper.CopyMetaFields<T>(obj);
+			//}
+		}
+
+		public string PrintValueTracker() {
+			string result = "";
+			foreach (DictionaryEntry info in _valueTracker) {
+				result += (info.Key.ToString () + ": " + info.Value.ToString ()) + "\r\n";
+			}
+
+			return result;
+		}
+
+		#endregion
+	
 	}
 }
