@@ -804,13 +804,46 @@ namespace MageSDK.Client {
 		}
 
 		///<summary>Capture app event</summary>
-		public void OnEvent(MageEventType type, string eventDetail = "") {
+		public void OnEvent(MageEventType type) {
+			ApiUtils.Log("OnEvent: " + type);
+			MageEventHelper.GetInstance().OnEvent(type, this.SendUserEventsToMage, "");
+
+			// send event to firebase
+			if (useFirebaseAnalytic) {
+				FirebaseAdaptor.OnEvent(type, "", "");
+			}
+			
+		}
+
+		public void OnEvent(MageEventType type, string eventDetail) {
 			ApiUtils.Log("OnEvent: " + type);
 			MageEventHelper.GetInstance().OnEvent(type, this.SendUserEventsToMage, eventDetail);
 
 			// send event to firebase
 			if (useFirebaseAnalytic) {
-				FirebaseAdaptor.OnEvent(type, eventDetail);
+				FirebaseAdaptor.OnEvent(type, eventDetail, "");
+			}
+			
+		}
+
+		public void OnEvent(MageEventType type, string eventDetail, string eventValue) {
+			ApiUtils.Log("OnEvent: " + type);
+			MageEventHelper.GetInstance().OnEvent(type, this.SendUserEventsToMage, eventDetail);
+
+			// send event to firebase
+			if (useFirebaseAnalytic) {
+				FirebaseAdaptor.OnEvent(type, eventDetail, eventValue);
+			}
+			
+		}
+
+		public void OnEvent(MageEventType type, string eventDetail, int eventValue) {
+			ApiUtils.Log("OnEvent: " + type);
+			MageEventHelper.GetInstance().OnEvent(type, this.SendUserEventsToMage, eventDetail);
+
+			// send event to firebase
+			if (useFirebaseAnalytic) {
+				FirebaseAdaptor.OnEvent(type, eventDetail, eventValue);
 			}
 			
 		}
@@ -822,7 +855,7 @@ namespace MageSDK.Client {
 			
 			// send event to firebase
 			if (useFirebaseAnalytic) {
-				FirebaseAdaptor.OnEvent(type, obj.ToJson());
+				FirebaseAdaptor.OnEvent(type, obj.ToJson(), "");
 			}
 		}
 

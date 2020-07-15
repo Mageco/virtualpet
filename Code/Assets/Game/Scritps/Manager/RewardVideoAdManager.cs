@@ -107,11 +107,9 @@ public class RewardVideoAdManager : MonoBehaviour
 				}
 			break;
 			case AdDistribute.Yodo1MAS: 
-				#if YODO1MAS_ENABLED
 				ApiUtils.Log("Show Yodo1MAS VideoAds");
 				rewardType = type;
 				Yodo1U3dAds.ShowVideo();
-				#endif
 			break;
 			case AdDistribute.IronSource: 
 				ApiUtils.Log("Show Iron Source VideoAds");
@@ -140,12 +138,10 @@ public class RewardVideoAdManager : MonoBehaviour
 				}
 			break;
 			case AdDistribute.Yodo1MAS: 
-				#if YODO1MAS_ENABLED
 				ApiUtils.Log("Show Yodo1MAS VideoAds - Pet");
 				rewardType = type;
 				this.petId = petId;
 				Yodo1U3dAds.ShowVideo();
-				#endif
 			break;
 			case AdDistribute.IronSource: 
 				ApiUtils.Log("Show Ironsource VideoAds - Pet");
@@ -175,12 +171,10 @@ public class RewardVideoAdManager : MonoBehaviour
 				}
 			break;
 			case AdDistribute.Yodo1MAS: 
-				#if YODO1MAS_ENABLED
 				ApiUtils.Log("Show Yodo1MAS VideoAds - Chest");
 				rewardType = type;
 				Yodo1U3dAds.ShowVideo();
 				chestItem = item;
-				#endif
 			break;
 			case AdDistribute.IronSource: 
 				ApiUtils.Log("Show IronSource VideoAds - Chest");
@@ -210,11 +204,9 @@ public class RewardVideoAdManager : MonoBehaviour
 				// do nothing
 			break;
 			case AdDistribute.Yodo1MAS: 
-				#if YODO1MAS_ENABLED
 				ApiUtils.Log("Show Yodo1MAS Interstitial");
 				rewardType = type;
 				Yodo1U3dAds.ShowInterstitial();
-				#endif
 			break;
 			case AdDistribute.IronSource: 
 				ApiUtils.Log("Show IronSource Interstitial");
@@ -246,7 +238,7 @@ public class RewardVideoAdManager : MonoBehaviour
 			timeAd = GameManager.instance.gameTime;
 		}
 		// Reward the user for watching the ad to completion.
-		MageEngine.instance.OnEvent(adsType, rewardType.ToString());
+		MageEngine.instance.OnEvent(adsType, rewardType.ToString(), adDistribute.ToString());
 		
 		if (rewardType == RewardType.Minigame)
 		{

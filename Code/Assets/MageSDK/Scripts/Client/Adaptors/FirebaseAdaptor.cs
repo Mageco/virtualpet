@@ -161,10 +161,17 @@ namespace MageSDK.Client.Adaptors
 		}
 
 		///<summary>send event to firebase</summary>
-		public static void OnEvent(MageEventType type, string eventDetail = "") {
+		public static void OnEvent(MageEventType type,  string eventDetail, int eventValue) {
 			ApiUtils.Log("Firebase: OnEvent - " + type.ToString() + eventDetail);
 			eventDetail = (eventDetail == "" ? "No detail" : eventDetail);
-			Firebase.Analytics.FirebaseAnalytics.LogEvent(type.ToString(), eventDetail, "Empty");
+			Firebase.Analytics.FirebaseAnalytics.LogEvent(type.ToString(), eventDetail, eventValue);
+		}
+
+		public static void OnEvent(MageEventType type, string eventDetail, string eventValue) {
+			ApiUtils.Log("Firebase: OnEvent - " + type.ToString() + eventDetail);
+			eventDetail = (eventDetail == "" ? "No detail" : eventDetail);
+			eventValue = (eventValue == "" ? "Empty" : eventValue);
+			Firebase.Analytics.FirebaseAnalytics.LogEvent(type.ToString(), eventDetail, eventValue);
 		}
 
 	}
