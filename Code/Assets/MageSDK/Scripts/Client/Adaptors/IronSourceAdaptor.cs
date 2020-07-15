@@ -15,6 +15,7 @@ using UnityEngine;
 
 namespace MageSDK.Client.Adaptors 
 {
+   
 	public class IronSourceAdaptor 
 	{
          #if UNITY_IOS
@@ -38,6 +39,7 @@ namespace MageSDK.Client.Adaptors
 
 		///<summary>Initialize IronSource Ads</summary>
 		public void Initialize(Action<MageEventType> processMageEventTypeCallback) {
+            #if IRON_SOURCE_ENABLED
 			ApiUtils.Log ("unity-script: Initialize Iron source called");
 
             //Dynamic config example
@@ -78,8 +80,9 @@ namespace MageSDK.Client.Adaptors
             // SDK init
             ApiUtils.Log ("unity-script: IronSource.Agent.init");
             IronSource.Agent.init (appKey);
+            #endif
 		}
-
+        #if IRON_SOURCE_ENABLED
         /************* Video Delegates *************/ 
         public void RewardedVideoAdOpenedEvent ()
         {
@@ -160,8 +163,10 @@ namespace MageSDK.Client.Adaptors
             // prepare for next time
             IronSource.Agent.loadInterstitial();
         }
-
+        #endif
 	}
+
+    
 	
 		
 }

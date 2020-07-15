@@ -8,6 +8,12 @@
 #if UNITY_EDITOR || UNITY_ANDROID || UNITY_IOS || UNITY_STANDALONE_OSX || UNITY_STANDALONE_WIN || UNITY_WEBGL
 #define PLATFORM_TEST
 #endif
+#if !YODO1MAS_ENABLED
+#define YODO1MAS_ENABLED
+#endif
+#if !IRON_SOURCE_ENABLED
+#define IRON_SOURCE_ENABLED
+#endif
 
 using System.Collections;
 using System.Collections.Generic;

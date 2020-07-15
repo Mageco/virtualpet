@@ -35,7 +35,7 @@ namespace MageSDK.Client.Helper {
 		
 		private void SaveEventCounterList(List<EventCounter> data) {
 			#if PLATFORM_TEST
-				if (!MageEngine.GetInstance().resetUserDataOnStart) {
+				if (!MageEngine.instance.resetUserDataOnStart) {
 					ES2.Save(data, MageEngineSettings.GAME_ENGINE_EVENT_COUNTER_CACHE);
 				}
 			#else
@@ -163,7 +163,7 @@ namespace MageSDK.Client.Helper {
 
 		public void SaveMageEventsList(List<MageEvent> data) {
 			#if PLATFORM_TEST
-				if (!MageEngine.GetInstance().resetUserDataOnStart) {
+				if (!MageEngine.instance.resetUserDataOnStart) {
 					ES2.Save(data, MageEngineSettings.GAME_ENGINE_EVENT_CACHE);
 				}
 			#else

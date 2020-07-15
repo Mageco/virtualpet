@@ -32,7 +32,7 @@ namespace MageSDK.Client.Helper {
 		///<summary>Use this function to save data to both Engine / Local file</summary>
 		public void SaveCacheData<T>(T data, string cacheName) {
 			#if PLATFORM_TEST
-				if (!this.resetUserDataOnStart) {
+				if (!MageEngine.instance.resetUserDataOnStart) {
 					ES2.Save<T>(data, cacheName);
 				}
 			#else

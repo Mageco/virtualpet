@@ -42,32 +42,41 @@ public class RewardVideoAdManager : MonoBehaviour
 
 		// select ads distribution network
 		Debug.Log(MageEngine.instance.GetApplicationDataItem(MageEngineSettings.GAME_ENGINE_ADS_DISTRIBUTION));
-		switch (MageEngine.instance.GetApplicationDataItem(MageEngineSettings.GAME_ENGINE_ADS_DISTRIBUTION))
-		{
-			case "Unity" : adDistribute = AdDistribute.Unity; break;
-			case "Admob" : adDistribute = AdDistribute.Admob; break;
-			case "Yodo1MAS" : adDistribute = AdDistribute.Yodo1MAS; break;
-			case "IronSource" : adDistribute = AdDistribute.IronSource; break;
-			default: adDistribute = AdDistribute.Unity; break;
-		}
-		
-		// Initialize correspondent Ads network
-		switch (adDistribute)
-		{
-			case AdDistribute.Admob: 
-				AdmobAdaptor.GetInstance().Initialize(ProcessReward);
-			break;
-			case AdDistribute.Yodo1MAS: 
-				YodoMASAdaptor.GetInstance().Initialize(ProcessReward);
-			break;
-			case AdDistribute.IronSource: 
-				IronSourceAdaptor.GetInstance().Initialize(ProcessReward);
-			break;
-			case AdDistribute.Unity: 
-			default: 
-				UnityAdsAdaptor.GetInstance().Initialize(ProcessReward);
-			break;
-		}
+		string adsDistributor = MageEngine.instance.GetApplicationDataItem(MageEngineSettings.GAME_ENGINE_ADS_DISTRIBUTION) == "" ? "Unity" : MageEngine.instance.GetApplicationDataItem(MageEngineSettings.GAME_ENGINE_ADS_DISTRIBUTION);
+		switch (adsDistributor)
+        {
+            case "Unity": adDistribute = AdDistribute.Unity; break;
+            case "Admob": adDistribute = AdDistribute.Admob; break;
+            #if YODO1MAS_ENABLED
+            case "Yodo1MAS": adDistribute = AdDistribute.Yodo1MAS; break;
+            #endif
+            #if IRON_SOURCE_ENABLED
+            case "IronSource": adDistribute = AdDistribute.IronSource; break;
+            #endif
+            default: adDistribute = AdDistribute.Unity; break;
+        }
+
+        // Initialize correspondent Ads network
+        switch (adDistribute)
+        {
+            case AdDistribute.Admob:
+                AdmobAdaptor.GetInstance().Initialize(ProcessReward);
+                break;
+            #if YODO1MAS_ENABLED
+            case AdDistribute.Yodo1MAS:
+                YodoMASAdaptor.GetInstance().Initialize(ProcessReward);
+                break;
+            #endif
+            #if IRON_SOURCE_ENABLED
+            case AdDistribute.IronSource:
+                IronSourceAdaptor.GetInstance().Initialize(ProcessReward);
+                break;
+            #endif
+            case AdDistribute.Unity:
+            default:
+                UnityAdsAdaptor.GetInstance().Initialize(ProcessReward);
+                break;
+        }
 
         //Get quest max value
 		if (MageEngine.instance.GetApplicationDataItem("QuestMax") != null)
@@ -106,16 +115,20 @@ public class RewardVideoAdManager : MonoBehaviour
 					AdmobAdaptor.GetInstance().rewardBasedVideo.Show();
 				}
 			break;
+#if YODO1MAS_ENABLED			
 			case AdDistribute.Yodo1MAS: 
 				ApiUtils.Log("Show Yodo1MAS VideoAds");
 				rewardType = type;
 				Yodo1U3dAds.ShowVideo();
 			break;
+#endif
+#if IRON_SOURCE_ENABLED			
 			case AdDistribute.IronSource: 
 				ApiUtils.Log("Show Iron Source VideoAds");
 				rewardType = type;
 				IronSource.Agent.showRewardedVideo();
 			break;
+#endif			
 			case AdDistribute.Unity: 
 			default: 
 				ApiUtils.Log("Show Unity Ads VideoAds");
@@ -137,18 +150,22 @@ public class RewardVideoAdManager : MonoBehaviour
 					this.petId = petId;
 				}
 			break;
+#if YODO1MAS_ENABLED			
 			case AdDistribute.Yodo1MAS: 
 				ApiUtils.Log("Show Yodo1MAS VideoAds - Pet");
 				rewardType = type;
 				this.petId = petId;
 				Yodo1U3dAds.ShowVideo();
 			break;
+#endif
+#if IRON_SOURCE_ENABLED			
 			case AdDistribute.IronSource: 
 				ApiUtils.Log("Show Ironsource VideoAds - Pet");
 				rewardType = type;
 				this.petId = petId;
 				IronSource.Agent.showRewardedVideo();
 			break;
+#endif			
 			case AdDistribute.Unity: 
 			default: 
 				rewardType = type;
@@ -170,18 +187,22 @@ public class RewardVideoAdManager : MonoBehaviour
 					chestItem = item;
 				}
 			break;
+#if YODO1MAS_ENABLED			
 			case AdDistribute.Yodo1MAS: 
 				ApiUtils.Log("Show Yodo1MAS VideoAds - Chest");
 				rewardType = type;
 				Yodo1U3dAds.ShowVideo();
 				chestItem = item;
 			break;
+#endif
+#if IRON_SOURCE_ENABLED			
 			case AdDistribute.IronSource: 
 				ApiUtils.Log("Show IronSource VideoAds - Chest");
 				rewardType = type;
 				IronSource.Agent.showRewardedVideo();
 				chestItem = item;
 			break;
+#endif			
 			case AdDistribute.Unity: 
 			default: 
 				ApiUtils.Log("Show Unity VideoAds - Chest");
@@ -203,16 +224,20 @@ public class RewardVideoAdManager : MonoBehaviour
 			case AdDistribute.Admob: 
 				// do nothing
 			break;
+#if YODO1MAS_ENABLED			
 			case AdDistribute.Yodo1MAS: 
 				ApiUtils.Log("Show Yodo1MAS Interstitial");
 				rewardType = type;
 				Yodo1U3dAds.ShowInterstitial();
 			break;
+#endif
+#if IRON_SOURCE_ENABLED			
 			case AdDistribute.IronSource: 
 				ApiUtils.Log("Show IronSource Interstitial");
 				rewardType = type;
 				IronSource.Agent.showInterstitial();
 			break;
+#endif			
 			case AdDistribute.Unity: 
 			default: 
 				ApiUtils.Log("Show UnityAds Interstitial");
