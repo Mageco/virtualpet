@@ -245,6 +245,7 @@ public class RewardVideoAdManager : MonoBehaviour
 				Advertisement.Show(UnityAdsAdaptor.interstitialPlacementId);
 			break;
 		}
+		timeAd = GameManager.instance.myPlayer.playTime;
 
 	}
 

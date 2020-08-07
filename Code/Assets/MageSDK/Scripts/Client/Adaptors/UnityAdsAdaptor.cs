@@ -69,7 +69,10 @@ namespace MageSDK.Client.Adaptors
             }
             else if (showResult == ShowResult.Skipped)
             {
-                // Do not reward the user for skipping the ad.
+                 // Do not reward the user for skipping the ad.
+                if (placementId == interstitialPlacementId) {
+                    processMageEventType(MageEventType.InterstitialAdShow);
+                }
             }
             else if (showResult == ShowResult.Failed)
             {
