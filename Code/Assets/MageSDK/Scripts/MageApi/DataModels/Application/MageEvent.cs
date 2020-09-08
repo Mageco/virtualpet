@@ -13,16 +13,18 @@ namespace Mage.Models.Application{
 		public string eventName = MageEventType.OpenScreen.ToString();
 		public string eventDetail = "";
 
+		public string eventValue = "";
+
 		public string eventDate = String.Format("{0:s}", DateTime.Now);
 
 		public MageEvent() : base () {
 		}
 
-		public MageEvent(MageEventType type, string eventDetail = "") {
+		public MageEvent(MageEventType type, string eventDetail = "", string eventValue = "") {
 			this.eventName = type.ToString();
 			this.eventDetail = eventDetail;
 			eventDate = String.Format("{0:s}", DateTime.Now);
-
+			this.eventValue = eventValue;
 		}
 
 	}
@@ -213,7 +215,16 @@ namespace Mage.Models.Application{
 
 		ApplicationSignatureFailed,
 
-		ApplicationSignatureSuccess
-
+		ApplicationSignatureSuccess,
+        Tutorial,
+        LevelUp,
+        CollectedCoin,
+        CollectedDiamond,
+        UserAction,
+        PetAction,
+        BuyPet,
+        BuyItem,
+        RewardItem,
+        UserActionSuccess,
 	}
 }

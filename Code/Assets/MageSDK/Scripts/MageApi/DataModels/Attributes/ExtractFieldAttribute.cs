@@ -8,7 +8,7 @@ namespace Mage.Models.Attributes
     [Serializable]
     public class ExtractFieldAttribute : Attribute
     {
-
+        public const string name = "ExtractField";
         public ExtractFieldAttribute()
         {
         }

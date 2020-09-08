@@ -22,13 +22,15 @@ namespace Mage.Models.Users{
 		public string phone = "";
 		public string email = "";
 		public string avatar = "";
-		public UserStatus status = UserStatus.ACTIVE;
+		public UserStatus status = UserStatus.FIRST_LOGIN;
 		public string notification_token = "";
 		public string country_code = "";
 
 		public string last_run_app_version = "";
 
 		public string app_version = "";
+
+		public string is_test_user = "";
 
 		public List<UserData> user_datas = new List<UserData>();
 
@@ -156,7 +158,9 @@ namespace Mage.Models.Users{
 
 	public enum UserBasicData {
 		Version,
-		StoredIAPTransactionIDs
+		StoredIAPTransactionIDs,
+		SocialId,
+		SocialDataReloaded
 	}
 }
 

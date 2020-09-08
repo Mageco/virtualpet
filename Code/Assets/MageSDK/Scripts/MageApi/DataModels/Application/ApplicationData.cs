@@ -23,6 +23,16 @@ namespace Mage.Models.Application{
 			this.attr_type = attrType;
 		}
 
+		public static ApplicationData SearchFromList(List<ApplicationData> list, string attr_name) {
+			foreach(ApplicationData data in list)
+			{
+				if(data.attr_name == attr_name) {
+					return data;
+				}
+			}
+			return null;
+		}
+
 	}
 
 	public enum ApplicationBasicData {

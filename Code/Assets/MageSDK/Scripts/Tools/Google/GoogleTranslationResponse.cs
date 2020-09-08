@@ -7,15 +7,17 @@ using System;
 using Mage.Models;
 using MageApi.Models.Response;
 
-namespace MageSDK.Tools.Google{
-	[Serializable]
-	public class GoogleTranslationResponse : BaseResponse
-	{		
-			public List<TranslationItem> translations = new List<TranslationItem>();
+namespace MageSDK.Tools.Google
+{
+    [Serializable]
+    public class GoogleTranslationResponse : BaseResponse
+    {
+        public List<TranslationItem> translations = new List<TranslationItem>();
 
-		public GoogleTranslationResponse() : base () {
+        public GoogleTranslationResponse() : base()
+        {
 
-		}
+        }
 
-	}
+    }
 }

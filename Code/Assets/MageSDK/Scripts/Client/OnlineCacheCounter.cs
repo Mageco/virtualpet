@@ -10,38 +10,48 @@ using MageApi.Models.Request;
 using MageApi.Models.Response;
 using MageApi;
 
-namespace MageSDK.Client {
-	public class OnlineCacheCounter {
+namespace MageSDK.Client
+{
+    public class OnlineCacheCounter
+    {
         private int counter = 0;
         private int max = 0;
 
-        public OnlineCacheCounter(int counter = 0, int max = 0) {
+        public OnlineCacheCounter(int counter = 0, int max = 0)
+        {
             this.counter = counter;
             this.max = max;
         }
 
-        public bool IsMax () {
-            if (counter == max) {
+        public bool IsMax()
+        {
+            if (counter == max)
+            {
                 counter = 0;
                 return true;
-            } else {
-                counter ++;
+            }
+            else
+            {
+                counter++;
                 return false;
             }
         }
 
-        public void ResetCounter () {
+        public void ResetCounter()
+        {
             counter = 0;
         }
 
-        public void SetMax(int newMax) {
+        public void SetMax(int newMax)
+        {
             max = newMax;
         }
 
-        public int GetMax() {
+        public int GetMax()
+        {
             return max;
         }
-	}
+    }
 
 }
 

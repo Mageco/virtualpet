@@ -6,16 +6,18 @@ using System.Reflection;
 using System;
 using Mage.Models;
 
-namespace MageSDK.Tools.Google{
-	[Serializable]
-	public class TranslationItem : BaseModel
-	{		
-			public string translatedText = "";
-			public string model = "";
+namespace MageSDK.Tools.Google
+{
+    [Serializable]
+    public class TranslationItem : BaseModel
+    {
+        public string translatedText = "";
+        public string model = "";
 
-		public TranslationItem() : base () {
+        public TranslationItem() : base()
+        {
 
-		}
+        }
 
-	}
+    }
 }

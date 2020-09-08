@@ -167,7 +167,7 @@ namespace Mage.Models.Attributes
                         UserData d = new UserData() {
                             attr_name = name+"_"+k,
                             attr_value = val[k],
-                            attr_type = "ExtractField"
+                            attr_type = ExtractFieldAttribute.name
                         };
 
                        result.Add(d);
@@ -178,7 +178,7 @@ namespace Mage.Models.Attributes
                 UserData d = new UserData() {
                     attr_name = name,
                     attr_value = value,
-                    attr_type = "ExtractField"
+                    attr_type = ExtractFieldAttribute.name
                 };
 
                result.Add(d);
@@ -200,7 +200,7 @@ namespace Mage.Models.Attributes
                         UserData d = new UserData() {
                             attr_name = name+"_"+k,
                             attr_value = val[k],
-                            attr_type = "Firebase"
+                            attr_type = FBUserPropertyAttribute.name
                         };
 
                        result.Add(d);
@@ -211,7 +211,7 @@ namespace Mage.Models.Attributes
                 UserData d = new UserData() {
                     attr_name = name,
                     attr_value = value,
-                    attr_type = "Firebase"
+                    attr_type = FBUserPropertyAttribute.name
                 };
 
                result.Add(d);

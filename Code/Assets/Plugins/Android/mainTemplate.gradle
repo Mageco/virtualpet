@@ -50,7 +50,7 @@ allprojects {
             url "https://jitpack.io" // Assets/Yodo1Ads/Editor/Dependencies/Yodo1AdsAndroidDependencies.xml:10
         }
         maven {
-            url (unityProjectPath + "/Assets/Firebase/m2repository") // Assets/Firebase/Editor/AnalyticsDependencies.xml:18, Assets/Firebase/Editor/AppDependencies.xml:20, Assets/Firebase/Editor/AuthDependencies.xml:20, Assets/Firebase/Editor/MessagingDependencies.xml:20, Assets/Firebase/Editor/RemoteConfigDependencies.xml:20
+            url (unityProjectPath + "/Assets/Firebase/m2repository") // Assets/Firebase/Editor/AnalyticsDependencies.xml:18, Assets/Firebase/Editor/AppDependencies.xml:20, Assets/Firebase/Editor/AuthDependencies.xml:20, Assets/Firebase/Editor/MessagingDependencies.xml:20, Assets/Firebase/Editor/RemoteConfigDependencies.xml:20, Assets/Firebase/Editor/StorageDependencies.xml:20
         }
         maven {
             url "https://maven.google.com/" // Assets/GoogleMobileAds/Editor/GoogleMobileAdsDependencies.xml:7, Assets/IronSource/Editor/IronSourceSDKDependencies.xml:16, Assets/IronSource/Editor/ISAdMobAdapterDependencies.xml:8, Assets/IronSource/Editor/ISAppLovinAdapterDependencies.xml:15, Assets/IronSource/Editor/ISChartboostAdapterDependencies.xml:22, Assets/IronSource/Editor/ISFacebookAdapterDependencies.xml:8, Assets/IronSource/Editor/ISUnityAdsAdapterDependencies.xml:16
@@ -85,17 +85,17 @@ dependencies {
 // Android Resolver Dependencies Start
     implementation 'com.adcolony:sdk:4.1.4' // Assets/IronSource/Editor/ISAdColonyAdapterDependencies.xml:8
     implementation 'com.android.support:appcompat-v7:26.1.0' // Assets/Yodo1Ads/Editor/Dependencies/Yodo1AdsAndroidDependencies.xml:12
-    //implementation 'com.applovin:applovin-sdk:9.12.7' // Assets/IronSource/Editor/ISAppLovinAdapterDependencies.xml:15
+    implementation 'com.applovin:applovin-sdk:9.12.7' // Assets/IronSource/Editor/ISAppLovinAdapterDependencies.xml:15
     implementation 'com.chartboost:chartboost-sdk:8.0.2' // Assets/IronSource/Editor/ISChartboostAdapterDependencies.xml:15
     implementation 'com.facebook.android:audience-network-sdk:5.9.1' // Assets/IronSource/Editor/ISFacebookAdapterDependencies.xml:8
-    //implementation 'com.google.android.gms:play-services-ads:18.2.0' // Assets/GoogleMobileAds/Editor/GoogleMobileAdsDependencies.xml:7
+    implementation 'com.google.android.gms:play-services-ads:18.2.0' // Assets/GoogleMobileAds/Editor/GoogleMobileAdsDependencies.xml:7
     implementation 'com.google.android.gms:play-services-ads:19.1.0' // Assets/IronSource/Editor/ISAdMobAdapterDependencies.xml:8
-    //implementation 'com.google.android.gms:play-services-ads-identifier:16.0.0' // Assets/Yodo1Ads/Editor/Dependencies/Yodo1AdsAndroidDependencies.xml:15
+    implementation 'com.google.android.gms:play-services-ads-identifier:16.0.0' // Assets/Yodo1Ads/Editor/Dependencies/Yodo1AdsAndroidDependencies.xml:15
     implementation 'com.google.android.gms:play-services-ads-identifier:17.0.0' // Assets/IronSource/Editor/IronSourceSDKDependencies.xml:16
-    //implementation 'com.google.android.gms:play-services-base:16.1.0' // Assets/Yodo1Ads/Editor/Dependencies/Yodo1AdsAndroidDependencies.xml:14
+    implementation 'com.google.android.gms:play-services-base:16.1.0' // Assets/Yodo1Ads/Editor/Dependencies/Yodo1AdsAndroidDependencies.xml:14
     implementation 'com.google.android.gms:play-services-base:17.2.1' // Assets/IronSource/Editor/ISChartboostAdapterDependencies.xml:22
     implementation 'com.google.android.gms:play-services-basement:16.0.1' // Assets/Yodo1Ads/Editor/Dependencies/Yodo1AdsAndroidDependencies.xml:13
-    implementation 'com.google.firebase:firebase-analytics:17.2.1' // Assets/Firebase/Editor/RemoteConfigDependencies.xml:15
+    implementation 'com.google.firebase:firebase-analytics:17.2.1' // Assets/Firebase/Editor/StorageDependencies.xml:15
     implementation 'com.google.firebase:firebase-analytics-unity:6.9.0' // Assets/Firebase/Editor/AnalyticsDependencies.xml:18
     implementation 'com.google.firebase:firebase-app-unity:6.9.0' // Assets/Firebase/Editor/AppDependencies.xml:20
     implementation 'com.google.firebase:firebase-auth:19.2.0' // Assets/Firebase/Editor/AuthDependencies.xml:13
@@ -105,26 +105,21 @@ dependencies {
     implementation 'com.google.firebase:firebase-config-unity:6.9.0' // Assets/Firebase/Editor/RemoteConfigDependencies.xml:20
     implementation 'com.google.firebase:firebase-messaging:20.1.0' // Assets/Firebase/Editor/MessagingDependencies.xml:13
     implementation 'com.google.firebase:firebase-messaging-unity:6.9.0' // Assets/Firebase/Editor/MessagingDependencies.xml:20
+    implementation 'com.google.firebase:firebase-storage:19.1.0' // Assets/Firebase/Editor/StorageDependencies.xml:13
+    implementation 'com.google.firebase:firebase-storage-unity:6.9.0' // Assets/Firebase/Editor/StorageDependencies.xml:20
     implementation 'com.ironsource.adapters:adcolonyadapter:4.3.1' // Assets/IronSource/Editor/ISAdColonyAdapterDependencies.xml:16
     implementation 'com.ironsource.adapters:admobadapter:4.3.10' // Assets/IronSource/Editor/ISAdMobAdapterDependencies.xml:16
     implementation 'com.ironsource.adapters:amazonadapter:4.3.2' // Assets/IronSource/Editor/ISAmazonAdapterDependencies.xml:8
     implementation 'com.ironsource.adapters:amazonsdk:5.9.0@jar' // Assets/IronSource/Editor/ISAmazonAdapterDependencies.xml:15
-    implementation 'com.ironsource.adapters:applovinadapter:4.3.13'  // Assets/IronSource/Editor/ISAppLovinAdapterDependencies.xml:8
+    implementation 'com.ironsource.adapters:applovinadapter:4.3.13' // Assets/IronSource/Editor/ISAppLovinAdapterDependencies.xml:8
     implementation 'com.ironsource.adapters:chartboostadapter:4.3.3' // Assets/IronSource/Editor/ISChartboostAdapterDependencies.xml:8
     implementation 'com.ironsource.adapters:facebookadapter:4.3.17' // Assets/IronSource/Editor/ISFacebookAdapterDependencies.xml:16
     implementation 'com.ironsource.adapters:unityadsadapter:4.3.5' // Assets/IronSource/Editor/ISUnityAdsAdapterDependencies.xml:9
     implementation 'com.ironsource.adapters:vungleadapter:4.3.1' // Assets/IronSource/Editor/ISVungleAdapterDependencies.xml:16
     implementation 'com.ironsource.sdk:mediationsdk:6.17.0' // Assets/IronSource/Editor/IronSourceSDKDependencies.xml:9
-    // Assets/IronSource/Editor/ISUnityAdsAdapterDependencies.xml:16
+    implementation 'com.unity3d.ads:unity-ads:3.4.6' // Assets/IronSource/Editor/ISUnityAdsAdapterDependencies.xml:16
     implementation 'com.vungle:publisher-sdk-android:6.5.3' // Assets/IronSource/Editor/ISVungleAdapterDependencies.xml:8
-    implementation ('com.yodo1:advert-gp:3.8.1') {
-        exclude group: 'com.unity3d.ads'
-        exclude group: 'com.unity3d.services'
-    }// Assets/Yodo1Ads/Editor/Dependencies/Yodo1AdsAndroidDependencies.xml:11
-    // implementation ('com.unity3d.ads:unity-ads:3.4.6') {
-    //    force = true
-    //    transitive = false
-    //}
+    implementation 'com.yodo1:advert-gp:3.8.1' // Assets/Yodo1Ads/Editor/Dependencies/Yodo1AdsAndroidDependencies.xml:11
 // Android Resolver Dependencies End
 **DEPS**}
 

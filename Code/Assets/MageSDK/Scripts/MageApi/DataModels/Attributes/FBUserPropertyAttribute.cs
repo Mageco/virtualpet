@@ -8,7 +8,7 @@ namespace Mage.Models.Attributes
     [Serializable]
     public class FBUserPropertyAttribute : Attribute
     {
-        
+        public const string name = "Firebase";
         public FBUserPropertyCategory attributeType = FBUserPropertyCategory.Others;
         public FBUserPropertyAttribute(FBUserPropertyCategory type = FBUserPropertyCategory.Others)
         {

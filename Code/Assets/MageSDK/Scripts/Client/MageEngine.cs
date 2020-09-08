@@ -8,30 +8,18 @@
 #if UNITY_EDITOR || UNITY_ANDROID || UNITY_IOS || UNITY_STANDALONE_OSX || UNITY_STANDALONE_WIN || UNITY_WEBGL
 #define PLATFORM_TEST
 #endif
-#if !YODO1MAS_ENABLED
-#define YODO1MAS_ENABLED
-#endif
-#if !IRON_SOURCE_ENABLED
-#define IRON_SOURCE_ENABLED
-#endif
 
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
 using System.IO;
-using System.Net;
-using SimpleJSON;
-using MageApi.Models;
 using MageApi.Models.Request;
 using MageApi.Models.Response;
 using MageApi;
 using Mage.Models.Users;
-using Mage.Models.Game;
 using Mage.Models.Application;
 using Mage.Models;
-using UnityEngine.UI;
-using UnityEngine.SceneManagement;
 using MageSDK.Client.Helper;
 using System.Security.Cryptography;
 using System.Text;
@@ -55,12 +43,17 @@ namespace MageSDK.Client {
 		public bool isWorkingOnline = false;
 		public bool useFirebaseAnalytic = false;
 		public bool useFirebaseApplicationData = false;
+		public bool useFirebaseStorage = false;
 		public string signatureHashAndroid = "";
 		public ClientLoginMethod loginMethod;
 		[HideInInspector]
 		public Hashtable apiCounter = new Hashtable();
 		[HideInInspector]
 		public bool isAppActive = true;
+		[HideInInspector]
+		public string _serverLog = "";
+		[HideInInspector]
+		public int _logStep = 1;
 		#endregion
 
 		#region private variables
@@ -102,6 +95,7 @@ namespace MageSDK.Client {
 
 				// init api cache
 				InitApiCache();
+
 				// load engine cache data from local storage
 				LoadEngineCache();
 
@@ -148,6 +142,53 @@ namespace MageSDK.Client {
 			#endif
 		}
 
+		public void DoSocialLogin() {
+			#if UNITY_IOS
+			Social.localUser.Authenticate((bool success) => {
+				if (success)
+				{
+					User currentUser = GetUser();
+					//_serverLog += (_logStep++) + ": User load from social login: " + currentUser.ToJson() + "\r\n";
+					// only update at first login
+					string socialId = ApiUtils.GetInstance().GetDeviceType() + "_" + Social.localUser.id + "_" + Social.localUser.userName;
+					if (currentUser.status == UserStatus.FIRST_LOGIN)
+					{
+						if (!(Social.localUser.id == "1000" && Social.localUser.userName == "Lerpz"))
+						{
+							MageAdaptor.GetUserBySocialId(
+										socialId,
+										(users) =>
+										{
+											if (users.Count > 0)
+											{
+												int version = 0;
+												User tmp = new User();
+												foreach (User u in users)
+												{
+													if (version < u.GetUserDataInt(UserBasicData.Version))
+													{
+														version = u.GetUserDataInt(UserBasicData.Version);
+														tmp = u;
+													}
+												}
+
+													//_serverLog += (_logStep++) + ": Load from play services: " + tmp.ToJson() + "\r\n";
+													UpdateUserData(tmp.user_datas);
+												_isReloadRequired = true;
+												OnLoginCompleteCallback();
+											}
+										});
+						}
+						UpdateUserData(new UserData() { attr_name = UserBasicData.SocialId.ToString(), attr_value = socialId, attr_type = "System" });
+					}
+				}
+				});
+				
+			#endif
+			
+		}
+
+
 		///<summary>Other implementation will override this function</summary>
 		protected virtual void Load() {
 		}
@@ -163,10 +204,10 @@ namespace MageSDK.Client {
 			MageAdaptor.LoginWithDeviceID(OnCompleteMageLogin, null, TimeoutHandler);
 
 			// also login to firebase, if the application uses Firebase analytic
-			if (this.useFirebaseAnalytic) {
+			if (this.useFirebaseAnalytic || this.useFirebaseApplicationData) {
 				StartCoroutine(FirebaseAdaptor.LoginAnonymous((x) => {
 					ApiUtils.Log("Firebase Login: " + x.UserId);
-					FirebaseAdaptor.InitializeAnalytic();
+					FirebaseAdaptor.InitializeFirebaseStacks();
 				}));
 			}
 		}
@@ -223,6 +264,7 @@ namespace MageSDK.Client {
 
 		///<summary>On completed logged in</summary>
 		private void OnCompleteMageLogin(LoginResponse result) {
+			//_serverLog += (_logStep++) + ": Complete uuid login\r\n";
 			//update information after login
 			_isLogin = true;
 			RuntimeParameters.GetInstance().SetParam(ApiSettings.SESSION_LOGIN_TOKEN, result.Token);
@@ -235,8 +277,10 @@ namespace MageSDK.Client {
 				} else {
 					// handle first time login to system
 					if (result.User.status == UserStatus.FIRST_LOGIN) {
+						//_serverLog += (_logStep++) + ": Create new user FIRST_LOGIN\r\n";
 						CreateNewUser (result.User);
 					} else {
+						//_serverLog += (_logStep++) + ": Create existing user NOT FIRST_LOGIN\r\n";
 						CreateExistingUser (result.User);
 					}
 
@@ -254,9 +298,15 @@ namespace MageSDK.Client {
 					CreateExistingUser (result.User);
 				}
 			#endif
-
+			
+			//_serverLog += (_logStep++) + ": Call Social Login\r\n";
 			//pass the call to UI level to continue process data
 			OnLoginCompleteCallback();
+
+			DoSocialLogin();
+			
+			
+			//
 
 			#if UNITY_ANDROID && !UNITY_EDITOR
 				if (!this._completedSignatureCheckForAndroid) {
@@ -282,6 +332,9 @@ namespace MageSDK.Client {
 				tmp.notification_token = u.notification_token;
 			}
 
+			// refresh status with from server
+			tmp.status = u.status;
+
 			SetUser(tmp);
 		}
 
@@ -291,26 +344,33 @@ namespace MageSDK.Client {
 			//if (tmp.id == "0") {
 			tmp.id = u.id;
 			tmp.last_run_app_version = u.last_run_app_version;
+			// refresh status with from server
+			tmp.status = u.status;
 			//}
 
 			ApiUtils.Log("Local version: " + tmp.GetUserDataInt(UserBasicData.Version) + " server version; " + u.GetUserDataInt(UserBasicData.Version));
 
+			//_serverLog += (_logStep++) + ": Local version: " + tmp.GetUserDataInt(UserBasicData.Version) + " server version" + u.GetUserDataInt(UserBasicData.Version) + "\r\n";
 			// check and swap version
 			if (tmp.GetUserDataInt(UserBasicData.Version) >= u.GetUserDataInt(UserBasicData.Version)) {
 				// in case local is newer, then it requires to update server with local
 				SetUser(tmp);
+				//_serverLog += (_logStep++) + ": Load from local\r\n";
 				// save user datas to server
 				SaveUserDataToServer(tmp);
 			} else {
 				// in case data from server is newer, then replace local by copy from server
 				SetUser(u);
+				//_serverLog += (_logStep++) + ": Load from server: " + u.ToJson() + "\r\n";
+
 				_isReloadRequired = true;
 			}
 
+            /*
 			if (u.last_run_app_version != ""  && string.Compare(u.last_run_app_version, "1.08") <= 0) {
 				ApiUtils.Log("Old Version detected");
 				_isReloadRequired = true;
-			}
+			}*/
 		}
 
 		///<summary>Update user data to current user. Once complete, save data to cache</summary>
@@ -354,7 +414,6 @@ namespace MageSDK.Client {
 			User u = GetUser();
 			if (null != u && null != userDatas && userDatas.Count > 0) {
 				foreach(UserData d in userDatas) {
-					Debug.Log("Enrich: " + d.ToJson());
 					u.SetUserData(d);
 				}
 			}
@@ -425,10 +484,16 @@ namespace MageSDK.Client {
 			// save user properties to firebase
 			if (useFirebaseAnalytic) {
 				foreach(UserData d in u.user_datas) {
-					if (d.attr_type == "Firebase") {
+					if (d.attr_type == FBUserPropertyAttribute.name) {
 						FirebaseAdaptor.UpdateUserData(d);
 					}	
 				}
+
+				UserData testFlag = new UserData() {
+					attr_name = "IsTestUser",
+					attr_value = u.is_test_user
+				};
+				FirebaseAdaptor.UpdateUserData(testFlag);
 			}
 		}
 
@@ -569,9 +634,8 @@ namespace MageSDK.Client {
 		}
 
 		private void SetUser(User u) {
-			this.SaveUserDataToCache(u);
 			RuntimeParameters.GetInstance().SetParam(MageEngineSettings.GAME_ENGINE_USER, u);
-
+			this.SaveUserDataToCache(u);
 		}
 
 		private void SaveUserDataToCache(User u) {
@@ -617,6 +681,8 @@ namespace MageSDK.Client {
 				if (isLocalApplicationData) {
 					// in unity and test mode application data can be retrieved from local Resources
 					LoadApplicationDataFromResources();
+					// if user local data then mark application data as loaded
+					this._isApplicationDataLoaded = true;
 				} else {
 					// load from local first and then overwrite with value from server
 					LoadApplicationDataFromResources();
@@ -787,7 +853,7 @@ namespace MageSDK.Client {
 			ApiUtils.Log(" Queue size: " + ((OnlineCacheCounter)this.apiCounter["SendUserEventListRequest"]).GetMax());
 
 			/// if the size of user events queue reachs limit
-			if (this.IsSendable("SendUserEventListRequest")) {
+			if (IsLogin() && this.IsSendable("SendUserEventListRequest")) {
 				ApiUtils.Log("Event can be sent");
 				List<MageEvent> cachedEvent = MageEventHelper.GetInstance().GetMageEventsList();
 				ApiUtils.Log("Size of Event queue: " + cachedEvent.Count);
@@ -810,6 +876,7 @@ namespace MageSDK.Client {
 		}
 
 		///<summary>Capture app event</summary>
+		///<summary>Capture app event</summary>
 		public void OnEvent(MageEventType type) {
 			ApiUtils.Log("OnEvent: " + type);
 			MageEventHelper.GetInstance().OnEvent(type, this.SendUserEventsToMage, "");
@@ -823,7 +890,7 @@ namespace MageSDK.Client {
 
 		public void OnEvent(MageEventType type, string eventDetail) {
 			ApiUtils.Log("OnEvent: " + type);
-			MageEventHelper.GetInstance().OnEvent(type, this.SendUserEventsToMage, eventDetail);
+			MageEventHelper.GetInstance().OnEvent(type, this.SendUserEventsToMage, eventDetail, "");
 
 			// send event to firebase
 			if (useFirebaseAnalytic) {
@@ -834,7 +901,7 @@ namespace MageSDK.Client {
 
 		public void OnEvent(MageEventType type, string eventDetail, string eventValue) {
 			ApiUtils.Log("OnEvent: " + type);
-			MageEventHelper.GetInstance().OnEvent(type, this.SendUserEventsToMage, eventDetail);
+			MageEventHelper.GetInstance().OnEvent(type, this.SendUserEventsToMage, eventDetail, eventValue);
 
 			// send event to firebase
 			if (useFirebaseAnalytic) {
@@ -845,7 +912,7 @@ namespace MageSDK.Client {
 
 		public void OnEvent(MageEventType type, string eventDetail, int eventValue) {
 			ApiUtils.Log("OnEvent: " + type);
-			MageEventHelper.GetInstance().OnEvent(type, this.SendUserEventsToMage, eventDetail);
+			MageEventHelper.GetInstance().OnEvent(type, this.SendUserEventsToMage, eventDetail, "" + eventValue);
 
 			// send event to firebase
 			if (useFirebaseAnalytic) {
@@ -962,7 +1029,19 @@ namespace MageSDK.Client {
 		}
 
 		public DateTime GetServerTimeStamp() {
-			return RuntimeParameters.GetInstance().GetParam<DateTime>(ApiSettings.API_SERVER_TIMESTAMP);
+			if (MageEngine.instance.isWorkingOnline){
+				DateTime serverTime = RuntimeParameters.GetInstance().GetParam<DateTime>(ApiSettings.API_SERVER_TIMESTAMP);
+				DateTime localTime = DateTime.Now;
+
+				if (serverTime == default(DateTime) || Math.Abs(serverTime.Subtract(localTime).TotalSeconds) <= 600) {
+					return localTime;
+				} else {
+					return serverTime;
+				}
+			}
+			
+			else
+				return System.DateTime.Now;
 		}
 
 		#endregion
@@ -1167,96 +1246,29 @@ namespace MageSDK.Client {
 
 		public void UploadAvatar(Texture2D image, Action<string> onUploadCompleteCallback = null) {
 			ApiUtils.Log("Upload avatar");
-			#if BUNNY_CDN
-				ApiUtils.Log("Calling bunny upload");
-				UploadPNGToBunnyCDN(image, onUploadCompleteCallback);
-			#else
-				UploadFileRequest r = new UploadFileRequest ();
-				r.SetUploadFile (image.EncodeToPNG());
-
-				//call to login api
-				ApiHandler.instance.UploadFile<UploadFileResponse>(
-					r, 
-					(result) => {
-						ApiUtils.Log("Success: Upload file successfully");
-						ApiUtils.Log("Upload URL: " + result.UploadedURL);
-
-						User u = GetUser();
-						u.avatar = result.UploadedURL;
-						string[] keys = result.UploadedURL.Split ('/');
-						string path = keys [keys.Length - 1];
-						ES2.SaveImage(image,path);
-						UpdateUserProfile(u);
-						if (onUploadCompleteCallback != null) {
-							onUploadCompleteCallback(result.UploadedURL);
-						}
-					},
-					(errorStatus) => {
-						ApiUtils.Log("Error: " + errorStatus);
-						//do some other processing here
-					},
-					() => {
-						//timeout handler here
-						ApiUtils.Log("Api call is timeout");
-					}
-				);
-			#endif
-
-		}
-
-		#if BUNNY_CDN
-		private IEnumerator UploadPNGToBunnyCDN(Texture2D image, Action<string> onUploadCompleteCallback = null  ) {
-			if (null == bunnyCDNStorage) {
-				ApiUtils.Log("Bunny is null");
-				yield return null;
-			}
-
-			string targetFilename = GetUser().id+"_"+DateTime.Now.ToString("YYYYMMDDhhmmss")+".png";
-			ApiUtils.Log("Target file: " + targetFilename);
-
-			Stream stream = new MemoryStream(image.EncodeToPNG());
-			yield return bunnyCDNStorage.UploadAsync(stream, "/virtupet/" + targetFilename);
-
-			string avatarUrl = "https://virtupet.b-cdn.net/virtupet/" + targetFilename;
-			User u = GetUser();
-			u.avatar = avatarUrl;
-
-			ES2.SaveImage(image, targetFilename);
-			UpdateUserProfile(u);
-			if (onUploadCompleteCallback != null) {
-				onUploadCompleteCallback(avatarUrl);
-			}
-		}
-
-		async void LoadImageFromBunnyCDN(string avatarUrl, Action<Texture2D> onLoadCompleteCallback){
-
-
-			string[] keys = avatarUrl.Split ('/');
-			string path = keys [keys.Length - 1];
-			Texture2D tex = new Texture2D(128, 128,TextureFormat.ARGB32,false);
-			if (ES3.FileExists (path)) {
-				tex = ES3.LoadImage (path);
+			if (this.useFirebaseStorage) {
+				string targetFilename = GetUser().id+"_"+DateTime.Now.ToString("YYYYMMDDhhmmss")+".png";
+				FirebaseAdaptor.UploadImage(image, targetFilename, onUploadCompleteCallback);
 			} else {
-				ApiUtils.Log ("start Download");
-				Stream stream = await bunnyCDNStorage.DownloadObjectAsStreamAsync("/virtupet/" + path) ;
-
-				using(var memoryStream = new MemoryStream())
-				{
-					stream.CopyTo(memoryStream);
-					tex.LoadImage(memoryStream.ToArray());
-					ApiUtils.Log ("downloaded");
-					ES3.SaveImage (tex, path);
-					ApiUtils.Log ("saved");
-				}
+				MageAdaptor.UploadImage(image, onUploadCompleteCallback);
 			}
 
-			if (tex != null) {
-				onLoadCompleteCallback(tex);
+		}
+
+		public void UpdateUserAvatar(Texture2D image, string avatarUrl, Action<string> otherCallback) {
+			User u = GetUser();
+			u.avatar =avatarUrl;
+			string[] keys =avatarUrl.Split ('/');
+			string path = keys [keys.Length - 1];
+			ES2.SaveImage(image, path);
+			UpdateUserProfile(u);
+
+			if (otherCallback != null) {
+				otherCallback(avatarUrl);
 			}
 		}
 
-		#endif //BUNNY_CDN
-
+		
 		IEnumerator LoadImageCoroutine(string avatarUrl, Action<Texture2D> onLoadCompleteCallback)
 		{
 			string[] keys = avatarUrl.Split ('/');
@@ -1341,4 +1353,3 @@ namespace MageSDK.Client {
 	}
 		
 }
-
