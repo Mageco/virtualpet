@@ -1306,9 +1306,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03fb4604782777a438d91aebc8cb0242, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  TestMode: 0
+  TestUUID: 
+  ApplicationSecretKey: 
+  ApplicationKey: 
+  ApiVersion: 
+  ApiUrl: http://localhost:8080/portal/api
   isLocalApplicationData: 1
   resetUserDataOnStart: 0
+  isWorkingOnline: 0
+  useFirebaseAnalytic: 0
+  useFirebaseApplicationData: 0
+  useFirebaseStorage: 0
+  signatureHashAndroid: 
   loginMethod: 0
+  isAppActive: 1
 --- !u!114 &477743854
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1722,7 +1734,7 @@ MonoBehaviour:
     - {fileID: 1653504231}
     - {fileID: 1723643125}
     - {fileID: 1723643127}
-    - {fileID: 1723643126}
+    - {fileID: 0}
     - {fileID: 1825990229}
     - {fileID: 1825990232}
     - {fileID: 1825990231}
@@ -4231,7 +4243,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1723643127}
-  - component: {fileID: 1723643126}
   m_Layer: 0
   m_Name: ApiHandler
   m_TagString: Untagged
@@ -4239,25 +4250,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1723643126
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1723643125}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e345028d6ae398418969fa102dec938, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  TestMode: 1
-  TestUUID: 1000-000000-0000009
-  ApplicationSecretKey: OJXTCbc8Ih7my2zRBv3CJbPt7poUd5qP
-  ApplicationKey: virtupet
-  ApiVersion: 1.0.00
-  ApiUrl: http://localhost:8080/portal/api
-  TimeOut: 200
 --- !u!4 &1723643127
 Transform:
   m_ObjectHideFlags: 0

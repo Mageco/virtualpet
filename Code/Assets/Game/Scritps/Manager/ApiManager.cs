@@ -56,8 +56,9 @@ public class ApiManager : MageEngine {
 
 		}
 
-
+#if USE_FIREBASE
 		SetupFirebaseMessaging();
+#endif		
     }
 
 	public void ExampleOfGetRandomFriend() { 
@@ -97,7 +98,7 @@ public class ApiManager : MageEngine {
 
 	}
 
-
+#if USE_FIREBASE
     protected override void OnNewFirebaseMessageCallback(object sender, MessageReceivedEventArgs e)
     {
 		ConfirmationPopup confirm = MageManager.instance.OnConfirmationPopup("",e.Message.Notification.Body);
@@ -110,7 +111,7 @@ public class ApiManager : MageEngine {
 
 		Debug.Log(e.Message.RawData);
     }
-
+#endif
 
     void OnClick(string url)
     {

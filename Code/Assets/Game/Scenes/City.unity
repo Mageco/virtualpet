@@ -641,6 +641,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   interactable: 1
+  isMouseDown: 0
 --- !u!61 &1023712901
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -998,6 +999,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   interactable: 1
+  isMouseDown: 0
 --- !u!61 &1626048056
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1337,6 +1339,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   interactable: 1
+  isMouseDown: 0
 --- !u!61 &1877245372
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1828,6 +1831,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: MageManager
       objectReference: {fileID: 0}
+    - target: {fileID: 5946030510101734352, guid: 2690067ddedd64631953f52f26e327fb,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8605673700397394327, guid: 2690067ddedd64631953f52f26e327fb,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1883,7 +1891,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 8084780117521707054, guid: 2690067ddedd64631953f52f26e327fb, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 2690067ddedd64631953f52f26e327fb, type: 3}
 --- !u!1001 &3186097608722714848
 PrefabInstance:

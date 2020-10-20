@@ -1,3 +1,4 @@
+#if USE_UNITY_ADMOB && !UNITY_STANDALONE
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -31,6 +32,10 @@ namespace MageSDK.Client.Adaptors
         public static string rewardedVideoPlacementId = "rewardedVideo";
         public static string interstitialPlacementId = "Interstitial";
 
+        private static bool testMode = false;
+
+        public Action<MageEventType> processMageEventType;
+
         public UnityAdsAdaptor()
         {
         }
@@ -43,14 +48,12 @@ namespace MageSDK.Client.Adaptors
             }
             return _instance;
         }
-        private static bool testMode = false;
-
-        public static Action<MageEventType> processMageEventType;
 
         ///<summary>Initialize Unity Ads</summary>
         public void Initialize(Action<MageEventType> processMageEventTypeCallback)
         {
             AdsConfigurations adsConfigurations = MageEngine.instance.GetApplicationDataItem<AdsConfigurations>(MageEngineSettings.GAME_ENGINE_ADS_UNIT_CONFIGURAIONS);
+            ApiUtils.Log("Initialized Unity Ads: " + adsConfigurations.ToJson());
 #if UNITY_IOS
             gameId = adsConfigurations.unityIOSGameId;
             UnityAdsAdaptor.rewardedVideoPlacementId = adsConfigurations.unityIOSVideoUnitId;
@@ -68,6 +71,7 @@ namespace MageSDK.Client.Adaptors
 
             Advertisement.AddListener(this);
             Advertisement.Initialize(gameId, testMode);
+            
             processMageEventType = processMageEventTypeCallback;
         }
 
@@ -96,16 +100,16 @@ namespace MageSDK.Client.Adaptors
                 {
                     processMageEventType(MageEventType.InterstitialAdShow);
                 }
-                /*else
+                else
                 {
-                    MageManager.instance.OnNotificationPopup(157);
-                }*/
+                    //MageManager.instance.OnNotificationPopup(157);
+                }
             }
             else if (showResult == ShowResult.Failed)
             {
-                /*if (placementId == rewardedVideoPlacementId) {
-                    MageManager.instance.OnNotificationPopup(157);
-                }*/
+                if (placementId == rewardedVideoPlacementId) {
+                    //MageManager.instance.OnNotificationPopup(157);
+                }
                 Debug.LogWarning("The ad did not finish due to an error.");
             }
         }
@@ -126,6 +130,28 @@ namespace MageSDK.Client.Adaptors
         }
         #endregion
 
+        private void ShowUnityAd(string placementId) 
+        {
+            if(Advertisement.IsReady()) {
+                Advertisement.Show(placementId);
+                ApiUtils.Log("Unity ad is ready:" + placementId);
+            } 
+            else 
+            {
+                ApiUtils.Log("Unity ad is not ready:" + placementId);
+            }
+        }
+
+        public void ShowVideoAd()
+        {
+            ShowUnityAd(UnityAdsAdaptor.rewardedVideoPlacementId);
+        }
+
+        public void ShowInterstitialAd()
+        {
+            ShowUnityAd(UnityAdsAdaptor.interstitialPlacementId);
+        }
     }
 
 }
+#endif

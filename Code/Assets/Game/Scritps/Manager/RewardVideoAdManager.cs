@@ -41,42 +41,7 @@ public class RewardVideoAdManager : MonoBehaviour
         }
 
 		// select ads distribution network
-		Debug.Log(MageEngine.instance.GetApplicationDataItem(MageEngineSettings.GAME_ENGINE_ADS_DISTRIBUTION));
-		string adsDistributor = MageEngine.instance.GetApplicationDataItem(MageEngineSettings.GAME_ENGINE_ADS_DISTRIBUTION) == "" ? "Unity" : MageEngine.instance.GetApplicationDataItem(MageEngineSettings.GAME_ENGINE_ADS_DISTRIBUTION);
-		switch (adsDistributor)
-        {
-            case "Unity": adDistribute = AdDistribute.Unity; break;
-            case "Admob": adDistribute = AdDistribute.Admob; break;
-            #if YODO1MAS_ENABLED
-            case "Yodo1MAS": adDistribute = AdDistribute.Yodo1MAS; break;
-            #endif
-            #if IRON_SOURCE_ENABLED
-            case "IronSource": adDistribute = AdDistribute.IronSource; break;
-            #endif
-            default: adDistribute = AdDistribute.Unity; break;
-        }
-
-        // Initialize correspondent Ads network
-        switch (adDistribute)
-        {
-            case AdDistribute.Admob:
-                AdmobAdaptor.GetInstance().Initialize(ProcessReward);
-                break;
-            #if YODO1MAS_ENABLED
-            case AdDistribute.Yodo1MAS:
-                YodoMASAdaptor.GetInstance().Initialize(ProcessReward);
-                break;
-            #endif
-            #if IRON_SOURCE_ENABLED
-            case AdDistribute.IronSource:
-                IronSourceAdaptor.GetInstance().Initialize(ProcessReward);
-                break;
-            #endif
-            case AdDistribute.Unity:
-            default:
-                UnityAdsAdaptor.GetInstance().Initialize(ProcessReward);
-                break;
-        }
+		MageAdsHelper.GetInstance().Initialize(ProcessReward);
 
         //Get quest max value
 		if (MageEngine.instance.GetApplicationDataItem("QuestMax") != null)
@@ -85,11 +50,11 @@ public class RewardVideoAdManager : MonoBehaviour
 		}
 
 		// Get time lap for Interstitial
-		if (MageEngine.instance.GetApplicationDataItem("TimeLapInterstitial") != null)
+	 	if (MageEngine.instance.GetApplicationDataItem(MageEngineSettings.GAME_ENGINE_TIME_LAP_INTERSTITIAL) != null && MageEngine.instance.GetApplicationDataItem(MageEngineSettings.GAME_ENGINE_TIME_LAP_INTERSTITIAL) != "")
 		{
-			adDuration = float.Parse(MageEngine.instance.GetApplicationDataItem("TimeLapInterstitial"));
-			Debug.Log("TimeLapInterstitial " + MageEngine.instance.GetApplicationDataItem("TimeLapInterstitial"));
+            adDuration = float.Parse(MageEngine.instance.GetApplicationDataItem(MageEngineSettings.GAME_ENGINE_TIME_LAP_INTERSTITIAL));
 		}
+
 		
 		// remove ad for paid user
 		if (MageEventHelper.GetInstance().GetEventCounter(MageEventType.ConfirmPaymentItem.ToString()) > 0)
@@ -106,111 +71,27 @@ public class RewardVideoAdManager : MonoBehaviour
 
 	public void ShowVideoAd(RewardType type)
 	{
-		switch (adDistribute)
-		{
-			case AdDistribute.Admob: 
-				if (AdmobAdaptor.GetInstance().rewardBasedVideo.IsLoaded())
-				{
-					rewardType = type;
-					AdmobAdaptor.GetInstance().rewardBasedVideo.Show();
-				}
-			break;
-#if YODO1MAS_ENABLED			
-			case AdDistribute.Yodo1MAS: 
-				ApiUtils.Log("Show Yodo1MAS VideoAds");
-				rewardType = type;
-				Yodo1U3dAds.ShowVideo();
-			break;
-#endif
-#if IRON_SOURCE_ENABLED			
-			case AdDistribute.IronSource: 
-				ApiUtils.Log("Show Iron Source VideoAds");
-				rewardType = type;
-				IronSource.Agent.showRewardedVideo();
-			break;
-#endif			
-			case AdDistribute.Unity: 
-			default: 
-				ApiUtils.Log("Show Unity Ads VideoAds");
-				rewardType = type;
-				Advertisement.Show(UnityAdsAdaptor.rewardedVideoPlacementId);
-			break;
-		}
+		Debug.Log("Video ads is called: " + MageAdsHelper.GetInstance().GetVideoDistributor());
+        rewardType = type;
+        MageAdsHelper.GetInstance().ShowVideoAd();
 	}
 
 	public void ShowVideoAd(RewardType type,int petId)
 	{
-		switch (adDistribute)
-		{
-			case AdDistribute.Admob: 
-				if (AdmobAdaptor.GetInstance().rewardBasedVideo.IsLoaded())
-				{
-					rewardType = type;
-					AdmobAdaptor.GetInstance().rewardBasedVideo.Show();
-					this.petId = petId;
-				}
-			break;
-#if YODO1MAS_ENABLED			
-			case AdDistribute.Yodo1MAS: 
-				ApiUtils.Log("Show Yodo1MAS VideoAds - Pet");
-				rewardType = type;
-				this.petId = petId;
-				Yodo1U3dAds.ShowVideo();
-			break;
-#endif
-#if IRON_SOURCE_ENABLED			
-			case AdDistribute.IronSource: 
-				ApiUtils.Log("Show Ironsource VideoAds - Pet");
-				rewardType = type;
-				this.petId = petId;
-				IronSource.Agent.showRewardedVideo();
-			break;
-#endif			
-			case AdDistribute.Unity: 
-			default: 
-				rewardType = type;
-				this.petId = petId;
-				Advertisement.Show(UnityAdsAdaptor.rewardedVideoPlacementId);
-			break;
-		}
+		Debug.Log("Video ads is called: " + MageAdsHelper.GetInstance().GetVideoDistributor());
+        rewardType = type;
+		this.petId = petId;
+        MageAdsHelper.GetInstance().ShowVideoAd();
+
+		
 	}
 
 	public void ShowVideoAd(RewardType type, ChestItem item)
 	{
-		switch (adDistribute)
-		{
-			case AdDistribute.Admob: 
-				if (AdmobAdaptor.GetInstance().rewardBasedVideo.IsLoaded())
-				{
-					rewardType = type;
-					AdmobAdaptor.GetInstance().rewardBasedVideo.Show();
-					chestItem = item;
-				}
-			break;
-#if YODO1MAS_ENABLED			
-			case AdDistribute.Yodo1MAS: 
-				ApiUtils.Log("Show Yodo1MAS VideoAds - Chest");
-				rewardType = type;
-				Yodo1U3dAds.ShowVideo();
-				chestItem = item;
-			break;
-#endif
-#if IRON_SOURCE_ENABLED			
-			case AdDistribute.IronSource: 
-				ApiUtils.Log("Show IronSource VideoAds - Chest");
-				rewardType = type;
-				IronSource.Agent.showRewardedVideo();
-				chestItem = item;
-			break;
-#endif			
-			case AdDistribute.Unity: 
-			default: 
-				ApiUtils.Log("Show Unity VideoAds - Chest");
-				rewardType = type;
-				Advertisement.Show(UnityAdsAdaptor.rewardedVideoPlacementId);
-				chestItem = item;
-			break;
-		}
+		Debug.Log("Video ads is called: " + MageAdsHelper.GetInstance().GetVideoDistributor());
+        rewardType = type;
+		this.chestItem = item;
+        MageAdsHelper.GetInstance().ShowVideoAd();
 	}
 
 	public void ShowIntetestial(RewardType type = RewardType.Minigame)
@@ -219,32 +100,9 @@ public class RewardVideoAdManager : MonoBehaviour
 		if (GameManager.instance.gameTime - timeAd < adDuration)
 			return;
 
-		switch (adDistribute)
-		{
-			case AdDistribute.Admob: 
-				// do nothing
-			break;
-#if YODO1MAS_ENABLED			
-			case AdDistribute.Yodo1MAS: 
-				ApiUtils.Log("Show Yodo1MAS Interstitial");
-				rewardType = type;
-				Yodo1U3dAds.ShowInterstitial();
-			break;
-#endif
-#if IRON_SOURCE_ENABLED			
-			case AdDistribute.IronSource: 
-				ApiUtils.Log("Show IronSource Interstitial");
-				rewardType = type;
-				IronSource.Agent.showInterstitial();
-			break;
-#endif			
-			case AdDistribute.Unity: 
-			default: 
-				ApiUtils.Log("Show UnityAds Interstitial");
-				rewardType = type;
-				Advertisement.Show(UnityAdsAdaptor.interstitialPlacementId);
-			break;
-		}
+        rewardType = type;
+        MageAdsHelper.GetInstance().ShowInterstitialAd();
+
 		timeAd = GameManager.instance.myPlayer.playTime;
 
 	}

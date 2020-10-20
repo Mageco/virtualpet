@@ -3,6 +3,7 @@ using SimpleJSON;
 using UnityEngine;
 using MageApi.Models;
 using System.Security.Cryptography;
+using MageSDK.Client;
 
 namespace MageApi
 {
@@ -51,7 +52,7 @@ namespace MageApi
 		 */
         public string EncodeXor(string text)
         {
-            return encrypt(text, ApiHandler.instance.ApplicationSecretKey);
+            return encrypt(text, MageEngine.instance.ApplicationSecretKey);
         }
 
         /*
@@ -59,7 +60,7 @@ namespace MageApi
 		 */
         public string DecodeXor(string cipherText)
         {
-            return decrypt(cipherText, ApiHandler.instance.ApplicationSecretKey);
+            return decrypt(cipherText, MageEngine.instance.ApplicationSecretKey);
         }
 
         /*
@@ -213,8 +214,8 @@ namespace MageApi
 
         public static void Log(string s)
         {
-#if UNITY_EDITOR
-            //Debug.Log(s);
+#if UNITY_EDITOR || MAGE_DEBUG
+            Debug.Log(s);
 #endif
         }
 

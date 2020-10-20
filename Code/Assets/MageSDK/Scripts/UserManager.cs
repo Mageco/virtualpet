@@ -15,6 +15,7 @@ using Crs;
 using Crs.Models.Response;
 using Mage.Models.Application;
 using Mage.Models.Game;
+using MageSDK.Client;
 
 public class UserManager : MonoBehaviour
 {
@@ -47,7 +48,7 @@ public class UserManager : MonoBehaviour
 		LoginRequest r = new LoginRequest (ApiSettings.LOGIN_DEVICE_UUID);
 
 		//call to login api
-		ApiHandler.instance.SendApi<LoginResponse>(
+		MageEngine.instance.SendApi<LoginResponse>(
 			ApiSettings.API_LOGIN, 
 			r, 
 			(result) => {
@@ -73,7 +74,7 @@ public class UserManager : MonoBehaviour
 	public void LoginUsernamePasswordClick() {
 		LoginRequest r = new LoginRequest (ApiSettings.LOGIN_USERNAME_PASSWORD, "", "butanido", "123456");
 		//call to login api
-		ApiHandler.instance.SendApi<LoginResponse>(
+		MageEngine.instance.SendApi<LoginResponse>(
 			ApiSettings.API_LOGIN, 
 			r, 
 			(result) => {
@@ -105,7 +106,7 @@ public class UserManager : MonoBehaviour
 		tmp = new UserData ("Power", "200", "Power");
 		r.UserDatas.Add (tmp);
 		//call to login api
-		ApiHandler.instance.SendApi<UpdateUserDataResponse>(
+		MageEngine.instance.SendApi<UpdateUserDataResponse>(
 			ApiSettings.API_UPDATE_USER_DATA, 
 			r, 
 			(result) => {
@@ -131,7 +132,7 @@ public class UserManager : MonoBehaviour
 		tmp = new UserData ("Power", "200", "Power");
 		r.LeaderboardDatas.Add (tmp);
 		//call to login api
-		ApiHandler.instance.SendApi<UpdateUserLeaderboardResponse>(
+		MageEngine.instance.SendApi<UpdateUserLeaderboardResponse>(
 			ApiSettings.API_UPDATE_USER_LEADER_BOARD,
 			r, 
 			(result) => {
@@ -154,7 +155,7 @@ public class UserManager : MonoBehaviour
 		r.UserDatas.Add (tmp);
 
 		//call to login api
-		ApiHandler.instance.SendApi<DeleteUserDataResponse>(
+		MageEngine.instance.SendApi<DeleteUserDataResponse>(
 			ApiSettings.API_DELETE_USER_DATA,
 			r, 
 			(result) => {
@@ -179,7 +180,7 @@ public class UserManager : MonoBehaviour
 		r.SetUploadFile (File.ReadAllBytes(imagePath));
 
 		//call to login api
-		ApiHandler.instance.UploadFile<UploadFileResponse>(
+		MageEngine.instance.UploadFile<UploadFileResponse>(
 			r, 
 			(result) => {
 				Debug.Log("Success: Upload file successfully");
@@ -203,7 +204,7 @@ public class UserManager : MonoBehaviour
 		r.Avatar = tmpURL;
 
 		//call to login api
-		ApiHandler.instance.SendApi<UpdateProfileResponse>(
+		MageEngine.instance.SendApi<UpdateProfileResponse>(
 			ApiSettings.API_UPDATE_PROFILE,
 			r, 
 			(result) => {
@@ -225,7 +226,7 @@ public class UserManager : MonoBehaviour
 		GetLeaderBoardRequest r = new GetLeaderBoardRequest ("Power");
 
 		//call to login api
-		ApiHandler.instance.SendApi<GetLeaderBoardResponse>(
+		MageEngine.instance.SendApi<GetLeaderBoardResponse>(
 			ApiSettings.API_GET_LEADER_BOARD,
 			r, 
 			(result) => {
@@ -248,7 +249,7 @@ public class UserManager : MonoBehaviour
 		GetUserMessagesRequest r = new GetUserMessagesRequest ();
 
 		//call to login api
-		ApiHandler.instance.SendApi<GetUserMessagesResponse>(
+		MageEngine.instance.SendApi<GetUserMessagesResponse>(
 			ApiSettings.API_GET_USER_MESSAGE,
 			r, 
 			(result) => {
@@ -270,7 +271,7 @@ public class UserManager : MonoBehaviour
 		GetUserProfileRequest r = new GetUserProfileRequest ("12");
 
 		//call to login api
-		ApiHandler.instance.SendApi<GetUserProfileResponse>(
+		MageEngine.instance.SendApi<GetUserProfileResponse>(
 			ApiSettings.API_GET_USER_PROFILE,
 			r, 
 			(result) => {
@@ -292,7 +293,7 @@ public class UserManager : MonoBehaviour
 		SendMessageRequest r = new SendMessageRequest ("4", MessageType.PushNotification, "test from unity", "no title");
 
 		//call to login api
-		ApiHandler.instance.SendApi<SendMessageResponse>(
+		MageEngine.instance.SendApi<SendMessageResponse>(
 			ApiSettings.API_SEND_MESSAGE,
 			r, 
 			(result) => {
@@ -314,7 +315,7 @@ public class UserManager : MonoBehaviour
 		SendUserEventRequest r = new SendUserEventRequest ("Open_Main_Screen");
 
 		//call to login api
-		ApiHandler.instance.SendApi<SendUserEventResponse>(
+		MageEngine.instance.SendApi<SendUserEventResponse>(
 			ApiSettings.API_SEND_USER_EVENT,
 			r, 
 			(result) => {
@@ -336,7 +337,7 @@ public class UserManager : MonoBehaviour
 		GetApplicationDataRequest r = new GetApplicationDataRequest ();
 
 		//call to login api
-		ApiHandler.instance.SendApi<GetApplicationDataResponse>(
+		MageEngine.instance.SendApi<GetApplicationDataResponse>(
 			ApiSettings.API_GET_APPLICATION_DATA,
 			r, 
 			(result) => {
@@ -358,7 +359,7 @@ public class UserManager : MonoBehaviour
 		LinkFacebookAccountRequest r = new LinkFacebookAccountRequest ();
 		r.FacebookId = "new facebook id";
 		//call to login api
-		ApiHandler.instance.SendApi<LinkFacebookAccountResponse>(
+		MageEngine.instance.SendApi<LinkFacebookAccountResponse>(
 			ApiSettings.API_LINK_FB_ACCOUNT,
 			r, 
 			(result) => {
@@ -381,7 +382,7 @@ public class UserManager : MonoBehaviour
 		ConfirmLinkFacebookAccountRequest r = new ConfirmLinkFacebookAccountRequest ();
 		r.FacebookId = "new facebook id";
 		//call to login api
-		ApiHandler.instance.SendApi<ConfirmLinkFacebookAccountResponse>(
+		MageEngine.instance.SendApi<ConfirmLinkFacebookAccountResponse>(
 			ApiSettings.API_CONFIRM_LINK_FB_ACCOUNT,
 			r, 
 			(result) => {
@@ -408,7 +409,7 @@ public class UserManager : MonoBehaviour
 		SendQuestionAnswerRecordRequest r = new SendQuestionAnswerRecordRequest (1, 1, 1, 1, CrsApiSettings.QUESTION_STATUS_CORRECT, 0, 10, DateTime.Now, DateTime.Now);
 		Debug.Log("now: " + r.StartTime);
 		//call to login api
-		ApiHandler.instance.SendApi<SendQuestionAnswerRecordResponse>(
+		MageEngine.instance.SendApi<SendQuestionAnswerRecordResponse>(
 			CrsApiSettings.API_SEND_QUESTION_ANSWER_RECORD,
 			r, 
 			(result) => {
@@ -434,7 +435,7 @@ public class UserManager : MonoBehaviour
 												"<speak>Cún cưng</speak>");  
 		
 		//call to login api
-		ApiHandler.instance.SendApi<GetAudioFromTextResponse>(
+		MageEngine.instance.SendApi<GetAudioFromTextResponse>(
 			ApiSettings.API_GET_AUDIO_FROM_TEXT,
 			r, 
 			(result) => {
@@ -456,7 +457,7 @@ public class UserManager : MonoBehaviour
 		GetApplicationAudioResourcesRequest r = new GetApplicationAudioResourcesRequest(1);  // English wil be EN_en
 		
 		//call to login api
-		ApiHandler.instance.SendApi<GetApplicationAudioResourcesResponse>(
+		MageEngine.instance.SendApi<GetApplicationAudioResourcesResponse>(
 			ApiSettings.API_GET_APPLICATION_AUDIO_RESOURCES,
 			r, 
 			(result) => {
@@ -483,7 +484,7 @@ public class UserManager : MonoBehaviour
 		CheckSubscriptionRequest r = new CheckSubscriptionRequest();  // English wil be EN_en
 		
 		//call to login api
-		ApiHandler.instance.SendApi<CheckSubscriptionResponse>(
+		MageEngine.instance.SendApi<CheckSubscriptionResponse>(
 			ApiSettings.API_CHECK_SUBSCRIPTION,
 			r, 
 			(result) => {
@@ -510,7 +511,7 @@ public class UserManager : MonoBehaviour
 		ValidateActivationCodeRequest r = new ValidateActivationCodeRequest("CG509DA4F6F3", "", "0908026022", "" );  // English wil be EN_en
 		
 		//call to login api
-		ApiHandler.instance.SendApi<ValidateActivationCodeResponse>(
+		MageEngine.instance.SendApi<ValidateActivationCodeResponse>(
 			ApiSettings.API_VALIDATE_ACTIVATION_CODE,
 			r, 
 			(result) => {
@@ -546,7 +547,7 @@ public class UserManager : MonoBehaviour
 		ActivateByProductRequest r = new ActivateByProductRequest("GB-IAP-6M", "", "012345678", "" );  // English wil be EN_en
 		
 		//call to login api
-		ApiHandler.instance.SendApi<ActivateByProductResponse>(
+		MageEngine.instance.SendApi<ActivateByProductResponse>(
 			ApiSettings.API_ACTIVATE_BY_PRODUCT,
 			r, 
 			(result) => {
@@ -582,7 +583,7 @@ public class UserManager : MonoBehaviour
 		CancelByProductRequest r = new CancelByProductRequest("INAPP");  // English wil be EN_en
 		
 		//call to login api
-		ApiHandler.instance.SendApi<CancelByProductResponse>(
+		MageEngine.instance.SendApi<CancelByProductResponse>(
 			ApiSettings.API_CANCEL_BY_PRODUCT,
 			r, 
 			(result) => {
@@ -618,7 +619,7 @@ public class UserManager : MonoBehaviour
 		GetApplicationMaterialsRequest r = new GetApplicationMaterialsRequest ();
 
 		//call to login api
-		ApiHandler.instance.SendApi<GetApplicationMaterialsResponse>(
+		MageEngine.instance.SendApi<GetApplicationMaterialsResponse>(
 			ApiSettings.API_GET_APPLICATION_MATERIALS,
 			r, 
 			(result) => {
@@ -649,7 +650,7 @@ public class UserManager : MonoBehaviour
 		r.UserDatas.Add(new UserData("Online", "" + DateTime.Now.ToString("yyyyMMddHHmmss") , "PublicInfo"));
 
 		//call to login api
-		ApiHandler.instance.SendApi<UpdateUserDataResponse>(
+		MageEngine.instance.SendApi<UpdateUserDataResponse>(
 			ApiSettings.API_UPDATE_USER_DATA,
 			r, 
 			(result) => {
@@ -673,7 +674,7 @@ public class UserManager : MonoBehaviour
 		r2.SearchDatas.Add(new SearchData("Online", SearchOperator.GreaterOrEqual, (DateTime.Now.Add(new TimeSpan(0, -5, 0)).ToString("yyyyMMddHHmmss"))));
 
 		//call to login api
-		ApiHandler.instance.SendApi<GetUsersByUserDataResponse>(
+		MageEngine.instance.SendApi<GetUsersByUserDataResponse>(
 			ApiSettings.API_GET_USERS_BY_USER_DATAS,
 			r2, 
 			(result) => {
@@ -695,7 +696,7 @@ public class UserManager : MonoBehaviour
 		AddGameCharacterRequest r = new AddGameCharacterRequest ("Cún cưng", "Shiba");
 
 		//call to login api
-		ApiHandler.instance.SendApi<AddGameCharacterResponse>(
+		MageEngine.instance.SendApi<AddGameCharacterResponse>(
 			ApiSettings.API_ADD_GAME_CHARACTER,
 			r, 
 			(result) => {
@@ -717,7 +718,7 @@ public class UserManager : MonoBehaviour
 		UpdateGameCharacterNameRequest r = new UpdateGameCharacterNameRequest ();
 
 		//call to login api
-		ApiHandler.instance.SendApi<UpdateGameCharacterNameResponse>(
+		MageEngine.instance.SendApi<UpdateGameCharacterNameResponse>(
 			ApiSettings.API_UPDATE_GAME_CHARACTER_NAME,
 			r, 
 			(result) => {
@@ -746,7 +747,7 @@ public class UserManager : MonoBehaviour
 		};
 
 		//call to login api
-		ApiHandler.instance.SendApi<UpdateGameCharacterDataResponse>(
+		MageEngine.instance.SendApi<UpdateGameCharacterDataResponse>(
 			ApiSettings.API_UPDATE_GAME_CHARACTER_DATAS,
 			r, 
 			(result) => {
@@ -768,7 +769,7 @@ public class UserManager : MonoBehaviour
 		GetAvailableGameCharacterItemsRequest r = new GetAvailableGameCharacterItemsRequest();
 
 		//call to login api
-		ApiHandler.instance.SendApi<GetAvailableGameCharacterItemsResponse>(
+		MageEngine.instance.SendApi<GetAvailableGameCharacterItemsResponse>(
 			ApiSettings.API_GET_AVAILABLE_GAME_CHARACTER_ITEMS,
 			r, 
 			(result) => {
@@ -790,7 +791,7 @@ public class UserManager : MonoBehaviour
 		BuyGameCharacterItemRequest r = new BuyGameCharacterItemRequest("Hat_01");
 
 		//call to login api
-		ApiHandler.instance.SendApi<BuyGameCharacterItemResponse>(
+		MageEngine.instance.SendApi<BuyGameCharacterItemResponse>(
 			ApiSettings.API_BUY_GAME_CHARACTER_ITEM,
 			r, 
 			(result) => {
@@ -813,7 +814,7 @@ public class UserManager : MonoBehaviour
 		UpdateGameCharacterItemStatusRequest r = new UpdateGameCharacterItemStatusRequest("1", "1", CharacterItemStatus.AVAILABLE);
 
 		//call to login api
-		ApiHandler.instance.SendApi<UpdateGameCharacterItemStatusResponse>(
+		MageEngine.instance.SendApi<UpdateGameCharacterItemStatusResponse>(
 			ApiSettings.API_UPDATE_GAME_CHARACTER_ITEM_STATUS,
 			r, 
 			(result) => {

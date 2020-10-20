@@ -584,7 +584,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2064670513}
-  - component: {fileID: 2064670512}
   - component: {fileID: 2064670511}
   m_Layer: 0
   m_Name: Manager
@@ -605,36 +604,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aeb881e50c98145a2ae12197f6a4015a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  TestMode: 0
+  TestUUID: 
+  ApplicationSecretKey: 
+  ApplicationKey: 
+  ApiVersion: 
+  ApiUrl: http://localhost:8080/portal/api
   isLocalApplicationData: 0
   resetUserDataOnStart: 0
   isWorkingOnline: 1
+  useFirebaseAnalytic: 0
+  useFirebaseApplicationData: 0
+  useFirebaseStorage: 0
+  signatureHashAndroid: 
   loginMethod: 0
   isAppActive: 1
-  signatureHashAndroid: 
   testRound: 0
   testSequence: 0
   contactUrl: 
   contactPhone: 
   option: 0
---- !u!114 &2064670512
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2064670510}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e345028d6ae398418969fa102dec938, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  TestMode: 1
-  TestUUID: 50
-  ApplicationSecretKey: OJXTCbc8Ih7my2zRBv3CJbPt7poUd5qP
-  ApplicationKey: virtupet
-  ApiVersion: 1.0.00
-  ApiUrl: http://localhost:8080/portal/api
-  TimeOut: 200
 --- !u!4 &2064670513
 Transform:
   m_ObjectHideFlags: 0

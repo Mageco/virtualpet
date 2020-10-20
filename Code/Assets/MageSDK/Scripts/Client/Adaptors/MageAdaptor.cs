@@ -1,15 +1,10 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Threading.Tasks;
-using Firebase.RemoteConfig;
-using Mage.Models;
 using Mage.Models.Application;
 using Mage.Models.Users;
 using MageApi;
 using MageApi.Models.Request;
 using MageApi.Models.Response;
-using MageSDK.Client;
 using UnityEngine;
 
 namespace MageSDK.Client.Adaptors
@@ -20,7 +15,7 @@ namespace MageSDK.Client.Adaptors
         {
             GetApplicationDataRequest r = new GetApplicationDataRequest();
             //call to login api
-            ApiHandler.instance.SendApi<GetApplicationDataResponse>(
+            MageEngine.instance.SendApi<GetApplicationDataResponse>(
                 ApiSettings.API_GET_APPLICATION_DATA,
                 r,
                 (result) =>
@@ -53,7 +48,7 @@ namespace MageSDK.Client.Adaptors
             LoginRequest r = new LoginRequest(ApiSettings.LOGIN_DEVICE_UUID);
 
             //call to login api
-            ApiHandler.instance.SendApi<LoginResponse>(
+            MageEngine.instance.SendApi<LoginResponse>(
                 ApiSettings.API_LOGIN,
                 r,
                 (result) =>
@@ -86,7 +81,7 @@ namespace MageSDK.Client.Adaptors
             UpdateApplicationDataRequest r = new UpdateApplicationDataRequest(applicationDatas, unityAdminToken);
 
             //call to login api
-            ApiHandler.instance.SendApi<UpdateApplicationDataResponse>(
+            MageEngine.instance.SendApi<UpdateApplicationDataResponse>(
                 ApiSettings.API_UPDATE_APPLICATION_DATA,
                 r,
                 (result) =>
@@ -122,7 +117,7 @@ namespace MageSDK.Client.Adaptors
             SendUserEventListRequest r = new SendUserEventListRequest(cachedEvent);
 
             //call to login api
-            ApiHandler.instance.SendApi<SendUserEventListResponse>(
+            MageEngine.instance.SendApi<SendUserEventListResponse>(
                 ApiSettings.API_SEND_USER_EVENT_LIST,
                 r,
                 (result) =>
@@ -154,7 +149,7 @@ namespace MageSDK.Client.Adaptors
         {
             SendUserEventRequest r = new SendUserEventRequest(t.eventName, t.eventDetail);
             //call to login api
-            ApiHandler.instance.SendApi<SendUserEventResponse>(
+            MageEngine.instance.SendApi<SendUserEventResponse>(
                 ApiSettings.API_SEND_USER_EVENT,
                 r,
                 (result) =>
@@ -187,7 +182,7 @@ namespace MageSDK.Client.Adaptors
             r.SetUploadFile(image.EncodeToPNG());
 
             //call to login api
-            ApiHandler.instance.UploadFile<UploadFileResponse>(
+            MageEngine.instance.UploadFile<UploadFileResponse>(
                 r,
                 (result) =>
                 {
@@ -222,7 +217,7 @@ namespace MageSDK.Client.Adaptors
             r2.SearchDatas = searchDatas;
 
             //call to login api
-            ApiHandler.instance.SendApi<GetUsersByUserDataResponse>(
+            MageEngine.instance.SendApi<GetUsersByUserDataResponse>(
                 ApiSettings.API_GET_USERS_BY_USER_DATAS,
                 r2,
                 (result) =>
@@ -255,7 +250,7 @@ namespace MageSDK.Client.Adaptors
             GetUsersBySocialIdRequest r2 = new GetUsersBySocialIdRequest(socialId);
 
             //call to login api
-            ApiHandler.instance.SendApi<GetUsersBySocialIdResponse>(
+            MageEngine.instance.SendApi<GetUsersBySocialIdResponse>(
                 ApiSettings.API_GET_USERS_BY_SOCIAL_ID,
                 r2,
                 (result) =>

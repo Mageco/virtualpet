@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if USE_FIREBASE && !UNITY_STANDALONE
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
@@ -20,7 +21,10 @@ namespace MageSDK.Client.Adaptors
     public class FirebaseAdaptor
     {
         public static FirebaseAuth auth;
-        private static FirebaseStorage storage;
+        public static FirebaseStorage storage;
+        public static FirebaseApp app;
+
+        public static bool isStackInitialized = false;
 
         ///<summary>Initialize Firebase Analytic</summary>
         public static void InitializeFirebaseStacks()
@@ -44,6 +48,10 @@ namespace MageSDK.Client.Adaptors
 
                         if (MageEngine.instance.useFirebaseStorage)
                             InitializeStorage();
+
+                        app = FirebaseApp.DefaultInstance;
+
+                        isStackInitialized = true;
                     }
                     else
                     {
@@ -109,7 +117,7 @@ namespace MageSDK.Client.Adaptors
         public static IEnumerator LoginAnonymous(Action<FirebaseUser> onCompleteCallback)
         {
             ApiUtils.Log("Firebase: Login anonymous ...");
-            FirebaseAuth auth = FirebaseAuth.DefaultInstance;
+            auth = FirebaseAuth.DefaultInstance;
 
             if (auth.CurrentUser == null)
             {
@@ -189,6 +197,9 @@ namespace MageSDK.Client.Adaptors
         ///<summary>Update user Properties</summary>
         public static void UpdateUserData(UserData data)
         {
+            // if not initialized then skip next actions
+            if (!isStackInitialized) return;
+
             ApiUtils.Log("Firebase: UpdateUserData - " + data.ToJson());
             Firebase.Analytics.FirebaseAnalytics.SetUserProperty(data.attr_name, data.attr_value);
         }
@@ -196,6 +207,9 @@ namespace MageSDK.Client.Adaptors
         ///<summary>send event to firebase</summary>
         public static void OnEvent(MageEventType type, string eventDetail, int eventValue)
         {
+             // if not initialized then skip next actions
+            if (!isStackInitialized) return;
+
             ApiUtils.Log("Firebase: OnEvent - " + type.ToString() + eventDetail);
             eventDetail = (eventDetail == "" ? "No detail" : eventDetail);
             Firebase.Analytics.FirebaseAnalytics.LogEvent(type.ToString(), eventDetail, eventValue);
@@ -203,6 +217,9 @@ namespace MageSDK.Client.Adaptors
 
         public static void OnEvent(MageEventType type, string eventDetail, string eventValue)
         {
+             // if not initialized then skip next actions
+            if (!isStackInitialized) return;
+
             ApiUtils.Log("Firebase: OnEvent - " + type.ToString() + eventDetail);
             eventDetail = (eventDetail == "" ? "No detail" : eventDetail);
             eventValue = (eventValue == "" ? "Empty" : eventValue);
@@ -211,11 +228,10 @@ namespace MageSDK.Client.Adaptors
 
         public static IEnumerator UploadFile(string file, Action<string> onCompleteCallback)
         {
-
             // Create a root reference
             string local_file = Application.dataPath + file;
             Firebase.Storage.StorageReference storage_ref = storage.RootReference;
-            Firebase.Storage.StorageReference file_ref = storage_ref.Child(ApiHandler.instance.ApplicationKey + "/" + file);
+            Firebase.Storage.StorageReference file_ref = storage_ref.Child(MageEngine.instance.ApplicationKey + "/" + file);
 
             Task<StorageMetadata> task = file_ref.PutFileAsync(local_file);
 
@@ -244,7 +260,7 @@ namespace MageSDK.Client.Adaptors
 
             // Create a root reference
             Firebase.Storage.StorageReference storage_ref = storage.RootReference;
-            Firebase.Storage.StorageReference file_ref = storage_ref.Child(ApiHandler.instance.ApplicationKey + "/" + file);
+            Firebase.Storage.StorageReference file_ref = storage_ref.Child(MageEngine.instance.ApplicationKey + "/" + file);
 
             Task<StorageMetadata> task = file_ref.PutBytesAsync(image.EncodeToPNG());
 
@@ -275,3 +291,4 @@ namespace MageSDK.Client.Adaptors
 
 }
 
+#endif

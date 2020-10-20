@@ -7,6 +7,7 @@ using System;
 using Mage.Models;
 using Mage.Models.Game;
 using MageApi;
+using MageSDK.Client;
 
 namespace Mage.Models.Users{
 	[Serializable]
@@ -135,7 +136,7 @@ namespace Mage.Models.Users{
 		}
 		
 		public T GetUserData<T>() where T:BaseModel {
-			string key = ApiHandler.instance.ApplicationKey + "_" + typeof(T).Name;
+			string key = MageEngine.instance.ApplicationKey + "_" + typeof(T).Name;
 
 			if ("" != this.GetUserData(key)) {
 				return BaseModel.CreateFromJSON<T>(this.GetUserData(key));
