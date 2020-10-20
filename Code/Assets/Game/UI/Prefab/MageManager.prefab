@@ -339,7 +339,6 @@ MonoBehaviour:
   tip: {fileID: 922418651}
   icon: {fileID: 1049365945746277048}
   loadingImage: {fileID: 1334758218}
-  tipIds: 4d0000004e0000004f000000500000005100000052000000530000005400000055000000560000005700000058000000590000005a000000
 --- !u!1 &320811322641333613
 GameObject:
   m_ObjectHideFlags: 0
@@ -762,7 +761,6 @@ GameObject:
   m_Component:
   - component: {fileID: 8605673700397394327}
   - component: {fileID: 5453886026327393268}
-  - component: {fileID: 8084780117521707054}
   - component: {fileID: 6574483390622879999}
   - component: {fileID: 1448778918}
   - component: {fileID: 1448778919}
@@ -800,36 +798,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aeb881e50c98145a2ae12197f6a4015a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  TestMode: 0
+  TestUUID: 
+  ApplicationSecretKey: 
+  ApplicationKey: 
+  ApiVersion: 
+  ApiUrl: http://localhost:8080/portal/api
   isLocalApplicationData: 0
   resetUserDataOnStart: 0
   isWorkingOnline: 1
+  useFirebaseAnalytic: 0
+  useFirebaseApplicationData: 0
+  useFirebaseStorage: 0
+  signatureHashAndroid: 67:5B:BF:BD:74:83:CA:AD:C7:4E:88:9C:E1:86:DF:A1:6A:B1:BF:13
   loginMethod: 0
   isAppActive: 1
-  signatureHashAndroid: 67:5B:BF:BD:74:83:CA:AD:C7:4E:88:9C:E1:86:DF:A1:6A:B1:BF:13
   testRound: 0
   testSequence: 0
   contactUrl: 
   contactPhone: 
   option: 0
---- !u!114 &8084780117521707054
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5946030510101734352}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e345028d6ae398418969fa102dec938, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  TestMode: 0
-  TestUUID: 30
-  ApplicationSecretKey: OJXTCbc8Ih7my2zRBv3CJbPt7poUd5qP
-  ApplicationKey: virtupet
-  ApiVersion: 1.0.00
-  ApiUrl: https://www.portal.mage.com.vn/api
-  TimeOut: 200
 --- !u!114 &6574483390622879999
 MonoBehaviour:
   m_ObjectHideFlags: 0

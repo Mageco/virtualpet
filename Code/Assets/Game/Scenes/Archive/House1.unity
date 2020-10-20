@@ -473,9 +473,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 82464ca5dae054dd8a51e7fdbd6f1f30, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dayBG: {fileID: 348769955}
-  nightBG: {fileID: 1306071244}
-  rainEffect: {fileID: 1994115575}
+  gardenDayBG: {fileID: 0}
+  gardenNightBG: {fileID: 0}
   maxTimeCheck: 1
 --- !u!224 &123463198 stripped
 RectTransform:
@@ -851,12 +850,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 5
---- !u!1 &348769955 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 180939786108987686, guid: f03084cae5fb433418601eb07030ca0a,
-    type: 3}
-  m_PrefabInstance: {fileID: 180939786142759849}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &371239879
 GameObject:
   m_ObjectHideFlags: 0
@@ -1223,7 +1216,9 @@ MonoBehaviour:
   initZ: -6
   scaleFactor: 0.05
   shitPrefab: {fileID: 0}
+  item: {fileID: 0}
   state: 0
+  minQuestId: -1
 --- !u!58 &484018032
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -2555,21 +2550,35 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   items: []
-  itemSaveDatas: []
-  itemColliders: []
-  expireTime: 10
   peePrefab: {fileID: 7166089402494124037, guid: ccefdc6a159554ad68c454188f52587b,
     type: 3}
   shitPrefab: {fileID: 4887335964014193537, guid: 6cd2b87a2c28c424ba4e4c5f8d1ddfd2,
     type: 3}
   heartPrefab: {fileID: 1052099055937570257, guid: 81d9e6058b88e4c4d8297b01f85eacb3,
     type: 3}
+  coinPrefab: {fileID: 0}
+  starPrefab: {fileID: 0}
   dirtyPrefab: {fileID: 1950067868025273820, guid: e0ee5a05abb3343b1892e76545773be2,
     type: 3}
-  healthEffectPrefab: {fileID: 5279987827855304787, guid: ef2d0effe2b5743ac899bdd36e0213eb,
-    type: 3}
+  chestPrefab: {fileID: 0}
+  pillEffectPrefab: {fileID: 0}
+  bandageEffectPrefab: {fileID: 0}
   guidePrefab: {fileID: 3630009744855649881, guid: 2aab0edba9f1ff2449578691142dd67e,
     type: 3}
+  petGiftPrefab: {fileID: 0}
+  petHappyPrefab: {fileID: 0}
+  coinPaidPrefab: {fileID: 0}
+  highlightMaterial: {fileID: 0}
+  defaultMaterial: {fileID: 0}
+  roomBoundX: {x: -50, y: 80}
+  roomBoundY: {x: -26, y: 0}
+  roomWallBoundY: {x: 3, y: 30}
+  gardenBoundX: {x: -270, y: 150}
+  gardenBoundY: {x: -26, y: 0}
+  cameraBoundX: {x: -320, y: 200}
+  cameraBoundY: {x: -26, y: 40}
+  activeCamera: {fileID: 0}
+  isLoad: 0
 --- !u!4 &852301776
 Transform:
   m_ObjectHideFlags: 0
@@ -3268,7 +3277,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 97b6ffb89c3f34029a4b9fb8259ec660, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fadeScreen: {fileID: 0}
+  blackScreenUI: {fileID: 0}
+  blackScreen: {fileID: 0}
+  blackScreenButton: {fileID: 0}
+  handClickUI: {fileID: 0}
+  handClick: {fileID: 0}
+  dropPosition: {fileID: 0}
+  pointer: {fileID: 0}
 --- !u!4 &1149895198
 Transform:
   m_ObjectHideFlags: 0
@@ -3387,6 +3402,7 @@ MonoBehaviour:
   offset: {x: 0, y: 6}
   boundX: {x: -67, y: 67}
   boundY: {x: -26, y: 31}
+  screenOffset: 0.7
 --- !u!114 &1159892325
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3618,6 +3634,8 @@ MonoBehaviour:
   initZ: -6
   scaleFactor: 0.1
   state: 0
+  minQuestId: -1
+  item: {fileID: 0}
 --- !u!1 &1206368286
 GameObject:
   m_ObjectHideFlags: 0
@@ -4037,44 +4055,99 @@ MonoBehaviour:
     type: 3}
   rateUsUIPrefab: {fileID: 5750703770928168468, guid: c8df11ddda92e304f892c8c951fdc717,
     type: 3}
-  questCompletePrefab: {fileID: 8960736323230882429, guid: 46536c6c9cc12a34e82f9d3d50f1c742,
-    type: 3}
   shopUIPrefab: {fileID: 1475602191, guid: 944810598c3091f45bd614bd218336e8, type: 3}
   eventUIPrefab: {fileID: 152425207960357335, guid: 0e7f05268e9dbfd418204bd4cf44b4b4,
-    type: 3}
-  profileUIPrefab: {fileID: 2859478906567845954, guid: 0bfb694e6b44849d3ad9963ee1bfd50d,
-    type: 3}
-  skillCompletePrefab: {fileID: 6092021802291730817, guid: cb9c4c8c69c60477da45ea7791ca3616,
     type: 3}
   achivementPrefab: {fileID: 3502109333287952501, guid: 7eeeaa71b12a017448463c87c4b16f6c,
     type: 3}
   confirmBuyShopPrefab: {fileID: 4039681933990909816, guid: 9aa96c88e7374984db2401080f21ec1b,
     type: 3}
-  itemInfoPrefab: {fileID: 4039681933990909816, guid: e9ff7585e45163b44aacd7f01fb99aa9,
-    type: 3}
   treatmentPopupPrefab: {fileID: 8151612463901336215, guid: 551a9f216088c2f4b94daf3e4cc1fdfa,
     type: 3}
-  treatmentConfirmPrefab: {fileID: 4039681933990909816, guid: dd172e9196a844248842bae921ec0ee1,
-    type: 3}
+  PetRequirementPanelPrefab: {fileID: 0}
+  confirmBuyPetPrefab: {fileID: 0}
+  mapPanelPrefab: {fileID: 0}
+  rewardItemPrefab: {fileID: 0}
+  mapRequirementPrefab: {fileID: 0}
+  levelUpPrefab: {fileID: 0}
+  welcomeBackPrefab: {fileID: 0}
+  servicePanelPrefab: {fileID: 0}
+  settingPanelPrefab: {fileID: 0}
+  dailyBonusPanelPrefab: {fileID: 0}
+  rewardDiamondPanelPrefab: {fileID: 0}
+  commomChestPanelPrefab: {fileID: 0}
+  rareChestPanelPrefab: {fileID: 0}
+  epicChestPanelPrefab: {fileID: 0}
+  profilePanelPrefab: {fileID: 0}
+  houseNamePanelPrefab: {fileID: 0}
+  takePhotoUIPrefab: {fileID: 0}
+  leaderBoardPanelPrefab: {fileID: 0}
+  remotePlayerPanellPrefab: {fileID: 0}
+  spinWheelPanelPrefab: {fileID: 0}
+  spinRewardPanelPrefab: {fileID: 0}
+  dailyQuestPanelPrefab: {fileID: 0}
+  accessoryPanelPrefab: {fileID: 0}
+  inventoryPanelPrefab: {fileID: 0}
+  newVersionPanelPrefab: {fileID: 0}
+  itemInfoUIPrefab: {fileID: 0}
   coinText: {fileID: 65223674}
   diamonText: {fileID: 949322702}
   heartText: {fileID: 374896054}
+  coinIcon: {fileID: 0}
+  diamonIcon: {fileID: 0}
+  heartIcon: {fileID: 0}
+  levelText: {fileID: 0}
+  exp: {fileID: 0}
+  expProgress: {fileID: 0}
+  questNotification: {fileID: 0}
+  questComplete: {fileID: 0}
+  shopPanel: {fileID: 0}
+  eventPanel: {fileID: 0}
+  confirmBuyShopPopup: {fileID: 0}
+  ratingWindow: {fileID: 0}
+  petRequirementPanel: {fileID: 0}
+  confirmBuyPetPopup: {fileID: 0}
+  rewardItemPanel: {fileID: 0}
+  mapRequirementPanel: {fileID: 0}
+  mapPanel: {fileID: 0}
+  levelUpPanel: {fileID: 0}
+  welcomeBackPanel: {fileID: 0}
+  servicePanel: {fileID: 0}
+  settingPanel: {fileID: 0}
+  dailyBonusPanel: {fileID: 0}
+  rewardDiamondPanel: {fileID: 0}
+  profilePanel: {fileID: 0}
+  houseNamePanel: {fileID: 0}
+  takePhotoUI: {fileID: 0}
+  chestSalePanel: {fileID: 0}
+  leaderBoardPanel: {fileID: 0}
+  remotePlayerPanel: {fileID: 0}
+  spinWheelPanel: {fileID: 0}
+  spinRewardPanel: {fileID: 0}
+  dailyQuestPanel: {fileID: 0}
+  accessoryPanel: {fileID: 0}
+  inventoryPanel: {fileID: 0}
+  newVersionPanel: {fileID: 0}
+  itemInfoUI: {fileID: 0}
   achivementNotification: {fileID: 4713419841878808483}
-  eventNotification: {fileID: 3948004708898843698}
+  giftNotification: {fileID: 0}
+  dailyQuestNotification: {fileID: 0}
   achivementPanel: {fileID: 0}
   homeUI: {fileID: 1206368286}
+  toolUI: {fileID: 0}
   profilePrefab: {fileID: 2859478906567845954, guid: 0bfb694e6b44849d3ad9963ee1bfd50d,
     type: 3}
-  profileAnchor: {fileID: 148552542}
-  notificationText: []
-  doubleClickEffect: {fileID: 4894337678173227654, guid: 77b0a101719694ca8a48aa65aa6c84ce,
-    type: 3}
---- !u!1 &1306071244 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 180939786108987686, guid: f0326c2b2cdd545429ba60d9612d20ab,
-    type: 3}
-  m_PrefabInstance: {fileID: 3235432156250980608}
-  m_PrefabAsset: {fileID: 0}
+  notificationIcon: {fileID: 0}
+  eventButton: {fileID: 0}
+  achivementButton: {fileID: 0}
+  shopButton: {fileID: 0}
+  callButton: {fileID: 0}
+  remotePanel: {fileID: 0}
+  inventoryButton: {fileID: 0}
+  petButton: {fileID: 0}
+  avatarUI: {fileID: 0}
+  remoteAvatarUI: {fileID: 0}
+  saleButton: {fileID: 0}
 --- !u!1 &1307597350
 GameObject:
   m_ObjectHideFlags: 0
@@ -4104,8 +4177,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6879d5e0abcac42d8a90bccbdbe60ec1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isStartQuest: 0
-  isEndQuest: 0
+  state: 0
+  replayTime: 0
+  maxReplayTime: 30
+  isReplay: 1
+  coinIcons: []
+  isReplaying: 0
+  questId: 0
 --- !u!4 &1307597352
 Transform:
   m_ObjectHideFlags: 0
@@ -5130,6 +5208,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   interactable: 1
+  isMouseDown: 0
 --- !u!60 &1693659670
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -7514,7 +7593,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 8084780117521707054, guid: 2690067ddedd64631953f52f26e327fb, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 2690067ddedd64631953f52f26e327fb, type: 3}
 --- !u!224 &2875241481165342116
 RectTransform:

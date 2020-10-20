@@ -62,13 +62,13 @@ public class RewardVideoAdManager : MonoBehaviour
 		// start calculate time for Interstitial
 		timeAd = GameManager.instance.gameTime;
 	}
-
+#if IRON_SOURCE_ENABLED
 	void OnApplicationPause(bool isPaused) {      
 		if (adDistribute == AdDistribute.IronSource) {
 			IronSource.Agent.onApplicationPause(isPaused);
 		}           
 	}
-
+#endif
 	public void ShowVideoAd(RewardType type)
 	{
 		Debug.Log("Video ads is called: " + MageAdsHelper.GetInstance().GetVideoDistributor());
