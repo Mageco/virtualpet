@@ -1,4 +1,4 @@
-﻿/*
+﻿
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,6 +11,7 @@ using MageApi;
 
 public class PurchaseManager : MonoBehaviour, IStoreListener
 {
+    
 	public static PurchaseManager instance;
 	[HideInInspector]
 	public bool isSubscripted = false;
@@ -438,6 +439,6 @@ public class PurchaseManager : MonoBehaviour, IStoreListener
 	}
 
 	#endregion
+
 }
 
-*/
