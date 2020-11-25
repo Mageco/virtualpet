@@ -72,7 +72,7 @@ public class ProfileUI : MonoBehaviour
         Debug.Log(pet.GetName(0));
         Accessory a = DataHolder.GetAccessory(playerPet.iD,playerPet.accessoryId);
         petName.text = playerPet.petName;
-        string url = a.iconUrl.Replace("Assets/Game/Resources/", "");
+        string url = pet.iconUrl.Replace("Assets/Game/Resources/", "");
         url = url.Replace(".png", "");
         icon.sprite = Resources.Load<Sprite>(url) as Sprite;
         price = playerPet.level * playerPet.level * 5;

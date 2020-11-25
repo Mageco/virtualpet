@@ -7,7 +7,7 @@ public class AccessoryUI : MonoBehaviour
 {
     public int realId = 0;
     public int itemId = 0;
-    public Image icon;
+    //public Image icon;
     public Text price;
     public Button buyButton;
     public Button equipButton;
@@ -39,9 +39,15 @@ public class AccessoryUI : MonoBehaviour
 
         realId = p.realId;
         itemId = d.iD;
-        string url = d.iconUrl.Replace("Assets/Game/Resources/", "");
-        url = url.Replace(".png", "");
-        icon.sprite = Resources.Load<Sprite>(url) as Sprite;
+        //string url = d.iconUrl.Replace("Assets/Game/Resources/", "");
+        //url = url.Replace(".png", "");
+        //icon.sprite = Resources.Load<Sprite>(url) as Sprite;
+        CharController charController = GameManager.instance.GetPetObject(p.realId);
+        Pet pet = DataHolder.GetPet(p.iD);
+        GameObject go = Instantiate(charController.skinPrefabs[d.accessoryId]) as GameObject;
+        go.transform.parent = this.transform;
+        go.transform.localScale = new Vector3(14,14,1);
+        go.transform.localPosition = new Vector3(0,0,-10);
 
         if (d.levelRequire > p.level && state == ItemState.OnShop)
             isLevelRequire = true;

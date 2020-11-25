@@ -15,6 +15,7 @@ public Transform anchor;
     }
 
     public void Load(){
+
         List<PlayerAchivement> items = new List<PlayerAchivement>();
 
 
@@ -76,5 +77,6 @@ public Transform anchor;
             Destroy(s.gameObject);
         }
         items.Clear();
+
     }
 }

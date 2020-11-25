@@ -33,6 +33,11 @@ public class AccessoryPanel : MonoBehaviour
 
     public void Load(int realId)
     {
+        UIManager.instance.accessoryCamera.SetActive(true);
+        UIManager.instance.homeUI.SetActive(false);
+        if (UIManager.instance.profilePanel != null)
+            UIManager.instance.profilePanel.Close();
+
         MageManager.instance.PlaySound("BubbleButton", false);
         ClearItems();
         PlayerPet pet = GameManager.instance.GetPet(realId);
@@ -99,7 +104,10 @@ public class AccessoryPanel : MonoBehaviour
 
     public void Close()
     {
-        this.GetComponent<Popup>().Close();
+        UIManager.instance.accessoryCamera.SetActive(false);
+        UIManager.instance.homeUI.SetActive(true);
+        UIManager.instance.OnProfilePanel();
+        Destroy(this.gameObject);
     }
 
 }

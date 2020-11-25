@@ -126,6 +126,9 @@ public class UIManager : MonoBehaviour
     public GameObject toolUI;
     public GameObject profilePrefab;
     public GameObject notificationIcon;
+
+    public Transform accessoryAnchor;
+    public GameObject accessoryCamera;
     
     //public List<string> notificationText = new List<string>();
 
@@ -168,6 +171,7 @@ public class UIManager : MonoBehaviour
         DontDestroyOnLoad(this.gameObject);
 
 
+        accessoryCamera.SetActive(false);
 
     }
     // Start is called before the first frame update
@@ -885,9 +889,11 @@ public class UIManager : MonoBehaviour
         {
             var popup = Instantiate(accessoryPanelPrefab) as GameObject;
             popup.SetActive(true);
-            popup.transform.localScale = Vector3.zero;
-            popup.transform.SetParent(GameObject.Find("Canvas").transform, false);
-            popup.GetComponent<Popup>().Open();
+            //popup.transform.localScale = Vector3.zero;
+            popup.transform.SetParent(accessoryAnchor, false);
+            popup.transform.localPosition = new Vector3(0, 5, 0);
+            popup.transform.localScale = new Vector3(0.05f, 0.05f, 1);
+            //popup.GetComponent<Popup>().Open();
             accessoryPanel = popup.GetComponent<AccessoryPanel>();
             accessoryPanel.Load(petId);
         }
