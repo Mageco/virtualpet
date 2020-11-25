@@ -11,20 +11,20 @@ public class ChestSalePanel : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     public void Load(RareType rareType)
     {
         this.rareType = rareType;
-        
-        if(rareType == RareType.Common)
+
+        if (rareType == RareType.Common)
         {
             Item item = DataHolder.GetItem(128);
             priceText.text = (item.buyPrice * (float.Parse(DataHolder.Dialog(64).GetDescription(MageManager.instance.GetLanguage())))).ToString(".00");
@@ -44,6 +44,7 @@ public class ChestSalePanel : MonoBehaviour
 
     public void OnBuy()
     {
+#if USE_UNITY_PURCHASE        
         if (rareType == RareType.Common)
         {
             PurchaseManager.instance.BuyConsumable(4);
@@ -55,6 +56,7 @@ public class ChestSalePanel : MonoBehaviour
         {
             PurchaseManager.instance.BuyConsumable(6);
         }
+#endif        
     }
 
     public void Close()

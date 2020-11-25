@@ -102,7 +102,7 @@ public class ItemUI : MonoBehaviour
             price.text = d.buyPrice.ToString();
             buyButton.gameObject.SetActive(true);
 
-            if(d.itemType == ItemType.Room || d.itemType == ItemType.Gate || d.itemType == ItemType.Board ||
+            if (d.itemType == ItemType.Room || d.itemType == ItemType.Gate || d.itemType == ItemType.Board ||
                 d.iD == 1 || d.iD == 96 || d.iD == 97 || d.iD == 98)
             {
                 if (GameManager.instance.IsHaveItem(d.iD))
@@ -157,7 +157,7 @@ public class ItemUI : MonoBehaviour
         else if (d.itemType == ItemType.Drink)
         {
             if (d.value > 0)
-            {        
+            {
                 drinkIcon.gameObject.SetActive(true);
                 drinkText.text = d.value.ToString("F0");
             }
@@ -240,7 +240,7 @@ public class ItemUI : MonoBehaviour
                     buyButton.interactable = true;
                     moneyIcon.SetActive(true);
                     moneyIcon.GetComponent<Text>().text = DataHolder.Dialog(64).GetName(MageManager.instance.GetLanguage());
-                    price.text = (d.buyPrice * (float.Parse(DataHolder.Dialog(64).GetDescription(MageManager.instance.GetLanguage())))).ToString(".00") ;
+                    price.text = (d.buyPrice * (float.Parse(DataHolder.Dialog(64).GetDescription(MageManager.instance.GetLanguage())))).ToString(".00");
                     levelText.gameObject.SetActive(true);
                     levelText.text = DataHolder.Dialog(115).GetName(MageManager.instance.GetLanguage()) + " " + GameManager.instance.GetItemNumber(128).ToString() + "/3"; ;
                 }
@@ -286,7 +286,7 @@ public class ItemUI : MonoBehaviour
                 {
                     price.gameObject.SetActive(true);
                     buyButton.GetComponentInChildren<Text>().gameObject.SetActive(false);
-                  buyButton.interactable = true;
+                    buyButton.interactable = true;
                     moneyIcon.SetActive(true);
                     moneyIcon.GetComponent<Text>().text = DataHolder.Dialog(64).GetName(MageManager.instance.GetLanguage());
                     price.text = (d.buyPrice * (float.Parse(DataHolder.Dialog(64).GetDescription(MageManager.instance.GetLanguage())))).ToString(".00");
@@ -296,7 +296,7 @@ public class ItemUI : MonoBehaviour
                 }
             }
         }
-        
+
     }
 
 
@@ -379,7 +379,7 @@ public class ItemUI : MonoBehaviour
                 buyButton.interactable = false;
             }
         }
-        
+
     }
 
 
@@ -392,9 +392,9 @@ public class ItemUI : MonoBehaviour
         diamonIcon.SetActive(false);
         moneyIcon.SetActive(false);
         happyIcon.SetActive(false);
-       
+
         petLevelText.gameObject.SetActive(false);
-        
+
 
         statPanel.SetActive(false);
         happyIcon.gameObject.SetActive(false);
@@ -408,7 +408,7 @@ public class ItemUI : MonoBehaviour
         plusCoinIcon.gameObject.SetActive(false);
         toyIcon.gameObject.SetActive(false);
         tags[0].transform.parent.gameObject.SetActive(false);
-        for(int i = 0; i < tags.Length; i++)
+        for (int i = 0; i < tags.Length; i++)
         {
             tags[i].SetActive(false);
         }
@@ -433,6 +433,7 @@ public class ItemUI : MonoBehaviour
         }
         else
         {
+#if USE_UNITY_PURCHASE            
             if (DataHolder.GetItem(itemId).itemType == ItemType.Diamond)
             {
                 
@@ -469,6 +470,7 @@ public class ItemUI : MonoBehaviour
             {
                 UIManager.instance.OnConfirmationShopPanel(itemId, false, true);
             }
+#endif            
         }
 
         isBusy = false;
@@ -479,11 +481,12 @@ public class ItemUI : MonoBehaviour
         MageManager.instance.PlaySound("BubbleButton", false);
         if (!isCharacter && !isLevelRequire)
         {
-            if(itemId == 128)
+            if (itemId == 128)
             {
                 UIManager.instance.OnChestSalePanel(RareType.Common);
                 return;
-            }else if(itemId == 129)
+            }
+            else if (itemId == 129)
             {
                 UIManager.instance.OnChestSalePanel(RareType.Rare);
                 return;
