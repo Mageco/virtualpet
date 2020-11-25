@@ -1,5 +1,4 @@
 ﻿#if USE_UNITY_PURCHASE
-#define SKIP_IAP_VALIDATION
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Purchasing;
@@ -7,6 +6,7 @@ using System;
 using MageSDK.Client;
 using Mage.Models.Users;
 using MageApi;
+using UnityEngine.Purchasing.Security;
 
 public class PurchaseManager : MonoBehaviour, IStoreListener
 {
