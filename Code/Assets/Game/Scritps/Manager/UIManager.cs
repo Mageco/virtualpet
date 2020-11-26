@@ -240,12 +240,13 @@ public class UIManager : MonoBehaviour
                 achivementNotification.SetActive(false);
 
             //Check Gift Notification
+            /*
             if (GameManager.instance.IsCollectDailyGift())
             {
                 giftNotification.SetActive(true);
             }
             else
-                giftNotification.SetActive(false);
+                giftNotification.SetActive(false);*/
 
             if (timeRate > maxTimeRate && !ES2.Exists("RateUs") && !IsPopUpOpen() && ItemManager.instance != null)
             {
@@ -1011,14 +1012,14 @@ public class UIManager : MonoBehaviour
         {
             callButton.SetActive(true);
             petButton.SetActive(true);
-            inventoryButton.SetActive(true);
+            //inventoryButton.SetActive(true);
             RewardVideoAdManager.instance.HideBanner();
         }
         else
         {
             callButton.SetActive(false);
             petButton.SetActive(false);
-            inventoryButton.SetActive(false);
+            //inventoryButton.SetActive(false);
             RewardVideoAdManager.instance.ShowBanner();
         }
 

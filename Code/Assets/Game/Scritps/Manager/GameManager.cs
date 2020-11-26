@@ -1612,6 +1612,7 @@ public class GameManager : MonoBehaviour
         {
             try
             {
+                Debug.Log(myPlayer.dailyBonus[n - 1].timeReceived);
                 if (myPlayer.dailyBonus[n - 1].timeReceived != "" && IsYesterDay(System.DateTime.Parse(myPlayer.dailyBonus[n - 1].timeReceived)))
                 {
                     isCollect = true;
