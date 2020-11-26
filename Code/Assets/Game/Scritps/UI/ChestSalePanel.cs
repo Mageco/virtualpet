@@ -44,7 +44,6 @@ public class ChestSalePanel : MonoBehaviour
 
     public void OnBuy()
     {
-#if USE_UNITY_PURCHASE        
         if (rareType == RareType.Common)
         {
             PurchaseManager.instance.BuyConsumable(4);
@@ -56,7 +55,6 @@ public class ChestSalePanel : MonoBehaviour
         {
             PurchaseManager.instance.BuyConsumable(6);
         }
-#endif        
     }
 
     public void Close()

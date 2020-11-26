@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using Mage.Models.Attributes;
 using Mage.Models.Users;
@@ -1610,11 +1611,15 @@ public class GameManager : MonoBehaviour
             isCollect = false;
         }else
         {
-            if (myPlayer.dailyBonus[n - 1].timeReceived != "" && IsYesterDay(System.DateTime.Parse(myPlayer.dailyBonus[n - 1].timeReceived)))
+            try
             {
-                isCollect = true;
+                if (myPlayer.dailyBonus[n - 1].timeReceived != "" && IsYesterDay(System.DateTime.Parse(myPlayer.dailyBonus[n - 1].timeReceived)))
+                {
+                    isCollect = true;
+                }
+            }catch(Exception e){
+                isCollect = false;
             }
-
         }
 
         return isCollect;
