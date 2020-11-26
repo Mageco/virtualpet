@@ -53,7 +53,7 @@ public class DailyBonusPanel : MonoBehaviour
             collectButtons[n].interactable = true;
         }else if (n == 7)
         {
-            if (GameManager.instance.IsYesterDay(System.DateTime.Parse(GameManager.instance.myPlayer.dailyBonus[n - 1].timeReceived)))
+            if (GameManager.instance.IsYesterDay(GameManager.instance.myPlayer.dailyBonus[n - 1].timeReceived))
             {
                 for (int i = 0; i < GameManager.instance.myPlayer.dailyBonus.Count; i++)
                 {
@@ -68,7 +68,7 @@ public class DailyBonusPanel : MonoBehaviour
            
             Debug.Log(MageEngine.instance.GetServerTimeStamp().Day);
 
-            if (GameManager.instance.IsYesterDay(System.DateTime.Parse(GameManager.instance.myPlayer.dailyBonus[n - 1].timeReceived)))
+            if (GameManager.instance.IsYesterDay(GameManager.instance.myPlayer.dailyBonus[n - 1].timeReceived))
             {
                 collectButtons[n].interactable = true;
             }

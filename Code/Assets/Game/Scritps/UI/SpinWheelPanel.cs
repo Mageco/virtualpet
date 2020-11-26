@@ -29,18 +29,22 @@ public class SpinWheelPanel : MonoBehaviour
 
     void LoadTime()
     {
-
-
         if (GameManager.instance.myPlayer.spinedTime != "")
         {
-            timeSpin = System.DateTime.Parse(GameManager.instance.myPlayer.spinedTime);
+            try
+            {
+                timeSpin = System.DateTime.Parse(GameManager.instance.myPlayer.spinedTime);
+            }catch(System.Exception e)
+            {
+                timeSpin = System.DateTime.Now.AddDays(-1);
+            }
         }
         else
             GameManager.instance.myPlayer.spinCount = 1;
 
 
 
-        if (GameManager.instance.IsYesterDay(timeSpin))
+        if (GameManager.instance.IsYesterDay(GameManager.instance.myPlayer.spinedTime))
         {
             GameManager.instance.myPlayer.spinCount = 1;
         }

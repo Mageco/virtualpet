@@ -44,7 +44,7 @@ public class RewardVideoAdManager : MonoBehaviour
 		MageAdsHelper.GetInstance().Initialize(ProcessReward);
 
         //Get quest max value
-		if (MageEngine.instance.GetApplicationDataItem("QuestMax") != null)
+		if (MageEngine.instance.GetApplicationDataItem("QuestMax") != null && MageEngine.instance.GetApplicationDataItem("QuestMax") != "")
 		{
 			GameManager.instance.questMax = int.Parse(MageEngine.instance.GetApplicationDataItem("QuestMax"));
 		}

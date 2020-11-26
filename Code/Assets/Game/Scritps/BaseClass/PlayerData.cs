@@ -193,11 +193,17 @@ public class PlayerService : BaseModel
 
     public string GetTime()
     {
-		double t = (System.DateTime.Parse(timeStart).AddSeconds(duration) - System.DateTime.Now).TotalSeconds;
-		int m = (int)t / 60;
-		int s = (int)(t - m * 60);
-		string time = m.ToString("00") + ":" + s.ToString("00");
-		return time;
+        try
+        {
+			double t = (System.DateTime.Parse(timeStart).AddSeconds(duration) - System.DateTime.Now).TotalSeconds;
+			int m = (int)t / 60;
+			int s = (int)(t - m * 60);
+			string time = m.ToString("00") + ":" + s.ToString("00");
+			return time;
+		}catch(System.Exception e)
+        {
+			return System.DateTime.Now.ToString();
+        }
     }
 }
 

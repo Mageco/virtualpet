@@ -1612,8 +1612,8 @@ public class GameManager : MonoBehaviour
         {
             try
             {
-                Debug.Log(myPlayer.dailyBonus[n - 1].timeReceived);
-                if (myPlayer.dailyBonus[n - 1].timeReceived != "" && IsYesterDay(System.DateTime.Parse(myPlayer.dailyBonus[n - 1].timeReceived)))
+                //Debug.Log(myPlayer.dailyBonus[n - 1].timeReceived);
+                if (myPlayer.dailyBonus[n - 1].timeReceived != "" && IsYesterDay(myPlayer.dailyBonus[n - 1].timeReceived))
                 {
                     isCollect = true;
                 }
@@ -1625,11 +1625,19 @@ public class GameManager : MonoBehaviour
         return isCollect;
     }
 
-    public bool IsYesterDay(System.DateTime time)
+    public bool IsYesterDay(string time)
     {
-        if (time.Year < MageEngine.instance.GetServerTimeStamp().Year || (time.Year == MageEngine.instance.GetServerTimeStamp().Year && time.Month < MageEngine.instance.GetServerTimeStamp().Month) || (time.Year == MageEngine.instance.GetServerTimeStamp().Year && time.Month == MageEngine.instance.GetServerTimeStamp().Month && time.Day < MageEngine.instance.GetServerTimeStamp().Day))
+        try
+        {
+            System.DateTime t = System.DateTime.Parse(time);
+            if (t.Year < MageEngine.instance.GetServerTimeStamp().Year || (t.Year == MageEngine.instance.GetServerTimeStamp().Year && t.Month < MageEngine.instance.GetServerTimeStamp().Month) || (t.Year == MageEngine.instance.GetServerTimeStamp().Year && t.Month == MageEngine.instance.GetServerTimeStamp().Month && t.Day < MageEngine.instance.GetServerTimeStamp().Day))
+                return true;
+            else return false;
+        }
+        catch(System.Exception e)
+        {
             return true;
-        else return false;
+        }        
     }
 
 }

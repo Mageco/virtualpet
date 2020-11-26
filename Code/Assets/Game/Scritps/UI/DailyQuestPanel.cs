@@ -28,8 +28,6 @@ public class DailyQuestPanel : MonoBehaviour
 
     void LoadQuest()
     {
-
-
         List<Achivement> achivements = new List<Achivement>();
         for(int i = 0; i < DataHolder.Achivements().GetDataCount(); i++)
         {
@@ -67,7 +65,7 @@ public class DailyQuestPanel : MonoBehaviour
         int count = 0;
         foreach(DailyQuestData quest in GameManager.instance.myPlayer.dailyQuests)
         {
-            if (quest.timeCollected != "" && GameManager.instance.IsYesterDay(System.DateTime.Parse(quest.timeCollected)))
+            if (quest.timeCollected != "" && GameManager.instance.IsYesterDay(quest.timeCollected))
             {
                 isRenewQuest = true;
             }   
@@ -79,7 +77,7 @@ public class DailyQuestPanel : MonoBehaviour
             { 
                 quest.achivementId = achivements[ids[count]].iD;
                 quest.state = DailyQuestState.None;
-                quest.timeCollected = MageEngine.instance.GetServerTimeStamp().ToString();
+                quest.timeCollected = MageEngine.instance.GetServerTimeStamp().ToString(); ;
                 GameManager.instance.myPlayer.isCompleteDailyQuest = false;
                 count++;   
             }

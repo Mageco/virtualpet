@@ -240,13 +240,13 @@ public class UIManager : MonoBehaviour
                 achivementNotification.SetActive(false);
 
             //Check Gift Notification
-            /*
+            
             if (GameManager.instance.IsCollectDailyGift())
             {
                 giftNotification.SetActive(true);
             }
             else
-                giftNotification.SetActive(false);*/
+                giftNotification.SetActive(false);
 
             if (timeRate > maxTimeRate && !ES2.Exists("RateUs") && !IsPopUpOpen() && ItemManager.instance != null)
             {
@@ -263,6 +263,8 @@ public class UIManager : MonoBehaviour
                 dailyQuestNotification.SetActive(true);
             foreach (DailyQuestData dailyQuest in GameManager.instance.myPlayer.dailyQuests)
             {
+                //Debug.Log(dailyQuest.timeCollected);
+                /*
                 if (dailyQuest.timeCollected != "" && GameManager.instance.IsYesterDay(System.DateTime.Parse(dailyQuest.timeCollected)))
                 {
                     dailyQuestNotification.SetActive(true);
@@ -273,7 +275,7 @@ public class UIManager : MonoBehaviour
                 } else if (dailyQuest.state == DailyQuestState.Collected)
                 {
                     n++;
-                }
+                }*/
             }
 
             if(n == 3 && !GameManager.instance.myPlayer.isCompleteDailyQuest)
