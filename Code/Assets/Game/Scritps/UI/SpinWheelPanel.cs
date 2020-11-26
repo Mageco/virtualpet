@@ -212,9 +212,9 @@ public class SpinWheelPanel : MonoBehaviour
         }
         else if (n == 6)
         {
-            value = 500;
-            GameManager.instance.AddCoin(value, GetKey());
-            UIManager.instance.OnSpinRewardPanel(icons[n].sprite, value.ToString(), DataHolder.Dialog(6).GetName(MageManager.instance.GetLanguage()));
+            value = 50;
+            GameManager.instance.AddHappy(value, GetKey());
+            UIManager.instance.OnSpinRewardPanel(icons[n].sprite, value.ToString(), DataHolder.Dialog(8).GetName(MageManager.instance.GetLanguage()));
         }
         else if (n == 7)
         {

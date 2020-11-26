@@ -63,7 +63,7 @@ public class Minigame : MonoBehaviour
             popup.GetComponent<Popup>().Open();
             winPanel = popup.GetComponent<WinPanel>();
             if (isWin)
-                bonus += 20 * (1 + gameLevel/10);
+                bonus += 5 * (1 + gameLevel/10);
 
             if (bonus == 0)
                 bonus = 1;

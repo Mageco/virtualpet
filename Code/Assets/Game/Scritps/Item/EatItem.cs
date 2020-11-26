@@ -77,7 +77,9 @@ public class EatItem : BaseFloorItem
 	{
         if(foodAmount < maxfoodAmount - 1)
         {
+            /*
 			int price = (int)((maxfoodAmount - foodAmount)/20);
+
 			if (GameManager.instance.GetCoin() < price)
 			{
 				MageManager.instance.OnNotificationPopup(DataHolder.Dialog(6).GetDescription(MageManager.instance.GetLanguage()));
@@ -89,11 +91,13 @@ public class EatItem : BaseFloorItem
 					ItemManager.instance.SpawnCoinPaid(this.transform.position, -price);
 					GameManager.instance.AddCoin(-price, Utils.instance.Md5Sum(GameManager.instance.count.ToString() + GameManager.instance.myPlayer.playTime.ToString() + GameManager.instance.myPlayer.Happy.ToString() + "M@ge2013"));
 				}
-				if (foodAmount < maxfoodAmount - 1)
-					MageManager.instance.PlaySound3D("happy_collect_item_06", false, this.transform.position);
 
-				foodAmount = maxfoodAmount - 1;
-			}
+			}*/
+
+			if (foodAmount < maxfoodAmount - 1)
+				MageManager.instance.PlaySound3D("happy_collect_item_06", false, this.transform.position);
+
+			foodAmount = maxfoodAmount - 1;
 		}
 	}
 
