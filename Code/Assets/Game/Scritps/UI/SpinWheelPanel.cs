@@ -17,7 +17,7 @@ public class SpinWheelPanel : MonoBehaviour
     public Button buttonCost;
     System.DateTime timeSpin = System.DateTime.Now;
     public Image[] icons;
-    int price = 2;
+    int price = 3;
     public Text priceText;
 
     private void Awake()
@@ -68,7 +68,7 @@ public class SpinWheelPanel : MonoBehaviour
             buttonFree.gameObject.SetActive(false);
             buttonAd.gameObject.SetActive(true);
             buttonAd.interactable = true;
-            buttonCost.gameObject.SetActive(false);
+            buttonCost.gameObject.SetActive(true);
             buttonCost.interactable = true;
         }
     }
