@@ -149,7 +149,7 @@ public class ItemManager : MonoBehaviour
         {
             SpawnChest();
             timeChest = 0;
-            maxTimeChest = Random.Range(10, 30);
+            maxTimeChest = 30;
         }
         else
         {
