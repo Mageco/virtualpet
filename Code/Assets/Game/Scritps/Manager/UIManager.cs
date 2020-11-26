@@ -170,8 +170,8 @@ public class UIManager : MonoBehaviour
 
         DontDestroyOnLoad(this.gameObject);
 
-
-        accessoryCamera.SetActive(false);
+        if(accessoryCamera != null)
+            accessoryCamera.SetActive(false);
 
     }
     // Start is called before the first frame update
@@ -1010,11 +1010,15 @@ public class UIManager : MonoBehaviour
         if (type == MapType.House)
         {
             callButton.SetActive(true);
+            petButton.SetActive(true);
+            inventoryButton.SetActive(true);
             RewardVideoAdManager.instance.HideBanner();
         }
         else
         {
             callButton.SetActive(false);
+            petButton.SetActive(false);
+            inventoryButton.SetActive(false);
             RewardVideoAdManager.instance.ShowBanner();
         }
 

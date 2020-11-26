@@ -1595,7 +1595,7 @@ public class GameManager : MonoBehaviour
         int n = 0;
         for (int i = 0; i < myPlayer.dailyBonus.Count; i++)
         {
-            if (GameManager.instance.myPlayer.dailyBonus[i].isCollected)
+            if (myPlayer.dailyBonus[i].isCollected)
             {
                 n++;
             }
@@ -1605,12 +1605,16 @@ public class GameManager : MonoBehaviour
         {
             isCollect = true;
         }
-        else
+        else if(n == myPlayer.dailyBonus.Count)
         {
-            if (System.DateTime.Parse(GameManager.instance.myPlayer.dailyBonus[n - 1].timeReceived).Year < MageEngine.instance.GetServerTimeStamp().Year || System.DateTime.Parse(GameManager.instance.myPlayer.dailyBonus[n - 1].timeReceived).Month < MageEngine.instance.GetServerTimeStamp().Month || System.DateTime.Parse(GameManager.instance.myPlayer.dailyBonus[n - 1].timeReceived).Day < MageEngine.instance.GetServerTimeStamp().Day)
+            isCollect = false;
+        }else
+        {
+            if (myPlayer.dailyBonus[n - 1].timeReceived != "" && IsYesterDay(System.DateTime.Parse(myPlayer.dailyBonus[n - 1].timeReceived)))
             {
                 isCollect = true;
             }
+
         }
 
         return isCollect;

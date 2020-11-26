@@ -73,9 +73,9 @@ public class CharController : MonoBehaviour
     public Vector3 originalShadowScale;
 
     TextMeshPro petNameText;
-    public SpriteRenderer petEmotion;
-    public EmotionStatus emotionStatus = EmotionStatus.Happy;
-    Sprite[] emotionIcons = new Sprite[3];
+    //public SpriteRenderer petEmotion;
+    //public EmotionStatus emotionStatus = EmotionStatus.Happy;
+    //Sprite[] emotionIcons = new Sprite[3];
 
     #endregion
 
@@ -219,8 +219,8 @@ public class CharController : MonoBehaviour
         if (petNameText != null)
             Destroy(petNameText.gameObject);
 
-        if(petEmotion != null)
-            Destroy(petEmotion.gameObject);
+        //if(petEmotion != null)
+        //    Destroy(petEmotion.gameObject);
 
         if (charStatus != null)
             Destroy(charStatus.gameObject);
@@ -268,11 +268,11 @@ public class CharController : MonoBehaviour
             }
         }
 
-        GameObject go1 = GameObject.Instantiate(Resources.Load("Prefabs/Pets/PetEmotion")) as GameObject;
-        petEmotion = go1.GetComponent<SpriteRenderer>();
-        go1.transform.parent = this.transform;
-        go1.transform.localPosition = new Vector3(-4f, iconStatusObject.transform.localPosition.y - 2.5f, -10);
-        petEmotion.gameObject.SetActive(true);
+        //GameObject go1 = GameObject.Instantiate(Resources.Load("Prefabs/Pets/PetEmotion")) as GameObject;
+        //petEmotion = go1.GetComponent<SpriteRenderer>();
+        //go1.transform.parent = this.transform;
+        //go1.transform.localPosition = new Vector3(-4f, iconStatusObject.transform.localPosition.y - 2.5f, -10);
+        //petEmotion.gameObject.SetActive(true);
 
 
         iconStatusObject.transform.parent = charObject.transform.GetChild(0);
@@ -281,9 +281,10 @@ public class CharController : MonoBehaviour
 
         nameObject.transform.position = iconStatusObject.transform.position - new Vector3(0, 2.5f, 10);
         petNameText = nameObject.GetComponent<TextMeshPro>();
-        petNameText.text = "<color=green>" + data.level.ToString() + " </color>" + data.petName;
+        //petNameText.text = "<color=green>" + data.level.ToString() + " </color>" + data.petName;
+        petNameText.text = data.petName;
 
- 
+
         nameObject.transform.SetParent(this.transform);
         if (iconStatusObject != null)
         {
@@ -296,10 +297,10 @@ public class CharController : MonoBehaviour
             go2.transform.parent = iconStatusObject.transform;
             go2.transform.localPosition = new Vector3(0, 0, -10);
 
-            emotionIcons[0] = Resources.Load<Sprite>("Icons/Status/Happy") as Sprite;
-            emotionIcons[1] = Resources.Load<Sprite>("Icons/Status/Normal") as Sprite;
-            emotionIcons[2] = Resources.Load<Sprite>("Icons/Status/Sad") as Sprite;
-
+            //emotionIcons[0] = Resources.Load<Sprite>("Icons/Status/Happy") as Sprite;
+            //emotionIcons[1] = Resources.Load<Sprite>("Icons/Status/Normal") as Sprite;
+            //emotionIcons[2] = Resources.Load<Sprite>("Icons/Status/Sad") as Sprite;
+            //petEmotion.gameObject.SetActive(false);
         }
     }
 
@@ -401,8 +402,9 @@ public class CharController : MonoBehaviour
         }
 
         petNameText.transform.position = iconStatusObject.transform.position - new Vector3(0, 2.5f, 10);
-        petEmotion.transform.position = iconStatusObject.transform.position - new Vector3(4f, 2.3f, 10);
+        //petEmotion.transform.position = iconStatusObject.transform.position - new Vector3(4f, 2.3f, 10);
 
+        /*
         if (emotionStatus != EmotionStatus.Sad)
         {
             if(data.timeLove > maxTimeLove && actionType != ActionType.Hold)
@@ -417,6 +419,7 @@ public class CharController : MonoBehaviour
                 data.timeLove += Time.deltaTime;
         }
 
+
         if(emotionStatus == EmotionStatus.Happy)
         {
             petEmotion.sprite = emotionIcons[0];
@@ -426,7 +429,7 @@ public class CharController : MonoBehaviour
         }else
         {
             petEmotion.sprite = emotionIcons[2];
-        }
+        }*/
 
         CalculateDirection();
 
@@ -859,7 +862,7 @@ public class CharController : MonoBehaviour
 
     protected virtual void CalculateStatus()
     {
-        lastEmotionStatus = emotionStatus;
+        //lastEmotionStatus = emotionStatus;
         lastIconStatus = iconStatus;
 
         if (actionType == ActionType.Injured)
@@ -1002,7 +1005,7 @@ public class CharController : MonoBehaviour
             iconStatus = IconStatus.None;
         }
 
-        
+        /*
         if (data.Damage > 0.9f * data.MaxDamage || data.Health < 0.1f * data.MaxHealth || data.Pee > 0.9f * data.MaxPee || data.Pee > 0.9f * data.MaxShit
             || data.Food < 0.1f * data.MaxFood || data.Water < 0.1f * data.MaxWater || data.Sleep < 0.1f * data.MaxSleep || data.Toy < 0.1f * data.MaxToy
             || data.Dirty > 0.9f * data.MaxDirty)
@@ -1015,26 +1018,26 @@ public class CharController : MonoBehaviour
             emotionStatus = EmotionStatus.Normal;
         }else
             emotionStatus = EmotionStatus.Happy;
-        
+        */
 
         if (iconStatusObject != null)
         {
             LoadIconStatus();
         }
 
-        if(emotionStatus != lastEmotionStatus)
-        {
+        //if(emotionStatus != lastEmotionStatus)
+        //{
             //StartCoroutine(OnEmotion());
-        }
+        //}
         //iconStatusObject.transform.localScale = originalStatusScale / charScale.scaleAgeFactor;
 
     }
 
     IEnumerator OnEmotion()
     {
-        petEmotion.gameObject.SetActive(true);
+        //petEmotion.gameObject.SetActive(true);
         yield return new WaitForSeconds(3);
-        petEmotion.gameObject.SetActive(false);
+        //petEmotion.gameObject.SetActive(false);
     }
 
     void LoadIconStatus()
@@ -1847,6 +1850,7 @@ public class CharController : MonoBehaviour
             {
                 if (startValue - data.Dirty > data.MaxDirty * 0.1f)
                 {
+                    ItemManager.instance.SpawnHeart(data.RateHappy, this.transform.position);
                     GameManager.instance.LogAchivement(AchivementType.Do_Action, ActionType.OnBath);
                 }
 
@@ -1909,6 +1913,7 @@ public class CharController : MonoBehaviour
         {
             if (pee - data.Pee > data.MaxPee * 0.1f)
             {
+                ItemManager.instance.SpawnHeart(data.RateHappy, this.transform.position);
                 GameManager.instance.LogAchivement(AchivementType.Do_Action, ActionType.Pee);
             }
             JumpOut();
@@ -1969,6 +1974,7 @@ public class CharController : MonoBehaviour
         {
             if (shit - data.Shit > 0.1f * data.MaxShit)
             {
+                ItemManager.instance.SpawnHeart(data.RateHappy, this.transform.position);
                 GameManager.instance.LogAchivement(AchivementType.Do_Action, ActionType.Pee);
             }
             equipment.RemovePet(this);
@@ -2022,6 +2028,7 @@ public class CharController : MonoBehaviour
                 }
                 if (data.Food - startValue >= 0.1f * data.MaxFood)
                 {
+                    ItemManager.instance.SpawnHeart(data.RateHappy, this.transform.position);
                     GameManager.instance.LogAchivement(AchivementType.Do_Action, ActionType.Eat);
                 }
                 
@@ -2097,6 +2104,7 @@ public class CharController : MonoBehaviour
                 }
                 if (data.Water - startValue > 0.1f * data.MaxWater)
                 {
+                    ItemManager.instance.SpawnHeart(data.RateHappy, this.transform.position);
                     GameManager.instance.LogAchivement(AchivementType.Do_Action, ActionType.Drink);
                 }
 
@@ -2184,6 +2192,7 @@ public class CharController : MonoBehaviour
         {
             if (data.Sleep - startValue > data.MaxSleep * 0.1f)
             {
+                ItemManager.instance.SpawnHeart(data.RateHappy, this.transform.position);
                 GameManager.instance.LogAchivement(AchivementType.Do_Action, ActionType.Sleep);
             }
             if(!isAbort)
@@ -2648,7 +2657,11 @@ public class CharController : MonoBehaviour
         }
 
         if (data.Toy - startValue > data.MaxToy * 0.1f)
+        {
+            ItemManager.instance.SpawnHeart(data.RateHappy, this.transform.position);
             GameManager.instance.LogAchivement(AchivementType.Do_Action, ActionType.Toy);
+        }
+            
 
         if (!isAbort)
         {
