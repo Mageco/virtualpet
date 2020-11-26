@@ -11,9 +11,11 @@ public class LanguageUIInspector : Editor
 	public override void OnInspectorGUI()
 	{
 		Undo.RecordObject(target, "Changed");
+		DataHolder.Instance().Init();
 		if (((LanguageUI)target).dialogId != -1)
 		{
-			id = DataHolder.Dialogs().GetDialogPosition(((LanguageUI)target).dialogId);
+            if(DataHolder.Dialogs().GetDialogPosition(((LanguageUI)target).dialogId) != -1)
+			    id = DataHolder.Dialogs().GetDialogPosition(((LanguageUI)target).dialogId);
 		}
 		//Debug.Log(id);
 		//((TextVoiceOver)target).text = (Text)EditorGUILayout.ObjectField ("Description",((TextVoiceOver)target).text, typeof(Text), true, GUILayout.MaxWidth (300));

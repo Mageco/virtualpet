@@ -116,8 +116,8 @@ public class ItemManager : MonoBehaviour
             yield return new WaitForEndOfFrame();
         }
         
-        if(!GameManager.instance.isGuest)
-            LoadWelcome(awayTime);
+        //if(!GameManager.instance.isGuest)
+        //    LoadWelcome(awayTime);
     }
 
     // Update is called once per frame
@@ -774,8 +774,8 @@ public class ItemManager : MonoBehaviour
         happy = (int)t/3600 * 5 * GameManager.instance.GetTotalPetNumber();
         exp = (int)t / 3600 * 5;
 
-        if (t >= 3600)
-            UIManager.instance.OnWelcomeBack(coin, happy, exp);
+        //if (t >= 3600)
+        //    UIManager.instance.OnWelcomeBack(coin, happy, exp);
     }
 
     public int GetFruitId()

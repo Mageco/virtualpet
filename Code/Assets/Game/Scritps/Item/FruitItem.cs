@@ -90,7 +90,8 @@ public class FruitItem : MonoBehaviour
     }
 
     void Pick(){
-        StartCoroutine(PickCouroutine());
+        if (!GameManager.instance.isGuest)
+            StartCoroutine(PickCouroutine());
     }
 
     private bool IsPointerOverUIObject()
