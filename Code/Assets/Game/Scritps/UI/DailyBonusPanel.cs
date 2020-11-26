@@ -22,7 +22,6 @@ public class DailyBonusPanel : MonoBehaviour
 
     private void Load()
     {
-
         int n = 0;
         for (int i=0;i< GameManager.instance.myPlayer.dailyBonus.Count;i++)
         {

@@ -54,6 +54,26 @@ public class ForestManager : MonoBehaviour
 
     void LoadCollectors()
     {
+
+        for (int i = 0; i < charCollectors.Length; i++)
+        {
+            int r = Random.Range(0, 100);
+            if (isForest)
+            {
+                if (r > 90)
+                {
+                    StartCoroutine(LoadCollector(i));
+                }
+            }
+            else
+            {
+                if (r > 95)
+                {
+                    StartCoroutine(LoadCollector(i));
+                }
+            }
+        }
+        /*
         if (isForest)
         {
             int cave = Random.Range(0, 100);
@@ -85,12 +105,12 @@ public class ForestManager : MonoBehaviour
                 }
             }
         }
-
+        */
     }
 
     IEnumerator LoadCollector(int id)
     {
-        yield return new WaitForSeconds(Random.Range(0, 15));
+        yield return new WaitForSeconds(Random.Range(5, 60));
         collector = GameObject.Instantiate(charCollectors[id]) as GameObject;
         CharCollectorTimeline c = collector.GetComponentInChildren<CharCollectorTimeline>();
         collector.transform.parent = this.transform;
