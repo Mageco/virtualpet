@@ -91,7 +91,7 @@ public class ItemManager : MonoBehaviour
         GameManager.instance.LoadPetObjects();
         if (GameManager.instance.IsPreviousData())
         {
-            UIManager.instance.OnNewVersionPanel();
+            //UIManager.instance.OnNewVersionPanel();
             //QuestManager.instance.OnGift();
             //MageManager.instance.OnNotificationPopup(DataHolder.Dialog(206).GetName(MageManager.instance.GetLanguage()));
         }
