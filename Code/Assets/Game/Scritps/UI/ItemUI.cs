@@ -433,7 +433,6 @@ public class ItemUI : MonoBehaviour
         }
         else
         {
-#if USE_UNITY_PURCHASE            
             if (DataHolder.GetItem(itemId).itemType == ItemType.Diamond)
             {
                 
@@ -470,7 +469,7 @@ public class ItemUI : MonoBehaviour
             {
                 UIManager.instance.OnConfirmationShopPanel(itemId, false, true);
             }
-#endif            
+         
         }
 
         isBusy = false;

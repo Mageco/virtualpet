@@ -1,4 +1,4 @@
-﻿#if USE_UNITY_PURCHASE
+﻿
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Purchasing;
@@ -458,4 +458,3 @@ public class PurchaseManager : MonoBehaviour, IStoreListener
 
 }
 
-#endif
