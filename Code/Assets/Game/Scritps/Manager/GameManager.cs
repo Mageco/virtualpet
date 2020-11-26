@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using Mage.Models.Attributes;
 using Mage.Models.Users;
@@ -1617,7 +1616,7 @@ public class GameManager : MonoBehaviour
                 {
                     isCollect = true;
                 }
-            }catch(Exception e){
+            }catch(System.Exception e){
                 isCollect = false;
             }
         }
