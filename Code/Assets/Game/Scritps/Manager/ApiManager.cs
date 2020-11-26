@@ -11,27 +11,30 @@ using Mage.Models.Game;
 using System.IO;
 using Mage.Models.Application;
 using MageSDK.Client;
+#if USE_FIREBASE
 using Firebase.Messaging;
+#endif
 using MageSDK.Client.Helper;
 
-public class ApiManager : MageEngine {
+public class ApiManager : MageEngine
+{
 
-	//private static ApiManager instance;
-	[HideInInspector]
-	public int testRound = 0;
-	[HideInInspector]
-	public int testSequence = 0;
-	
-	[HideInInspector]
-	public string contactUrl = "";
-	[HideInInspector]
-	public string contactPhone = "";
-	[HideInInspector]
-	public int option = 0;
-	
+    //private static ApiManager instance;
+    [HideInInspector]
+    public int testRound = 0;
+    [HideInInspector]
+    public int testSequence = 0;
 
-	protected override void Load()
-	{
+    [HideInInspector]
+    public string contactUrl = "";
+    [HideInInspector]
+    public string contactPhone = "";
+    [HideInInspector]
+    public int option = 0;
+
+
+    protected override void Load()
+    {
         /*
 		if (instance == null)
 			instance = this;
@@ -39,64 +42,71 @@ public class ApiManager : MageEngine {
 			Destroy (this.gameObject);
 
 		DontDestroyOnLoad (this.gameObject);*/
-	}
+    }
 
-	protected override void OnLoginCompleteCallback() {
+    protected override void OnLoginCompleteCallback()
+    {
         if (IsReloadRequired())
         {
             Debug.Log("Load data from server");
             GameManager.instance.myPlayer = GetUserData<PlayerData>();
-			GameManager.instance.UnLoadPets();
-			Debug.Log(GameManager.instance.myPlayer.ToJson());
-			GameManager.instance.ConvertPlayer();
-			if (ItemManager.instance != null)
-			{
-				MageManager.instance.LoadSceneWithLoading("House");
-			}
+            GameManager.instance.UnLoadPets();
+            Debug.Log(GameManager.instance.myPlayer.ToJson());
+            GameManager.instance.ConvertPlayer();
+            if (ItemManager.instance != null)
+            {
+                MageManager.instance.LoadSceneWithLoading("House");
+            }
 
-		}
+        }
 
 #if USE_FIREBASE
 		SetupFirebaseMessaging();
 #endif		
     }
 
-	public void ExampleOfGetRandomFriend() { 
-		GetRandomFriend( (User u) => {
-			Debug.Log("Friend: " + u.ToJson());
-		} );
-	}
+    public void ExampleOfGetRandomFriend()
+    {
+        GetRandomFriend((User u) =>
+        {
+            Debug.Log("Friend: " + u.ToJson());
+        });
+    }
 
-	//public static ApiManager GetInstance() {
-	//	return instance;
-	//}
+    //public static ApiManager GetInstance() {
+    //	return instance;
+    //}
 
-	protected void Start() {
-		DoLogin();
-	}
+    protected void Start()
+    {
+        DoLogin();
+    }
 
 
-	protected override void OnHasNewUserMessagesCallback(List<Message> newMessages) {
-       //sample only
-	   for (int i = 0; i < newMessages.Count; i++) {
-		   Debug.Log("Update message: " + newMessages[i].id + " as read");
-			if (newMessages[i].status == MessageStatus.New)
-			{
-				ConfirmationPopup confirm = MageManager.instance.OnConfirmationPopup(newMessages[i].title, newMessages[i].message);
-				string url = "";
-                #if UNITY_ANDROID
+    protected override void OnHasNewUserMessagesCallback(List<Message> newMessages)
+    {
+        //sample only
+        for (int i = 0; i < newMessages.Count; i++)
+        {
+            Debug.Log("Update message: " + newMessages[i].id + " as read");
+            if (newMessages[i].status == MessageStatus.New)
+            {
+                ConfirmationPopup confirm = MageManager.instance.OnConfirmationPopup(newMessages[i].title, newMessages[i].message);
+                string url = "";
+#if UNITY_ANDROID
 				url = newMessages[i].action_android;
-                #elif UNITY_IOS
+#elif UNITY_IOS
                 url = newMessages[i].action_ios;
-                #endif
-				confirm.okButton.onClick.AddListener(delegate {
-					OnClick(url);
-				});
-				UpdateMessageStatus(newMessages[i].id, MessageStatus.Read);
-			}
-		}
+#endif
+                confirm.okButton.onClick.AddListener(delegate
+                {
+                    OnClick(url);
+                });
+                UpdateMessageStatus(newMessages[i].id, MessageStatus.Read);
+            }
+        }
 
-	}
+    }
 
 #if USE_FIREBASE
     protected override void OnNewFirebaseMessageCallback(object sender, MessageReceivedEventArgs e)
@@ -115,7 +125,7 @@ public class ApiManager : MageEngine {
 
     void OnClick(string url)
     {
-	    Application.OpenURL(url);
+        Application.OpenURL(url);
     }
 
     void OnUpdate()
@@ -126,7 +136,7 @@ public class ApiManager : MageEngine {
 #elif UNITY_IOS
         Application.OpenURL("https://apps.apple.com/us/app/pet-house-little-friends/id1499945488?ls=1");
 #endif
-	}
+    }
 
 }
 

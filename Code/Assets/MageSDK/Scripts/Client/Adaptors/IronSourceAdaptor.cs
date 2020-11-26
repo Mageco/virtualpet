@@ -1,3 +1,4 @@
+#if IRON_SOURCE_ENABLED
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -18,11 +19,11 @@ namespace MageSDK.Client.Adaptors
    
 	public class IronSourceAdaptor 
 	{
-         #if UNITY_IOS
+#if UNITY_IOS
             private static string appKey = "";
-        #elif UNITY_ANDROID
+#elif UNITY_ANDROID
             private static string appKey = "cab81bed";
-        #endif
+#endif
 		
         private static IronSourceAdaptor _instance;
         public static Action<MageEventType> processMageEventType;
@@ -39,7 +40,7 @@ namespace MageSDK.Client.Adaptors
 
 		///<summary>Initialize IronSource Ads</summary>
 		public void Initialize(Action<MageEventType> processMageEventTypeCallback) {
-            #if IRON_SOURCE_ENABLED
+#if IRON_SOURCE_ENABLED
 			ApiUtils.Log ("unity-script: Initialize Iron source called");
 
             //Dynamic config example
@@ -80,9 +81,9 @@ namespace MageSDK.Client.Adaptors
             // SDK init
             ApiUtils.Log ("unity-script: IronSource.Agent.init");
             IronSource.Agent.init (appKey);
-            #endif
+#endif
 		}
-        #if IRON_SOURCE_ENABLED
+#if IRON_SOURCE_ENABLED
         /************* Video Delegates *************/ 
         public void RewardedVideoAdOpenedEvent ()
         {
@@ -163,7 +164,7 @@ namespace MageSDK.Client.Adaptors
             // prepare for next time
             IronSource.Agent.loadInterstitial();
         }
-        #endif
+#endif
 	}
 
     
@@ -171,3 +172,4 @@ namespace MageSDK.Client.Adaptors
 		
 }
 
+#endif

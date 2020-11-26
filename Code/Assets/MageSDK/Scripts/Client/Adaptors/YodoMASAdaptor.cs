@@ -1,3 +1,4 @@
+#if YODO1MAS_ENABLED
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -36,7 +37,7 @@ namespace MageSDK.Client.Adaptors
 		///<summary>Initialize YodoMAS Ads</summary>
 		public void Initialize(Action<MageEventType> processMageEventTypeCallback) {
             processMageEventType = processMageEventTypeCallback;
-            #if YODO1MAS_ENABLED
+#if YODO1MAS_ENABLED
             ApiUtils.Log("Initialize Yodo1MAS");
 			
 			// dont' collect user information
@@ -52,11 +53,11 @@ namespace MageSDK.Client.Adaptors
 			Yodo1U3dSDK.setRewardVideoDelegate(OnYodoVideoAdsHandler);
 			//set callback to handle interstitial
 			Yodo1U3dSDK.setInterstitialAdDelegate(OnYodoInterstitialAdsHandler);
-            #endif
+#endif
 		}
 
-        #region Yodo1MAS
-        #if YODO1MAS_ENABLED
+#region Yodo1MAS
+#if YODO1MAS_ENABLED
         public void OnYodoInterstitialAdsHandler(Yodo1U3dConstants.AdEvent adEvent,string error)
         {
             Debug.Log ("InterstitialAdDelegate:" + adEvent + "\n" + error);
@@ -98,9 +99,10 @@ namespace MageSDK.Client.Adaptors
                 break;
             }
         }
-        #endif
-        #endregion
+#endif
+#endregion
         
 	}
 		
 }
+#endif

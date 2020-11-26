@@ -1,17 +1,8 @@
+#if USE_UNITY_ADMOB && !UNITY_STANDALONE
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Firebase;
-using Firebase.Analytics;
-using Firebase.Auth;
-using Firebase.RemoteConfig;
 using GoogleMobileAds.Api;
-using Mage.Models;
 using Mage.Models.Application;
-using Mage.Models.Users;
 using MageApi;
-using MageSDK.Client;
 using UnityEngine;
 using UnityEngine.Advertisements;
 
@@ -212,3 +203,4 @@ namespace MageSDK.Client.Adaptors
     }
 
 }
+#endif
