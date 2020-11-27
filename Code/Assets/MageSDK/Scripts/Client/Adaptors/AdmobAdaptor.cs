@@ -1,4 +1,4 @@
-#if USE_UNITY_ADMOB && !UNITY_STANDALONE
+#if USE_GOOGLE_ADMOB && !UNITY_STANDALONE
 using System;
 using GoogleMobileAds.Api;
 using Mage.Models.Application;

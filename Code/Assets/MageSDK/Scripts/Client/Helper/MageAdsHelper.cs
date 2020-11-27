@@ -11,7 +11,7 @@ using MageApi.Models.Response;
 using MageApi;
 using Mage.Models.Application;
 using Mage.Models.Users;
-#if USE_UNITY_ADMOB && !UNITY_STANDALONE
+#if (USE_UNITY_ADS || USE_GOOGLE_ADMOB) && !UNITY_STANDALONE
 using MageSDK.Client.Adaptors;
 #endif
 
@@ -58,13 +58,16 @@ namespace MageSDK.Client.Helper
 #endif
 
             // Initialize correspondent Ads network
-#if USE_UNITY_ADMOB && !UNITY_STANDALONE
-            foreach(AdDistribute adDistribute in adsConfigurations.adDistributors) {
+#if !UNITY_STANDALONE
+            foreach (AdDistribute adDistribute in adsConfigurations.adDistributors)
+            {
                 switch (adDistribute)
                 {
+#if USE_GOOGLE_ADMOB
                     case AdDistribute.Admob:
                         AdmobAdaptor.GetInstance().Initialize(processMageEventType);
                         break;
+#endif
 #if YODO1MAS_ENABLED
                     case AdDistribute.Yodo1MAS:
                         YodoMASAdaptor.GetInstance().Initialize(processMageEventType);
@@ -75,13 +78,17 @@ namespace MageSDK.Client.Helper
                         IronSourceAdaptor.GetInstance().Initialize(processMageEventType);
                         break;
 #endif
+#if USE_UNITY_ADS
                     case AdDistribute.Unity:
+#endif                    
                     default:
+#if USE_UNITY_ADS
                         UnityAdsAdaptor.GetInstance().Initialize(processMageEventType);
+#endif                        
                         break;
                 }
             }
-#endif  
+#endif
             this._isInitialized = true;
         }
 
@@ -91,30 +98,36 @@ namespace MageSDK.Client.Helper
             {
                 return;
             }
-#if USE_UNITY_ADMOB && !UNITY_STANDALONE
-        switch (adsConfigurations.videoDistributor)
-        {
-            case AdDistribute.Admob:
-                AdmobAdaptor.GetInstance().ShowVideoAd();
-                break;
-            case AdDistribute.Yodo1MAS:
+#if !UNITY_STANDALONE
+            switch (adsConfigurations.videoDistributor)
+            {
+#if USE_GOOGLE_ADMOB
+                case AdDistribute.Admob:
+                    AdmobAdaptor.GetInstance().ShowVideoAd();
+                    break;
+#endif
+                case AdDistribute.Yodo1MAS:
 #if YODO1MAS_ENABLED
 				ApiUtils.Log("Show Yodo1MAS VideoAds");
 				Yodo1U3dAds.ShowVideo();
 #endif
-                break;
-            case AdDistribute.IronSource:
+                    break;
+                case AdDistribute.IronSource:
 #if IRON_SOURCE_ENABLED
 				ApiUtils.Log("Show Iron Source VideoAds");
 				IronSource.Agent.showRewardedVideo();
 #endif
-                break;
-            case AdDistribute.Unity:
-            default:
-                ApiUtils.Log("Show Unity Ads VideoAds");
-                UnityAdsAdaptor.GetInstance().ShowVideoAd();
-                break;
-        }
+                    break;
+#if USE_UNITY_ADS                    
+                case AdDistribute.Unity:
+#endif                
+                default:
+#if USE_UNITY_ADS                
+                    ApiUtils.Log("Show Unity Ads VideoAds");
+                    UnityAdsAdaptor.GetInstance().ShowVideoAd();
+#endif                    
+                    break;
+            }
 #else
             processMageEventType(MageEventType.VideoAdRewarded);
 #endif
@@ -126,31 +139,37 @@ namespace MageSDK.Client.Helper
             {
                 return;
             }
-#if USE_UNITY_ADMOB && !UNITY_STANDALONE
-        switch (adsConfigurations.interstitialDistributor)
-        {
-            case AdDistribute.Admob:
+#if !UNITY_STANDALONE
+            switch (adsConfigurations.interstitialDistributor)
+            {
+#if USE_GOOGLE_ADMOB
+                case AdDistribute.Admob:
                 AdmobAdaptor.GetInstance().ShowInterstitial();
                 break;
-            case AdDistribute.Yodo1MAS:
+#endif
+                case AdDistribute.Yodo1MAS:
 #if YODO1MAS_ENABLED
 				ApiUtils.Log("Show Yodo1MAS Interstitial");
 				Yodo1U3dAds.ShowInterstitial();
 #endif
-                break;
-            case AdDistribute.IronSource:
+                    break;
+                case AdDistribute.IronSource:
 #if IRON_SOURCE_ENABLED
 				ApiUtils.Log("Show IronSource Interstitial");
 				IronSource.Agent.showInterstitial();
 #endif
-                break;
-            case AdDistribute.Unity:
-            default:
-                ApiUtils.Log("Show UnityAds Interstitial");
-                UnityAdsAdaptor.GetInstance().ShowInterstitialAd();
-                break;
+                    break;
+#if USE_UNITY_ADS
+                case AdDistribute.Unity:
+#endif
+                default:
+#if USE_UNITY_ADS
+                    ApiUtils.Log("Show UnityAds Interstitial");
+                    UnityAdsAdaptor.GetInstance().ShowInterstitialAd();
+#endif
+                    break;
 
-        }
+            }
 #else
             processMageEventType(MageEventType.InterstitialAdShow);
 #endif

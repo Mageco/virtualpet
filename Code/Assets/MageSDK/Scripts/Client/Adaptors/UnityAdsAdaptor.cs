@@ -1,4 +1,4 @@
-#if USE_UNITY_ADMOB && !UNITY_STANDALONE
+#if USE_UNITY_ADS && !UNITY_STANDALONE
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -20,13 +20,13 @@ namespace MageSDK.Client.Adaptors
     public class UnityAdsAdaptor : IUnityAdsListener
     {
 
-        #if UNITY_IOS
+#if UNITY_IOS
             private static string gameId = "3508454";
-        #elif UNITY_ANDROID
-            private static string gameId = "3508455";
-        #else
+#elif UNITY_ANDROID
+        private static string gameId = "3508455";
+#else
             private static string gameId = "3508454";
-        #endif
+#endif
 
         private static UnityAdsAdaptor _instance;
         public static string rewardedVideoPlacementId = "rewardedVideo";
@@ -67,11 +67,11 @@ namespace MageSDK.Client.Adaptors
             UnityAdsAdaptor.rewardedVideoPlacementId = adsConfigurations.unityIOSVideoUnitId;
             UnityAdsAdaptor.interstitialPlacementId = adsConfigurations.unityIOSInterstitialUnitId;
 #endif
-            
+
 
             Advertisement.AddListener(this);
             Advertisement.Initialize(gameId, testMode);
-            
+
             processMageEventType = processMageEventTypeCallback;
         }
 
@@ -107,7 +107,8 @@ namespace MageSDK.Client.Adaptors
             }
             else if (showResult == ShowResult.Failed)
             {
-                if (placementId == rewardedVideoPlacementId) {
+                if (placementId == rewardedVideoPlacementId)
+                {
                     //MageManager.instance.OnNotificationPopup(157);
                 }
                 Debug.LogWarning("The ad did not finish due to an error.");
@@ -130,13 +131,21 @@ namespace MageSDK.Client.Adaptors
         }
         #endregion
 
-        private void ShowUnityAd(string placementId) 
+        private void ShowUnityAd(string placementId)
         {
-            if(Advertisement.IsReady()) {
+            if (!Advertisement.isInitialized)
+            {
+                if (this.processMageEventType != null)
+                {
+                    Initialize(this.processMageEventType);
+                }
+            }
+            if (Advertisement.IsReady())
+            {
                 Advertisement.Show(placementId);
                 ApiUtils.Log("Unity ad is ready:" + placementId);
-            } 
-            else 
+            }
+            else
             {
                 ApiUtils.Log("Unity ad is not ready:" + placementId);
             }
@@ -144,11 +153,25 @@ namespace MageSDK.Client.Adaptors
 
         public void ShowVideoAd()
         {
+            if (!Advertisement.isInitialized)
+            {
+                if (this.processMageEventType != null)
+                {
+                    Initialize(this.processMageEventType);
+                }
+            }
             ShowUnityAd(UnityAdsAdaptor.rewardedVideoPlacementId);
         }
 
         public void ShowInterstitialAd()
         {
+            if (!Advertisement.isInitialized)
+            {
+                if (this.processMageEventType != null)
+                {
+                    Initialize(this.processMageEventType);
+                }
+            }
             ShowUnityAd(UnityAdsAdaptor.interstitialPlacementId);
         }
     }
