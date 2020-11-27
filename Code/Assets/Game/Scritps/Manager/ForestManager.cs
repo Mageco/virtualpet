@@ -62,14 +62,16 @@ public class ForestManager : MonoBehaviour
             {
                 if (r > 90)
                 {
-                    StartCoroutine(LoadCollector(i));
+                    if(charCollectors[i] != null)
+                        StartCoroutine(LoadCollector(i));
                 }
             }
             else
             {
                 if (r > 95)
                 {
-                    StartCoroutine(LoadCollector(i));
+                    if (charCollectors[i] != null)
+                        StartCoroutine(LoadCollector(i));
                 }
             }
         }
