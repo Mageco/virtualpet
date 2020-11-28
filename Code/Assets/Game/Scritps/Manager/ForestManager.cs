@@ -19,7 +19,7 @@ public class ForestManager : MonoBehaviour
     public GameObject[] animalPrefabs;
     public string music = "Forest";
     float timeCoin = 0;
-    float maxTimeCoin = 3;
+    float maxTimeCoin = 10;
     float timeFish = 0;
     float maxTimeFish = 5;
     float timeAnimal = 0;
@@ -160,7 +160,7 @@ public class ForestManager : MonoBehaviour
         {
             timeCoin = 0;
             SpawnForestCoin();
-            maxTimeCoin = Random.Range(30, 60);
+            maxTimeCoin = Random.Range(30, 80);
         }
         else
             timeCoin += Time.deltaTime;

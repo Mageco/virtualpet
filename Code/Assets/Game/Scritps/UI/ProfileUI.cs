@@ -78,7 +78,7 @@ public class ProfileUI : MonoBehaviour
         price = playerPet.level * playerPet.level * 5;
         priceText.text = price.ToString();
         strengthText.text = (pet.maxHealth + playerPet.level * 20).ToString();
-        heartText.text = "+" + pet.RateHappy.ToString();
+        heartText.text = "+" + (pet.RateHappy + playerPet.level/5).ToString();
 
         sellCoin.SetActive(true);
         sellDiamond.SetActive(false);
@@ -125,7 +125,7 @@ public class ProfileUI : MonoBehaviour
         price = playerPet.level * playerPet.level * 5;
         priceText.text = price.ToString();
         strengthText.text = (pet.maxHealth + playerPet.level * 20).ToString();
-        heartText.text = "+" + pet.RateHappy.ToString();
+        heartText.text = "+" + (pet.RateHappy + playerPet.level / 5).ToString();
 
         int n = playerPet.level / 5;
         for (int i = 0; i < icons.Length; i++)

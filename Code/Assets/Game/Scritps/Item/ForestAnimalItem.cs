@@ -61,7 +61,7 @@ public class ForestAnimalItem : MonoBehaviour
         }
         if (shadow != null)
             shadow.SetActive(false);
-        yield return new WaitForSeconds(Random.Range(40, 80));
+        yield return new WaitForSeconds(Random.Range(50, 100));
         for (int i = 0; i < sprites.Length; i++)
         {
             sprites[i].enabled = true;

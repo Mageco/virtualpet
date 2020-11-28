@@ -45,7 +45,7 @@ public class ChestItem : MonoBehaviour
         animator = this.GetComponent<Animator>();
 
         itemId = 0;
-        value = 3;
+        value = Random.Range(1,4);
     }
     // Start is called before the first frame update
     void Start()

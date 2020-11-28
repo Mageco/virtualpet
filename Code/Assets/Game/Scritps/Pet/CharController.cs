@@ -369,7 +369,7 @@ public class CharController : MonoBehaviour
     {
         data.petName = GameManager.instance.GetPet(data.realId).petName;
         Debug.Log(data.petName);
-        petNameText.text = "<color=green>" + data.level.ToString() + " </color>" + data.petName;
+        petNameText.text = data.petName;
     }
 
 
@@ -1850,7 +1850,7 @@ public class CharController : MonoBehaviour
             {
                 if (startValue - data.Dirty > data.MaxDirty * 0.1f)
                 {
-                    ItemManager.instance.SpawnHeart(data.RateHappy, this.transform.position);
+                    ItemManager.instance.SpawnHeart(data.RateHappy + data.level/5, this.transform.position);
                     GameManager.instance.LogAchivement(AchivementType.Do_Action, ActionType.OnBath);
                 }
 
@@ -1913,7 +1913,7 @@ public class CharController : MonoBehaviour
         {
             if (pee - data.Pee > data.MaxPee * 0.1f)
             {
-                ItemManager.instance.SpawnHeart(data.RateHappy, this.transform.position);
+                ItemManager.instance.SpawnHeart(data.RateHappy + data.level/5, this.transform.position);
                 GameManager.instance.LogAchivement(AchivementType.Do_Action, ActionType.Pee);
             }
             JumpOut();
@@ -1974,7 +1974,7 @@ public class CharController : MonoBehaviour
         {
             if (shit - data.Shit > 0.1f * data.MaxShit)
             {
-                ItemManager.instance.SpawnHeart(data.RateHappy, this.transform.position);
+                ItemManager.instance.SpawnHeart(data.RateHappy + data.level/5, this.transform.position);
                 GameManager.instance.LogAchivement(AchivementType.Do_Action, ActionType.Pee);
             }
             equipment.RemovePet(this);
@@ -2028,7 +2028,7 @@ public class CharController : MonoBehaviour
                 }
                 if (data.Food - startValue >= 0.1f * data.MaxFood)
                 {
-                    ItemManager.instance.SpawnHeart(data.RateHappy, this.transform.position);
+                    ItemManager.instance.SpawnHeart(data.RateHappy + data.level/5, this.transform.position);
                     GameManager.instance.LogAchivement(AchivementType.Do_Action, ActionType.Eat);
                 }
                 
@@ -2104,7 +2104,7 @@ public class CharController : MonoBehaviour
                 }
                 if (data.Water - startValue > 0.1f * data.MaxWater)
                 {
-                    ItemManager.instance.SpawnHeart(data.RateHappy, this.transform.position);
+                    ItemManager.instance.SpawnHeart(data.RateHappy + data.level/5, this.transform.position);
                     GameManager.instance.LogAchivement(AchivementType.Do_Action, ActionType.Drink);
                 }
 
@@ -2192,7 +2192,7 @@ public class CharController : MonoBehaviour
         {
             if (data.Sleep - startValue > data.MaxSleep * 0.1f)
             {
-                ItemManager.instance.SpawnHeart(data.RateHappy, this.transform.position);
+                ItemManager.instance.SpawnHeart(data.RateHappy + data.level/5, this.transform.position);
                 GameManager.instance.LogAchivement(AchivementType.Do_Action, ActionType.Sleep);
             }
             if(!isAbort)
@@ -2658,7 +2658,7 @@ public class CharController : MonoBehaviour
 
         if (data.Toy - startValue > data.MaxToy * 0.1f)
         {
-            ItemManager.instance.SpawnHeart(data.RateHappy, this.transform.position);
+            ItemManager.instance.SpawnHeart(data.RateHappy + data.level/5, this.transform.position);
             GameManager.instance.LogAchivement(AchivementType.Do_Action, ActionType.Toy);
         }
             
