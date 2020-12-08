@@ -189,6 +189,7 @@ namespace MageSDK.Client.Adaptors
         {
             if (this.rewardBasedVideo.IsLoaded())
             {
+                ApiUtils.Log("Show admob video ads: " + this.videoAdUnitId);
                 this.rewardBasedVideo.Show();
             }
         }
@@ -197,6 +198,7 @@ namespace MageSDK.Client.Adaptors
         {
             if (this.interstitial.IsLoaded())
             {
+                ApiUtils.Log("Show admob interstitial ads: " + this.interstitialAdUnitId);
                 this.interstitial.Show();
             }
         }
