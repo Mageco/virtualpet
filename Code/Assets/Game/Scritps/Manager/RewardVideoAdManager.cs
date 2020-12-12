@@ -43,6 +43,14 @@ public class RewardVideoAdManager : MonoBehaviour
             yield return new WaitForEndOfFrame();
         }
 
+        MageEngine.instance.AddApplicationDataReload(this.OnApplicationDataInitialize);
+        
+        OnApplicationDataInitialize();
+        
+    }
+
+    public void OnApplicationDataInitialize()
+    {
         // select ads distribution network
         MageAdsHelper.GetInstance().Initialize(ProcessReward);
 
@@ -65,6 +73,7 @@ public class RewardVideoAdManager : MonoBehaviour
         // start calculate time for Interstitial
         timeAd = GameManager.instance.gameTime;
     }
+
 #if IRON_SOURCE_ENABLED
 	void OnApplicationPause(bool isPaused) {      
 		if (adDistribute == AdDistribute.IronSource) {

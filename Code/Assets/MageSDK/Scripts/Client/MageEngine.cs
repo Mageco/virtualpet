@@ -56,10 +56,14 @@ namespace MageSDK.Client
         private bool _isApplicationDataLoaded = false;
         private static bool _isLoaded = false;
         private DateTime _lastUserDataUpdate = DateTime.Now;
+        private DateTime _lastApplicationDataFetched = DateTime.Now;
         private bool _completedSignatureCheckForAndroid = false;
         //private bool _hasDataEncrypted = true;
         private string _encryptKey = "wgIl3ZjLdwYviMeTPo90QhVk1BHLA4YgWt5ES1avh8Lace8wqp5SfetYqRFJvg2xh6Kn1pIrHRyVBGCtgCSn3V8FbsVROZSosJEN5CcHQpX6Roj89TDk0sRYzxPKzbqjzPbjk7PxZhVYAO8vg6kFPF7px8Hwl5yDxElhwxRdlpvmU9La96qelkXyAuTK55JuYOvohN0zdEJp5MSlkfpYxAMcudeB7dxL973Y6B835RIKB8Yq7Usr0IaxvF8QostF";
         private float TimeOut = 200;
+
+        private List<Action> _onApplicationDataReloadActions = new List<Action>();
+        private string _serverApplicationDataHash = "";
         #endregion
 
         void Awake()
@@ -99,6 +103,16 @@ namespace MageSDK.Client
         {
             //ApiUtils.Log("Mage Engine update...");
             //SceneTrackerHelper.GetInstance().AddScreenTime(SceneManager.GetActiveScene().name);
+
+            DateTime now = DateTime.Now;
+            double timeToAdd = now.Subtract(this._lastApplicationDataFetched).TotalSeconds;
+
+            /* for this we only send if the last update is more than X seconds ago */
+            if (timeToAdd >= 120)
+            {
+                this.GetApplicationData();
+                this._lastApplicationDataFetched = now;
+            }
         }
 
         void OnApplicationFocus(bool hasFocus)
@@ -760,6 +774,14 @@ namespace MageSDK.Client
         ///<summary>After get Application data, it needs to merge with data from local</summary>
         private void MergeApplicationDataFromServer(List<ApplicationData> serverList)
         {
+            string serverHash = this.GetServerApplicationDataHash(serverList);
+            if (this._serverApplicationDataHash == serverHash) 
+            {
+                return;
+            }
+
+            this._serverApplicationDataHash = serverHash;
+            
             List<ApplicationData> localList = RuntimeParameters.GetInstance().GetParam<List<ApplicationData>>(MageEngineSettings.GAME_ENGINE_APPLICATION_DATA);
 
             if (null == localList)
@@ -798,6 +820,31 @@ namespace MageSDK.Client
 
             // refresh Event cache counter
             RefereshEventCacheCounter();
+
+            TriggerApplicationDataReload();
+        }
+
+        private string GetServerApplicationDataHash(List<ApplicationData> serverList)
+        {
+            string hash = "";
+            foreach (ApplicationData data in serverList) 
+            {
+                hash = ApiUtils.GetInstance().Md5Sum(data.attr_name + "@" + data.attr_value + "@" + hash);
+            }
+            return hash;
+        }
+
+        public void AddApplicationDataReload(Action action)
+        {
+            this._onApplicationDataReloadActions.Add(action);
+        }
+
+        private void TriggerApplicationDataReload()
+        {
+            foreach (Action a in this._onApplicationDataReloadActions)
+            {
+                a();
+            }
         }
 
         public bool IsApplicationDataLoaded()
