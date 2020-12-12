@@ -13,7 +13,7 @@ public class ExpertPanel : MonoBehaviour
     void Start()
     {
         priceText.text = price.ToString();
-        if (MageEngine.instance.GetApplicationDataItem<DataConfiguratoin>("GameEngine_DataConfiguration").isVideoRewardAd)
+        if (GameManager.instance.GetDataConfiguration() != null && GameManager.instance.GetDataConfiguration().isVideoRewardAd)
             adButton.SetActive(true);
         else
             adButton.SetActive(false);

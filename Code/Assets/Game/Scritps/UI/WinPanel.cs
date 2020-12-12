@@ -24,7 +24,7 @@ public class WinPanel : MonoBehaviour
     void Start()
     {
         MageManager.instance.PlaySound("Win", false);
-        if (MageEngine.instance.GetApplicationDataItem<DataConfiguratoin>("GameEngine_DataConfiguration").isVideoRewardAd)
+        if (MageEngine.instance.GetApplicationDataItem<DataConfiguration>("GameEngine_DataConfiguration").isVideoRewardAd)
             watchAd.gameObject.SetActive(true);
         else
             watchAd.gameObject.SetActive(false);

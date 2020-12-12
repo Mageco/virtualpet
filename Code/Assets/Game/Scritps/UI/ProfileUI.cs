@@ -70,7 +70,6 @@ public class ProfileUI : MonoBehaviour
        }*/
         Pet pet = DataHolder.GetPet(playerPet.iD);
         Debug.Log(pet.GetName(0));
-        Accessory a = DataHolder.GetAccessory(playerPet.iD,playerPet.accessoryId);
         petName.text = playerPet.petName;
         string url = pet.iconUrl.Replace("Assets/Game/Resources/", "");
         url = url.Replace(".png", "");

@@ -602,7 +602,7 @@ public class ItemManager : MonoBehaviour
 
     public void SpawnChest()
     {
-        if (MageEngine.instance.GetApplicationDataItem<DataConfiguratoin>("GameEngine_DataConfiguration").isVideoRewardAd)
+        if (GameManager.instance.GetDataConfiguration() != null && GameManager.instance.GetDataConfiguration().isVideoRewardAd)
         {
             ChestItem[] chests = FindObjectsOfType<ChestItem>();
             if (chests.Length > 2)

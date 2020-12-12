@@ -22,7 +22,7 @@ public class GameManager : MonoBehaviour
     public PlayerData myPlayer = new PlayerData();
     public PlayerData guest = new PlayerData();
 
-    public DataConfiguratoin dataConfiguratoin = new DataConfiguratoin();
+    public DataConfiguration dataConfiguratoin = new DataConfiguration();
 
     public int rateCount = 0;
     [HideInInspector]
@@ -1626,6 +1626,14 @@ public class GameManager : MonoBehaviour
         }
 
         return isCollect;
+    }
+
+    public DataConfiguration GetDataConfiguration()
+    {
+        if (MageEngine.instance.GetApplicationDataItem<DataConfiguration>("GameEngine_DataConfiguration") != null)
+            return MageEngine.instance.GetApplicationDataItem<DataConfiguration>("GameEngine_DataConfiguration");
+        else
+            return null;
     }
 
     public bool IsYesterDay(string time)

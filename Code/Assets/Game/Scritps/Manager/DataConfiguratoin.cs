@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Mage.Models;
 using UnityEngine;
 
-public class DataConfiguratoin : BaseModel
+public class DataConfiguration : BaseModel
 {
     public bool isSaleDisplay = false;
     public bool isIntertestialAd = false;

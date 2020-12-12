@@ -108,7 +108,7 @@ public class RewardVideoAdManager : MonoBehaviour
 
     public void ShowIntetestial(RewardType type = RewardType.Minigame)
     {
-        if (MageEngine.instance.GetApplicationDataItem<DataConfiguratoin>("GameEngine_DataConfiguration").isIntertestialAd)
+        if (GameManager.instance.GetDataConfiguration() != null && GameManager.instance.GetDataConfiguration().isIntertestialAd)
         {
             Debug.Log(GameManager.instance.gameTime - timeAd + " " + adDuration);
             if (GameManager.instance.gameTime - timeAd < adDuration)
