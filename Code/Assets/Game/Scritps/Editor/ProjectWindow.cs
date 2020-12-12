@@ -81,6 +81,7 @@ public class ProjectWindow : EditorWindow
 		DataHolder.Pets().SaveData();
 		DataHolder.Achivements().SaveData();
 		DataHolder.Accessories().SaveData();
+		AssetDatabase.Refresh();
 	}
 
 
