@@ -222,15 +222,16 @@ public class ItemUI : MonoBehaviour
         {
             if (d.iD == 128)
             {
-                if (GameManager.instance.GetItemNumber(128) > 2)
+                if (GameManager.instance.GetItemNumber(128) > 9)
                 {
                     icon.material = greyMaterial;
                     price.gameObject.SetActive(false);
                     moneyIcon.SetActive(false);
+                    buyButton.gameObject.SetActive(false);
                     buyButton.interactable = false;
                     isLevelRequire = true;
                     levelText.gameObject.SetActive(true);
-                    levelText.text = DataHolder.Dialog(115).GetName(MageManager.instance.GetLanguage()) + " " + GameManager.instance.GetItemNumber(128).ToString() + "/3"; ;
+                    levelText.text = DataHolder.Dialog(115).GetName(MageManager.instance.GetLanguage()) + " " + GameManager.instance.GetItemNumber(128).ToString() + "/10"; ;
 
                 }
                 else
@@ -242,20 +243,21 @@ public class ItemUI : MonoBehaviour
                     moneyIcon.GetComponent<Text>().text = DataHolder.Dialog(64).GetName(MageManager.instance.GetLanguage());
                     price.text = (d.buyPrice * (float.Parse(DataHolder.Dialog(64).GetDescription(MageManager.instance.GetLanguage())))).ToString(".00");
                     levelText.gameObject.SetActive(true);
-                    levelText.text = DataHolder.Dialog(115).GetName(MageManager.instance.GetLanguage()) + " " + GameManager.instance.GetItemNumber(128).ToString() + "/3"; ;
+                    levelText.text = DataHolder.Dialog(115).GetName(MageManager.instance.GetLanguage()) + " " + GameManager.instance.GetItemNumber(128).ToString() + "/10"; ;
                 }
             }
             else if (d.iD == 129)
             {
-                if (GameManager.instance.GetItemNumber(129) > 0)
+                if (GameManager.instance.GetItemNumber(129) > 4)
                 {
                     icon.material = greyMaterial;
                     price.gameObject.SetActive(false);
                     moneyIcon.SetActive(false);
                     buyButton.interactable = false;
+                    buyButton.gameObject.SetActive(false);
                     isLevelRequire = true;
                     levelText.gameObject.SetActive(true);
-                    levelText.text = DataHolder.Dialog(115).GetName(MageManager.instance.GetLanguage()) + " " + GameManager.instance.GetItemNumber(129).ToString() + "/1";
+                    levelText.text = DataHolder.Dialog(115).GetName(MageManager.instance.GetLanguage()) + " " + GameManager.instance.GetItemNumber(129).ToString() + "/5";
                 }
                 else
                 {
@@ -266,21 +268,22 @@ public class ItemUI : MonoBehaviour
                     moneyIcon.GetComponent<Text>().text = DataHolder.Dialog(64).GetName(MageManager.instance.GetLanguage());
                     price.text = (d.buyPrice * (float.Parse(DataHolder.Dialog(64).GetDescription(MageManager.instance.GetLanguage())))).ToString(".00");
                     levelText.gameObject.SetActive(true);
-                    levelText.text = DataHolder.Dialog(115).GetName(MageManager.instance.GetLanguage()) + " " + GameManager.instance.GetItemNumber(129).ToString() + "/1";
+                    levelText.text = DataHolder.Dialog(115).GetName(MageManager.instance.GetLanguage()) + " " + GameManager.instance.GetItemNumber(129).ToString() + "/5";
                 }
             }
             if (d.iD == 130)
             {
-                if (GameManager.instance.GetItemNumber(130) > 0)
+                if (GameManager.instance.GetItemNumber(130) > 2)
                 {
                     icon.material = greyMaterial;
 
                     price.gameObject.SetActive(false);
                     moneyIcon.SetActive(false);
                     buyButton.interactable = false;
+                    buyButton.gameObject.SetActive(false);
                     isLevelRequire = true;
                     levelText.gameObject.SetActive(true);
-                    levelText.text = DataHolder.Dialog(115).GetName(MageManager.instance.GetLanguage()) + " " + GameManager.instance.GetItemNumber(130).ToString() + "/1";
+                    levelText.text = DataHolder.Dialog(115).GetName(MageManager.instance.GetLanguage()) + " " + GameManager.instance.GetItemNumber(130).ToString() + "/3";
                 }
                 else
                 {
@@ -291,7 +294,7 @@ public class ItemUI : MonoBehaviour
                     moneyIcon.GetComponent<Text>().text = DataHolder.Dialog(64).GetName(MageManager.instance.GetLanguage());
                     price.text = (d.buyPrice * (float.Parse(DataHolder.Dialog(64).GetDescription(MageManager.instance.GetLanguage())))).ToString(".00");
                     levelText.gameObject.SetActive(true);
-                    levelText.text = DataHolder.Dialog(115).GetName(MageManager.instance.GetLanguage()) + " " + GameManager.instance.GetItemNumber(130).ToString() + "/1";
+                    levelText.text = DataHolder.Dialog(115).GetName(MageManager.instance.GetLanguage()) + " " + GameManager.instance.GetItemNumber(130).ToString() + "/3";
 
                 }
             }
