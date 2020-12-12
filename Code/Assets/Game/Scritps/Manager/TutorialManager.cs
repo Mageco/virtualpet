@@ -53,7 +53,8 @@ public class TutorialManager : MonoBehaviour
         else if (questId == 1)
         {
             StartCoroutine(TapToFoodBowl());
-        }        //Tap to the food bowl
+        }
+        //Tap to the food bowl
         else if (questId == 2)
         {
             StartCoroutine(TapToWaterBowl());
