@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using MageSDK.Client;
 
 public class WinPanel : MonoBehaviour
 {
@@ -23,6 +24,10 @@ public class WinPanel : MonoBehaviour
     void Start()
     {
         MageManager.instance.PlaySound("Win", false);
+        if (MageEngine.instance.GetApplicationDataItem<DataConfiguratoin>("GameEngine_DataConfiguration").isVideoRewardAd)
+            watchAd.gameObject.SetActive(true);
+        else
+            watchAd.gameObject.SetActive(false);
     }
 
     Animator animator;

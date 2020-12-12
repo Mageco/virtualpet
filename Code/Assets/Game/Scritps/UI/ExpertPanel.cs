@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using MageSDK.Client;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,10 +8,15 @@ public class ExpertPanel : MonoBehaviour
 {
     int price = 3;
     public Text priceText;
+    public GameObject adButton;
     // Start is called before the first frame update
     void Start()
     {
         priceText.text = price.ToString();
+        if (MageEngine.instance.GetApplicationDataItem<DataConfiguratoin>("GameEngine_DataConfiguration").isVideoRewardAd)
+            adButton.SetActive(true);
+        else
+            adButton.SetActive(false);
     }
 
     // Update is called once per frame

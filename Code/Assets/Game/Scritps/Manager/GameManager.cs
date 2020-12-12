@@ -22,6 +22,8 @@ public class GameManager : MonoBehaviour
     public PlayerData myPlayer = new PlayerData();
     public PlayerData guest = new PlayerData();
 
+    public DataConfiguratoin dataConfiguratoin = new DataConfiguratoin();
+
     public int rateCount = 0;
     [HideInInspector]
     public int expScale = 1;
@@ -57,6 +59,7 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        Debug.Log(dataConfiguratoin.ToJson());
         LoadPlayer();
         isLoad = true;
     }

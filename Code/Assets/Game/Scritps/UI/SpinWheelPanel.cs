@@ -66,8 +66,12 @@ public class SpinWheelPanel : MonoBehaviour
         else
         {
             buttonFree.gameObject.SetActive(false);
-            buttonAd.gameObject.SetActive(true);
-            buttonAd.interactable = true;
+            if (MageEngine.instance.GetApplicationDataItem<DataConfiguratoin>("GameEngine_DataConfiguration").isVideoRewardAd)
+            {
+                buttonAd.gameObject.SetActive(true);
+                buttonAd.interactable = true;
+            }
+
             buttonCost.gameObject.SetActive(true);
             buttonCost.interactable = true;
         }

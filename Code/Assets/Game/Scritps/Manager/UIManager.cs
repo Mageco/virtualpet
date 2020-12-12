@@ -1089,25 +1089,27 @@ public class UIManager : MonoBehaviour
     #region Sale
     public void OnSale()
     {
-        if(GameManager.instance.myPlayer.level >= 7 && GameManager.instance.GetItemNumber(130) == 0)
+        if (MageEngine.instance.GetApplicationDataItem<DataConfiguratoin>("GameEngine_DataConfiguration").isSaleDisplay)
         {
-            this.rareType = RareType.Epic;
-            isSale = true;
-            saleButton.SetActive(true);
+            if (GameManager.instance.myPlayer.level >= 7 && GameManager.instance.GetItemNumber(130) == 0)
+            {
+                this.rareType = RareType.Epic;
+                isSale = true;
+                saleButton.SetActive(true);
+            }
+            else if (GameManager.instance.myPlayer.level >= 5 && GameManager.instance.GetItemNumber(129) == 0)
+            {
+                this.rareType = RareType.Rare;
+                isSale = true;
+                saleButton.SetActive(true);
+            }
+            else if (GameManager.instance.myPlayer.level >= 3 && GameManager.instance.GetItemNumber(128) < 3)
+            {
+                this.rareType = RareType.Common;
+                isSale = true;
+                saleButton.SetActive(true);
+            }
         }
-        else if (GameManager.instance.myPlayer.level >= 5 && GameManager.instance.GetItemNumber(129) == 0)
-        {
-            this.rareType = RareType.Rare;
-            isSale = true;
-            saleButton.SetActive(true);
-        }
-        else if (GameManager.instance.myPlayer.level >= 3 && GameManager.instance.GetItemNumber(128) < 3)
-        {
-            this.rareType = RareType.Common;
-            isSale = true;
-            saleButton.SetActive(true);
-        }
-        Debug.Log(rareType);
     }
 
     public bool IsPopUpOpen()

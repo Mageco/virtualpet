@@ -602,23 +602,27 @@ public class ItemManager : MonoBehaviour
 
     public void SpawnChest()
     {
-        ChestItem[] chests = FindObjectsOfType<ChestItem>();
-        if (chests.Length > 2)
-            return;
-        Vector3 pos = GetRandomPoint(AreaType.GardenRight);
-        bool isOk = false;
-        while (!isOk)
+        if (MageEngine.instance.GetApplicationDataItem<DataConfiguratoin>("GameEngine_DataConfiguration").isVideoRewardAd)
         {
-            pos = GetRandomPoint(AreaType.GardenRight);
-            isOk = true;
-            for(int i = 0; i < chests.Length; i++)
+            ChestItem[] chests = FindObjectsOfType<ChestItem>();
+            if (chests.Length > 2)
+                return;
+            Vector3 pos = GetRandomPoint(AreaType.GardenRight);
+            bool isOk = false;
+            while (!isOk)
             {
-                if (Vector2.Distance(chests[i].transform.position, pos) < 10)
-                    isOk = false;
+                pos = GetRandomPoint(AreaType.GardenRight);
+                isOk = true;
+                for (int i = 0; i < chests.Length; i++)
+                {
+                    if (Vector2.Distance(chests[i].transform.position, pos) < 10)
+                        isOk = false;
+                }
             }
+            pos.z = pos.y * 10;
+            GameObject go = Instantiate(chestPrefab, pos, Quaternion.identity);
         }
-        pos.z = pos.y * 10;
-        GameObject go = Instantiate(chestPrefab, pos, Quaternion.identity);
+
     }
 
     void CheckItemData(){
