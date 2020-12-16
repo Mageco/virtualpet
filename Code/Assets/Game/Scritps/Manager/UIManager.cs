@@ -1089,7 +1089,7 @@ public class UIManager : MonoBehaviour
     #region Sale
     public void OnSale()
     {
-        if (MageEngine.instance.GetApplicationDataItem<DataConfiguration>("GameEngine_DataConfiguration").isSaleDisplay)
+        if (GameManager.instance.GetDataConfiguration() != null && GameManager.instance.GetDataConfiguration().isSaleDisplay)
         {
             if (GameManager.instance.myPlayer.level >= 7 && GameManager.instance.GetItemNumber(130) == 0)
             {
