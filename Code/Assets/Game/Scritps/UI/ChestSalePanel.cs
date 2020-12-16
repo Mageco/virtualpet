@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -27,17 +28,17 @@ public class ChestSalePanel : MonoBehaviour
         if (rareType == RareType.Common)
         {
             Item item = DataHolder.GetItem(128);
-            priceText.text = (item.buyPrice * (float.Parse(DataHolder.Dialog(64).GetDescription(MageManager.instance.GetLanguage())))).ToString(".00");
+            priceText.text = (item.buyPrice * (float.Parse(DataHolder.Dialog(64).GetDescription(MageManager.instance.GetLanguage()), new CultureInfo("en-US")))).ToString("F2");
         }
         else if (rareType == RareType.Rare)
         {
             Item item = DataHolder.GetItem(129);
-            priceText.text = (item.buyPrice * (float.Parse(DataHolder.Dialog(64).GetDescription(MageManager.instance.GetLanguage())))).ToString(".00");
+            priceText.text = (item.buyPrice * (float.Parse(DataHolder.Dialog(64).GetDescription(MageManager.instance.GetLanguage()), new CultureInfo("en-US")))).ToString("F2");
         }
         if (rareType == RareType.Epic)
         {
             Item item = DataHolder.GetItem(130);
-            priceText.text = (item.buyPrice * (float.Parse(DataHolder.Dialog(64).GetDescription(MageManager.instance.GetLanguage())))).ToString(".00");
+            priceText.text = (item.buyPrice * (float.Parse(DataHolder.Dialog(64).GetDescription(MageManager.instance.GetLanguage()), new CultureInfo("en-US")))).ToString("F2");
         }
 
     }
