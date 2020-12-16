@@ -10,13 +10,25 @@ public class LosePanel : MonoBehaviour
     public Text coin;
     int gameId = 0;
     int price = 5;
-
+    public Button watchAd;
 
     // Start is called before the first frame update
     void Start()
     {
         priceText.text = price.ToString();
         MageManager.instance.PlaySound("Lose", false);
+        if (GameManager.instance.GetDataConfiguration() != null && GameManager.instance.GetDataConfiguration().isVideoRewardAd)
+        {
+            if(watchAd != null)
+                watchAd.gameObject.SetActive(true);
+        }
+
+        else
+        {
+            if(watchAd != null)
+                watchAd.gameObject.SetActive(false);
+        }
+            
     }
 
     // Update is called once per frame

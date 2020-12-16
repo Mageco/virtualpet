@@ -131,7 +131,11 @@ public class ItemUI : MonoBehaviour
             {
                 moneyIcon.SetActive(true);
                 moneyIcon.GetComponent<Text>().text = DataHolder.Dialog(64).GetName(MageManager.instance.GetLanguage());
-                price.text = (d.buyPrice * (float.Parse(DataHolder.Dialog(64).GetDescription(MageManager.instance.GetLanguage())))).ToString(".00");
+                float p = d.buyPrice * (float.Parse(DataHolder.Dialog(64).GetDescription(MageManager.instance.GetLanguage())));
+                if (p < 100)
+                    price.text = (p * 0.99999f).ToString("F2");
+                else
+                    price.text = p.ToString();
             }
             else if (d.priceType == PriceType.Happy)
             {
