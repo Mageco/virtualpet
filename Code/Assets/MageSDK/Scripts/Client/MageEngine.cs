@@ -110,8 +110,11 @@ namespace MageSDK.Client
             /* for this we only send if the last update is more than X seconds ago */
             if (timeToAdd >= 120)
             {
-                this.GetApplicationData();
-                this._lastApplicationDataFetched = now;
+                if (!isLocalApplicationData)
+                {
+                    this.LoadApplicationDataFromServer();
+                    this._lastApplicationDataFetched = now;
+                }
             }
         }
 
@@ -248,9 +251,9 @@ namespace MageSDK.Client
                 // if there is no user saved locally, then initate a default user
                 if (ES2.Exists(MageEngineSettings.GAME_ENGINE_USER))
                 {
-					byte[] rawData = ES2.LoadRaw(MageEngineSettings.GAME_ENGINE_USER);
-					string encryptedUser = Encoding.UTF8.GetString(rawData, 0, rawData.Length);
-					SetUser(User.CreatFromEncryptJson<User>(encryptedUser, this._encryptKey));
+                    byte[] rawData = ES2.LoadRaw(MageEngineSettings.GAME_ENGINE_USER);
+                    string encryptedUser = Encoding.UTF8.GetString(rawData, 0, rawData.Length);
+                    SetUser(User.CreatFromEncryptJson<User>(encryptedUser, this._encryptKey));
                 }
                 else
                 {
@@ -775,13 +778,13 @@ namespace MageSDK.Client
         private void MergeApplicationDataFromServer(List<ApplicationData> serverList)
         {
             string serverHash = this.GetServerApplicationDataHash(serverList);
-            if (this._serverApplicationDataHash == serverHash) 
+            if (this._serverApplicationDataHash == serverHash)
             {
                 return;
             }
 
             this._serverApplicationDataHash = serverHash;
-            
+
             List<ApplicationData> localList = RuntimeParameters.GetInstance().GetParam<List<ApplicationData>>(MageEngineSettings.GAME_ENGINE_APPLICATION_DATA);
 
             if (null == localList)
@@ -827,7 +830,7 @@ namespace MageSDK.Client
         private string GetServerApplicationDataHash(List<ApplicationData> serverList)
         {
             string hash = "";
-            foreach (ApplicationData data in serverList) 
+            foreach (ApplicationData data in serverList)
             {
                 hash = ApiUtils.GetInstance().Md5Sum(data.attr_name + "@" + data.attr_value + "@" + hash);
             }
