@@ -133,7 +133,10 @@ namespace MageApi
             string result = "";
             foreach (DictionaryEntry info in _container)
             {
-                result += (info.Key.ToString() + ": " + info.Value.ToString()) + "\r\n";
+                if (info.Key != null && info.Value != null)
+                {
+                    result += (info.Key.ToString() + ": " + info.Value.ToString()) + "\r\n";
+                }
             }
 
             return result;

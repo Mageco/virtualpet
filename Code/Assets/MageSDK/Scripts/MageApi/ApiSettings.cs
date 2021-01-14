@@ -79,8 +79,9 @@ namespace MageApi
         public const string API_UPDATE_GAME_CHARACTER_ITEM_STATUS = "UpdateGameCharacterItemStatus";
         public const string API_BUY_GAME_CHARACTER_ITEM = "BuyGameCharacterItem";
         public const string API_GET_AVAILABLE_GAME_CHARACTER_ITEMS = "GetAvailableGameCharacterItems";
-
+        public const string API_GET_USER_DATA_BY_USER_LIST = "GetUserDataByUserList";
         public const string API_SEND_GAME_USER_ACTION_LOG = "SendGameUserActionLog";
+        public const string API_GET_SERVER_TIMESTAMP = "GetServerTimestamp";
 
         //defines Login method
         public const string LOGIN_DEVICE_UUID = "0";

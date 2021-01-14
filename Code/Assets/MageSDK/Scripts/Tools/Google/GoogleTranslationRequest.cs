@@ -27,5 +27,12 @@ namespace MageSDK.Tools.Google
             this.q = text;
         }
 
+        public GoogleTranslationRequest(string targetLanguage, string text, string sourceLanguage) : base()
+        {
+            this.target = targetLanguage;
+            this.source = sourceLanguage;
+            this.q = text;
+        }
+
     }
 }

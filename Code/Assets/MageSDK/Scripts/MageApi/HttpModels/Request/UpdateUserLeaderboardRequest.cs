@@ -9,8 +9,8 @@ namespace MageApi.Models.Request {
 	[Serializable]
 	public class UpdateUserLeaderboardRequest: BaseRequest {
 
+		public string OtherUserId = "";
 		public List<UserData> LeaderboardDatas;
-
 		public UpdateUserLeaderboardRequest() : base() {
 			LeaderboardDatas = new List<UserData> ();
 		}

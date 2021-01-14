@@ -33,6 +33,8 @@ namespace Mage.Models.Users{
 
 		public string is_test_user = "";
 
+		public int user_ages = 0;
+
 		public List<UserData> user_datas = new List<UserData>();
 
 		public List<Character> characters = new List<Character>();
@@ -162,6 +164,11 @@ namespace Mage.Models.Users{
 		StoredIAPTransactionIDs,
 		SocialId,
 		SocialDataReloaded
+	}
+
+	public enum UserDataFlag {
+		Public,
+		Private
 	}
 }
 

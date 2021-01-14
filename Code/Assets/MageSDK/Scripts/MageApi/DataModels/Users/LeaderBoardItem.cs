@@ -14,11 +14,10 @@ namespace Mage.Models.Users{
 		public string board_name = "";
 		public int score = 0;
 		public string user_id = "";
-
 		public string fullname = "";
-
 		public string avatar = "";
-
+		public string title = "";
+		public string is_test_user = "0";
 		public LeaderBoardItem() : base () {
 		}
 	}

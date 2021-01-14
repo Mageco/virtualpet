@@ -10,23 +10,11 @@ using MageApi.Models.Request;
 using MageApi.Models.Response;
 using Mage.Models.Application;
 using MageSDK.Client;
-using System.Threading.Tasks;
-using UnityEngine.Networking;
 
 namespace MageApi
 {
     public class ApiHandler
     {
-
-        /*public bool TestMode;
-        public string TestUUID;
-        public string ApplicationSecretKey = "";
-        public string ApplicationKey = "";
-        public string ApiVersion = "";
-        public string ApiUrl = "http://localhost:8080/portal/api";*/
-
-        public float TimeOut = 200;
-
 
         [HideInInspector]
         private static ApiHandler _instance;
@@ -41,6 +29,7 @@ namespace MageApi
 
         public void Initialize()
         {
+            ApiUtils.Log("ApiHandler initialize started");
             RuntimeParameters.GetInstance().SetParam(ApiSettings.API_VERSION, MageEngine.instance.ApiVersion);
 
 #if UNITY_EDITOR
@@ -69,7 +58,7 @@ namespace MageApi
             RuntimeParameters.GetInstance().SetParam(ApiSettings.APPLICATION_VERSION, Application.version);
             RuntimeParameters.GetInstance().SetParam(ApiSettings.SYSTEM_LANGUAGE, Application.systemLanguage.ToString());
             RuntimeParameters.GetInstance().SetParam(ApiSettings.API_SERVER_TIMESTAMP, DateTime.Now);
-
+            ApiUtils.Log("ApiHandler initialize completed");
         }
 
         

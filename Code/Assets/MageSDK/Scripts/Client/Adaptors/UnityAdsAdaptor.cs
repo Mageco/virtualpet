@@ -1,17 +1,12 @@
 #if USE_UNITY_ADS && !UNITY_STANDALONE
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Firebase;
-using Firebase.Analytics;
-using Firebase.Auth;
-using Firebase.RemoteConfig;
+
 using Mage.Models;
 using Mage.Models.Application;
 using Mage.Models.Users;
 using MageApi;
 using MageSDK.Client;
+using MageSDK.Client.Helper;
 using UnityEngine;
 using UnityEngine.Advertisements;
 
@@ -19,13 +14,13 @@ namespace MageSDK.Client.Adaptors
 {
     public class UnityAdsAdaptor : IUnityAdsListener
     {
-
+        //Unity ID
 #if UNITY_IOS
-            private static string gameId = "3508454";
+        private static string gameId = "3508454";
 #elif UNITY_ANDROID
         private static string gameId = "3508455";
 #else
-            private static string gameId = "3508454";
+        private static string gameId = "3508454";
 #endif
 
         private static UnityAdsAdaptor _instance;
@@ -73,9 +68,10 @@ namespace MageSDK.Client.Adaptors
             Advertisement.Initialize(gameId, testMode);
 
             processMageEventType = processMageEventTypeCallback;
+
         }
 
-        #region Unity Ad
+#region Unity Ad
 
         // Implement IUnityAdsListener interface methods:
         public void OnUnityAdsDidFinish(string placementId, ShowResult showResult)
@@ -85,11 +81,11 @@ namespace MageSDK.Client.Adaptors
             {
                 if (placementId == rewardedVideoPlacementId)
                 {
-                    processMageEventType(MageEventType.VideoAdRewarded);
+                    MageEngine.instance.EnqueueCallbackTask(processMageEventType, new object[] {MageEventType.VideoAdRewarded});
                 }
                 if (placementId == interstitialPlacementId)
                 {
-                    processMageEventType(MageEventType.InterstitialAdShow);
+                    MageEngine.instance.EnqueueCallbackTask(processMageEventType, new object[] {MageEventType.InterstitialAdShow});
                 }
 
             }
@@ -98,7 +94,7 @@ namespace MageSDK.Client.Adaptors
                 // Do not reward the user for skipping the ad.
                 if (placementId == interstitialPlacementId)
                 {
-                    processMageEventType(MageEventType.InterstitialAdShow);
+                    MageEngine.instance.EnqueueCallbackTask(processMageEventType, new object[] {MageEventType.InterstitialAdShow});
                 }
                 else
                 {
@@ -129,7 +125,7 @@ namespace MageSDK.Client.Adaptors
         {
             // Optional actions to take when the end-users triggers an ad.
         }
-        #endregion
+#endregion
 
         private void ShowUnityAd(string placementId)
         {

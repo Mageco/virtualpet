@@ -214,7 +214,7 @@ namespace MageApi
 
         public static void Log(string s)
         {
-#if UNITY_EDITOR || MAGE_DEBUG
+#if MAGE_DEBUG
             Debug.Log(s);
 #endif
         }

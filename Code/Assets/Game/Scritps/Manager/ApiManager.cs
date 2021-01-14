@@ -77,12 +77,6 @@ public class ApiManager : MageEngine
     //	return instance;
     //}
 
-    protected void Start()
-    {
-        DoLogin();
-    }
-
-
     protected override void OnHasNewUserMessagesCallback(List<Message> newMessages)
     {
         //sample only

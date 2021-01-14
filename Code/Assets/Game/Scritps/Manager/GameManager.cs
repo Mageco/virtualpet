@@ -57,8 +57,13 @@ public class GameManager : MonoBehaviour
     }
 
 
-    private void Start()
+    IEnumerator Start()
     {
+        while (!MageEngine.instance.IsApplicationDataLoaded())
+        {
+            yield return new WaitForEndOfFrame();
+        }
+        MageEngine.instance.DoLogin();
         Debug.Log(dataConfiguratoin.ToJson());
         LoadPlayer();
         isLoad = true;

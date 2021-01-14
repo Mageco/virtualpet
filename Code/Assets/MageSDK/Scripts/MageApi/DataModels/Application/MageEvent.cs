@@ -27,6 +27,14 @@ namespace Mage.Models.Application{
 			this.eventValue = eventValue;
 		}
 
+		public MageEvent(string type, string eventDetail = "", string eventValue = "") {
+			this.eventName = type;
+			this.eventDetail = eventDetail;
+			eventDate = String.Format("{0:s}", DateTime.Now);
+			this.eventValue = eventValue;
+		}
+
+
 	}
 
 	public enum MageEventType {
@@ -226,5 +234,10 @@ namespace Mage.Models.Application{
         BuyItem,
         RewardItem,
         UserActionSuccess,
+        WinMatch,
+        LoseMatch,
+        UpgradeCard,
+        UpgradeItem,
+        OpenChest,
 	}
 }

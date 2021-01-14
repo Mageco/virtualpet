@@ -41,14 +41,10 @@ namespace MageSDK.Client.Helper
 
         private void SaveEventCounterList(List<EventCounter> data)
         {
-#if PLATFORM_TEST
             if (!MageEngine.instance.resetUserDataOnStart)
             {
                 ES2.Save(data, MageEngineSettings.GAME_ENGINE_EVENT_COUNTER_CACHE);
             }
-#else
-				ES2.Save(data, MageEngineSettings.GAME_ENGINE_EVENT_COUNTER_CACHE);
-#endif
 
             RuntimeParameters.GetInstance().SetParam(MageEngineSettings.GAME_ENGINE_EVENT_COUNTER_CACHE, data);
         }
@@ -199,19 +195,23 @@ namespace MageSDK.Client.Helper
 
         public void SaveMageEventsList(List<MageEvent> data)
         {
-#if PLATFORM_TEST
+
             if (!MageEngine.instance.resetUserDataOnStart)
             {
                 ES2.Save(data, MageEngineSettings.GAME_ENGINE_EVENT_CACHE);
             }
-#else
-				ES2.Save(data, MageEngineSettings.GAME_ENGINE_EVENT_CACHE);
-#endif
 
             RuntimeParameters.GetInstance().SetParam(MageEngineSettings.GAME_ENGINE_EVENT_CACHE, data);
         }
 
         public void OnEvent(MageEventType type, Action callbackSendEventApi, string eventDetail = "", string eventValue = "")
+        {
+            AddEventToCache(type, eventDetail, eventValue);
+            AddEventCounter(type.ToString());
+            callbackSendEventApi();
+        }
+
+        public void OnEvent(string type, Action callbackSendEventApi, string eventDetail = "", string eventValue = "")
         {
             AddEventToCache(type, eventDetail, eventValue);
             AddEventCounter(type.ToString());
@@ -227,6 +227,13 @@ namespace MageSDK.Client.Helper
         }
 
         private void AddEventToCache(MageEventType type, string eventDetail = "", string eventValue = "")
+        {
+            List<MageEvent> cachedEvent = GetMageEventsList();
+            cachedEvent.Add(new MageEvent(type, eventDetail, eventValue));
+            SaveMageEventsList(cachedEvent);
+        }
+
+        private void AddEventToCache(string type, string eventDetail = "", string eventValue = "")
         {
             List<MageEvent> cachedEvent = GetMageEventsList();
             cachedEvent.Add(new MageEvent(type, eventDetail, eventValue));

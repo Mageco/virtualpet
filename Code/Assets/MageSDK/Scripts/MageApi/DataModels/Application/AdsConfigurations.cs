@@ -8,9 +8,11 @@ using Mage.Models;
 
 namespace Mage.Models.Application
 {
+    
     [Serializable]
     public class AdsConfigurations : BaseModel
     {
+        
         public List<AdDistribute> adDistributors = new List<AdDistribute>();
 
         public AdDistribute videoDistributor = AdDistribute.Unity;
@@ -38,6 +40,8 @@ namespace Mage.Models.Application
         public AdsConfigurations() {
             adDistributors = new List<AdDistribute>() {AdDistribute.Admob, AdDistribute.Unity};
         }
+
     }
 
 }
+

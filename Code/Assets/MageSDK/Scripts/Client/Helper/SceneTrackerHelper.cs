@@ -116,14 +116,10 @@ namespace MageSDK.Client.Helper
 
         public void SaveSceneCacheListData(List<CacheScreenTime> data, string cacheName)
         {
-#if PLATFORM_TEST
             if (!MageEngine.instance.resetUserDataOnStart)
             {
                 ES2.Save(data, cacheName);
             }
-#else
-				ES2.Save(data, cacheName);
-#endif
 
             RuntimeParameters.GetInstance().SetParam(cacheName, data);
         }

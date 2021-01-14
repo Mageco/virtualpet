@@ -83,14 +83,10 @@ namespace MageSDK.Client.Helper
 
         public void SaveUserMessages(List<Message> data)
         {
-#if PLATFORM_TEST
             if (!MageEngine.instance.resetUserDataOnStart)
             {
                 ES2.Save(data, MageEngineSettings.GAME_ENGINE_USER_MESSAGE);
             }
-#else
-				ES2.Save(data, MageEngineSettings.GAME_ENGINE_USER_MESSAGE);
-#endif
 
             RuntimeParameters.GetInstance().SetParam(MageEngineSettings.GAME_ENGINE_USER_MESSAGE, data);
         }

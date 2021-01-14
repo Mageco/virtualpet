@@ -1,8 +1,12 @@
 #if USE_GOOGLE_ADMOB && !UNITY_STANDALONE
 using System;
 using GoogleMobileAds.Api;
+using Mage.Models;
 using Mage.Models.Application;
+using Mage.Models.Users;
 using MageApi;
+using MageSDK.Client;
+using MageSDK.Client.Helper;
 using UnityEngine;
 using UnityEngine.Advertisements;
 
@@ -30,7 +34,7 @@ namespace MageSDK.Client.Adaptors
         string interstitialAdUnitId = "unexpected_platform";
 #endif
         private static AdmobAdaptor _instance;
-        public RewardBasedVideoAd rewardBasedVideo;
+        public RewardedAd rewardedAd;
         public InterstitialAd interstitial;
 
         public AdmobAdaptor()
@@ -46,7 +50,7 @@ namespace MageSDK.Client.Adaptors
             return _instance;
         }
 
-        public static Action<MageEventType> processMageEventType;
+        public Action<MageEventType> processMageEventType;
 
         ///<summary>Initialize Unity Ads</summary>
         public void Initialize(Action<MageEventType> processMageEventTypeCallback)
@@ -67,22 +71,20 @@ namespace MageSDK.Client.Adaptors
             MobileAds.Initialize(appId);
 
             // Get singleton reward based video ad reference.
-            this.rewardBasedVideo = RewardBasedVideoAd.Instance;
+            this.rewardedAd = new RewardedAd(videoAdUnitId);
 
             // Called when an ad request has successfully loaded.
-            rewardBasedVideo.OnAdLoaded += HandleRewardBasedVideoLoaded;
+            this.rewardedAd.OnAdLoaded += HandleRewardedAdLoaded;
             // Called when an ad request failed to load.
-            rewardBasedVideo.OnAdFailedToLoad += HandleRewardBasedVideoFailedToLoad;
+            this.rewardedAd.OnAdFailedToLoad += HandleRewardedAdFailedToLoad;
             // Called when an ad is shown.
-            rewardBasedVideo.OnAdOpening += HandleRewardBasedVideoOpened;
-            // Called when the ad starts to play.
-            rewardBasedVideo.OnAdStarted += HandleRewardBasedVideoStarted;
-            // Called when the user should be rewarded for watching a video.
-            rewardBasedVideo.OnAdRewarded += HandleRewardBasedVideoRewarded;
+            this.rewardedAd.OnAdOpening += HandleRewardedAdOpening;
+            // Called when an ad request failed to show.
+            this.rewardedAd.OnAdFailedToShow += HandleRewardedAdFailedToShow;
+            // Called when the user should be rewarded for interacting with the ad.
+            this.rewardedAd.OnUserEarnedReward += HandleUserEarnedReward;
             // Called when the ad is closed.
-            rewardBasedVideo.OnAdClosed += HandleRewardBasedVideoClosed;
-            // Called when the ad click caused the user to leave the application.
-            rewardBasedVideo.OnAdLeavingApplication += HandleRewardBasedVideoLeftApplication;
+            this.rewardedAd.OnAdClosed += HandleRewardedAdClosed;
 
             // Initialize an InterstitialAd.
             interstitial = new InterstitialAd(interstitialAdUnitId);
@@ -99,64 +101,65 @@ namespace MageSDK.Client.Adaptors
             interstitial.OnAdLeavingApplication += HandleOnAdLeavingApplication;
 
             // initialize at begining
-            this.RequestRewardBasedVideo();
+            this.RequestRewardedAd();
 
             this.RequestInterstitial();
+
         }
 
-        private void RequestRewardBasedVideo()
+        private void RequestRewardedAd()
         {
             // Create an empty ad request.
-            AdRequest request = new AdRequest.Builder().TagForChildDirectedTreatment(true).AddExtra("is_designed_for_families", "true").Build();
+            //AdRequest request = new AdRequest.Builder().TagForChildDirectedTreatment(true).AddExtra("is_designed_for_families", "true").Build();
+            AdRequest request = new AdRequest.Builder().Build();
 
             // Load the rewarded video ad with the request.
-            this.rewardBasedVideo.LoadAd(request, videoAdUnitId);
+            this.rewardedAd.LoadAd(request);
         }
 
         private void RequestInterstitial()
         {
             // Create an empty ad request.
-            AdRequest request = new AdRequest.Builder().TagForChildDirectedTreatment(true).AddExtra("is_designed_for_families", "true").Build();
-
+            //AdRequest request = new AdRequest.Builder().TagForChildDirectedTreatment(true).AddExtra("is_designed_for_families", "true").Build();
+            AdRequest request = new AdRequest.Builder().Build();
             // Load the interstitial with the request.
-            interstitial.LoadAd(request);
-        }
-
-        public void HandleRewardBasedVideoLoaded(object sender, EventArgs args)
-        {
-            ApiUtils.Log("HandleRewardBasedVideoLoaded event received");
-        }
-
-        public void HandleRewardBasedVideoFailedToLoad(object sender, AdFailedToLoadEventArgs args)
-        {
-            ApiUtils.Log("HandleRewardBasedVideoFailedToLoad event received with message: " + args.Message);
-        }
-
-        public void HandleRewardBasedVideoOpened(object sender, EventArgs args)
-        {
-            ApiUtils.Log("HandleRewardBasedVideoOpened event received");
-        }
-
-        public void HandleRewardBasedVideoStarted(object sender, EventArgs args)
-        {
-            ApiUtils.Log("HandleRewardBasedVideoStarted event received");
-        }
-
-        public void HandleRewardBasedVideoClosed(object sender, EventArgs args)
-        {
-            ApiUtils.Log("HandleRewardBasedVideoClosed event received");
-            RequestRewardBasedVideo();
-        }
-
-        public void HandleRewardBasedVideoLeftApplication(object sender, EventArgs args)
-        {
-            ApiUtils.Log("HandleAdmobAdaptor.GetInstance().rewardBasedVideoLeftApplication event received");
+            this.interstitial.LoadAd(request);
         }
 
 
-        public void HandleRewardBasedVideoRewarded(object sender, Reward args)
+        public void HandleRewardedAdLoaded(object sender, EventArgs args)
         {
-            processMageEventType(MageEventType.VideoAdRewarded);
+            ApiUtils.Log("HandleRewardedAdLoaded event received");
+        }
+
+        public void HandleRewardedAdFailedToLoad(object sender, AdErrorEventArgs args)
+        {
+            ApiUtils.Log(
+                "HandleRewardedAdFailedToLoad event received with message: "
+                                 + args.Message);
+        }
+
+        public void HandleRewardedAdOpening(object sender, EventArgs args)
+        {
+            ApiUtils.Log("HandleRewardedAdOpening event received");
+        }
+
+        public void HandleRewardedAdFailedToShow(object sender, AdErrorEventArgs args)
+        {
+            ApiUtils.Log(
+                "HandleRewardedAdFailedToShow event received with message: "
+                                 + args.Message);
+        }
+
+        public void HandleRewardedAdClosed(object sender, EventArgs args)
+        {
+            ApiUtils.Log("HandleRewardedAdClosed event received");
+            RequestRewardedAd();
+        }
+
+        public void HandleUserEarnedReward(object sender, Reward args)
+        {
+            MageEngine.instance.EnqueueCallbackTask(processMageEventType, new object[] { MageEventType.VideoAdRewarded });
         }
 
         public void HandleOnAdLoaded(object sender, EventArgs args)
@@ -171,8 +174,7 @@ namespace MageSDK.Client.Adaptors
 
         public void HandleOnAdOpened(object sender, EventArgs args)
         {
-            Debug.Log("HandleAdOpened event received");
-            processMageEventType(MageEventType.InterstitialAdShow);
+            MageEngine.instance.EnqueueCallbackTask(processMageEventType, new object[] { MageEventType.InterstitialAdShow });
         }
 
         public void HandleOnAdClosed(object sender, EventArgs args)
@@ -187,10 +189,13 @@ namespace MageSDK.Client.Adaptors
 
         public void ShowVideoAd()
         {
-            if (this.rewardBasedVideo.IsLoaded())
+            if (this.rewardedAd.IsLoaded())
             {
-                ApiUtils.Log("Show admob video ads: " + this.videoAdUnitId);
-                this.rewardBasedVideo.Show();
+                this.rewardedAd.Show();
+            }
+            else
+            {
+                this.Initialize(this.processMageEventType);
             }
         }
 
@@ -198,11 +203,15 @@ namespace MageSDK.Client.Adaptors
         {
             if (this.interstitial.IsLoaded())
             {
-                ApiUtils.Log("Show admob interstitial ads: " + this.interstitialAdUnitId);
                 this.interstitial.Show();
+            }
+            else
+            {
+                this.Initialize(this.processMageEventType);
             }
         }
     }
 
 }
+
 #endif

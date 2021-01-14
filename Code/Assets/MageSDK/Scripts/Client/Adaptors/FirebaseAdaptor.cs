@@ -1,20 +1,18 @@
-﻿#if USE_FIREBASE && !UNITY_STANDALONE
+﻿#if USE_FIREBASE
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Threading;
 using System.Threading.Tasks;
 using Firebase;
 using Firebase.Analytics;
 using Firebase.Auth;
 using Firebase.RemoteConfig;
 using Firebase.Storage;
-using Mage.Models;
 using Mage.Models.Application;
 using Mage.Models.Users;
 using MageApi;
-using MageSDK.Client;
 using UnityEngine;
+
 
 namespace MageSDK.Client.Adaptors
 {
@@ -33,30 +31,42 @@ namespace MageSDK.Client.Adaptors
             {
                 FirebaseApp.CheckAndFixDependenciesAsync().ContinueWith(task =>
                 {
-                    if (task.Result == DependencyStatus.Available)
+                    try
                     {
-                        ApiUtils.Log("Firebase: initialized analytic " + task.Result);
-                        FirebaseAnalytics.SetAnalyticsCollectionEnabled(true);
+                        if (task.Result == DependencyStatus.Available)
+                        {
+                            ApiUtils.Log("Firebase: initialized analytic " + task.Result);
+                            FirebaseAnalytics.SetAnalyticsCollectionEnabled(true);
 
-                        // Set the user's sign up method.
-                        Firebase.Analytics.FirebaseAnalytics.SetUserProperty(
-                            Firebase.Analytics.FirebaseAnalytics.UserPropertySignUpMethod,
-                            "Anonymous");
+                            // Set the user's sign up method.
+                            Firebase.Analytics.FirebaseAnalytics.SetUserProperty(
+                                Firebase.Analytics.FirebaseAnalytics.UserPropertySignUpMethod,
+                                "Anonymous");
 
-                        if (RuntimeParameters.GetInstance().GetStringValule(MageEngineSettings.GAME_ENGINE_FB_USER_ID) != "")
-                            Firebase.Analytics.FirebaseAnalytics.SetUserId(RuntimeParameters.GetInstance().GetStringValule(MageEngineSettings.GAME_ENGINE_FB_USER_ID));
+                            if (RuntimeParameters.GetInstance().GetStringValule(MageEngineSettings.GAME_ENGINE_FB_USER_ID) != "")
+                                Firebase.Analytics.FirebaseAnalytics.SetUserId(RuntimeParameters.GetInstance().GetStringValule(MageEngineSettings.GAME_ENGINE_FB_USER_ID));
 
-                        if (MageEngine.instance.useFirebaseStorage)
-                            InitializeStorage();
+                            // init other components
+                            // init storage
+                            if (MageEngine.instance.useFirebaseStorage)
+                                InitializeStorage();
 
-                        app = FirebaseApp.DefaultInstance;
+                            // init default app
+                            app = FirebaseApp.DefaultInstance;
 
-                        isStackInitialized = true;
+                            // init database and firestore
+                            isStackInitialized = true;
+                        }
+                        else
+                        {
+                            ApiUtils.LogError("Firebase: Could not resolve all Firebase dependencies: " + task.Result);
+                        }
                     }
-                    else
+                    catch (Exception e)
                     {
-                        ApiUtils.LogError("Firebase: Could not resolve all Firebase dependencies: " + task.Result);
+                        ApiUtils.LogError(e.StackTrace);
                     }
+
                 });
             }
 
@@ -99,7 +109,7 @@ namespace MageSDK.Client.Adaptors
         }
 
         ///<summary>Get Remote Config from firebase and convert to List of ApplicationData of MageSDK</summary>
-        public static IEnumerator GetApplicationDataFromServer(Action<List<ApplicationData>> onCompleteCallback)
+        public static IEnumerator GetApplicationDataFromServer(Action<List<ApplicationData>> onCompleteCallback, bool isQueueTask = true)
         {
             ApiUtils.Log("Firebase: Fetching data...");
 
@@ -107,10 +117,25 @@ namespace MageSDK.Client.Adaptors
                 TimeSpan.Zero);
 
             yield return t;
+            try
+            {
+                Firebase.RemoteConfig.FirebaseRemoteConfig.ActivateFetched();
+                ApiUtils.Log("Firebase: Fetching data complete");
+                if (isQueueTask)
+                {
+                    MageEngine.instance.EnqueueCallbackTask(onCompleteCallback, new object[] { GetApplicationDataToList() });
+                }
+                else
+                {
+                    onCompleteCallback(GetApplicationDataToList());
+                }
 
-            Firebase.RemoteConfig.FirebaseRemoteConfig.ActivateFetched();
-            ApiUtils.Log("Firebase: Fetching data complete");
-            onCompleteCallback(GetApplicationDataToList());
+
+            }
+            catch (Exception e)
+            {
+                ApiUtils.Log(e.StackTrace);
+            }
         }
 
         ///<summary>Login to firebase anonymous</summary>
@@ -152,78 +177,44 @@ namespace MageSDK.Client.Adaptors
 
         }
 
-        /*public static IEnumerator LoginWithMageUser(User user, Action<FirebaseUser> onCompleteCallback) {
-			ApiUtils.Log("Firebase: Login with MageUser ...");
-			var uid = user.id + "-" + user.uuid;
-			var additionalClaims = new Dictionary<string, object>()
-			{
-				{ "full_name", user.fullname },
-				{ "avatar", user.avatar },
-				{ "mage_id", user.id}
-			};
-
-			FirebaseAuth auth = FirebaseAuth.DefaultInstance;
-			Task<FirebaseUser> t = FirebaseAuth.DefaultInstance.SignInWithCustomTokenAsync(uid);
-
-			yield return t;
-
-			if (t.IsCanceled) {
-				ApiUtils.LogError("Firebase: LoginWithMageUser was canceled.");
-			}
-			if (t.IsFaulted) {
-				ApiUtils.LogError("Firebase: LoginWithMageUser encountered an error: " + t.Exception);
-			}
-
-			if (t.IsCompleted) {
-				Firebase.Auth.FirebaseUser newUser = t.Result;
-				ApiUtils.Log("Firebase: LoginWithMageUser - User signed in successfully: " + newUser.DisplayName + " : " + newUser.UserId);
-				onCompleteCallback(newUser);
-			}
-
-			Firebase.Auth.FirebaseUser u = auth.CurrentUser;
-			if (u != null) {
-				string name = u.DisplayName;
-				string email = u.Email;
-				System.Uri photo_url = u.PhotoUrl;
-				// The user's Id, unique to the Firebase project.
-				// Do NOT use this value to authenticate with your backend server, if you
-				// have one; use User.TokenAsync() instead.
-				string tx = u.UserId;
-
-				ApiUtils.Log("id: " + tx);
-			}
-		}*/
 
         ///<summary>Update user Properties</summary>
-        public static void UpdateUserData(UserData data)
+        public static void UpdateUserProperty(UserData data)
         {
             // if not initialized then skip next actions
-            if (!isStackInitialized) return;
+            if (!IsStackInitialized()) return;
 
-            ApiUtils.Log("Firebase: UpdateUserData - " + data.ToJson());
             Firebase.Analytics.FirebaseAnalytics.SetUserProperty(data.attr_name, data.attr_value);
         }
 
         ///<summary>send event to firebase</summary>
         public static void OnEvent(MageEventType type, string eventDetail, int eventValue)
         {
-             // if not initialized then skip next actions
+            // if not initialized then skip next actions
             if (!isStackInitialized) return;
 
-            ApiUtils.Log("Firebase: OnEvent - " + type.ToString() + eventDetail);
             eventDetail = (eventDetail == "" ? "No detail" : eventDetail);
             Firebase.Analytics.FirebaseAnalytics.LogEvent(type.ToString(), eventDetail, eventValue);
         }
 
         public static void OnEvent(MageEventType type, string eventDetail, string eventValue)
         {
-             // if not initialized then skip next actions
+            // if not initialized then skip next actions
             if (!isStackInitialized) return;
 
-            ApiUtils.Log("Firebase: OnEvent - " + type.ToString() + eventDetail);
             eventDetail = (eventDetail == "" ? "No detail" : eventDetail);
             eventValue = (eventValue == "" ? "Empty" : eventValue);
             Firebase.Analytics.FirebaseAnalytics.LogEvent(type.ToString(), eventDetail, eventValue);
+        }
+
+        public static void OnEvent(string type, string eventDetail, string eventValue)
+        {
+            // if not initialized then skip next actions
+            if (!isStackInitialized) return;
+
+            eventDetail = (eventDetail == "" ? "No detail" : eventDetail);
+            eventValue = (eventValue == "" ? "Empty" : eventValue);
+            Firebase.Analytics.FirebaseAnalytics.LogEvent(type, eventDetail, eventValue);
         }
 
         public static IEnumerator UploadFile(string file, Action<string> onCompleteCallback)
@@ -286,6 +277,14 @@ namespace MageSDK.Client.Adaptors
         }
 
 
+        private static bool IsStackInitialized()
+        {
+            if (!isStackInitialized)
+            {
+                InitializeFirebaseStacks();
+            }
+            return isStackInitialized;
+        }
     }
 
 
